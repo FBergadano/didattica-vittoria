@@ -86,3 +86,11 @@ corsi:
     classe: "tutte"
     materia: cittadinanza
     capitoli: 0
+
+exclude:
+  - HOWTO.md
+  - PROGETTO.md
+  - STILE.md
+  - Gemfile
+  - Gemfile.lock
+  - README.md
