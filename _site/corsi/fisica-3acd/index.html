@@ -35,22 +35,24 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
 
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+<!-- Begin Jekyll SEO tag v2.9.0 -->
 <title>Fisica 3ª ACD | Bergadano Didattica — Liceo Vittoria</title>
-<meta name="generator" content="Jekyll v3.10.0" />
+<meta name="generator" content="Jekyll v4.4.1" />
 <meta property="og:title" content="Fisica 3ª ACD" />
 <meta name="author" content="Prof. Fulvio Bergadano" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Fisica · 3° anno · Classe 3ACD · Progetto sperimentale Fisica 3ª ACD Contenuto in preparazione." />
-<meta property="og:description" content="Fisica · 3° anno · Classe 3ACD · Progetto sperimentale Fisica 3ª ACD Contenuto in preparazione." />
+<meta name="twitter:description" property="og:description" content="Fisica · 3° anno · Classe 3ACD · Progetto sperimentale Fisica 3ª ACD Contenuto in preparazione." />
 <link rel="canonical" href="http://localhost:4000/bergadano-didattica/corsi/fisica-3acd/" />
 <meta property="og:url" content="http://localhost:4000/bergadano-didattica/corsi/fisica-3acd/" />
 <meta property="og:site_name" content="Bergadano Didattica — Liceo Vittoria" />
-<meta property="og:type" content="website" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-06-26T18:25:35+02:00" />
+<meta property="article:modified_time" content="2026-06-26T18:25:35+02:00" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Fisica 3ª ACD" />
+<meta name="twitter:title" content="Fisica 3ª ACD" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Prof. Fulvio Bergadano"},"description":"Fisica · 3° anno · Classe 3ACD · Progetto sperimentale Fisica 3ª ACD Contenuto in preparazione.","headline":"Fisica 3ª ACD","url":"http://localhost:4000/bergadano-didattica/corsi/fisica-3acd/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Prof. Fulvio Bergadano"},"dateModified":"2026-06-26T18:25:35+02:00","datePublished":"2026-06-26T18:25:35+02:00","description":"Fisica · 3° anno · Classe 3ACD · Progetto sperimentale Fisica 3ª ACD Contenuto in preparazione.","headline":"Fisica 3ª ACD","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/bergadano-didattica/corsi/fisica-3acd/"},"url":"http://localhost:4000/bergadano-didattica/corsi/fisica-3acd/"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
@@ -188,6 +190,21 @@
 </footer>
 
 <script>
+// ── Citazioni <cit autore="..."> ─────────────────────────────
+(function() {
+  document.querySelectorAll('cit[autore]').forEach(function(el) {
+    var text = el.textContent.trim();
+    var author = el.getAttribute('autore');
+    el.textContent = '';
+    var q = document.createTextNode('« ' + text + ' »');
+    var aut = document.createElement('span');
+    aut.className = 'cit-aut';
+    aut.textContent = '— ' + author;
+    el.appendChild(q);
+    el.appendChild(aut);
+  });
+})();
+
 // ── PDF export with QR codes for videos ───────────────────────
 function exportPDF() {
   var wraps = document.querySelectorAll('.video-wrap');

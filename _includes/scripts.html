@@ -1,4 +1,19 @@
 <script>
+// ── Citazioni <cit autore="..."> ─────────────────────────────
+(function() {
+  document.querySelectorAll('cit[autore]').forEach(function(el) {
+    var text = el.textContent.trim();
+    var author = el.getAttribute('autore');
+    el.textContent = '';
+    var q = document.createTextNode('« ' + text + ' »');
+    var aut = document.createElement('span');
+    aut.className = 'cit-aut';
+    aut.textContent = '— ' + author;
+    el.appendChild(q);
+    el.appendChild(aut);
+  });
+})();
+
 // ── PDF export with QR codes for videos ───────────────────────
 function exportPDF() {
   var wraps = document.querySelectorAll('.video-wrap');

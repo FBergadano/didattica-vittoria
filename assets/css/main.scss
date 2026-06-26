@@ -544,7 +544,7 @@ h1.chapter-title {
 
 .chapter-prose {
   counter-reset: section;
-  p  { margin-bottom: 1rem; }
+  p  { margin-bottom: 1rem; text-align: justify; hyphens: auto; }
   ul, ol { margin: 0.75rem 0 1rem 1.5rem; }
   li { margin-bottom: 0.3rem; }
   u {
@@ -739,24 +739,14 @@ h1.chapter-title {
 // ── Citazioni <cit autore="..."> ─────────────────────────────
 cit {
   display: block;
-  border-left: 3px solid $border-strong;
-  padding: 0.75rem 1.5rem 0.4rem;
   margin: 1.5rem 0;
   font-style: italic;
-  color: $text-secondary;
-  background: $bg-surface;
-  border-radius: 0 6px 6px 0;
 }
-cit::before { content: "«\00A0"; color: $text-muted; font-style: normal; font-size: 1.05em; }
-cit::after {
-  content: "»\00A0—\00A0" attr(autore);
+.cit-aut {
   display: block;
   text-align: right;
   font-style: normal;
-  font-weight: 600;
   font-size: 0.87rem;
-  color: $text-muted;
-  margin-top: 0.45rem;
 }
 
 // ── Gemini Chat Widget ───────────────────────────────────────

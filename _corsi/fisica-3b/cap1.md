@@ -8,11 +8,13 @@ classe: "3B"
 numero: 1
 ---
 
-<cit autore="Max Planck">La meraviglia per i miracoli della Natura è all'origine di ogni pensiero scientifico.</cit>
+<cit autore="Max Planck">La meraviglia per i miracoli della Natura è all'origine di ogni pensiero scientifico.</cit> 
+
+Una delle cose più meravigliose dell'Universo è la sua immensità. L'infinita grandezza di una galassia e l'infinita piccolezza degli atomi di cui sono composte. Noi, come uomini, siamo sospesi a metà tra questi due infiniti, e questo è un fatto che non cesserà mai di meravigliarci.
 
 
 
-{% capture _system %}Sei il Prof. Bergadano, un professore di Fisica appassionato che insegna in un Liceo Scientifico a Torino. Stai parlando con uno studente di 15-16 anni.
+{% capture _system %}Sei il Prof. Bergadano, un professore di Fisica appassionato che insegna in un Liceo Linguistico a Torino. Stai parlando con uno studente di 15-16 anni.
 
 Lo studente ti scrive cosa lo fa sentire infinitamente piccolo, o cosa trova meravigliosamente enorme. Il tuo compito è guidarlo a scoprire il vero ordine di grandezza di quella cosa attraverso una conversazione socratica:
 
@@ -25,8 +27,8 @@ Lo studente ti scrive cosa lo fa sentire infinitamente piccolo, o cosa trova mer
 Scrivi sempre in italiano. Tono caldo, curioso, incoraggiante. Risposte brevi (2–4 frasi per turno). Prosa naturale — niente elenchi puntati. Se lo studente scrive qualcosa di non misurabile, aiutalo gentilmente a trovarne un aspetto misurabile.{% endcapture %}
 {% include gemini-chat.html
    system=_system
-   domanda="Cosa ti fa sentire <em>infinitamente piccolo·a</em>?<br>Cos'è che trovi <em>meravigliosamente enorme</em>?"
-   hint="Scrivi la prima cosa che ti viene in mente — un luogo, un oggetto, un fenomeno, un numero..."
+   domanda="<em>Cerca di ricordare una volta in cui hai avvertito la sensazione di essere piccolissimo in confronto a ciò che avevi di fronte. Cos'era</em>?"
+   hint="Se non ti ricordi di aver provato questa sensazione, prova a immaginarla."
 %}
 
 # Che cosa significa _misurare_?
@@ -40,11 +42,11 @@ Per ogni caratteristica, decidi: è una **grandezza fisica** (le si può associa
 {% capture _q %}[
 {"t":"L'altezza di un tavolo","ok":true,"s":"Si misura in metri — è una grandezza fisica."},
 {"t":"La massa di un tavolo","ok":true,"s":"Si misura in chilogrammi — è una grandezza fisica."},
-{"t":"La durezza del tavolo","ok":true,"s":"Si misura (scala Mohs, Vickers...) — è una grandezza fisica."},
 {"t":"La comodità del tavolo","ok":false,"s":"È soggettiva: non le si può associare un numero universale."},
 {"t":"La difficoltà della Fisica","ok":false,"s":"Cambia da persona a persona — non è misurabile."},
 {"t":"Il numero di formule della Fisica","ok":true,"s":"Si può contare: un numero è già una misura."},
 {"t":"L'intensità luminosa di una lampadina","ok":true,"s":"Si misura in candele (cd) — è una delle 7 grandezze fondamentali!"},
+{"t":"L'importanza storica di un avvenimento","ok":false,"s":"Non sarebbe possibile esprimerla tramite un numero, quindi non è una grandezza fisica."},
 {"t":"L'intensità di un rumore o di un suono","ok":true,"s":"Si misura in decibel (dB) — è una grandezza fisica."}
 ]{% endcapture %}
 {% include quiz.html domande=_q label_si="Una grandezza fisica" label_no="Non una grandezza fisica" %}

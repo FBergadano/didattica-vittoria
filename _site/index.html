@@ -18,20 +18,20 @@
   };
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
-<!-- Begin Jekyll SEO tag v2.8.0 -->
+<!-- Begin Jekyll SEO tag v2.9.0 -->
 <title>Bergadano Didattica — Liceo Vittoria | Materiale didattico interattivo di Matematica e Fisica</title>
-<meta name="generator" content="Jekyll v3.10.0" />
+<meta name="generator" content="Jekyll v4.4.1" />
 <meta property="og:title" content="Bergadano Didattica — Liceo Vittoria" />
 <meta name="author" content="Prof. Fulvio Bergadano" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Materiale didattico interattivo di Matematica e Fisica" />
-<meta property="og:description" content="Materiale didattico interattivo di Matematica e Fisica" />
+<meta name="twitter:description" property="og:description" content="Materiale didattico interattivo di Matematica e Fisica" />
 <link rel="canonical" href="http://localhost:4000/bergadano-didattica/" />
 <meta property="og:url" content="http://localhost:4000/bergadano-didattica/" />
 <meta property="og:site_name" content="Bergadano Didattica — Liceo Vittoria" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Bergadano Didattica — Liceo Vittoria" />
+<meta name="twitter:title" content="Bergadano Didattica — Liceo Vittoria" />
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Prof. Fulvio Bergadano"},"description":"Materiale didattico interattivo di Matematica e Fisica","headline":"Bergadano Didattica — Liceo Vittoria","name":"Bergadano Didattica — Liceo Vittoria","url":"http://localhost:4000/bergadano-didattica/"}</script>
 <!-- End Jekyll SEO tag -->
@@ -177,6 +177,21 @@
 </footer>
 
 <script>
+// ── Citazioni <cit autore="..."> ─────────────────────────────
+(function() {
+  document.querySelectorAll('cit[autore]').forEach(function(el) {
+    var text = el.textContent.trim();
+    var author = el.getAttribute('autore');
+    el.textContent = '';
+    var q = document.createTextNode('« ' + text + ' »');
+    var aut = document.createElement('span');
+    aut.className = 'cit-aut';
+    aut.textContent = '— ' + author;
+    el.appendChild(q);
+    el.appendChild(aut);
+  });
+})();
+
 // ── PDF export with QR codes for videos ───────────────────────
 function exportPDF() {
   var wraps = document.querySelectorAll('.video-wrap');
