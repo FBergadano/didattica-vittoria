@@ -113,7 +113,7 @@
     if(reply){ bubble('assistant', reply); $$('.gchat-reply-input').focus(); }
   }
 
-  if(!GROQ_KEY || GROQ_KEY === '__GROQ_KEY__'){
+  if(!GROQ_KEY || GROQ_KEY[0] === '_'){
     $$('.gchat-submit').addEventListener('click', function(){
       $$('.gchat-step1').style.display = 'none';
       $$('.gchat-step2').style.display = 'block';
