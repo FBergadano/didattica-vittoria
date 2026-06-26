@@ -35,10 +35,10 @@ jobs:
         env:
           JEKYLL_ENV: production
 
-      - name: Inject Gemini API key
+      - name: Inject Groq API key
         run: |
           find _site -name "*.html" \
-            -exec sed -i "s|__GEMINI_KEY__|${{ secrets.GEMINI_KEY }}|g" {} +
+            -exec sed -i "s|__GROQ_KEY__|${{ secrets.GROQ_KEY }}|g" {} +
 
       - uses: actions/upload-pages-artifact@v3
         with:
