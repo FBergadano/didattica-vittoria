@@ -108,6 +108,48 @@ Quando Fulvio incolla del LaTeX grezzo, convertire così:
 - `\begin{itemize}...\end{itemize}` → elenco Markdown con `-`
 - `\begin{enumerate}...\end{enumerate}` → elenco Markdown con `1.`
 
+## Chat con Gemini (widget interattivo AI)
+
+Chat socratica alimentata da Gemini 2.0 Flash. La chiave API viene iniettata dal workflow GitHub Actions.
+
+```liquid
+{% capture _system %}Sei il Prof. Bergadano...{% endcapture %}
+{% include gemini-chat.html
+   system=_system
+   domanda="Testo della domanda (HTML ammesso, es. <em>corsivo</em>)"
+   hint="Suggerimento opzionale mostrato sotto la domanda"
+%}
+```
+
+Parametri:
+- `system` — system prompt (via capture, obbligatorio)
+- `domanda` — domanda di apertura (HTML ammesso, obbligatorio)
+- `hint` — testo di suggerimento (opzionale)
+- `apertura` — riga introduttiva prima della domanda (default: "Prima di cominciare, una domanda.")
+- `docente` — nome mostrato nelle bolle AI (default: "Prof. Bergadano")
+- `id` — ID univoco (default: "gc"), usare se ci sono più widget nella stessa pagina
+
+## Quiz "Verifica Subito!"
+
+Quiz vero/falso interattivo con coriandoli (risposta giusta) e fuochi d'artificio (tutto corretto).
+
+```liquid
+{% capture _q %}[
+{"t":"Testo della domanda","ok":true,"s":"Spiegazione mostrata dopo la risposta."},
+{"t":"Altra domanda","ok":false,"s":"Spiegazione."}
+]{% endcapture %}
+{% include quiz.html domande=_q label_si="Etichetta campo sì" label_no="Etichetta campo no" %}
+```
+
+Parametri:
+- `domande` — array JSON delle domande (obbligatorio)
+- `label_si` — etichetta del primo campo finale (default: "Un esempio corretto")
+- `label_no` — etichetta del secondo campo finale (default: "Un controesempio")
+- `id` — ID univoco del widget (default: "qgf"), usare se ci sono più quiz nella stessa pagina
+
+Ogni domanda: `{"t": "testo", "ok": true/false, "s": "spiegazione"}`.
+Si usa sempre dentro un box: `{% include box-ex.html titolo="Verifica Subito!" %}` ... `{% include box-end.html %}`.
+
 ## Simulazioni interattive
 
 Le simulazioni vanno scritte in JavaScript puro (no React, no framework).

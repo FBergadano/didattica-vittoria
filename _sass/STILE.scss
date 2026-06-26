@@ -59,6 +59,12 @@ $box-ex-bg:       #faf5ff;   $box-ex-border:    #7c3aed;  // Esempio — viola
 $box-proof-bg:    #f8fafc;   $box-proof-border: #718096;  // Dimostrazione — grigio
 $box-note-bg:     #fff7ed;   $box-note-border:  #ea580c;  // Nota — arancio
 
+// ── Elementi inline personalizzati ──────────────────────────
+definizione {
+  font-weight: bold;
+  color: #7c3aed;
+}
+
 // ── Spaziatura ───────────────────────────────────────────────
 $radius-sm:       6px;
 $radius-md:       10px;

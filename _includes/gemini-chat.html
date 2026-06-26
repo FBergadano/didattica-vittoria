@@ -1,0 +1,139 @@
+{% assign _id     = include.id      | default: "gc" %}
+{% assign _doc    = include.docente | default: "Prof. Bergadano" %}
+{% assign _aper   = include.apertura | default: "Prima di cominciare, una domanda." %}
+{% assign _max    = include.maxTokens | default: 400 %}
+
+<div id="{{ _id }}" class="gchat-widget">
+  <div class="gchat-sys" hidden>{{ include.system | xml_escape }}</div>
+  <div class="gchat-step1">
+    {% if _aper != "" %}<p class="gchat-opening">{{ _aper }}</p>{% endif %}
+    <p class="gchat-question">{{ include.domanda }}</p>
+    {% if include.hint != "" and include.hint %}<p class="gchat-hint">{{ include.hint }}</p>{% endif %}
+    <textarea class="gchat-input" rows="3" placeholder="Scrivi qui la tua risposta..."></textarea>
+    <br>
+    <button class="gchat-btn-primary gchat-submit">Continua →</button>
+  </div>
+  <div class="gchat-step2" style="display:none">
+    <div class="gchat-messages"></div>
+    <textarea class="gchat-reply-input" rows="2" placeholder="La tua risposta… (Invio per inviare, Shift+Invio per andare a capo)"></textarea>
+    <br>
+    <button class="gchat-btn-primary gchat-reply-btn">Invia →</button>
+    <button class="gchat-btn-ghost gchat-restart">↺ Ricomincia</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var GEMINI_KEY = '__GEMINI_KEY__';
+  var root    = document.getElementById('{{ _id }}');
+  function $$(s){ return root.querySelector(s); }
+  var SYSTEM  = $$('.gchat-sys').textContent.trim();
+  var DOCENTE = '{{ _doc }}';
+  var MAX_TOK = {{ _max }};
+  var history = [];
+
+  function bubble(role, text){
+    var msgs = $$('.gchat-messages');
+    var div = document.createElement('div');
+    div.className = 'gchat-msg ' + (role==='model' ? 'gchat-msg-ai' : 'gchat-msg-user');
+    var lbl = document.createElement('span');
+    lbl.className = 'gchat-label';
+    lbl.textContent = role==='model' ? DOCENTE : 'Tu';
+    div.appendChild(lbl);
+    var cnt = document.createElement('span');
+    cnt.className = 'gchat-content';
+    cnt.textContent = text;
+    div.appendChild(cnt);
+    msgs.appendChild(div);
+    div.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  function setLoading(on){
+    var el = $$('.gchat-loading');
+    if(on){
+      if(!el){
+        el = document.createElement('div');
+        el.className = 'gchat-loading';
+        el.textContent = 'Il professore sta scrivendo…';
+        $$('.gchat-messages').appendChild(el);
+      }
+    } else { if(el) el.remove(); }
+    $$('.gchat-reply-btn').disabled = on;
+  }
+
+  async function callGemini(userText){
+    history.push({role:'user', parts:[{text:userText}]});
+    setLoading(true);
+    try {
+      var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
+      var resp = await fetch(url, {
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body: JSON.stringify({
+          system_instruction:{parts:[{text:SYSTEM}]},
+          contents: history,
+          generationConfig:{maxOutputTokens: MAX_TOK}
+        })
+      });
+      setLoading(false);
+      if(!resp.ok){
+        var errBody = await resp.text();
+        bubble('model','⚠ Errore '+resp.status+'. Riprova tra qualche secondo.');
+        console.error('Gemini error', resp.status, errBody);
+        return null;
+      }
+      var data = await resp.json();
+      var reply = data.candidates[0].content.parts[0].text;
+      history.push({role:'model', parts:[{text:reply}]});
+      return reply;
+    } catch(e){
+      setLoading(false);
+      bubble('model','⚠ Impossibile contattare il server. Controlla la connessione internet.');
+      return null;
+    }
+  }
+
+  async function startChat(studentText){
+    $$('.gchat-step1').style.display = 'none';
+    $$('.gchat-step2').style.display = 'block';
+    history = [];
+    bubble('user', studentText);
+    var reply = await callGemini(studentText);
+    if(reply){ bubble('model', reply); $$('.gchat-reply-input').focus(); }
+  }
+
+  async function sendReply(){
+    var text = $$('.gchat-reply-input').value.trim();
+    if(!text) return;
+    $$('.gchat-reply-input').value = '';
+    bubble('user', text);
+    var reply = await callGemini(text);
+    if(reply){ bubble('model', reply); $$('.gchat-reply-input').focus(); }
+  }
+
+  if(!GEMINI_KEY){
+    $$('.gchat-submit').addEventListener('click', function(){
+      bubble('model','⚠ L\'esercizio interattivo non è ancora attivato. Contatta il professore.');
+      $$('.gchat-step1').style.display = 'none';
+      $$('.gchat-step2').style.display = 'block';
+    });
+    return;
+  }
+
+  $$('.gchat-submit').addEventListener('click', function(){
+    var text = $$('.gchat-input').value.trim();
+    if(text) startChat(text);
+  });
+  $$('.gchat-reply-btn').addEventListener('click', sendReply);
+  $$('.gchat-reply-input').addEventListener('keydown', function(e){
+    if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendReply(); }
+  });
+  $$('.gchat-restart').addEventListener('click', function(){
+    history = [];
+    $$('.gchat-messages').innerHTML = '';
+    $$('.gchat-step2').style.display = 'none';
+    $$('.gchat-step1').style.display = 'block';
+    $$('.gchat-input').value = '';
+  });
+})();
+</script>

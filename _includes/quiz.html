@@ -1,0 +1,135 @@
+{% assign _qid = include.id | default: "qgf" %}
+{% assign _label_si = include.label_si | default: "Un esempio corretto" %}
+{% assign _label_no = include.label_no | default: "Un controesempio" %}
+
+<div id="{{ _qid }}" class="qgf-widget">
+  <div class="qgf-prog">
+    <div class="qgf-prog-fill"></div>
+    <span class="qgf-prog-txt"></span>
+  </div>
+  <div class="qgf-card">
+    <p class="qgf-q"></p>
+    <div class="qgf-btns">
+      <button class="qgf-btn-si">✓ &nbsp;Vero</button>
+      <button class="qgf-btn-no">✗ &nbsp;Falso</button>
+    </div>
+    <div class="qgf-fb"></div>
+    <div class="qgf-nav"><button class="qgf-next" style="display:none">Avanti →</button></div>
+  </div>
+  <div class="qgf-fine" style="display:none">
+    <p class="qgf-fine-title">🎉 Quiz completato!</p>
+    <p>Ora tocca a te. Scrivi un esempio e un controesempio.</p>
+    <div class="qgf-field"><label>{{ _label_si }}</label><input class="qgf-inp-si" type="text"></div>
+    <div class="qgf-field"><label>{{ _label_no }}</label><input class="qgf-inp-no" type="text"></div>
+    <button class="qgf-confirm">Conferma</button>
+    <p class="qgf-msg"></p>
+  </div>
+</div>
+<canvas class="qgf-canvas"></canvas>
+
+<script>
+(function(){
+var root=document.getElementById('{{ _qid }}');
+var cv=root.nextElementSibling;
+var Q={{ include.domande }};
+var i=0,allOk=true;
+function $$(s){return root.querySelector(s);}
+
+function prog(){
+  $$('.qgf-prog-fill').style.width=((i/Q.length)*100)+'%';
+  $$('.qgf-prog-txt').textContent=(i+1)+' / '+Q.length;
+}
+function show(){
+  prog();
+  $$('.qgf-q').textContent=Q[i].t;
+  var fb=$$('.qgf-fb');fb.style.display='none';fb.className='qgf-fb';fb.textContent='';
+  $$('.qgf-next').style.display='none';
+  $$('.qgf-btn-si').disabled=false;$$('.qgf-btn-no').disabled=false;
+}
+function risposta(v){
+  var q=Q[i],fb=$$('.qgf-fb');
+  $$('.qgf-btn-si').disabled=true;$$('.qgf-btn-no').disabled=true;
+  fb.style.display='block';
+  if(v===q.ok){fb.className='qgf-fb ok';fb.textContent='✓ Corretto! '+q.s;confetti();}
+  else{fb.className='qgf-fb err';fb.textContent='✗ '+(q.ok?'Affermazione vera. ':'Affermazione falsa. ')+q.s;allOk=false;}
+  var nx=$$('.qgf-next');nx.style.display='inline-block';
+  nx.textContent=i<Q.length-1?'Avanti →':'Vedi risultato →';
+}
+function nextQ(){
+  i++;
+  if(i<Q.length){show();}
+  else{
+    $$('.qgf-prog-fill').style.width='100%';
+    $$('.qgf-prog-txt').textContent='Completato!';
+    $$('.qgf-card').style.display='none';
+    $$('.qgf-fine').style.display='block';
+    if(allOk)fireworks();
+  }
+}
+function concludi(){
+  var si=$$('.qgf-inp-si').value.trim(),no=$$('.qgf-inp-no').value.trim(),msg=$$('.qgf-msg');
+  if(!si||!no){msg.style.color='#b91c1c';msg.textContent='Compila entrambi i campi.';return;}
+  msg.style.color='#15803d';
+  msg.textContent='✓ Bene! Hai scritto «'+si+'» e «'+no+'». Confronta con un compagno!';
+}
+
+$$('.qgf-btn-si').addEventListener('click',function(){risposta(true);});
+$$('.qgf-btn-no').addEventListener('click',function(){risposta(false);});
+$$('.qgf-next').addEventListener('click',nextQ);
+$$('.qgf-confirm').addEventListener('click',concludi);
+
+function getCanvas(){cv.width=window.innerWidth;cv.height=window.innerHeight;cv.style.display='block';return cv;}
+function confetti(){
+  var canvas=getCanvas(),ctx=canvas.getContext('2d');
+  var r=root.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.4;
+  var cols=['#0891b2','#22d3ee','#059669','#d97706','#ec4899','#a78bfa','#fbbf24'];
+  var ps=[];
+  for(var k=0;k<55;k++){
+    ps.push({x:cx+(Math.random()-.5)*100,y:cy,vx:(Math.random()-.5)*11,vy:-(Math.random()*13+5),
+      w:Math.random()*11+5,h:Math.random()*6+3,col:cols[k%cols.length],
+      rot:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.32,a:1});
+  }
+  (function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);var alive=false;
+    ps.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;p.vy+=0.38;p.rot+=p.rv;p.a-=0.017;
+      if(p.a<=0)return;alive=true;
+      ctx.save();ctx.globalAlpha=p.a;ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+    });
+    if(alive)requestAnimationFrame(frame);else canvas.style.display='none';
+  })();
+}
+function fireworks(){
+  var canvas=getCanvas(),ctx=canvas.getContext('2d');
+  var cols=['#fbbf24','#ef4444','#0891b2','#22d3ee','#10b981','#f472b6','#fff','#fde68a'];
+  var bursts=[],cnt=0,max=8,done=false;
+  function newBurst(){
+    var cx=window.innerWidth*(0.15+Math.random()*.7),cy=window.innerHeight*(0.08+Math.random()*.5);
+    var col=cols[Math.floor(Math.random()*cols.length)],ps=[];
+    for(var k=0;k<80;k++){
+      var a=Math.random()*Math.PI*2,sp=Math.random()*7+2;
+      ps.push({x:cx,y:cy,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,r:Math.random()*3+1,col:col,a:1});
+    }
+    bursts.push(ps);
+  }
+  newBurst();
+  var t=setInterval(function(){cnt++;if(cnt<max)newBurst();else clearInterval(t);},550);
+  (function frame(){
+    if(done)return;
+    ctx.fillStyle='rgba(0,0,0,0.13)';ctx.fillRect(0,0,canvas.width,canvas.height);
+    var alive=false;
+    bursts.forEach(function(ps){ps.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;p.vy+=0.07;p.a-=0.012;
+      if(p.a<=0)return;alive=true;
+      ctx.beginPath();ctx.globalAlpha=p.a;ctx.fillStyle=p.col;ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+    });});
+    ctx.globalAlpha=1;
+    if(alive||cnt<max)requestAnimationFrame(frame);
+    else{done=true;canvas.style.display='none';}
+  })();
+}
+
+show();
+})();
+</script>

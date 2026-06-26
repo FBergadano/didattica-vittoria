@@ -8,277 +8,50 @@ classe: "3B"
 numero: 1
 ---
 
-<style>
-.scope-widget {
-  background: #1a202c;
-  color: #e2e8f0;
-  border-radius: 8px;
-  padding: 2rem;
-  margin: 0 0 2.5rem;
-  font-family: 'Source Serif 4', Georgia, serif;
-}
-.scope-opening {
-  color: var(--accent-border, #86efac);
-  font-style: italic;
-  margin: 0 0 0.4rem;
-  font-size: 0.95rem;
-}
-.scope-question {
-  font-size: 1.2rem;
-  line-height: 1.65;
-  margin: 0 0 0.75rem;
-}
-.scope-hint {
-  color: #a0aec0;
-  font-size: 0.9rem;
-  margin: 0 0 1rem;
-}
-.scope-widget textarea {
-  width: 100%;
-  background: #2d3748;
-  border: 1px solid #4a5568;
-  color: #e2e8f0;
-  padding: 0.7rem;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 1rem;
-  resize: vertical;
-  box-sizing: border-box;
-  line-height: 1.6;
-}
-.scope-widget textarea:focus {
-  outline: 2px solid var(--accent, #0f766e);
-  border-color: var(--accent, #0f766e);
-}
-.scope-btn-primary {
-  background: var(--accent, #0f766e);
-  color: #fff;
-  border: none;
-  padding: 0.55rem 1.4rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.95rem;
-  margin-top: 0.6rem;
-}
-.scope-btn-primary:hover { opacity: 0.88; }
-.scope-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
-.scope-btn-ghost {
-  background: none;
-  border: 1px solid #4a5568;
-  color: #718096;
-  padding: 0.35rem 0.9rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.82rem;
-  margin-top: 0.75rem;
-}
-.scope-btn-ghost:hover { border-color: #718096; color: #a0aec0; }
-.scope-chat { margin-bottom: 1rem; }
-.scope-msg {
-  margin-bottom: 0.9rem;
-  padding: 0.7rem 1rem;
-  border-radius: 5px;
-  line-height: 1.7;
-  font-size: 0.97rem;
-}
-.scope-msg-teacher {
-  background: #2d3748;
-  border-left: 3px solid var(--accent, #0f766e);
-}
-.scope-msg-student {
-  background: #253040;
-  border-left: 3px solid #4a5568;
-  color: #a0aec0;
-}
-.scope-msg-teacher::before {
-  content: "Prof. Bergadano";
-  display: block;
-  font-size: 0.72rem;
-  color: var(--accent-border, #86efac);
-  margin-bottom: 0.25rem;
-  font-style: normal;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.scope-msg-student::before {
-  content: "Tu";
-  display: block;
-  font-size: 0.72rem;
-  color: #718096;
-  margin-bottom: 0.25rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.scope-loading {
-  color: #718096;
-  font-style: italic;
-  padding: 0.4rem 0;
-  font-size: 0.9rem;
-}
-</style>
+<cit autore="Max Planck">La meraviglia per i miracoli della Natura è all'origine di ogni pensiero scientifico.</cit>
 
-<div class="scope-widget" id="scope-widget">
 
-  <div id="scope-step1">
-    <p class="scope-opening">Prima di cominciare, una domanda.</p>
-    <p class="scope-question">Cosa ti fa sentire <em>infinitamente piccolo·a</em>?<br>Cos'è che trovi <em>meravigliosamente enorme</em>?</p>
-    <p class="scope-hint">Scrivi la prima cosa che ti viene in mente — un luogo, un oggetto, un fenomeno, un numero...</p>
-    <textarea id="scope-input" rows="3" placeholder="Scrivi qui la tua risposta..."></textarea>
-    <br>
-    <button class="scope-btn-primary" id="scope-submit">Continua →</button>
-  </div>
 
-  <div id="scope-step2" style="display:none">
-    <div id="scope-chat" class="scope-chat"></div>
-    <textarea id="scope-reply" rows="2" placeholder="La tua risposta... (Invio per inviare, Shift+Invio per andare a capo)"></textarea>
-    <br>
-    <button class="scope-btn-primary" id="scope-reply-btn">Invia →</button>
-    <button class="scope-btn-ghost" id="scope-restart">↺ Ricomincia</button>
-  </div>
+{% capture _system %}Sei il Prof. Bergadano, un professore di Fisica appassionato che insegna in un Liceo Scientifico a Torino. Stai parlando con uno studente di 15-16 anni.
 
-</div>
+Lo studente ti scrive cosa lo fa sentire infinitamente piccolo, o cosa trova meravigliosamente enorme. Il tuo compito è guidarlo a scoprire il vero ordine di grandezza di quella cosa attraverso una conversazione socratica:
 
-<script>
-(function () {
-  // Chiave iniettata al momento del build da GitHub Actions (mai nel sorgente).
-  var GEMINI_KEY = '__GEMINI_KEY__';
+1. Accogli la sua risposta con calore e curiosità (1-2 frasi).
+2. Fai UNA domanda concreta sulla dimensione o quantità — invitalo a fare una stima numerica specifica. Non "quant'è grande?" ma per esempio "quanti chilometri pensi che misuri?" oppure "quanti granelli pensi che ci siano in un cucchiaio di sabbia?".
+3. Quando lo studente risponde, correggi o conferma la sua stima con il vero valore numerico, poi poni UN'altra domanda che avvicina alla scoperta del numero finale.
+4. Continua per 2–4 scambi, guidando lo studente verso l'ordine di grandezza reale.
+5. Concludi con una frase di meraviglia che collega quel numero a qualcosa di concreto e sorprendente.
 
-  var SYSTEM = 'Sei il Prof. Bergadano, un professore di Fisica appassionato che insegna in un Liceo Scientifico a Torino. Stai parlando con uno studente di 15-16 anni.\n\nLo studente ti scrive cosa lo fa sentire infinitamente piccolo, o cosa trova meravigliosamente enorme. Il tuo compito è guidarlo a scoprire il vero ordine di grandezza di quella cosa attraverso una conversazione socratica:\n\n1. Accogli la sua risposta con calore e curiosità (1-2 frasi).\n2. Fai UNA domanda concreta sulla dimensione o quantità — invitalo a fare una stima numerica specifica. Non "quant\'è grande?" ma per esempio "quanti chilometri pensi che misuri?" oppure "quanti granelli pensi che ci siano in un cucchiaio di sabbia?".\n3. Quando lo studente risponde, correggi o conferma la sua stima con il vero valore numerico, poi poni UN\'altra domanda che avvicina alla scoperta del numero finale.\n4. Continua per 2–4 scambi, guidando lo studente verso l\'ordine di grandezza reale.\n5. Concludi con una frase di meraviglia che collega quel numero a qualcosa di concreto e sorprendente.\n\nScrivi sempre in italiano. Tono caldo, curioso, incoraggiante. Risposte brevi (2–4 frasi per turno). Prosa naturale — niente elenchi puntati. Se lo studente scrive qualcosa di non misurabile, aiutalo gentilmente a trovarne un aspetto misurabile.';
-
-  var history = [];
-
-  function init() {
-    if (!GEMINI_KEY) {
-      document.getElementById('scope-submit').addEventListener('click', function () {
-        bubble('model', '⚠ L\'esercizio interattivo non è ancora attivato. Contatta il professore.');
-        document.getElementById('scope-step1').style.display = 'none';
-        document.getElementById('scope-step2').style.display = 'block';
-        document.getElementById('scope-restart').style.display = 'inline-block';
-      });
-      return;
-    }
-
-    document.getElementById('scope-submit').addEventListener('click', function () {
-      var text = document.getElementById('scope-input').value.trim();
-      if (!text) return;
-      startChat(text);
-    });
-
-    document.getElementById('scope-reply-btn').addEventListener('click', sendReply);
-    document.getElementById('scope-reply').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendReply(); }
-    });
-
-    document.getElementById('scope-restart').addEventListener('click', function () {
-      history = [];
-      document.getElementById('scope-chat').innerHTML = '';
-      document.getElementById('scope-step2').style.display = 'none';
-      document.getElementById('scope-step1').style.display = 'block';
-      document.getElementById('scope-input').value = '';
-    });
-  }
-
-  function bubble(role, text) {
-    var chat = document.getElementById('scope-chat');
-    var div = document.createElement('div');
-    div.className = 'scope-msg ' + (role === 'model' ? 'scope-msg-teacher' : 'scope-msg-student');
-    div.textContent = text;
-    chat.appendChild(div);
-    div.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }
-
-  function setLoading(on) {
-    var el = document.getElementById('scope-loading');
-    if (on) {
-      if (!el) {
-        el = document.createElement('div');
-        el.id = 'scope-loading';
-        el.className = 'scope-loading';
-        el.textContent = 'Il professore sta scrivendo…';
-        document.getElementById('scope-chat').appendChild(el);
-      }
-    } else { if (el) el.remove(); }
-    document.getElementById('scope-reply-btn').disabled = on;
-  }
-
-  async function callGemini(userText) {
-    history.push({ role: 'user', parts: [{ text: userText }] });
-    setLoading(true);
-    try {
-      var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
-      var resp = await fetch(url, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: SYSTEM }] },
-          contents: history,
-          generationConfig: { maxOutputTokens: 400 }
-        })
-      });
-      setLoading(false);
-      if (!resp.ok) {
-        bubble('model', '⚠ Errore ' + resp.status + '. Riprova tra qualche secondo.');
-        return null;
-      }
-      var data = await resp.json();
-      var reply = data.candidates[0].content.parts[0].text;
-      history.push({ role: 'model', parts: [{ text: reply }] });
-      return reply;
-    } catch (e) {
-      setLoading(false);
-      bubble('model', '⚠ Impossibile contattare il server. Controlla la connessione internet.');
-      return null;
-    }
-  }
-
-  async function startChat(studentText) {
-    document.getElementById('scope-step1').style.display = 'none';
-    document.getElementById('scope-step2').style.display = 'block';
-    history = [];
-    bubble('user', studentText);
-    var reply = await callGemini(studentText);
-    if (reply) { bubble('model', reply); document.getElementById('scope-reply').focus(); }
-  }
-
-  async function sendReply() {
-    var text = document.getElementById('scope-reply').value.trim();
-    if (!text) return;
-    document.getElementById('scope-reply').value = '';
-    bubble('user', text);
-    var reply = await callGemini(text);
-    if (reply) { bubble('model', reply); document.getElementById('scope-reply').focus(); }
-  }
-
-  init();
-})();
-</script>
+Scrivi sempre in italiano. Tono caldo, curioso, incoraggiante. Risposte brevi (2–4 frasi per turno). Prosa naturale — niente elenchi puntati. Se lo studente scrive qualcosa di non misurabile, aiutalo gentilmente a trovarne un aspetto misurabile.{% endcapture %}
+{% include gemini-chat.html
+   system=_system
+   domanda="Cosa ti fa sentire <em>infinitamente piccolo·a</em>?<br>Cos'è che trovi <em>meravigliosamente enorme</em>?"
+   hint="Scrivi la prima cosa che ti viene in mente — un luogo, un oggetto, un fenomeno, un numero..."
+%}
 
 # Che cosa significa _misurare_?
 
 «Misurare» significa studiare una *caratteristica* di un oggetto ed associare ad essa *un numero*. Stiamo cioè scegliendo di spiegare il mondo <u>con il linguaggio della Matematica</u>. Ecco perché la Fisica è fatta di equazioni. Le caratteristiche misurabili di un oggetto si chiamano <definizione>grandezze fisiche</definizione>.
 
-{% include box-ex.html %}
+{% include box-ex.html titolo="Verifica Subito!" %}
 
-**Esercizio.** Pensate a questi casi: secondo voi quali di queste caratteristiche di oggetti comuni attorno a noi sono *misurabili* e perciò sono grandezze *fisiche* e quali no?
+Per ogni caratteristica, decidi: è una **grandezza fisica** (le si può associare un numero) oppure no?
 
-- l'altezza di un tavolo;
-- la massa di un tavolo;
-- la durezza del tavolo;
-- la comodità del tavolo;
-- la difficoltà della Fisica;
-- il numero di formule della Fisica;
-- l'intensità luminosa di una lampadina;
-- l'intensità di un rumore o di un suono.
-
-Per ognuna di queste, cerca di capire se ha senso chiedere *quanto*. Ad esempio, quando leggi «l'altezza del tavolo», chiediti se ha senso la domanda «*quanto* è alto», e così pure per tutte le altre caratteristiche elencate.
-
-Inoltre, se riesci, cerca di porti la domanda «posso associare a questa cosa un numero?». Se la risposta è sì, allora è una grandezza fisica; se la risposta è no, allora non lo è.
-
-Non ti preoccupare se su alcuni di questi esempi hai dei dubbi: presto ne vedremo molti altri e questi ti appariranno più facili!
+{% capture _q %}[
+{"t":"L'altezza di un tavolo","ok":true,"s":"Si misura in metri — è una grandezza fisica."},
+{"t":"La massa di un tavolo","ok":true,"s":"Si misura in chilogrammi — è una grandezza fisica."},
+{"t":"La durezza del tavolo","ok":true,"s":"Si misura (scala Mohs, Vickers...) — è una grandezza fisica."},
+{"t":"La comodità del tavolo","ok":false,"s":"È soggettiva: non le si può associare un numero universale."},
+{"t":"La difficoltà della Fisica","ok":false,"s":"Cambia da persona a persona — non è misurabile."},
+{"t":"Il numero di formule della Fisica","ok":true,"s":"Si può contare: un numero è già una misura."},
+{"t":"L'intensità luminosa di una lampadina","ok":true,"s":"Si misura in candele (cd) — è una delle 7 grandezze fondamentali!"},
+{"t":"L'intensità di un rumore o di un suono","ok":true,"s":"Si misura in decibel (dB) — è una grandezza fisica."}
+]{% endcapture %}
+{% include quiz.html domande=_q label_si="Una grandezza fisica" label_no="Non una grandezza fisica" %}
 
 {% include box-end.html %}
+
+Ora facciamo un piccolo esperimento: misuriamo il lato verticale della seguente lavagna. Per farlo, trascinate gli oggetti che vedete sullo schermo a lato della lavagna e misurate quante volte 
 
 Ora, ricordate l'esperimento che abbiamo fatto in classe? Abbiamo misurato più volte la lunghezza del lato della lavagna e in vari modi (con il cancellino, con il libro, con la penna, etc.). Quello che abbiamo visto è che il lato della lavagna è lungo circa 9 cancellini, ma circa 7 penne BIC. Cioè, il numero cambia a seconda che noi utilizziamo una penna o un cancellino o un altro oggetto. Da questo piccolo esempio capiamo che è essenziale specificare *con cosa* stiamo misurando, cioè qual è la nostra unità di misura.
 
