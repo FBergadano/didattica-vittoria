@@ -207,7 +207,7 @@ numero: 1
     history.push({ role: 'user', parts: [{ text: userText }] });
     setLoading(true);
     try {
-      var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + GEMINI_KEY;
+      var url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_KEY;
       var resp = await fetch(url, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -255,9 +255,9 @@ numero: 1
 })();
 </script>
 
-# Che cos'è una grandezza fisica
+# Che cosa significa _misurare_?
 
-«Misurare» significa studiare una *caratteristica* di un oggetto ed associare ad essa *un numero* (reale). Attenzione! Per quanto questo concetto sembri scontato, perché ci siamo familiari, questa è in realtà una cosa molto profonda. Infatti, descrivere gli oggetti attorno a noi con dei *numeri* significa che *scegliamo* di spiegare il mondo con il linguaggio *della matematica*. Chiaramente, non tutte le caratteristiche degli oggetti attorno a noi possono essere misurate, cioè non a tutte possiamo associare un numero. Ad esempio, un quadro può essere universalmente riconosciuto come «bello», ma non possiamo attribuire un numero alla sua bellezza, anche se è indubitabilmente una sua caratteristica. Questo significa che la Fisica — che non può assolutamente fare a meno della misurazione — non può descrivere tutte le caratteristiche degli oggetti, ma si restringe solo a una porzione di mondo, che è quella degli oggetti misurabili. Se la caratteristica di un oggetto è misurabile, allora si dice che essa è una «grandezza fisica».
+«Misurare» significa studiare una *caratteristica* di un oggetto ed associare ad essa *un numero*. Stiamo cioè scegliendo di spiegare il mondo <u>con il linguaggio della Matematica</u>. Ecco perché la Fisica è fatta di equazioni. Le caratteristiche misurabili di un oggetto si chiamano <definizione>grandezze fisiche</definizione>.
 
 {% include box-ex.html %}
 
