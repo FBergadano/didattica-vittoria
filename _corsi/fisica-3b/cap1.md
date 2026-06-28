@@ -2495,12 +2495,12 @@ document.getElementById('area-anim-btn').addEventListener('click',function(){
 Prova ora a ripetere lo stesso ragionamento con gli altri multipli del metro.
 
 {% capture _disc_area %}[
-  {"p":"Quanti cm ci sono in 1 m? (suggerimento: 1 m = 10<sup>?</sup> cm)","a":100,"t":0.0001},
-  {"p":"Quindi, quanti cm&#178; ci sono in 1 m&#178;? Calcola (10&#178; cm) &times; (10&#178; cm).","a":10000,"t":0.0001},
-  {"p":"Quanti mm ci sono in 1 m? (suggerimento: 1 m = 10<sup>?</sup> mm)","a":1000,"t":0.0001},
-  {"p":"Quindi, quanti mm&#178; ci sono in 1 m&#178;?","a":1000000,"t":0.0001}
+  {"p":"Completa: 1 m = 10<sup>?</sup> cm. Scrivi solo l'esponente.","a":2,"t":0.0001},
+  {"p":"Quindi: 1 m&#178; = (10<sup>2</sup> cm) &times; (10<sup>2</sup> cm) = 10<sup>?</sup> cm&#178;. Scrivi l'esponente.","a":4,"t":0.0001},
+  {"p":"Completa: 1 m = 10<sup>?</sup> mm. Scrivi solo l'esponente.","a":3,"t":0.0001},
+  {"p":"Quindi: 1 m&#178; = (10<sup>3</sup> mm) &times; (10<sup>3</sup> mm) = 10<sup>?</sup> mm&#178;. Scrivi l'esponente.","a":6,"t":0.0001}
 ]{% endcapture %}
-{% include iex-num.html id="disc-area" domande=_disc_area titolo="Scoperta guidata — riproduci il ragionamento" hint="Segui lo stesso schema: sostituisci 1 m con il suo equivalente in cm o mm, poi eleva al quadrato." %}
+{% include iex-num.html id="disc-area" domande=_disc_area titolo="Scoperta guidata — riproduci il ragionamento" hint="Scrivi solo il numero dell'esponente (es. 2, 4, …)." %}
 
 Cosa noti? Per dm era $10^1$ → area $10^2$; per cm era $10^2$ → area $10^4$; per mm era $10^3$ → area $10^6$. **L'esponente dell'area è sempre il doppio** dell'esponente lineare.
 
@@ -2711,12 +2711,12 @@ document.getElementById('vol-anim-btn').addEventListener('click',function(){
 Prova ora a ripetere lo stesso ragionamento con gli altri multipli del metro.
 
 {% capture _disc_vol %}[
-  {"p":"Quanti cm ci sono in 1 m? (suggerimento: 1 m = 10<sup>?</sup> cm)","a":100,"t":0.0001},
-  {"p":"Quindi, quanti cm&#179; ci sono in 1 m&#179;? Calcola (10&#178; cm)&#179;.","a":1000000,"t":0.0001},
-  {"p":"Quanti mm ci sono in 1 m? (suggerimento: 1 m = 10<sup>?</sup> mm)","a":1000,"t":0.0001},
-  {"p":"Quindi, quanti mm&#179; ci sono in 1 m&#179;?","a":1000000000,"t":0.0001}
+  {"p":"Completa: 1 m = 10<sup>?</sup> cm. Scrivi solo l'esponente.","a":2,"t":0.0001},
+  {"p":"Quindi: 1 m&#179; = (10<sup>2</sup> cm)<sup>3</sup> = 10<sup>?</sup> cm&#179;. Scrivi l'esponente.","a":6,"t":0.0001},
+  {"p":"Completa: 1 m = 10<sup>?</sup> mm. Scrivi solo l'esponente.","a":3,"t":0.0001},
+  {"p":"Quindi: 1 m&#179; = (10<sup>3</sup> mm)<sup>3</sup> = 10<sup>?</sup> mm&#179;. Scrivi l'esponente.","a":9,"t":0.0001}
 ]{% endcapture %}
-{% include iex-num.html id="disc-vol" domande=_disc_vol titolo="Scoperta guidata — riproduci il ragionamento" hint="Segui lo stesso schema: sostituisci 1 m con il suo equivalente, poi eleva al cubo." %}
+{% include iex-num.html id="disc-vol" domande=_disc_vol titolo="Scoperta guidata — riproduci il ragionamento" hint="Scrivi solo il numero dell'esponente (es. 3, 6, …)." %}
 
 Cosa noti? Per dm era $10^1$ → volume $10^3$; per cm era $10^2$ → volume $10^6$; per mm era $10^3$ → volume $10^9$. **L'esponente del volume è sempre il triplo** dell'esponente lineare.
 
