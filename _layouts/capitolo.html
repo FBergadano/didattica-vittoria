@@ -45,27 +45,20 @@
 </head>
 <body>
 
+<div id="read-progress" class="read-progress" role="progressbar" aria-hidden="true"></div>
+
 {% include topbar.html %}
 
 <div class="page-layout">
 
-  <!-- Sidebar con elenco capitoli del corso -->
-  <aside class="sidebar" aria-label="Capitoli del corso">
+  <!-- Sidebar con TOC del capitolo corrente (popolata da JS) -->
+  <aside class="sidebar" aria-label="Indice del capitolo">
     {% assign corso_url = '/corsi/' | append: page.corso | append: '/' %}
     <a href="{{ corso_url | relative_url }}" class="sidebar-course-name">{{ page.corso_titolo }}</a>
     <p class="sidebar-course-class">{{ page.classe }} · Liceo Vittoria</p>
+    <p class="sidebar-toc-label">In questo capitolo</p>
     <nav>
-      <ul class="sidebar-nav">
-        {% assign tutti_capitoli = site.corsi | where: "corso", page.corso | sort: "numero" %}
-        {% for cap in tutti_capitoli %}
-        <li>
-          <a href="{{ cap.url | relative_url }}"{% if cap.numero == page.numero %} class="active"{% endif %}>
-            <span class="chapter-num">Capitolo {{ cap.numero }}</span>
-            {{ cap.title }}
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
+      <ul class="sidebar-toc" id="sidebar-toc"></ul>
     </nav>
   </aside>
 

@@ -33,6 +33,18 @@ body.accessible-font * {
 a { color: $magenta; text-decoration: none; transition: color 0.2s; }
 a:hover { color: $cyan; text-decoration: underline; }
 
+// ── Reading progress bar ─────────────────────────────────────
+.read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--accent, #{$teal});
+  z-index: 200;
+  transition: width 0.08s linear;
+  pointer-events: none;
+}
+
 // ── Top bar ──────────────────────────────────────────────────
 .topbar {
   position: sticky; top: 0; z-index: 100;
@@ -292,6 +304,40 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
   }
 }
 
+// ── Sidebar TOC ───────────────────────────────────────────────
+.sidebar-toc-label {
+  font-family: $font-accessible;
+  font-size: 0.68rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: $text-muted;
+  margin: 1.25rem 0 0.5rem; padding-left: 0.35rem;
+}
+
+.sidebar-toc {
+  list-style: none;
+
+  li { margin-bottom: 0.05rem; }
+
+  a {
+    display: block;
+    padding: 0.38rem 0.6rem 0.38rem 0.35rem;
+    font-size: 0.83rem; line-height: 1.35;
+    color: $text-secondary;
+    border-radius: $radius-sm; text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    &:hover, &.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      text-decoration: none;
+    }
+  }
+
+  .toc-h2 a {
+    padding-left: 1rem;
+    font-size: 0.78rem;
+    color: $text-muted;
+  }
+}
+
 // ── Main content area ─────────────────────────────────────────
 .main-content {
   padding: 2.5rem 3rem;
@@ -384,6 +430,53 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
                 .box-label { color: $box-proof-border; } }
   &.box-note  { background: $box-note-bg;  border-color: $box-note-border;
                 .box-label { color: $box-note-border; } }
+
+  &.box-imp {
+    border-left: none;
+    border-right: 2.5px solid $cyan;
+    border-radius: $radius-md 0 0 $radius-md;
+    background: $box-imp-bg;
+    position: relative;
+    overflow: visible;
+
+    .box-imp-deco {
+      position: absolute;
+      left: calc(100% + 3px);
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+    }
+    .box-imp-arm {
+      display: block;
+      width: 14px;
+      height: 2px;
+      background: $cyan;
+      flex-shrink: 0;
+    }
+    .box-imp-dot {
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 2px solid $cyan;
+      background: white;
+      flex-shrink: 0;
+    }
+    .box-imp-lbl {
+      display: block;
+      margin-left: 6px;
+      color: $cyan;
+      font-weight: 700;
+      font-family: $font-accessible;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      max-width: 9rem;
+      line-height: 1.3;
+    }
+  }
 }
 
 // ── Fill-in definition ────────────────────────────────────────
@@ -614,15 +707,17 @@ h1.chapter-title {
   }
 }
 
-// h2 — Subsection  (Large · colored · left rule · no number)
+// h2 — Subsection  (same bar as h1, no diamond, no number)
 .chapter-prose h2 {
+  position: relative;
+  background: color-mix(in srgb, var(--accent-light) 55%, var(--accent-border) 45%)
+              0 50% / 100% 2rem no-repeat;
+  padding: 0.5rem 1rem 0.5rem 0.9rem;
+  margin: 1.9rem 0 0.7rem;
   font-family: $font-display;
-  font-size: 1.15rem;   // Large
+  font-size: 1.15rem;
   font-weight: normal;
-  color: var(--accent);
-  margin: 1.75rem 0 0.6rem;
-  padding-left: 0.9rem;
-  border-left: 3px solid var(--accent-border);
+  color: $text-primary;
 }
 
 // h3 — Paragraph  (large · colored italic · no decoration)
@@ -727,13 +822,100 @@ h1.chapter-title {
   &-title { font-family: $font-display; font-size: 1rem; }
 }
 
-// ── Responsive ────────────────────────────────────────────────
+// ── Responsive ─────────────────────────────────────────────────
+//
+// Breakpoints:
+//   1024px — laptop stretto: padding più stretto
+//    768px — tablet portrait: sidebar → barra orizzontale scorrevole
+//    600px — telefono: nascondi chrome superfluo, riduci tutto
+//    380px — telefono piccolo: topbar minimale
+
+@media (max-width: 1024px) {
+  .main-content { padding: 2rem 1.75rem; }
+}
+
 @media (max-width: 768px) {
   .page-layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid $border; }
-  .main-content { padding: 1.5rem 1rem; }
-  .topbar { padding: 0 1rem; }
+
+  // Sidebar: da colonna verticale a barra orizzontale scorrevole
+  .sidebar {
+    position: static; height: auto;
+    border-right: none; border-bottom: 1px solid $border;
+    display: flex; flex-direction: row; align-items: center;
+    gap: 0.65rem; padding: 0.55rem 1rem;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+    &-course-class { display: none; }
+    &-course-name  { margin-bottom: 0; white-space: nowrap; font-size: 0.88rem; flex-shrink: 0; }
+  }
+  a.sidebar-course-name { margin-bottom: 0; white-space: nowrap; font-size: 0.88rem; flex-shrink: 0; }
+  .sidebar nav { flex-shrink: 0; }
+  .sidebar-toc-label { display: none; }
+
+  // Sezioni del capitolo: pillole orizzontali scorrevoli
+  .sidebar-toc {
+    display: flex; flex-direction: row; flex-wrap: nowrap; gap: 0.3rem;
+    li { margin-bottom: 0; flex-shrink: 0; }
+    .toc-h2 { display: none; }
+    a {
+      display: inline-block; white-space: nowrap;
+      padding: 0.25rem 0.7rem; font-size: 0.78rem;
+      border: 1px solid $border; border-radius: 20px;
+      color: $text-secondary;
+      &:hover, &.active {
+        border-color: var(--accent);
+        background: var(--accent-light);
+        color: var(--accent);
+      }
+    }
+  }
+
+  .main-content  { padding: 1.5rem 1.25rem; }
+  .topbar        { padding: 0 1rem; }
   .chapter-nav a { max-width: none; font-size: 0.82rem; }
+}
+
+@media (max-width: 600px) {
+  // Topbar: nascondi breadcrumb e pulsante PDF
+  .breadcrumb { display: none; }
+  #pdf-btn    { display: none; }
+  .topbar     { padding: 0 0.85rem; }
+
+  // Spaziature ridotte
+  .hero            { padding: 2.5rem 1rem 1.5rem; }
+  .courses-section { padding: 1.5rem 1rem 2rem; }
+  .main-content    { padding: 1.25rem 0.9rem; }
+
+  // Titoli di sezione più piccoli
+  .chapter-prose h1 { font-size: 1.15rem; }
+  .chapter-prose h2 { font-size: 1rem; }
+
+  // Navigazione capitolo: impila verticalmente
+  .chapter-nav {
+    flex-direction: column;
+    a { max-width: 100%; justify-content: center; }
+  }
+
+  // box-imp: nascondi decorazione esterna (nessun margine)
+  .box-imp-deco { display: none; }
+
+  // TOC: nascondi completamente su telefono (la barra progresso è sufficiente)
+  .sidebar-toc { display: none; }
+
+  // Tabelle: scorrimento orizzontale invece di overflow
+  .chapter-prose table {
+    display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+
+  // Card griglia: colonna singola
+  .classi-grid  { grid-template-columns: 1fr; }
+  .courses-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 380px) {
+  .topbar-brand { font-size: 0.88rem; }
+  #font-toggle  { font-size: 0.72rem; padding: 4px 8px; }
 }
 
 // ── Citazioni <cit autore="..."> ─────────────────────────────
@@ -827,7 +1009,7 @@ cit {
     &::before { background: #444 !important; }
     &::after  { color: #fff !important; }
   }
-  .chapter-prose h2 { color: #444 !important; border-left-color: #999 !important; }
+  .chapter-prose h2 { background: #ddd !important; color: #333 !important; }
   .chapter-prose h3 { color: #555 !important; }
 
   // Boxes: remove tinted backgrounds, keep left border

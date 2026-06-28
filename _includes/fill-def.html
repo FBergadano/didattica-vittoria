@@ -2,6 +2,6 @@
   <p class="fill-def-label">✏️ Completa la definizione</p>
   <p class="fill-def-prompt">{{ include.prompt }}</p>
   <textarea id="{{ include.id }}" placeholder="Scrivi qui la tua risposta…"
-            aria-label="{{ include.prompt }}"></textarea>
+            aria-label="{{ include.prompt | escape }}"></textarea>
   <p class="fill-def-note">💡 Questa sezione è per la tua pratica — le risposte non vengono salvate sul server.</p>
 </div>

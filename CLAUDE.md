@@ -59,6 +59,7 @@ Tutti i box si aprono con `{% include box-XXX.html titolo="..." %}` e si chiudon
 | `box-ex.html` | viola | Esempi risolti |
 | `box-proof.html` | grigio | Dimostrazioni |
 | `box-note.html` | arancio | Note, approfondimenti |
+| `box-imp.html`  | ambra + barra cyan destra | Punti importanti da ricordare |
 
 Esempio:
 ```
