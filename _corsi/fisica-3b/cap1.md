@@ -845,7 +845,7 @@ Vedete che in entrambi i casi ho lasciato solo una cifra prima della virgola. Qu
 <div class="iex-q" id="ex2row1" style="display:none">
 <p class="iex-qt"><strong>ii)</strong> Il diametro di un globulo rosso: $d_\text{globulo rosso} = 8{,}6 \times 10^{-6}\ \text{m}$<span class="iex-note">(pensa a quanto sono minuscole queste cellule!)</span></p>
 <div class="iex-ir">
-<input class="iex-full" id="ex2inp1" type="text" placeholder="es: 0,0000086" onkeydown="if(event.key==='Enter')ex2check(1)">
+<input class="iex-full" id="ex2inp1" type="text" placeholder="?" onkeydown="if(event.key==='Enter')ex2check(1)">
 <button class="iex-vbtn" onclick="ex2check(1)">Verifica</button>
 </div>
 <div class="iex-fb" id="ex2fb1"></div>
@@ -855,7 +855,7 @@ Vedete che in entrambi i casi ho lasciato solo una cifra prima della virgola. Qu
 <div class="iex-q" id="ex2row2" style="display:none">
 <p class="iex-qt"><strong>iii)</strong> Il numero di globuli rossi in un uomo medio: $n_\text{globuli rossi} = 2{,}5\times 10^{13}\ \text{globuli rossi}$<span class="iex-note">(è più grande del numero di stelle nella Via Lattea, la nostra galassia)</span></p>
 <div class="iex-ir">
-<input class="iex-full" id="ex2inp2" type="text" placeholder="es: 25 000 000 000 000" onkeydown="if(event.key==='Enter')ex2check(2)">
+<input class="iex-full" id="ex2inp2" type="text" placeholder="?" onkeydown="if(event.key==='Enter')ex2check(2)">
 <button class="iex-vbtn" onclick="ex2check(2)">Verifica</button>
 </div>
 <div class="iex-fb" id="ex2fb2"></div>
@@ -947,25 +947,25 @@ window.ex2check=function(i){
 
 Quando la calcolatrice esegue un'operazione e il risultato è molto grande o molto piccolo, sul display **non c'è spazio per mostrare tutte le cifre** nella forma decimale estesa. Allora la calcolatrice usa automaticamente la notazione scientifica, ma con una sintassi diversa da quella che usiamo su carta: al posto di «$\times 10^n$» compare semplicemente la lettera **E** (dall'inglese *exponent*) seguita dall'esponente.
 
-<figure style="float:right;clear:right;margin:0 0 1rem 1.5rem;max-width:210px;text-align:center;">
-<svg viewBox="0 0 292 148" width="100%" style="display:block;margin:0 auto;">
-  <rect x="4" y="4" width="284" height="140" rx="11" fill="rgba(0,0,0,.25)"/>
-  <rect x="0" y="0" width="284" height="140" rx="11" fill="#1e1e1e"/>
-  <rect x="1" y="1" width="282" height="7" rx="10" fill="rgba(255,255,255,.06)"/>
-  <rect x="13" y="12" width="258" height="116" rx="5" fill="#0a0a0a"/>
-  <rect x="17" y="16" width="250" height="108" rx="4" fill="#b8c87a"/>
-  <rect x="17" y="16" width="250" height="46" rx="4" fill="rgba(255,255,255,.09)"/>
-  <text x="261" y="52" font-family="'Courier New',Courier,monospace" font-size="11" fill="#3a4a18" text-anchor="end" opacity="0.7">1 ÷ 3600 =</text>
-  <text x="261" y="104" font-family="'Courier New',Courier,monospace" font-size="32" font-weight="bold" fill="#0c1804" text-anchor="end">2.7778E-4</text>
+<figure style="text-align:center;margin:2rem auto 1.5rem;max-width:400px;">
+<svg viewBox="0 0 400 196" width="100%" style="max-width:400px;display:block;margin:0 auto;">
+  <rect x="5" y="5" width="390" height="186" rx="14" fill="rgba(0,0,0,.30)"/>
+  <rect x="0" y="0" width="390" height="186" rx="14" fill="#1e1e1e"/>
+  <rect x="1" y="1" width="388" height="9" rx="13" fill="rgba(255,255,255,.06)"/>
+  <rect x="18" y="16" width="354" height="154" rx="7" fill="#0a0a0a"/>
+  <rect x="22" y="20" width="346" height="146" rx="5" fill="#b8c87a"/>
+  <rect x="22" y="20" width="346" height="60" rx="5" fill="rgba(255,255,255,.09)"/>
+  <text x="358" y="68" font-family="'Courier New',Courier,monospace" font-size="15" fill="#3a4a18" text-anchor="end" opacity="0.75">1 ÷ 3600 =</text>
+  <text x="358" y="138" font-family="'Courier New',Courier,monospace" font-size="46" font-weight="bold" fill="#0c1804" text-anchor="end" letter-spacing="1">2.7778E-4</text>
 </svg>
-<figcaption style="font-size:.78rem;color:#6b7280;margin-top:.3rem;">1 ÷ 3600 sulla calcolatrice</figcaption>
+<figcaption style="font-size:.85rem;color:#6b7280;margin-top:.5rem;">Display di una calcolatrice scientifica dopo aver calcolato 1 ÷ 3600</figcaption>
 </figure>
 
 La lettera **E** va letta come «per dieci alla»: dunque
 
 $$a\,\texttt{E}\,n \;=\; a \times 10^{n}.$$
 
-Nel display, `2.7778E-4` significa $2{,}7778 \times 10^{-4}$ — cioè $0{,}00027778$.
+Nel display qui sopra, `2.7778E-4` significa $2{,}7778 \times 10^{-4}$ — cioè $0{,}00027778$.
 
 {% include box-note.html titolo="Altri esempi di notazione E" %}
 
@@ -2391,9 +2391,9 @@ Esempio: un quadrato di lato $\ell = 4\ \text{m}$ ha area $A = \ell^2 = (4\ \tex
 
 #### Equivalenze tra misure di area
 
-<div style="float:right;clear:right;margin:0 0 1rem 1.5rem;text-align:center;max-width:252px;">
-<canvas id="area-anim" width="252" height="248" style="max-width:100%;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;display:block;margin:0 auto .5rem;"></canvas>
-<button id="area-anim-btn" class="iex-vbtn" style="font-size:.85rem;">&#9654; Riproduci</button>
+<div style="text-align:center;margin:1.5rem 0;">
+<canvas id="area-anim" width="320" height="290" style="max-width:100%;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;display:block;margin:0 auto .6rem;"></canvas>
+<button id="area-anim-btn" class="iex-vbtn" style="font-size:.9rem;">&#9654; Riproduci animazione</button>
 </div>
 
 Partiamo dalla definizione di metro quadro:
@@ -2404,7 +2404,7 @@ Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
 
 $$1\ \text{m}^2 = (10\ \text{dm}) \times (10\ \text{dm}) = 10^2\ \text{dm}^2 = 100\ \text{dm}^2.$$
 
-L'animazione qui a lato mostra esattamente questo: un quadrato di lato 1 m viene suddiviso con una griglia di lato 1 dm, rivelando che ci sono esattamente 100 quadratini di 1 dm².
+L'animazione qui sotto mostra esattamente questo: un quadrato di lato 1 m viene suddiviso con una griglia di lato 1 dm, rivelando che ci sono esattamente 100 quadratini di 1 dm².
 
 <script>
 (function(){
@@ -2412,8 +2412,8 @@ var cv=document.getElementById('area-anim');
 if(!cv)return;
 var ctx=cv.getContext('2d');
 var W=cv.width,H=cv.height;
-var S=162,N=10,cell=S/N;
-var ox=56,oy=38;
+var S=200,N=10,cell=S/N;
+var ox=70,oy=48;
 function cl(t,a,b){return Math.max(0,Math.min(1,(t-a)/(b-a)));}
 function ease(t){return t<.5?2*t*t:-1+(4-2*t)*t;}
 function frame(t){
@@ -2504,17 +2504,13 @@ Prova ora a ripetere lo stesso ragionamento con gli altri multipli del metro.
 
 Cosa noti? Per dm era $10^1$ → area $10^2$; per cm era $10^2$ → area $10^4$; per mm era $10^3$ → area $10^6$. **L'esponente dell'area è sempre il doppio** dell'esponente lineare.
 
-<div style="float:right;clear:right;max-width:275px;margin:0 0 1rem 1.5rem;">
 {% include box-warn.html titolo="Attenzione" %}
 **Non è vero** che $1\ \text{m}^2 = 10^2\ \text{cm}^2$. L'esponente raddoppia: $1\ \text{m}^2 = 10^4\ \text{cm}^2$.
 {% include box-end.html %}
-</div>
 
 {% include box-imp.html titolo="Regola per le aree" %}
 Se per la lunghezza il fattore di conversione è $10^n$, per l'**area** è $10^{2n}$.
 {% include box-end.html %}
-
-<div style="clear:both"></div>
 
 {% capture _quiz_area %}[
   {"p":"Quanti cm&#178; ci sono in 1 dm&#178;? (1 dm = 10 cm)","a":100,"t":0.0001},
@@ -2533,32 +2529,55 @@ Il volume di un solido è una grandezza derivata: è dato dal prodotto di tre lu
 {% include box-end.html %}
 
 <figure style="text-align:center;margin:1.5rem auto 1rem;">
-<svg viewBox="0 0 480 148" width="100%" style="max-width:480px;display:block;margin:0 auto;">
-  <!-- Cubo (quasi-isometrico) -->
-  <polygon points="14,96 14,38 56,14 56,72" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>
-  <polygon points="14,38 56,14 98,38 56,62" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
-  <polygon points="56,62 98,38 98,96 56,72" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5"/>
-  <text x="56" y="120" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Cubo</text>
-  <text x="56" y="137" text-anchor="middle" fill="#1d4ed8" font-size="13" font-family="Georgia,serif">V = l ³</text>
-  <!-- Parallelepipedo -->
-  <polygon points="126,96 126,54 156,38 156,80" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
-  <polygon points="126,54 156,38 222,38 192,54" fill="#bbf7d0" stroke="#15803d" stroke-width="1.5"/>
-  <polygon points="192,54 222,38 222,80 192,96" fill="#f0fdf4" stroke="#15803d" stroke-width="1.5"/>
-  <text x="174" y="120" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Parallelepipedo</text>
-  <text x="174" y="137" text-anchor="middle" fill="#15803d" font-size="13" font-family="Georgia,serif">V = l · w · h</text>
-  <!-- Cilindro -->
-  <ellipse cx="318" cy="38" rx="36" ry="11" fill="#fef9c3" stroke="#d97706" stroke-width="1.5"/>
-  <rect x="282" y="38" width="72" height="54" fill="#fefce8" stroke="none"/>
-  <line x1="282" y1="38" x2="282" y2="92" stroke="#d97706" stroke-width="1.5"/>
-  <line x1="354" y1="38" x2="354" y2="92" stroke="#d97706" stroke-width="1.5"/>
-  <ellipse cx="318" cy="92" rx="36" ry="11" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
-  <text x="318" y="120" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Cilindro</text>
-  <text x="318" y="137" text-anchor="middle" fill="#d97706" font-size="13" font-family="Georgia,serif">V = &#960; r &#178; h</text>
-  <!-- Sfera -->
-  <circle cx="428" cy="62" r="34" fill="#fdf4ff" stroke="#7c3aed" stroke-width="2"/>
-  <ellipse cx="428" cy="62" rx="34" ry="11" fill="none" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
-  <text x="428" y="120" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Sfera</text>
-  <text x="428" y="137" text-anchor="middle" fill="#7c3aed" font-size="13" font-family="Georgia,serif">V = &#8532;&#960; r ³</text>
+<svg viewBox="0 0 480 150" width="100%" style="max-width:480px;display:block;margin:0 auto;">
+
+  <!-- ── CUBO isometrico (col 0-120, centre x=60) ── -->
+  <!-- s=30, dx=26, dy=15: A(60,10) B(34,25) C(86,25) G(60,40) D(34,55) E(86,55) F(60,70) -->
+  <!-- Top face (lightest) -->
+  <polygon points="60,10 34,25 60,40 86,25" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.4"/>
+  <!-- Left face (medium) -->
+  <polygon points="34,25 34,55 60,70 60,40" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.4"/>
+  <!-- Right face (lightest = "lit from front-right") -->
+  <polygon points="86,25 60,40 60,70 86,55" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.4"/>
+  <text x="60" y="90" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Cubo</text>
+  <text x="60" y="107" text-anchor="middle" fill="#1d4ed8" font-size="13" font-family="Georgia,serif">V = l ³</text>
+
+  <!-- ── PARALLELEPIPEDO isometrico (col 120-240, centre x=180) ── -->
+  <!-- Wide & flat: dx=38,dy=10,h=26; A(180,12) B(142,22) C(218,22) G(180,32) D(142,58) E(218,58) F(180,68) -->
+  <polygon points="180,12 142,22 180,32 218,22" fill="#bbf7d0" stroke="#15803d" stroke-width="1.4"/>
+  <polygon points="142,22 142,58 180,68 180,32" fill="#dcfce7" stroke="#15803d" stroke-width="1.4"/>
+  <polygon points="218,22 180,32 180,68 218,58" fill="#f0fdf4" stroke="#15803d" stroke-width="1.4"/>
+  <text x="180" y="90" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Parallelepipedo</text>
+  <text x="180" y="107" text-anchor="middle" fill="#15803d" font-size="13" font-family="Georgia,serif">V = l · w · h</text>
+
+  <!-- ── CILINDRO (col 240-360, centre x=300) ── -->
+  <!-- Draw order: bottom ellipse → body rect → side lines → top ellipse -->
+  <ellipse cx="300" cy="76" rx="34" ry="11" fill="#fde68a" stroke="#d97706" stroke-width="1.4"/>
+  <rect x="266" y="20" width="68" height="56" fill="#fefce8" stroke="none"/>
+  <line x1="266" y1="20" x2="266" y2="76" stroke="#d97706" stroke-width="1.4"/>
+  <line x1="334" y1="20" x2="334" y2="76" stroke="#d97706" stroke-width="1.4"/>
+  <ellipse cx="300" cy="20" rx="34" ry="11" fill="#fef9c3" stroke="#d97706" stroke-width="1.4"/>
+  <!-- r label -->
+  <line x1="300" y1="20" x2="334" y2="20" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="317" y="15" text-anchor="middle" fill="#d97706" font-size="10" font-style="italic" font-family="Georgia,serif">r</text>
+  <!-- h label -->
+  <line x1="342" y1="20" x2="342" y2="76" stroke="#d97706" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="350" y="52" text-anchor="start" fill="#d97706" font-size="10" font-style="italic" font-family="Georgia,serif">h</text>
+  <text x="300" y="103" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Cilindro</text>
+  <text x="300" y="120" text-anchor="middle" fill="#d97706" font-size="13" font-family="Georgia,serif">V = &#960; r ² h</text>
+
+  <!-- ── SFERA (col 360-480, centre x=420) ── -->
+  <circle cx="420" cy="46" r="36" fill="#fdf4ff" stroke="#7c3aed" stroke-width="2"/>
+  <!-- right-half darker shading -->
+  <path d="M420,10 A36,36,0,0,1,420,82" fill="rgba(124,58,237,.07)" stroke="none"/>
+  <!-- equatorial ellipse -->
+  <ellipse cx="420" cy="46" rx="36" ry="12" fill="none" stroke="#7c3aed" stroke-width="1.2" stroke-dasharray="5,3"/>
+  <!-- radius line -->
+  <line x1="420" y1="46" x2="456" y2="46" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="438" y="41" text-anchor="middle" fill="#7c3aed" font-size="10" font-style="italic" font-family="Georgia,serif">r</text>
+  <text x="420" y="103" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Sfera</text>
+  <text x="420" y="120" text-anchor="middle" fill="#7c3aed" font-size="13" font-family="Georgia,serif">V = &#8532;&#960; r ³</text>
+
 </svg>
 </figure>
 
@@ -2566,9 +2585,9 @@ Esempio: un cubo di lato $\ell = 2\ \text{m}$ ha volume $V = \ell^3 = (2\ \text{
 
 #### Equivalenze tra misure di volume
 
-<div style="float:right;clear:right;margin:0 0 1rem 1.5rem;text-align:center;max-width:252px;">
-<canvas id="vol-anim" width="252" height="268" style="max-width:100%;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;display:block;margin:0 auto .5rem;"></canvas>
-<button id="vol-anim-btn" class="iex-vbtn" style="font-size:.85rem;">&#9654; Riproduci</button>
+<div style="text-align:center;margin:1.5rem 0;">
+<canvas id="vol-anim" width="320" height="310" style="max-width:100%;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;display:block;margin:0 auto .6rem;"></canvas>
+<button id="vol-anim-btn" class="iex-vbtn" style="font-size:.9rem;">&#9654; Riproduci animazione</button>
 </div>
 
 Partiamo dalla definizione di metro cubo:
@@ -2579,7 +2598,7 @@ Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
 
 $$1\ \text{m}^3 = (10\ \text{dm}) \times (10\ \text{dm}) \times (10\ \text{dm}) = 10^3\ \text{dm}^3 = 1\,000\ \text{dm}^3.$$
 
-L'animazione qui a lato mostra come il cubo di lato 1 m si compone di 10 strati da 100 dm² ciascuno, per un totale di 1000 dm³.
+L'animazione qui sotto mostra come il cubo di lato 1 m si compone di 10 strati da 100 dm² ciascuno, per un totale di 1000 dm³.
 
 <script>
 (function(){
@@ -2587,9 +2606,9 @@ var cv=document.getElementById('vol-anim');
 if(!cv)return;
 var ctx=cv.getContext('2d');
 var W=cv.width,H=cv.height;
-var S=142,N=10,cell=S/N;
-var ox=52,oy=34;
-var DX=7,DY=-4;
+var S=155,N=10,cell=S/N;
+var ox=65,oy=48;
+var DX=5,DY=-3;
 function cl(t,a,b){return Math.max(0,Math.min(1,(t-a)/(b-a)));}
 function ease(t){return t<.5?2*t*t:-1+(4-2*t)*t;}
 function drawLayer(ly,alpha){
@@ -2701,17 +2720,13 @@ Prova ora a ripetere lo stesso ragionamento con gli altri multipli del metro.
 
 Cosa noti? Per dm era $10^1$ → volume $10^3$; per cm era $10^2$ → volume $10^6$; per mm era $10^3$ → volume $10^9$. **L'esponente del volume è sempre il triplo** dell'esponente lineare.
 
-<div style="float:right;clear:right;max-width:275px;margin:0 0 1rem 1.5rem;">
 {% include box-warn.html titolo="Attenzione" %}
 **Non è vero** che $1\ \text{m}^3 = 10^2\ \text{cm}^3$. L'esponente si triplica: $1\ \text{m}^3 = 10^6\ \text{cm}^3$.
 {% include box-end.html %}
-</div>
 
 {% include box-imp.html titolo="Regola per i volumi" %}
 Se per la lunghezza il fattore di conversione è $10^n$, per il **volume** è $10^{3n}$.
 {% include box-end.html %}
-
-<div style="clear:both"></div>
 
 {% capture _quiz_vol %}[
   {"p":"Quanti dm&#179; ci sono in 1 m&#179;? (1 m = 10 dm)","a":1000,"t":0.0001},
