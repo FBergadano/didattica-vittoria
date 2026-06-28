@@ -33,7 +33,7 @@ Scrivi sempre in italiano. Tono caldo, curioso, incoraggiante. Risposte brevi (2
 
 # Che cosa significa _misurare_?
 
-«Misurare» significa studiare una *caratteristica* di un oggetto ed associare ad essa *un numero*. Descrivere il mondo con i numeri, significa scegliere <u>di utilizzare il linguaggio della Matematica</u>. Ecco perché la Fisica è fatta di equazioni. Naturalmente, non tutto si può esprimere con i numeri. La Fisica si limita dunque a descrivere solo le caratteristiche misurabili di un oggetto, che si chiamano <definizione>grandezze fisiche</definizione>.
+«Misurare» significa associare **un numero** a una *caratteristica* di un oggetto. Descrivere il mondo con i numeri, significa scegliere <u>di utilizzare il linguaggio della Matematica</u>. Ecco perché la Fisica è fatta di equazioni. Naturalmente, non tutto si può esprimere con i numeri. La Fisica si limita dunque a descrivere solo le caratteristiche misurabili di un oggetto, che si chiamano <definizione>grandezze fisiche</definizione>.
 
 {% include box-ex.html titolo="Verifica Subito!" %}
 
@@ -423,13 +423,12 @@ Vediamo le risposte che hanno dato i fisici a questo problema.
 Nel 1875, alcuni dei più importanti scienziati di tutto il mondo si sono riuniti a Parigi, in una conferenza chiamata *«Conférence générale des poids et mesures»*, per stabilire delle unità di misura da adottare <u>in tutto il mondo</u>, <u>sempre</u>.  
 Essi trovarono che tutte le grandezze fisiche potevano essere espresse in termini di **sette** <definizione>grandezze fondamentali</definizione>, a cui sono associate le rispettive <definizione>unità di misura</definizione>. Costruirono cioè la seguente tabella. 
 
-<table style="border-collapse:collapse;margin:1rem 0;font-size:15px;">
+<table id="tab-si" style="border-collapse:collapse;margin:1rem 0;font-size:15px;">
   <thead>
     <tr>
       <th style="padding:6px 20px 6px 8px;border-bottom:2px solid #555;text-align:left;">Grandezza</th>
       <th style="padding:6px 20px 6px 8px;border-bottom:2px solid #555;text-align:left;">Unità di misura</th>
       <th style="padding:6px 20px 6px 8px;border-bottom:2px solid #555;text-align:left;">Simbolo</th>
-      <th colspan="2" style="border-bottom:2px solid #555;"></th>
     </tr>
   </thead>
   <tbody>
@@ -437,45 +436,36 @@ Essi trovarono che tutte le grandezze fisiche potevano essere espresse in termin
       <td style="padding:6px 20px 6px 8px;">Lunghezza</td>
       <td style="padding:6px 20px 6px 8px;">metro</td>
       <td style="padding:6px 20px 6px 8px;">m</td>
-      <td style="width:10px;border-top:1.5px solid #555;border-right:1.5px solid #555;"></td>
-      <td rowspan="3" style="vertical-align:middle;padding:0 0 0 10px;font-style:italic;color:#1a5276;font-size:13px;white-space:nowrap;">Queste tre<br>sono da<br>sapere</td>
     </tr>
     <tr>
       <td style="padding:6px 20px 6px 8px;">Tempo</td>
       <td style="padding:6px 20px 6px 8px;">secondo</td>
       <td style="padding:6px 20px 6px 8px;">s</td>
-      <td style="width:10px;border-right:1.5px solid #555;"></td>
     </tr>
     <tr>
       <td style="padding:6px 20px 6px 8px;">Massa</td>
       <td style="padding:6px 20px 6px 8px;">chilogrammo</td>
       <td style="padding:6px 20px 6px 8px;">kg</td>
-      <td style="width:10px;border-bottom:1.5px solid #555;border-right:1.5px solid #555;"></td>
     </tr>
     <tr>
-      <td style="padding:6px 20px 6px 8px;color:#777;">Temperatura</td>
-      <td style="padding:6px 20px 6px 8px;color:#777;">kelvin</td>
-      <td style="padding:6px 20px 6px 8px;color:#777;">K</td>
-      <td></td><td></td>
+      <td style="padding:6px 20px 6px 8px;">Temperatura</td>
+      <td style="padding:6px 20px 6px 8px;">kelvin</td>
+      <td style="padding:6px 20px 6px 8px;">K</td>
     </tr>
     <tr>
-      <td style="padding:6px 20px 6px 8px;color:#777;">Intensità di corrente</td>
-      <td style="padding:6px 20px 6px 8px;color:#777;">ampere</td>
-      <td style="padding:6px 20px 6px 8px;color:#777;">A</td>
-      <td></td><td></td>
+      <td style="padding:6px 20px 6px 8px;">Intensità di corrente</td>
+      <td style="padding:6px 20px 6px 8px;">ampere</td>
+      <td style="padding:6px 20px 6px 8px;">A</td>
     </tr>
     <tr>
-      <td style="padding:6px 20px 6px 8px;color:#777;">Quantità di materia</td>
-      <td style="padding:6px 20px 6px 8px;color:#777;">mole</td>
-      <td style="padding:6px 20px 6px 8px;color:#777;">mol</td>
-      <td></td><td></td>
+      <td style="padding:6px 20px 6px 8px;">Quantità di materia</td>
+      <td style="padding:6px 20px 6px 8px;">mole</td>
+      <td style="padding:6px 20px 6px 8px;">mol</td>
     </tr>
     <tr>
-      <td style="padding:6px 20px 6px 8px;color:#777;border-bottom:1px solid #ccc;">Intensità luminosa</td>
-      <td style="padding:6px 20px 6px 8px;color:#777;border-bottom:1px solid #ccc;">candela</td>
-      <td style="padding:6px 20px 6px 8px;color:#777;border-bottom:1px solid #ccc;">cd</td>
-      <td style="border-bottom:1px solid #ccc;"></td>
-      <td style="border-bottom:1px solid #ccc;"></td>
+      <td style="padding:6px 20px 6px 8px;border-bottom:1px solid #ccc;">Intensità luminosa</td>
+      <td style="padding:6px 20px 6px 8px;border-bottom:1px solid #ccc;">candela</td>
+      <td style="padding:6px 20px 6px 8px;border-bottom:1px solid #ccc;">cd</td>
     </tr>
   </tbody>
 </table>
@@ -602,11 +592,23 @@ m_\text{S} &= 1\,989\,100\,000\,000\,000\,000\,000\,000\,000\,000\ \text{kg}\\ &
 \end{aligned}
 $$
 
-E se invece il numero è molto piccolo, come nel caso della massa dell'elettrone? Facciamo lo stesso ragionamento! Cominciamo notando che $0{,}01$ corrisponde a $\dfrac{1}{100} = 10^{-2}$. Allo stesso modo, $0{,}001 = 10^{-3}$. In generale, il numero di zeri che compare prima dell'uno, incluso quello prima della virgola, è pari all'esponente con un meno di fronte:
+E se invece il numero è molto piccolo, come nel caso della massa dell'elettrone? Facciamo lo stesso ragionamento, ma anziché far scivolare la virgola verso sinistra la facciamo scivolare verso destra. Questo significa che invece di moltiplicare per $10$ stiamo **dividendo** per $10$. Quindi
 
-$$\underbrace{0{,}000\,000\,000\,000\,000\,000\,000\,000\,000\,00}_{30\ \text{zeri}}1 = 10^{-30}.$$
+$$
+0{,}00\, 000 \,000 \,000 \,000 \,000 \,000 \,000 \,000 \,000 1 = 1\div\underbrace{ 10 \div 10 \div \cdots \div 10}_{30 \text{ volte}} = \frac 1 {10^{30}}.
+$$
 
-In questo modo, $0{,}05 = 5\times 10^{-2}$ e $0{,}0567 = 5{,}67 \times 10^{-2}$. Anche in questo caso, il numero di salti verso destra che fa la virgola diventa l'esponente, ma con un segno meno. Ad esempio, la massa dell'elettrone può essere scritta come
+Ricordiamo inoltre che $\frac 1 {10^n} = 10^{-n}$, quindi
+
+$$
+0{,}00 \,000 \,000 \,000 \,000 \,000 \,000 \,000 \,000 \,000 1 = 10^{-30}.
+$$
+
+In generale, il numero di zeri che compare prima della prima cifra, incluso quello prima della virgola, è pari all'esponente con un meno di fronte:
+
+$$0{,}00\,1= 10^{-3}, \qquad 0{,}00\, 2 = 2\times 10^{-3}, \qquad 0{,}00\, 000\, 003\, 21 = 3{,}21\times 10^{-8}$$
+
+Anche in questo caso, il numero di salti verso destra che fa la virgola diventa l'esponente, ma con un segno meno. Ad esempio, la massa dell'elettrone può essere scritta come
 
 <div style="margin:1.5rem 0;background:#fafaf8;border-radius:8px;padding:0.85rem 1rem 0.7rem;border:1px solid #e5e7eb;">
 <p style="margin:0 0 0.5rem;font-size:13px;color:#374151;">Qui la virgola salta verso destra: l'esponente diventa negativo e cresce in valore assoluto.</p>
@@ -939,6 +941,58 @@ window.ex2check=function(i){
 };
 })();
 </script>
+
+
+### La notazione scientifica sulla calcolatrice
+
+Quando la calcolatrice esegue un'operazione e il risultato è molto grande o molto piccolo, sul display **non c'è spazio per mostrare tutte le cifre** nella forma decimale estesa. Allora la calcolatrice usa automaticamente la notazione scientifica, ma con una sintassi diversa da quella che usiamo su carta: al posto di «$\times 10^n$» compare semplicemente la lettera **E** (dall'inglese *exponent*) seguita dall'esponente.
+
+<figure style="float:right;clear:right;margin:0 0 1rem 1.5rem;max-width:210px;text-align:center;">
+<svg viewBox="0 0 292 148" width="100%" style="display:block;margin:0 auto;">
+  <rect x="4" y="4" width="284" height="140" rx="11" fill="rgba(0,0,0,.25)"/>
+  <rect x="0" y="0" width="284" height="140" rx="11" fill="#1e1e1e"/>
+  <rect x="1" y="1" width="282" height="7" rx="10" fill="rgba(255,255,255,.06)"/>
+  <rect x="13" y="12" width="258" height="116" rx="5" fill="#0a0a0a"/>
+  <rect x="17" y="16" width="250" height="108" rx="4" fill="#b8c87a"/>
+  <rect x="17" y="16" width="250" height="46" rx="4" fill="rgba(255,255,255,.09)"/>
+  <text x="261" y="52" font-family="'Courier New',Courier,monospace" font-size="11" fill="#3a4a18" text-anchor="end" opacity="0.7">1 ÷ 3600 =</text>
+  <text x="261" y="104" font-family="'Courier New',Courier,monospace" font-size="32" font-weight="bold" fill="#0c1804" text-anchor="end">2.7778E-4</text>
+</svg>
+<figcaption style="font-size:.78rem;color:#6b7280;margin-top:.3rem;">1 ÷ 3600 sulla calcolatrice</figcaption>
+</figure>
+
+La lettera **E** va letta come «per dieci alla»: dunque
+
+$$a\,\texttt{E}\,n \;=\; a \times 10^{n}.$$
+
+Nel display, `2.7778E-4` significa $2{,}7778 \times 10^{-4}$ — cioè $0{,}00027778$.
+
+{% include box-note.html titolo="Altri esempi di notazione E" %}
+
+<table style="width:100%;border-collapse:collapse;margin:.4rem 0;">
+<tr>
+  <th style="padding:5px 22px 5px 6px;border-bottom:2px solid #b0c4de;text-align:left;">Sul display</th>
+  <th style="padding:5px 22px 5px 6px;border-bottom:2px solid #b0c4de;text-align:left;">Significato</th>
+  <th style="padding:5px 6px 5px 6px;border-bottom:2px solid #b0c4de;text-align:left;">Valore decimale</th>
+</tr>
+<tr>
+  <td style="padding:5px 22px 5px 6px;"><code>1.234E-5</code></td>
+  <td style="padding:5px 22px 5px 6px;">$1{,}234 \times 10^{-5}$</td>
+  <td style="padding:5px 6px 5px 6px;">$0{,}00001234$</td>
+</tr>
+<tr>
+  <td style="padding:5px 22px 5px 6px;"><code>6.022E+23</code></td>
+  <td style="padding:5px 22px 5px 6px;">$6{,}022 \times 10^{23}$</td>
+  <td style="padding:5px 6px 5px 6px;">$602\,200\,000\,000\,000\,000\,000\,000$</td>
+</tr>
+<tr>
+  <td style="padding:5px 22px 5px 6px;border-bottom:1px solid #e5e7eb;"><code>9.109E-31</code></td>
+  <td style="padding:5px 22px 5px 6px;border-bottom:1px solid #e5e7eb;">$9{,}109 \times 10^{-31}$</td>
+  <td style="padding:5px 6px 5px 6px;border-bottom:1px solid #e5e7eb;">massa dell'elettrone in kg</td>
+</tr>
+</table>
+
+{% include box-end.html %}
 
 
 ## Le operazioni in Notazione Scientifica
@@ -1332,7 +1386,7 @@ $$\frac{a\times10^n}{b\times10^m} = \frac{a}{b}\times 10^{n-m}$$
 </div>
 
 <div class="iex-q" id="ex5row3" style="display:none">
-<p class="iex-qt"><strong>iv)</strong> Un bicchiere d'acqua contiene $8{,}36 \times 10^{24}$ molecole. Una <em>mole</em> corrisponde a $6{,}022 \times 10^{23}$ molecole. Quante moli d'acqua ci sono nel bicchiere?<span class="iex-note">Usa $n = N/N_A$, con il numero di molecole $N$ al numeratore e il numero di Avogadro $N_A$ al denominatore.</span></p>
+<p class="iex-qt"><strong>iv)</strong> Un bicchiere d'acqua contiene $8{,}36 \times 10^{24}$ molecole. Una <em>mole</em> corrisponde a $N_A = 6{,}022 \times 10^{23}$ molecole. Quante moli d'acqua ci sono nel bicchiere?<span class="iex-note">Usa $n = N/N_A$, con il numero di molecole $N$ al numeratore e il numero di Avogadro $N_A$ al denominatore.</span></p>
 <div class="iex-ir">
 <input class="iex-m" id="ex5m3" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex5check(3)">
 <span>&times;&thinsp;10<sup><input class="iex-e" id="ex5e3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex5check(3)"></sup></span>
@@ -1344,7 +1398,7 @@ $$\frac{a\times10^n}{b\times10^m} = \frac{a}{b}\times 10^{n-m}$$
 </div>
 
 <div class="iex-q" id="ex5row4" style="display:none">
-<p class="iex-qt"><strong>v)</strong> Il DNA umano contiene circa $3{,}0 \times 10^9$ paia di basi, distribuite su $4{,}6 \times 10^1$ cromosomi. Quante paia di basi ha in media ogni cromosoma?<span class="iex-note">Usa: basi per cromosoma $=$ basi totali $\div$ numero di cromosomi, con le basi totali al numeratore e il numero di cromosomi al denominatore.</span></p>
+<p class="iex-qt"><strong>v)</strong> Il DNA umano contiene circa $3{,}0 \times 10^9$ paia di basi, distribuite su $4{,}6 \times 10^1$ cromosomi. Quante paia di basi ha in media ogni cromosoma?<span class="iex-note">Usa: basi per cromosoma $=$ basi totali / numero di cromosomi.</span></p>
 <div class="iex-ir">
 <input class="iex-m" id="ex5m4" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex5check(4)">
 <span>&times;&thinsp;10<sup><input class="iex-e" id="ex5e4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex5check(4)"></sup></span>
@@ -1465,179 +1519,1213 @@ window.ex5check=function(i){opCheck('ex5',Q5,ex5ok,ex5c,N5,i);};
 </script>
 ## Dalle unità ai loro multipli e sottomultipli
 
-Finora abbiamo parlato del metro, del chilo, del secondo, etc. Eppure sappiamo che esistono tante altre scale, come i chilometri, i centimetri, i millimetri, i grammi, le ore, etc. Queste *non* sono unità di misura differenti, bensì *multipli differenti* delle stesse unità di misura. Passare da metri a centimetri è molto semplice; passare da metri a miglia, no.
+Se doveste misurare la lunghezza di una formica, probabilmente non vi verrebbe da utilizzare la notazione scientifica, bensì esprimereste semplicemente la lunghezza in millimetri anziché metri. Non state realmente cambiando unità di misura, state semplicemente utilizzando un **sottomultiplo** del metro. Allo stesso modo, se doveste misurare la distanza tra Torino e Milano, difficilmente direste che corrisponde a circa $200\, 000 \ \text m$: più facilmente direste che sono circa $200\, \text{km}$. In questo caso state utilizzando un **multiplo** del metro.
 
-Un centimetro (che si indica con «cm») è definito come $0{,}01$ metri. Se non te lo ricordi, pensa alla parola: «centimetro» comincia con «cent» e ti suggerisce che è *un centesimo* del metro. Quindi, in notazione scientifica:
+Questi multipli e sottomultipli sono gli stessi per tutte le unità di misura e si indicano semplicemente con una lettera davanti al simbolo dell'unità di misura. Essi si basano sulle potenze di $10$. Ad esempio, un kilometro si indica con $1\ \text{km}$ e corrisponde a 
 
-$$1\ \text{cm} = 10^{-2}\ \text{m} \qquad \text{oppure} \qquad 1\ \text{m} = 10^2\ \text{cm}.$$
+$$1\ \text{km} = 1\,000 \text m = 10^3 \ \text m.$$
 
-Attenzione a non confonderti! $1\ \text{m} = 10^2\ \text{cm}$ e **non** $1\ \text{m} = 10^{-2}\ \text{cm}$. Se hai dei dubbi, pensa al fatto che il metro è più grande del centimetro, quindi un metro sono *molti* centimetri.
+Allo stesso modo, il millimetro si indica con $1 \ \text{mm}$ e corrisponde a
 
-Perciò, se abbiamo $0{,}000\,000\,1234\ \text{m}$, possiamo scriverlo come $1{,}234 \times 10^{-7}\ \text{m}$ e poi riportarlo in centimetri come
+$$ 1 \ \text{mm} = 0{,}00\, 1 m = 10^{-3} \ \text m.$$
 
-$$1{,}234 \times 10^{-7} \times 10^{2}\ \text{cm} = 1{,}234 \times 10^{-5}\ \text{cm}.$$
 
-Per i millimetri: la parola ci dice che sono un *millesimo* di metro, quindi
+Ecco la lista dei prefissi dei multipli e sottomultipli.
 
-$$1\ \text{mm} = 10^{-3}\ \text{m}, \qquad \qquad 1\ \text{km} = 10^3\ \text{m}.$$
+<div style="overflow-x:auto;margin:1.2rem 0;">
+<table style="width:100%;border-collapse:collapse;font-size:.95rem;">
+<thead><tr style="background:#f1f5f9;border-bottom:2px solid #cbd5e1;">
+  <th style="padding:.45rem 1.2rem;text-align:left;">Prefisso</th>
+  <th style="padding:.45rem 1.2rem;text-align:center;">Simbolo</th>
+  <th style="padding:.45rem 1.2rem;text-align:center;">Fattore</th>
+  <th style="padding:.45rem 1.2rem;text-align:left;">Esempio</th>
+</tr></thead>
+<tbody>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">Tera</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">T</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{12}$</td>  <td style="padding:.4rem 1.2rem;">1 Ts = $10^{12}$ s</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">Giga</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">G</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{9}$</td>   <td style="padding:.4rem 1.2rem;">1 Gm = $10^{9}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">Mega</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">M</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{6}$</td>   <td style="padding:.4rem 1.2rem;">1 Mg = $10^{6}$ g</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">kilo</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">k</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{3}$</td>   <td style="padding:.4rem 1.2rem;">1 kg = $10^{3}$ g</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">etto</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">h</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{2}$</td>   <td style="padding:.4rem 1.2rem;">1 hg = $10^{2}$ g</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">deca</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">da</td> <td style="padding:.4rem 1.2rem;text-align:center;">$10^{1}$</td>   <td style="padding:.4rem 1.2rem;">1 dag = $10^{1}$ g</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">deci</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">d</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-1}$</td>  <td style="padding:.4rem 1.2rem;">1 dm = $10^{-1}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">centi</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">c</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-2}$</td>  <td style="padding:.4rem 1.2rem;">1 cm = $10^{-2}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">milli</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">m</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-3}$</td>  <td style="padding:.4rem 1.2rem;">1 ms = $10^{-3}$ s</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">micro</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">μ</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-6}$</td>  <td style="padding:.4rem 1.2rem;">1 μm = $10^{-6}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">nano</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">n</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-9}$</td>  <td style="padding:.4rem 1.2rem;">1 ns = $10^{-9}$ s</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">pico</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">p</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-12}$</td> <td style="padding:.4rem 1.2rem;">1 pm = $10^{-12}$ m</td></tr>
+</tbody></table></div>
 
-In generale, i multipli e sottomultipli del metro sono i seguenti:
 
-| Nome | Simbolo | Valore |
-|------|---------|--------|
-| picometro | pm | $10^{-12}\ \text{m}$ |
-| nanometro | nm | $10^{-9}\ \text{m}$ |
-| micrometro | μm | $10^{-6}\ \text{m}$ |
-| millimetro | mm | $10^{-3}\ \text{m}$ |
-| centimetro | cm | $10^{-2}\ \text{m}$ |
-| decimetro | dm | $10^{-1}\ \text{m}$ |
-| **metro** | **m** | $10^{0}\ \text{m}$ |
-| decametro | dam | $10^{1}\ \text{m}$ |
-| ettometro | hm | $10^{2}\ \text{m}$ |
-| chilometro | km | $10^{3}\ \text{m}$ |
-| megametro | Mm | $10^{6}\ \text{m}$ |
-| gigametro | Gm | $10^{9}\ \text{m}$ |
-| terametro | Tm | $10^{12}\ \text{m}$ |
+Questi prefissi si possono ordinare su una retta dal più piccolo al più grande nel seguente modo.
 
-Qui abbiamo fatto l'esempio con il metro, ma in realtà vale anche per tutto il resto. In generale, queste lettere che si mettono prima dell'unità di misura si chiamano «prefissi» e possono essere messe di fronte a ciascuna unità di misura. Ad esempio, si può parlare di «millikelvin» (mK), etc. Fate attenzione: per il kg, non c'è il «millichilogrammo», bensì semplicemente il grammo!
+<div style="overflow-x:auto;margin:1.5rem 0;">
+<svg viewBox="0 0 700 115" width="700" style="max-width:100%;display:block;min-width:420px;margin:auto;">
+  <line x1="20" y1="60" x2="638" y2="60" stroke="#374151" stroke-width="2"/>
+  <polygon points="642,60 632,55 632,65" fill="#374151"/>
+  <text x="648" y="64" font-size="10" fill="#374151" font-style="italic">grandezza</text>
+<line x1="25" y1="46" x2="25" y2="74" stroke="#7c3aed" stroke-width="2.5"/>
+<text x="25" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#7c3aed">p</text>
+<text x="25" y="88" text-anchor="middle" fill="#7c3aed"><tspan font-size="12">10</tspan><tspan dy="-5" font-size="9">&#8722;12</tspan></text>
+<text x="25" y="102" text-anchor="middle" font-size="11" fill="#7c3aed">pico</text>
+<line x1="90" y1="46" x2="90" y2="74" stroke="#4f46e5" stroke-width="2.5"/>
+<text x="90" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#4f46e5">n</text>
+<text x="90" y="88" text-anchor="middle" fill="#4f46e5"><tspan font-size="12">10</tspan><tspan dy="-5" font-size="9">&#8722;9</tspan></text>
+<text x="90" y="102" text-anchor="middle" font-size="11" fill="#4f46e5">nano</text>
+<line x1="155" y1="46" x2="155" y2="74" stroke="#2563eb" stroke-width="2.5"/>
+<text x="155" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#2563eb">μ</text>
+<text x="155" y="88" text-anchor="middle" fill="#2563eb"><tspan font-size="12">10</tspan><tspan dy="-5" font-size="9">&#8722;6</tspan></text>
+<text x="155" y="102" text-anchor="middle" font-size="11" fill="#2563eb">micro</text>
+<line x1="220" y1="46" x2="220" y2="74" stroke="#0891b2" stroke-width="2.5"/>
+<text x="220" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#0891b2">m</text>
+<text x="220" y="88" text-anchor="middle" fill="#0891b2"><tspan font-size="12">10</tspan><tspan dy="-5" font-size="9">&#8722;3</tspan></text>
+<text x="220" y="102" text-anchor="middle" font-size="11" fill="#0891b2">milli</text>
+<line x1="255" y1="30" x2="255" y2="65" stroke="#0d9488" stroke-width="1.8"/>
+<text x="255" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d9488">c</text>
+<text x="255" y="14" text-anchor="middle" fill="#0d9488"><tspan font-size="11">10</tspan><tspan dy="-4" font-size="8">&#8722;2</tspan></text>
+<line x1="290" y1="55" x2="290" y2="90" stroke="#16a34a" stroke-width="1.8"/>
+<text x="290" y="97" text-anchor="middle" font-size="12" font-weight="bold" fill="#16a34a">d</text>
+<text x="290" y="112" text-anchor="middle" fill="#16a34a"><tspan font-size="11">10</tspan><tspan dy="-4" font-size="8">&#8722;1</tspan></text>
+<line x1="325" y1="30" x2="325" y2="65" stroke="#6b7280" stroke-width="1.8"/>
+<text x="325" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#6b7280">—</text>
+<text x="325" y="14" text-anchor="middle" fill="#6b7280"><tspan font-size="11">10</tspan><tspan dy="-4" font-size="8">0</tspan></text>
+<line x1="360" y1="55" x2="360" y2="90" stroke="#ca8a04" stroke-width="1.8"/>
+<text x="360" y="97" text-anchor="middle" font-size="12" font-weight="bold" fill="#ca8a04">da</text>
+<text x="360" y="112" text-anchor="middle" fill="#ca8a04"><tspan font-size="11">10</tspan><tspan dy="-4" font-size="8">1</tspan></text>
+<line x1="395" y1="30" x2="395" y2="65" stroke="#d97706" stroke-width="1.8"/>
+<text x="395" y="25" text-anchor="middle" font-size="12" font-weight="bold" fill="#d97706">h</text>
+<text x="395" y="14" text-anchor="middle" fill="#d97706"><tspan font-size="11">10</tspan><tspan dy="-4" font-size="8">2</tspan></text>
+<line x1="430" y1="46" x2="430" y2="74" stroke="#ea580c" stroke-width="2.5"/>
+<text x="430" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#ea580c">k</text>
+<text x="430" y="88" text-anchor="middle" fill="#ea580c"><tspan font-size="12">10</tspan><tspan dy="-5" font-size="9">3</tspan></text>
+<text x="430" y="102" text-anchor="middle" font-size="11" fill="#ea580c">kilo</text>
+<line x1="495" y1="46" x2="495" y2="74" stroke="#dc2626" stroke-width="2.5"/>
+<text x="495" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#dc2626">M</text>
+<text x="495" y="88" text-anchor="middle" fill="#dc2626"><tspan font-size="12">10</tspan><tspan dy="-5" font-size="9">6</tspan></text>
+<text x="495" y="102" text-anchor="middle" font-size="11" fill="#dc2626">Mega</text>
+<line x1="560" y1="46" x2="560" y2="74" stroke="#be185d" stroke-width="2.5"/>
+<text x="560" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#be185d">G</text>
+<text x="560" y="88" text-anchor="middle" fill="#be185d"><tspan font-size="12">10</tspan><tspan dy="-5" font-size="9">9</tspan></text>
+<text x="560" y="102" text-anchor="middle" font-size="11" fill="#be185d">Giga</text>
+<line x1="625" y1="46" x2="625" y2="74" stroke="#7e22ce" stroke-width="2.5"/>
+<text x="625" y="38" text-anchor="middle" font-size="15" font-weight="bold" fill="#7e22ce">T</text>
+<text x="625" y="88" text-anchor="middle" fill="#7e22ce"><tspan font-size="12">10</tspan><tspan dy="-5" font-size="9">12</tspan></text>
+<text x="625" y="102" text-anchor="middle" font-size="11" fill="#7e22ce">Tera</text>
+</svg>
+</div>
 
-| Nome | Simbolo | Valore | | Nome | Simbolo | Valore |
-|------|---------|--------|-|------|---------|--------|
-| pico | p | $10^{-12}$ | | deca | da | $10^{1}$ |
-| nano | n | $10^{-9}$ | | hecto | h | $10^{2}$ |
-| micro | μ | $10^{-6}$ | | kilo | k | $10^{3}$ |
-| milli | m | $10^{-3}$ | | mega | M | $10^{6}$ |
-| centi | c | $10^{-2}$ | | giga | G | $10^{9}$ |
-| deci | d | $10^{-1}$ | | tera | T | $10^{12}$ |
+{% include box-imp.html titolo="Come convertire tra prefissi" %}
+Ogni prefisso ha un **esponente** (visibile in tabella e sulla retta). Per convertire un numero da un prefisso a un altro:
 
-Non voglio che le memorizziate tutte, però vorrei che sapeste queste, perché sono le più utilizzate: **nano** (n, $10^{-9}$), **micro** (μ, $10^{-6}$), **milli** (m, $10^{-3}$), **centi** (c, $10^{-2}$), **kilo** (k, $10^{3}$), **mega** (M, $10^{6}$), **giga** (G, $10^{9}$).
+1. Guarda l'esponente del prefisso di **partenza** ($n$) e quello di **arrivo** ($m$).
+2. Calcola la differenza: $n - m$.
+3. Moltiplica il numero per $10^{n-m}$.
 
-Quindi come facciamo a passare da nanokelvin a kelvin?
+$$\underbrace{a \times 10^n}_{\text{prefisso partenza}} = a \times 10^{n-m} \times \underbrace{10^m}_{\text{prefisso arrivo}}$$
 
-$$1\ \text{nK} = 10^{-9}\ \text{K}$$
-
-e allo stesso modo, da microsecondi a secondi:
-
-$$0{,}0567\ \mu\text{s} = 5{,}67 \times 10^{-2}\ \mu\text{s} = 5{,}67 \times 10^{-2} \times 10^{-6}\ \text{s} = 5{,}67\times 10^{-8}\ \text{s}.$$
-
-E se volessimo passare da secondi a minuti? Qui la situazione è leggermente diversa: non possiamo farlo con le potenze di $10$. Per passare da secondi a minuti, dobbiamo notare che un minuto è composto da esattamente $60$ secondi:
-
-$$1\ \text{min} = 60\ \text{s}, \qquad \qquad 1\ \text{s} = \frac{1}{60}\ \text{min}.$$
-
-Per passare da secondi a ore, dobbiamo dividere per $60 \times 60 = 3\,600$. Invece, per passare da ore a secondi, dobbiamo moltiplicare per $3\,600$.
-
-Non ti confondere! In un'ora ci sono molti secondi, quindi nel passaggio da ore a secondi si *moltiplica* per un numero grande, e nel passaggio inverso si *divide*:
-
-$$1\ \text{s} = \frac{1}{3\,600}\ \text{h}, \qquad \qquad 1\ \text{h} = 3\,600\ \text{s}.$$
-
-Ad esempio: $3{,}45\ \text{h} = 3{,}45\times 3\,600\ \text{s} = 12\,420\ \text{s} = 1{,}242 \times 10^4\ \text{s}$.
-
-Ora, in generale vale la seguente regola, *per qualsiasi unità di misura*:
-
-{% include box-def.html %}
-
-Ogni volta che devo convertire un numero da un'unità di misura $x$ a un'altra unità di misura $y$, faccio le seguenti cose.
-
-1. Calcolo la relazione tra le due unità: trovo $a$ tale che $1\ x = a\ y$ (ad esempio, $1\ \text{km} = 10^3\ \text{m}$, oppure $1\ \text{h} = 3\,600\ \text{s}$).
-2. Nel numero di partenza, al posto di $x$ scrivo $\cdot\, a\, y$: se $1\,x = a\, y$, allora $b\, x = b\cdot a \cdot y$.
-
+Se $n > m$ (vai verso un prefisso più piccolo, cioè verso sinistra), il numero cresce. Se $n < m$ (vai verso un prefisso più grande, cioè verso destra), il numero diminuisce.
 {% include box-end.html %}
 
-{% include box-note.html titolo="Esempio" %}
+{% include box-blue.html titolo="Esempi" %}
+**Esempio 1 — km in m:** k ha esponente 3, la base ha esponente 0. Differenza: $3-0=3$. Quindi $5\ \text{km} = 5\times 10^3\ \text{m} = 5000\ \text{m}$.
 
-Sappiamo che $1\ \text{s} = \dfrac{1}{3\,600}\ \text{h}$.
+**Esempio 2 — mm in μm:** m ha esponente $-3$, μ ha esponente $-6$. Differenza: $-3-(-6)=3$. Quindi $2\ \text{mm} = 2\times 10^3\ \text{µm} = 2000\ \text{µm}$.
 
-Per convertire $5\ \text{s}$ in ore, ci basta fare
+**Esempio 3 — Mm in km:** M ha esponente 6, k ha esponente 3. Differenza: $6-3=3$. Quindi $4\ \text{Mm} = 4\times 10^3\ \text{km} = 4000\ \text{km}$.
 
-$$5\ \text{s} = 5 \cdot \frac{1}{3\,600}\ \text{h} = \frac{5}{3\,600}\ \text{h} \approx 1{,}389 \times 10^{-3}\ \text{h}.$$
-
+**Esempio 4 — cm in m:** c ha esponente $-2$, la base ha esponente 0. Differenza: $-2-0=-2$. Quindi $150\ \text{cm} = 150\times 10^{-2}\ \text{m} = 1{,}50\ \text{m}$.
 {% include box-end.html %}
 
-{% include box-ex.html titolo="Esercizio 3 — Conversioni" %}
 
-Converti, utilizzando la notazione scientifica, i seguenti numeri nelle unità di misura indicate.
 
-i) $1{,}234\ \text{nK}$ in $\text{MK}$
+<div class="iex-widget" id="iex6" style="margin-top:2rem;">
+<p class="iex-lbl">Esercizio 6 — Prefissi e notazione scientifica</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="ex6prev" onclick="ex6nav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="ex6dots"></div>
+<button class="iex-navbtn" id="ex6next" onclick="ex6nav(1)">Succ. &rarr;</button>
+</div>
 
-ii) $0{,}004\ \text{km}$ in $\mu\text{m}$
+<div class="iex-q" id="ex6row0">
+<p class="iex-qt"><strong>i)</strong> Esprimi $5\ \text{mm}$ in metri usando la notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex6m0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex6check(0)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex6e0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex6check(0)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex6check(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex6fb0"></div>
+<div class="iex-sol" id="ex6sol0">Soluzione: $5\ \text{mm} = 5\times 10^{-3}\ \text{m}$ &mdash; 1 mm = $10^{-3}$ m, quindi si moltiplica per $10^{-3}$.</div>
+</div>
+<div class="iex-q" id="ex6row1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Esprimi $3\ \text{km}$ in metri usando la notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex6m1" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex6check(1)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex6e1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex6check(1)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex6check(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex6fb1"></div>
+<div class="iex-sol" id="ex6sol1">Soluzione: $3\ \text{km} = 3\times 10^{3}\ \text{m}$ &mdash; 1 km = $10^{3}$ m.</div>
+</div>
+<div class="iex-q" id="ex6row2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Esprimi $250\ \text{µs}$ in secondi usando la notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex6m2" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex6check(2)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex6e2" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex6check(2)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">s</span>
+<button class="iex-vbtn" onclick="ex6check(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex6fb2"></div>
+<div class="iex-sol" id="ex6sol2">Soluzione: $250\ \text{µs} = 250\times 10^{-6}\ \text{s} = 2{,}5\times 10^{-4}\ \text{s}$.</div>
+</div>
+<div class="iex-q" id="ex6row3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Esprimi $7{,}2\ \text{GHz}$ in Hz usando la notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex6m3" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex6check(3)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex6e3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex6check(3)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">Hz</span>
+<button class="iex-vbtn" onclick="ex6check(3)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex6fb3"></div>
+<div class="iex-sol" id="ex6sol3">Soluzione: $7{,}2\ \text{GHz} = 7{,}2\times 10^{9}\ \text{Hz}$ &mdash; 1 GHz = $10^{9}$ Hz.</div>
+</div>
+<div class="iex-q" id="ex6row4" style="display:none">
+<p class="iex-qt"><strong>v)</strong> Esprimi $42\ \text{nm}$ in metri usando la notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex6m4" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex6check(4)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex6e4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex6check(4)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex6check(4)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex6fb4"></div>
+<div class="iex-sol" id="ex6sol4">Soluzione: $42\ \text{nm} = 42\times 10^{-9}\ \text{m} = 4{,}2\times 10^{-8}\ \text{m}$.</div>
+</div>
 
-iii) $6\,579{,}88\ \text{Mg}$ in $\text{mg}$
 
-iv) $3{,}5\times 10^{10}\ \text{cm}$ in $\text{km}$
+</div>
 
-v) $278\ \text{ms}$ in $\text{ns}$
+<script>
+(function(){
+var Q6=[
+  {v:0.005,tol:0.001},
+  {v:3000.0,tol:0.001},
+  {v:0.00025,tol:0.001},
+  {v:7200000000.0,tol:0.001},
+  {v:4.2e-08,tol:0.001}
+];
+var ex6ok=[false,false,false,false,false];
+var ex6c=[0],N6=5;
 
-vi) $45\ \text{min}$ in $\text{s}$
+function parseMant(s){var c=s.trim();if(c.indexOf(',')!==-1)c=c.replace(',','.');return parseFloat(c);}
+function parseExp(s){return parseInt(s.trim().replace('−','-'),10);}
+function shootConf(el){
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+  for(var i=0;i<55;i++){
+    var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;
+    p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+    document.body.appendChild(p);
+    (function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+  }
+}
+function shootFW(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
+function updateDots(pfx,cur,ok,N){var dots=document.querySelectorAll('#'+pfx+'dots .iex-dot');for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');}
+function buildDots(pfx,N,showFn){var c=document.getElementById(pfx+'dots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+function makeShow(pfx,ok,cur,N){
+  return function(i){
+    document.querySelectorAll('#iex6 .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById(pfx+'row'+i).style.display='block';
+    cur[0]=i;
+    document.getElementById(pfx+'prev').disabled=(i===0);
+    document.getElementById(pfx+'next').disabled=(i===N-1);
+    updateDots(pfx,i,ok,N);
+    setTimeout(function(){var inp=document.querySelector('#'+pfx+'row'+i+' .iex-m');if(inp&&!ok[i])inp.focus();},60);
+  };
+}
+var ex6show=makeShow('ex6',ex6ok,ex6c,N6);
+buildDots('ex6',N6,ex6show);
+window.ex6show=ex6show;
+window.ex6nav=function(d){if(ex6c[0]+d>=0&&ex6c[0]+d<N6)ex6show(ex6c[0]+d);};
+window.ex6check=function(i){
+  var mv=parseMant(document.getElementById('ex6m'+i).value);
+  var ev=parseExp(document.getElementById('ex6e'+i).value);
+  var fb=document.getElementById('ex6fb'+i);
+  var vb=document.querySelector('#ex6row'+i+' .iex-vbtn');
+  var q=Q6[i];
+  var computed=mv*Math.pow(10,ev);
+  var isOk=!isNaN(computed)&&Math.abs(computed-q.v)/Math.abs(q.v)<=q.tol;
+  if(isOk){
+    ex6ok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<N6-1?' <button class="iex-nextbtn" onclick="ex6show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    if(vb)shootConf(vb);updateDots('ex6',ex6c[0],ex6ok,N6);
+    if(ex6ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSol(\'ex6sol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+})();
+</script>
 
-vii) $7{,}2\times 10^{-4}\ \text{s}$ in $\text{min}$
+Usa la simulazione qui sotto per visualizzare come si converte da un prefisso a un altro. Scegli il prefisso di partenza e quello di arrivo, poi clicca **Mostra**.
 
-viii) $1{,}8\ \text{h}$ in $\text{s}$
+<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1.1rem 1.4rem;margin:1.2rem 0 1.5rem;">
+<div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:.9rem;">
+<label style="font-size:.92rem;">Da:&ensp;<select id="pfx-from" style="border:1px solid #d1d5db;border-radius:5px;padding:.25rem .5rem;">
+<option value="0">pico (p)</option>
+<option value="1">nano (n)</option>
+<option value="2">micro (μ)</option>
+<option value="3">milli (m)</option>
+<option value="4">centi (c)</option>
+<option value="5">deci (d)</option>
+<option value="6">base (—)</option>
+<option value="7">deca (da)</option>
+<option value="8">etto (h)</option>
+<option value="9" selected>kilo (k)</option>
+<option value="10">Mega (M)</option>
+<option value="11">Giga (G)</option>
+<option value="12">Tera (T)</option>
+</select></label>
+<label style="font-size:.92rem;">A:&ensp;<select id="pfx-to" style="border:1px solid #d1d5db;border-radius:5px;padding:.25rem .5rem;">
+<option value="0">pico (p)</option>
+<option value="1">nano (n)</option>
+<option value="2">micro (μ)</option>
+<option value="3">milli (m)</option>
+<option value="4">centi (c)</option>
+<option value="5">deci (d)</option>
+<option value="6" selected>base (—)</option>
+<option value="7">deca (da)</option>
+<option value="8">etto (h)</option>
+<option value="9">kilo (k)</option>
+<option value="10">Mega (M)</option>
+<option value="11">Giga (G)</option>
+<option value="12">Tera (T)</option>
+</select></label>
+<button id="pfx-go" style="background:#0f766e;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.92rem;">Mostra</button>
+</div>
+<canvas id="pfx-canvas" style="max-width:100%;display:block;"></canvas>
+<div id="pfx-expl" style="margin-top:.75rem;font-size:.92rem;min-height:2.5rem;color:#374151;">
+Scegli i prefissi e clicca <strong>Mostra</strong>.
+</div>
+</div>
 
-{% include box-end.html %}
+<div class="iex-widget" id="iex7" style="margin-top:2rem;">
+<p class="iex-lbl">Esercizio 7 — Conversione tra prefissi</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="ex7prev" onclick="ex7nav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="ex7dots"></div>
+<button class="iex-navbtn" id="ex7next" onclick="ex7nav(1)">Succ. &rarr;</button>
+</div>
+<div class="iex-q" id="ex7row0">
+<p class="iex-qt"><strong>i)</strong> Converti $5\ \text{km}$ in metri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(0)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(0)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex7check(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb0"></div>
+<div class="iex-sol" id="ex7sol0">Soluzione: $5\ \text{km}=5\times10^3\ \text{m}$ — k ha esponente 3, base ha 0, diff 3.</div>
+</div>
+<div class="iex-q" id="ex7row1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Converti $3\ \text{mm}$ in metri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m1" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(1)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(1)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex7check(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb1"></div>
+<div class="iex-sol" id="ex7sol1">Soluzione: $3\ \text{mm}=3\times10^{-3}\ \text{m}$ — m ha esponente −3.</div>
+</div>
+<div class="iex-q" id="ex7row2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Converti $7\ \text{Mm}$ in chilometri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m2" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(2)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e2" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(2)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">km</span>
+<button class="iex-vbtn" onclick="ex7check(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb2"></div>
+<div class="iex-sol" id="ex7sol2">Soluzione: $7\ \text{Mm}=7\times10^3\ \text{km}$ — diff M→k: 6−3=3.</div>
+</div>
+<div class="iex-q" id="ex7row3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Converti $500\ \text{µm}$ in millimetri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m3" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(3)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(3)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">mm</span>
+<button class="iex-vbtn" onclick="ex7check(3)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb3"></div>
+<div class="iex-sol" id="ex7sol3">Soluzione: $500\ \text{µm}=0{,}5\ \text{mm}$ — diff μ→m: −6−(−3)=−3, quindi ÷10³.</div>
+</div>
+<div class="iex-q" id="ex7row4" style="display:none">
+<p class="iex-qt"><strong>v)</strong> Converti $1{,}5\ \text{km}$ in millimetri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m4" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(4)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(4)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">mm</span>
+<button class="iex-vbtn" onclick="ex7check(4)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb4"></div>
+<div class="iex-sol" id="ex7sol4">Soluzione: $1{,}5\ \text{km}=1{,}5\times10^6\ \text{mm}$ — diff k→m: 3−(−3)=6.</div>
+</div>
+<div class="iex-q" id="ex7row5" style="display:none">
+<p class="iex-qt"><strong>vi)</strong> Converti $4{,}2\ \text{nm}$ in picometri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m5" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(5)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e5" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(5)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">pm</span>
+<button class="iex-vbtn" onclick="ex7check(5)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb5"></div>
+<div class="iex-sol" id="ex7sol5">Soluzione: $4{,}2\ \text{nm}=4200\ \text{pm}$ — diff n→p: −9−(−12)=3.</div>
+</div>
+<div class="iex-q" id="ex7row6" style="display:none">
+<p class="iex-qt"><strong>vii)</strong> Converti $8\ \text{Mg}$ in grammi.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m6" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(6)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e6" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(6)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">g</span>
+<button class="iex-vbtn" onclick="ex7check(6)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb6"></div>
+<div class="iex-sol" id="ex7sol6">Soluzione: $8\ \text{Mg}=8\times10^6\ \text{g}$ — M ha esponente 6.</div>
+</div>
+<div class="iex-q" id="ex7row7" style="display:none">
+<p class="iex-qt"><strong>viii)</strong> Converti $0{,}3\ \text{mm}$ in micrometri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m7" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(7)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e7" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(7)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">μm</span>
+<button class="iex-vbtn" onclick="ex7check(7)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb7"></div>
+<div class="iex-sol" id="ex7sol7">Soluzione: $0{,}3\ \text{mm}=300\ \text{µm}$ — diff m→μ: −3−(−6)=3.</div>
+</div>
+<div class="iex-q" id="ex7row8" style="display:none">
+<p class="iex-qt"><strong>ix)</strong> Converti $6{,}4\ \text{Gm}$ in Megametri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m8" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(8)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e8" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(8)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">Mm</span>
+<button class="iex-vbtn" onclick="ex7check(8)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb8"></div>
+<div class="iex-sol" id="ex7sol8">Soluzione: $6{,}4\ \text{Gm}=6400\ \text{Mm}$ — diff G→M: 9−6=3.</div>
+</div>
+<div class="iex-q" id="ex7row9" style="display:none">
+<p class="iex-qt"><strong>x)</strong> Converti $25\ \text{cm}$ in metri.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex7m9" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex7check(9)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex7e9" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex7check(9)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex7check(9)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex7fb9"></div>
+<div class="iex-sol" id="ex7sol9">Soluzione: $25\ \text{cm}=0{,}25\ \text{m}$ — diff c→base: −2−0=−2, quindi 25×10⁻²=0,25.</div>
+</div>
+</div>
 
-## Le grandezze derivate (cenni)
+<div class="iex-widget" id="pfxquiz" style="margin-top:2rem;">
+<p class="iex-lbl">Esercizio 8 — Trova il prefisso</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="pfxprev" onclick="pfxnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="pfxdots"></div>
+<button class="iex-navbtn" id="pfxnext" onclick="pfxnav(1)">Succ. &rarr;</button>
+</div>
+<div class="iex-q" id="pfxrow0">
+<p class="iex-qt">$5{,}7\times10^6$ s = 5,7&thinsp;<input class="pfx-inp" id="pfxinp0" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(0)">&thinsp;s&ensp;<button class="iex-vbtn" onclick="pfxcheck(0)">Verifica</button></p>
+<div class="iex-fb" id="pfxfb0"></div>
+<div class="iex-sol" id="pfxsol0">Risposta: <strong>M</strong></div>
+</div>
+<div class="iex-q" id="pfxrow1" style="display:none">
+<p class="iex-qt">$4{,}2\times10^{-5}$ m = 42&thinsp;<input class="pfx-inp" id="pfxinp1" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(1)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(1)">Verifica</button> <span class="iex-note">Suggerimento: $4{,}2\times10^{-5} = 42\times10^{-6}$</span></p>
+<div class="iex-fb" id="pfxfb1"></div>
+<div class="iex-sol" id="pfxsol1">Risposta: <strong>μ</strong></div>
+</div>
+<div class="iex-q" id="pfxrow2" style="display:none">
+<p class="iex-qt">$0{,}000\,000\,001$ g = 1&thinsp;<input class="pfx-inp" id="pfxinp2" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(2)">&thinsp;g&ensp;<button class="iex-vbtn" onclick="pfxcheck(2)">Verifica</button></p>
+<div class="iex-fb" id="pfxfb2"></div>
+<div class="iex-sol" id="pfxsol2">Risposta: <strong>n</strong></div>
+</div>
+<div class="iex-q" id="pfxrow3" style="display:none">
+<p class="iex-qt">$3\times10^{-3}$ m = 3&thinsp;<input class="pfx-inp" id="pfxinp3" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(3)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(3)">Verifica</button></p>
+<div class="iex-fb" id="pfxfb3"></div>
+<div class="iex-sol" id="pfxsol3">Risposta: <strong>m</strong></div>
+</div>
+<div class="iex-q" id="pfxrow4" style="display:none">
+<p class="iex-qt">$1{,}5\times10^3$ m = 1,5&thinsp;<input class="pfx-inp" id="pfxinp4" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(4)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(4)">Verifica</button></p>
+<div class="iex-fb" id="pfxfb4"></div>
+<div class="iex-sol" id="pfxsol4">Risposta: <strong>k</strong></div>
+</div>
+<div class="iex-q" id="pfxrow5" style="display:none">
+<p class="iex-qt">$8\times10^9$ s = 8&thinsp;<input class="pfx-inp" id="pfxinp5" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(5)">&thinsp;s&ensp;<button class="iex-vbtn" onclick="pfxcheck(5)">Verifica</button></p>
+<div class="iex-fb" id="pfxfb5"></div>
+<div class="iex-sol" id="pfxsol5">Risposta: <strong>G</strong></div>
+</div>
+<div class="iex-q" id="pfxrow6" style="display:none">
+<p class="iex-qt">$2{,}5\times10^{-1}$ m = 2,5&thinsp;<input class="pfx-inp" id="pfxinp6" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(6)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(6)">Verifica</button></p>
+<div class="iex-fb" id="pfxfb6"></div>
+<div class="iex-sol" id="pfxsol6">Risposta: <strong>d</strong></div>
+</div>
+<div class="iex-q" id="pfxrow7" style="display:none">
+<p class="iex-qt">$7\times10^{12}$ m = 7&thinsp;<input class="pfx-inp" id="pfxinp7" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(7)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(7)">Verifica</button></p>
+<div class="iex-fb" id="pfxfb7"></div>
+<div class="iex-sol" id="pfxsol7">Risposta: <strong>T</strong></div>
+</div>
+<div class="iex-q" id="pfxrow8" style="display:none">
+<p class="iex-qt">$0{,}01$ m = 1&thinsp;<input class="pfx-inp" id="pfxinp8" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(8)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(8)">Verifica</button> <span class="iex-note">Suggerimento: $0{,}01=1\times10^{-2}$</span></p>
+<div class="iex-fb" id="pfxfb8"></div>
+<div class="iex-sol" id="pfxsol8">Risposta: <strong>c</strong></div>
+</div>
+<div class="iex-q" id="pfxrow9" style="display:none">
+<p class="iex-qt">$3\times10^{-12}$ m = 3&thinsp;<input class="pfx-inp" id="pfxinp9" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(9)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(9)">Verifica</button></p>
+<div class="iex-fb" id="pfxfb9"></div>
+<div class="iex-sol" id="pfxsol9">Risposta: <strong>p</strong></div>
+</div>
+</div>
 
-{% include box-note.html titolo="Bonus — non richiesto in verifica" %}
+<style>
+.pfx-inp{width:2.2rem;text-align:center;border:2px solid #d1d5db;border-radius:5px;
+  padding:.2rem .3rem;font-size:1rem;font-weight:bold;}
+.pfx-inp:focus{border-color:#0891b2;outline:none;}
+</style>
 
-*Questa parte non è richiesta in verifica. Però, se la volete studiare, chiedetemelo: sarebbe valutata molto positivamente.*
+<script>
+(function(){
+/* ── Canvas animation ── */
+var PFX_DATA=[{sym:"p",name:"pico",exp:-12,col:"#7c3aed",big:true},{sym:"n",name:"nano",exp:-9,col:"#4f46e5",big:true},{sym:"μ",name:"micro",exp:-6,col:"#2563eb",big:true},{sym:"m",name:"milli",exp:-3,col:"#0891b2",big:true},{sym:"c",name:"centi",exp:-2,col:"#0d9488",big:false},{sym:"d",name:"deci",exp:-1,col:"#16a34a",big:false},{sym:"—",name:"base",exp:0,col:"#6b7280",big:false},{sym:"da",name:"deca",exp:1,col:"#ca8a04",big:false},{sym:"h",name:"etto",exp:2,col:"#d97706",big:false},{sym:"k",name:"kilo",exp:3,col:"#ea580c",big:true},{sym:"M",name:"Mega",exp:6,col:"#dc2626",big:true},{sym:"G",name:"Giga",exp:9,col:"#be185d",big:true},{sym:"T",name:"Tera",exp:12,col:"#7e22ce",big:true}];
+var STEP_EXP=[3,3,3,1,1,1,1,1,1,3,3,3];
+var XS=[25,90,155,220,255,290,325,360,395,430,495,560,625];
+var W=660,H=135,LY=62;
+var canvas=document.getElementById('pfx-canvas');
+var ctx=canvas.getContext('2d');
+var fromSel=document.getElementById('pfx-from');
+var toSel=document.getElementById('pfx-to');
+var goBtn=document.getElementById('pfx-go');
+var explDiv=document.getElementById('pfx-expl');
+var dpr=window.devicePixelRatio||1;
+canvas.width=W*dpr; canvas.height=H*dpr;
+canvas.style.width=W+'px'; canvas.style.height=H+'px';
+ctx.scale(dpr,dpr);
 
-{% include box-end.html %}
+function supStr(n){
+  var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴',
+         '5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};
+  return n.toString().split('').map(function(c){return m[c]||c;}).join('');
+}
+
+function drawScene(hlF,hlT,dotX,dotCol,labels){
+  ctx.clearRect(0,0,W,H);
+  var g=ctx.createLinearGradient(20,0,625,0);
+  g.addColorStop(0,'rgba(124,58,237,.1)');
+  g.addColorStop(.5,'rgba(107,114,128,.03)');
+  g.addColorStop(1,'rgba(126,34,206,.1)');
+  ctx.fillStyle=g; ctx.fillRect(20,LY-2,605,4);
+  ctx.strokeStyle='#374151'; ctx.lineWidth=2; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(20,LY); ctx.lineTo(633,LY); ctx.stroke();
+  ctx.fillStyle='#374151';
+  ctx.beginPath(); ctx.moveTo(637,LY); ctx.lineTo(627,LY-5); ctx.lineTo(627,LY+5); ctx.fill();
+  ctx.font='10px sans-serif'; ctx.textAlign='left';
+  ctx.fillText('grandezza',641,LY+4);
+  for(var i=0;i<PFX_DATA.length;i++){
+    var p=PFX_DATA[i],x=XS[i];
+    var hl=(i===hlF||i===hlT);
+    if(p.big){
+      ctx.strokeStyle=p.col; ctx.lineWidth=hl?3:2; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(x,LY-14); ctx.lineTo(x,LY+14); ctx.stroke();
+      if(hl){
+        ctx.strokeStyle=p.col; ctx.lineWidth=1.8; ctx.setLineDash([3,2]);
+        ctx.beginPath(); ctx.arc(x,LY,18,0,Math.PI*2); ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      ctx.fillStyle=p.col;
+      ctx.font='bold 14px sans-serif'; ctx.textAlign='center';
+      ctx.fillText(p.sym,x,LY-22);
+      ctx.font='13px sans-serif';
+      ctx.fillText('10'+supStr(p.exp),x,LY+27);
+      ctx.font='12px sans-serif';
+      ctx.fillText(p.name,x,LY+40);
+    } else {
+      var li=i-4;
+      var up=(li%2===0);
+      ctx.strokeStyle=p.col; ctx.lineWidth=hl?2.5:1.5; ctx.setLineDash([]);
+      if(up){
+        ctx.beginPath(); ctx.moveTo(x,LY-26); ctx.lineTo(x,LY+5); ctx.stroke();
+        if(hl){
+          ctx.strokeStyle=p.col; ctx.lineWidth=1.8; ctx.setLineDash([3,2]);
+          ctx.beginPath(); ctx.arc(x,LY,14,0,Math.PI*2); ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        ctx.fillStyle=p.col;
+        ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+        ctx.fillText(p.sym,x,LY-32);
+        ctx.font='12px sans-serif';
+        ctx.fillText('10'+supStr(p.exp),x,LY-46);
+      } else {
+        ctx.beginPath(); ctx.moveTo(x,LY-5); ctx.lineTo(x,LY+26); ctx.stroke();
+        if(hl){
+          ctx.strokeStyle=p.col; ctx.lineWidth=1.8; ctx.setLineDash([3,2]);
+          ctx.beginPath(); ctx.arc(x,LY,14,0,Math.PI*2); ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        ctx.fillStyle=p.col;
+        ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+        ctx.fillText(p.sym,x,LY+33);
+        ctx.font='12px sans-serif';
+        ctx.fillText('10'+supStr(p.exp),x,LY+48);
+      }
+    }
+  }
+  if(dotX!==null){
+    ctx.beginPath(); ctx.arc(dotX,LY,9,0,Math.PI*2);
+    ctx.fillStyle=dotCol||'#f59e0b'; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2.5; ctx.stroke();
+  }
+  if(labels) labels.forEach(function(l){
+    ctx.fillStyle=l.col||'#111'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(l.text,l.x,l.y);
+  });
+}
+
+var running=false;
+drawScene(-1,-1,null,null,null);
+
+goBtn.addEventListener('click',function(){
+  if(running) return;
+  var fi=parseInt(fromSel.value);
+  var ti=parseInt(toSel.value);
+  if(fi===ti){
+    explDiv.innerHTML='I due prefissi coincidono: nessuna conversione necessaria.';
+    drawScene(fi,ti,XS[fi],PFX_DATA[fi].col,null);
+    return;
+  }
+  running=true; goBtn.disabled=true;
+  var dir=(ti>fi)?1:-1;
+  var nSteps=Math.abs(ti-fi);
+  var stepIdx=0;
+
+  function doStep(){
+    if(stepIdx>=nSteps){
+      drawScene(fi,ti,XS[ti],PFX_DATA[ti].col,null);
+      ctx.save();
+      ctx.strokeStyle='#f59e0b'; ctx.lineWidth=2.5; ctx.setLineDash([5,3]);
+      var ay=LY-36;
+      ctx.beginPath(); ctx.moveTo(XS[fi],ay); ctx.lineTo(XS[ti],ay); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='#f59e0b'; ctx.beginPath();
+      if(ti>fi){ctx.moveTo(XS[ti]+2,ay);ctx.lineTo(XS[ti]-9,ay-5);ctx.lineTo(XS[ti]-9,ay+5);}
+      else{ctx.moveTo(XS[ti]-2,ay);ctx.lineTo(XS[ti]+9,ay-5);ctx.lineTo(XS[ti]+9,ay+5);}
+      ctx.fill(); ctx.restore();
+      var expDiff=PFX_DATA[fi].exp-PFX_DATA[ti].exp;
+      var fname=PFX_DATA[fi].name==='base'?'(unità base)':PFX_DATA[fi].name;
+      var tname=PFX_DATA[ti].name==='base'?'(unità base)':PFX_DATA[ti].name;
+      var fsym=PFX_DATA[fi].sym==='—'?'':PFX_DATA[fi].sym;
+      var tsym=PFX_DATA[ti].sym==='—'?'':PFX_DATA[ti].sym;
+      var rule;
+      if(expDiff>0) rule='<strong>moltiplica per 10<sup>'+expDiff+'</sup></strong>';
+      else if(expDiff<0) rule='<strong>dividi per 10<sup>'+(-expDiff)+'</sup></strong>';
+      else rule='nessun fattore';
+      explDiv.innerHTML='Da <strong>'+fname+'</strong> a <strong>'+tname+'</strong>: '
+        +rule+'. Equivalenza: <strong>1&thinsp;'+fsym+'X = 10<sup>'+expDiff+'</sup>&thinsp;'+tsym+'X</strong>.';
+      running=false; goBtn.disabled=false;
+      return;
+    }
+    var curI=fi+stepIdx*dir;
+    var nxtI=curI+dir;
+    var seIdx=(dir>0)?curI:nxtI;
+    var sExp=STEP_EXP[seIdx];
+    var op=dir>0?'÷':'×';
+    var lbl=op+'10'+supStr(sExp);
+    var lblCol=dir>0?'#dc2626':'#0f766e';
+    var x0=XS[curI],x1=XS[nxtI];
+    var midX=(x0+x1)/2;
+    var t0=null;
+    function frame(ts){
+      if(!t0)t0=ts;
+      var prog=Math.min((ts-t0)/400,1);
+      var cx=x0+(x1-x0)*prog;
+      drawScene(fi,-1,cx,'#f59e0b',[{x:midX,y:LY-52,text:lbl,col:lblCol}]);
+      if(prog<1){requestAnimationFrame(frame);}
+      else{stepIdx++;setTimeout(doStep,250);}
+    }
+    requestAnimationFrame(frame);
+  }
+
+  explDiv.innerHTML='Animazione in corso…';
+  drawScene(fi,-1,XS[fi],'#f59e0b',null);
+  setTimeout(doStep,400);
+});
+
+/* ── iex7 quiz ── */
+var Q7=[{v:5000.0,tol:0.002},{v:0.003,tol:0.002},{v:7000.0,tol:0.002},{v:0.5,tol:0.002},{v:1500000.0,tol:0.002},{v:4200.0,tol:0.002},{v:8000000.0,tol:0.002},{v:300.0,tol:0.002},{v:6400.0,tol:0.002},{v:0.25,tol:0.002}];
+var ex7ok=[false,false,false,false,false,false,false,false,false,false];
+var ex7c=[0],N7=10;
+
+function parseMant(s){var c=s.trim();if(c.indexOf(',')!==-1)c=c.replace(',','.');return parseFloat(c);}
+function parseExp2(s){return parseInt(s.trim().replace('−','-').replace('·',''),10);}
+function shootConf2(el){
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+  for(var i=0;i<55;i++){
+    var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;
+    p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]
+      +';border-radius:'+(Math.random()>.5?'50%':'2px')
+      +';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+    document.body.appendChild(p);
+    (function(pp,vx,vy,xx,yy){
+      var op=1;
+      function step(){vy+=.28;xx+=vx;yy+=vy;op-=.016;
+        pp.style.left=xx+'px';pp.style.top=yy+'px';pp.style.opacity=op;
+        if(op>0)requestAnimationFrame(step);else pp.remove();}
+      requestAnimationFrame(step);
+    })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+  }
+}
+function shootFW2(){
+  for(var b=0;b<7;b++){
+    (function(bb){
+      setTimeout(function(){
+        shootConf2({getBoundingClientRect:function(){
+          return{left:window.innerWidth*(.15+Math.random()*.7),
+                 top:window.innerHeight*(.05+Math.random()*.55),
+                 width:0,height:0};
+        }});
+      },bb*270);
+    })(b);
+  }
+}
+function ex7show(i){
+  document.querySelectorAll('#iex7 .iex-q').forEach(function(q){q.style.display='none';});
+  document.getElementById('ex7row'+i).style.display='block';
+  ex7c[0]=i;
+  document.getElementById('ex7prev').disabled=(i===0);
+  document.getElementById('ex7next').disabled=(i===N7-1);
+  var dots=document.querySelectorAll('#ex7dots .iex-dot');
+  for(var k=0;k<N7;k++)dots[k].className='iex-dot'+(k===i?' cur':'')+(ex7ok[k]?' ok':'');
+  setTimeout(function(){var inp=document.querySelector('#ex7row'+i+' .iex-m');
+    if(inp&&!ex7ok[i])inp.focus();},60);
+}
+(function(){
+  var c=document.getElementById('ex7dots');
+  for(var j=0;j<N7;j++){
+    var d=document.createElement('span');
+    d.className='iex-dot'+(j===0?' cur':'');
+    d.title='Domanda '+(j+1);
+    (function(jj){d.onclick=function(){ex7show(jj);};})(j);
+    c.appendChild(d);
+  }
+})();
+window.ex7show=ex7show;
+window.ex7nav=function(d){if(ex7c[0]+d>=0&&ex7c[0]+d<N7)ex7show(ex7c[0]+d);};
+window.ex7check=function(i){
+  var mv=parseMant(document.getElementById('ex7m'+i).value);
+  var ev=parseExp2(document.getElementById('ex7e'+i).value);
+  var fb=document.getElementById('ex7fb'+i);
+  var vb=document.querySelector('#ex7row'+i+' .iex-vbtn');
+  var q=Q7[i];
+  var computed=mv*Math.pow(10,ev);
+  var isOk=!isNaN(computed)&&Math.abs(computed-q.v)/Math.abs(q.v)<=q.tol;
+  if(isOk){
+    ex7ok[i]=true; fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'
+      +(i<N7-1?' <button class="iex-nextbtn" onclick="ex7show('+(i+1)
+               +')">Domanda successiva →</button>'
+             :'&ensp;Hai completato l\'esercizio!');
+    if(vb)shootConf2(vb);
+    var dots=document.querySelectorAll('#ex7dots .iex-dot');
+    for(var k=0;k<N7;k++)dots[k].className='iex-dot'+(k===ex7c[0]?' cur':'')+(ex7ok[k]?' ok':'');
+    if(ex7ok.every(function(x){return x;}))setTimeout(shootFW2,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non è esatto. Riprova, oppure '
+      +'<button class="iex-lbtn" onclick="showSol(\'ex7sol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+
+/* ── pfx-quiz (find the prefix) ── */
+var PFX_SYMS=[["M"],["μ","µ","u"],["n"],["m"],["k"],["G"],["d"],["T"],["c"],["p"]];
+var pfxok=[false,false,false,false,false,false,false,false,false,false];
+var pfxc=[0],Npfx=10;
+function pfxshow(i){
+  document.querySelectorAll('#pfxquiz .iex-q').forEach(function(q){q.style.display='none';});
+  document.getElementById('pfxrow'+i).style.display='block';
+  pfxc[0]=i;
+  document.getElementById('pfxprev').disabled=(i===0);
+  document.getElementById('pfxnext').disabled=(i===Npfx-1);
+  var dots=document.querySelectorAll('#pfxdots .iex-dot');
+  for(var k=0;k<Npfx;k++)dots[k].className='iex-dot'+(k===i?' cur':'')+(pfxok[k]?' ok':'');
+  setTimeout(function(){var inp=document.getElementById('pfxinp'+i);
+    if(inp&&!pfxok[i])inp.focus();},60);
+}
+(function(){
+  var c=document.getElementById('pfxdots');
+  for(var j=0;j<Npfx;j++){
+    var d=document.createElement('span');
+    d.className='iex-dot'+(j===0?' cur':'');
+    d.title='Domanda '+(j+1);
+    (function(jj){d.onclick=function(){pfxshow(jj);};})(j);
+    c.appendChild(d);
+  }
+})();
+window.pfxshow=pfxshow;
+window.pfxnav=function(d){if(pfxc[0]+d>=0&&pfxc[0]+d<Npfx)pfxshow(pfxc[0]+d);};
+window.pfxcheck=function(i){
+  var val=document.getElementById('pfxinp'+i).value.trim();
+  var fb=document.getElementById('pfxfb'+i);
+  var vb=document.querySelector('#pfxrow'+i+' .iex-vbtn');
+  var accepted=PFX_SYMS[i];
+  var ok=accepted.some(function(s){return s===val;});
+  if(ok){
+    pfxok[i]=true; fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'
+      +(i<Npfx-1?' <button class="iex-nextbtn" onclick="pfxshow('+(i+1)
+               +')">Domanda successiva →</button>'
+             :'&ensp;Hai completato il quiz!');
+    if(vb)shootConf2(vb);
+    var dots=document.querySelectorAll('#pfxdots .iex-dot');
+    for(var k=0;k<Npfx;k++)dots[k].className='iex-dot'+(k===pfxc[0]?' cur':'')+(pfxok[k]?' ok':'');
+    if(pfxok.every(function(x){return x;}))setTimeout(shootFW2,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non è esatto. Riprova, oppure '
+      +'<button class="iex-lbtn" onclick="showSol(\'pfxsol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+
+})();
+</script>
+
+### L'unità di misura del tempo
+
+Il tempo si misura in secondi. Però i multipli del secondo sono un po' strani, perché non sono decimali. Infatti, $1$ minuto corrisponde a $60$ secondi. Un'ora corrisponde a $60$ minuti, ciascuno dei quali è composto da $60$ secondi. Perciò un'ora è composta da
+
+$$1\ \text h = 60 \ \text{min} = 60\times60 \ \text s = 3600 \ \text s.$$
+
+{% capture _d8 %}[
+  {"p":"Quanti secondi ci sono in 1 giorno?","a":86400,"t":0.0001},
+  {"p":"Quanti secondi ci sono in 1 anno? (Considera 365,25 giorni/anno.)","a":31557600,"t":0.005}
+]{% endcapture %}
+{% include iex-num.html id="t8" domande=_d8 titolo="Esercizio 8 — Secondi in un giorno e in un anno" hint="Indizio: 1 giorno = 24 h, 1 h = 60 min, 1 min = 60 s. Per l'anno considera 365,25 giorni medi (anni bisestili ogni 4 anni)." %}
+
+{% capture _d9 %}[
+  {"p":"Quanti secondi ci sono in un <strong>secolo</strong>? (Scrivi in notazione scientifica, es. <code>3.16e9</code>)","a":3.15576e9,"t":0.005},
+  {"p":"Quanti secondi ci sono in un <strong>millennio</strong>?","a":3.15576e10,"t":0.005}
+]{% endcapture %}
+{% include iex-num.html id="t9" domande=_d9 titolo="Esercizio 9 — Secondi in un secolo e in un millennio" %}
+
+{% include calc-margin.html id="calc1" %}
+
+**Esercizio 10 — Quante ore ci sono in un secondo?**
+
+Sappiamo che $1\ \text{h} = 3\,600\ \text{s}$. Quindi 1 secondo corrisponde a una certa *frazione* di ora. Come faresti a trovarla? Prova tu, esprimendo il risultato in notazione scientifica. Poi controlla con la soluzione qui sotto.
+
+{% include spoiler.html testo="Mostra la soluzione" %}
+Poiché sappiamo che $3600 \ \text s  = 1 \ \text h $, allora ci basta dividere da entrambe le parti per $3600$ di modo da ottenere
+
+$$\frac{\cancel{3600}}{\cancel{3600}} s = \frac1 {3600} \ h  \implies  1 \ \text s = \frac 1 {3600} \ \text h.$$
+
+Mettendo sulla calcolatrice si ottiene
+
+$$1 \ \text s = 0{,}00027777778 \ \text h$$
+
+che in notazione scientifica diventa
+
+$$
+1 \ \text s \simeq 2{,}78 \times 10^{-4} \ \text h.
+$$
+{% include spoiler-end.html %}
+
+<div style="clear:both"></div>
+
+
+
+# Le grandezze derivate
+
+Come abbiamo detto precedentemente, le grandezze derivate sono tutte quelle che non appartengono alle sette grandezze fondamentali del Sistema Internazionale (Tab. 1, [vedi qui](#tab-si)).
 
 ### Area
 
-Immaginate di dover misurare l'area di un rettangolo. Non la potete misurare in metri, perché i metri sono l'unità di misura della lunghezza, e un'area non è una lunghezza! Però sapete che l'area di un rettangolo si calcola come $A = b \cdot h$. Se misuriamo la base e l'altezza in metri, l'area è il prodotto di qualcosa in metri per qualcosa in metri, quindi la sua unità di misura è **metro quadrato** ($\text{m}^2$). Ad esempio, con $b = 2\ \text{m}$ e $h = 1\ \text{m}$:
+{% include box-imp.html titolo="Area" %}
 
-$$A = (2\ \text{m}) \times (1\ \text{m}) = 2\ \text{m}^2.$$
+L'area di una superficie è una grandezza derivata: è data dal prodotto di due lunghezze e si misura in **metri quadrati** ($\text{m}^2$).
 
-Non ho bisogno di inventare una nuova unità di misura: mi basta elevare il metro al quadrato. Ecco perché l'area è una grandezza *derivata*.
+{% include box-end.html %}
 
-Ora proviamo a passare da metri quadri a centimetri quadri. Ricordiamo che $a^m\cdot a^n = a^{m+n}$:
+<figure style="text-align:center;margin:1.5rem auto 1rem;">
+<svg viewBox="0 0 480 148" width="100%" style="max-width:480px;display:block;margin:0 auto;">
+  <!-- Quadrato -->
+  <rect x="22" y="24" width="72" height="72" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+  <line x1="22" y1="16" x2="94" y2="16" stroke="#1d4ed8" stroke-width="1"/>
+  <line x1="22" y1="12" x2="22" y2="20" stroke="#1d4ed8" stroke-width="1"/>
+  <line x1="94" y1="12" x2="94" y2="20" stroke="#1d4ed8" stroke-width="1"/>
+  <text x="58" y="13" text-anchor="middle" fill="#1d4ed8" font-size="11" font-style="italic" font-family="Georgia,serif">l</text>
+  <line x1="14" y1="24" x2="14" y2="96" stroke="#1d4ed8" stroke-width="1"/>
+  <line x1="10" y1="24" x2="18" y2="24" stroke="#1d4ed8" stroke-width="1"/>
+  <line x1="10" y1="96" x2="18" y2="96" stroke="#1d4ed8" stroke-width="1"/>
+  <text x="58" y="65" text-anchor="middle" fill="#1d4ed8" font-size="14" font-style="italic" font-family="Georgia,serif">l</text>
+  <text x="58" y="112" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Quadrato</text>
+  <text x="58" y="130" text-anchor="middle" fill="#1d4ed8" font-size="13" font-family="Georgia,serif">A = l ²</text>
+  <!-- Rettangolo -->
+  <rect x="140" y="36" width="96" height="56" fill="#f0fdf4" stroke="#15803d" stroke-width="2"/>
+  <text x="188" y="68" text-anchor="middle" fill="#15803d" font-size="12" font-style="italic" font-family="Georgia,serif">b</text>
+  <text x="247" y="68" text-anchor="start" fill="#15803d" font-size="12" font-style="italic" font-family="Georgia,serif">h</text>
+  <text x="188" y="112" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Rettangolo</text>
+  <text x="188" y="130" text-anchor="middle" fill="#15803d" font-size="13" font-family="Georgia,serif">A = b · h</text>
+  <!-- Triangolo -->
+  <polygon points="280,96 352,96 316,26" fill="#fefce8" stroke="#d97706" stroke-width="2"/>
+  <text x="316" y="112" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Triangolo</text>
+  <text x="316" y="130" text-anchor="middle" fill="#d97706" font-size="13" font-family="Georgia,serif">A = ½ b · h</text>
+  <!-- Cerchio -->
+  <circle cx="425" cy="60" r="36" fill="#fdf4ff" stroke="#7c3aed" stroke-width="2"/>
+  <line x1="425" y1="60" x2="461" y2="60" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="443" y="55" text-anchor="middle" fill="#7c3aed" font-size="11" font-style="italic" font-family="Georgia,serif">r</text>
+  <text x="425" y="112" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Cerchio</text>
+  <text x="425" y="130" text-anchor="middle" fill="#7c3aed" font-size="13" font-family="Georgia,serif">A = π r ²</text>
+</svg>
+</figure>
 
-$$1\ \text{m}^2 = (10^2\ \text{cm}) \times (10^2\ \text{cm}) = 10^4\ \text{cm}^2.$$
+Esempio: un quadrato di lato $\ell = 4\ \text{m}$ ha area $A = \ell^2 = (4\ \text{m})^2 = 16\ \text{m}^2$.
 
+#### Equivalenze tra misure di area
+
+<div style="float:right;clear:right;margin:0 0 1rem 1.5rem;text-align:center;max-width:252px;">
+<canvas id="area-anim" width="252" height="248" style="max-width:100%;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;display:block;margin:0 auto .5rem;"></canvas>
+<button id="area-anim-btn" class="iex-vbtn" style="font-size:.85rem;">&#9654; Riproduci</button>
+</div>
+
+Partiamo dalla definizione di metro quadro:
+
+$$1\ \text{m}^2 = 1\ \text{m} \times 1\ \text{m}.$$
+
+Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
+
+$$1\ \text{m}^2 = (10\ \text{dm}) \times (10\ \text{dm}) = 10^2\ \text{dm}^2 = 100\ \text{dm}^2.$$
+
+L'animazione qui a lato mostra esattamente questo: un quadrato di lato 1 m viene suddiviso con una griglia di lato 1 dm, rivelando che ci sono esattamente 100 quadratini di 1 dm².
+
+<script>
+(function(){
+var cv=document.getElementById('area-anim');
+if(!cv)return;
+var ctx=cv.getContext('2d');
+var W=cv.width,H=cv.height;
+var S=162,N=10,cell=S/N;
+var ox=56,oy=38;
+function cl(t,a,b){return Math.max(0,Math.min(1,(t-a)/(b-a)));}
+function ease(t){return t<.5?2*t*t:-1+(4-2*t)*t;}
+function frame(t){
+  ctx.clearRect(0,0,W,H);
+  if(t>1.0){
+    ctx.globalAlpha=ease(cl(t,1.0,2.4))*0.75;
+    ctx.strokeStyle='#93c5fd';ctx.lineWidth=0.7;
+    for(var i=1;i<N;i++){
+      ctx.beginPath();ctx.moveTo(ox+i*cell,oy);ctx.lineTo(ox+i*cell,oy+S);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox,oy+i*cell);ctx.lineTo(ox+S,oy+i*cell);ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+  if(t>3.0){
+    var cp=cl(t,3.0,5.2);
+    var tot=Math.min(100,Math.ceil(cp*100));
+    ctx.fillStyle='rgba(251,191,36,.45)';
+    var left=tot;
+    for(var r=0;r<N&&left>0;r++)for(var c=0;c<N&&left>0;c++){ctx.fillRect(ox+c*cell+.5,oy+r*cell+.5,cell-1,cell-1);left--;}
+  }
+  if(t>2.4){
+    var hp=ease(cl(t,2.4,3.0));
+    ctx.globalAlpha=hp;
+    ctx.fillStyle='#fbbf24';ctx.fillRect(ox+.5,oy+.5,cell-1,cell-1);
+    ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5;ctx.strokeRect(ox+.5,oy+.5,cell-1,cell-1);
+    ctx.globalAlpha=1;
+    if(hp>0.6){ctx.fillStyle='#78350f';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.fillText('1 dm²',ox+cell/2,oy+cell/2+3);}
+  }
+  ctx.strokeStyle='#1d4ed8';ctx.lineWidth=2.5;ctx.strokeRect(ox,oy,S,S);
+  if(t>0.6){
+    var tp=cl(t,0.6,1.0);var show=Math.round(tp*N);
+    ctx.strokeStyle='#374151';ctx.lineWidth=1;
+    for(var j=1;j<=show&&j<N;j++){
+      var xj=ox+j*cell,yj=oy+j*cell;
+      ctx.beginPath();ctx.moveTo(xj,oy);ctx.lineTo(xj,oy-5);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(xj,oy+S);ctx.lineTo(xj,oy+S+5);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox,yj);ctx.lineTo(ox-5,yj);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox+S,yj);ctx.lineTo(ox+S+5,yj);ctx.stroke();
+    }
+    if(show>=1){ctx.fillStyle='#6b7280';ctx.font='8px sans-serif';ctx.textAlign='center';ctx.fillText('1 dm',ox+cell/2,oy-9);}
+  }
+  var lp=ease(cl(t,0,0.6));
+  if(lp>0){
+    ctx.globalAlpha=lp;
+    ctx.fillStyle='#1d4ed8';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+    ctx.fillText('1 m',ox+S/2,oy-20);
+    ctx.save();ctx.translate(ox-30,oy+S/2);ctx.rotate(-Math.PI/2);ctx.fillText('1 m',0,0);ctx.restore();
+    ctx.globalAlpha=1;
+  }
+  if(t>3.0){
+    var cp2=cl(t,3.0,5.2);
+    var cnt=Math.min(100,Math.ceil(cp2*100));
+    ctx.fillStyle='#1d4ed8';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+    ctx.fillText(cnt+' dm²',ox+S/2,oy+S+26);
+    if(cnt>=100){
+      ctx.globalAlpha=ease(cl(t,5.2,6.2));
+      ctx.fillStyle='#166534';ctx.font='bold 13px sans-serif';
+      ctx.fillText('= 1 m²',ox+S/2,oy+S+44);
+      ctx.globalAlpha=1;
+    }
+  }
+}
+frame(0);
+var _aaid=null,_ats0=null,_ATOT=7;
+document.getElementById('area-anim-btn').addEventListener('click',function(){
+  if(_aaid){cancelAnimationFrame(_aaid);_aaid=null;}
+  _ats0=null;
+  function step(ts){
+    if(!_ats0)_ats0=ts;
+    var t=Math.min((ts-_ats0)/1000,_ATOT);
+    frame(t);
+    _aaid=t<_ATOT?requestAnimationFrame(step):null;
+  }
+  _aaid=requestAnimationFrame(step);
+});
+})();
+</script>
+
+Prova ora a ripetere lo stesso ragionamento con gli altri multipli del metro.
+
+{% capture _disc_area %}[
+  {"p":"Quanti cm ci sono in 1 m? (suggerimento: 1 m = 10<sup>?</sup> cm)","a":100,"t":0.0001},
+  {"p":"Quindi, quanti cm&#178; ci sono in 1 m&#178;? Calcola (10&#178; cm) &times; (10&#178; cm).","a":10000,"t":0.0001},
+  {"p":"Quanti mm ci sono in 1 m? (suggerimento: 1 m = 10<sup>?</sup> mm)","a":1000,"t":0.0001},
+  {"p":"Quindi, quanti mm&#178; ci sono in 1 m&#178;?","a":1000000,"t":0.0001}
+]{% endcapture %}
+{% include iex-num.html id="disc-area" domande=_disc_area titolo="Scoperta guidata — riproduci il ragionamento" hint="Segui lo stesso schema: sostituisci 1 m con il suo equivalente in cm o mm, poi eleva al quadrato." %}
+
+Cosa noti? Per dm era $10^1$ → area $10^2$; per cm era $10^2$ → area $10^4$; per mm era $10^3$ → area $10^6$. **L'esponente dell'area è sempre il doppio** dell'esponente lineare.
+
+<div style="float:right;clear:right;max-width:275px;margin:0 0 1rem 1.5rem;">
 {% include box-warn.html titolo="Attenzione" %}
+**Non è vero** che $1\ \text{m}^2 = 10^2\ \text{cm}^2$. L'esponente raddoppia: $1\ \text{m}^2 = 10^4\ \text{cm}^2$.
+{% include box-end.html %}
+</div>
 
-**Non è vero** che $1\ \text{m}^2 = 10^2\ \text{cm}^2$. La risposta corretta è $1\ \text{m}^2 = 10^4\ \text{cm}^2$.
-
+{% include box-imp.html titolo="Regola per le aree" %}
+Se per la lunghezza il fattore di conversione è $10^n$, per l'**area** è $10^{2n}$.
 {% include box-end.html %}
 
-Allo stesso modo: $1\ \text{m}^2 = 10^6\ \text{mm}^2$, e $1\ \mu\text{m}^2 = 10^{-12}\ \text{km}^2$.
+<div style="clear:both"></div>
 
-{% include box-def.html %}
-
-Per passare da un multiplo/sottomultiplo del **metro quadro** a un altro, si prende l'esponente di $10$ che permette di passare da un multiplo del metro all'altro e lo si moltiplica per **2**.
-
-{% include box-end.html %}
+{% capture _quiz_area %}[
+  {"p":"Quanti cm&#178; ci sono in 1 dm&#178;? (1 dm = 10 cm)","a":100,"t":0.0001},
+  {"p":"Quanti m&#178; ci sono in 1 km&#178;? (1 km = 10&#179; m)","a":1000000,"t":0.0001},
+  {"p":"Quanti mm&#178; ci sono in 1 cm&#178;? (1 cm = 10 mm)","a":100,"t":0.0001},
+  {"p":"Quanti dm&#178; ci sono in 3,5 m&#178;?","a":350,"t":0.0001}
+]{% endcapture %}
+{% include iex-num.html id="quiz-area" domande=_quiz_area titolo="Esercizio — conversioni di aree" %}
 
 ### Volume
 
-Il volume del cubo si calcola come $V = \ell^3$, dove $\ell$ è il lato. Con $\ell = 1\ \text{m}$:
+{% include box-imp.html titolo="Volume" %}
 
-$$V = 1\ \text{m} \times 1\ \text{m} \times 1\ \text{m} = 1\ \text{m}^3.$$
+Il volume di un solido è una grandezza derivata: è dato dal prodotto di tre lunghezze e si misura in **metri cubi** ($\text{m}^3$).
 
-L'unità di misura del volume è quindi **metro cubo** ($\text{m}^3$). Proviamo a esprimere un metro cubo in centimetri cubi:
+{% include box-end.html %}
 
-$$1\ \text{m}^3 = (10^2\ \text{cm}) \times (10^2\ \text{cm}) \times (10^2\ \text{cm}) = 10^{6}\ \text{cm}^3.$$
+<figure style="text-align:center;margin:1.5rem auto 1rem;">
+<svg viewBox="0 0 480 148" width="100%" style="max-width:480px;display:block;margin:0 auto;">
+  <!-- Cubo (quasi-isometrico) -->
+  <polygon points="14,96 14,38 56,14 56,72" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <polygon points="14,38 56,14 98,38 56,62" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.5"/>
+  <polygon points="56,62 98,38 98,96 56,72" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="56" y="120" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Cubo</text>
+  <text x="56" y="137" text-anchor="middle" fill="#1d4ed8" font-size="13" font-family="Georgia,serif">V = l ³</text>
+  <!-- Parallelepipedo -->
+  <polygon points="126,96 126,54 156,38 156,80" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+  <polygon points="126,54 156,38 222,38 192,54" fill="#bbf7d0" stroke="#15803d" stroke-width="1.5"/>
+  <polygon points="192,54 222,38 222,80 192,96" fill="#f0fdf4" stroke="#15803d" stroke-width="1.5"/>
+  <text x="174" y="120" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Parallelepipedo</text>
+  <text x="174" y="137" text-anchor="middle" fill="#15803d" font-size="13" font-family="Georgia,serif">V = l · w · h</text>
+  <!-- Cilindro -->
+  <ellipse cx="318" cy="38" rx="36" ry="11" fill="#fef9c3" stroke="#d97706" stroke-width="1.5"/>
+  <rect x="282" y="38" width="72" height="54" fill="#fefce8" stroke="none"/>
+  <line x1="282" y1="38" x2="282" y2="92" stroke="#d97706" stroke-width="1.5"/>
+  <line x1="354" y1="38" x2="354" y2="92" stroke="#d97706" stroke-width="1.5"/>
+  <ellipse cx="318" cy="92" rx="36" ry="11" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+  <text x="318" y="120" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Cilindro</text>
+  <text x="318" y="137" text-anchor="middle" fill="#d97706" font-size="13" font-family="Georgia,serif">V = &#960; r &#178; h</text>
+  <!-- Sfera -->
+  <circle cx="428" cy="62" r="34" fill="#fdf4ff" stroke="#7c3aed" stroke-width="2"/>
+  <ellipse cx="428" cy="62" rx="34" ry="11" fill="none" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="428" y="120" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Sfera</text>
+  <text x="428" y="137" text-anchor="middle" fill="#7c3aed" font-size="13" font-family="Georgia,serif">V = &#8532;&#960; r ³</text>
+</svg>
+</figure>
 
+Esempio: un cubo di lato $\ell = 2\ \text{m}$ ha volume $V = \ell^3 = (2\ \text{m})^3 = 8\ \text{m}^3$.
+
+#### Equivalenze tra misure di volume
+
+<div style="float:right;clear:right;margin:0 0 1rem 1.5rem;text-align:center;max-width:252px;">
+<canvas id="vol-anim" width="252" height="268" style="max-width:100%;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;display:block;margin:0 auto .5rem;"></canvas>
+<button id="vol-anim-btn" class="iex-vbtn" style="font-size:.85rem;">&#9654; Riproduci</button>
+</div>
+
+Partiamo dalla definizione di metro cubo:
+
+$$1\ \text{m}^3 = 1\ \text{m} \times 1\ \text{m} \times 1\ \text{m}.$$
+
+Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
+
+$$1\ \text{m}^3 = (10\ \text{dm}) \times (10\ \text{dm}) \times (10\ \text{dm}) = 10^3\ \text{dm}^3 = 1\,000\ \text{dm}^3.$$
+
+L'animazione qui a lato mostra come il cubo di lato 1 m si compone di 10 strati da 100 dm² ciascuno, per un totale di 1000 dm³.
+
+<script>
+(function(){
+var cv=document.getElementById('vol-anim');
+if(!cv)return;
+var ctx=cv.getContext('2d');
+var W=cv.width,H=cv.height;
+var S=142,N=10,cell=S/N;
+var ox=52,oy=34;
+var DX=7,DY=-4;
+function cl(t,a,b){return Math.max(0,Math.min(1,(t-a)/(b-a)));}
+function ease(t){return t<.5?2*t*t:-1+(4-2*t)*t;}
+function drawLayer(ly,alpha){
+  var offx=ly*DX,offy=ly*DY;
+  ctx.globalAlpha=alpha;
+  ctx.fillStyle=ly===0?'rgba(59,130,246,.06)':'rgba(147,197,253,.18)';
+  ctx.fillRect(ox+offx,oy+offy,S,S);
+  ctx.strokeStyle=ly===0?'#93c5fd':'#bfdbfe';ctx.lineWidth=0.6;
+  for(var i=1;i<N;i++){
+    ctx.beginPath();ctx.moveTo(ox+offx+i*cell,oy+offy);ctx.lineTo(ox+offx+i*cell,oy+offy+S);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(ox+offx,oy+offy+i*cell);ctx.lineTo(ox+offx+S,oy+offy+i*cell);ctx.stroke();
+  }
+  ctx.strokeStyle=ly===0?'#1d4ed8':'#60a5fa';ctx.lineWidth=ly===0?2.5:1.2;
+  ctx.strokeRect(ox+offx,oy+offy,S,S);
+  ctx.globalAlpha=1;
+}
+function frame(t){
+  ctx.clearRect(0,0,W,H);
+  var numLayers=t>5.0?Math.min(10,Math.ceil(cl(t,5.0,7.2)*10)):1;
+  for(var ly=numLayers-1;ly>0;ly--){
+    var la=ease(cl(t,5.0+(ly-1)*0.22,5.0+ly*0.22+0.5));
+    drawLayer(ly,la*0.8);
+  }
+  if(t>1.0){
+    ctx.globalAlpha=ease(cl(t,1.0,2.4))*0.75;
+    ctx.strokeStyle='#93c5fd';ctx.lineWidth=0.7;
+    for(var i=1;i<N;i++){
+      ctx.beginPath();ctx.moveTo(ox+i*cell,oy);ctx.lineTo(ox+i*cell,oy+S);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox,oy+i*cell);ctx.lineTo(ox+S,oy+i*cell);ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+  if(t>3.0){
+    var cp=cl(t,3.0,5.0);
+    var tot=Math.min(100,Math.ceil(cp*100));
+    ctx.fillStyle='rgba(251,191,36,.45)';
+    var left=tot;
+    for(var r=0;r<N&&left>0;r++)for(var c=0;c<N&&left>0;c++){ctx.fillRect(ox+c*cell+.5,oy+r*cell+.5,cell-1,cell-1);left--;}
+  }
+  if(t>2.4){
+    var hp=ease(cl(t,2.4,3.0));
+    ctx.globalAlpha=hp;
+    ctx.fillStyle='#fbbf24';ctx.fillRect(ox+.5,oy+.5,cell-1,cell-1);
+    ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5;ctx.strokeRect(ox+.5,oy+.5,cell-1,cell-1);
+    ctx.globalAlpha=1;
+    if(hp>0.6){ctx.fillStyle='#78350f';ctx.font='bold 7px sans-serif';ctx.textAlign='center';ctx.fillText('1 dm²',ox+cell/2,oy+cell/2+2.5);}
+  }
+  ctx.strokeStyle='#1d4ed8';ctx.lineWidth=2.5;ctx.strokeRect(ox,oy,S,S);
+  if(t>0.6){
+    var tp=cl(t,0.6,1.0);var show=Math.round(tp*N);
+    ctx.strokeStyle='#374151';ctx.lineWidth=1;
+    for(var j=1;j<=show&&j<N;j++){
+      var xj=ox+j*cell,yj=oy+j*cell;
+      ctx.beginPath();ctx.moveTo(xj,oy);ctx.lineTo(xj,oy-4);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(xj,oy+S);ctx.lineTo(xj,oy+S+4);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox,yj);ctx.lineTo(ox-4,yj);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox+S,yj);ctx.lineTo(ox+S+4,yj);ctx.stroke();
+    }
+    if(show>=1){ctx.fillStyle='#6b7280';ctx.font='8px sans-serif';ctx.textAlign='center';ctx.fillText('1 dm',ox+cell/2,oy-9);}
+  }
+  var lp=ease(cl(t,0,0.6));
+  if(lp>0){
+    ctx.globalAlpha=lp;
+    ctx.fillStyle='#1d4ed8';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText('1 m',ox+S/2,oy-17);
+    ctx.save();ctx.translate(ox-26,oy+S/2);ctx.rotate(-Math.PI/2);ctx.fillText('1 m',0,0);ctx.restore();
+    ctx.globalAlpha=1;
+  }
+  if(t>3.0){
+    var nL=t>5.0?Math.min(10,Math.ceil(cl(t,5.0,7.2)*10)):1;
+    var fC=t>3.0?Math.min(100,Math.ceil(cl(t,3.0,5.0)*100)):0;
+    var total=(nL-1)*100+fC;
+    var cy2=oy+S+28+Math.abs((nL-1)*DY);
+    ctx.fillStyle='#1d4ed8';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText(total+' dm³',ox+S/2+(nL-1)*DX/2,cy2);
+    if(total>=1000){
+      ctx.globalAlpha=ease(cl(t,7.2,8.2));
+      ctx.fillStyle='#166534';ctx.font='bold 12px sans-serif';
+      ctx.fillText('= 1 m³',ox+S/2+(nL-1)*DX/2,cy2+18);
+      ctx.globalAlpha=1;
+    }
+  }
+}
+frame(0);
+var _vaid=null,_vts0=null,_VTOT=9;
+document.getElementById('vol-anim-btn').addEventListener('click',function(){
+  if(_vaid){cancelAnimationFrame(_vaid);_vaid=null;}
+  _vts0=null;
+  function step(ts){
+    if(!_vts0)_vts0=ts;
+    var t=Math.min((ts-_vts0)/1000,_VTOT);
+    frame(t);
+    _vaid=t<_VTOT?requestAnimationFrame(step):null;
+  }
+  _vaid=requestAnimationFrame(step);
+});
+})();
+</script>
+
+Prova ora a ripetere lo stesso ragionamento con gli altri multipli del metro.
+
+{% capture _disc_vol %}[
+  {"p":"Quanti cm ci sono in 1 m? (suggerimento: 1 m = 10<sup>?</sup> cm)","a":100,"t":0.0001},
+  {"p":"Quindi, quanti cm&#179; ci sono in 1 m&#179;? Calcola (10&#178; cm)&#179;.","a":1000000,"t":0.0001},
+  {"p":"Quanti mm ci sono in 1 m? (suggerimento: 1 m = 10<sup>?</sup> mm)","a":1000,"t":0.0001},
+  {"p":"Quindi, quanti mm&#179; ci sono in 1 m&#179;?","a":1000000000,"t":0.0001}
+]{% endcapture %}
+{% include iex-num.html id="disc-vol" domande=_disc_vol titolo="Scoperta guidata — riproduci il ragionamento" hint="Segui lo stesso schema: sostituisci 1 m con il suo equivalente, poi eleva al cubo." %}
+
+Cosa noti? Per dm era $10^1$ → volume $10^3$; per cm era $10^2$ → volume $10^6$; per mm era $10^3$ → volume $10^9$. **L'esponente del volume è sempre il triplo** dell'esponente lineare.
+
+<div style="float:right;clear:right;max-width:275px;margin:0 0 1rem 1.5rem;">
 {% include box-warn.html titolo="Attenzione" %}
+**Non è vero** che $1\ \text{m}^3 = 10^2\ \text{cm}^3$. L'esponente si triplica: $1\ \text{m}^3 = 10^6\ \text{cm}^3$.
+{% include box-end.html %}
+</div>
 
-**Non è vero** che $1\ \text{m}^3 = 10^2\ \text{cm}^3$. La risposta corretta è $1\ \text{m}^3 = 10^6\ \text{cm}^3$.
-
+{% include box-imp.html titolo="Regola per i volumi" %}
+Se per la lunghezza il fattore di conversione è $10^n$, per il **volume** è $10^{3n}$.
 {% include box-end.html %}
 
-Allo stesso modo: $1\ \text{mm}^3 = 10^{-18}\ \text{km}^3$.
+<div style="clear:both"></div>
 
-{% include box-def.html %}
-
-Per passare da un multiplo/sottomultiplo del **metro cubo** a un altro, si prende l'esponente di $10$ che permette di passare da un multiplo del metro all'altro e lo si moltiplica per **3**.
-
-{% include box-end.html %}
+{% capture _quiz_vol %}[
+  {"p":"Quanti dm&#179; ci sono in 1 m&#179;? (1 m = 10 dm)","a":1000,"t":0.0001},
+  {"p":"Quanti cm&#179; ci sono in 1 dm&#179;? (1 dm = 10 cm)","a":1000,"t":0.0001},
+  {"p":"Quanti m&#179; ci sono in 5000 dm&#179;?","a":5,"t":0.0001},
+  {"p":"Quanti cm&#179; ci sono in 1,5 m&#179;?","a":1500000,"t":0.0001}
+]{% endcapture %}
+{% include iex-num.html id="quiz-vol" domande=_quiz_vol titolo="Esercizio — conversioni di volumi" %}
 
 {% include box-ex.html titolo="Esercizio 4 — Aree e volumi" %}
 
 Converti i seguenti numeri:
 
-i) $1\ \mu\text{m}^3$ in megametri cubi &nbsp; [risposta: $10^{-36}\ \text{Mm}^3$]
+i) $1\ \text{µm}^3$ in megametri cubi &nbsp; [risposta: $10^{-36}\ \text{Mm}^3$]
 
 ii) $67{,}12\ \text{nm}^2$ in metri quadri
 
