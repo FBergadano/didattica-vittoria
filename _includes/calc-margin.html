@@ -1,0 +1,80 @@
+{% comment %}
+Calcolatrice nel margine destro della pagina.
+Parametri:
+  id — ID univoco (default: "calc")
+
+Esempio:
+  {% include calc-margin.html id="c1" %}
+  Usa la calcolatrice qui a fianco per calcolare 1 ÷ 3600.
+  <div style="clear:both"></div>
+{% endcomment %}
+{% assign _id = include.id | default: "calc" %}
+<div class="calc-outer" id="{{ _id }}">
+  <div class="calc-label">Calcolatrice</div>
+  <div class="calc-expr" id="{{ _id }}-expr">&nbsp;</div>
+  <div class="calc-disp" id="{{ _id }}-disp">0</div>
+  <div class="calc-grid">
+    <button class="calc-fn" data-k="C">C</button>
+    <button class="calc-fn" data-k="±">±</button>
+    <button class="calc-fn" data-k="⌫">⌫</button>
+    <button class="calc-op" data-k="÷">÷</button>
+    <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+    <button class="calc-op" data-k="×">×</button>
+    <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+    <button class="calc-op" data-k="−">−</button>
+    <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+    <button class="calc-op" data-k="+">+</button>
+    <button class="calc-zero" data-k="0">0</button>
+    <button data-k=".">.</button>
+    <button class="calc-op calc-eq" data-k="=">=</button>
+  </div>
+</div>
+<script>
+(function(){
+var id='{{ _id }}';
+var el=document.getElementById(id);
+var disp=document.getElementById(id+'-disp');
+var expr=document.getElementById(id+'-expr');
+var s={buf:'0',op:null,prev:null,fresh:true};
+function fmt(n){
+  if(!isFinite(n))return '∞';
+  if(n!==0&&(Math.abs(n)>=1e10||Math.abs(n)<=0.0001))
+    return n.toExponential(6).replace(/\.?0+(e)/,'$1');
+  var r=parseFloat(n.toPrecision(10)).toString();
+  return r.length>12?parseFloat(n.toPrecision(8)).toString():r;
+}
+function op2(a,b,o){
+  if(o==='÷')return a/b; if(o==='×')return a*b;
+  if(o==='−')return a-b; return a+b;
+}
+function handle(k){
+  if(k==='C'){s={buf:'0',op:null,prev:null,fresh:true};expr.textContent='';}
+  else if(k==='⌫'){if(!s.fresh)s.buf=s.buf.length>1?s.buf.slice(0,-1):'0';}
+  else if(k==='±'){s.buf=String(-parseFloat(s.buf)||0);s.fresh=false;}
+  else if('÷×−+'.indexOf(k)>=0){
+    if(s.op&&!s.fresh){var r=op2(s.prev,parseFloat(s.buf),s.op);s.buf=fmt(r);s.prev=r;}
+    else{s.prev=parseFloat(s.buf);}
+    s.op=k;expr.textContent=s.buf+' '+k;s.fresh=true;
+  }
+  else if(k==='='){
+    if(s.op){
+      var r2=op2(s.prev,parseFloat(s.buf),s.op);
+      expr.textContent=s.buf+' =';
+      s.buf=fmt(r2);s.op=null;s.prev=null;s.fresh=true;
+    }
+  }
+  else if(k==='.'){
+    if(s.fresh){s.buf='0.';s.fresh=false;}
+    else if(s.buf.indexOf('.')<0)s.buf+='.';
+  }
+  else{
+    if(s.fresh){s.buf=k;s.fresh=false;}
+    else s.buf=(s.buf==='0'?k:s.buf+k);
+  }
+  disp.textContent=s.buf;
+}
+el.querySelectorAll('button[data-k]').forEach(function(btn){
+  btn.addEventListener('click',function(){handle(btn.dataset.k);});
+});
+})();
+</script>

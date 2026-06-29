@@ -8,7 +8,7 @@ classe: "3B"
 numero: 1
 ---
 
-<cit autore="Max Planck">La meraviglia per i miracoli della Natura è all'origine di ogni pensiero scientifico.</cit> 
+<cit autore="Giacomo Leopardi, Zibaldone">Niuna cosa maggiormente dimostra la grandezza e la potenza dell'umano intelletto, né l'altezza e nobiltà dell'uomo, che il poter l'uomo conoscere e interamente comprendere e fortemente sentire la sua piccolezza.</cit> 
 
 Una delle cose più meravigliose dell'Universo è la sua immensità. L'infinita grandezza della galassia che ci contiene e l'infinita piccolezza degli atomi di cui siamo composti. Noi uomini siamo sospesi a metà tra questi due infiniti, e questo è un fatto che non cesserà mai di meravigliarci.
 
@@ -19,10 +19,11 @@ Una delle cose più meravigliose dell'Universo è la sua immensità. L'infinita 
 Lo studente ti scrive cosa lo fa sentire infinitamente piccolo, o cosa trova meravigliosamente enorme. Il tuo compito è guidarlo a scoprire il vero ordine di grandezza di quella cosa attraverso una conversazione socratica:
 
 1. Accogli la sua risposta con calore.
-2. Fai UNA domanda concreta sulla dimensione o quantità — invitalo a fare una stima numerica specifica. Non "quant'è grande?" ma per esempio "quanti chilometri pensi che misuri?" oppure "quanti granelli pensi che ci siano in un cucchiaio di sabbia?". Un elemento di quella cosa grande che sia il più possibile facile da stimare.
+2. Fai UNA domanda concreta sulla dimensione o quantità — invitalo a fare una stima numerica specifica. Non "quant'è grande?" ma per esempio "quanti chilometri pensi che misuri?" oppure "quanti granelli pensi che ci siano in un cucchiaio di sabbia?". Un elemento di quella cosa grande che sia il più possibile facile da stimare. Introduci la domanda con una cosa tipo "Proviamo a stimare quanto è grande per davvero questa cosa". Il concetto è un po' quello di allenare lo studente ai ragionamenti tipo di Fermi "quanti accordatori di pianoforte ci sono a Chicago?". Oppure quello di Archimede chegli ha permesso di stimare il numero di granelli di sabbia necessari a riempire l'Universo.
 3. Quando lo studente risponde, correggi o conferma la sua stima con il vero valore numerico, poi poni UN'altra domanda che avvicina alla scoperta del numero finale.
 4. Continua per 2–4 scambi, guidando lo studente verso l'ordine di grandezza reale.
 5. Concludi con una frase di meraviglia che collega quel numero a qualcosa di concreto e sorprendente.
+6. Se lo studente risponde qualcosa di provocatorio o un insulto, rifiutati semplicemente e cordialmente di rispondere.
 
 Scrivi sempre in italiano. Tono caldo, curioso, incoraggiante. Risposte brevi (2–4 frasi per turno). Prosa naturale — niente elenchi puntati. Se lo studente scrive qualcosa di non misurabile, aiutalo gentilmente a trovarne un aspetto misurabile.{% endcapture %}
 {% include gemini-chat.html
@@ -707,31 +708,31 @@ Vedete che in entrambi i casi ho lasciato solo una cifra prima della virgola. Qu
 
 
 <style>
-.iex-widget{background:#faf5ff;border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:1.2rem 1.5rem;margin:1.5rem 0;}
-.iex-lbl{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7c3aed;margin:0 0 .8rem;}
+.iex-widget{background:#ecfeff;border-left:4px solid #0e7490;border-radius:0 8px 8px 0;padding:1.2rem 1.5rem;margin:1.5rem 0;}
+.iex-lbl{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0e7490;margin:0 0 .8rem;}
 .iex-topnav{display:flex;align-items:center;gap:.6rem;margin-bottom:1.1rem;flex-wrap:wrap;}
-.iex-navbtn{background:#f3e8ff;color:#7c3aed;border:1px solid #c4b5fd;border-radius:5px;padding:.22rem .7rem;cursor:pointer;font-size:.85rem;}
-.iex-navbtn:hover:not(:disabled){background:#ede9fe;}
+.iex-navbtn{background:#cffafe;color:#0e7490;border:1px solid #67e8f9;border-radius:5px;padding:.22rem .7rem;cursor:pointer;font-size:.85rem;}
+.iex-navbtn:hover:not(:disabled){background:#a5f3fc;}
 .iex-navbtn:disabled{opacity:.35;cursor:default;}
 .iex-dots{display:flex;gap:.3rem;align-items:center;}
-.iex-dot{width:11px;height:11px;border-radius:50%;background:#e9d5ff;cursor:pointer;transition:background .18s;}
-.iex-dot.cur{background:#7c3aed;}
+.iex-dot{width:11px;height:11px;border-radius:50%;background:#a5f3fc;cursor:pointer;transition:background .18s;}
+.iex-dot.cur{background:#0e7490;}
 .iex-dot.ok{background:#0f766e;}
 .iex-qt{margin:0 0 .6rem;font-size:.95rem;line-height:1.55;}
 .iex-note{color:#6b7280;font-style:italic;font-size:.87em;display:block;margin-top:.15rem;}
 .iex-ir{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin:.5rem 0;}
-.iex-m{border:1.5px solid #c4b5fd;border-radius:5px;padding:.22rem .45rem;font-size:1rem;font-family:Georgia,serif;width:84px;background:#fff;}
-.iex-m:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 0 2px #ede9fe;}
-.iex-e{border:1px solid #c4b5fd;border-radius:3px;padding:.03rem .22rem;font-size:1em;font-family:Georgia,serif;width:34px;background:#fff;}
-.iex-e:focus{outline:none;border-color:#7c3aed;}
-.iex-full{border:1.5px solid #c4b5fd;border-radius:5px;padding:.22rem .45rem;font-size:1rem;font-family:Georgia,serif;min-width:185px;max-width:100%;background:#fff;}
-.iex-full:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 0 2px #ede9fe;}
-.iex-vbtn{background:#7c3aed;color:#fff;border:none;border-radius:5px;padding:.25rem .9rem;cursor:pointer;font-size:.9rem;}
-.iex-vbtn:hover{background:#6d28d9;}
+.iex-m{border:1.5px solid #67e8f9;border-radius:5px;padding:.22rem .45rem;font-size:1rem;font-family:Georgia,serif;width:84px;background:#fff;}
+.iex-m:focus{outline:none;border-color:#0e7490;box-shadow:0 0 0 2px #cffafe;}
+.iex-e{border:1px solid #67e8f9;border-radius:3px;padding:.03rem .22rem;font-size:1em;font-family:Georgia,serif;width:34px;background:#fff;}
+.iex-e:focus{outline:none;border-color:#0e7490;}
+.iex-full{border:1.5px solid #67e8f9;border-radius:5px;padding:.22rem .45rem;font-size:1rem;font-family:Georgia,serif;min-width:185px;max-width:100%;background:#fff;}
+.iex-full:focus{outline:none;border-color:#0e7490;box-shadow:0 0 0 2px #cffafe;}
+.iex-vbtn{background:#0e7490;color:#fff;border:none;border-radius:5px;padding:.25rem .9rem;cursor:pointer;font-size:.9rem;}
+.iex-vbtn:hover{background:#0c6b82;}
 .iex-fb{font-size:.88rem;margin-top:.4rem;min-height:1.1em;}
 .iex-fb.ok{color:#0f766e;font-weight:600;}
 .iex-fb.err{color:#dc2626;}
-.iex-lbtn{background:none;border:none;color:#7c3aed;cursor:pointer;font-size:.85rem;text-decoration:underline;padding:0;margin:0 .25rem;}
+.iex-lbtn{background:none;border:none;color:#0e7490;cursor:pointer;font-size:.85rem;text-decoration:underline;padding:0;margin:0 .25rem;}
 .iex-nextbtn{background:#0f766e;color:#fff;border:none;border-radius:5px;padding:.18rem .7rem;cursor:pointer;font-size:.85rem;margin-left:.5rem;}
 .iex-nextbtn:hover{background:#0d6660;}
 .iex-sol{display:none;margin-top:.45rem;background:#fef9c3;border-left:3px solid #ca8a04;padding:.35rem .75rem;border-radius:4px;font-size:.88rem;color:#713f12;}
@@ -1530,6 +1531,8 @@ Allo stesso modo, il millimetro si indica con $1 \ \text{mm}$ e corrisponde a
 $$ 1 \ \text{mm} = 0{,}00\, 1 m = 10^{-3} \ \text m.$$
 
 
+Notiamo, in generale, che quando passiamo da un multiplo di un'unità di misura a un altro dobbiamo moltiplicare per un certo fattore che corrisponde a una potenza di $10$. Tale fattore è chiamato <definizione>fattore di conversione</definizione>. Ad esempio, per passare da kilometri a metri, il fattore di conversione vale $10^3$; per passare da millimetri a metri il fattore vale $10^{-3}$.
+
 Ecco la lista dei prefissi dei multipli e sottomultipli.
 
 <div style="overflow-x:auto;margin:1.2rem 0;">
@@ -1537,22 +1540,22 @@ Ecco la lista dei prefissi dei multipli e sottomultipli.
 <thead><tr style="background:#f1f5f9;border-bottom:2px solid #cbd5e1;">
   <th style="padding:.45rem 1.2rem;text-align:left;">Prefisso</th>
   <th style="padding:.45rem 1.2rem;text-align:center;">Simbolo</th>
-  <th style="padding:.45rem 1.2rem;text-align:center;">Fattore</th>
+  <th style="padding:.45rem 1.2rem;text-align:center;">Fattore di conversione</th>
   <th style="padding:.45rem 1.2rem;text-align:left;">Esempio</th>
 </tr></thead>
 <tbody>
 <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">Tera</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">T</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{12}$</td>  <td style="padding:.4rem 1.2rem;">1 Ts = $10^{12}$ s</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">Giga</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">G</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{9}$</td>   <td style="padding:.4rem 1.2rem;">1 Gm = $10^{9}$ m</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">Mega</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">M</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{6}$</td>   <td style="padding:.4rem 1.2rem;">1 Mg = $10^{6}$ g</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">kilo</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">k</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{3}$</td>   <td style="padding:.4rem 1.2rem;">1 kg = $10^{3}$ g</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">etto</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">h</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{2}$</td>   <td style="padding:.4rem 1.2rem;">1 hg = $10^{2}$ g</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">deca</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">da</td> <td style="padding:.4rem 1.2rem;text-align:center;">$10^{1}$</td>   <td style="padding:.4rem 1.2rem;">1 dag = $10^{1}$ g</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">deci</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">d</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-1}$</td>  <td style="padding:.4rem 1.2rem;">1 dm = $10^{-1}$ m</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">centi</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">c</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-2}$</td>  <td style="padding:.4rem 1.2rem;">1 cm = $10^{-2}$ m</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">milli</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">m</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-3}$</td>  <td style="padding:.4rem 1.2rem;">1 ms = $10^{-3}$ s</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">micro</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">μ</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-6}$</td>  <td style="padding:.4rem 1.2rem;">1 μm = $10^{-6}$ m</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">nano</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">n</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-9}$</td>  <td style="padding:.4rem 1.2rem;">1 ns = $10^{-9}$ s</td></tr>
-<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">pico</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">p</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-12}$</td> <td style="padding:.4rem 1.2rem;">1 pm = $10^{-12}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">Giga</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">G</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{9}$</td>   <td style="padding:.4rem 1.2rem;">1,23 Gm = $1,23\times 10^{9}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">Mega</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">M</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{6}$</td>   <td style="padding:.4rem 1.2rem;">12,3 Mg = $12,3\times 10^{6}$ g</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">kilo</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">k</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{3}$</td>   <td style="padding:.4rem 1.2rem;">9,8 kg = $9,8\times 10^{3}$ g</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">etto</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">h</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{2}$</td>   <td style="padding:.4rem 1.2rem;">100 hg = $100\times 10^{2}$ g</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">deca</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">da</td> <td style="padding:.4rem 1.2rem;text-align:center;">$10^{1}$</td>   <td style="padding:.4rem 1.2rem;">3 dag = $3\times 10^{1}$ g</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">deci</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">d</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-1}$</td>  <td style="padding:.4rem 1.2rem;">0,04 dm = $0,04\times 10^{-1}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">centi</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">c</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-2}$</td>  <td style="padding:.4rem 1.2rem;">3 cm = $3\times 10^{-2}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">milli</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">m</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-3}$</td>  <td style="padding:.4rem 1.2rem;">41 ms = $41\times 10^{-3}$ s</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">micro</td> <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">μ</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-6}$</td>  <td style="padding:.4rem 1.2rem;">1,0001 μm = $1,0001\times 10^{-6}$ m</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">nano</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">n</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-9}$</td>  <td style="padding:.4rem 1.2rem;">5,55 ns = $5,55\times 10^{-9}$ s</td></tr>
+<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:.4rem 1.2rem;">pico</td>  <td style="padding:.4rem 1.2rem;text-align:center;font-weight:bold;">p</td>  <td style="padding:.4rem 1.2rem;text-align:center;">$10^{-12}$</td> <td style="padding:.4rem 1.2rem;">6 pm = $6\times10^{-12}$ m</td></tr>
 </tbody></table></div>
 
 
@@ -1614,15 +1617,14 @@ Questi prefissi si possono ordinare su una retta dal più piccolo al più grande
 </div>
 
 {% include box-imp.html titolo="Come convertire tra prefissi" %}
-Ogni prefisso ha un **esponente** (visibile in tabella e sulla retta). Per convertire un numero da un prefisso a un altro:
+Per convertire un numero da un prefisso a un altro:
 
-1. Guarda l'esponente del prefisso di **partenza** ($n$) e quello di **arrivo** ($m$).
+1. Guarda i fattori di conversione del prefisso di **partenza** ($10^n$) e di quello di **arrivo** $\text (10^m\text )$. (La base ha fattore di conversione $10^0$).
 2. Calcola la differenza: $n - m$.
-3. Moltiplica il numero per $10^{n-m}$.
+3. Il fattore di conversione totale è $10^{n-m}$.
 
-$$\underbrace{a \times 10^n}_{\text{prefisso partenza}} = a \times 10^{n-m} \times \underbrace{10^m}_{\text{prefisso arrivo}}$$
 
-Se $n > m$ (vai verso un prefisso più piccolo, cioè verso sinistra), il numero cresce. Se $n < m$ (vai verso un prefisso più grande, cioè verso destra), il numero diminuisce.
+Se $n > m$ (vai verso un prefisso più piccolo, cioè verso sinistra), il numero cresce, cioè l'esponente è positivo. Se $n < m$ (vai verso un prefisso più grande, cioè verso destra), il numero diminuisce, cioè l'esponente è negativo.
 {% include box-end.html %}
 
 {% include box-blue.html titolo="Esempi" %}
@@ -1767,6 +1769,8 @@ window.ex6check=function(i){
 })();
 </script>
 
+Per convertire da un prefisso a un altro è utile anche avere sempre presente la linea dei prefissi. Si possono quindi contare i salti per arrivare dal prefisso di partenza a quello di arrivo. Si deve porre attenzione al fatto che alcuni salti valgono $3$ (per esempio, da micrometri $10^{-6}$ a millimetri $10^{-3}$) mentre altri valgono solo $1$ (per esempio, da millimetri $10^{-3}$ a centimetri $10^{-2}$). Il numero di salti totale 
+è pari all'esponente del fattore di conversione. Se i salti sono verso destra, l'esponente sarà negativo; se i salti sono verso sinistra, l'esponente sarà positivo.  
 Usa la simulazione qui sotto per visualizzare come si converte da un prefisso a un altro. Scegli il prefisso di partenza e quello di arrivo, poi clicca **Mostra**.
 
 <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1.1rem 1.4rem;margin:1.2rem 0 1.5rem;">
@@ -1936,61 +1940,61 @@ Scegli i prefissi e clicca <strong>Mostra</strong>.
 <button class="iex-navbtn" id="pfxnext" onclick="pfxnav(1)">Succ. &rarr;</button>
 </div>
 <div class="iex-q" id="pfxrow0">
-<p class="iex-qt">$5{,}7\times10^6$ s = 5,7&thinsp;<input class="pfx-inp" id="pfxinp0" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(0)">&thinsp;s&ensp;<button class="iex-vbtn" onclick="pfxcheck(0)">Verifica</button></p>
+<p class="iex-qt">$5{,}7\times10^6$ s = 5,7&thinsp;<select class="pfx-sel" id="pfxsel0"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;s&ensp;<button class="iex-vbtn" onclick="pfxcheck(0)">Verifica</button></p>
 <div class="iex-fb" id="pfxfb0"></div>
 <div class="iex-sol" id="pfxsol0">Risposta: <strong>M</strong></div>
 </div>
 <div class="iex-q" id="pfxrow1" style="display:none">
-<p class="iex-qt">$4{,}2\times10^{-5}$ m = 42&thinsp;<input class="pfx-inp" id="pfxinp1" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(1)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(1)">Verifica</button> <span class="iex-note">Suggerimento: $4{,}2\times10^{-5} = 42\times10^{-6}$</span></p>
+<p class="iex-qt">$4{,}2\times10^{-5}$ m = 42&thinsp;<select class="pfx-sel" id="pfxsel1"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(1)">Verifica</button> <span class="iex-note">Suggerimento: $4{,}2\times10^{-5} = 42\times10^{-6}$</span></p>
 <div class="iex-fb" id="pfxfb1"></div>
 <div class="iex-sol" id="pfxsol1">Risposta: <strong>μ</strong></div>
 </div>
 <div class="iex-q" id="pfxrow2" style="display:none">
-<p class="iex-qt">$0{,}000\,000\,001$ g = 1&thinsp;<input class="pfx-inp" id="pfxinp2" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(2)">&thinsp;g&ensp;<button class="iex-vbtn" onclick="pfxcheck(2)">Verifica</button></p>
+<p class="iex-qt">$0{,}000\,000\,001$ g = 1&thinsp;<select class="pfx-sel" id="pfxsel2"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;g&ensp;<button class="iex-vbtn" onclick="pfxcheck(2)">Verifica</button></p>
 <div class="iex-fb" id="pfxfb2"></div>
 <div class="iex-sol" id="pfxsol2">Risposta: <strong>n</strong></div>
 </div>
 <div class="iex-q" id="pfxrow3" style="display:none">
-<p class="iex-qt">$3\times10^{-3}$ m = 3&thinsp;<input class="pfx-inp" id="pfxinp3" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(3)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(3)">Verifica</button></p>
+<p class="iex-qt">$3\times10^{-3}$ m = 3&thinsp;<select class="pfx-sel" id="pfxsel3"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(3)">Verifica</button></p>
 <div class="iex-fb" id="pfxfb3"></div>
 <div class="iex-sol" id="pfxsol3">Risposta: <strong>m</strong></div>
 </div>
 <div class="iex-q" id="pfxrow4" style="display:none">
-<p class="iex-qt">$1{,}5\times10^3$ m = 1,5&thinsp;<input class="pfx-inp" id="pfxinp4" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(4)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(4)">Verifica</button></p>
+<p class="iex-qt">$1{,}5\times10^3$ m = 1,5&thinsp;<select class="pfx-sel" id="pfxsel4"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(4)">Verifica</button></p>
 <div class="iex-fb" id="pfxfb4"></div>
 <div class="iex-sol" id="pfxsol4">Risposta: <strong>k</strong></div>
 </div>
 <div class="iex-q" id="pfxrow5" style="display:none">
-<p class="iex-qt">$8\times10^9$ s = 8&thinsp;<input class="pfx-inp" id="pfxinp5" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(5)">&thinsp;s&ensp;<button class="iex-vbtn" onclick="pfxcheck(5)">Verifica</button></p>
+<p class="iex-qt">$8\times10^9$ s = 8&thinsp;<select class="pfx-sel" id="pfxsel5"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;s&ensp;<button class="iex-vbtn" onclick="pfxcheck(5)">Verifica</button></p>
 <div class="iex-fb" id="pfxfb5"></div>
 <div class="iex-sol" id="pfxsol5">Risposta: <strong>G</strong></div>
 </div>
 <div class="iex-q" id="pfxrow6" style="display:none">
-<p class="iex-qt">$2{,}5\times10^{-1}$ m = 2,5&thinsp;<input class="pfx-inp" id="pfxinp6" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(6)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(6)">Verifica</button></p>
+<p class="iex-qt">$2{,}5\times10^{-1}$ m = 2,5&thinsp;<select class="pfx-sel" id="pfxsel6"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(6)">Verifica</button></p>
 <div class="iex-fb" id="pfxfb6"></div>
 <div class="iex-sol" id="pfxsol6">Risposta: <strong>d</strong></div>
 </div>
 <div class="iex-q" id="pfxrow7" style="display:none">
-<p class="iex-qt">$7\times10^{12}$ m = 7&thinsp;<input class="pfx-inp" id="pfxinp7" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(7)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(7)">Verifica</button></p>
+<p class="iex-qt">$7\times10^{12}$ m = 7&thinsp;<select class="pfx-sel" id="pfxsel7"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(7)">Verifica</button></p>
 <div class="iex-fb" id="pfxfb7"></div>
 <div class="iex-sol" id="pfxsol7">Risposta: <strong>T</strong></div>
 </div>
 <div class="iex-q" id="pfxrow8" style="display:none">
-<p class="iex-qt">$0{,}01$ m = 1&thinsp;<input class="pfx-inp" id="pfxinp8" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(8)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(8)">Verifica</button> <span class="iex-note">Suggerimento: $0{,}01=1\times10^{-2}$</span></p>
+<p class="iex-qt">$0{,}01$ m = 1&thinsp;<select class="pfx-sel" id="pfxsel8"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(8)">Verifica</button> <span class="iex-note">Suggerimento: $0{,}01=1\times10^{-2}$</span></p>
 <div class="iex-fb" id="pfxfb8"></div>
 <div class="iex-sol" id="pfxsol8">Risposta: <strong>c</strong></div>
 </div>
 <div class="iex-q" id="pfxrow9" style="display:none">
-<p class="iex-qt">$3\times10^{-12}$ m = 3&thinsp;<input class="pfx-inp" id="pfxinp9" type="text" placeholder="?" size="3" onkeydown="if(event.key==='Enter')pfxcheck(9)">&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(9)">Verifica</button></p>
+<p class="iex-qt">$3\times10^{-12}$ m = 3&thinsp;<select class="pfx-sel" id="pfxsel9"><option value="">— scegli —</option><option value="p">pico (p)</option><option value="n">nano (n)</option><option value="μ">micro (μ)</option><option value="m">milli (m)</option><option value="c">centi (c)</option><option value="d">deci (d)</option><option value="da">deca (da)</option><option value="h">etto (h)</option><option value="k">kilo (k)</option><option value="M">Mega (M)</option><option value="G">Giga (G)</option><option value="T">Tera (T)</option></select>&thinsp;m&ensp;<button class="iex-vbtn" onclick="pfxcheck(9)">Verifica</button></p>
 <div class="iex-fb" id="pfxfb9"></div>
 <div class="iex-sol" id="pfxsol9">Risposta: <strong>p</strong></div>
 </div>
 </div>
 
 <style>
-.pfx-inp{width:2.2rem;text-align:center;border:2px solid #d1d5db;border-radius:5px;
-  padding:.2rem .3rem;font-size:1rem;font-weight:bold;}
-.pfx-inp:focus{border-color:#0891b2;outline:none;}
+.pfx-sel{border:2px solid #67e8f9;border-radius:5px;padding:.2rem .5rem;font-size:.95rem;
+  font-weight:bold;background:#fff;cursor:pointer;color:#0e7490;}
+.pfx-sel:focus{border-color:#0e7490;outline:none;}
 </style>
 
 <script>
@@ -2106,6 +2110,7 @@ goBtn.addEventListener('click',function(){
   var dir=(ti>fi)?1:-1;
   var nSteps=Math.abs(ti-fi);
   var stepIdx=0;
+  var cumExp=0;
 
   function doStep(){
     if(stepIdx>=nSteps){
@@ -2119,6 +2124,12 @@ goBtn.addEventListener('click',function(){
       if(ti>fi){ctx.moveTo(XS[ti]+2,ay);ctx.lineTo(XS[ti]-9,ay-5);ctx.lineTo(XS[ti]-9,ay+5);}
       else{ctx.moveTo(XS[ti]-2,ay);ctx.lineTo(XS[ti]+9,ay-5);ctx.lineTo(XS[ti]+9,ay+5);}
       ctx.fill(); ctx.restore();
+      if(cumExp!==0){
+        var ctotF=cumExp>=0?'×10'+supStr(cumExp):'÷10'+supStr(-cumExp);
+        ctx.save();ctx.fillStyle='#0f766e';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+        ctx.fillText('Fattore totale: '+ctotF,(XS[fi]+XS[ti])/2,LY-48);
+        ctx.restore();
+      }
       var expDiff=PFX_DATA[fi].exp-PFX_DATA[ti].exp;
       var fname=PFX_DATA[fi].name==='base'?'(unità base)':PFX_DATA[fi].name;
       var tname=PFX_DATA[ti].name==='base'?'(unità base)':PFX_DATA[ti].name;
@@ -2142,14 +2153,20 @@ goBtn.addEventListener('click',function(){
     var lblCol=dir>0?'#dc2626':'#0f766e';
     var x0=XS[curI],x1=XS[nxtI];
     var midX=(x0+x1)/2;
+    var nextCumExp=cumExp+(dir>0?-sExp:sExp);
     var t0=null;
     function frame(ts){
       if(!t0)t0=ts;
       var prog=Math.min((ts-t0)/400,1);
       var cx=x0+(x1-x0)*prog;
       drawScene(fi,-1,cx,'#f59e0b',[{x:midX,y:LY-52,text:lbl,col:lblCol}]);
+      if(cumExp!==0){
+        var cpfx=cumExp>=0?'×10'+supStr(cumExp):'÷10'+supStr(-cumExp);
+        ctx.save();ctx.fillStyle='rgba(15,118,110,.8)';ctx.font='bold 11px sans-serif';ctx.textAlign='right';
+        ctx.fillText('Finora: '+cpfx,W-8,H-8);ctx.restore();
+      }
       if(prog<1){requestAnimationFrame(frame);}
-      else{stepIdx++;setTimeout(doStep,250);}
+      else{cumExp=nextCumExp;stepIdx++;setTimeout(doStep,250);}
     }
     requestAnimationFrame(frame);
   }
@@ -2246,7 +2263,7 @@ window.ex7check=function(i){
 };
 
 /* ── pfx-quiz (find the prefix) ── */
-var PFX_SYMS=[["M"],["μ","µ","u"],["n"],["m"],["k"],["G"],["d"],["T"],["c"],["p"]];
+var PFX_SYMS=[["M"],["μ"],["n"],["m"],["k"],["G"],["d"],["T"],["c"],["p"]];
 var pfxok=[false,false,false,false,false,false,false,false,false,false];
 var pfxc=[0],Npfx=10;
 function pfxshow(i){
@@ -2257,8 +2274,8 @@ function pfxshow(i){
   document.getElementById('pfxnext').disabled=(i===Npfx-1);
   var dots=document.querySelectorAll('#pfxdots .iex-dot');
   for(var k=0;k<Npfx;k++)dots[k].className='iex-dot'+(k===i?' cur':'')+(pfxok[k]?' ok':'');
-  setTimeout(function(){var inp=document.getElementById('pfxinp'+i);
-    if(inp&&!pfxok[i])inp.focus();},60);
+  setTimeout(function(){var sel=document.getElementById('pfxsel'+i);
+    if(sel&&!pfxok[i])sel.focus();},60);
 }
 (function(){
   var c=document.getElementById('pfxdots');
@@ -2273,9 +2290,11 @@ function pfxshow(i){
 window.pfxshow=pfxshow;
 window.pfxnav=function(d){if(pfxc[0]+d>=0&&pfxc[0]+d<Npfx)pfxshow(pfxc[0]+d);};
 window.pfxcheck=function(i){
-  var val=document.getElementById('pfxinp'+i).value.trim();
+  var sel=document.getElementById('pfxsel'+i);
+  var val=sel?sel.value:'';
   var fb=document.getElementById('pfxfb'+i);
   var vb=document.querySelector('#pfxrow'+i+' .iex-vbtn');
+  if(!val){fb.className='iex-fb err';fb.innerHTML='Scegli un prefisso dal menu.';return;}
   var accepted=PFX_SYMS[i];
   var ok=accepted.some(function(s){return s===val;});
   if(ok){
@@ -2304,6 +2323,7 @@ Il tempo si misura in secondi. Però i multipli del secondo sono un po' strani, 
 
 $$1\ \text h = 60 \ \text{min} = 60\times60 \ \text s = 3600 \ \text s.$$
 
+Ci sarà in generale molto utile convertire tutti i multipli dei secondi (minuti, ore, giorni, anni, secoli, millenni) in secondi. Per farlo, prova tu con questi esercizi.
 {% capture _d8 %}[
   {"p":"Quanti secondi ci sono in 1 giorno?","a":86400,"t":0.0001},
   {"p":"Quanti secondi ci sono in 1 anno? (Considera 365,25 giorni/anno.)","a":31557600,"t":0.005}
@@ -2318,7 +2338,9 @@ $$1\ \text h = 60 \ \text{min} = 60\times60 \ \text s = 3600 \ \text s.$$
 
 {% include calc-margin.html id="calc1" %}
 
-**Esercizio 10 — Quante ore ci sono in un secondo?**
+<div class="iex-widget" style="margin-top:2rem;">
+<p class="iex-lbl">Esercizio — Quante ore ci sono in un secondo?</p>
+<div markdown="1">
 
 Sappiamo che $1\ \text{h} = 3\,600\ \text{s}$. Quindi 1 secondo corrisponde a una certa *frazione* di ora. Come faresti a trovarla? Prova tu, esprimendo il risultato in notazione scientifica. Poi controlla con la soluzione qui sotto.
 
@@ -2337,6 +2359,9 @@ $$
 1 \ \text s \simeq 2{,}78 \times 10^{-4} \ \text h.
 $$
 {% include spoiler-end.html %}
+
+</div>
+</div>
 
 <div style="clear:both"></div>
 
@@ -2370,7 +2395,7 @@ L'area di una superficie è una grandezza derivata: è data dal prodotto di due 
   <text x="58" y="130" text-anchor="middle" fill="#1d4ed8" font-size="13" font-family="Georgia,serif">A = l ²</text>
   <!-- Rettangolo -->
   <rect x="140" y="36" width="96" height="56" fill="#f0fdf4" stroke="#15803d" stroke-width="2"/>
-  <text x="188" y="68" text-anchor="middle" fill="#15803d" font-size="12" font-style="italic" font-family="Georgia,serif">b</text>
+  <text x="188" y="22" text-anchor="middle" fill="#15803d" font-size="12" font-style="italic" font-family="Georgia,serif">b</text>
   <text x="247" y="68" text-anchor="start" fill="#15803d" font-size="12" font-style="italic" font-family="Georgia,serif">h</text>
   <text x="188" y="112" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Rettangolo</text>
   <text x="188" y="130" text-anchor="middle" fill="#15803d" font-size="13" font-family="Georgia,serif">A = b · h</text>
@@ -2404,7 +2429,7 @@ Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
 
 $$1\ \text{m}^2 = (10\ \text{dm}) \times (10\ \text{dm}) = 10^2\ \text{dm}^2 = 100\ \text{dm}^2.$$
 
-L'animazione qui sotto mostra esattamente questo: un quadrato di lato 1 m viene suddiviso con una griglia di lato 1 dm, rivelando che ci sono esattamente 100 quadratini di 1 dm².
+L'animazione qui sopra mostra esattamente questo: un quadrato di lato 1 m viene suddiviso con una griglia di lato 1 dm, rivelando che ci sono esattamente 100 quadratini di 1 dm².
 
 <script>
 (function(){
@@ -2509,16 +2534,216 @@ Cosa noti? Per dm era $10^1$ → area $10^2$; per cm era $10^2$ → area $10^4$;
 {% include box-end.html %}
 
 {% include box-imp.html titolo="Regola per le aree" %}
-Se per la lunghezza il fattore di conversione è $10^n$, per l'**area** è $10^{2n}$.
+Se per la lunghezza il fattore di conversione è $10^n$, per l'**area** è $10^{2n}$. Sulla retta dei prefissi, ogni passo vale il **doppio** per le aree.
 {% include box-end.html %}
 
-{% capture _quiz_area %}[
-  {"p":"Quanti cm&#178; ci sono in 1 dm&#178;? (1 dm = 10 cm)","a":100,"t":0.0001},
-  {"p":"Quanti m&#178; ci sono in 1 km&#178;? (1 km = 10&#179; m)","a":1000000,"t":0.0001},
-  {"p":"Quanti mm&#178; ci sono in 1 cm&#178;? (1 cm = 10 mm)","a":100,"t":0.0001},
-  {"p":"Quanti dm&#178; ci sono in 3,5 m&#178;?","a":350,"t":0.0001}
-]{% endcapture %}
-{% include iex-num.html id="quiz-area" domande=_quiz_area titolo="Esercizio — conversioni di aree" %}
+<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1.1rem 1.4rem;margin:1.2rem 0 1.5rem;">
+<p style="font-size:.92rem;font-weight:bold;margin:0 0 .6rem;color:#374151;">Retta dei prefissi per le <em>aree</em> — ogni passo vale il doppio</p>
+<div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:.9rem;">
+<label style="font-size:.92rem;">Da:&ensp;<select id="pfxa-from" style="border:1px solid #d1d5db;border-radius:5px;padding:.25rem .5rem;">
+<option value="0">pico (p)</option><option value="1">nano (n)</option><option value="2">micro (μ)</option>
+<option value="3">milli (m)</option><option value="4">centi (c)</option><option value="5">deci (d)</option>
+<option value="6">base (—)</option><option value="7">deca (da)</option><option value="8">etto (h)</option>
+<option value="9" selected>kilo (k)</option><option value="10">Mega (M)</option><option value="11">Giga (G)</option><option value="12">Tera (T)</option>
+</select></label>
+<label style="font-size:.92rem;">A:&ensp;<select id="pfxa-to" style="border:1px solid #d1d5db;border-radius:5px;padding:.25rem .5rem;">
+<option value="0">pico (p)</option><option value="1">nano (n)</option><option value="2">micro (μ)</option>
+<option value="3">milli (m)</option><option value="4">centi (c)</option><option value="5">deci (d)</option>
+<option value="6" selected>base (—)</option><option value="7">deca (da)</option><option value="8">etto (h)</option>
+<option value="9">kilo (k)</option><option value="10">Mega (M)</option><option value="11">Giga (G)</option><option value="12">Tera (T)</option>
+</select></label>
+<button id="pfxa-go" style="background:#0f766e;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.92rem;">Mostra</button>
+</div>
+<canvas id="pfxa-canvas" style="max-width:100%;display:block;"></canvas>
+<div id="pfxa-expl" style="margin-top:.75rem;font-size:.92rem;min-height:2.5rem;color:#374151;">Scegli i prefissi e clicca <strong>Mostra</strong>.</div>
+</div>
+
+<script>
+(function(){
+var MULT=2;
+var PFX_A=[{sym:"p",name:"pico",exp:-12,col:"#7c3aed",big:true},{sym:"n",name:"nano",exp:-9,col:"#4f46e5",big:true},{sym:"μ",name:"micro",exp:-6,col:"#2563eb",big:true},{sym:"m",name:"milli",exp:-3,col:"#0891b2",big:true},{sym:"c",name:"centi",exp:-2,col:"#0d9488",big:false},{sym:"d",name:"deci",exp:-1,col:"#16a34a",big:false},{sym:"—",name:"base",exp:0,col:"#6b7280",big:false},{sym:"da",name:"deca",exp:1,col:"#ca8a04",big:false},{sym:"h",name:"etto",exp:2,col:"#d97706",big:false},{sym:"k",name:"kilo",exp:3,col:"#ea580c",big:true},{sym:"M",name:"Mega",exp:6,col:"#dc2626",big:true},{sym:"G",name:"Giga",exp:9,col:"#be185d",big:true},{sym:"T",name:"Tera",exp:12,col:"#7e22ce",big:true}];
+var STEP_A=[3,3,3,1,1,1,1,1,1,3,3,3];
+var XSA=[25,90,155,220,255,290,325,360,395,430,495,560,625];
+var WA=660,HA=135,LYA=62;
+var cva=document.getElementById('pfxa-canvas');
+var ctxa=cva.getContext('2d');
+var fromA=document.getElementById('pfxa-from');
+var toA=document.getElementById('pfxa-to');
+var goA=document.getElementById('pfxa-go');
+var explA=document.getElementById('pfxa-expl');
+var dprA=window.devicePixelRatio||1;
+cva.width=WA*dprA; cva.height=HA*dprA;
+cva.style.width=WA+'px'; cva.style.height=HA+'px';
+ctxa.scale(dprA,dprA);
+function supA(n){var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};return n.toString().split('').map(function(c){return m[c]||c;}).join('');}
+function drawA(hlF,hlT,dotX,dotCol,labels){
+  ctxa.clearRect(0,0,WA,HA);
+  var g=ctxa.createLinearGradient(20,0,625,0);
+  g.addColorStop(0,'rgba(124,58,237,.1)');g.addColorStop(.5,'rgba(107,114,128,.03)');g.addColorStop(1,'rgba(126,34,206,.1)');
+  ctxa.fillStyle=g;ctxa.fillRect(20,LYA-2,605,4);
+  ctxa.strokeStyle='#374151';ctxa.lineWidth=2;ctxa.setLineDash([]);
+  ctxa.beginPath();ctxa.moveTo(20,LYA);ctxa.lineTo(633,LYA);ctxa.stroke();
+  ctxa.fillStyle='#374151';ctxa.beginPath();ctxa.moveTo(637,LYA);ctxa.lineTo(627,LYA-5);ctxa.lineTo(627,LYA+5);ctxa.fill();
+  ctxa.font='10px sans-serif';ctxa.textAlign='left';ctxa.fillText('grandezza',641,LYA+4);
+  for(var i=0;i<PFX_A.length;i++){
+    var p=PFX_A[i],x=XSA[i],hl=(i===hlF||i===hlT);
+    if(p.big){
+      ctxa.strokeStyle=p.col;ctxa.lineWidth=hl?3:2;ctxa.setLineDash([]);
+      ctxa.beginPath();ctxa.moveTo(x,LYA-14);ctxa.lineTo(x,LYA+14);ctxa.stroke();
+      if(hl){ctxa.strokeStyle=p.col;ctxa.lineWidth=1.8;ctxa.setLineDash([3,2]);ctxa.beginPath();ctxa.arc(x,LYA,18,0,Math.PI*2);ctxa.stroke();ctxa.setLineDash([]);}
+      ctxa.fillStyle=p.col;ctxa.font='bold 14px sans-serif';ctxa.textAlign='center';ctxa.fillText(p.sym,x,LYA-22);
+      ctxa.font='13px sans-serif';ctxa.fillText('10'+supA(p.exp*MULT),x,LYA+27);
+      ctxa.font='12px sans-serif';ctxa.fillText(p.name,x,LYA+40);
+    } else {
+      var li=i-4,up=(li%2===0);
+      ctxa.strokeStyle=p.col;ctxa.lineWidth=hl?2.5:1.5;ctxa.setLineDash([]);
+      if(up){
+        ctxa.beginPath();ctxa.moveTo(x,LYA-26);ctxa.lineTo(x,LYA+5);ctxa.stroke();
+        if(hl){ctxa.strokeStyle=p.col;ctxa.lineWidth=1.8;ctxa.setLineDash([3,2]);ctxa.beginPath();ctxa.arc(x,LYA,14,0,Math.PI*2);ctxa.stroke();ctxa.setLineDash([]);}
+        ctxa.fillStyle=p.col;ctxa.font='bold 12px sans-serif';ctxa.textAlign='center';ctxa.fillText(p.sym,x,LYA-32);
+        ctxa.font='12px sans-serif';ctxa.fillText('10'+supA(p.exp*MULT),x,LYA-46);
+      } else {
+        ctxa.beginPath();ctxa.moveTo(x,LYA-5);ctxa.lineTo(x,LYA+26);ctxa.stroke();
+        if(hl){ctxa.strokeStyle=p.col;ctxa.lineWidth=1.8;ctxa.setLineDash([3,2]);ctxa.beginPath();ctxa.arc(x,LYA,14,0,Math.PI*2);ctxa.stroke();ctxa.setLineDash([]);}
+        ctxa.fillStyle=p.col;ctxa.font='bold 12px sans-serif';ctxa.textAlign='center';ctxa.fillText(p.sym,x,LYA+33);
+        ctxa.font='12px sans-serif';ctxa.fillText('10'+supA(p.exp*MULT),x,LYA+48);
+      }
+    }
+  }
+  if(dotX!==null){ctxa.beginPath();ctxa.arc(dotX,LYA,9,0,Math.PI*2);ctxa.fillStyle=dotCol||'#f59e0b';ctxa.fill();ctxa.strokeStyle='#fff';ctxa.lineWidth=2.5;ctxa.stroke();}
+  if(labels)labels.forEach(function(l){ctxa.fillStyle=l.col||'#111';ctxa.font='bold 12px sans-serif';ctxa.textAlign='center';ctxa.fillText(l.text,l.x,l.y);});
+}
+var runA=false;
+drawA(-1,-1,null,null,null);
+goA.addEventListener('click',function(){
+  if(runA)return;
+  var fi=parseInt(fromA.value),ti=parseInt(toA.value);
+  if(fi===ti){explA.innerHTML='I due prefissi coincidono: nessuna conversione necessaria.';drawA(fi,ti,XSA[fi],PFX_A[fi].col,null);return;}
+  runA=true;goA.disabled=true;
+  var dir=(ti>fi)?1:-1,nSteps=Math.abs(ti-fi),stepIdx=0,cumExp=0;
+  function doStep(){
+    if(stepIdx>=nSteps){
+      drawA(fi,ti,XSA[ti],PFX_A[ti].col,null);
+      ctxa.save();ctxa.strokeStyle='#f59e0b';ctxa.lineWidth=2.5;ctxa.setLineDash([5,3]);
+      var ay=LYA-36;
+      ctxa.beginPath();ctxa.moveTo(XSA[fi],ay);ctxa.lineTo(XSA[ti],ay);ctxa.stroke();ctxa.setLineDash([]);
+      ctxa.fillStyle='#f59e0b';ctxa.beginPath();
+      if(ti>fi){ctxa.moveTo(XSA[ti]+2,ay);ctxa.lineTo(XSA[ti]-9,ay-5);ctxa.lineTo(XSA[ti]-9,ay+5);}
+      else{ctxa.moveTo(XSA[ti]-2,ay);ctxa.lineTo(XSA[ti]+9,ay-5);ctxa.lineTo(XSA[ti]+9,ay+5);}
+      ctxa.fill();ctxa.restore();
+      if(cumExp!==0){
+        var ctotA=cumExp>=0?'×10'+supA(cumExp):'÷10'+supA(-cumExp);
+        ctxa.save();ctxa.fillStyle='#0f766e';ctxa.font='bold 13px sans-serif';ctxa.textAlign='center';
+        ctxa.fillText('Fattore totale per le aree: '+ctotA,(XSA[fi]+XSA[ti])/2,ay-8);ctxa.restore();
+      }
+      var expDiff=(PFX_A[fi].exp-PFX_A[ti].exp)*MULT;
+      var fname=PFX_A[fi].name==='base'?'(unità base)':PFX_A[fi].name;
+      var tname=PFX_A[ti].name==='base'?'(unità base)':PFX_A[ti].name;
+      var fsym=PFX_A[fi].sym==='—'?'':PFX_A[fi].sym;
+      var tsym=PFX_A[ti].sym==='—'?'':PFX_A[ti].sym;
+      var rule;
+      if(expDiff>0)rule='<strong>moltiplica per 10<sup>'+expDiff+'</sup></strong>';
+      else if(expDiff<0)rule='<strong>dividi per 10<sup>'+(-expDiff)+'</sup></strong>';
+      else rule='nessun fattore';
+      explA.innerHTML='Per le <strong>aree</strong>: da <strong>'+fname+'</strong> a <strong>'+tname+'</strong>: '+rule+'.'
+        +' Equivalenza: <strong>1&thinsp;'+fsym+'X² = 10<sup>'+expDiff+'</sup>&thinsp;'+tsym+'X²</strong>.';
+      runA=false;goA.disabled=false;return;
+    }
+    var curI=fi+stepIdx*dir,nxtI=curI+dir,seIdx=(dir>0)?curI:nxtI;
+    var sExp=STEP_A[seIdx]*MULT;
+    var op=dir>0?'÷':'×';
+    var lbl=op+'10'+supA(sExp),lblCol=dir>0?'#dc2626':'#0f766e';
+    var x0=XSA[curI],x1=XSA[nxtI],midX=(x0+x1)/2;
+    var nextCumExp=cumExp+(dir>0?-sExp:sExp);
+    var t0=null;
+    function frame(ts){
+      if(!t0)t0=ts;
+      var prog=Math.min((ts-t0)/400,1);
+      var cx=x0+(x1-x0)*prog;
+      drawA(fi,-1,cx,'#f59e0b',[{x:midX,y:LYA-52,text:lbl,col:lblCol}]);
+      if(cumExp!==0){
+        var cpfxA=cumExp>=0?'×10'+supA(cumExp):'÷10'+supA(-cumExp);
+        ctxa.save();ctxa.fillStyle='rgba(15,118,110,.8)';ctxa.font='bold 11px sans-serif';ctxa.textAlign='right';
+        ctxa.fillText('Finora: '+cpfxA,WA-8,HA-8);ctxa.restore();
+      }
+      if(prog<1){requestAnimationFrame(frame);}
+      else{cumExp=nextCumExp;stepIdx++;setTimeout(doStep,250);}
+    }
+    requestAnimationFrame(frame);
+  }
+  explA.innerHTML='Animazione in corso…';
+  drawA(fi,-1,XSA[fi],'#f59e0b',null);
+  setTimeout(doStep,400);
+});
+})();
+</script>
+
+<div class="iex-widget" id="qar" style="margin-top:1rem;">
+<p class="iex-lbl">Esercizio — conversioni di aree</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="qarprev" onclick="qarNav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="qardots"></div>
+<button class="iex-navbtn" id="qarnext" onclick="qarNav(1)">Succ. &rarr;</button>
+</div>
+<div class="iex-q" id="qarrow0">
+<p class="iex-qt"><strong>i)</strong> Quanti cm&#178; ci sono in 1 dm&#178;? (1 dm = 10 cm)</p>
+<div class="iex-ir"><input class="iex-m" id="qarinp0" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qarCheck(0)"><button class="iex-vbtn" onclick="qarCheck(0)">Verifica</button></div>
+<div class="iex-fb" id="qarfb0"></div>
+<div class="iex-sol" id="qarsol0">1 dm = 10 cm &rarr; 1 dm&sup2; = 10&sup2; cm&sup2; = <strong>100 cm&sup2;</strong>.</div>
+</div>
+<div class="iex-q" id="qarrow1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Quanti m&#178; ci sono in 1 km&#178;? (1 km = 10&#179; m)</p>
+<div class="iex-ir"><input class="iex-m" id="qarinp1" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qarCheck(1)"><button class="iex-vbtn" onclick="qarCheck(1)">Verifica</button></div>
+<div class="iex-fb" id="qarfb1"></div>
+<div class="iex-sol" id="qarsol1">1 km = 10&sup3; m &rarr; 1 km&sup2; = (10&sup3;)&sup2; m&sup2; = 10&sup6; m&sup2; = <strong>1 000 000 m&sup2;</strong>.</div>
+</div>
+<div class="iex-q" id="qarrow2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Quanti mm&#178; ci sono in 1 cm&#178;? (1 cm = 10 mm)</p>
+<div class="iex-ir"><input class="iex-m" id="qarinp2" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qarCheck(2)"><button class="iex-vbtn" onclick="qarCheck(2)">Verifica</button></div>
+<div class="iex-fb" id="qarfb2"></div>
+<div class="iex-sol" id="qarsol2">1 cm = 10 mm &rarr; 1 cm&sup2; = 10&sup2; mm&sup2; = <strong>100 mm&sup2;</strong>.</div>
+</div>
+<div class="iex-q" id="qarrow3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Quanti dm&#178; ci sono in 3,5 m&#178;?</p>
+<div class="iex-ir"><input class="iex-m" id="qarinp3" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qarCheck(3)"><button class="iex-vbtn" onclick="qarCheck(3)">Verifica</button></div>
+<div class="iex-fb" id="qarfb3"></div>
+<div class="iex-sol" id="qarsol3">1 m&sup2; = 100 dm&sup2; &rarr; 3,5 m&sup2; = 3,5 &times; 100 dm&sup2; = <strong>350 dm&sup2;</strong>.</div>
+</div>
+</div>
+<script>
+(function(){
+var QAR=[{a:100,t:0.0001},{a:1000000,t:0.0001},{a:100,t:0.0001},{a:350,t:0.0001}];
+var qarok=[false,false,false,false];
+var qarc=[0],NQAR=4;
+function parseVA(s){s=s.trim().replace(/\s+/g,'').replace(/,/,'.');s=s.replace(/[×x·]\s*10\^?\(?(-?\d+\.?\d*)\)?/i,'e$1');s=s.replace(/\*\s*10\^?\(?(-?\d+)\)?/,'e$1');return parseFloat(s);}
+function shootCA(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<55;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);}}
+function shootFWA(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootCA({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
+function showSolA(id){var el=document.getElementById(id);if(el)el.style.display='block';}
+function buildDotsA(N,showFn){var c=document.getElementById('qardots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+function updDotsA(){var dots=document.querySelectorAll('#qardots .iex-dot');for(var i=0;i<NQAR;i++)dots[i].className='iex-dot'+(i===qarc[0]?' cur':'')+(qarok[i]?' ok':'');}
+function qarShow(i){document.querySelectorAll('#qar .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('qarrow'+i).style.display='block';qarc[0]=i;document.getElementById('qarprev').disabled=(i===0);document.getElementById('qarnext').disabled=(i===NQAR-1);updDotsA();}
+window.qarNav=function(d){qarShow(Math.max(0,Math.min(NQAR-1,qarc[0]+d)));};
+window.qarCheck=function(i){
+  var inp=document.getElementById('qarinp'+i);
+  var fb=document.getElementById('qarfb'+i);
+  var vb=inp?inp.parentElement.querySelector('button'):null;
+  if(!inp||!fb)return;
+  var v=parseVA(inp.value);
+  if(isNaN(v)){fb.className='iex-fb err';fb.innerHTML='Inserisci un numero valido.';return;}
+  var q=QAR[i],ok=q.a===0?Math.abs(v)<1e-10:Math.abs((v-q.a)/q.a)<=q.t;
+  if(ok){
+    qarok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<NQAR-1?' <button class="iex-nextbtn" onclick="qarShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    if(vb)shootCA(vb);updDotsA();
+    if(qarok.every(function(x){return x;}))setTimeout(shootFWA,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolA(\'qarsol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+buildDotsA(NQAR,qarShow);
+})();
+</script>
 
 ### Volume
 
@@ -2539,6 +2764,9 @@ Il volume di un solido è una grandezza derivata: è dato dal prodotto di tre lu
   <polygon points="34,25 34,55 60,70 60,40" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.4"/>
   <!-- Right face (lightest = "lit from front-right") -->
   <polygon points="86,25 60,40 60,70 86,55" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.4"/>
+  <!-- l label on right vertical edge C(86,25)→E(86,55) -->
+  <line x1="90" y1="25" x2="90" y2="55" stroke="#1d4ed8" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <text x="97" y="43" text-anchor="start" fill="#1d4ed8" font-size="10" font-style="italic" font-family="Georgia,serif">l</text>
   <text x="60" y="90" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Cubo</text>
   <text x="60" y="107" text-anchor="middle" fill="#1d4ed8" font-size="13" font-family="Georgia,serif">V = l ³</text>
 
@@ -2547,6 +2775,13 @@ Il volume di un solido è una grandezza derivata: è dato dal prodotto di tre lu
   <polygon points="180,12 142,22 180,32 218,22" fill="#bbf7d0" stroke="#15803d" stroke-width="1.4"/>
   <polygon points="142,22 142,58 180,68 180,32" fill="#dcfce7" stroke="#15803d" stroke-width="1.4"/>
   <polygon points="218,22 180,32 180,68 218,58" fill="#f0fdf4" stroke="#15803d" stroke-width="1.4"/>
+  <!-- l label on top-right edge A(180,12)→C(218,22) -->
+  <text x="205" y="10" text-anchor="middle" fill="#15803d" font-size="10" font-style="italic" font-family="Georgia,serif">l</text>
+  <!-- w label on top-left edge A(180,12)→B(142,22) -->
+  <text x="155" y="10" text-anchor="middle" fill="#15803d" font-size="10" font-style="italic" font-family="Georgia,serif">w</text>
+  <!-- h label on right vertical edge C(218,22)→E(218,58) -->
+  <line x1="222" y1="22" x2="222" y2="58" stroke="#15803d" stroke-width="0.8" stroke-dasharray="2,2"/>
+  <text x="229" y="42" text-anchor="start" fill="#15803d" font-size="10" font-style="italic" font-family="Georgia,serif">h</text>
   <text x="180" y="90" text-anchor="middle" fill="#374151" font-size="12" font-weight="bold" font-family="sans-serif">Parallelepipedo</text>
   <text x="180" y="107" text-anchor="middle" fill="#15803d" font-size="13" font-family="Georgia,serif">V = l · w · h</text>
 
@@ -2598,7 +2833,7 @@ Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
 
 $$1\ \text{m}^3 = (10\ \text{dm}) \times (10\ \text{dm}) \times (10\ \text{dm}) = 10^3\ \text{dm}^3 = 1\,000\ \text{dm}^3.$$
 
-L'animazione qui sotto mostra come il cubo di lato 1 m si compone di 10 strati da 100 dm² ciascuno, per un totale di 1000 dm³.
+L'animazione qui sopra mostra come il cubo di lato 1 m si compone di 10 strati da 100 dm² ciascuno, per un totale di 1000 dm³.
 
 <script>
 (function(){
@@ -2725,41 +2960,365 @@ Cosa noti? Per dm era $10^1$ → volume $10^3$; per cm era $10^2$ → volume $10
 {% include box-end.html %}
 
 {% include box-imp.html titolo="Regola per i volumi" %}
-Se per la lunghezza il fattore di conversione è $10^n$, per il **volume** è $10^{3n}$.
+Se per la lunghezza il fattore di conversione è $10^n$, per il **volume** è $10^{3n}$. Sulla retta dei prefissi, ogni passo vale il **triplo** per i volumi.
 {% include box-end.html %}
 
-{% capture _quiz_vol %}[
-  {"p":"Quanti dm&#179; ci sono in 1 m&#179;? (1 m = 10 dm)","a":1000,"t":0.0001},
-  {"p":"Quanti cm&#179; ci sono in 1 dm&#179;? (1 dm = 10 cm)","a":1000,"t":0.0001},
-  {"p":"Quanti m&#179; ci sono in 5000 dm&#179;?","a":5,"t":0.0001},
-  {"p":"Quanti cm&#179; ci sono in 1,5 m&#179;?","a":1500000,"t":0.0001}
-]{% endcapture %}
-{% include iex-num.html id="quiz-vol" domande=_quiz_vol titolo="Esercizio — conversioni di volumi" %}
+<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1.1rem 1.4rem;margin:1.2rem 0 1.5rem;">
+<p style="font-size:.92rem;font-weight:bold;margin:0 0 .6rem;color:#374151;">Retta dei prefissi per i <em>volumi</em> — ogni passo vale il triplo</p>
+<div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:.9rem;">
+<label style="font-size:.92rem;">Da:&ensp;<select id="pfxv-from" style="border:1px solid #d1d5db;border-radius:5px;padding:.25rem .5rem;">
+<option value="0">pico (p)</option><option value="1">nano (n)</option><option value="2">micro (μ)</option>
+<option value="3">milli (m)</option><option value="4">centi (c)</option><option value="5">deci (d)</option>
+<option value="6">base (—)</option><option value="7">deca (da)</option><option value="8">etto (h)</option>
+<option value="9" selected>kilo (k)</option><option value="10">Mega (M)</option><option value="11">Giga (G)</option><option value="12">Tera (T)</option>
+</select></label>
+<label style="font-size:.92rem;">A:&ensp;<select id="pfxv-to" style="border:1px solid #d1d5db;border-radius:5px;padding:.25rem .5rem;">
+<option value="0">pico (p)</option><option value="1">nano (n)</option><option value="2">micro (μ)</option>
+<option value="3">milli (m)</option><option value="4">centi (c)</option><option value="5">deci (d)</option>
+<option value="6" selected>base (—)</option><option value="7">deca (da)</option><option value="8">etto (h)</option>
+<option value="9">kilo (k)</option><option value="10">Mega (M)</option><option value="11">Giga (G)</option><option value="12">Tera (T)</option>
+</select></label>
+<button id="pfxv-go" style="background:#0f766e;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.92rem;">Mostra</button>
+</div>
+<canvas id="pfxv-canvas" style="max-width:100%;display:block;"></canvas>
+<div id="pfxv-expl" style="margin-top:.75rem;font-size:.92rem;min-height:2.5rem;color:#374151;">Scegli i prefissi e clicca <strong>Mostra</strong>.</div>
+</div>
 
-{% include box-ex.html titolo="Esercizio 4 — Aree e volumi" %}
+<script>
+(function(){
+var MULTV=3;
+var PFX_V=[{sym:"p",name:"pico",exp:-12,col:"#7c3aed",big:true},{sym:"n",name:"nano",exp:-9,col:"#4f46e5",big:true},{sym:"μ",name:"micro",exp:-6,col:"#2563eb",big:true},{sym:"m",name:"milli",exp:-3,col:"#0891b2",big:true},{sym:"c",name:"centi",exp:-2,col:"#0d9488",big:false},{sym:"d",name:"deci",exp:-1,col:"#16a34a",big:false},{sym:"—",name:"base",exp:0,col:"#6b7280",big:false},{sym:"da",name:"deca",exp:1,col:"#ca8a04",big:false},{sym:"h",name:"etto",exp:2,col:"#d97706",big:false},{sym:"k",name:"kilo",exp:3,col:"#ea580c",big:true},{sym:"M",name:"Mega",exp:6,col:"#dc2626",big:true},{sym:"G",name:"Giga",exp:9,col:"#be185d",big:true},{sym:"T",name:"Tera",exp:12,col:"#7e22ce",big:true}];
+var STEP_V=[3,3,3,1,1,1,1,1,1,3,3,3];
+var XSV=[25,90,155,220,255,290,325,360,395,430,495,560,625];
+var WV=660,HV=135,LYV=62;
+var cvv=document.getElementById('pfxv-canvas');
+var ctxv=cvv.getContext('2d');
+var fromV=document.getElementById('pfxv-from');
+var toV=document.getElementById('pfxv-to');
+var goV=document.getElementById('pfxv-go');
+var explV=document.getElementById('pfxv-expl');
+var dprV=window.devicePixelRatio||1;
+cvv.width=WV*dprV;cvv.height=HV*dprV;cvv.style.width=WV+'px';cvv.style.height=HV+'px';
+ctxv.scale(dprV,dprV);
+function supV(n){var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};return n.toString().split('').map(function(c){return m[c]||c;}).join('');}
+function drawV(hlF,hlT,dotX,dotCol,labels){
+  ctxv.clearRect(0,0,WV,HV);
+  var g=ctxv.createLinearGradient(20,0,625,0);
+  g.addColorStop(0,'rgba(124,58,237,.1)');g.addColorStop(.5,'rgba(107,114,128,.03)');g.addColorStop(1,'rgba(126,34,206,.1)');
+  ctxv.fillStyle=g;ctxv.fillRect(20,LYV-2,605,4);
+  ctxv.strokeStyle='#374151';ctxv.lineWidth=2;ctxv.setLineDash([]);
+  ctxv.beginPath();ctxv.moveTo(20,LYV);ctxv.lineTo(633,LYV);ctxv.stroke();
+  ctxv.fillStyle='#374151';ctxv.beginPath();ctxv.moveTo(637,LYV);ctxv.lineTo(627,LYV-5);ctxv.lineTo(627,LYV+5);ctxv.fill();
+  ctxv.font='10px sans-serif';ctxv.textAlign='left';ctxv.fillText('grandezza',641,LYV+4);
+  for(var i=0;i<PFX_V.length;i++){
+    var p=PFX_V[i],x=XSV[i],hl=(i===hlF||i===hlT);
+    if(p.big){
+      ctxv.strokeStyle=p.col;ctxv.lineWidth=hl?3:2;ctxv.setLineDash([]);
+      ctxv.beginPath();ctxv.moveTo(x,LYV-14);ctxv.lineTo(x,LYV+14);ctxv.stroke();
+      if(hl){ctxv.strokeStyle=p.col;ctxv.lineWidth=1.8;ctxv.setLineDash([3,2]);ctxv.beginPath();ctxv.arc(x,LYV,18,0,Math.PI*2);ctxv.stroke();ctxv.setLineDash([]);}
+      ctxv.fillStyle=p.col;ctxv.font='bold 14px sans-serif';ctxv.textAlign='center';ctxv.fillText(p.sym,x,LYV-22);
+      ctxv.font='13px sans-serif';ctxv.fillText('10'+supV(p.exp*MULTV),x,LYV+27);
+      ctxv.font='12px sans-serif';ctxv.fillText(p.name,x,LYV+40);
+    } else {
+      var li=i-4,up=(li%2===0);
+      ctxv.strokeStyle=p.col;ctxv.lineWidth=hl?2.5:1.5;ctxv.setLineDash([]);
+      if(up){
+        ctxv.beginPath();ctxv.moveTo(x,LYV-26);ctxv.lineTo(x,LYV+5);ctxv.stroke();
+        if(hl){ctxv.strokeStyle=p.col;ctxv.lineWidth=1.8;ctxv.setLineDash([3,2]);ctxv.beginPath();ctxv.arc(x,LYV,14,0,Math.PI*2);ctxv.stroke();ctxv.setLineDash([]);}
+        ctxv.fillStyle=p.col;ctxv.font='bold 12px sans-serif';ctxv.textAlign='center';ctxv.fillText(p.sym,x,LYV-32);
+        ctxv.font='12px sans-serif';ctxv.fillText('10'+supV(p.exp*MULTV),x,LYV-46);
+      } else {
+        ctxv.beginPath();ctxv.moveTo(x,LYV-5);ctxv.lineTo(x,LYV+26);ctxv.stroke();
+        if(hl){ctxv.strokeStyle=p.col;ctxv.lineWidth=1.8;ctxv.setLineDash([3,2]);ctxv.beginPath();ctxv.arc(x,LYV,14,0,Math.PI*2);ctxv.stroke();ctxv.setLineDash([]);}
+        ctxv.fillStyle=p.col;ctxv.font='bold 12px sans-serif';ctxv.textAlign='center';ctxv.fillText(p.sym,x,LYV+33);
+        ctxv.font='12px sans-serif';ctxv.fillText('10'+supV(p.exp*MULTV),x,LYV+48);
+      }
+    }
+  }
+  if(dotX!==null){ctxv.beginPath();ctxv.arc(dotX,LYV,9,0,Math.PI*2);ctxv.fillStyle=dotCol||'#f59e0b';ctxv.fill();ctxv.strokeStyle='#fff';ctxv.lineWidth=2.5;ctxv.stroke();}
+  if(labels)labels.forEach(function(l){ctxv.fillStyle=l.col||'#111';ctxv.font='bold 12px sans-serif';ctxv.textAlign='center';ctxv.fillText(l.text,l.x,l.y);});
+}
+var runV=false;
+drawV(-1,-1,null,null,null);
+goV.addEventListener('click',function(){
+  if(runV)return;
+  var fi=parseInt(fromV.value),ti=parseInt(toV.value);
+  if(fi===ti){explV.innerHTML='I due prefissi coincidono: nessuna conversione necessaria.';drawV(fi,ti,XSV[fi],PFX_V[fi].col,null);return;}
+  runV=true;goV.disabled=true;
+  var dir=(ti>fi)?1:-1,nSteps=Math.abs(ti-fi),stepIdx=0,cumExp=0;
+  function doStep(){
+    if(stepIdx>=nSteps){
+      drawV(fi,ti,XSV[ti],PFX_V[ti].col,null);
+      ctxv.save();ctxv.strokeStyle='#f59e0b';ctxv.lineWidth=2.5;ctxv.setLineDash([5,3]);
+      var ay=LYV-36;
+      ctxv.beginPath();ctxv.moveTo(XSV[fi],ay);ctxv.lineTo(XSV[ti],ay);ctxv.stroke();ctxv.setLineDash([]);
+      ctxv.fillStyle='#f59e0b';ctxv.beginPath();
+      if(ti>fi){ctxv.moveTo(XSV[ti]+2,ay);ctxv.lineTo(XSV[ti]-9,ay-5);ctxv.lineTo(XSV[ti]-9,ay+5);}
+      else{ctxv.moveTo(XSV[ti]-2,ay);ctxv.lineTo(XSV[ti]+9,ay-5);ctxv.lineTo(XSV[ti]+9,ay+5);}
+      ctxv.fill();ctxv.restore();
+      if(cumExp!==0){
+        var ctotV=cumExp>=0?'×10'+supV(cumExp):'÷10'+supV(-cumExp);
+        ctxv.save();ctxv.fillStyle='#0f766e';ctxv.font='bold 13px sans-serif';ctxv.textAlign='center';
+        ctxv.fillText('Fattore totale per i volumi: '+ctotV,(XSV[fi]+XSV[ti])/2,ay-8);ctxv.restore();
+      }
+      var expDiff=(PFX_V[fi].exp-PFX_V[ti].exp)*MULTV;
+      var fname=PFX_V[fi].name==='base'?'(unità base)':PFX_V[fi].name;
+      var tname=PFX_V[ti].name==='base'?'(unità base)':PFX_V[ti].name;
+      var fsym=PFX_V[fi].sym==='—'?'':PFX_V[fi].sym;
+      var tsym=PFX_V[ti].sym==='—'?'':PFX_V[ti].sym;
+      var rule;
+      if(expDiff>0)rule='<strong>moltiplica per 10<sup>'+expDiff+'</sup></strong>';
+      else if(expDiff<0)rule='<strong>dividi per 10<sup>'+(-expDiff)+'</sup></strong>';
+      else rule='nessun fattore';
+      explV.innerHTML='Per i <strong>volumi</strong>: da <strong>'+fname+'</strong> a <strong>'+tname+'</strong>: '+rule+'.'
+        +' Equivalenza: <strong>1&thinsp;'+fsym+'X³ = 10<sup>'+expDiff+'</sup>&thinsp;'+tsym+'X³</strong>.';
+      runV=false;goV.disabled=false;return;
+    }
+    var curI=fi+stepIdx*dir,nxtI=curI+dir,seIdx=(dir>0)?curI:nxtI;
+    var sExp=STEP_V[seIdx]*MULTV;
+    var op=dir>0?'÷':'×';
+    var lbl=op+'10'+supV(sExp),lblCol=dir>0?'#dc2626':'#0f766e';
+    var x0=XSV[curI],x1=XSV[nxtI],midX=(x0+x1)/2;
+    var nextCumExp=cumExp+(dir>0?-sExp:sExp);
+    var t0=null;
+    function frame(ts){
+      if(!t0)t0=ts;
+      var prog=Math.min((ts-t0)/400,1);
+      var cx=x0+(x1-x0)*prog;
+      drawV(fi,-1,cx,'#f59e0b',[{x:midX,y:LYV-52,text:lbl,col:lblCol}]);
+      if(cumExp!==0){
+        var cpfxV=cumExp>=0?'×10'+supV(cumExp):'÷10'+supV(-cumExp);
+        ctxv.save();ctxv.fillStyle='rgba(15,118,110,.8)';ctxv.font='bold 11px sans-serif';ctxv.textAlign='right';
+        ctxv.fillText('Finora: '+cpfxV,WV-8,HV-8);ctxv.restore();
+      }
+      if(prog<1){requestAnimationFrame(frame);}
+      else{cumExp=nextCumExp;stepIdx++;setTimeout(doStep,250);}
+    }
+    requestAnimationFrame(frame);
+  }
+  explV.innerHTML='Animazione in corso…';
+  drawV(fi,-1,XSV[fi],'#f59e0b',null);
+  setTimeout(doStep,400);
+});
+})();
+</script>
 
-Converti i seguenti numeri:
+<div class="iex-widget" id="qvol" style="margin-top:1rem;">
+<p class="iex-lbl">Esercizio — conversioni di volumi</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="qvolprev" onclick="qvolNav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="qvoldots"></div>
+<button class="iex-navbtn" id="qvolnext" onclick="qvolNav(1)">Succ. &rarr;</button>
+</div>
+<div class="iex-q" id="qvolrow0">
+<p class="iex-qt"><strong>i)</strong> Quanti dm&#179; ci sono in 1 m&#179;? (1 m = 10 dm)</p>
+<div class="iex-ir"><input class="iex-m" id="qvolinp0" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qvolCheck(0)"><button class="iex-vbtn" onclick="qvolCheck(0)">Verifica</button></div>
+<div class="iex-fb" id="qvolfb0"></div>
+<div class="iex-sol" id="qvolsol0">1 m = 10 dm &rarr; 1 m&sup3; = 10&sup3; dm&sup3; = <strong>1000 dm&sup3;</strong>.</div>
+</div>
+<div class="iex-q" id="qvolrow1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Quanti cm&#179; ci sono in 1 dm&#179;? (1 dm = 10 cm)</p>
+<div class="iex-ir"><input class="iex-m" id="qvolinp1" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qvolCheck(1)"><button class="iex-vbtn" onclick="qvolCheck(1)">Verifica</button></div>
+<div class="iex-fb" id="qvolfb1"></div>
+<div class="iex-sol" id="qvolsol1">1 dm = 10 cm &rarr; 1 dm&sup3; = 10&sup3; cm&sup3; = <strong>1000 cm&sup3;</strong>.</div>
+</div>
+<div class="iex-q" id="qvolrow2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Quanti m&#179; ci sono in 5000 dm&#179;?</p>
+<div class="iex-ir"><input class="iex-m" id="qvolinp2" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qvolCheck(2)"><button class="iex-vbtn" onclick="qvolCheck(2)">Verifica</button></div>
+<div class="iex-fb" id="qvolfb2"></div>
+<div class="iex-sol" id="qvolsol2">1 m&sup3; = 1000 dm&sup3; &rarr; 5000 dm&sup3; = 5000 &divide; 1000 m&sup3; = <strong>5 m&sup3;</strong>.</div>
+</div>
+<div class="iex-q" id="qvolrow3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Quanti cm&#179; ci sono in 1,5 m&#179;?</p>
+<div class="iex-ir"><input class="iex-m" id="qvolinp3" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qvolCheck(3)"><button class="iex-vbtn" onclick="qvolCheck(3)">Verifica</button></div>
+<div class="iex-fb" id="qvolfb3"></div>
+<div class="iex-sol" id="qvolsol3">1 m = 100 cm &rarr; 1 m&sup3; = 10&sup6; cm&sup3; &rarr; 1,5 m&sup3; = <strong>1 500 000 cm&sup3;</strong>.</div>
+</div>
+</div>
+<script>
+(function(){
+var QVOL=[{a:1000,t:0.0001},{a:1000,t:0.0001},{a:5,t:0.0001},{a:1500000,t:0.0001}];
+var qvolok=[false,false,false,false];
+var qvolc=[0],NQVOL=4;
+function parseVV(s){s=s.trim().replace(/\s+/g,'').replace(/,/,'.');s=s.replace(/[×x·]\s*10\^?\(?(-?\d+\.?\d*)\)?/i,'e$1');s=s.replace(/\*\s*10\^?\(?(-?\d+)\)?/,'e$1');return parseFloat(s);}
+function shootCV(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<55;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);}}
+function shootFWV(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootCV({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
+function showSolV(id){var el=document.getElementById(id);if(el)el.style.display='block';}
+function buildDotsV(N,showFn){var c=document.getElementById('qvoldots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+function updDotsV(){var dots=document.querySelectorAll('#qvoldots .iex-dot');for(var i=0;i<NQVOL;i++)dots[i].className='iex-dot'+(i===qvolc[0]?' cur':'')+(qvolok[i]?' ok':'');}
+function qvolShow(i){document.querySelectorAll('#qvol .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('qvolrow'+i).style.display='block';qvolc[0]=i;document.getElementById('qvolprev').disabled=(i===0);document.getElementById('qvolnext').disabled=(i===NQVOL-1);updDotsV();}
+window.qvolNav=function(d){qvolShow(Math.max(0,Math.min(NQVOL-1,qvolc[0]+d)));};
+window.qvolCheck=function(i){
+  var inp=document.getElementById('qvolinp'+i);
+  var fb=document.getElementById('qvolfb'+i);
+  var vb=inp?inp.parentElement.querySelector('button'):null;
+  if(!inp||!fb)return;
+  var v=parseVV(inp.value);
+  if(isNaN(v)){fb.className='iex-fb err';fb.innerHTML='Inserisci un numero valido.';return;}
+  var q=QVOL[i],ok=q.a===0?Math.abs(v)<1e-10:Math.abs((v-q.a)/q.a)<=q.t;
+  if(ok){
+    qvolok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<NQVOL-1?' <button class="iex-nextbtn" onclick="qvolShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    if(vb)shootCV(vb);updDotsV();
+    if(qvolok.every(function(x){return x;}))setTimeout(shootFWV,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolV(\'qvolsol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+buildDotsV(NQVOL,qvolShow);
+})();
+</script>
 
-i) $1\ \text{µm}^3$ in megametri cubi &nbsp; [risposta: $10^{-36}\ \text{Mm}^3$]
+<div class="iex-widget" id="iex-ae" style="margin-top:1.5rem;">
+<p class="iex-lbl">Esercizio — Aree e volumi</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="aeprev" onclick="aeNav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="aedots"></div>
+<button class="iex-navbtn" id="aenext" onclick="aeNav(1)">Succ. &rarr;</button>
+</div>
 
-ii) $67{,}12\ \text{nm}^2$ in metri quadri
+<div class="iex-q" id="aerow0">
+<p class="iex-qt"><strong>i)</strong> Converti $1\ \text{µm}^3$ in megametri cubi (Mm³).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem0" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(0)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(0)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">Mm³</span>
+<button class="iex-vbtn" onclick="aeCheck(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb0"></div>
+<div class="iex-sol" id="aesol0">$1\ \mu\text{m}=10^{-6}\ \text{m}=10^{-12}\ \text{Mm}$, quindi $1\ \mu\text{m}^3=(10^{-12})^3\ \text{Mm}^3=10^{-36}\ \text{Mm}^3$.</div>
+</div>
 
-iii) $5\,123\,456\ \text{m}^2$ in nanometri quadri
+<div class="iex-q" id="aerow1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Converti $67{,}12\ \text{nm}^2$ in metri quadri (m²).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem1" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(1)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(1)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m²</span>
+<button class="iex-vbtn" onclick="aeCheck(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb1"></div>
+<div class="iex-sol" id="aesol1">$1\ \text{nm}=10^{-9}\ \text{m}$, quindi $1\ \text{nm}^2=10^{-18}\ \text{m}^2$. Perciò $67{,}12\ \text{nm}^2=67{,}12\times10^{-18}\ \text{m}^2=6{,}712\times10^{-17}\ \text{m}^2$.</div>
+</div>
 
-iv) $3{,}45\ \text{mm}^3$ in centimetri cubi
+<div class="iex-q" id="aerow2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Converti $5\,123\,456\ \text{m}^2$ in nanometri quadri (nm²).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem2" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(2)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee2" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(2)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">nm²</span>
+<button class="iex-vbtn" onclick="aeCheck(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb2"></div>
+<div class="iex-sol" id="aesol2">$1\ \text{m}=10^{9}\ \text{nm}$, quindi $1\ \text{m}^2=10^{18}\ \text{nm}^2$. Perciò $5\,123\,456\ \text{m}^2=5{,}123456\times10^{6}\times10^{18}\ \text{nm}^2=5{,}123456\times10^{24}\ \text{nm}^2$.</div>
+</div>
 
-v) $0{,}0025\ \text{km}^2$ in metri quadri
+<div class="iex-q" id="aerow3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Converti $3{,}45\ \text{mm}^3$ in centimetri cubi (cm³).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem3" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(3)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(3)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">cm³</span>
+<button class="iex-vbtn" onclick="aeCheck(3)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb3"></div>
+<div class="iex-sol" id="aesol3">$1\ \text{mm}=10^{-1}\ \text{cm}$, quindi $1\ \text{mm}^3=10^{-3}\ \text{cm}^3$. Perciò $3{,}45\ \text{mm}^3=3{,}45\times10^{-3}\ \text{cm}^3$.</div>
+</div>
 
-vi) $7{,}1\ \text{cm}^2$ in metri quadri
+<div class="iex-q" id="aerow4" style="display:none">
+<p class="iex-qt"><strong>v)</strong> Converti $0{,}0025\ \text{km}^2$ in metri quadri (m²).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem4" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(4)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(4)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m²</span>
+<button class="iex-vbtn" onclick="aeCheck(4)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb4"></div>
+<div class="iex-sol" id="aesol4">$1\ \text{km}=10^{3}\ \text{m}$, quindi $1\ \text{km}^2=10^{6}\ \text{m}^2$. Perciò $0{,}0025\ \text{km}^2=0{,}0025\times10^{6}\ \text{m}^2=2{,}5\times10^{3}\ \text{m}^2$.</div>
+</div>
 
-vii) $12{,}6\ \text{Gm}^3$ in metri cubi
+<div class="iex-q" id="aerow5" style="display:none">
+<p class="iex-qt"><strong>vi)</strong> Converti $7{,}1\ \text{cm}^2$ in metri quadri (m²).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem5" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(5)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee5" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(5)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m²</span>
+<button class="iex-vbtn" onclick="aeCheck(5)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb5"></div>
+<div class="iex-sol" id="aesol5">$1\ \text{cm}=10^{-2}\ \text{m}$, quindi $1\ \text{cm}^2=10^{-4}\ \text{m}^2$. Perciò $7{,}1\ \text{cm}^2=7{,}1\times10^{-4}\ \text{m}^2$.</div>
+</div>
 
-{% include box-end.html %}
+<div class="iex-q" id="aerow6" style="display:none">
+<p class="iex-qt"><strong>vii)</strong> Converti $12{,}6\ \text{Gm}^3$ in metri cubi (m³).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem6" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(6)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee6" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(6)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m³</span>
+<button class="iex-vbtn" onclick="aeCheck(6)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb6"></div>
+<div class="iex-sol" id="aesol6">$1\ \text{Gm}=10^{9}\ \text{m}$, quindi $1\ \text{Gm}^3=10^{27}\ \text{m}^3$. Perciò $12{,}6\ \text{Gm}^3=12{,}6\times10^{27}\ \text{m}^3=1{,}26\times10^{28}\ \text{m}^3$.</div>
+</div>
 
-# L'incertezza
+</div>
 
-Vi ricordate quello che abbiamo fatto durante la nostra prima lezione di Fisica? Abbiamo misurato il lato della lavagna e abbiamo osservato
+<script>
+(function(){
+var QAE=[
+  {v:1e-36,   tol:0.001},
+  {v:6.712e-17,tol:0.001},
+  {v:5.123456e24,tol:0.001},
+  {v:3.45e-3,  tol:0.001},
+  {v:2.5e3,    tol:0.001},
+  {v:7.1e-4,   tol:0.001},
+  {v:1.26e28,  tol:0.001}
+];
+var aeok=[false,false,false,false,false,false,false];
+var aec=[0],NAE=7;
+function parseMantAE(s){var c=s.trim();if(c.indexOf(',')!==-1)c=c.replace(',','.');return parseFloat(c);}
+function parseExpAE(s){return parseInt(s.trim().replace('−','-'),10);}
+function shootCAE(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;var cl=['#0e7490','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#22d3ee'];for(var i=0;i<55;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);}}
+function shootFWAE(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootCAE({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
+function showSolAE(id){var el=document.getElementById(id);if(el){el.style.display='block';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]);}}
+function buildDotsAE(N,showFn){var c=document.getElementById('aedots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+function updDotsAE(){var dots=document.querySelectorAll('#aedots .iex-dot');for(var i=0;i<NAE;i++)dots[i].className='iex-dot'+(i===aec[0]?' cur':'')+(aeok[i]?' ok':'');}
+function aeShow(i){document.querySelectorAll('#iex-ae .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('aerow'+i).style.display='block';aec[0]=i;document.getElementById('aeprev').disabled=(i===0);document.getElementById('aenext').disabled=(i===NAE-1);updDotsAE();}
+window.aeNav=function(d){aeShow(Math.max(0,Math.min(NAE-1,aec[0]+d)));};
+window.aeCheck=function(i){
+  var m=document.getElementById('aem'+i);
+  var e=document.getElementById('aee'+i);
+  var fb=document.getElementById('aefb'+i);
+  var vb=m?m.parentElement.querySelector('button'):null;
+  if(!m||!e||!fb)return;
+  var mv=parseMantAE(m.value),ev=parseExpAE(e.value);
+  if(isNaN(mv)||isNaN(ev)){fb.className='iex-fb err';fb.innerHTML='Inserisci coefficiente ed esponente.';return;}
+  var computed=mv*Math.pow(10,ev);
+  var q=QAE[i];
+  var isOk=Math.abs(q.v)===0?Math.abs(computed)<1e-60:Math.abs((computed-q.v)/q.v)<=q.tol;
+  if(isOk){
+    aeok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<NAE-1?' <button class="iex-nextbtn" onclick="aeShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    if(vb)shootCAE(vb);updDotsAE();
+    if(aeok.every(function(x){return x;}))setTimeout(shootFWAE,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolAE(\'aesol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+buildDotsAE(NAE,aeShow);
+})();
+</script>
 
-- che è necessario specificare l'unità di misura;
-
-*— il contenuto di questa sezione sarà completato prossimamente.*
+<script>
+(function(){
+  var n=0;
+  document.querySelectorAll('.iex-lbl').forEach(function(el){
+    if(/^Esercizio/.test(el.textContent.trim())){
+      n++;
+      el.textContent=el.textContent.trim().replace(/^Esercizio[\s ]*\d*[\s ]*(?:[—–\-][\s ]*)?/,'Esercizio '+n+' — ');
+    }
+  });
+})();
+</script>

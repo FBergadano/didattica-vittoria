@@ -69,7 +69,7 @@ a:hover { color: $cyan; text-decoration: underline; }
 
 .breadcrumb {
   font-size: 0.83rem; color: $text-muted;
-  a { color: $text-secondary; }
+  a { color: $magenta; }
 }
 
 #font-toggle {
@@ -426,6 +426,8 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
                 .box-label { color: $box-warn-border; } }
   &.box-ex    { background: $box-ex-bg;    border-color: $box-ex-border;
                 .box-label { color: $box-ex-border; } }
+  &.box-blue  { background: $box-blue-bg;  border-color: $box-blue-border;
+                .box-label { color: $box-blue-border; } }
   &.box-proof { background: $box-proof-bg; border-color: $box-proof-border;
                 .box-label { color: $box-proof-border; } }
   &.box-note  { background: $box-note-bg;  border-color: $box-note-border;
@@ -627,6 +629,12 @@ h1.chapter-title {
   padding-bottom: 0.3rem;
 }
 
+.chapter-subtitle {
+  font-family: $font-display; font-size: 1.05rem;
+  color: $text-secondary; font-style: italic;
+  margin: 0.3rem 0 0; padding: 0;
+}
+
 // ── Section / subsection / paragraph headings ─────────────────
 //
 // Diamond geometry — square side s = 1.85rem, rotated 45°:
@@ -759,9 +767,9 @@ h1.chapter-title {
   }
 
   a {
-    color: var(--accent, #{$teal}); font-size: 0.92rem;
+    color: $magenta; font-size: 0.92rem;
     text-decoration: none;
-    &:hover { text-decoration: underline; color: var(--accent); }
+    &:hover { text-decoration: underline; color: $magenta; }
   }
 }
 
@@ -775,13 +783,13 @@ h1.chapter-title {
   a {
     display: inline-flex; align-items: center; gap: 0.4rem;
     padding: 0.55rem 1rem;
-    border: 1.5px solid var(--accent-border);
+    border: 1.5px solid $magenta-light;
     border-radius: $radius-md;
-    color: var(--accent); font-size: 0.88rem;
+    color: $magenta; font-size: 0.88rem;
     font-family: $font-accessible; text-decoration: none;
     transition: background 0.15s;
     max-width: 45%;
-    &:hover { background: var(--accent-light); text-decoration: none; }
+    &:hover { background: $magenta-light; text-decoration: none; }
   }
 
   &-prev::before { content: '← '; }
@@ -983,6 +991,39 @@ cit {
 .qgf-field input:focus { outline: none; border-color: $cyan; }
 .qgf-msg { margin-top: .85rem; font-size: .95rem; min-height: 1.4em; }
 .qgf-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; display: none; }
+
+// ── iex-num / iex-hint ───────────────────────────────────────
+.iex-hint { font-size: .88rem; color: #6b7280; font-style: italic; margin: -.2rem 0 .8rem; line-height: 1.5; }
+.iex-num-row { margin-bottom: .9rem; }
+
+// ── Calcolatrice nel margine ─────────────────────────────────
+.calc-outer {
+  float: right; clear: right;
+  margin: 0 0 1.4rem 1.6rem;
+  width: 196px;
+  background: #1c1c1e;
+  border-radius: 20px;
+  padding: 14px 12px 14px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.45);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  user-select: none;
+}
+.calc-label { color: #636366; font-size: .65rem; text-align: center; margin-bottom: 4px; letter-spacing: .09em; text-transform: uppercase; }
+.calc-expr { color: #8e8e93; font-size: .78rem; text-align: right; min-height: 1.1em; padding: 0 4px; }
+.calc-disp { color: #fff; font-size: 2rem; font-weight: 300; text-align: right; padding: 0 4px 10px; line-height: 1.1; word-break: break-all; }
+.calc-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  button {
+    border: none; border-radius: 50%; height: 42px; width: 100%;
+    font-size: 1.1rem; font-weight: 500; cursor: pointer;
+    transition: filter .1s; background: #3a3a3c; color: #fff;
+    &:hover  { filter: brightness(1.35); }
+    &:active { filter: brightness(1.6); }
+    &.calc-fn  { background: #636366; }
+    &.calc-op  { background: #ff9f0a; font-size: 1.25rem; }
+    &.calc-zero { grid-column: span 2; border-radius: 21px; text-align: left; padding-left: .8rem; }
+  }
+}
 
 // ── Print / PDF export ────────────────────────────────────────
 @media print {
