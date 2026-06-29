@@ -23,12 +23,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
-
-      - name: Install bundler 4
-        run: gem install bundler -v '4.0.15'
-
-      - name: Install gems
-        run: bundle _4.0.15_ install --jobs 4 --retry 3
+          bundler-cache: true
 
       - name: Build Jekyll
         run: bundle exec jekyll build

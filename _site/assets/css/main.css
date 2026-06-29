@@ -85,7 +85,7 @@ a:hover {
   color: #718096;
 }
 .breadcrumb a {
-  color: #4a5568;
+  color: #c026d3;
 }
 
 #font-toggle {
@@ -593,11 +593,18 @@ body.accessible-font #font-toggle {
   color: #ca8a04;
 }
 .box.box-ex {
-  background: #faf5ff;
-  border-color: #7c3aed;
+  background: #ecfeff;
+  border-color: #0e7490;
 }
 .box.box-ex .box-label {
-  color: #7c3aed;
+  color: #0e7490;
+}
+.box.box-blue {
+  background: #eff6ff;
+  border-color: #3b82f6;
+}
+.box.box-blue .box-label {
+  color: #3b82f6;
 }
 .box.box-proof {
   background: #f8fafc;
@@ -910,6 +917,15 @@ h1.chapter-title {
   padding-bottom: 0.3rem;
 }
 
+.chapter-subtitle {
+  font-family: "IM Fell English", Georgia, serif;
+  font-size: 1.05rem;
+  color: #4a5568;
+  font-style: italic;
+  margin: 0.3rem 0 0;
+  padding: 0;
+}
+
 .chapter-prose {
   counter-reset: section;
 }
@@ -1035,13 +1051,13 @@ h1.chapter-title {
   font-style: italic;
 }
 .chapter-toc a {
-  color: var(--accent, #0f766e);
+  color: #c026d3;
   font-size: 0.92rem;
   text-decoration: none;
 }
 .chapter-toc a:hover {
   text-decoration: underline;
-  color: var(--accent);
+  color: #c026d3;
 }
 
 .chapter-nav {
@@ -1058,9 +1074,9 @@ h1.chapter-title {
   align-items: center;
   gap: 0.4rem;
   padding: 0.55rem 1rem;
-  border: 1.5px solid var(--accent-border);
+  border: 1.5px solid #fae8ff;
   border-radius: 10px;
-  color: var(--accent);
+  color: #c026d3;
   font-size: 0.88rem;
   font-family: "Atkinson Hyperlegible", Arial, sans-serif;
   text-decoration: none;
@@ -1068,7 +1084,7 @@ h1.chapter-title {
   max-width: 45%;
 }
 .chapter-nav a:hover {
-  background: var(--accent-light);
+  background: #fae8ff;
   text-decoration: none;
 }
 .chapter-nav-prev::before {
@@ -1607,6 +1623,95 @@ cit {
   pointer-events: none;
   z-index: 9999;
   display: none;
+}
+
+.iex-hint {
+  font-size: 0.88rem;
+  color: #6b7280;
+  font-style: italic;
+  margin: -0.2rem 0 0.8rem;
+  line-height: 1.5;
+}
+
+.iex-num-row {
+  margin-bottom: 0.9rem;
+}
+
+.calc-outer {
+  float: right;
+  clear: right;
+  margin: 0 0 1.4rem 1.6rem;
+  width: 196px;
+  background: #1c1c1e;
+  border-radius: 20px;
+  padding: 14px 12px 14px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  user-select: none;
+}
+
+.calc-label {
+  color: #636366;
+  font-size: 0.65rem;
+  text-align: center;
+  margin-bottom: 4px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.calc-expr {
+  color: #8e8e93;
+  font-size: 0.78rem;
+  text-align: right;
+  min-height: 1.1em;
+  padding: 0 4px;
+}
+
+.calc-disp {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 300;
+  text-align: right;
+  padding: 0 4px 10px;
+  line-height: 1.1;
+  word-break: break-all;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.calc-grid button {
+  border: none;
+  border-radius: 50%;
+  height: 42px;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter 0.1s;
+  background: #3a3a3c;
+  color: #fff;
+}
+.calc-grid button:hover {
+  filter: brightness(1.35);
+}
+.calc-grid button:active {
+  filter: brightness(1.6);
+}
+.calc-grid button.calc-fn {
+  background: #636366;
+}
+.calc-grid button.calc-op {
+  background: #ff9f0a;
+  font-size: 1.25rem;
+}
+.calc-grid button.calc-zero {
+  grid-column: span 2;
+  border-radius: 21px;
+  text-align: left;
+  padding-left: 0.8rem;
 }
 
 @media print {
