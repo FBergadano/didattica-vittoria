@@ -476,6 +476,7 @@ Queste 7 grandezze definiscono il <definizione>Sistema Internazionale</definizio
 ### La differenza tra grandezze fondamentali e grandezze derivate
 Tutte le altre grandezze fisiche possono essere derivate a partire dalle grandezze nella tabella, tramite le leggi della fisica. Sono perciò dette <definizione>grandezze derivate</definizione>.  
 Immaginatevi le 7 grandezze fisiche nella tabella come delle note musicali: esse si combinano in opportuni accordi (le formule della Fisica) e producono un nuovo suono, che è quello delle altre grandezze (come velocità, accelerazione, forza, etc.). Ad esempio, la velocità esprime semplicemente *quanto spazio percorro in un certo tempo*, quindi per misurare la velocità mi basta misurare lo spazio e il tempo.
+<a id="def-si" style="display:block;height:0;overflow:hidden" aria-hidden="true"></a>
 {% include box-imp.html titolo="Il Sistema Internazionale di Unità di Misura"%}
 
 Il Sistema Internazionale di Unità di Misura è un sistema di *convenzioni* che ha scelto 7 grandezze fondamentali, a ciascuna delle quali ha associato un'unità di misura. Tutte le altre grandezze possono essere ottenute a partire da queste.
@@ -2718,11 +2719,11 @@ var qarc=[0],NQAR=4;
 function parseVA(s){s=s.trim().replace(/\s+/g,'').replace(/,/,'.');s=s.replace(/[×x·]\s*10\^?\(?(-?\d+\.?\d*)\)?/i,'e$1');s=s.replace(/\*\s*10\^?\(?(-?\d+)\)?/,'e$1');return parseFloat(s);}
 function shootCA(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<55;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);}}
 function shootFWA(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootCA({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
-function showSolA(id){var el=document.getElementById(id);if(el)el.style.display='block';}
+window.showSolA=function(id){var el=document.getElementById(id);if(el)el.style.display='block';};
 function buildDotsA(N,showFn){var c=document.getElementById('qardots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
 function updDotsA(){var dots=document.querySelectorAll('#qardots .iex-dot');for(var i=0;i<NQAR;i++)dots[i].className='iex-dot'+(i===qarc[0]?' cur':'')+(qarok[i]?' ok':'');}
-function qarShow(i){document.querySelectorAll('#qar .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('qarrow'+i).style.display='block';qarc[0]=i;document.getElementById('qarprev').disabled=(i===0);document.getElementById('qarnext').disabled=(i===NQAR-1);updDotsA();}
-window.qarNav=function(d){qarShow(Math.max(0,Math.min(NQAR-1,qarc[0]+d)));};
+window.qarShow=function(i){document.querySelectorAll('#qar .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('qarrow'+i).style.display='block';qarc[0]=i;document.getElementById('qarprev').disabled=(i===0);document.getElementById('qarnext').disabled=(i===NQAR-1);updDotsA();}
+window.qarNav=function(d){window.qarShow(Math.max(0,Math.min(NQAR-1,qarc[0]+d)));};
 window.qarCheck=function(i){
   var inp=document.getElementById('qarinp'+i);
   var fb=document.getElementById('qarfb'+i);
@@ -2741,7 +2742,7 @@ window.qarCheck=function(i){
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolA(\'qarsol'+i+'\')">vedi la soluzione</button>.';
   }
 };
-buildDotsA(NQAR,qarShow);
+buildDotsA(NQAR,window.qarShow);
 })();
 </script>
 
@@ -3143,11 +3144,11 @@ var qvolc=[0],NQVOL=4;
 function parseVV(s){s=s.trim().replace(/\s+/g,'').replace(/,/,'.');s=s.replace(/[×x·]\s*10\^?\(?(-?\d+\.?\d*)\)?/i,'e$1');s=s.replace(/\*\s*10\^?\(?(-?\d+)\)?/,'e$1');return parseFloat(s);}
 function shootCV(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<55;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);}}
 function shootFWV(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootCV({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
-function showSolV(id){var el=document.getElementById(id);if(el)el.style.display='block';}
+window.showSolV=function(id){var el=document.getElementById(id);if(el)el.style.display='block';};
 function buildDotsV(N,showFn){var c=document.getElementById('qvoldots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
 function updDotsV(){var dots=document.querySelectorAll('#qvoldots .iex-dot');for(var i=0;i<NQVOL;i++)dots[i].className='iex-dot'+(i===qvolc[0]?' cur':'')+(qvolok[i]?' ok':'');}
-function qvolShow(i){document.querySelectorAll('#qvol .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('qvolrow'+i).style.display='block';qvolc[0]=i;document.getElementById('qvolprev').disabled=(i===0);document.getElementById('qvolnext').disabled=(i===NQVOL-1);updDotsV();}
-window.qvolNav=function(d){qvolShow(Math.max(0,Math.min(NQVOL-1,qvolc[0]+d)));};
+window.qvolShow=function(i){document.querySelectorAll('#qvol .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('qvolrow'+i).style.display='block';qvolc[0]=i;document.getElementById('qvolprev').disabled=(i===0);document.getElementById('qvolnext').disabled=(i===NQVOL-1);updDotsV();}
+window.qvolNav=function(d){window.qvolShow(Math.max(0,Math.min(NQVOL-1,qvolc[0]+d)));};
 window.qvolCheck=function(i){
   var inp=document.getElementById('qvolinp'+i);
   var fb=document.getElementById('qvolfb'+i);
@@ -3166,7 +3167,7 @@ window.qvolCheck=function(i){
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolV(\'qvolsol'+i+'\')">vedi la soluzione</button>.';
   }
 };
-buildDotsV(NQVOL,qvolShow);
+buildDotsV(NQVOL,window.qvolShow);
 })();
 </script>
 
@@ -3187,7 +3188,7 @@ buildDotsV(NQVOL,qvolShow);
 <button class="iex-vbtn" onclick="aeCheck(0)">Verifica</button>
 </div>
 <div class="iex-fb" id="aefb0"></div>
-<div class="iex-sol" id="aesol0">$1\ \mu\text{m}=10^{-6}\ \text{m}=10^{-12}\ \text{Mm}$, quindi $1\ \mu\text{m}^3=(10^{-12})^3\ \text{Mm}^3=10^{-36}\ \text{Mm}^3$.</div>
+<div class="iex-sol" id="aesol0">$1\ µ\text{m}=10^{-6}\ \text{m}=10^{-12}\ \text{Mm}$, quindi $1\ µ\text{m}^3=(10^{-12})^3\ \text{Mm}^3=10^{-36}\ \text{Mm}^3$.</div>
 </div>
 
 <div class="iex-q" id="aerow1" style="display:none">
@@ -3281,11 +3282,11 @@ function parseMantAE(s){var c=s.trim();if(c.indexOf(',')!==-1)c=c.replace(',','.
 function parseExpAE(s){return parseInt(s.trim().replace('−','-'),10);}
 function shootCAE(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;var cl=['#0e7490','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#22d3ee'];for(var i=0;i<55;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);}}
 function shootFWAE(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootCAE({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
-function showSolAE(id){var el=document.getElementById(id);if(el){el.style.display='block';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]);}}
+window.showSolAE=function(id){var el=document.getElementById(id);if(el){el.style.display='block';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]);}};
 function buildDotsAE(N,showFn){var c=document.getElementById('aedots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
 function updDotsAE(){var dots=document.querySelectorAll('#aedots .iex-dot');for(var i=0;i<NAE;i++)dots[i].className='iex-dot'+(i===aec[0]?' cur':'')+(aeok[i]?' ok':'');}
-function aeShow(i){document.querySelectorAll('#iex-ae .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('aerow'+i).style.display='block';aec[0]=i;document.getElementById('aeprev').disabled=(i===0);document.getElementById('aenext').disabled=(i===NAE-1);updDotsAE();}
-window.aeNav=function(d){aeShow(Math.max(0,Math.min(NAE-1,aec[0]+d)));};
+window.aeShow=function(i){document.querySelectorAll('#iex-ae .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('aerow'+i).style.display='block';aec[0]=i;document.getElementById('aeprev').disabled=(i===0);document.getElementById('aenext').disabled=(i===NAE-1);updDotsAE();}
+window.aeNav=function(d){window.aeShow(Math.max(0,Math.min(NAE-1,aec[0]+d)));};
 window.aeCheck=function(i){
   var m=document.getElementById('aem'+i);
   var e=document.getElementById('aee'+i);
@@ -3307,7 +3308,7 @@ window.aeCheck=function(i){
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolAE(\'aesol'+i+'\')">vedi la soluzione</button>.';
   }
 };
-buildDotsAE(NAE,aeShow);
+buildDotsAE(NAE,window.aeShow);
 })();
 </script>
 
@@ -3322,3 +3323,577 @@ buildDotsAE(NAE,aeShow);
   });
 })();
 </script>
+
+# Esercizi di riepilogo
+### Le unità di misura e il Sistema Internazionale
+
+{% include ex.html diff=1%}
+Abbiamo visto che misurando il lato della lavagna con due campioni diversi (ad esempio un cancellino e una biro) ottenevamo risultati diversi (ad esempio 9.3 cancellini e 7.3 biro). In generale, abbiamo concluso che cambiando il campione cambia il risultato della misurazione. Come è stato risolto questo problema dalla comunità scientifica?
+{% include ex-sol.html %}
+Adottando un Sistema Internazionale di unità di misura, in cui cioè le misurazioni sono sempre riferite allo stesso campione, in tutto il mondo.
+{% include ex-sol-end.html %}
+
+
+{% include ex.html diff=1%}
+Associa a ogni grandezza fisica fondamentale la rispettiva unità di misura e poi a ogni unità di misura il rispettivo simbolo.
+{% capture _d %}[
+  {"l":"Lunghezza",                  "m":"metro",        "r":"m"},
+  {"l":"Massa",                      "m":"chilogrammo",  "r":"kg"},
+  {"l":"Tempo",                      "m":"secondo",      "r":"s"},
+  {"l":"Corrente elettrica",         "m":"ampere",       "r":"A"},
+  {"l":"Temperatura",                "m":"kelvin",       "r":"K"},
+  {"l":"Quantità di sostanza",       "m":"mole",         "r":"mol"},
+  {"l":"Intensità luminosa",         "m":"candela",      "r":"cd"}
+]{% endcapture %}
+{% include match.html id="g7" dati=_d col1="Grandezza fondamentale" col2="Unità SI" col3="Simbolo" %}
+{% include ex-end.html %}
+
+
+{% include ex.html diff=1 %}
+Inserisci ciascuna delle seguenti grandezze nella colonna appropriata.
+
+{% capture _sort %}[
+  {"t":"Velocità",                    "c":0},
+  {"t":"Forza",                       "c":0},
+  {"t":"Accelerazione",               "c":0},
+  {"t":"Energia",                     "c":0},
+  {"t":"Pressione",                   "c":0},
+  {"t":"Area",                        "c":0},
+  {"t":"Lunghezza",                   "c":1},
+  {"t":"Massa",                       "c":1},
+  {"t":"Tempo",                       "c":1},
+  {"t":"Corrente elettrica",          "c":1},
+  {"t":"Temperatura",   "c":1},
+  {"t":"Quantità di sostanza",        "c":1}
+]{% endcapture %}
+{% include sort.html id="sort-gf" dati=_sort col0="Grandezze derivate" col1="Grandezze fondamentali" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Prova a formulare una definizione del Sistema Internazionale, completando la frase.
+
+{% include def-compare.html id="dc-si"
+   testo="Il Sistema Internazionale è..."
+   link="#def-si"
+   label="Confronta con la definizione nel riquadro" %}
+{% include ex-end.html %}
+
+### La notazione scientifica e la conversione tra prefissi nelle grandezze fondamentali
+
+{% include ex.html diff=1 %}
+Per ciascuna delle seguenti parole, associa il numero corrispondente, poi associa la sua espressione in notazione scientifica.
+
+{% capture _d %}[
+  {"l":"uno",             "m":"1",                   "r":"$10^0$"},
+  {"l":"dieci",           "m":"10",                  "r":"$10^1$"},
+  {"l":"cento",           "m":"100",                 "r":"$10^2$"},
+  {"l":"mille",           "m":"1 000",               "r":"$10^3$"},
+  {"l":"diecimila",       "m":"10 000",              "r":"$10^4$"},
+  {"l":"centomila",       "m":"100 000",             "r":"$10^5$"},
+  {"l":"un milione",      "m":"1 000 000",           "r":"$10^6$"},
+  {"l":"un miliardo",     "m":"1 000 000 000",       "r":"$10^9$"},
+  {"l":"cento miliardi",  "m":"100 000 000 000",     "r":"$10^{11}$"}
+]{% endcapture %}
+{% include match.html id="noti" dati=_d col1="Nome" col2="Numero" col3="Notazione scientifica" %}
+
+{% include ex-end.html %}
+
+{% include ex.html %}
+Riordina i seguenti numeri dal più piccolo al più grande trascinando le caselle.
+
+{% capture _d %}[
+  {"t":"$10^{-100}$",   "pos":0},
+  {"t":"$10^{-6}$",     "pos":1},
+  {"t":"$10^0$",        "pos":2},
+  {"t":"$10^6$",        "pos":3},
+  {"t":"2 milioni e mezzo",             "pos":4},
+  {"t":"10 000 000",    "pos":5},
+  {"t":"$10^{100}$",    "pos":6}
+]{% endcapture %}
+{% include order.html id="ord1" dati=_d direz="dal più piccolo al più grande" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Esprimi i seguenti valori in notazione scientifica.
+
+{% include sci.html prima="450 000 000 000 =" coeff="4.5" exp="11" s="4.5 × 10¹¹" %}
+{% include sci.html prima="73 000 000 000 =" coeff="7.3" exp="10" s="7.3 × 10¹⁰" %}
+{% include sci.html prima="8 600 000 000 000 =" coeff="8.6" exp="12" s="8.6 × 10¹²" %}
+{% include sci.html prima="0,000 000 032 =" coeff="3.2" exp="-8" s="3.2 × 10⁻⁸" %}
+{% include sci.html prima="0,000 000 000 051 =" coeff="5.1" exp="-11" s="5.1 × 10⁻¹¹" %}
+{% include sci.html prima="0,000 000 000 74 =" coeff="7.4" exp="-10" s="7.4 × 10⁻¹⁰" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Riscrivi i seguenti valori per esteso (senza spazi).
+
+{% include fill.html prima="$2.9 \times 10^{11}$ =" ok="290000000000" s="290 000 000 000" %}
+{% include fill.html prima="$6.1 \times 10^{9}$ =" ok="6100000000" s="6 100 000 000" %}
+{% include fill.html prima="$1.7 \times 10^{13}$ =" ok="17000000000000" s="17 000 000 000 000" %}
+{% include fill.html prima="$4.5 \times 10^{-9}$ =" ok="0.0000000045,0,0000000045" s="0,000 000 004 5" %}
+{% include fill.html prima="$8.3 \times 10^{-7}$ =" ok="0.00000083,0,00000083" s="0,000 000 83" %}
+{% include fill.html prima="$3.0 \times 10^{-11}$ =" ok="0.00000000003,0,00000000003" s="0,000 000 000 030" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Ogni anno nell'Universo nascono circa $3 \times 10^{11}$ stelle. Quante stelle nasceranno nel prossimo millennio?
+
+{% include sci.html coeff="3" exp="14" s="3 × 10¹⁴" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Nel 2023 le entrate fiscali di un piccolo paese europeo sono state di $4{,}5 \times 10^{11}$ €, mentre le spese pubbliche hanno raggiunto $3{,}9 \times 10^{11}$ €. Qual è il bilancio dello stato (entrate meno spese)?
+
+{% include sci.html coeff="6" exp="10" s="6 × 10¹⁰ €" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Calcola e scrivi il risultato in notazione scientifica.
+
+$$\frac{(4 \times 10^8) \times (3 \times 10^5)}{(2 \times 10^6) \times (6 \times 10^3)}$$
+
+{% include sci.html coeff="1" exp="4" s="1 × 10⁴" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Calcola e scrivi il risultato in notazione scientifica.
+
+$$\frac{(5 \times 10^9) \times (6 \times 10^4)}{(3 \times 10^7) \times (2 \times 10^3)}$$
+
+{% include sci.html coeff="5" exp="3" s="5 × 10³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Calcola il risultato delle seguenti operazioni in notazione scientifica. Cerca di non usare la calcolatrice: riconduci prima ogni numero alla forma $a \times 10^n$ e poi esegui i calcoli a mente!
+
+{% include sci.html prima="$\dfrac{80\,000}{0{,}04} =$" coeff="2" exp="6" s="2 × 10⁶" %}
+{% include sci.html prima="$4\,000\,000 \times 0{,}000\,02 =$" coeff="8" exp="1" s="8 × 10¹" %}
+{% include sci.html prima="$\dfrac{0{,}016}{0{,}000\,000\,4} =$" coeff="4" exp="4" s="4 × 10⁴" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Il numero di stelle visibili a occhio nudo dalla Terra è circa 9 000. Quando Galileo inventò il primo telescopio poteva però vederne circa $3\times 10^4$. Quante stelle ha scoperto Galileo, in notazione scientifica?
+
+{% include sci.html coeff="2.1" exp="4" s="2.1 × 10⁴" %}
+{% include ex-end.html %}
+
+
+
+{% include ex.html diff=1 %}
+Una macchina accesa emette circa $2\times 10^{-3}$ kg di CO₂ al secondo. In questo momento nel mondo ci sono circa $5 \times 10^{8}$ macchine accese. Stima la quantità totale di CO₂ emessa in questo secondo, in chilogrammi.
+
+{% include sci.html coeff="1" exp="6" s="1 × 10⁶ kg" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Una tonnellata sono 1 000 chilogrammi. Esprimi $7.6 \times 10^7$ tonnellate in chilogrammi.
+
+{% include sci.html coeff="7.6" exp="10" s="7.6 × 10¹⁰ kg" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Un quintale sono 100 chilogrammi. Esprimi $1.5 \times 10^8$ kg in quintali.
+
+{% include sci.html coeff="1.5" exp="6" s="1.5 × 10⁶ quintali" %}
+{% include ex-end.html %}
+
+{% capture _d %}[
+  {"t":"1 pm",  "pos":0},
+  {"t":"1 nm",  "pos":1},
+  {"t":"1 µm",  "pos":2},
+  {"t":"1 cm",  "pos":3},
+  {"t":"1 dam", "pos":4},
+  {"t":"1 hm",  "pos":5},
+  {"t":"1 km",  "pos":6},
+  {"t":"1 Gm",  "pos":7},
+  {"t":"1 Tm",  "pos":8}
+]{% endcapture %}
+{% include ex.html diff=1 %}
+Riordina le seguenti lunghezze dal più piccolo al più grande.
+
+{% include order.html id="ord-pref" dati=_d direz="dal più piccolo al più grande" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Il raggio della Terra è $R = 6\,400$ km. Usando la formula $C = 2\pi R$ e $\pi \approx 3.14$, calcola la lunghezza dell'equatore ed esprimila in notazione scientifica con una sola cifra prima della virgola (in km).
+
+{% include sci.html coeff="4.0,4" exp="4" s="4,0 × 10⁴ km" %}
+
+Ricordando che la superficie di una sfera si calcola come $S = 4\pi R^2$, trova la superficie terrestre (in km²).
+
+{% include sci.html coeff="5.1" exp="8" tol=2 s="5,1 × 10⁸ km²" %}
+
+Sapendo che il 70% della superficie terrestre è acqua, calcola la superficie totale delle acque terrestri (in km²).
+{% include sci.html coeff="3.6" exp="8" tol=2 s="3,6 × 10⁸ km²" %}
+
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+L'universo osservabile contiene circa $2 \times 10^{12}$ galassie. Supponi che ogni galassia abbia esattamente un pianeta abitato con una popolazione pari a quella terrestre (circa $8 \times 10^9$ esseri). Stima il numero totale di esseri viventi nell'universo.
+
+{% include sci.html coeff="1.6" exp="22" s="1.6 × 10²²" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Il volume di Giove è $1.4 \times 10^{15}$ km³, quello della Terra è $1.1 \times 10^{12}$ km³. Quante volte la Terra è contenuta in Giove?
+
+{% include sci.html coeff="1.3,1.27,1.4" exp="3" s="≈ 1.3 × 10³" %}
+
+Sapendo che Giove è contenuto circa $10^3$ volte nel Sole, quante volte sarebbe contenuta la Terra nel Sole?
+
+{% include sci.html coeff="1.3,1.27,1.4" exp="6" s="≈ 1.3 × 10⁶" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Investi 34,5 euro in un'azione il cui valore aumenta di 100 volte ogni anno. *(Esercizio ipotetico: nella realtà i rendimenti sono ben diversi.)* Dopo 6 anni, quale sarà il valore dell'azione in euro?
+
+{% include sci.html coeff="3.45,3.4,3.5" exp="13" s="3.45 × 10¹³ euro" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Una persona ha in media $8.6 \times 10^{10}$ neuroni. La popolazione mondiale è circa $8 \times 10^9$ persone. Quanti neuroni umani ci sono nel mondo?
+
+{% include sci.html coeff="6.9,6.88,6.8,7" exp="20" s="≈ 6.9 × 10²⁰" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Il patrimonio totale di tutte le persone del mondo è circa $5.5\times 10^{14}$ dollari. Gli abitanti della Terra sono circa 8.2 miliardi. Se fosse distribuito equamente, quanti dollari spetterebbero a ciascuno?
+
+*Indizio: converti prima entrambi i dati in notazione scientifica.*
+
+{% include sci.html coeff="6.7" exp="4" s="6.7 × 10⁴ dollari, ovvero 67 mila euro per ciascuno." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Converti le seguenti lunghezze in metri, usando la notazione scientifica.
+
+{% include sci.html prima="$10^6$ km =" coeff="1" exp="9" s="1 × 10⁹ m" %}
+{% include sci.html prima="$10^{-12}$ Gm =" coeff="1" exp="-3" s="1 × 10⁻³ m" %}
+{% include sci.html prima="$10^4$ nm =" coeff="1" exp="-5" s="1 × 10⁻⁵ m" %}
+{% include sci.html prima="$5 \times 10^3$ cm =" coeff="5" exp="1" s="5 × 10¹ m" %}
+{% include sci.html prima="$2 \times 10^{-4}$ Tm =" coeff="2" exp="8" s="2 × 10⁸ m" %}
+{% include sci.html prima="$3 \times 10^6$ µm =" coeff="3" exp="0" s="3 × 10⁰ m = 3 m" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Converti le seguenti masse in kilogrammi, usando la notazione scientifica.
+
+{% include sci.html prima="$4 \times 10^6$ g =" coeff="4" exp="3" s="4 × 10³ kg" %}
+{% include sci.html prima="$6 \times 10^{-2}$ t =" coeff="6" exp="1" s="6 × 10¹ kg" %}
+{% include sci.html prima="$3 \times 10^{10}$ mg =" coeff="3" exp="4" s="3 × 10⁴ kg" %}
+{% include sci.html prima="$9 \times 10^{14}$ µg =" coeff="9" exp="5" s="9 × 10⁵ kg" %}
+{% include sci.html prima="$5 \times 10^{-3}$ t =" coeff="5" exp="0" s="5 × 10⁰ kg = 5 kg" %}
+{% include sci.html prima="$2 \times 10^{-4}$ t =" coeff="2" exp="-1" s="2 × 10⁻¹ kg" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Converti i seguenti intervalli di tempo in secondi, usando la notazione scientifica.
+
+{% include sci.html prima="$4 \times 10^6$ ms =" coeff="4" exp="3" s="4 × 10³ s" %}
+{% include sci.html prima="$6 \times 10^4$ µs =" coeff="6" exp="-2" s="6 × 10⁻² s" %}
+{% include sci.html prima="$2 \times 10^8$ ns =" coeff="2" exp="-1" s="2 × 10⁻¹ s" %}
+{% include sci.html prima="$5 \times 10^2$ min =" coeff="3" exp="4" s="3 × 10⁴ s" %}
+{% include sci.html prima="$7 \times 10^{-2}$ ks =" coeff="7" exp="1" s="7 × 10¹ s" %}
+{% include sci.html prima="$1.5 \times 10^4$ min =" coeff="9" exp="5" s="9 × 10⁵ s" %}
+{% include ex-end.html %}
+
+{% capture _d %}[
+  {"t":"$10^2$ pm",     "pos":0},
+  {"t":"1 nm",          "pos":1},
+  {"t":"$10^{-2}$ cm",  "pos":2},
+  {"t":"$10^5$ µm",     "pos":3},
+  {"t":"10 dam",        "pos":4},
+  {"t":"100 km",        "pos":5},
+  {"t":"10 000 hm",     "pos":6},
+  {"t":"$10^{-2}$ Gm",  "pos":7},
+  {"t":"$10^{-3}$ Tm",  "pos":8}
+]{% endcapture %}
+{% include ex.html diff=2 %}
+Riordina le seguenti lunghezze dal più piccolo al più grande.
+
+*Indizio: converti tutto in metri.*
+
+{% include order.html id="ord-pref2" dati=_d direz="dal più piccolo al più grande" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+I neutrini solari sono particelle quasi prive di massa prodotte dalle reazioni nel Sole. Ogni secondo, attraverso ogni cm² del tuo corpo, passano circa $6.5 \times 10^{10}$ neutrini. La sezione trasversale di una persona è circa $10^4$ cm². Quanti neutrini ti attraversano al secondo?
+
+{% include sci.html coeff="6.5" exp="14" s="6.5 × 10¹⁴ neutrini/s" %}
+
+E quanti in una vita di 80 anni? (Usa $1\,\text{anno} \approx 3.15 \times 10^7$ s.)
+
+{% include sci.html coeff="1.6,1.64" exp="24" s="≈ 1.6 × 10²⁴ neutrini" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Un computer portatile esegue circa $3 \times 10^7$ somme al secondo. Quante somme riesce a eseguire in un'ora?
+
+{% include sci.html coeff="1.08,1.1" exp="11" s="1.08 × 10¹¹" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+La Terra si è formata circa $4.57 \times 10^9$ anni fa. Quanti secoli sono passati? Quanti minuti?
+
+{% include sci.html prima="Secoli =" coeff="4.57,4.6" exp="7" s="4.57 × 10⁷ secoli" %}
+{% include sci.html prima="Minuti =" coeff="2.4,2.40,2.40" exp="15" s="2.4 × 10¹⁵ minuti" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Un anno-luce è la distanza percorsa dalla luce in un anno. Sapendo che la luce percorre $3 \times 10^8$ m al secondo, e approssimando un anno con 365 giorni, calcola quanti metri corrisponde un anno-luce.
+
+{% include sci.html coeff="9.5,9.46,9.461,9.47" exp="15" tol=2 s="≈ 9.5 × 10¹⁵ m" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Un treno parte da Torino alle 13:30 e arriva a Milano alle 15:25. Quanti minuti sono trascorsi? E quanti secondi? Esprimi entrambi in notazione scientifica.
+
+{% include sci.html prima="Minuti =" coeff="1.15,1.2" exp="2" s="1.15 × 10² min" %}
+{% include sci.html prima="Secondi =" coeff="6.9" exp="3" s="6.9 × 10³ s" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Quanti giorni hai vissuto? Calcola il risultato e scrivilo in notazione scientifica. Poi inserisci la tua data di nascita per verificare.
+
+<div class="sci-wrap" id="dob-sci">
+<span class="sci-nota"><input class="sci-c" id="dob-c" type="text" autocomplete="off"><span class="sci-x">&times;&thinsp;10<span class="sci-pow"><input class="sci-e" id="dob-e" type="text" autocomplete="off"></span></span></span>
+</div>
+
+<div style="margin:.5rem 0 .2rem;display:flex;align-items:center;gap:.25rem;flex-wrap:wrap;font-size:.88rem;color:#6b7280">
+Per la verifica — data di nascita:
+<input type="number" id="dob-d" min="1" max="31" placeholder="GG" style="width:3rem;font-size:.88rem;border:1.5px solid #d1d5db;border-radius:5px;padding:.12rem .3rem;text-align:center">
+<span>/</span>
+<input type="number" id="dob-m" min="1" max="12" placeholder="MM" style="width:3rem;font-size:.88rem;border:1.5px solid #d1d5db;border-radius:5px;padding:.12rem .3rem;text-align:center">
+<span>/</span>
+<input type="number" id="dob-y" min="1900" max="2026" placeholder="AAAA" style="width:4.5rem;font-size:.88rem;border:1.5px solid #d1d5db;border-radius:5px;padding:.12rem .3rem;text-align:center">
+<button id="dob-v" style="background:var(--accent);color:#fff;border:none;border-radius:5px;padding:.15rem .65rem;cursor:pointer;font-size:.86rem">✓ Verifica</button>
+<span class="sci-fb" id="dob-fb"></span>
+</div>
+<script>
+(function(){
+window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+var ic=document.getElementById('dob-c'),ie=document.getElementById('dob-e');
+var vBtn=document.getElementById('dob-v'),fb=document.getElementById('dob-fb');
+vBtn.addEventListener('click',function(){
+  var d=parseInt(document.getElementById('dob-d').value);
+  var m=parseInt(document.getElementById('dob-m').value);
+  var y=parseInt(document.getElementById('dob-y').value);
+  if(isNaN(d)||isNaN(m)||isNaN(y)||d<1||d>31||m<1||m>12||y<1900||y>2026){
+    fb.textContent='Inserisci una data valida.';fb.className='sci-fb err';return;
+  }
+  var dob=new Date(y,m-1,d),today=new Date();
+  var totalDays=Math.floor((today-dob)/86400000);
+  if(totalDays<=0){fb.textContent='Data non valida.';fb.className='sci-fb err';return;}
+  var exp=Math.floor(Math.log10(totalDays));
+  var coeffExact=totalDays/Math.pow(10,exp);
+  var cv=parseFloat(ic.value.trim().replace(',','.').replace('−','-'));
+  var ev=parseInt(ie.value.trim().replace('−','-'));
+  var cok=!isNaN(cv)&&Math.abs(cv-coeffExact)<0.1;
+  var eok=ev===exp;
+  ic.classList.toggle('ok',cok);ic.classList.toggle('err',!cok);
+  ie.classList.toggle('ok',eok);ie.classList.toggle('err',!eok);
+  if(cok&&eok){fb.textContent='✓ Corretto! Hai vissuto '+totalDays+' giorni.';fb.className='sci-fb ok';_shoot(vBtn);}
+  else{fb.textContent='→ '+coeffExact.toFixed(1)+' × 10^'+exp+' ('+totalDays+' giorni)';fb.className='sci-fb err';}
+});
+[ic,ie].forEach(function(el){el.addEventListener('keydown',function(e){if(e.key==='Enter')vBtn.click();});});
+})();
+</script>
+{% include ex-end.html %}
+
+### Grandezze derivate: area e volume
+
+{% include ex.html diff=1 %}
+Indica se ciascuna delle seguenti grandezze si misura in **m**, **m²** o **m³**.
+
+{% include fill.html prima="La distanza da casa a scuola" tipo="drop" opts="m|m²|m³" ok="m" dopo="." %}
+{% include fill.html prima="La superficie terrestre" tipo="drop" opts="m|m²|m³" ok="m²" dopo="." %}
+{% include fill.html prima="La quantità d'acqua per riempire una piscina" tipo="drop" opts="m|m²|m³" ok="m³" dopo="." %}
+{% include fill.html prima="L'altezza di una persona" tipo="drop" opts="m|m²|m³" ok="m" dopo="." %}
+{% include fill.html prima="La superficie di un campo da calcio" tipo="drop" opts="m|m²|m³" ok="m²" dopo="." %}
+{% include fill.html prima="Il volume di un pallone da basket" tipo="drop" opts="m|m²|m³" ok="m³" dopo="." %}
+{% include fill.html prima="La larghezza di un fiume" tipo="drop" opts="m|m²|m³" ok="m" dopo="." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Un campo da tennis (doppio) misura 24 m di lunghezza e 11 m di larghezza. Calcola la sua area.
+
+{% include fill.html prima="Area =" ok="264" dopo=" m²" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+La vasca della Fontana di Trevi può essere approssimata con un cilindro di raggio $r = 10$ m e altezza $h = 1$ m. Calcola il volume d'acqua che può contenere.
+
+{% include spoiler.html testo="Formula e valore di π" %}
+$V_{\text{cil}} = \pi r^2 h$, con $\pi \approx 3{,}14$.
+{% include spoiler-end.html %}
+
+{% include fill.html prima="Volume ≈" ok="314,314.0" dopo=" m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Un litro corrisponde a $1\,\text{dm}^3$. Convertilo in m³ e in cm³, esprimendo il risultato in notazione scientifica.
+
+{% include sci.html prima="$1\,\text{dm}^3$ in m³ =" coeff="1" exp="-3" s="1 × 10⁻³ m³" %}
+{% include sci.html prima="$1\,\text{dm}^3$ in cm³ =" coeff="1" exp="3" s="1 × 10³ cm³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Un adulto medio ispira circa 500 L di aria all'ora. Converti in m³.
+
+{% include sci.html prima="500 L =" coeff="5" exp="-1" s="5 × 10⁻¹ m³ (cioè 0,5 m³)" %}
+
+In una vita di 80 anni, quanti m³ di aria ispira una persona?
+
+{% include sci.html coeff="3.5,3.504,3.51" exp="5" tol=3 s="≈ 3.5 × 10⁵ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Calcola il rapporto tra $1\,\text{m}^2$ e $4\,\text{mm}^2$.
+
+{% include sci.html prima="$\dfrac{1\,\text{m}^2}{4\,\text{mm}^2} =$" coeff="2.5" exp="5" s="2.5 × 10⁵" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Un **ettaro** corrisponde a $1\,\text{hm}^2$. Convertilo in m² usando la notazione scientifica.
+
+{% include sci.html prima="$1\,\text{hm}^2 =$" coeff="1" exp="4" s="1 × 10⁴ m²" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Una piscina olimpionica ha un'area di $1{,}25 \times 10^7\,\text{cm}^2$ e una profondità di $2 \times 10^3\,\text{mm}$. Calcola il volume in m³.
+
+{% include sci.html coeff="2.5" exp="3" s="2.5 × 10³ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Converti le seguenti aree in m², usando la notazione scientifica.
+
+{% include sci.html prima="$100\,µ\text{m}^2 =$" coeff="1" exp="-10" s="1 × 10⁻¹⁰ m²" %}
+{% include sci.html prima="$10^5\,\text{nm}^2 =$" coeff="1" exp="-13" s="1 × 10⁻¹³ m²" %}
+{% include sci.html prima="$10^{-20}\,\text{Gm}^2 =$" coeff="1" exp="-2" s="1 × 10⁻² m²" %}
+{% include sci.html prima="$5 \times 10^4\,\text{km}^2 =$" coeff="5" exp="10" s="5 × 10¹⁰ m²" %}
+{% include sci.html prima="$3 \times 10^{-2}\,\text{cm}^2 =$" coeff="3" exp="-6" s="3 × 10⁻⁶ m²" %}
+{% include sci.html prima="$7 \times 10^3\,\text{mm}^2 =$" coeff="7" exp="-3" s="7 × 10⁻³ m²" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Converti i seguenti volumi in m³, usando la notazione scientifica.
+
+{% include sci.html prima="$4 \times 10^6\,µ\text{m}^3 =$" coeff="4" exp="-12" s="4 × 10⁻¹² m³" %}
+{% include sci.html prima="$2 \times 10^{12}\,\text{nm}^3 =$" coeff="2" exp="-15" s="2 × 10⁻¹⁵ m³" %}
+{% include sci.html prima="$5 \times 10^3\,\text{dm}^3 =$" coeff="5" exp="0" s="5 × 10⁰ m³ = 5 m³" %}
+{% include sci.html prima="$8 \times 10^7\,\text{cm}^3 =$" coeff="8" exp="1" s="8 × 10¹ m³" %}
+{% include sci.html prima="$3 \times 10^{-2}\,\text{km}^3 =$" coeff="3" exp="7" s="3 × 10⁷ m³" %}
+{% include sci.html prima="$9 \times 10^4\,\text{mm}^3 =$" coeff="9" exp="-5" s="9 × 10⁻⁵ m³" %}
+{% include ex-end.html %}
+
+{% capture _d %}[
+  {"t":"10 nm³","pos":0},
+  {"t":"10³ µm³","pos":1},
+  {"t":"0,1 dm³","pos":2},
+  {"t":"5×10⁴ cm³","pos":3},
+  {"t":"1 m³","pos":4}
+]{% endcapture %}
+{% include ex.html diff=2 %}
+Riordina i seguenti volumi dal più piccolo al più grande.
+
+{% include order.html id="ord-vol" dati=_d direz="dal più piccolo al più grande" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Un capello lungo 20 cm è assimilabile a un cilindro di raggio $r = 40\,µ\text{m}$. Calcola il suo volume in m³.
+
+{% include spoiler.html testo="Formula e valore di π" %}
+$V_{\text{cil}} = \pi r^2 h$, con $\pi \approx 3{,}14$.
+{% include spoiler-end.html %}
+
+{% include sci.html coeff="1,1.0" exp="-9" tol=5 s="1.0 × 10⁻⁹ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Un foglio di carta A4 ha i lati di 21 cm e 30 cm e uno spessore di 0,1 mm.
+
+Calcola la superficie del foglio:
+
+{% include fill.html prima="Superficie =" ok="630,630.0" dopo=" cm²" %}
+
+Calcola il volume del foglio in cm³:
+
+{% include sci.html prima="Volume =" coeff="6.3" exp="0" s="6.3 × 10⁰ cm³ = 6.3 cm³" %}
+
+Quanti fogli servono per formare un libro alto 5 cm?
+
+{% include sci.html prima="Fogli =" coeff="5" exp="2" s="5 × 10² = 500 fogli" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Un atomo di idrogeno è approssimabile con una sfera di raggio $r = 0{,}05\,\text{nm}$. Calcola il suo volume in m³.
+
+{% include spoiler.html testo="Formula e valore di π" %}
+$V_{\text{sfera}} = \dfrac{4}{3}\pi r^3$, con $\pi \approx 3{,}14$.
+{% include spoiler-end.html %}
+
+{% include sci.html coeff="5.2,5.24" exp="-31" tol=5 s="≈ 5.2 × 10⁻³¹ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+L'universo osservabile è approssimabile con una sfera di raggio $r = 4{,}4 \times 10^{14}\,\text{Tm}$. Calcola il suo volume in m³.
+
+{% include spoiler.html testo="Formula e valore di π" %}
+$V_{\text{sfera}} = \dfrac{4}{3}\pi r^3$, con $\pi \approx 3{,}14$.
+{% include spoiler-end.html %}
+
+{% include sci.html coeff="3.6,3.57" exp="80" tol=5 s="≈ 3.6 × 10⁸⁰ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Il raggio della Luna è $r = 1{,}74 \times 10^6$ m. Calcola il volume della Luna in m³.
+
+{% include spoiler.html testo="Formula e valore di π" %}
+$V_{\text{sfera}} = \dfrac{4}{3}\pi r^3$, con $\pi \approx 3{,}14$.
+{% include spoiler-end.html %}
+
+{% include sci.html coeff="2.2,2.21" exp="19" tol=3 s="≈ 2.2 × 10¹⁹ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Il raggio del Sole è $r = 7{,}0 \times 10^8$ m. Calcola la superficie totale del Sole in m².
+
+{% include spoiler.html testo="Formula e valore di π" %}
+$S_{\text{sfera}} = 4\pi r^2$, con $\pi \approx 3{,}14$.
+{% include spoiler-end.html %}
+
+{% include sci.html coeff="6.2,6.15" exp="18" tol=3 s="≈ 6.2 × 10¹⁸ m²" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+La Piramide di Cheope ha una base quadrata di lato 230 m e un'altezza originaria di 146 m. Calcola il suo volume.
+
+{% include spoiler.html testo="Formula del volume di una piramide a base quadrata" %}
+$V = \dfrac{1}{3}b^2 h$, dove $b$ è il lato della base e $h$ è l'altezza.
+{% include spoiler-end.html %}
+
+{% include sci.html coeff="2.6,2.57" exp="6" tol=3 s="≈ 2.6 × 10⁶ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Un grande iceberg può essere approssimato come un cubo di lato 500 m. Calcola il suo volume.
+
+{% include sci.html coeff="1.25,1.3" exp="8" s="1.25 × 10⁸ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+La città più grande del mondo per superficie è Chongqing, in Cina, con i suoi 82 400 km². Esprimila in m².
+
+{% include sci.html prima="Chongqing =" coeff="8.24,8.2" exp="10" s="8.24 × 10¹⁰ m²" %}
+
+Quante volte la superficie di Torino (pari a $1{,}30 \times 10^8$ m²) è compresa in quella di Chongqing?
+
+{% include sci.html prima="Rapporto =" coeff="6.3,6.34" exp="2" tol=3 s="≈ 6.3 × 10² (circa 634 volte)" %}
+{% include ex-end.html %}
+
+
+
+
+
+  

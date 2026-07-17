@@ -1,0 +1,124 @@
+{% comment %}
+Esercizio di classificazione: trascina le voci nella colonna giusta.
+Parametri:
+  id   — ID univoco (default "s1")
+  dati — array JSON: [{"t":"Velocità","c":0},{"t":"Lunghezza","c":1},...]
+          c=0 → colonna sinistra, c=1 → colonna destra
+  col0 — intestazione colonna sinistra
+  col1 — intestazione colonna destra
+Esempio:
+  {% capture _s %}[
+    {"t":"Velocità","c":0},{"t":"Forza","c":0},
+    {"t":"Lunghezza","c":1},{"t":"Massa","c":1}
+  ]{% endcapture %}
+  {% include sort.html id="s1" dati=_s col0="Grandezze derivate" col1="Grandezze fondamentali" %}
+{% endcomment %}
+{% assign _sid = include.id | default: "s1" %}
+<div class="sort-widget" id="sw-{{ _sid }}">
+<p class="sort-hint">Trascina ogni voce nella colonna appropriata.</p>
+<div class="sort-pool" id="sp-{{ _sid }}"></div>
+<div class="sort-table">
+<div class="sort-zone">
+<div class="sort-zone-hdr">{{ include.col0 }}</div>
+<div class="sort-zone-body" id="szb-{{ _sid }}-0" data-cat="0"></div>
+</div>
+<div class="sort-zone">
+<div class="sort-zone-hdr">{{ include.col1 }}</div>
+<div class="sort-zone-body" id="szb-{{ _sid }}-1" data-cat="1"></div>
+</div>
+</div>
+<div class="sort-ctrl">
+<button class="sort-vbtn" id="sv-{{ _sid }}">✓ Verifica</button>
+<button class="sort-rbtn" id="sr-{{ _sid }}">↺ Ricomincia</button>
+</div>
+<div class="sort-fb" id="sf-{{ _sid }}"></div>
+</div>
+<script>
+(function(){
+var D={{ include.dati }},ID='{{ _sid }}';
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=0|Math.random()*(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var pool=document.getElementById('sp-'+ID);
+var zones=[document.getElementById('szb-'+ID+'-0'),document.getElementById('szb-'+ID+'-1')];
+var fb=document.getElementById('sf-'+ID);
+var dragging=null,ghost=null,overZone=null,ox=0,oy=0;
+
+function getZone(x,y){ghost.style.display='none';var el=document.elementFromPoint(x,y);ghost.style.display='';return el?el.closest('.sort-zone-body,.sort-pool'):null;}
+
+function onDown(e){
+  e.preventDefault();
+  var el=this;
+  dragging=el;
+  var r=el.getBoundingClientRect();
+  ox=e.clientX-r.left;oy=e.clientY-r.top;
+  ghost=el.cloneNode(true);
+  ghost.className='sort-item sort-ghost';
+  ghost.style.cssText+='width:'+r.width+'px;left:'+(e.clientX-ox)+'px;top:'+(e.clientY-oy)+'px;';
+  document.body.appendChild(ghost);
+  el.classList.add('sort-dragging');
+  fb.className='sort-fb';fb.textContent='';
+  el.querySelectorAll('.correct,.wrong').forEach(function(x){x.classList.remove('correct','wrong');});
+  el.classList.remove('correct','wrong');
+  document.addEventListener('pointermove',onMove,{passive:false});
+  document.addEventListener('pointerup',onUp);
+  document.addEventListener('pointercancel',onUp);
+}
+
+function onMove(e){
+  e.preventDefault();
+  if(!ghost)return;
+  ghost.style.left=(e.clientX-ox)+'px';ghost.style.top=(e.clientY-oy)+'px';
+  var z=getZone(e.clientX,e.clientY);
+  if(overZone!==z){if(overZone)overZone.classList.remove('over');overZone=z;if(overZone)overZone.classList.add('over');}
+}
+
+function onUp(){
+  document.removeEventListener('pointermove',onMove);
+  document.removeEventListener('pointerup',onUp);
+  document.removeEventListener('pointercancel',onUp);
+  if(ghost){ghost.remove();ghost=null;}
+  if(!dragging)return;
+  var el=dragging;dragging=null;
+  el.classList.remove('sort-dragging');
+  if(overZone){overZone.classList.remove('over');overZone.appendChild(el);overZone=null;}
+}
+
+function mkItem(d){
+  var el=document.createElement('span');
+  el.className='sort-item';el.textContent=d.t;
+  el.dataset.c=d.c;el.style.touchAction='none';
+  el.addEventListener('pointerdown',onDown);
+  return el;
+}
+
+function render(){
+  pool.innerHTML='';zones[0].innerHTML='';zones[1].innerHTML='';
+  fb.className='sort-fb';fb.textContent='';
+  shuf(D).forEach(function(d){pool.appendChild(mkItem(d));});
+}
+
+window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+
+document.getElementById('sv-'+ID).addEventListener('click',function(){
+  if(pool.querySelector('.sort-item')){fb.className='sort-fb err';fb.textContent='Posiziona tutti gli elementi prima di verificare.';return;}
+  var allOk=true;
+  [0,1].forEach(function(ci){
+    zones[ci].querySelectorAll('.sort-item').forEach(function(el){
+      var ok=parseInt(el.dataset.c)===ci;
+      el.classList.toggle('correct',ok);el.classList.toggle('wrong',!ok);
+      if(!ok)allOk=false;
+    });
+  });
+  var btn=document.getElementById('sv-'+ID);
+  if(allOk){
+    fb.className='sort-fb ok';fb.textContent='✓ Perfetto! Tutti gli elementi sono nella colonna giusta.';
+    _shoot(btn);
+    for(var b=0;b<5;b++)(function(b){setTimeout(function(){_shoot({getBoundingClientRect:function(){return{left:window.innerWidth*(.1+Math.random()*.8),top:window.innerHeight*(.1+Math.random()*.5),width:0,height:0};}});},b*200);})(b);
+  } else {
+    fb.className='sort-fb err';fb.textContent='✗ Alcuni elementi non sono nella colonna giusta. Quelli corretti sono in verde, gli altri in rosso.';
+  }
+});
+
+document.getElementById('sr-'+ID).addEventListener('click',render);
+render();
+})();
+</script>

@@ -68,6 +68,115 @@ La derivata di $f$ in $x_0$ è $f'(x_0) = \lim_{h\to 0}\frac{f(x_0+h)-f(x_0)}{h}
 {% include box-end.html %}
 ```
 
+## Esercizi interattivi
+
+### Box esercizio (numerazione automatica)
+
+```liquid
+# Senza soluzione
+{% include ex.html %}
+Testo dell'esercizio con $formule$ e tutto il markdown.
+{% include ex-end.html %}
+
+# Con soluzione in spoiler
+{% include ex.html diff=2 %}
+Testo dell'esercizio.
+{% include ex-sol.html %}
+La soluzione è $x = 2$.
+{% include ex-sol-end.html %}
+
+# Due colonne (responsive: una colonna su mobile)
+<div class="ex-2col">
+{% include ex.html %}Primo esercizio.{% include ex-end.html %}
+{% include ex.html %}Secondo esercizio.{% include ex-end.html %}
+</div>
+```
+
+- Numerazione automatica (CSS counter, azzera ad ogni capitolo)
+- `diff=1/2/3` aggiunge ★/★★/★★★ sotto il numero
+- Due colonne: avvolgere in `<div class="ex-2col">`
+
+### Vero/Falso interattivo
+
+```liquid
+{% include tf.html q="La velocità è un vettore." ok=true s="Sì, ha direzione e verso." %}
+{% include tf.html q="L'energia si misura in Newton." ok=false s="No, si misura in Joule (J)." %}
+```
+
+- `q` — testo (HTML ammesso)
+- `ok` — `true` o `false`
+- `s` — spiegazione opzionale mostrata dopo la risposta
+- Risposta giusta → coriandoli; sbagliata → messaggio rosso
+
+### Completa la frase
+
+```liquid
+# Menu a tendina
+{% include fill.html prima="L'unità SI della forza è il"
+   tipo="drop" opts="Newton|Joule|Pascal" ok="Newton"
+   dopo="." s="N = kg·m/s²." %}
+
+# Testo libero (accetta varianti separate da virgola)
+{% include fill.html prima="La derivata dello spostamento è la"
+   ok="velocità,velocita" dopo=" istantanea." %}
+```
+
+- `prima`/`dopo` — testo prima/dopo la lacuna
+- `tipo` — `"drop"` (tendina) oppure `"text"` (default)
+- `opts` — opzioni tendina, separate da `|`
+- `ok` — risposta corretta; più varianti separate da `,`
+- `s` — spiegazione opzionale
+- Risposta giusta → coriandoli; sbagliata → messaggio rosso
+
+### Abbinamento a tre colonne
+
+```liquid
+{% capture _dati %}[
+  {"l":"Lunghezza",         "m":"metro",       "r":"m"},
+  {"l":"Massa",             "m":"chilogrammo", "r":"kg"},
+  {"l":"Tempo",             "m":"secondo",     "r":"s"}
+]{% endcapture %}
+{% include match.html id="id-univoco" dati=_dati col1="Grandezza" col2="Unità SI" col3="Simbolo" %}
+```
+
+- `dati` — array JSON con `l`/`m`/`r` (left/middle/right); stesso indice = abbinamento corretto
+- `col1`/`col2`/`col3` — intestazioni delle tre colonne
+- `id` — ID univoco (usare un ID diverso per ogni widget nella stessa pagina)
+- Lo studente clicca i pallini per tracciare linee di collegamento
+- Bottone **Verifica** → linee verdi/rosse + coriandoli se tutto corretto
+- Bottone **Mescola** → nuova disposizione casuale
+- Nascosto in stampa PDF
+
+### Classificazione drag-and-drop
+
+```liquid
+{% capture _s %}[
+  {"t":"Velocità","c":0},{"t":"Forza","c":0},
+  {"t":"Lunghezza","c":1},{"t":"Massa","c":1}
+]{% endcapture %}
+{% include sort.html id="id-univoco" dati=_s col0="Grandezze derivate" col1="Grandezze fondamentali" %}
+```
+
+- `dati` — array JSON: `c=0` → colonna sinistra, `c=1` → colonna destra
+- `col0`/`col1` — intestazioni delle due colonne
+- Lo studente trascina le voci (funziona anche su touch/mobile)
+- Verifica: chip verde/rosso + coriandoli se tutto giusto
+- Nascosto in stampa PDF
+
+### Scrivi e confronta (definizioni)
+
+```liquid
+{% include def-compare.html id="id-univoco"
+   testo="Il Sistema Internazionale è..."
+   link="#def-si"
+   label="Confronta con la definizione nel riquadro" %}
+```
+
+- `testo` — incipit della definizione (mostrato sopra il campo)
+- `link` — ancora nel testo a cui confrontarsi (es. `#def-si`)
+- `label` — testo del link (default: "Confronta con la definizione nel testo")
+- In stampa: il campo è visibile come area tratteggiata, il link sparisce
+
 ## Altri elementi
 
 ```

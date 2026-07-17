@@ -1,0 +1,34 @@
+{% comment %}
+Completa la frase — dropdown o testo libero.
+Parametri:
+  prima — testo prima della lacuna (obbligatorio)
+  dopo  — testo dopo la lacuna (opzionale)
+  tipo  — "drop" (menu a tendina) oppure "text" (default, testo libero)
+  opts  — opzioni per il dropdown, separate da | (solo con tipo="drop")
+  ok    — risposta corretta; più varianti separate da virgola
+           es. ok="velocità,velocita" (accetta entrambe)
+  s     — spiegazione mostrata dopo la risposta (opzionale, HTML ammesso)
+Esempi:
+  {% include fill.html prima="L'unità SI della forza è il" tipo="drop" opts="Newton|Joule|Pascal" ok="Newton" dopo="." s="N = kg·m/s²" %}
+  {% include fill.html prima="La derivata dello spostamento è la" ok="velocità,velocita" dopo=" istantanea." %}
+{% endcomment %}
+<p class="fill-wrap">{{ include.prima }}{% if include.tipo == "drop" %}<select class="fill-sel">
+<option value="">—</option>{% assign _opts = include.opts | split: "|" %}{% for o in _opts %}<option value="{{ o }}">{{ o }}</option>{% endfor %}
+</select>{% else %}<input class="fill-inline" type="text" placeholder="…" size="{{ include.ok | size | plus: 4 }}">{% endif %}{{ include.dopo }}<button class="fill-vbtn" data-ok="{{ include.ok | escape }}" data-sol="{{ include.s | escape }}" onclick="_fillchk(this)">✓</button></p>
+<div class="fill-fb"></div>
+<script>
+if(!window._fillReady){window._fillReady=1;
+window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+window._fillchk=function(btn){
+  var wrap=btn.closest('.fill-wrap'),fb=wrap.nextElementSibling;
+  var inp=wrap.querySelector('input,select'),v=(inp.value||'').trim();
+  var ok=btn.dataset.ok.split(','),sol=btn.dataset.sol||'';
+  if(!v){fb.className='fill-fb err';fb.textContent='Scrivi o seleziona una risposta.';return;}
+  function norm(s){return s.toLowerCase().replace(/[àáâ]/g,'a').replace(/[èéê]/g,'e').replace(/[ìíî]/g,'i').replace(/[òóô]/g,'o').replace(/[ùúû]/g,'u').trim();}
+  var found=ok.some(function(a){return norm(a)===norm(v);});
+  fb.className='fill-fb '+(found?'ok':'err');
+  fb.innerHTML=(found?'✓ Esatto!':'✗ Sbagliato.')+(sol?'&ensp;<small style="color:#6b7280">'+sol+'</small>':'');
+  if(found){_shoot(btn);if(window.MathJax)MathJax.typesetPromise([fb]);}
+};
+}
+</script>

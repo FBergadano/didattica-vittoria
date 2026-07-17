@@ -1,0 +1,42 @@
+{% comment %}
+Inserimento di un risultato in notazione scientifica (coefficiente + esponente).
+Usa sempre _d come variabile dati — non richiede variabile dati.
+
+Parametri:
+  prima  — testo o formula LaTeX prima degli spazi (es. "450 000 000 000 =")
+  coeff  — coefficiente corretto; varianti separate da virgola (es. "4.5,4,50")
+  exp    — esponente corretto; varianti separate da virgola (es. "11" oppure "-3")
+  s      — soluzione mostrata dopo risposta errata (opzionale)
+  tol    — tolleranza percentuale sul coefficiente (es. tol=5 accetta ±5%); default: 0 (corrispondenza esatta)
+
+Rendering: [prima]  [ coeff ] × 10^[ exp ]  [✓]  feedback
+
+Esempio:
+  {% include sci.html prima="450 000 000 000 =" coeff="4.5" exp="11" s="4.5 × 10¹¹" %}
+{% endcomment %}
+<div class="sci-wrap" data-coeff="{{ include.coeff | escape }}" data-exp="{{ include.exp | escape }}" data-sol="{{ include.s | escape }}" data-tol="{{ include.tol | default: 0 }}">{% if include.prima %}<span class="sci-prima">{{ include.prima }}</span>{% endif %}<span class="sci-nota"><input class="sci-c" type="text" autocomplete="off" spellcheck="false"><span class="sci-x">&times;&thinsp;10<span class="sci-pow"><input class="sci-e" type="text" autocomplete="off" spellcheck="false"></span></span></span><button class="sci-btn">✓</button><span class="sci-fb"></span></div>
+<script>
+(function(){
+window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+var sc=document.currentScript,w=sc.previousElementSibling;
+while(w&&!w.classList.contains('sci-wrap')){w=w.previousElementSibling;}
+var ic=w.querySelector('.sci-c'),ie=w.querySelector('.sci-e');
+var btn=w.querySelector('.sci-btn'),fb=w.querySelector('.sci-fb');
+var okc=w.dataset.coeff.split(',').map(function(x){return x.trim();});
+var oke=w.dataset.exp.split(',').map(function(x){return x.trim();});
+function norm(v){return v.trim().replace(',','.').replace('−','-').replace('+','');}
+var tol=parseFloat(w.dataset.tol||'0');
+function chk(){
+  var cv=norm(ic.value),ev=norm(ie.value);
+  var cvf=parseFloat(cv),cok,eok=oke.indexOf(ev)>=0;
+  if(tol>0&&!isNaN(cvf)){cok=okc.some(function(ok){var ref=parseFloat(ok);return Math.abs(cvf-ref)<=Math.abs(ref)*tol/100+0.001;});}
+  else{cok=okc.indexOf(cv)>=0;}
+  ic.classList.toggle('ok',cok);ic.classList.toggle('err',!cok);
+  ie.classList.toggle('ok',eok);ie.classList.toggle('err',!eok);
+  if(cok&&eok){fb.textContent='✓';fb.className='sci-fb ok';_shoot(btn);}
+  else{var sol=w.dataset.sol;fb.textContent=sol?('→ '+sol):'';fb.className='sci-fb err';}
+}
+btn.addEventListener('click',chk);
+[ic,ie].forEach(function(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter')chk();});});
+})();
+</script>
