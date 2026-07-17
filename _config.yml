@@ -3,8 +3,8 @@ description: "Materiale didattico interattivo di Matematica e Fisica"
 author: "Prof. Fulvio Bergadano"
 school: "Liceo Vittoria, Torino"
 email: ""           # aggiungi la tua email se vuoi
-baseurl: "/bergadano-didattica"         # lascia vuoto se il sito è nella root di GitHub Pages
-url: "https://tuousername.github.io"   # ← sostituisci con il tuo GitHub username
+baseurl: "/didattica-vittoria"         # lascia vuoto se il sito è nella root di GitHub Pages
+url: "https://fbergadano.github.io"   # ← sostituisci con il tuo GitHub username
 
 # Build
 markdown: kramdown
