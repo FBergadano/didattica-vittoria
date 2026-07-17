@@ -1,0 +1,9 @@
+{% comment %}
+Apre un esercizio numerato automaticamente.
+Parametri:
+  diff — difficoltà: 1 (★), 2 (★★), 3 (★★★) — opzionale
+Chiudere con:
+  {% include ex-end.html %}                         (senza soluzione)
+  {% include ex-sol.html %} … {% include ex-sol-end.html %}  (con soluzione)
+{% endcomment %}
+{% assign _exdiff = include.diff | plus: 0 %}<div class="ex-box"><div class="ex-badge">{% if _exdiff > 0 %}<span class="ex-diff">{% for i in (1.._exdiff) %}★{% endfor %}</span>{% endif %}</div><div class="ex-body" markdown="1">

@@ -1,0 +1,19 @@
+{% comment %}
+Campo libero per scrivere una definizione, con link al testo di riferimento.
+Parametri:
+  id    — ID univoco (default "dc1")
+  testo — frase iniziale incompleta (es. "Il Sistema Internazionale è...")
+  link  — ancora nel testo a cui confrontarsi (es. "#def-si")
+  label — testo del link (default: "Confronta con la definizione nel testo")
+Esempio:
+  {% include def-compare.html id="dc1"
+     testo="Il Sistema Internazionale è..."
+     link="#def-si"
+     label="Confronta con la definizione nel riquadro" %}
+{% endcomment %}
+{% assign _did = include.id | default: "dc1" %}
+<div class="defcmp">
+<p class="defcmp-prompt">{{ include.testo }}</p>
+<textarea class="defcmp-area" id="dca-{{ _did }}" rows="4" placeholder="Scrivi qui la tua risposta…" spellcheck="false"></textarea>
+{% if include.link %}<a class="defcmp-link" href="{{ include.link }}">{{ include.label | default: "Confronta con la definizione nel testo" }}</a>{% endif %}
+</div>

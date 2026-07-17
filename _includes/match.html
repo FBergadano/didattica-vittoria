@@ -1,0 +1,155 @@
+{% comment %}
+Esercizio di abbinamento a 2 o 3 colonne con linee interattive.
+Usa sempre la stessa variabile _d per i dati — viene sovrascritta ad ogni uso, non è un problema.
+
+Parametri:
+  id   — ID univoco (obbligatorio se più widget nella stessa pagina)
+  col1 — intestazione colonna sinistra  (obbligatorio)
+  col2 — intestazione colonna centrale  (ometti per 2 colonne)
+  col3 — intestazione colonna destra    (obbligatorio)
+  dati — array JSON: [{"l":"...","m":"...","r":"..."},...] per 3 colonne
+                     [{"l":"...","r":"..."},...] per 2 colonne
+          stesso indice = abbinamento corretto
+
+Esempio 3 colonne:
+  {% capture _d %}[
+    {"l":"Lunghezza","m":"metro","r":"m"},
+    {"l":"Massa","m":"chilogrammo","r":"kg"}
+  ]{% endcapture %}
+  {% include match.html id="m1" dati=_d col1="Grandezza" col2="Unità SI" col3="Simbolo" %}
+
+Esempio 2 colonne:
+  {% capture _d %}[
+    {"l":"Velocità","r":"m/s"},
+    {"l":"Forza","r":"N"}
+  ]{% endcapture %}
+  {% include match.html id="m2" dati=_d col1="Grandezza" col3="Unità" %}
+{% endcomment %}
+{% assign _mid = include.id | default: "m1" %}
+<div class="match-widget" id="mw-{{ _mid }}">
+<div class="match-body" id="mb-{{ _mid }}">
+<div class="match-cols" id="mc-{{ _mid }}">
+<div class="match-col"><div class="match-col-hdr">{{ include.col1 }}</div></div>
+{% if include.col2 %}<div class="match-col match-col-mid"><div class="match-col-hdr">{{ include.col2 }}</div></div>{% endif %}
+<div class="match-col"><div class="match-col-hdr">{{ include.col3 }}</div></div>
+</div>
+<svg class="match-svg" id="ms-{{ _mid }}"></svg>
+</div>
+<div class="match-ctrl">
+<button class="match-vbtn" id="mv-{{ _mid }}">✓ Verifica</button>
+<button class="match-rbtn" id="mr-{{ _mid }}">↺ Mescola</button>
+</div>
+<div class="match-fb" id="mf-{{ _mid }}"></div>
+</div>
+<script>
+(function(){
+var D={{ include.dati }},ID='{{ _mid }}',N=D.length;
+var COLS={{ include.col2 | size }} > 0 ? 3 : 2;
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=0|Math.random()*(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var LI,MI,RI,cLM={},cMR={},cLR={},pend=null;
+var wrap=document.getElementById('mw-'+ID);
+var body=document.getElementById('mb-'+ID);
+var colEls=document.getElementById('mc-'+ID).querySelectorAll('.match-col');
+var svg=document.getElementById('ms-'+ID);
+var fb=document.getElementById('mf-'+ID);
+
+function ondot(){
+  var dot=this,c=dot.dataset.c,i=parseInt(dot.dataset.i);
+  if(!pend){
+    wrap.querySelectorAll('.match-dot').forEach(function(d){d.classList.remove('active');});
+    pend={c:c,i:i};dot.classList.add('active');
+  } else {
+    var p=pend;pend=null;
+    wrap.querySelectorAll('.match-dot').forEach(function(d){d.classList.remove('active');});
+    var ok=false;
+    if(COLS===3){
+      if((p.c==='L'&&c==='ML')||(p.c==='ML'&&c==='L')){
+        var li=p.c==='L'?p.i:i,mi=p.c==='ML'?p.i:i;
+        Object.keys(cLM).forEach(function(k){if(parseInt(k)===li||cLM[k]===mi){rmln(lid('LM',k));delete cLM[k];}});
+        cLM[li]=mi;mkln('LM',li);ok=true;
+      } else if((p.c==='MR'&&c==='R')||(p.c==='R'&&c==='MR')){
+        var mi2=p.c==='MR'?p.i:i,ri=p.c==='R'?p.i:i;
+        Object.keys(cMR).forEach(function(k){if(parseInt(k)===mi2||cMR[k]===ri){rmln(lid('MR',k));delete cMR[k];}});
+        cMR[mi2]=ri;mkln('MR',mi2);ok=true;
+      }
+    } else {
+      if((p.c==='L'&&c==='R')||(p.c==='R'&&c==='L')){
+        var li2=p.c==='L'?p.i:i,ri2=p.c==='R'?p.i:i;
+        Object.keys(cLR).forEach(function(k){if(parseInt(k)===li2||cLR[k]===ri2){rmln(lid('LR',k));delete cLR[k];}});
+        cLR[li2]=ri2;mkln('LR',li2);ok=true;
+      }
+    }
+    if(!ok){pend={c:c,i:i};dot.classList.add('active');}
+    fb.className='match-fb';fb.textContent='';
+  }
+}
+function mkDot(c,i){var d=document.createElement('span');d.className='match-dot';d.dataset.c=c;d.dataset.i=i;d.addEventListener('click',ondot);return d;}
+function mkTxt(t){var s=document.createElement('span');s.className='match-text';s.innerHTML=t;return s;}
+
+function render(){
+  for(var ci=0;ci<colEls.length;ci++){var h=colEls[ci].querySelector('.match-col-hdr').cloneNode(true);colEls[ci].innerHTML='';colEls[ci].appendChild(h);}
+  LI=shuf(D.map(function(d,i){return{t:d.l,k:i};}));
+  RI=shuf(D.map(function(d,i){return{t:d.r,k:i};}));
+  if(COLS===3) MI=shuf(D.map(function(d,i){return{t:d.m,k:i};}));
+  LI.forEach(function(v,i){var r=document.createElement('div');r.className='match-item match-item-L';r.appendChild(mkTxt(v.t));r.appendChild(mkDot('L',i));colEls[0].appendChild(r);});
+  if(COLS===3){
+    MI.forEach(function(v,i){var r=document.createElement('div');r.className='match-item match-item-M';r.appendChild(mkDot('ML',i));r.appendChild(mkTxt(v.t));r.appendChild(mkDot('MR',i));colEls[1].appendChild(r);});
+    RI.forEach(function(v,i){var r=document.createElement('div');r.className='match-item match-item-R';r.appendChild(mkDot('R',i));r.appendChild(mkTxt(v.t));colEls[2].appendChild(r);});
+  } else {
+    RI.forEach(function(v,i){var r=document.createElement('div');r.className='match-item match-item-R';r.appendChild(mkDot('R',i));r.appendChild(mkTxt(v.t));colEls[1].appendChild(r);});
+  }
+  cLM={};cMR={};cLR={};pend=null;svg.innerHTML='';
+  fb.className='match-fb';fb.textContent='';
+  rsz();
+  if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise([document.getElementById('mc-'+ID)]).catch(function(){});}
+}
+
+function dpos(dot){var d=dot.getBoundingClientRect(),b=body.getBoundingClientRect();return{x:d.left+d.width/2-b.left,y:d.top+d.height/2-b.top};}
+function lid(type,i){return 'ml-'+ID+'-'+type+'-'+i;}
+function rmln(id){var e=document.getElementById(id);if(e)e.remove();}
+function mkln(type,i){
+  rmln(lid(type,i));
+  var d1,d2,mi,ri;
+  if(type==='LM'){mi=cLM[i];if(mi===undefined)return;d1=wrap.querySelector('[data-c="L"][data-i="'+i+'"]');d2=wrap.querySelector('[data-c="ML"][data-i="'+mi+'"]');}
+  else if(type==='MR'){ri=cMR[i];if(ri===undefined)return;d1=wrap.querySelector('[data-c="MR"][data-i="'+i+'"]');d2=wrap.querySelector('[data-c="R"][data-i="'+ri+'"]');}
+  else{ri=cLR[i];if(ri===undefined)return;d1=wrap.querySelector('[data-c="L"][data-i="'+i+'"]');d2=wrap.querySelector('[data-c="R"][data-i="'+ri+'"]');}
+  if(!d1||!d2)return;
+  var p1=dpos(d1),p2=dpos(d2),l=document.createElementNS('http://www.w3.org/2000/svg','line');
+  l.setAttribute('x1',p1.x);l.setAttribute('y1',p1.y);l.setAttribute('x2',p2.x);l.setAttribute('y2',p2.y);
+  l.setAttribute('id',lid(type,i));l.setAttribute('class','match-line');
+  svg.appendChild(l);
+}
+function redraw(){
+  Object.keys(cLM).forEach(function(i){mkln('LM',parseInt(i));});
+  Object.keys(cMR).forEach(function(i){mkln('MR',parseInt(i));});
+  Object.keys(cLR).forEach(function(i){mkln('LR',parseInt(i));});
+}
+function rsz(){var b=body.getBoundingClientRect();svg.setAttribute('width',b.width);svg.setAttribute('height',b.height);svg.style.height=b.height+'px';redraw();}
+
+window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+
+document.getElementById('mv-'+ID).addEventListener('click',function(){
+  var incomplete=COLS===3?(Object.keys(cLM).length<N||Object.keys(cMR).length<N):(Object.keys(cLR).length<N);
+  if(incomplete){fb.className='match-fb err';fb.textContent='Collega tutti gli elementi prima di verificare.';return;}
+  svg.querySelectorAll('.match-line').forEach(function(l){l.setAttribute('class','match-line');});
+  var allOk=true;
+  if(COLS===3){
+    Object.keys(cLM).forEach(function(li){li=parseInt(li);var mi=cLM[li],lmok=LI[li].k===MI[mi].k;document.getElementById(lid('LM',li)).setAttribute('class','match-line '+(lmok?'ok':'err'));if(!lmok)allOk=false;});
+    Object.keys(cMR).forEach(function(mi){mi=parseInt(mi);var ri=cMR[mi],mrok=MI[mi].k===RI[ri].k;document.getElementById(lid('MR',mi)).setAttribute('class','match-line '+(mrok?'ok':'err'));if(!mrok)allOk=false;});
+  } else {
+    Object.keys(cLR).forEach(function(li){li=parseInt(li);var ri=cLR[li],ok=LI[li].k===RI[ri].k;document.getElementById(lid('LR',li)).setAttribute('class','match-line '+(ok?'ok':'err'));if(!ok)allOk=false;});
+  }
+  var btn=document.getElementById('mv-'+ID);
+  if(allOk){
+    fb.className='match-fb ok';fb.textContent='✓ Perfetto! Tutti i collegamenti sono corretti.';
+    _shoot(btn);
+    for(var b=0;b<5;b++)(function(b){setTimeout(function(){_shoot({getBoundingClientRect:function(){return{left:window.innerWidth*(.1+Math.random()*.8),top:window.innerHeight*(.1+Math.random()*.5),width:0,height:0};}});},b*220);})(b);
+  } else {
+    fb.className='match-fb err';fb.textContent='✗ Qualche collegamento non è corretto. Quelli giusti sono in verde, gli sbagliati in rosso.';
+  }
+});
+document.getElementById('mr-'+ID).addEventListener('click',render);
+window.addEventListener('resize',function(){setTimeout(rsz,100);});
+render();
+})();
+</script>
