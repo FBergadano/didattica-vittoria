@@ -1,0 +1,22 @@
+{% assign _fid = include.id | default: "frayer" %}
+<div class="frayer" id="frayer-{{ _fid }}">
+  <div class="frayer-term">{{ include.termine }}</div>
+  <div class="frayer-grid">
+    <div class="frayer-quad frayer-def">
+      <p class="frayer-quad-label">{{ include.def_label | default: "Definizione" }}</p>
+      <textarea placeholder="{{ include.def_hint | default: 'Scrivi la definizione con parole tue…' }}" aria-label="Definizione di {{ include.termine }}"></textarea>
+    </div>
+    <div class="frayer-quad frayer-car">
+      <p class="frayer-quad-label">{{ include.car_label | default: "Caratteristiche essenziali" }}</p>
+      <textarea placeholder="{{ include.car_hint | default: 'Quali proprietà non possono mai mancare?' }}" aria-label="Caratteristiche di {{ include.termine }}"></textarea>
+    </div>
+    <div class="frayer-quad frayer-ex">
+      <p class="frayer-quad-label">{{ include.ex_label | default: "Esempi" }}</p>
+      <textarea placeholder="{{ include.ex_hint | default: 'Fai almeno un esempio concreto…' }}" aria-label="Esempi di {{ include.termine }}"></textarea>
+    </div>
+    <div class="frayer-quad frayer-nonex">
+      <p class="frayer-quad-label">{{ include.nonex_label | default: "Non-esempi" }}</p>
+      <textarea placeholder="{{ include.nonex_hint | default: 'Cosa sembra questo concetto, ma non lo è?' }}" aria-label="Non-esempi di {{ include.termine }}"></textarea>
+    </div>
+  </div>
+</div>

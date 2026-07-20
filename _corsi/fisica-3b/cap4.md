@@ -1,6 +1,6 @@
 ---
 layout: capitolo
-title: "Lavoro ed energia"
+title: "I Vettori"
 corso: fisica-3b
 corso_titolo: "Fisica 3ª B"
 materia: fisica

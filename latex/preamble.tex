@@ -1,0 +1,1012 @@
+% ============================================================
+%  ENCODING E FONT
+% ============================================================
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+% ============================================================
+%  LINGUE
+% ============================================================
+\usepackage{polyglossia}
+\setmainlanguage{italian}
+\setotherlanguage[variant=ancient]{greek}
+
+% ============================================================
+%  MATEMATICA
+% ============================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{physics}
+\usepackage{yhmath}
+\usepackage{cancel}
+\usepackage{bbm}
+
+% unicode-math va caricato dopo amsmath/amssymb/amsfonts (altrimenti conflitti
+% tipo "\eth already defined"); fornisce il font matematico per XeLaTeX.
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Pagella Math}
+
+%dimensionimatematica
+\makeatletter
+\DeclareMathSizes{\@xpt}{10}{7.5}{6}    % testo 10pt
+\DeclareMathSizes{\@xipt}{10}{7.5}{6}   % testo 11pt
+\DeclareMathSizes{\@xiipt}{10}{7.5}{6}  % testo 12pt
+\makeatother
+
+% Spaziatura display math
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{4pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{2pt}
+
+% Comandi matematici
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\sse}{ \ \textup{sse} \ }
+\newcommand{\tc}{ \textup{ t.c. }}
+\newcommand{\under}[1]{_{\textup{#1}}}
+\newcommand{\sopra}[1]{^{\textup{#1}}}
+\newcommand{\tonde}[1]{\left(#1\right)}
+\newcommand{\quadre}[1]{\left[#1\right]}
+\newcommand{\graffe}[1]{\left\lbrace #1 \right\rbrace}
+\newcommand{\et}{\wedge}
+\newcommand{\vel}{\vee}
+\newcommand{\aut}{\dot{\vee}}
+\newcommand{\quindi}{\quad \Rightarrow \quad}
+\newcommand{\ubar}[1]{\underline{\mathord{#1}}}
+
+% ============================================================
+%  UNITÀ DI MISURA
+% ============================================================
+\usepackage{siunitx}
+\sisetup{
+  detect-all,
+  output-decimal-marker = {,}
+}
+\DeclareSIPrefix\micro{μ}{-6}
+% ============================================================
+%  LAYOUT E GEOMETRIA
+% ============================================================
+\usepackage[centering, includeheadfoot]{geometry}
+
+\newlength{\margineEsterno}
+\newlength{\margineInterno}
+\newlength{\margineAlto}
+\newlength{\margineBasso}
+
+\setlength{\margineEsterno}{3.5cm}
+\setlength{\margineInterno}{1cm}
+\setlength{\margineAlto}{1cm}
+\setlength{\margineBasso}{1cm}
+
+\geometry{
+  paperwidth  = 170mm,
+  paperheight = 240mm,
+  top         = \margineAlto,
+  bottom      = \margineBasso,
+  inner       = \margineInterno,
+  outer       = \margineEsterno,
+  twoside,
+}
+
+% Dimensioni margine per QR e note
+\newlength{\maxQR}
+\newlength{\sizeQR}
+\newlength{\largQR}
+
+\setlength{\maxQR}{2.5cm}
+\setlength{\marginparsep}{3mm}
+\setlength{\marginparwidth}{\dimexpr\margineEsterno - \marginparsep\relax}
+\setlength{\largQR}{\dimexpr\marginparwidth - 6mm\relax}
+
+\newcommand{\calcsizeQR}{%
+  \setlength{\sizeQR}{\dimexpr\marginparwidth - 10pt\relax}%
+  \ifdim\sizeQR>\maxQR \setlength{\sizeQR}{\maxQR}\fi
+}
+
+% Spaziatura testo
+\usepackage{setspace}
+\setstretch{1.18}
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.25\baselineskip plus 1pt minus 1pt}
+
+%Sforare le immagini nel margine esterno
+\newcommand{\sforaEsterno}[1]{%
+  \checkoddpage
+  \ifoddpage
+    \begin{adjustwidth}{0pt}{-\margineEsterno}#1\end{adjustwidth}%
+  \else
+    \begin{adjustwidth}{-\margineEsterno}{0pt}#1\end{adjustwidth}%
+  \fi
+}
+
+\raggedbottom
+
+% ============================================================
+%  INTESTAZIONI E PIÈ DI PAGINA
+% ============================================================
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\let\cleardoublepage\clearpage
+\renewcommand{\cleardoublepage}{\clearpage}
+
+% ============================================================
+%  TITOLI E SEZIONI
+% ============================================================
+\usepackage{titlesec}
+\usepackage{tocloft}
+
+% Part
+\renewcommand{\part}[1]{%
+  \refstepcounter{part}
+  \clearpage
+  \thispagestyle{empty}
+  \begin{center}
+    \Huge\bfseries Part \thepart \\[1em] #1
+  \end{center}
+  \vspace{2em}
+  \addcontentsline{toc}{part}{Part \thepart: #1}
+}
+
+% Helper: salva il nome del capitolo E lo stampa
+\newcommand{\savechaptertitle}[1]{\gdef\currentchaptername{#1}#1}
+
+\titleformat{\chapter}[block]
+  {\normalfont\LARGE\bfseries\color{cyan}}
+  {\rule{\textwidth}{.5pt}\\[0.1em]\centering\Roman{chapter}.\,}
+  {1em}
+  {\huge\scshape\centering\savechaptertitle}
+  [\vspace{-0.2em}\rule{\textwidth}{0.5pt}]
+
+% ============================================================
+%  CAPITOLO CON IMMAGINE OPZIONALE
+% ============================================================
+\newcommand{\chapterimage}[3]{%
+  \clearpage
+  \thispagestyle{fancy}%
+  \begin{adjustwidth}{-\margineEsterno}{0pt}%
+    \includegraphics[width=\dimexpr\textwidth+\margineEsterno\relax]{#1}%
+    \par\vspace{2pt}%
+    {\small\itshape\color{gray} #2}%
+  \end{adjustwidth}%
+  \vspace{0.5em}%
+  \refstepcounter{chapter}%
+  \gdef\currentchaptername{#3}%
+  \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}#3}%
+  \begin{center}
+    {\color{cyan}\rule{\textwidth}{.5pt}}\\[0.2em]
+    {\color{cyan}\LARGE\bfseries\Roman{chapter}.\,}\\[0.1em]
+    {\color{cyan}\huge\scshape #3}\\[-0.3em]
+    {\color{cyan}\rule{\textwidth}{.5pt}}
+  \end{center}
+  \vspace{0.5em}%
+}
+
+\titleformat{\section}[block]
+  {\normalfont\Large\bfseries\color{cyan}}{\thesection}{1em}{}
+
+\titleformat{\subsection}[block]
+  {\normalfont\large\bfseries\color{cyan}}{\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}[block]
+  {\normalfont\bfseries\color{cyan}}{\thesubsubsection}{1em}{}
+
+\titleformat{\paragraph}[block]
+  {\normalfont\bfseries\color{cyan}}{}{0em}{}
+
+\titlespacing*{\chapter}   {0pt}{-30pt}{8pt}
+\titlespacing*{\section}   {0pt}{0.8\baselineskip}{0.3\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.6\baselineskip}{0.2\baselineskip}
+\setlength{\cftbeforechapskip}{4pt}
+
+% ============================================================
+%  LISTE
+% ============================================================
+\usepackage[inline]{enumitem}
+\setlist[itemize,1]{label=\textcolor{gray!70}{\rule{0.8ex}{0.8ex}}}
+\setlist{itemsep=0pt, parsep=0pt, topsep=3pt, partopsep=0pt}
+\setlength{\topsep}{2pt}
+\newlist{myenum}{enumerate*}{1}
+\setlist[myenum]{label=\arabic*, itemjoin={\hspace{1.5cm}}}
+\newlist{sceltamultipla}{enumerate}{1}
+\setlist[sceltamultipla,1]{%
+  label=\textcolor{gray}{\fbox{\textbf{\footnotesize\makebox[1.2em]{\Alph*}}}},
+  leftmargin=*,
+  itemsep=1pt,
+  topsep=2pt
+}
+
+% ============================================================
+%  COLORI
+% ============================================================
+\usepackage{xcolor}
+
+\definecolor{ciano}           {RGB}{0,   180, 200}
+\definecolor{sfondoImportante}{RGB}{255, 252, 220}
+\definecolor{coloreAnimazione}{RGB}{0,   150, 136}
+\definecolor{sfondoAnimazione}{RGB}{225, 245, 243}
+\definecolor{gold}            {RGB}{255, 215,   0}
+\definecolor{copper}          {RGB}{104, 115,  51}
+
+\definecolor{buildSub}  {HTML}{FFF0F5}  \definecolor{buildTitle} {HTML}{C71585}
+\definecolor{readSub}   {HTML}{F2F2F2}  \definecolor{readTitle}  {HTML}{333333}
+\definecolor{deriveSub} {HTML}{FFF9E6}  \definecolor{deriveTitle}{HTML}{B8860B}
+\definecolor{exSub}     {HTML}{F0F7FF}  \definecolor{exTitle}    {HTML}{005C99}
+\definecolor{impSub}    {HTML}{FFF0F0}  \definecolor{impTitle}   {HTML}{CC0000}
+\definecolor{warnSub}   {HTML}{FFF0F0}  \definecolor{warnTitle}  {HTML}{B22222}
+
+\definecolor{sfondoRiassunto}{RGB}{215, 242, 240}
+\definecolor{intestRiassunto}{RGB}{  0, 145, 132}
+\definecolor{rsezColor}      {RGB}{  0, 160, 146}
+
+% ============================================================
+%  TIKZ E GRAFICI
+% ============================================================
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{pgfplots}
+\usepackage{circuitikz}
+\usepackage{tikzsymbols, fontawesome5}
+
+\usetikzlibrary{
+  decorations.pathreplacing, decorations.markings, decorations.pathmorphing,
+  angles, quotes, arrows.meta, calc, positioning,
+  shapes, shapes.symbols, shadows, fit,
+  backgrounds, matrix, patterns, tikzmark
+}
+
+\pgfplotsset{compat=1.17}
+\usepgfplotslibrary{colormaps}
+\tdplotsetmaincoords{70}{110}
+
+% Simbolo caution
+\newcommand{\caution}[1]{%
+  \begingroup
+  \pgfmathsetmacro{\s}{#1}%
+  \pgfmathsetmacro{\Rr}{1.6*\s}%
+  \pgfmathsetmacro{\Lwd}{2*\s}%
+  \pgfmathsetmacro{\FSpt}{40*\s}%
+  \pgfmathsetmacro{\BLSpt}{1.2*\FSpt}%
+  \tikz[baseline=(bang.base)]{
+    \draw[line width=\Lwd mm, red, fill=yellow!30]
+      (90:\Rr) -- (210:\Rr) -- (330:\Rr) -- cycle;
+    \node (bang) at (0,0)
+      {\fontsize{\FSpt pt}{\BLSpt pt}\selectfont\bfseries !};
+  }%
+  \endgroup
+}
+
+% ============================================================
+%  BOX: TCOLORBOX
+% ============================================================
+\usepackage[many]{tcolorbox}
+
+\tcbset{
+  mystyle/.style={
+    enhanced, breakable,
+    boxrule=0pt, frame hidden, arc=2mm,
+    top=4mm, bottom=4mm, left=4mm, right=4mm,
+    fonttitle=\bfseries\sffamily, coltitle=white,
+    attach boxed title to top left={yshift=-2mm, xshift=0mm},
+    boxed title style={
+      empty,
+      top=1.5mm, bottom=1.5mm, left=3mm, right=8mm,
+      underlay={
+        \fill[#1, rounded corners=2mm]
+          (frame.south west) -- (frame.north west) --
+          ([xshift=-5mm]frame.north east) -- (frame.south east) -- cycle;
+      }
+    }
+  }
+}
+
+\newtcolorbox{mdwarning}[1][]{
+  mystyle={warnTitle}, colback=warnSub,
+  title={\ifstrempty{#1}{Attenzione}{#1}}
+}
+\newtcolorbox{mdbuild}[1][]{
+  mystyle={buildTitle}, colback=buildSub,
+  title={\ifstrempty{#1}{Costruire la formula}{#1}}
+}
+\newtcolorbox{mdread}[1][]{
+  mystyle={readTitle}, colback=readSub,
+  title={\ifstrempty{#1}{Leggere la formula}{#1}}
+}
+\newtcolorbox{mdderive}[1][]{
+  mystyle={deriveTitle}, colback=deriveSub,
+  title={\ifstrempty{#1}{Derivare la formula}{#1}}
+}
+\newtcolorbox{mdexample}[1][]{
+  mystyle={exTitle}, colback=exSub,
+  title={\ifstrempty{#1}{Esempio guidato}{#1}}
+}
+
+\newtcolorbox{mdimportant}[2][]{%
+  enhanced, breakable,
+  boxrule=0pt, frame hidden,
+  colback=sfondoImportante, arc=1mm,
+  top=4mm, bottom=4mm, left=6mm, right=4mm,
+  overlay={
+    \checkoddpage
+    \ifoddpage
+      \draw[ciano, line width=2pt] (frame.south east)--(frame.north east);
+      \draw[ciano, line width=2pt] (frame.east)--([xshift=5mm]frame.east);
+      \draw[ciano, fill=white, line width=2pt] ([xshift=5mm]frame.east) circle (4pt);
+      \node[anchor=west, text=ciano, font=\bfseries\sffamily\small,
+            align=left, text width=\dimexpr\largQR-2mm\relax]
+        at ([xshift=7mm]frame.east) {#2};
+    \else
+      \draw[ciano, line width=2pt] (frame.south west)--(frame.north west);
+      \draw[ciano, line width=2pt] ([xshift=-5mm]frame.west)--(frame.west);
+      \draw[ciano, fill=white, line width=2pt] ([xshift=-5mm]frame.west) circle (4pt);
+      \node[anchor=east, text=ciano, font=\bfseries\sffamily\small,
+            align=right, text width=\dimexpr\largQR-2mm\relax]
+        at ([xshift=-7mm]frame.west) {#2};
+    \fi
+  },
+  #1
+}
+
+\newsavebox{\mdanimationQRbox}
+
+\newtcolorbox{mdanimation}[2][Animazione]{%
+  enhanced, breakable,
+  boxrule=0pt, frame hidden,
+  colback=sfondoAnimazione, arc=2mm,
+  top=4mm, bottom=4mm, left=4mm, right=4mm,
+  fonttitle=\bfseries\sffamily,
+  coltitle=white,
+  title={#1},
+  attach boxed title to top left={yshift=-2mm, xshift=0mm},
+  boxed title style={
+    empty,
+    top=1.5mm, bottom=1.5mm, left=3mm, right=8mm,
+    underlay={
+      \fill[coloreAnimazione, rounded corners=2mm]
+        (frame.south west) -- (frame.north west) --
+        ([xshift=-5mm]frame.north east) -- (frame.south east) -- cycle;
+    }
+  },
+  overlay={
+    \ifx\relax#2\relax\else
+      \checkoddpage
+      \calcsizeQR
+      \ifoddpage
+        \fill[sfondoAnimazione]
+          ([xshift=-1mm, yshift=-2mm]frame.north east) --
+          ([xshift=3mm, yshift=1mm]frame.north east) --
+          ([xshift=3mm, yshift=-\the\sizeQR-0pt]frame.north east) --
+          ([xshift=-1mm, yshift=-\the\sizeQR+3mm]frame.north east) -- cycle;
+        \node[anchor=north west, draw=coloreAnimazione, line width=1.5pt,
+              fill=sfondoAnimazione, inner sep=4pt, rounded corners=1mm]
+          at ([xshift=3mm, yshift=2mm]frame.north east) {%
+            \begin{minipage}{\the\largQR}\centering
+              \qrcode[height=\the\sizeQR]{#2}
+            \end{minipage}%
+          };
+      \else
+        \fill[sfondoAnimazione]
+          ([xshift=1mm, yshift=-2mm]frame.north west) --
+          ([xshift=-3mm, yshift=1mm]frame.north west) --
+          ([xshift=-3mm, yshift=-\the\sizeQR-0pt]frame.north west) --
+          ([xshift=1mm, yshift=-\the\sizeQR+3mm]frame.north west) -- cycle;
+        \node[anchor=north east, draw=coloreAnimazione, line width=1.5pt,
+              fill=sfondoAnimazione, inner sep=4pt, rounded corners=1mm]
+          at ([xshift=-3mm, yshift=2mm]frame.north west) {%
+            \begin{minipage}{\the\largQR}\centering
+              \qrcode[height=\the\sizeQR]{#2}
+            \end{minipage}%
+          };
+      \fi
+    \fi
+  },
+}
+
+% ============================================================
+%  BOX: MDFRAMED
+% ============================================================
+\usepackage{mdframed}
+
+\newenvironment{cyanmargin}[1][]
+  {\begin{mdframed}[topline=false,bottomline=false,rightline=false,
+    linecolor=cyan,linewidth=.05cm,frametitlefont=\itshape]#1\ignorespaces}
+  {\end{mdframed}}
+
+\newenvironment{mdexercise}[1][]
+  {\begin{mdframed}[topline=false,bottomline=false,rightline=false,
+    linecolor=cyan,linewidth=.05cm,frametitlefont=\itshape]
+   \textbf{Esercizio. }#1\ignorespaces}
+  {\end{mdframed}}
+
+\newenvironment{mdexam}[1][]
+  {\begin{mdframed}[topline=false,bottomline=false,rightline=false,
+    linecolor=magenta,linewidth=2,frametitlefont=\itshape]
+   \textbf{Allenamento per la verifica. }#1\ignorespaces}
+  {\end{mdframed}}
+
+\newenvironment{mdproof}[1][]
+  {\begin{mdframed}[topline=false,bottomline=false,rightline=false,
+    linecolor=black,frametitle=Proof.,frametitlefont=\itshape]#1\ignorespaces}
+  {\unskip\begin{flushright}\qedsymbol\end{flushright}\end{mdframed}}
+
+\newenvironment{nestedproof}[1][\small]
+  {\begin{mdframed}[topline=false,bottomline=false,rightline=false,
+    linecolor=black,frametitle=Proof.,frametitlefont=\itshape]#1\ignorespaces}
+  {\unskip\begin{flushright}\qedsymbol\end{flushright}\end{mdframed}}
+
+% ============================================================
+%  TEOREMI
+% ============================================================
+\newtheoremstyle{flemma}
+  {3pt}{3pt}
+  {\itshape\fontfamily{qpl}\selectfont}
+  {1pt}{\bfseries}{ \space}{ }{}
+
+\theoremstyle{definition}
+\newtheorem*{definition}  {Definizione}
+\newtheorem*{proposition} {Proposizione}
+\newtheorem*{example}     {Esempio}
+\newtheorem*{remark}      {Osservazione}
+\newtheorem*{nota}        {Nota}
+\newtheorem*{application} {Applicazione}
+
+\theoremstyle{flemma}
+\newtheorem*{property}  {Proprietà}
+\newtheorem*{law}       {Legge}
+\newtheorem*{lemma}     {Lemma}
+\newtheorem*{theorem}   {Teorema}
+\newtheorem*{corollary} {Corollario}
+\newtheorem*{principle} {Principio}
+
+\renewcommand\qedsymbol{\fontfamily{qpl}\selectfont\emph{Q.E.D.}}
+
+% ============================================================
+%  ESERCIZI E SOLUZIONI (ambienti classici)
+% ============================================================
+\usepackage{needspace}
+\usepackage{xparse}
+\usepackage{pifont}
+\usepackage{environ}
+
+\newcounter{exercise}
+\renewcommand{\theexercise}{\arabic{exercise}}
+
+% Stelline — nere, senza fbox
+\newcommand{\onestar}  {\ding{72}\ding{73}\ding{73}\space}
+\newcommand{\twostars} {\ding{72}\ding{72}\ding{73}\space}
+\newcommand{\threestars}{\ding{72}\ding{72}\ding{72}\space}
+
+\newcommand{\setexdifficulty}[1]{%
+  \IfNoValueTF{#1}
+    {\def\exdifficulty{\twostars}}
+    {\def\exdifficulty{#1}}%
+}
+
+\NewDocumentEnvironment{exercise}{ o }{%
+  \refstepcounter{exercise}\par\medskip
+  \setexdifficulty{#1}\noindent
+  \hypertarget{ex:\theexercise}{}\label{ex:\theexercise}%
+  \textbf{Esercizio \theexercise\ }\exdifficulty\quad
+  \hyperlink{sol:\theexercise}{\textit{(vai alla soluzione)}}\quad\ignorespaces
+}{\par\medskip}
+
+\NewDocumentEnvironment{question}{ o }{%
+  \refstepcounter{exercise}\par\medskip
+  \setexdifficulty{#1}\noindent
+  \hypertarget{ex:\theexercise}{}\label{ex:\theexercise}%
+  \textbf{Domanda di Teoria \theexercise\ }\exdifficulty\quad
+  \hyperlink{sol:\theexercise}{\textit{(vai alla soluzione)}}\quad\ignorespaces
+}{\par\medskip}
+
+\NewDocumentEnvironment{exercisenosol}{ o }{%
+  \refstepcounter{exercise}\par\medskip
+  \setexdifficulty{#1}\noindent
+  \hypertarget{ex:\theexercise}{}\label{ex:\theexercise}%
+  \textbf{Esercizio \theexercise\ }\exdifficulty\quad\ignorespaces
+}{\par\medskip}
+
+\NewDocumentEnvironment{questionnosol}{ o }{%
+  \refstepcounter{exercise}\par\medskip
+  \setexdifficulty{#1}\noindent
+  \hypertarget{ex:\theexercise}{}\label{ex:\theexercise}%
+  \textbf{Domanda di teoria \theexercise\ }\exdifficulty\quad\ignorespaces
+}{\par\medskip}
+
+\NewDocumentEnvironment{expsolution}{ o }{%
+  \Needspace{6\baselineskip}%
+  \IfNoValueTF{#1}{\edef\resnum{\theexercise}}{\edef\resnum{#1}}%
+  \par\bigskip
+  \hypertarget{sol:\resnum}{}\label{sol:\resnum}%
+  \noindent\textbf{Soluzione \hyperlink{ex:\resnum}{\resnum}}\quad
+  \hyperlink{ex:\resnum}{\textit{(torna all'esercizio)}}\par\medskip
+}{\par\medskip}
+
+% solution: comportamento duale (inline grigio fuori da rigaesercizi,
+%           accumulatore dentro rigaesercizi — vedi sotto)
+\newenvironment{solution}
+  {\par\noindent\hfill\small\color{gray}}
+  {\par}
+
+% ============================================================
+%  MODALITÀ ESERCIZI (due colonne + testata ciano)
+% ============================================================
+\usepackage{multicol}
+\usepackage{colortbl}
+
+\newcommand{\exheadrule}[2]{%
+  \setlength{\headheight}{20pt}%
+  \fancyhead[RE]{%
+    \colorbox{ciano}{%
+      \parbox[c][14pt][c]{\textwidth}{%
+        \color{white}\bfseries\sffamily\small #1\hfill}}}%
+  \fancyhead[LO]{%
+    \colorbox{ciano}{%
+      \parbox[c][14pt][c]{\textwidth}{%
+        \color{white}\bfseries\sffamily\small\hfill #2}}}%
+  \fancyhead[RO,LE]{}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+\newif\ifinsidemodalita
+\insidemodalitafalse
+
+\newenvironment{modalitaesercizi}{%
+  \insidemodalitatrue
+  \edef\exChapNum{\thechapter}%
+  \edef\exChapName{\currentchaptername}%
+  \renewcommand{\Needspace}[1]{}%
+  \newgeometry{
+    top=0cm, bottom=.8cm,
+    inner=1.2cm, outer=1.2cm,
+    includeheadfoot,
+  }%
+  \pagestyle{fancy}\fancyhf{}\fancyfoot[C]{\thepage}%
+  \exheadrule%
+    {CAPITOLO \exChapNum \enspace\textbar\enspace \exChapName}%
+    {CAPITOLO \exChapNum \enspace\textbar\enspace ESERCIZI}%
+  \setlength{\columnsep}{1cm}%
+  \raggedcolumns
+  \begin{multicols}{2}%
+}{%
+  \end{multicols}%
+  \restoregeometry%
+  \pagestyle{fancy}\fancyhf{}\fancyhead{}\fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \insidemodalitafalse
+}
+
+\newcommand{\pausamulticol}{%
+  \ifinsidemodalita\end{multicols}\par\vspace{2pt}\fi
+}
+\newcommand{\riprendimulticol}{%
+  \ifinsidemodalita\par\vspace{2pt}\begin{multicols}{2}\fi
+}
+
+% ============================================================
+%  AMBIENTE truthorfalse
+%  Da aggiungere nel preambolo, dopo il caricamento di
+%  tcolorbox (già presente) e enumitem (già presente).
+%
+%  Uso:
+%    \begin{truthorfalse}
+%      \tfitem{testo dell'affermazione}
+%    \end{truthorfalse}
+%
+%  Le caselle V / F vengono inserite automaticamente
+%  a destra di ogni voce.
+% ============================================================
+
+% Casellina grigia piccola (V oppure F).
+% Si usa \newtcbox invece di \tcbox[...]{...} inline:
+% \tcbox con opzioni esplicite dentro \newcommand causa
+% conflitti nel parsing degli argomenti di tcolorbox.
+% \newtcbox pre-registra le opzioni ed è privo di ambiguità.
+\newtcbox{\tfvf}{%
+  on line,
+  arc=0.8pt, outer arc=0.8pt,
+  boxrule=0.3pt, boxsep=0pt,
+  left=2pt, right=2pt, top=0.8pt, bottom=0.8pt,
+  colframe=gray!40, colback=gray!10,
+  fontupper={\fontsize{6}{6}\selectfont\bfseries\color{gray!65}}%
+}
+
+% Singola voce: testo → caselle V F allineate a destra
+\newcommand{\tfitem}[1]{%
+  \item #1\nobreak\hfill\tfvf{V}\kern2pt\tfvf{F}%
+}
+
+% Lista vera/falsa
+\newenvironment{truthorfalse}{%
+  \begin{enumerate}[%
+    label  = \textbf{\alph*.},%
+    leftmargin = *,%
+    itemsep = 3pt,%
+    topsep  = 2pt,%
+    parsep  = 0pt%
+  ]%
+}{%
+  \end{enumerate}%
+}
+% ============================================================
+%  Flag per raccolta soluzioni
+% ============================================================
+% ============================================================
+%  *** SOSTITUIRE TUTTO da qui fino a fine \newenvironment{exrcell} ***
+% ============================================================
+
+% Flag per raccolta soluzioni
+\newif\ifincollectmode  \incollectmodefalse
+\newif\iffirstsolution  \firstsolutiontrue
+
+% ============================================================
+%  CORREZIONE BUG soluzioni duplicate con rigaesercizi{3}
+%
+%  Causa: il vecchio meccanismo con \newtoks memorizzava
+%  \the\exrsoltemp come riferimento LAZY dentro \exrsoltoks.
+%  Quando la terza soluzione sovrascriveva \exrsoltemp,
+%  entrambi i riferimenti espandevano lo stesso valore:
+%  risultato [sol1, sol3, sol3] invece di [sol1, sol2, sol3].
+%
+%  Fix: ogni soluzione viene copiata permanentemente in
+%  \exrsol@1, \exrsol@2, \exrsol@3  via \let, che fotografa
+%  \BODY al momento della chiamata.  Ridefinizioni successive
+%  di \BODY non toccano le copie già salvate.
+% ============================================================
+
+\newcounter{exrsolcount}   % conta le soluzioni della riga corrente
+
+\RenewEnviron{solution}{%
+  \ifincollectmode
+    \iffirstsolution
+      \global\firstsolutionfalse
+    \fi
+    \stepcounter{exrsolcount}%
+    % Copia permanente: \exrsol@N ottiene il significato corrente
+    % di \BODY; eventuali ridefinizioni future di \BODY non la toccano
+    \expandafter\global\expandafter\let
+      \csname exrsol@\theexrsolcount\endcsname\BODY
+  \else
+    \par\noindent\hfill\small\color{gray}\BODY\par
+  \fi
+}
+
+% ============================================================
+%  Dimensioni e box ausiliari (invariati)
+% ============================================================
+\newsavebox{\exrfulltmpbox}
+\newsavebox{\exrsolbox}
+\newsavebox{\exrstarbox}
+\newlength{\exrlabelwidth}
+\newlength{\exrcellwidth}
+\newlength{\exrsolcolwidth} \setlength{\exrsolcolwidth}{3.5cm}
+\newlength{\exrcellsep}     \setlength{\exrcellsep}{6mm}
+\newlength{\exrlabelgap}    \setlength{\exrlabelgap}{4mm}
+\newlength{\exrtotalgap}
+\newcounter{exrowcell}
+\newcounter{exrowmaxcolsctr}
+
+% ============================================================
+%  Stampa le soluzioni accumulate come  [sol1; sol2; sol3]
+%  Gestisce fino a 3 soluzioni per riga (massimo supportato).
+% ============================================================
+\newcommand{\exrprintsol}{%
+  \savebox{\exrsolbox}{%
+    \color{gray!70!black}%
+    \ifnum\value{exrsolcount}>0\relax
+      \csname exrsol@1\endcsname
+      \ifnum\value{exrsolcount}>1\relax
+        ;\space\csname exrsol@2\endcsname
+        \ifnum\value{exrsolcount}>2\relax
+          ;\space\csname exrsol@3\endcsname
+        \fi
+      \fi
+    \fi
+  }%
+  \color{gray!70!black}%
+  $\left[\rule[-\dp\exrsolbox]{0pt}%
+    {\dimexpr\ht\exrsolbox+\dp\exrsolbox\relax}\right.$%
+  \usebox{\exrsolbox}%
+  $\left.\rule[-\dp\exrsolbox]{0pt}%
+    {\dimexpr\ht\exrsolbox+\dp\exrsolbox\relax}\right]$%
+}
+
+\newenvironment{rigaesercizi}[2][\twostars]{%
+  \setcounter{exrowcell}{0}%
+  \setcounter{exrowmaxcolsctr}{#2}%
+  \setcounter{exrsolcount}{0}%
+  \global\firstsolutiontrue%
+  \incollectmodetrue%
+  \refstepcounter{exercise}%
+  \setexdifficulty{#1}%
+  \hypertarget{ex:\theexercise}{}\label{ex:\theexercise}%
+  \sbox{\exrstarbox}{{\scriptsize\exdifficulty}}%
+  \setlength{\exrlabelwidth}{\dimexpr\wd\exrstarbox + 6pt\relax}%
+  \setlength{\exrtotalgap}{#2\exrcellsep}%
+  \advance\exrtotalgap by -\exrcellsep%
+  \ifnum#2=1\relax
+    \setlength{\exrcellwidth}{\dimexpr
+      \linewidth - \exrlabelwidth - \exrlabelgap\relax}%
+  \else
+    \setlength{\exrcellwidth}{\dimexpr
+      ( \linewidth
+        - \exrlabelwidth
+        - \exrlabelgap
+        - \exrsolcolwidth
+        - \exrcellsep
+        - \exrtotalgap
+      ) / #2\relax}%
+  \fi
+  \par\nopagebreak\vspace{2pt}%
+  % \vbox\bgroup\noindent\leavevmode
+  \vbox\bgroup\noindent\leavevmode\parfillskip=0pt
+  {\setlength{\fboxsep}{0pt}%
+   \vtop{\offinterlineskip
+     \hbox{\colorbox{intestRiassunto}{%
+       \color{white}\bfseries\small
+       \makebox[\exrlabelwidth][c]{\rule{0pt}{11pt}\theexercise}}}%
+     \hbox{\makebox[\exrlabelwidth][c]{\scriptsize\exdifficulty}}%
+   }}%
+  \hspace{\exrlabelgap}\small\raggedright\parfillskip=0pt
+}{%
+  \iffirstsolution\else
+    \unskip\nobreak\hfill\allowbreak\null\hfill\mbox{\exrprintsol}%
+  \fi
+  \par\egroup
+  \vspace{4pt}%
+  \incollectmodefalse%
+}
+
+\newenvironment{exrcell}{%
+  \stepcounter{exrowcell}%
+  \ifnum\value{exrowmaxcolsctr}=1\relax
+    \ignorespaces
+  \else
+    \vtop\bgroup
+      \hsize=\exrcellwidth
+      \binoppenalty=10000
+      \relpenalty=10000
+      \small\raggedright\ignorespaces
+  \fi
+}{%
+  \ifnum\value{exrowmaxcolsctr}=1\relax
+    \unskip
+  \else
+    \egroup
+    \ifnum\value{exrowcell}<\value{exrowmaxcolsctr}\relax
+      \hspace{\exrcellsep}%
+    \fi
+  \fi
+}
+
+% ============================================================
+%  *** FINE sezione da sostituire ***
+% ============================================================
+% ============================================================
+%  SEZIONI INTERNE AL RIASSUNTO
+% ============================================================
+\newcommand{\rsection}[1]{%
+  \par\vspace{0.55\baselineskip}%
+  \begin{tcolorbox}[
+    enhanced, breakable,
+    colback=rsezColor, colframe=rsezColor,
+    arc=2mm, boxrule=0pt,
+    top=2mm, bottom=2mm, left=5mm, right=5mm,
+  ]
+    \color{white}\bfseries\sffamily\large #1%
+  \end{tcolorbox}%
+  \vspace{0.1\baselineskip}%
+}
+
+\newcommand{\rsubsection}[1]{%
+  \par\vspace{0.35\baselineskip}%
+  \noindent{\color{intestRiassunto}\bfseries\sffamily #1}%
+}
+
+\newcommand{\rkeyword}[1]{%
+  \textcolor{intestRiassunto}{\bfseries #1}%
+}
+
+% ============================================================
+%  AMBIENTE RIASSUNTO
+% ============================================================
+\newenvironment{riassunto}{%
+  \clearpage
+  \pagecolor{sfondoRiassunto}%
+  \newgeometry{
+    top    = 1.8cm,
+    bottom = 1.8cm,
+    inner  = 1.5cm,
+    outer  = 1.5cm,
+    includeheadfoot,
+  }%
+  \pagestyle{fancy}\fancyhf{}%
+  \setlength{\headheight}{22pt}%
+  \fancyhead[LE,RO]{%
+    \colorbox{intestRiassunto}{%
+      \parbox[c][16pt][c]{\textwidth}{%
+        \color{white}\bfseries\sffamily\small
+        \hspace{3mm}CAPITOLO~\thechapter
+        \enspace\textbar\enspace
+        \MakeUppercase{\currentchaptername}%
+        \hfill RIASSUNTO\hspace{3mm}%
+      }%
+    }%
+  }%
+  \fancyhead[LO,RE]{}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \fancyfoot[C]{\color{intestRiassunto}\thepage}%
+  \par\vspace{0.6em}%
+  \begin{center}
+    {\color{intestRiassunto!50!black}\rule{0.18\textwidth}{1pt}}%
+    \quad
+    {\color{intestRiassunto}\fontsize{27}{31}\selectfont\bfseries\scshape Riassunto}%
+    \quad
+    {\color{intestRiassunto!50!black}\rule{0.18\textwidth}{1pt}}\\[0.35em]
+    {\color{rsezColor!70!white}\fontsize{9}{11}\selectfont\sffamily
+      Capitolo~\thechapter\ \textbullet\ \currentchaptername}%
+  \end{center}%
+  \vspace{0.7em}%
+}{%
+  \clearpage
+  \pagecolor{white}%
+  \restoregeometry%
+  \pagestyle{fancy}%
+  \fancyhf{}\fancyhead{}\fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+% ============================================================
+%  AMBIENTE VERIFICA SUBITO
+% ============================================================
+\newenvironment{verificasubito}[2][Verifica subito!]{%
+  \def\vsncols{#2}%
+  \renewcommand{\Needspace}[1]{}%
+  \checkoddpage%
+  \ifoddpage%
+    \def\sforoSin{0cm}%
+    \def\sforoDes{0cm}%
+  \else%
+    \def\sforoSin{0cm}%
+    \def\sforoDes{0cm}%
+  \fi%
+  \begin{tcolorbox}[
+    enhanced, breakable,
+    colback=white, colframe=ciano,
+    boxrule=1.5pt, arc=3mm,
+    top=4mm, bottom=4mm, left=4mm, right=4mm,
+    enlarge left by=\sforoSin,
+    enlarge right by=\sforoDes,
+    title={\large\bfseries\sffamily #1},
+    coltitle=white,
+    attach boxed title to top left={yshift=-2mm, xshift=4mm},
+    boxed title style={
+      empty,
+      top=1.5mm, bottom=1.5mm, left=3mm, right=8mm,
+      underlay={
+        \fill[ciano, rounded corners=2mm]
+          (frame.south west) -- (frame.north west) --
+          ([xshift=-5mm]frame.north east) -- (frame.south east) -- cycle;
+      }
+    },
+  ]%
+  \setlength{\columnsep}{1cm}%
+  \raggedcolumns%
+  \ifnum\vsncols>1\relax
+    \begin{multicols}{\vsncols}%
+  \fi
+}{%
+  \ifnum\vsncols>1\relax
+    \end{multicols}%
+  \fi
+  \end{tcolorbox}%
+}
+
+% ============================================================
+%  QR NEL MARGINE
+% ============================================================
+\usepackage{qrcode}
+\usepackage{marginnote}
+\usepackage{marginfix}
+
+\newcommand{\marginqr}[2][]{%
+  \par\Needspace{6\baselineskip}\calcsizeQR
+  \marginpar{\centering
+    \begin{tcolorbox}[enhanced, boxrule=1.5pt, colframe=ciano, colback=white,
+      arc=1mm, top=4pt, bottom=4pt, left=3pt, right=3pt,
+      boxsep=0pt, width=\marginparwidth]
+      \if\relax\detokenize{#1}\relax\else
+        {\footnotesize\setlength{\parskip}{0pt}\setstretch{1.0}%
+         \raggedright\sffamily #1\par\vspace{3pt}}
+      \fi
+      \centering\qrcode[height=\sizeQR]{#2}%
+    \end{tcolorbox}}%
+}
+
+
+% ============================================================
+%  AMBIENTE PROVATU — box nel margine, colori riassunto
+% ============================================================
+\newsavebox{\provatubox}
+\newenvironment{provatu}[1][Prova tu!]{%
+  \begin{lrbox}{\provatubox}%
+    \begin{minipage}{\marginparwidth}%
+      \begin{mdframed}[
+        skipabove=0pt, skipbelow=0pt,
+        linecolor=intestRiassunto,
+        linewidth=1.2pt,
+        backgroundcolor=sfondoRiassunto,
+        frametitle={\color{white}\small\bfseries\sffamily\hspace{2pt}#1},
+        roundcorner=4pt,
+        frametitlebackgroundcolor=intestRiassunto,
+        frametitlerule=false,
+        frametitleaboveskip=2pt,
+        frametitlebelowskip=2pt,
+        innertopmargin=4pt,
+        innerbottommargin=4pt,
+        innerleftmargin=4pt,
+        innerrightmargin=4pt,
+      ]%
+      \small\raggedright\ignorespaces
+}{%
+      \end{mdframed}%
+    \end{minipage}%
+  \end{lrbox}%
+  \marginnote{\usebox{\provatubox}}%
+  \ignorespaces
+}{\ignorespacesafterend}
+
+% ============================================================
+%  TESTO E TIPOGRAFIA
+% ============================================================
+\usepackage{csquotes}
+\usepackage[normalem]{ulem}
+\usepackage{soul}
+\usepackage{tipa}
+
+\setulcolor{gray}
+\renewcommand{\CancelColor}{\color{red}}
+
+\newcommand{\schwa}{ə}
+\newcommand{\Schwa}{Ə}
+\newcommand{\lette}[1]{\enquote*{#1}}
+\newcommand{\virgo}[1]{\enquote*{#1}}
+\newcommand{\definizione}[1]{\textcolor{red}{\textbf{#1}}}
+\newcommand{\citaz}[2]{\guillemotleft#1\guillemotright\begin{flushright}#2\end{flushright}}
+\newcommand{\cit}[1]{\guillemotleft#1\guillemotright}
+\newcommand{\boh}[1]{\textcolor{red}{#1}}
+\newcommand{\bianco}[1]{\textcolor{white}{#1}}
+
+% ============================================================
+%  PACCHETTI GRAFICI E VARI
+% ============================================================
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{placeins}
+\usepackage{titling}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{sidecap}
+\usepackage{subfig}
+\usepackage{subcaption}
+\usepackage{floatflt}
+\usepackage{animate}
+\usepackage{standalone}
+\usepackage{listings}
+\usepackage{footmisc}
+\usepackage{xstring}
+\usepackage{ifthen}
+\usepackage[strict]{changepage}
+\usepackage[margin=1cm]{caption}
+
+% ============================================================
+%  HYPERREF (sempre per ultimo)
+% ============================================================
+\usepackage[colorlinks]{hyperref}
+\hypersetup{linkcolor=magenta}

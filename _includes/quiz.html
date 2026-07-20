@@ -9,20 +9,31 @@
   </div>
   <div class="qgf-card">
     <p class="qgf-q"></p>
+    <details class="spoiler qgf-hint" style="display:none;margin-bottom:1rem;">
+      <summary>Mostra indizio</summary>
+      <div class="spoiler-body qgf-hint-body"></div>
+    </details>
     <div class="qgf-btns">
       <button class="qgf-btn-si">✓ &nbsp;Vero</button>
       <button class="qgf-btn-no">✗ &nbsp;Falso</button>
     </div>
+    <p class="qgf-fillrow" style="display:none;">
+      <select class="fill-sel qgf-fill-select" style="display:none;"></select>
+      <input class="fill-inline qgf-fill-input" type="text" style="display:none;" autocomplete="off" spellcheck="false">
+      <button class="fill-vbtn qgf-fill-check">Verifica</button>
+    </p>
     <div class="qgf-fb"></div>
     <div class="qgf-nav"><button class="qgf-next" style="display:none">Avanti →</button></div>
   </div>
   <div class="qgf-fine" style="display:none">
     <p class="qgf-fine-title">🎉 Quiz completato!</p>
+    {% unless include.senza_esempi %}
     <p>Ora tocca a te. Scrivi un esempio e un controesempio.</p>
     <div class="qgf-field"><label>{{ _label_si }}</label><input class="qgf-inp-si" type="text"></div>
     <div class="qgf-field"><label>{{ _label_no }}</label><input class="qgf-inp-no" type="text"></div>
     <button class="qgf-confirm">Conferma</button>
     <p class="qgf-msg"></p>
+    {% endunless %}
   </div>
 </div>
 <canvas class="qgf-canvas"></canvas>
@@ -39,21 +50,62 @@ function prog(){
   $$('.qgf-prog-fill').style.width=((i/Q.length)*100)+'%';
   $$('.qgf-prog-txt').textContent=(i+1)+' / '+Q.length;
 }
+function typeset(el){if(window.MathJax&&el)MathJax.typesetPromise([el]);}
+function normFill(s){
+  return (s||'').toString().trim().toLowerCase()
+    .replace(/[àáâ]/g,'a').replace(/[èéê]/g,'e').replace(/[ìíî]/g,'i')
+    .replace(/[òóô]/g,'o').replace(/[ùúû]/g,'u');
+}
 function show(){
   prog();
-  $$('.qgf-q').textContent=Q[i].t;
+  var q=$$('.qgf-q');
+  q.textContent=Q[i].t;
+  var hint=$$('.qgf-hint'),hintBody=$$('.qgf-hint-body');
+  if(Q[i].h){hint.style.display='block';hint.open=false;hintBody.innerHTML=Q[i].h;typeset(hintBody);}
+  else{hint.style.display='none';}
   var fb=$$('.qgf-fb');fb.style.display='none';fb.className='qgf-fb';fb.textContent='';
   $$('.qgf-next').style.display='none';
-  $$('.qgf-btn-si').disabled=false;$$('.qgf-btn-no').disabled=false;
+
+  var isFill=Q[i].tipo==='fill';
+  $$('.qgf-btns').style.display=isFill?'none':'flex';
+  $$('.qgf-fillrow').style.display=isFill?'block':'none';
+  if(isFill){
+    var sel=$$('.qgf-fill-select'),inp=$$('.qgf-fill-input'),chk=$$('.qgf-fill-check');
+    chk.disabled=false;
+    if(Q[i].opts){
+      sel.style.display='inline-block';inp.style.display='none';
+      sel.innerHTML='<option value="">—</option>'+Q[i].opts.map(function(o){return '<option value="'+o+'">'+o+'</option>';}).join('');
+      sel.disabled=false;
+    } else {
+      sel.style.display='none';inp.style.display='inline-block';
+      inp.value='';inp.disabled=false;
+    }
+  } else {
+    $$('.qgf-btn-si').disabled=false;$$('.qgf-btn-no').disabled=false;
+  }
+  typeset(q);
 }
-function risposta(v){
+function esito(ok,corrDesc){
   var q=Q[i],fb=$$('.qgf-fb');
-  $$('.qgf-btn-si').disabled=true;$$('.qgf-btn-no').disabled=true;
   fb.style.display='block';
-  if(v===q.ok){fb.className='qgf-fb ok';fb.textContent='✓ Corretto! '+q.s;confetti();}
-  else{fb.className='qgf-fb err';fb.textContent='✗ '+(q.ok?'Affermazione vera. ':'Affermazione falsa. ')+q.s;allOk=false;}
+  if(ok){fb.className='qgf-fb ok';fb.textContent='✓ Corretto! '+q.s;confetti();}
+  else{fb.className='qgf-fb err';fb.textContent='✗ '+corrDesc+q.s;allOk=false;}
   var nx=$$('.qgf-next');nx.style.display='inline-block';
   nx.textContent=i<Q.length-1?'Avanti →':'Vedi risultato →';
+  typeset(fb);
+}
+function risposta(v){
+  $$('.qgf-btn-si').disabled=true;$$('.qgf-btn-no').disabled=true;
+  esito(v===Q[i].ok,Q[i].ok?'Affermazione vera. ':'Affermazione falsa. ');
+}
+function checkFill(){
+  var q=Q[i];
+  var sel=$$('.qgf-fill-select'),inp=$$('.qgf-fill-input');
+  var val=q.opts?sel.value:inp.value;
+  sel.disabled=true;inp.disabled=true;$$('.qgf-fill-check').disabled=true;
+  var accepted=String(q.ok).split(',').map(normFill);
+  var ok=accepted.indexOf(normFill(val))!==-1;
+  esito(ok,'Non corretto. ');
 }
 function nextQ(){
   i++;
@@ -75,8 +127,10 @@ function concludi(){
 
 $$('.qgf-btn-si').addEventListener('click',function(){risposta(true);});
 $$('.qgf-btn-no').addEventListener('click',function(){risposta(false);});
+$$('.qgf-fill-check').addEventListener('click',checkFill);
 $$('.qgf-next').addEventListener('click',nextQ);
-$$('.qgf-confirm').addEventListener('click',concludi);
+var confirmBtn=$$('.qgf-confirm');
+if(confirmBtn)confirmBtn.addEventListener('click',concludi);
 
 function getCanvas(){cv.width=window.innerWidth;cv.height=window.innerHeight;cv.style.display='block';return cv;}
 function confetti(){

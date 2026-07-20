@@ -889,6 +889,8 @@ $$ s=\frac{12.4-11.9}{2} \ \text{cm}. $$
 - Perché nella differenza $z = x - y$ le incertezze *assolute* si sommano (e non si sottraggono)?
 - Perché nel prodotto e nel quoziente si sommano le incertezze *relative*?
 - Perché nella propagazione dell'errore su $S = \pi(d/2)^2$ compare un fattore 2?
+
+**Attenzione!** Questa lista di domande sono solo esempi per aiutarvi a comprendere la tipologia. Chiaramente, potrei farvi domande non contenute in questa lista.
 {% include box-end.html %}
 
 </div>

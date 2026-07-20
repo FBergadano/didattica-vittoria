@@ -1,0 +1,16 @@
+{% comment %}
+Nota a margine: aggiunge, a fianco di uno o più paragrafi, una linea verticale
+tratteggiata ciano con una breve frase di riassunto (in ciano) accanto.
+Su schermi stretti (o in stampa) la linea diventa orizzontale, sopra il testo.
+
+Parametri:
+  testo — la frase di riassunto mostrata a fianco (obbligatorio)
+
+Esempio:
+  {% include margin-note.html testo="Tutto interagisce con tutto." %}
+  Tutti noi sappiamo che la forza gravitazionale è quella che ci attrae...
+  {% include margin-note-end.html %}
+{% endcomment %}
+<div class="mn-wrap">
+<div class="mn-line" aria-hidden="true"><span class="mn-caption">{{ include.testo }}</span></div>
+<div class="mn-content" markdown="1">

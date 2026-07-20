@@ -2,7 +2,7 @@ title: "Bergadano Didattica — Liceo Vittoria"
 description: "Materiale didattico interattivo di Matematica e Fisica"
 author: "Prof. Fulvio Bergadano"
 school: "Liceo Vittoria, Torino"
-email: ""           # aggiungi la tua email se vuoi
+email: "fulvio.bergadano@vittoriaweb.it"           # aggiungi la tua email se vuoi
 baseurl: "/didattica-vittoria"         # lascia vuoto se il sito è nella root di GitHub Pages
 url: "https://fbergadano.github.io"   # ← sostituisci con il tuo GitHub username
 
@@ -58,14 +58,14 @@ corsi:
     classe: "3B"
     materia: fisica
     anni: 3
-    capitoli: 6
+    capitoli: 7
   - id: fisica-3acd
     nome: "Fisica 3ª ACD"
     classe: "3ACD"
     materia: fisica
     anni: 3
     sperimentale: true
-    capitoli: 6
+    capitoli: 7
   - id: fisica-4b
     nome: "Fisica 4ª B"
     classe: "4B"
@@ -99,3 +99,11 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - "_corsi/**/appunti-*.md"
+  - "_corsi/**/appunti-*.tex"
+  - "_corsi/**/appunti-*.pdf"
+  - "_corsi/**/appunti-*.aux"
+  - "_corsi/**/appunti-*.log"
+  - "_corsi/**/appunti-*.out"
+  - "_corsi/**/appunti-*.synctex.gz"
+  - "latex/"
