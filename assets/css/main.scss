@@ -424,6 +424,10 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
     margin: 0.3rem 0 1rem;
   }
 }
+// Su schermi da telefono la nota a margine sparisce del tutto: resta solo il paragrafo.
+@media (max-width: 600px) {
+  .mn-line { display: none; }
+}
 @media print { .mn-line { display: none; } }
 
 // ── Content boxes ─────────────────────────────────────────────

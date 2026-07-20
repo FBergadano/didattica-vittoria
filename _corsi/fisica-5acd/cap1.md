@@ -38,8 +38,7 @@ Tutti noi sappiamo che la forza gravitazionale è quella che ci attrae verso il 
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="La gravità è la forza più debole della Natura." %}
-Ma, come ci dice l'esperienza quotidiana, questa attrazione è così debole che possiamo trascurarla praticamente sempre, tranne nel caso dei pianeti e delle stelle. Vale a dire, affinché gli effetti della forza gravitazionale siano realmente visibili, ci vogliono masse enormi.
-
+Ma, come ci dice l'esperienza quotidiana, questa attrazione è così debole che possiamo trascurarla praticamente sempre, tranne nel caso dei pianeti e delle stelle. Vale a dire, affinché gli effetti della forza gravitazionale siano realmente visibili, ci vogliono masse enormi.  
 La <definizione>gravità</definizione> è la forza più debole presente in Natura.
 {% include margin-note-end.html %}
 
