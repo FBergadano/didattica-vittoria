@@ -1,6 +1,6 @@
 ---
 layout: capitolo
-title: "Quantità di moto"
+title: "Il Moto nel Piano"
 corso: fisica-3b
 corso_titolo: "Fisica 3ª B"
 materia: fisica

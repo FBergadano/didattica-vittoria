@@ -1,6 +1,6 @@
 ---
 layout: capitolo
-title: "Le forze e la dinamica"
+title: "Il Moto Rettilineo: Velocità e Accelerazione"
 corso: fisica-3b
 corso_titolo: "Fisica 3ª B"
 materia: fisica

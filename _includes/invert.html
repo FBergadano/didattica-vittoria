@@ -1,0 +1,355 @@
+{% comment %}
+Esercizio: isola una variabile in un'equazione del tipo prodotto/rapporto di variabili,
+scegliendo tra alcune "mosse" (scambiare i membri, moltiplicare/dividere per una variabile).
+Lo studente viene valutato sul numero di mosse usate rispetto al minimo possibile.
+
+Parametri:
+  id        — ID univoco (obbligatorio)
+  variabili — variabili dell'equazione, separate da "|", es. "x|y|z"
+  sinistra  — membro sinistro iniziale, es. "x"
+  destra    — membro destro iniziale, es. "y/z"  (usa * per moltiplicare, / per dividere)
+  obiettivo — la variabile che lo studente deve isolare a sinistra, es. "y"
+  titolo    — etichetta mostrata sopra (default: "Isola {{ obiettivo }}")
+  etichette — (opzionale) simboli LaTeX da mostrare al posto delle variabili, separati da "|",
+              nello stesso ordine di "variabili". Utile per simboli composti come \Delta x,
+              che non possono essere usati direttamente come nome di variabile.
+              Es.: variabili="Dx|Dt|v" etichette="\\Delta x|\\Delta t|\\text{var}_{x,t}"
+
+Esempio:
+  {% include invert.html id="inv-y" variabili="x|y|z" sinistra="x" destra="y/z" obiettivo="y" %}
+{% endcomment %}
+{% assign _iid = include.id | default: "invx" %}
+{% assign _vars = include.variabili | split: "|" %}
+{% assign _labels_raw = include.etichette | split: "|" %}
+{% assign _obj_label = include.obiettivo %}
+{% capture _labelmap_json %}{% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}{% if v == include.obiettivo %}{% assign _obj_label = lbl %}{% endif %}{{ v | jsonify }}:{{ lbl | jsonify }}{% unless forloop.last %},{% endunless %}{% endfor %}{% endcapture %}
+
+<div id="{{ _iid }}" class="invx-widget">
+  <p class="invx-lbl">Isola <em>${{ _obj_label }}$</em> nel minor numero di mosse possibile</p>
+  <div class="invx-eq"></div>
+  <div class="invx-caption"></div>
+  <div class="invx-moves">
+    <button class="invx-btn invx-swap" data-type="swap">⇄ Scambia i membri</button>
+    {% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}<button class="invx-btn" data-type="mul" data-v="{{ v }}">× <span class="invx-btnsym">${{ lbl }}$</span></button>{% endfor %}
+    {% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}<button class="invx-btn" data-type="div" data-v="{{ v }}">÷ <span class="invx-btnsym">${{ lbl }}$</span></button>{% endfor %}
+  </div>
+  <div class="invx-history"></div>
+  <div class="invx-footer">
+    <span class="invx-counter">Mosse: <b class="invx-count">0</b></span>
+    <button class="invx-reset">↺ Ricomincia</button>
+  </div>
+  <div class="invx-result" style="display:none"></div>
+</div>
+
+<script>
+(function(){
+var root=document.getElementById('{{ _iid }}');
+var VARS={{ include.variabili | split: "|" | jsonify }};
+var LABELS={ {{ _labelmap_json }} };
+var TARGET='{{ include.obiettivo }}';
+var RANGE=4;
+
+function parseExpr(s){
+  var d={};
+  VARS.forEach(function(v){d[v]=0;});
+  var terms=(s.match(/[*\/]?[A-Za-z]+/g)||[]);
+  terms.forEach(function(t){
+    var sign=t.charAt(0)==='/'?-1:1;
+    var v=t.replace(/^[*\/]/,'');
+    d[v]=(d[v]||0)+sign;
+  });
+  return d;
+}
+var LEFT0=parseExpr('{{ include.sinistra }}');
+var RIGHT0=parseExpr('{{ include.destra }}');
+
+function clone(d){var o={};VARS.forEach(function(v){o[v]=d[v];});return o;}
+function stateKey(st){
+  return VARS.map(function(v){return st.left[v];}).join(',')+'|'+VARS.map(function(v){return st.right[v];}).join(',');
+}
+function isGoal(left){
+  return VARS.every(function(v){return left[v]===(v===TARGET?1:0);});
+}
+function allMoves(){
+  var m=[{type:'swap'}];
+  VARS.forEach(function(v){m.push({type:'mul',v:v});m.push({type:'div',v:v});});
+  return m;
+}
+function inRange(st){
+  return VARS.every(function(v){return Math.abs(st.left[v])<=RANGE&&Math.abs(st.right[v])<=RANGE;});
+}
+function applyMove(st,mv){
+  var left=clone(st.left),right=clone(st.right);
+  if(mv.type==='swap'){return {left:right,right:left};}
+  var d=mv.type==='mul'?1:-1;
+  left[mv.v]+=d;right[mv.v]+=d;
+  return {left:left,right:right};
+}
+function moveLabel(mv){
+  if(mv.type==='swap')return 'Scambia i membri';
+  return (mv.type==='mul'?'Moltiplica':'Dividi')+' entrambi i membri per $'+LABELS[mv.v]+'$';
+}
+function solveMin(){
+  var start={left:clone(LEFT0),right:clone(RIGHT0)};
+  var visited={};visited[stateKey(start)]=true;
+  var queue=[{state:start,moves:[]}];
+  var qi=0,moves=allMoves();
+  while(qi<queue.length){
+    var cur=queue[qi++];
+    if(isGoal(cur.state.left))return cur.moves;
+    for(var m=0;m<moves.length;m++){
+      var ns=applyMove(cur.state,moves[m]);
+      if(!inRange(ns))continue;
+      var k=stateKey(ns);
+      if(visited[k])continue;
+      visited[k]=true;
+      queue.push({state:ns,moves:cur.moves.concat([moves[m]])});
+    }
+  }
+  return null;
+}
+var MINPATH=solveMin();
+var MINCOUNT=MINPATH?MINPATH.length:null;
+
+function wrapLbl(lbl){return lbl.indexOf('\\')!==-1?'('+lbl+')':lbl;}
+function termPlain(v,e){
+  var lbl=LABELS[v];
+  return e===1?lbl:wrapLbl(lbl)+'^{'+e+'}';
+}
+function toLatex(d){
+  var nums=[],dens=[];
+  VARS.forEach(function(v){
+    var e=d[v];
+    if(e>0)nums.push(termPlain(v,e));
+    else if(e<0)dens.push(termPlain(v,-e));
+  });
+  var numStr=nums.length?nums.join('\\cdot '):'1';
+  if(dens.length)return '\\frac{'+numStr+'}{'+dens.join('\\cdot ')+'}';
+  return numStr;
+}
+function joinFrac(nums,dens){
+  var numStr=nums.length?nums.join('\\cdot '):'1';
+  if(dens.length)return '\\frac{'+numStr+'}{'+dens.join('\\cdot ')+'}';
+  return numStr;
+}
+// Costruisce le tre "fasi" (grezza, cancellazione, finale) per UN membro
+// dell'equazione, quando si moltiplica/divide per moveVar.
+function buildStages(oldMap,moveVar,delta){
+  var oldV=oldMap[moveVar]||0;
+  var sameSign=oldV===0||((oldV>0)===(delta>0));
+  var numsRaw=[],densRaw=[],numsCancel=[],densCancel=[];
+  VARS.forEach(function(v){
+    if(v===moveVar)return;
+    var e=oldMap[v];
+    if(e>0){var t=termPlain(v,e);numsRaw.push(t);numsCancel.push(t);}
+    else if(e<0){var t=termPlain(v,-e);densRaw.push(t);densCancel.push(t);}
+  });
+  var lbl=LABELS[moveVar],hasCancel=false;
+  if(sameSign){
+    var newAbs=Math.abs(oldV)+1;
+    var oldTerm=oldV!==0?termPlain(moveVar,Math.abs(oldV)):null;
+    var terms=oldTerm?[oldTerm,lbl]:[lbl];
+    if(delta>0||(oldV>0)){numsRaw=numsRaw.concat(terms);numsCancel=numsCancel.concat(terms);}
+    else{densRaw=densRaw.concat(terms);densCancel=densCancel.concat(terms);}
+  } else {
+    hasCancel=true;
+    var oldAbs=Math.abs(oldV),newAbsMag=oldAbs-1;
+    var oldRawTerm=termPlain(moveVar,oldAbs);
+    var oldCancelTerm=newAbsMag===0?('\\cancel{'+oldRawTerm+'}'):(wrapLbl(lbl)+'^{\\cancelto{'+newAbsMag+'}{'+oldAbs+'}}');
+    var newCancelTerm='\\cancel{'+lbl+'}';
+    if(oldV>0){numsRaw.push(oldRawTerm);densRaw.push(lbl);numsCancel.push(oldCancelTerm);densCancel.push(newCancelTerm);}
+    else{densRaw.push(oldRawTerm);numsRaw.push(lbl);densCancel.push(oldCancelTerm);numsCancel.push(newCancelTerm);}
+  }
+  return {hasCancel:hasCancel,raw:{num:numsRaw,den:densRaw},cancel:{num:numsCancel,den:densCancel}};
+}
+
+var left=clone(LEFT0), right=clone(RIGHT0), count=0, done=false, animating=false;
+var prevLeft=null, prevRight=null, lastMoveDesc=null;
+function $$(s){return root.querySelector(s);}
+function typeset(el){if(window.MathJax&&el)MathJax.typesetPromise([el]);}
+function renderEq(){
+  var box=$$('.invx-eq');
+  box.style.transition='none';box.style.transform='none';box.style.opacity=1;
+  box.innerHTML='$$'+toLatex(left)+' = '+toLatex(right)+'$$';
+  typeset(box);
+}
+// Mostra una fase dell'equazione (membro unico, già fusa) con una dissolvenza in dissolvenza,
+// a posizione fissa. Usata per il passaggio di cancellazione e per il risultato finale di ogni mossa.
+// 'hold' è il tempo (ms) per cui la fase resta visibile prima di richiamare cb.
+function renderStage(latex,opts,cb){
+  opts=opts||{};
+  var hold=opts.hold!=null?opts.hold:1700, dur=280;
+  var box=$$('.invx-eq');
+  box.style.transition='none';box.style.transform='none';box.style.opacity=0;
+  box.innerHTML='$$'+latex+'$$';
+  typeset(box);
+  void box.offsetWidth;
+  box.style.transition='opacity '+(dur/1000)+'s ease';
+  box.style.opacity=1;
+  if(cb)setTimeout(cb,dur+hold);
+}
+// Mostra la comparsa "grezza" del nuovo fattore quando si moltiplica/divide per moveVar,
+// tenendo fermo tutto il resto dell'equazione (i due membri attuali non vengono ri-disegnati):
+//  - moltiplicazione: compare lateralmente "lbl·" a sinistra e "·lbl" a destra, senza toccare i numeratori.
+//  - divisione: il membro attuale diventa il numeratore di una nuova frazione; la linea e il
+//    denominatore (lbl) compaiono sotto, senza spostare il numeratore.
+function renderAppear(mvType,lbl,cb){
+  var box=$$('.invx-eq');
+  box.style.transition='none';box.style.transform='none';box.style.opacity=1;
+  var leftHtml,rightHtml;
+  if(mvType==='mul'){
+    leftHtml='<span class="invx-add">$'+lbl+'\\cdot$</span><span class="invx-static">$'+toLatex(left)+'$</span>';
+    rightHtml='<span class="invx-static">$'+toLatex(right)+'$</span><span class="invx-add">$\\cdot '+lbl+'$</span>';
+  } else {
+    leftHtml='<span class="invx-fracside"><span class="invx-static">$'+toLatex(left)+'$</span>'+
+      '<span class="invx-fracline"></span><span class="invx-fracden">$'+lbl+'$</span></span>';
+    rightHtml='<span class="invx-fracside"><span class="invx-static">$'+toLatex(right)+'$</span>'+
+      '<span class="invx-fracline"></span><span class="invx-fracden">$'+lbl+'$</span></span>';
+  }
+  box.innerHTML=leftHtml+' <span class="invx-eq-rel">$=$</span> '+rightHtml;
+  typeset(box);
+  void box.offsetWidth;
+  root.querySelectorAll('.invx-add,.invx-fracden').forEach(function(el){el.classList.add('show');});
+  if(cb)setTimeout(cb,1900);
+}
+function setCaption(text){
+  var cap=$$('.invx-caption');
+  if(!text){cap.textContent='';cap.classList.remove('show');return;}
+  cap.innerHTML=text;
+  typeset(cap);
+  cap.classList.add('show');
+}
+function updateHistory(){
+  var hist=$$('.invx-history');
+  if(count===0||done){hist.innerHTML='';return;}
+  var html='<div class="invx-hist-row">Equazione iniziale: $'+toLatex(LEFT0)+' = '+toLatex(RIGHT0)+'$</div>';
+  if(count>=2&&prevLeft){
+    html+='<div class="invx-hist-row">Ultimo passaggio: $'+toLatex(prevLeft)+' = '+toLatex(prevRight)+'$ — '+lastMoveDesc+'</div>';
+  }
+  hist.innerHTML=html;
+  typeset(hist);
+}
+function setMovesEnabled(v){
+  root.querySelectorAll('.invx-btn').forEach(function(b){b.disabled=!v;});
+}
+function finish(){
+  done=true;
+  setMovesEnabled(false);
+  updateHistory();
+  var res=$$('.invx-result');
+  res.style.display='block';
+  if(count===MINCOUNT){
+    res.className='invx-result ok';
+    res.innerHTML='🎉 Complimenti! Hai isolato <em>$'+LABELS[TARGET]+'$</em> in '+count+' mosse: è il numero minimo possibile!';
+    confetti();
+  } else {
+    res.className='invx-result warn';
+    res.innerHTML='Hai isolato <em>$'+LABELS[TARGET]+'$</em> in '+count+' mosse. Esisteva una strategia più breve, in '+MINCOUNT+' moss'+(MINCOUNT===1?'a':'e')+'. '+
+      '<details class="spoiler" style="margin-top:0.5rem;"><summary>Vuoi vederla?</summary><div class="spoiler-body"><ol>'+
+      MINPATH.map(function(mv){return '<li>'+moveLabel(mv)+'</li>';}).join('')+
+      '</ol></div></details>';
+  }
+  typeset(res);
+}
+function reset(){
+  left=clone(LEFT0);right=clone(RIGHT0);count=0;done=false;
+  prevLeft=null;prevRight=null;lastMoveDesc=null;
+  $$('.invx-count').textContent=count;
+  $$('.invx-result').style.display='none';
+  setCaption(null);
+  updateHistory();
+  setMovesEnabled(true);
+  renderEq();
+}
+function afterMove(ns){
+  left=ns.left;right=ns.right;count++;
+  $$('.invx-count').textContent=count;
+  animating=false;
+  if(isGoal(left)){finish();}
+  else{updateHistory();setMovesEnabled(true);}
+}
+root.querySelectorAll('.invx-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    if(done||animating)return;
+    var mv=btn.dataset.type==='swap'?{type:'swap'}:{type:btn.dataset.type,v:btn.dataset.v};
+    var ns=applyMove({left:left,right:right},mv);
+    if(!inRange(ns))return;
+    prevLeft=clone(left);prevRight=clone(right);lastMoveDesc=moveLabel(mv);
+    setCaption(null);
+    animating=true;setMovesEnabled(false);
+
+    if(mv.type==='swap'){
+      renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
+      return;
+    }
+
+    var delta=mv.type==='mul'?1:-1;
+    var oldL=left[mv.v]||0, oldR=right[mv.v]||0;
+    var li=buildStages(left,mv.v,delta);
+    var ri=buildStages(right,mv.v,delta);
+    var hasCancel=li.hasCancel||ri.hasCancel;
+    var cancelLatex=hasCancel?(joinFrac(li.cancel.num,li.cancel.den)+' = '+joinFrac(ri.cancel.num,ri.cancel.den)):null;
+    var lbl=LABELS[mv.v];
+    var combineCaption=null;
+    if(!hasCancel){
+      var oldV=oldL!==0?oldL:(oldR!==0?oldR:0);
+      if(oldV!==0){
+        var newV=oldV+delta;
+        combineCaption='$'+termPlain(mv.v,Math.abs(oldV))+'\\cdot '+lbl+' = '+termPlain(mv.v,Math.abs(newV))+'$';
+      }
+    }
+    var cancelCaption=hasCancel?('Le $'+lbl+'$ si semplificano.'):null;
+
+    function finalStage(){
+      renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
+    }
+    renderAppear(mv.type,lbl,function(){
+      if(hasCancel){
+        setCaption(cancelCaption);
+        setTimeout(function(){
+          setCaption(null);
+          renderStage(cancelLatex,{hold:1700},finalStage);
+        },1600);
+      } else if(combineCaption){
+        setCaption(combineCaption);
+        setTimeout(function(){
+          setCaption(null);
+          finalStage();
+        },1600);
+      } else {
+        finalStage();
+      }
+    });
+  });
+});
+$$('.invx-reset').addEventListener('click',reset);
+
+function confetti(){
+  var canvas=document.createElement('canvas');
+  canvas.style.position='fixed';canvas.style.top=0;canvas.style.left=0;canvas.style.pointerEvents='none';canvas.style.zIndex=9999;
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  document.body.appendChild(canvas);
+  var ctx=canvas.getContext('2d');
+  var r=root.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.3;
+  var cols=['#0891b2','#22d3ee','#059669','#d97706','#ec4899','#a78bfa','#fbbf24'];
+  var ps=[];
+  for(var k=0;k<55;k++){
+    ps.push({x:cx+(Math.random()-.5)*100,y:cy,vx:(Math.random()-.5)*11,vy:-(Math.random()*13+5),
+      w:Math.random()*11+5,h:Math.random()*6+3,col:cols[k%cols.length],
+      rot:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.32,a:1});
+  }
+  (function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);var alive=false;
+    ps.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;p.vy+=0.38;p.rot+=p.rv;p.a-=0.017;
+      if(p.a<=0)return;alive=true;
+      ctx.save();ctx.globalAlpha=p.a;ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+    });
+    if(alive)requestAnimationFrame(frame);else document.body.removeChild(canvas);
+  })();
+}
+
+renderEq();
+})();
+</script>

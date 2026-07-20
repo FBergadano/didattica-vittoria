@@ -1,6 +1,6 @@
 ---
 layout: capitolo
-title: "Moto circolare e gravitazione"
+title: "Le Forze"
 corso: fisica-3b
 corso_titolo: "Fisica 3ª B"
 materia: fisica

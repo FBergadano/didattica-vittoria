@@ -177,6 +177,19 @@ La soluzione è $x = 2$.
 - `label` — testo del link (default: "Confronta con la definizione nel testo")
 - In stampa: il campo è visibile come area tratteggiata, il link sparisce
 
+### Frayer Model
+
+```liquid
+{% include frayer.html id="id-univoco" termine="Densità" %}
+```
+
+- `id` — ID univoco (usare un ID diverso per ogni widget nella stessa pagina)
+- `termine` — la parola/concetto al centro dello schema (obbligatorio)
+- Quattro quadranti con caselle di testo libere per lo studente: Definizione, Caratteristiche essenziali, Esempi, Non-esempi
+- Etichette personalizzabili (opzionali): `def_label`, `car_label`, `ex_label`, `nonex_label`
+- Placeholder personalizzabili (opzionali): `def_hint`, `car_hint`, `ex_hint`, `nonex_hint`
+- Nascosto in stampa PDF (come `fill-def`)
+
 ## Altri elementi
 
 ```

@@ -5,18 +5,11 @@ title: "Bergadano Didattica — Liceo Vittoria"
 
 <header class="hero">
   <p class="hero-eyebrow">Liceo Vittoria · Torino</p>
-  <h1 class="hero-title">Matematica e Fisica,<br><em>spiegati insieme</em></h1>
+  <h1 class="hero-title">Matematica e Fisica<br></h1>
   <p class="hero-subtitle">
-    Materiale didattico interattivo per i corsi del Prof. Fulvio Bergadano.
+    Materiale didattico interattivo per i miei corsi al Liceo Vittoria.
     Scegli la tua classe per accedere agli appunti, simulazioni ed esercizi.
   </p>
-  <div class="hero-formula" aria-label="Alcune formule dei corsi">
-    \( i\hbar\,\frac{\partial}{\partial t}\Psi = \hat{H}\Psi \)
-    &ensp;·&ensp;
-    \( \nabla \cdot \mathbf{E} = \frac{\rho}{\varepsilon_0} \)
-    &ensp;·&ensp;
-    \( \lim_{x\to 0}\frac{\sin x}{x} = 1 \)
-  </div>
 </header>
 
 <main class="courses-section">
