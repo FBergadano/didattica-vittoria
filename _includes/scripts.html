@@ -2,14 +2,24 @@
 // ── Citazioni <cit autore="..."> ─────────────────────────────
 (function() {
   document.querySelectorAll('cit[autore]').forEach(function(el) {
-    var text = el.textContent.trim();
     var author = el.getAttribute('autore');
-    el.textContent = '';
-    var q = document.createTextNode('« ' + text + ' »');
+    while (el.firstChild && el.firstChild.nodeType === 3 && !el.firstChild.textContent.trim()) {
+      el.removeChild(el.firstChild);
+    }
+    if (el.firstChild && el.firstChild.nodeType === 3) {
+      el.firstChild.textContent = el.firstChild.textContent.replace(/^\s+/, '');
+    }
+    while (el.lastChild && el.lastChild.nodeType === 3 && !el.lastChild.textContent.trim()) {
+      el.removeChild(el.lastChild);
+    }
+    if (el.lastChild && el.lastChild.nodeType === 3) {
+      el.lastChild.textContent = el.lastChild.textContent.replace(/\s+$/, '');
+    }
+    el.insertBefore(document.createTextNode('« '), el.firstChild);
+    el.appendChild(document.createTextNode(' »'));
     var aut = document.createElement('span');
     aut.className = 'cit-aut';
-    aut.textContent = '— ' + author;
-    el.appendChild(q);
+    aut.textContent = '— ' + author;
     el.appendChild(aut);
   });
 })();

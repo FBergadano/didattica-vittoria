@@ -955,7 +955,11 @@ cit {
   display: block;
   margin: 1.5rem 0;
   font-style: italic;
+  white-space: pre-line;
 }
+// Il corsivo dentro una citazione (già tutta in corsivo) viene reso in tondo,
+// per convenzione tipografica, così l'enfasi resta visibile.
+cit em, cit i { font-style: normal; }
 .cit-aut {
   display: block;
   text-align: right;
