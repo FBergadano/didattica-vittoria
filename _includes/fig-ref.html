@@ -1,0 +1,9 @@
+{% comment %}
+Riferimento a una figura numerata (vedi figura.html), come \ref{fig:...} in LaTeX.
+Il numero corretto viene calcolato automaticamente via JavaScript, quindi
+funziona anche se il riferimento compare nel testo PRIMA della figura stessa.
+
+Parametri: id — deve corrispondere all'id usato nel corrispondente {% include figura.html %}
+
+Esempio: si veda la {% include fig-ref.html id="bilancia_a_torsione" %}.
+{% endcomment %}<a href="#fig-{{ include.id }}" class="fig-ref" data-fig-ref="{{ include.id }}">Figura</a>

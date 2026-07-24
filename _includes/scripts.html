@@ -24,6 +24,20 @@
   });
 })();
 
+// ── Numerazione automatica delle figure (come \ref in LaTeX) ──────────
+(function() {
+  var map = {};
+  document.querySelectorAll('.fig-num[data-fig-id]').forEach(function(el, i) {
+    var n = i + 1;
+    map[el.getAttribute('data-fig-id')] = n;
+    el.textContent = 'Figura ' + n;
+  });
+  document.querySelectorAll('.fig-ref[data-fig-ref]').forEach(function(el) {
+    var n = map[el.getAttribute('data-fig-ref')];
+    if (n) el.textContent = 'Figura ' + n;
+  });
+})();
+
 // ── PDF export with QR codes for videos ───────────────────────
 function exportPDF() {
   var wraps = document.querySelectorAll('.video-wrap');

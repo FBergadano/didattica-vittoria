@@ -1,0 +1,19 @@
+{% comment %}
+Simulazione interattiva PhET (phet.colorado.edu), incorporata in un iframe.
+
+Parametri:
+  id         — identificatore univoco (obbligatorio)
+  src        — URL della simulazione PhET, versione "_all.html" (obbligatorio)
+  didascalia — testo mostrato sotto la simulazione (opzionale)
+  altezza    — altezza dell'iframe, es. "550px" (opzionale, default "550px")
+
+Esempio:
+  {% include phet-sim.html id="gravity-force-lab"
+     src="https://phet.colorado.edu/sims/html/gravity-force-lab/latest/gravity-force-lab_all.html"
+     didascalia="Simulazione PhET: modifica le masse e la distanza e osserva come cambia la forza."
+     altezza="550px" %}
+{% endcomment %}
+<div class="phet-wrap" id="{{ include.id }}" style="height: {{ include.altezza | default: "550px" }};">
+  <iframe src="{{ include.src }}" title="{{ include.didascalia | default: "Simulazione interattiva PhET" }}" allowfullscreen loading="lazy"></iframe>
+</div>
+{% if include.didascalia %}<p class="video-caption">{{ include.didascalia }}</p>{% endif %}
