@@ -1,0 +1,22 @@
+{% comment %}
+Immagine numerata con didascalia, come una \begin{figure} in LaTeX. Per citarla
+nel testo usa {% include fig-ref.html id="..." %} — funziona come \ref{fig:...}:
+la numerazione è automatica (basata sull'ordine in cui le figure compaiono
+nella pagina) e resta coerente ovunque venga citata, anche prima della figura stessa.
+
+Parametri:
+  id         — identificatore univoco della figura (obbligatorio, es. "bilancia_a_torsione")
+  src        — percorso dell'immagine, dalla root del sito (es. "/corsi/immagini/foo.png")
+  didascalia — testo della didascalia (obbligatorio)
+  alt        — testo alternativo (opzionale, default = didascalia)
+  larghezza  — larghezza massima CSS dell'immagine, es. "320px" (opzionale)
+
+Esempio:
+  {% include figura.html id="bilancia_a_torsione"
+     src="/corsi/immagini/bilancia_a_torsione_cavendish.png"
+     didascalia="La bilancia di torsione di Cavendish." larghezza="280px" %}
+{% endcomment %}
+<figure class="fig-block" id="fig-{{ include.id }}">
+  <img src="{{ include.src | relative_url }}" alt="{{ include.alt | default: include.didascalia }}"{% if include.larghezza %} style="max-width: {{ include.larghezza }};"{% endif %}>
+  <figcaption><span class="fig-num" data-fig-id="{{ include.id }}">Figura</span> — {{ include.didascalia }}</figcaption>
+</figure>

@@ -50,7 +50,7 @@ function prog(){
   $$('.qgf-prog-fill').style.width=((i/Q.length)*100)+'%';
   $$('.qgf-prog-txt').textContent=(i+1)+' / '+Q.length;
 }
-function typeset(el){if(window.MathJax&&el)MathJax.typesetPromise([el]);}
+function typeset(el){if(window.MathJax&&MathJax.typesetPromise&&el)MathJax.typesetPromise([el]);}
 function normFill(s){
   return (s||'').toString().trim().toLowerCase()
     .replace(/[àáâ]/g,'a').replace(/[èéê]/g,'e').replace(/[ìíî]/g,'i')

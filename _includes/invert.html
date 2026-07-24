@@ -14,6 +14,12 @@ Parametri:
               nello stesso ordine di "variabili". Utile per simboli composti come \Delta x,
               che non possono essere usati direttamente come nome di variabile.
               Es.: variabili="Dx|Dt|v" etichette="\\Delta x|\\Delta t|\\text{var}_{x,t}"
+  radice    — (opzionale) se presente (es. "1"), aggiunge fra le mosse disponibili "estrai la
+              radice quadrata di entrambi i membri" (dimezza tutti gli esponenti) e sostituisce
+              i tasti ×/÷ della sola variabile obiettivo con ×obiettivo²/÷obiettivo² (dato che
+              tale variabile compare al quadrato nell'equazione di partenza). Serve solo per
+              isolare una variabile che compare al quadrato (es. r in g=GM/r²): usare SOLO in
+              quei casi, non aggiungere di default agli altri invert.html del sito.
 
 Esempio:
   {% include invert.html id="inv-y" variabili="x|y|z" sinistra="x" destra="y/z" obiettivo="y" %}
@@ -30,8 +36,9 @@ Esempio:
   <div class="invx-caption"></div>
   <div class="invx-moves">
     <button class="invx-btn invx-swap" data-type="swap">⇄ Scambia i membri</button>
-    {% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}<button class="invx-btn" data-type="mul" data-v="{{ v }}">× <span class="invx-btnsym">${{ lbl }}$</span></button>{% endfor %}
-    {% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}<button class="invx-btn" data-type="div" data-v="{{ v }}">÷ <span class="invx-btnsym">${{ lbl }}$</span></button>{% endfor %}
+    {% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}{% if include.radice and v == include.obiettivo %}<button class="invx-btn" data-type="mul" data-v="{{ v }}" data-mag="2">× <span class="invx-btnsym">${{ lbl }}^2$</span></button>{% else %}<button class="invx-btn" data-type="mul" data-v="{{ v }}">× <span class="invx-btnsym">${{ lbl }}$</span></button>{% endif %}{% endfor %}
+    {% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}{% if include.radice and v == include.obiettivo %}<button class="invx-btn" data-type="div" data-v="{{ v }}" data-mag="2">÷ <span class="invx-btnsym">${{ lbl }}^2$</span></button>{% else %}<button class="invx-btn" data-type="div" data-v="{{ v }}">÷ <span class="invx-btnsym">${{ lbl }}$</span></button>{% endif %}{% endfor %}
+    {% if include.radice %}<button class="invx-btn invx-sqrt" data-type="sqrt">√ Radice quadrata di entrambi i membri</button>{% endif %}
   </div>
   <div class="invx-history"></div>
   <div class="invx-footer">
@@ -48,6 +55,7 @@ var VARS={{ include.variabili | split: "|" | jsonify }};
 var LABELS={ {{ _labelmap_json }} };
 var TARGET='{{ include.obiettivo }}';
 var RANGE=4;
+var ALLOW_SQRT={% if include.radice %}true{% else %}false{% endif %};
 
 function parseExpr(s){
   var d={};
@@ -67,12 +75,25 @@ function clone(d){var o={};VARS.forEach(function(v){o[v]=d[v];});return o;}
 function stateKey(st){
   return VARS.map(function(v){return st.left[v];}).join(',')+'|'+VARS.map(function(v){return st.right[v];}).join(',');
 }
-function isGoal(left){
-  return VARS.every(function(v){return left[v]===(v===TARGET?1:0);});
+function isGoal(left,right){
+  var leftOk = VARS.every(function(v){return left[v]===(v===TARGET?1:0);});
+  // La variabile obiettivo deve essere isolata: non deve comparire anche
+  // nell'altro membro, altrimenti "isolarla" sarebbe solo una tautologia
+  // (es. dividere e poi moltiplicare per la stessa variabile "vince" il
+  // controllo sul membro sinistro senza aver risolto nulla).
+  var rightFree = !right || right[TARGET] === 0;
+  return leftOk && rightFree;
 }
 function allMoves(){
   var m=[{type:'swap'}];
-  VARS.forEach(function(v){m.push({type:'mul',v:v});m.push({type:'div',v:v});});
+  VARS.forEach(function(v){
+    if(ALLOW_SQRT&&v===TARGET){
+      m.push({type:'mul',v:v,mag:2});m.push({type:'div',v:v,mag:2});
+    } else {
+      m.push({type:'mul',v:v});m.push({type:'div',v:v});
+    }
+  });
+  if(ALLOW_SQRT)m.push({type:'sqrt'});
   return m;
 }
 function inRange(st){
@@ -81,13 +102,20 @@ function inRange(st){
 function applyMove(st,mv){
   var left=clone(st.left),right=clone(st.right);
   if(mv.type==='swap'){return {left:right,right:left};}
-  var d=mv.type==='mul'?1:-1;
+  if(mv.type==='sqrt'){
+    var nl={},nr={};
+    VARS.forEach(function(v){nl[v]=left[v]/2;nr[v]=right[v]/2;});
+    return {left:nl,right:nr};
+  }
+  var d=(mv.type==='mul'?1:-1)*(mv.mag||1);
   left[mv.v]+=d;right[mv.v]+=d;
   return {left:left,right:right};
 }
 function moveLabel(mv){
   if(mv.type==='swap')return 'Scambia i membri';
-  return (mv.type==='mul'?'Moltiplica':'Dividi')+' entrambi i membri per $'+LABELS[mv.v]+'$';
+  if(mv.type==='sqrt')return 'Estrai la radice quadrata di entrambi i membri';
+  var sq=mv.mag===2?'^2':'';
+  return (mv.type==='mul'?'Moltiplica':'Dividi')+' entrambi i membri per $'+LABELS[mv.v]+sq+'$';
 }
 function solveMin(){
   var start={left:clone(LEFT0),right:clone(RIGHT0)};
@@ -96,7 +124,7 @@ function solveMin(){
   var qi=0,moves=allMoves();
   while(qi<queue.length){
     var cur=queue[qi++];
-    if(isGoal(cur.state.left))return cur.moves;
+    if(isGoal(cur.state.left,cur.state.right))return cur.moves;
     for(var m=0;m<moves.length;m++){
       var ns=applyMove(cur.state,moves[m]);
       if(!inRange(ns))continue;
@@ -114,9 +142,11 @@ var MINCOUNT=MINPATH?MINPATH.length:null;
 function wrapLbl(lbl){return lbl.indexOf('\\')!==-1?'('+lbl+')':lbl;}
 function termPlain(v,e){
   var lbl=LABELS[v];
-  return e===1?lbl:wrapLbl(lbl)+'^{'+e+'}';
+  if(e===1)return lbl;
+  if(e===0.5)return '\\sqrt{'+lbl+'}';
+  return wrapLbl(lbl)+'^{'+e+'}';
 }
-function toLatex(d){
+function toLatexInner(d){
   var nums=[],dens=[];
   VARS.forEach(function(v){
     var e=d[v];
@@ -127,15 +157,30 @@ function toLatex(d){
   if(dens.length)return '\\frac{'+numStr+'}{'+dens.join('\\cdot ')+'}';
   return numStr;
 }
+// Se uno o più esponenti non sono interi (perché è stata estratta una radice
+// e non si è ancora "richiuso" il conto), non si mostrano esponenti frazionari
+// sparsi: si raddoppiano tutti gli esponenti (tornano interi) e si racchiude
+// l'intero membro in un'unica radice quadrata — la forma standard dei libri di testo.
+function toLatex(d){
+  var hasFrac=VARS.some(function(v){return d[v]%1!==0;});
+  if(hasFrac){
+    var d2={};VARS.forEach(function(v){d2[v]=d[v]*2;});
+    return '\\sqrt{'+toLatexInner(d2)+'}';
+  }
+  return toLatexInner(d);
+}
 function joinFrac(nums,dens){
   var numStr=nums.length?nums.join('\\cdot '):'1';
   if(dens.length)return '\\frac{'+numStr+'}{'+dens.join('\\cdot ')+'}';
   return numStr;
 }
 // Costruisce le tre "fasi" (grezza, cancellazione, finale) per UN membro
-// dell'equazione, quando si moltiplica/divide per moveVar.
+// dell'equazione, quando si moltiplica/divide per moveVar (di un fattore mag,
+// tipicamente 1, oppure 2 per i tasti ×var²/÷var²).
 function buildStages(oldMap,moveVar,delta){
+  var mag=Math.abs(delta);
   var oldV=oldMap[moveVar]||0;
+  var newV=oldV+delta;
   var sameSign=oldV===0||((oldV>0)===(delta>0));
   var numsRaw=[],densRaw=[],numsCancel=[],densCancel=[];
   VARS.forEach(function(v){
@@ -144,21 +189,22 @@ function buildStages(oldMap,moveVar,delta){
     if(e>0){var t=termPlain(v,e);numsRaw.push(t);numsCancel.push(t);}
     else if(e<0){var t=termPlain(v,-e);densRaw.push(t);densCancel.push(t);}
   });
-  var lbl=LABELS[moveVar],hasCancel=false;
+  var lbl=LABELS[moveVar];
+  var magLbl=mag===2?(wrapLbl(lbl)+'^2'):lbl;
+  var hasCancel=false;
   if(sameSign){
-    var newAbs=Math.abs(oldV)+1;
     var oldTerm=oldV!==0?termPlain(moveVar,Math.abs(oldV)):null;
-    var terms=oldTerm?[oldTerm,lbl]:[lbl];
+    var terms=oldTerm?[oldTerm,magLbl]:[magLbl];
     if(delta>0||(oldV>0)){numsRaw=numsRaw.concat(terms);numsCancel=numsCancel.concat(terms);}
     else{densRaw=densRaw.concat(terms);densCancel=densCancel.concat(terms);}
   } else {
     hasCancel=true;
-    var oldAbs=Math.abs(oldV),newAbsMag=oldAbs-1;
+    var oldAbs=Math.abs(oldV),newAbsMag=Math.abs(newV);
     var oldRawTerm=termPlain(moveVar,oldAbs);
     var oldCancelTerm=newAbsMag===0?('\\cancel{'+oldRawTerm+'}'):(wrapLbl(lbl)+'^{\\cancelto{'+newAbsMag+'}{'+oldAbs+'}}');
-    var newCancelTerm='\\cancel{'+lbl+'}';
-    if(oldV>0){numsRaw.push(oldRawTerm);densRaw.push(lbl);numsCancel.push(oldCancelTerm);densCancel.push(newCancelTerm);}
-    else{densRaw.push(oldRawTerm);numsRaw.push(lbl);densCancel.push(oldCancelTerm);numsCancel.push(newCancelTerm);}
+    var newCancelTerm='\\cancel{'+magLbl+'}';
+    if(oldV>0){numsRaw.push(oldRawTerm);densRaw.push(magLbl);numsCancel.push(oldCancelTerm);densCancel.push(newCancelTerm);}
+    else{densRaw.push(oldRawTerm);numsRaw.push(magLbl);densCancel.push(oldCancelTerm);numsCancel.push(newCancelTerm);}
   }
   return {hasCancel:hasCancel,raw:{num:numsRaw,den:densRaw},cancel:{num:numsCancel,den:densCancel}};
 }
@@ -166,7 +212,7 @@ function buildStages(oldMap,moveVar,delta){
 var left=clone(LEFT0), right=clone(RIGHT0), count=0, done=false, animating=false;
 var prevLeft=null, prevRight=null, lastMoveDesc=null;
 function $$(s){return root.querySelector(s);}
-function typeset(el){if(window.MathJax&&el)MathJax.typesetPromise([el]);}
+function typeset(el){if(window.MathJax&&MathJax.typesetPromise&&el)MathJax.typesetPromise([el]);}
 function renderEq(){
   var box=$$('.invx-eq');
   box.style.transition='none';box.style.transform='none';box.style.opacity=1;
@@ -265,13 +311,13 @@ function afterMove(ns){
   left=ns.left;right=ns.right;count++;
   $$('.invx-count').textContent=count;
   animating=false;
-  if(isGoal(left)){finish();}
+  if(isGoal(left,right)){finish();}
   else{updateHistory();setMovesEnabled(true);}
 }
 root.querySelectorAll('.invx-btn').forEach(function(btn){
   btn.addEventListener('click',function(){
     if(done||animating)return;
-    var mv=btn.dataset.type==='swap'?{type:'swap'}:{type:btn.dataset.type,v:btn.dataset.v};
+    var mv=btn.dataset.type==='swap'||btn.dataset.type==='sqrt'?{type:btn.dataset.type}:{type:btn.dataset.type,v:btn.dataset.v,mag:btn.dataset.mag?parseInt(btn.dataset.mag,10):1};
     var ns=applyMove({left:left,right:right},mv);
     if(!inRange(ns))return;
     prevLeft=clone(left);prevRight=clone(right);lastMoveDesc=moveLabel(mv);
@@ -282,28 +328,37 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
       renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
       return;
     }
+    if(mv.type==='sqrt'){
+      var preLatex='\\sqrt{'+toLatexInner(left)+'} = \\sqrt{'+toLatexInner(right)+'}';
+      renderStage(preLatex,{hold:1700},function(){
+        renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
+      });
+      return;
+    }
 
-    var delta=mv.type==='mul'?1:-1;
+    var mag=mv.mag||1;
+    var delta=(mv.type==='mul'?1:-1)*mag;
     var oldL=left[mv.v]||0, oldR=right[mv.v]||0;
     var li=buildStages(left,mv.v,delta);
     var ri=buildStages(right,mv.v,delta);
     var hasCancel=li.hasCancel||ri.hasCancel;
     var cancelLatex=hasCancel?(joinFrac(li.cancel.num,li.cancel.den)+' = '+joinFrac(ri.cancel.num,ri.cancel.den)):null;
     var lbl=LABELS[mv.v];
+    var magLbl=mag===2?(wrapLbl(lbl)+'^2'):lbl;
     var combineCaption=null;
     if(!hasCancel){
       var oldV=oldL!==0?oldL:(oldR!==0?oldR:0);
       if(oldV!==0){
         var newV=oldV+delta;
-        combineCaption='$'+termPlain(mv.v,Math.abs(oldV))+'\\cdot '+lbl+' = '+termPlain(mv.v,Math.abs(newV))+'$';
+        combineCaption='$'+termPlain(mv.v,Math.abs(oldV))+'\\cdot '+magLbl+' = '+termPlain(mv.v,Math.abs(newV))+'$';
       }
     }
-    var cancelCaption=hasCancel?('Le $'+lbl+'$ si semplificano.'):null;
+    var cancelCaption=hasCancel?('Le $'+magLbl+'$ si semplificano.'):null;
 
     function finalStage(){
       renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
     }
-    renderAppear(mv.type,lbl,function(){
+    renderAppear(mv.type,magLbl,function(){
       if(hasCancel){
         setCaption(cancelCaption);
         setTimeout(function(){

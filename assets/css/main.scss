@@ -566,6 +566,21 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
 }
 .video-caption { font-size: 0.8rem; color: $text-muted; margin-top: 0.4rem; font-style: italic; }
 
+.phet-wrap {
+  margin: 1.5rem 0; border-radius: $radius-lg;
+  overflow: hidden; border: 1px solid $border;
+  iframe { width: 100%; height: 100%; border: none; display: block; }
+}
+@media print { .phet-wrap { display: none !important; } }
+
+.video-loop-wrap {
+  margin: 1.5rem auto; border-radius: $radius-lg;
+  overflow: hidden; border: 1px solid $border;
+  max-width: 100%;
+  video { width: 100%; height: auto; display: block; }
+}
+@media print { .video-loop-wrap { display: none !important; } }
+
 // ── Simulation container ──────────────────────────────────────
 .sim-container {
   background: $bg-surface;
@@ -680,11 +695,31 @@ h1.chapter-title {
     text-decoration-color: #a0aec0;
     text-decoration-thickness: 1.5px;
     text-underline-offset: 3px;
+    mjx-container {
+      text-decoration: underline;
+      text-decoration-color: #a0aec0;
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 3px;
+    }
   }
   mark {
     background: none;
     color: #6d28d9;
     font-weight: 700;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.2rem 0;
+    th, td {
+      padding: 0.6rem 1.4rem;
+      border-bottom: 1px solid $border;
+      text-align: left;
+    }
+    th {
+      font-weight: 700;
+      border-bottom: 2px solid var(--accent-border, $border);
+    }
   }
 }
 
@@ -1051,6 +1086,15 @@ cit em, cit i { font-style: normal; }
     &.calc-op  { background: #ff9f0a; font-size: 1.25rem; }
     &.calc-zero { grid-column: span 2; border-radius: 21px; text-align: left; padding-left: .8rem; }
   }
+}
+// Involucro per "calcolatrice + testo/esercizio che le scorre a fianco":
+// su desktop non cambia nulla (il float fa il suo lavoro); su telefono, dove
+// non c'è spazio per stare fianco a fianco, la calcolatrice passa SOTTO al
+// contenuto anziché sopra, pur restando prima nel markup (serve per il float).
+@media (max-width: 600px) {
+  .calc-flow { display: flex; flex-direction: column; }
+  .calc-flow .calc-outer { float: none; clear: none; order: 2; width: 100%; max-width: 240px; margin: 1rem auto 0; }
+  .calc-flow .calc-flow-body { order: 1; }
 }
 
 // ── Print / PDF export ────────────────────────────────────────
@@ -1438,6 +1482,21 @@ cit em, cit i { font-style: normal; }
 .sort-fb { font-size: .84rem; min-height: 1rem; margin-top: .3rem; &.ok { color: #15803d; font-weight: 600; } &.err { color: #dc2626; } }
 @media print { .sort-widget { display: none; } }
 
+// ── Somma vettoriale con trascinamento (widget inline in cap1 5ACD) ──
+.vdrag-widget { font-size: 0.88rem; margin: 0.5rem 0; user-select: none; }
+.vdrag-hint { font-size: 0.8rem; color: $text-secondary; font-style: italic; margin: 0 0 0.5rem; }
+.vdrag-actions { display: flex; gap: 0.5rem; margin-top: 0.6rem; justify-content: center; }
+.vdrag-check { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: .28rem .85rem; cursor: pointer; font-size: .87rem; }
+.vdrag-reset { background: #f9fafb; color: $text-secondary; border: 1px solid #e5e7eb; border-radius: 6px; padding: .28rem .75rem; cursor: pointer; font-size: .87rem; }
+.vdrag-fb { font-size: .84rem; min-height: 1rem; margin-top: .4rem; text-align: center; display: none; &.ok { color: #15803d; font-weight: 600; } &.err { color: #dc2626; } }
+@media print { .vdrag-widget { display: none; } }
+
+// ── Animazione sollevamento (cap1 5ACD): scena + equazione a fianco ──
+.lift-flow { display: flex; align-items: center; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
+.lift-flow > svg { flex: 0 1 300px; }
+.lift-eq { font-size: 1.1rem; white-space: nowrap; margin: 0; flex: 0 0 auto; }
+.lift-fixed, .lift-var { opacity: 0; transition: opacity .3s ease; display: inline-block; }
+
 // ── Ordinamento orizzontale (order.html) ─────────────────────
 .order-widget { margin: 0.6rem 0; }
 .order-direz {
@@ -1676,3 +1735,136 @@ cit em, cit i { font-style: normal; }
 .invx-result.ok { background: #f0fdf4; border-left: 4px solid #15803d; color: #166534; }
 .invx-result.warn { background: #fffbeb; border-left: 4px solid #d97706; color: #92400e; }
 @media print { .invx-widget { display: none !important; } }
+
+// ── Equazione commentata (formula con etichette a frecce) ──────────────
+.eqa-wrap { position: relative; margin: 2rem 0 2.4rem; padding: 0 .5rem; }
+.eqa-row { display: flex; justify-content: space-around; gap: 1rem; }
+.eqa-row-top { margin-bottom: 2.4rem; }
+.eqa-row-bottom { margin-top: 2.4rem; }
+.eqa-label {
+  max-width: 160px; text-align: center; font-size: .85rem; font-style: italic;
+  line-height: 1.3; color: var(--accent, #{$teal}); position: relative; z-index: 1;
+}
+.eqa-formula-box { text-align: center; font-size: 1.15rem; position: relative; z-index: 1; }
+.eqa-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+@media print { .eqa-svg, .eqa-label { display: none; } }
+
+// ── Figure numerate (come \figure / \ref in LaTeX) ──────────────────────
+.fig-block { margin: 1.5rem auto; text-align: center; }
+.fig-block img {
+  max-width: 100%; height: auto; border-radius: 6px;
+  border: 1px solid $border; box-shadow: 0 4px 16px rgba(0,0,0,.08);
+}
+.fig-block figcaption { font-size: .88rem; color: $text-secondary; margin-top: .6rem; font-style: italic; }
+.fig-num { font-style: normal; font-weight: 600; color: $text-primary; }
+.fig-ref { color: $cyan; text-decoration: none; font-weight: 600; }
+.fig-ref:hover { text-decoration: underline; }
+
+// ── Esercizio: risposta in notazione scientifica ────────────────────────
+.sciex-widget {
+  background: #fff; border: 1px solid $border; border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(8,145,178,.12); padding: 1.3rem 1.4rem 1.2rem; margin: 1.5rem 0;
+}
+.sciex-prompt { margin-bottom: 1rem; line-height: 1.6; }
+.sciex-prompt p:last-child { margin-bottom: 0; }
+.sciex-answer-row { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-bottom: 1rem; }
+.sciex-eq-lbl { font-weight: 600; color: $text-primary; }
+.sciex-coef, .sciex-exp {
+  width: 5.5rem; padding: .4rem .6rem; border: 1px solid $border-strong; border-radius: 6px;
+  font-family: $font-body; font-size: .95rem;
+}
+.sciex-times { color: $text-secondary; }
+.sciex-unit {
+  padding: .4rem .6rem; border: 1px solid $border-strong; border-radius: 6px;
+  font-family: $font-body; font-size: .95rem; background: #fff;
+}
+.sciex-actions { margin-bottom: .6rem; }
+.sciex-check {
+  background: $cyan; color: #fff; border: none; border-radius: 6px; cursor: pointer;
+  font-family: $font-body; font-weight: 600; padding: .5rem 1.3rem; font-size: .93rem;
+}
+.sciex-check:hover { background: darken($cyan, 8%); }
+.sciex-check:disabled { opacity: .5; cursor: not-allowed; }
+.sciex-fb { display: none; padding: .7rem .9rem; border-radius: 7px; font-size: .93rem; line-height: 1.5; }
+.sciex-fb.ok { background: #f0fdf4; color: #166534; border-left: 4px solid #15803d; }
+.sciex-fb.err { background: #fef2f2; color: #991b1b; border-left: 4px solid #dc2626; }
+.sciex-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; display: none; }
+@media print { .sciex-widget { display: none !important; } }
+
+// ── Esercizio: derivazione dell'unità di misura ─────────────────────────
+.uderive-widget {
+  background: #fff; border: 1px solid $border; border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(8,145,178,.12); padding: 1.3rem 1.4rem 1.2rem; margin: 1.5rem 0;
+}
+.uderive-title { font-weight: 700; color: $text-primary; margin-bottom: 1rem; }
+.uderive-row { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.uderive-frac { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
+.uderive-num, .uderive-den { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.uderive-bar { width: 100%; height: 2px; background: $text-primary; }
+.uderive-term { display: flex; align-items: center; gap: .4rem; font-size: .95rem; }
+.uderive-sym { white-space: nowrap; }
+.uderive-sel {
+  padding: .3rem .5rem; border: 1px solid $border-strong; border-radius: 6px;
+  font-family: $font-body; font-size: .9rem; background: #fff;
+}
+.uderive-actions { margin-bottom: .6rem; }
+.uderive-check {
+  background: $cyan; color: #fff; border: none; border-radius: 6px; cursor: pointer;
+  font-family: $font-body; font-weight: 600; padding: .5rem 1.3rem; font-size: .93rem;
+}
+.uderive-check:hover { background: darken($cyan, 8%); }
+.uderive-check:disabled { opacity: .5; cursor: not-allowed; }
+.uderive-fb { display: none; padding: .7rem .9rem; border-radius: 7px; font-size: .93rem; line-height: 1.5; }
+.uderive-fb.ok { background: #f0fdf4; color: #166534; border-left: 4px solid #15803d; }
+.uderive-fb.err { background: #fef2f2; color: #991b1b; border-left: 4px solid #dc2626; }
+.uderive-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; display: none; }
+@media print { .uderive-widget { display: none !important; } }
+
+// ── Esercizio a più passi in notazione scientifica (stile "iex", vedi 3b) ──
+.iex-widget { background:#ecfeff; border-left:4px solid #0e7490; border-radius:0 8px 8px 0; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+.iex-lbl { font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#0e7490; margin:0 0 .8rem; }
+.iex-topnav { display:flex; align-items:center; gap:.6rem; margin-bottom:1.1rem; flex-wrap:wrap; }
+.iex-navbtn { background:#cffafe; color:#0e7490; border:1px solid #67e8f9; border-radius:5px; padding:.22rem .7rem; cursor:pointer; font-size:.85rem; }
+.iex-navbtn:hover:not(:disabled) { background:#a5f3fc; }
+.iex-navbtn:disabled { opacity:.35; cursor:default; }
+.iex-dots { display:flex; gap:.3rem; align-items:center; }
+.iex-dot { width:11px; height:11px; border-radius:50%; background:#a5f3fc; cursor:pointer; transition:background .18s; }
+.iex-dot.cur { background:#0e7490; }
+.iex-dot.ok { background:#0f766e; }
+.iex-qt { margin:0 0 .6rem; font-size:.95rem; line-height:1.55; }
+.iex-note { color:#6b7280; font-style:italic; font-size:.87em; display:block; margin-top:.15rem; }
+.iex-ir { display:flex; align-items:center; gap:.45rem; flex-wrap:wrap; margin:.5rem 0; }
+.iex-m { border:1.5px solid #67e8f9; border-radius:5px; padding:.22rem .45rem; font-size:1rem; font-family: $font-body; width:84px; background:#fff; }
+.iex-m:focus { outline:none; border-color:#0e7490; box-shadow:0 0 0 2px #cffafe; }
+.iex-e { border:1px solid #67e8f9; border-radius:3px; padding:.03rem .22rem; font-size:1em; font-family: $font-body; width:34px; background:#fff; }
+.iex-e:focus { outline:none; border-color:#0e7490; }
+.iex-unit { border:1.5px solid #67e8f9; border-radius:5px; padding:.22rem .45rem; font-size:.95rem; font-family: $font-body; background:#fff; }
+.iex-unit:focus { outline:none; border-color:#0e7490; }
+.iex-full { border:1.5px solid #67e8f9; border-radius:5px; padding:.22rem .45rem; font-size:1rem; font-family: $font-body; min-width:185px; max-width:100%; background:#fff; }
+.iex-full:focus { outline:none; border-color:#0e7490; box-shadow:0 0 0 2px #cffafe; }
+.iex-vbtn { background:#0e7490; color:#fff; border:none; border-radius:5px; padding:.25rem .9rem; cursor:pointer; font-size:.9rem; }
+.iex-vbtn:hover { background:#0c6b82; }
+.iex-fb { font-size:.88rem; margin-top:.4rem; min-height:1.1em; }
+.iex-fb.ok { color:#0f766e; font-weight:600; }
+.iex-fb.err { color:#dc2626; }
+.iex-lbtn { background:none; border:none; color:#0e7490; cursor:pointer; font-size:.85rem; text-decoration:underline; padding:0; margin:0 .25rem; }
+.iex-nextbtn { background:#0f766e; color:#fff; border:none; border-radius:5px; padding:.18rem .7rem; cursor:pointer; font-size:.85rem; margin-left:.5rem; }
+.iex-nextbtn:hover { background:#0d6660; }
+.iex-sol { display:none; margin-top:.45rem; background:#fef9c3; border-left:3px solid #ca8a04; padding:.35rem .75rem; border-radius:4px; font-size:.88rem; color:#713f12; }
+// Quando un widget "a scheda" (invx-widget, uderive-widget...) compare come
+// passo dentro un iex-widget, si toglie la sua cornice: deve sembrare parte
+// dello stesso riquadro, non un'altra scheda annidata.
+.iex-nested .invx-widget, .iex-nested .uderive-widget {
+  background: transparent; border: none; box-shadow: none; padding: 0; margin: 0;
+}
+.iex-choices { display: flex; flex-direction: column; gap: .5rem; margin: .7rem 0; }
+.iex-choice-btn {
+  text-align: left; background: #fff; border: 1.5px solid #67e8f9; border-radius: 6px;
+  padding: .5rem .8rem; font-family: $font-body; font-size: .93rem; color: $text-primary;
+  cursor: pointer; transition: background .15s, border-color .15s;
+}
+.iex-choice-btn:hover:not(:disabled) { background: #cffafe; }
+.iex-choice-btn:disabled { cursor: default; }
+.iex-choice-btn.correct { background: #f0fdf4; border-color: #15803d; color: #166534; font-weight: 600; }
+.iex-choice-btn.wrong { background: #fef2f2; border-color: #dc2626; color: #991b1b; }
+@media print { .iex-widget { display: none !important; } }

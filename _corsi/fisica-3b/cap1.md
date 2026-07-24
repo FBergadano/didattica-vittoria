@@ -2337,7 +2337,9 @@ Ci sarà in generale molto utile convertire tutti i multipli dei secondi (minuti
 ]{% endcapture %}
 {% include iex-num.html id="t9" domande=_d9 titolo="Esercizio 9 — Secondi in un secolo e in un millennio" %}
 
+<div class="calc-flow">
 {% include calc-margin.html id="calc1" %}
+<div class="calc-flow-body">
 
 <div class="iex-widget" style="margin-top:2rem;">
 <p class="iex-lbl">Esercizio — Quante ore ci sono in un secondo?</p>
@@ -2364,7 +2366,9 @@ $$
 </div>
 </div>
 
+</div>
 <div style="clear:both"></div>
+</div>
 
 
 

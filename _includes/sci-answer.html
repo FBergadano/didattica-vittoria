@@ -1,0 +1,124 @@
+{% comment %}
+Esercizio: risposta numerica in notazione scientifica (coefficiente × 10^esponente),
+con scelta dell'unità di misura da un menù a tendina.
+
+Parametri:
+  id             — ID univoco (obbligatorio)
+  enunciato      — testo della domanda (Markdown/LaTeX ammessi, via capture)
+  coefficiente   — coefficiente corretto (es. 3.54)
+  tolleranza     — tolleranza assoluta sul coefficiente (default 0.05)
+  esponente      — esponente corretto (es. 22, oppure -11)
+  opzioni_unita  — opzioni del menù unità, separate da "|"
+  unita_corretta — unità corretta (deve comparire fra le opzioni)
+  spiegazione    — testo mostrato dopo una risposta corretta (opzionale)
+
+Esempio:
+  {% capture _enun %}
+  Calcola il modulo della forza gravitazionale fra Terra e Sole, sapendo che
+  $M_\oplus = 5{,}97 \times 10^{24}\ \text{kg}$, $M_\odot = 1{,}99 \times 10^{30}\ \text{kg}$
+  e che la distanza Terra-Sole è $r = 1{,}496 \times 10^{11}\ \text{m}$.
+  {% endcapture %}
+  {% include sci-answer.html id="se1" enunciato=_enun
+     coefficiente=3.54 esponente=22
+     opzioni_unita="N|kg|m|kg/m|N/m" unita_corretta="N" %}
+{% endcomment %}
+{% assign _sid = include.id | default: "sciex" %}
+{% assign _tol = include.tolleranza | default: 0.05 %}
+{% assign _uopts = include.opzioni_unita | split: "|" %}
+
+<div id="{{ _sid }}" class="sciex-widget">
+  <div class="sciex-prompt" markdown="1">
+{{ include.enunciato }}
+  </div>
+  <div class="sciex-answer-row">
+    <span class="sciex-eq-lbl">F =</span>
+    <input type="text" inputmode="decimal" class="sciex-coef" placeholder="coefficiente" aria-label="coefficiente">
+    <span class="sciex-times">&times; 10</span>
+    <input type="text" inputmode="numeric" class="sciex-exp" placeholder="esponente" aria-label="esponente">
+    <select class="sciex-unit" aria-label="unità di misura">
+      <option value="">unità</option>
+      {% for u in _uopts %}<option value="{{ u }}">{{ u }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="sciex-actions">
+    <button class="sciex-check">Verifica</button>
+  </div>
+  <div class="sciex-fb"></div>
+</div>
+<canvas class="sciex-canvas"></canvas>
+
+<script>
+(function () {
+  var root = document.getElementById('{{ _sid }}');
+  var cv = root.nextElementSibling;
+  var TARGET_COEF = {{ include.coefficiente }};
+  var TOL = {{ _tol }};
+  var TARGET_EXP = {{ include.esponente }};
+  var TARGET_UNIT = '{{ include.unita_corretta }}';
+  var EXPLAIN = {{ include.spiegazione | default: "" | jsonify }};
+
+  function $(s) { return root.querySelector(s); }
+  var coefEl = $('.sciex-coef'), expEl = $('.sciex-exp'), unitEl = $('.sciex-unit');
+  var fb = $('.sciex-fb'), checkBtn = $('.sciex-check');
+
+  function parseNum(s) {
+    if (!s) return NaN;
+    return parseFloat(s.replace(',', '.'));
+  }
+
+  function check() {
+    var coef = parseNum(coefEl.value);
+    var exp = parseInt(expEl.value, 10);
+    var unit = unitEl.value;
+    if (isNaN(coef) || isNaN(exp) || !unit) {
+      fb.className = 'sciex-fb err';
+      fb.style.display = 'block';
+      fb.textContent = 'Compila coefficiente, esponente e unità prima di verificare.';
+      return;
+    }
+    var coefOk = Math.abs(coef - TARGET_COEF) <= TOL;
+    var expOk = exp === TARGET_EXP;
+    var unitOk = unit === TARGET_UNIT;
+    fb.style.display = 'block';
+    if (coefOk && expOk && unitOk) {
+      fb.className = 'sciex-fb ok';
+      fb.innerHTML = '✓ Corretto! ' + EXPLAIN;
+      checkBtn.disabled = true; coefEl.disabled = true; expEl.disabled = true; unitEl.disabled = true;
+      confetti();
+    } else {
+      var parts = [];
+      if (!coefOk) parts.push('il coefficiente');
+      if (!expOk) parts.push('l’esponente');
+      if (!unitOk) parts.push('l’unità di misura');
+      fb.className = 'sciex-fb err';
+      fb.textContent = '✗ Controlla: ' + parts.join(', ') + '.';
+    }
+  }
+  checkBtn.addEventListener('click', check);
+
+  function getCanvas() { cv.width = window.innerWidth; cv.height = window.innerHeight; cv.style.display = 'block'; return cv; }
+  function confetti() {
+    var canvas = getCanvas(), ctx = canvas.getContext('2d');
+    var r = root.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .4;
+    var cols = ['#0891b2', '#22d3ee', '#059669', '#d97706', '#ec4899', '#a78bfa', '#fbbf24'];
+    var ps = [];
+    for (var k = 0; k < 55; k++) {
+      ps.push({ x: cx + (Math.random() - .5) * 100, y: cy, vx: (Math.random() - .5) * 11, vy: -(Math.random() * 13 + 5),
+        w: Math.random() * 11 + 5, h: Math.random() * 6 + 3, col: cols[k % cols.length],
+        rot: Math.random() * Math.PI * 2, rv: (Math.random() - .5) * .32, a: 1 });
+    }
+    (function frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); var alive = false;
+      ps.forEach(function (p) {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.38; p.rot += p.rv; p.a -= 0.017;
+        if (p.a <= 0) return; alive = true;
+        ctx.save(); ctx.globalAlpha = p.a; ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.col; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+      });
+      if (alive) requestAnimationFrame(frame); else canvas.style.display = 'none';
+    })();
+  }
+
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([root]);
+})();
+</script>

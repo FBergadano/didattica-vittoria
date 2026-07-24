@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.7.17)  20 JUL 2026 10:39
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.7.17)  21 JUL 2026 16:35
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2102,26 +2102,26 @@ Package siunitx Warning: Detected the "physics" package:
 
 Capitolo 1.
 LaTeX Font Info:    Font shape `TU/TeXGyrePagellaMath(2)/m/n' will be
-(Font)              scaled to size 10.00107pt on input line 26.
+(Font)              scaled to size 10.00107pt on input line 36.
 LaTeX Font Info:    Font shape `TU/TeXGyrePagellaMath(2)/m/n' will be
-(Font)              scaled to size 7.5008pt on input line 26.
+(Font)              scaled to size 7.5008pt on input line 36.
 LaTeX Font Info:    Font shape `TU/TeXGyrePagellaMath(2)/m/n' will be
-(Font)              scaled to size 6.00064pt on input line 26.
+(Font)              scaled to size 6.00064pt on input line 36.
 LaTeX Font Info:    Font shape `TU/TeXGyrePagellaMath(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 26.
+(Font)              scaled to size 9.99893pt on input line 36.
 LaTeX Font Info:    Font shape `TU/TeXGyrePagellaMath(3)/m/n' will be
-(Font)              scaled to size 7.49919pt on input line 26.
+(Font)              scaled to size 7.49919pt on input line 36.
 LaTeX Font Info:    Font shape `TU/TeXGyrePagellaMath(3)/m/n' will be
-(Font)              scaled to size 5.99936pt on input line 26.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 26.
+(Font)              scaled to size 5.99936pt on input line 36.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 36.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 26.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 36.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for OMX+yhex on input line 26.
+LaTeX Font Info:    Trying to load font information for OMX+yhex on input line 36.
  (/usr/share/texlive/texmf-dist/tex/latex/yhmath/OMXyhex.fd
 File: OMXyhex.fd 
 File: OMXyhex.fd 2013/07/03 v1.1 YH's humble contribution to TeX maths (NP)
@@ -2143,7 +2143,7 @@ Capitolo 4.
 ]
 Capitolo 5.
 
-Overfull \hbox (0.36885pt too wide) in paragraph at lines 139--140
+Overfull \hbox (0.36885pt too wide) in paragraph at lines 160--161
 []\TU/TeXGyrePagella(0)/m/n/10.95 essere consapevole della portata storica della scoperta delle onde elet-
  []
 
@@ -2162,11 +2162,11 @@ Package rerunfilecheck Info: File `appunti-5acd.out' has not changed.
 (rerunfilecheck)             Checksum: C94856E054B3158827568BFF1CFAACCF;718.
  ) 
 Here is how much of TeX's memory you used:
- 82823 strings out of 468173
- 2031324 string characters out of 5435520
+ 82827 strings out of 468173
+ 2031396 string characters out of 5435520
  3130451 words of memory out of 5000000
- 110450 multiletter control sequences out of 15000+600000
- 633931 words of font info for 99 fonts, out of 8000000 for 9000
+ 110452 multiletter control sequences out of 15000+600000
+ 633939 words of font info for 100 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  107i,11n,136p,1257b,1135s stack positions out of 10000i,1000n,20000p,200000b,200000s
 

@@ -1,0 +1,20 @@
+{% comment %}
+Video locale in loop, muto e autoplay: sostituto leggero di una GIF
+(un file .mp4 pesa in genere 10-50 volte meno di una GIF equivalente).
+
+Parametri:
+  id         — identificatore univoco (obbligatorio)
+  src        — percorso del file .mp4, dalla root del sito (es. "/corsi/video/foo.mp4")
+  didascalia — testo mostrato sotto il video (opzionale)
+  larghezza  — larghezza massima CSS, es. "420px" (opzionale)
+
+Esempio:
+  {% include video-loop.html id="telo-analogia"
+     src="/corsi/video/campo_gravitazionale_analogia_telo.mp4"
+     didascalia="La Terra deforma lo spazio attorno a sé; la Luna le orbita attorno."
+     larghezza="420px" %}
+{% endcomment %}
+<div class="video-loop-wrap"{% if include.larghezza %} style="max-width: {{ include.larghezza }};"{% endif %}>
+  <video src="{{ include.src | relative_url }}" autoplay muted loop playsinline></video>
+</div>
+{% if include.didascalia %}<p class="video-caption">{{ include.didascalia }}</p>{% endif %}

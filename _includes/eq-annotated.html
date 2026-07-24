@@ -1,0 +1,130 @@
+{% comment %}
+Equazione commentata: la formula resta scritta normalmente (compatta, come al
+solito), e alcune sue parti vengono indicate da un'etichetta di testo sopra o
+sotto, collegata da una linea curva che si ferma appena prima del simbolo.
+
+Parametri:
+  id         — nome descrittivo del widget (obbligatorio; a questo viene comunque
+               aggiunto in automatico un contatore univoco, quindi non c'è
+               problema a riusare lo stesso id più volte nella stessa pagina)
+  formula    — il LaTeX della formula, senza $ o $$, es. "F_G = G \dfrac{m_1 \cdot m_2}{r^2}"
+  frammenti  — le porzioni di LaTeX da annotare, separate da "|". Ognuna deve
+               comparire esattamente così (stessa scrittura, spazi compresi)
+               dentro "formula", una sola volta.
+  etichette  — il testo di ciascuna etichetta, separato da "|", stesso ordine di "frammenti"
+  posizioni  — "alto" o "basso" per ciascuna etichetta, separate da "|", stesso ordine
+
+Esempio:
+  {% include eq-annotated.html
+     id="fga1"
+     formula="F_G = G \dfrac{m_1 \cdot m_2}{r^2}"
+     frammenti="F_G|G|m_1 \cdot m_2|r^2"
+     etichette="modulo della forza gravitazionale|costante di gravitazione universale|prodotto delle masse|quadrato della distanza"
+     posizioni="alto|basso|alto|basso"
+  %}
+{% endcomment %}
+{% capture _eqa_n %}{% increment eqa_auto_counter %}{% endcapture %}
+{% assign _eid = include.id | default: "eqa" | append: "-a" | append: _eqa_n %}
+{% assign _frags = include.frammenti | split: "|" %}
+{% assign _labels = include.etichette | split: "|" %}
+{% assign _pos = include.posizioni | split: "|" %}
+{% assign _formula = include.formula %}
+{% comment %}
+  Sostituzione in due passaggi: prima ogni frammento viene rimpiazzato da un
+  segnaposto univoco (non un frammento di LaTeX, quindi non può comparire per
+  caso dentro un altro frammento), solo dopo i segnaposto vengono sostituiti
+  con il \cssId definitivo. Farlo in un solo passaggio sarebbe scorretto: se un
+  frammento è sottostringa di un altro già "avvolto" (es. "G" dentro "F_G"),
+  \cssId lo troverebbe nel posto sbagliato.
+{% endcomment %}
+{% for frag in _frags %}
+  {% assign _ph = "§§" | append: forloop.index0 | append: "§§" %}
+  {% assign _formula = _formula | replace_first: frag, _ph %}
+{% endfor %}
+{% for frag in _frags %}
+  {% assign idx = forloop.index0 %}
+  {% assign _ph = "§§" | append: idx | append: "§§" %}
+  {% assign _tid = _eid | append: "-t" | append: idx %}
+  {% assign _wrapped = "\cssId{" | append: _tid | append: "}{" | append: frag | append: "}" %}
+  {% assign _formula = _formula | replace_first: _ph, _wrapped %}
+{% endfor %}
+
+<div id="{{ _eid }}" class="eqa-wrap">
+  <div class="eqa-row eqa-row-top">
+    {% for frag in _frags %}
+      {% assign idx = forloop.index0 %}
+      {% if _pos[idx] == "alto" %}
+        {% assign _tid = _eid | append: "-t" | append: idx %}
+<div class="eqa-label" data-target="{{ _tid }}">{{ _labels[idx] }}</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="eqa-formula-box">
+
+$$ {{ _formula }} $$
+
+  </div>
+  <div class="eqa-row eqa-row-bottom">
+    {% for frag in _frags %}
+      {% assign idx = forloop.index0 %}
+      {% if _pos[idx] == "basso" %}
+        {% assign _tid = _eid | append: "-t" | append: idx %}
+<div class="eqa-label" data-target="{{ _tid }}">{{ _labels[idx] }}</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <svg class="eqa-svg"></svg>
+</div>
+
+<script>
+(function () {
+  var wrap = document.getElementById('{{ _eid }}');
+  if (!wrap) return;
+  var svg = wrap.querySelector('.eqa-svg');
+  var labels = wrap.querySelectorAll('.eqa-label');
+
+  function ready() {
+    return Array.prototype.every.call(labels, function (l) {
+      return document.getElementById(l.getAttribute('data-target'));
+    });
+  }
+  function waitReady(cb, tries) {
+    tries = tries || 0;
+    if (ready()) { cb(); }
+    else if (tries < 300) { requestAnimationFrame(function () { waitReady(cb, tries + 1); }); }
+  }
+
+  var GAP = 6; // px: quanto prima del simbolo si ferma la freccia
+  function drawArrows() {
+    var wrapRect = wrap.getBoundingClientRect();
+    svg.setAttribute('width', wrapRect.width);
+    svg.setAttribute('height', wrapRect.height);
+    var accentRaw = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+    var accent = (accentRaw && accentRaw.trim()) || '#0f766e';
+    svg.innerHTML = '';
+    labels.forEach(function (label) {
+      var target = document.getElementById(label.getAttribute('data-target'));
+      if (!target) return;
+      var tRect = target.getBoundingClientRect();
+      var lRect = label.getBoundingClientRect();
+      var isTop = label.closest('.eqa-row-top') != null;
+      var tx = tRect.left + tRect.width / 2 - wrapRect.left;
+      var ty = (isTop ? (tRect.top - GAP) : (tRect.bottom + GAP)) - wrapRect.top;
+      var lx = lRect.left + lRect.width / 2 - wrapRect.left;
+      var ly = (isTop ? lRect.bottom : lRect.top) - wrapRect.top;
+      var midY = (ly + ty) / 2;
+      var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', 'M ' + lx + ',' + ly + ' C ' + lx + ',' + midY + ' ' + tx + ',' + midY + ' ' + tx + ',' + ty);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', accent);
+      path.setAttribute('stroke-width', '1.5');
+      svg.appendChild(path);
+    });
+  }
+
+  waitReady(function () {
+    requestAnimationFrame(function () { requestAnimationFrame(drawArrows); });
+  });
+  window.addEventListener('resize', drawArrows);
+})();
+</script>

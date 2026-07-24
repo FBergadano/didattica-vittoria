@@ -28,7 +28,7 @@ window._fillchk=function(btn){
   var found=ok.some(function(a){return norm(a)===norm(v);});
   fb.className='fill-fb '+(found?'ok':'err');
   fb.innerHTML=(found?'✓ Esatto!':'✗ Sbagliato.')+(sol?'&ensp;<small style="color:#6b7280">'+sol+'</small>':'');
-  if(found){_shoot(btn);if(window.MathJax)MathJax.typesetPromise([fb]);}
+  if(found){_shoot(btn);if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([fb]);}
 };
 }
 </script>

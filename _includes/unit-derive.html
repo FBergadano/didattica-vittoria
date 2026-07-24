@@ -1,0 +1,134 @@
+{% comment %}
+Esercizio: trovare l'unità di misura di una grandezza, sostituendo ogni
+simbolo della sua formula con l'unità corrispondente, scelta da un menù a
+tendina (stesse opzioni per ogni simbolo).
+
+Parametri:
+  id                   — ID univoco (obbligatorio)
+  titolo               — titolo mostrato sopra (es. "Trova l'unità di misura di G")
+  variabile            — simbolo LaTeX della grandezza da trovare (es. "G")
+  numeratore_simboli   — simboli LaTeX al numeratore, separati da "|" (es. "F_G|r^2")
+  numeratore_corrette  — unità corrette corrispondenti, stesso ordine (es. "N|m^2")
+  denominatore_simboli — simboli LaTeX al denominatore, separati da "|" (vuoto se assente)
+  denominatore_corrette— unità corrette corrispondenti, stesso ordine
+  opzioni              — opzioni del menù, uguali per ogni simbolo, separate da "|"
+
+Esempio:
+  {% include unit-derive.html id="ud1" titolo="Trova l'unità di misura di G"
+     variabile="G"
+     numeratore_simboli="F_G|r^2" numeratore_corrette="N|m^2"
+     denominatore_simboli="M_1 \cdot M_2" denominatore_corrette="kg^2"
+     opzioni="N|kg|kg^2|m|m^2" %}
+{% endcomment %}
+{% assign _uid = include.id | default: "uderive" %}
+{% assign _numS = include.numeratore_simboli | split: "|" %}
+{% assign _numC = include.numeratore_corrette | split: "|" %}
+{% assign _denS = include.denominatore_simboli | split: "|" %}
+{% assign _denC = include.denominatore_corrette | split: "|" %}
+{% assign _opts = include.opzioni | split: "|" %}
+
+<div id="{{ _uid }}" class="uderive-widget">
+  {% if include.titolo %}<p class="uderive-title">{{ include.titolo }}</p>{% endif %}
+  <div class="uderive-row">
+    <span class="uderive-var">${{ include.variabile }} \;=\;$</span>
+    <div class="uderive-frac">
+      <div class="uderive-num">
+        {% for s in _numS %}
+          <span class="uderive-term">
+            <span class="uderive-sym">${{ s }}$ &rarr;</span>
+            <select class="uderive-sel" data-idx="{{ forloop.index0 }}">
+              <option value="">?</option>
+              {% for o in _opts %}<option value="{{ o }}">{{ o }}</option>{% endfor %}
+            </select>
+          </span>
+        {% endfor %}
+      </div>
+      {% if _denS.size > 0 and include.denominatore_simboli != "" %}
+      <div class="uderive-bar"></div>
+      <div class="uderive-den">
+        {% for s in _denS %}
+          <span class="uderive-term">
+            <span class="uderive-sym">${{ s }}$ &rarr;</span>
+            <select class="uderive-sel" data-idx="{{ forloop.index0 }}" data-den="1">
+              <option value="">?</option>
+              {% for o in _opts %}<option value="{{ o }}">{{ o }}</option>{% endfor %}
+            </select>
+          </span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="uderive-actions"><button class="uderive-check">Verifica</button></div>
+  <div class="uderive-fb"></div>
+</div>
+<canvas class="uderive-canvas"></canvas>
+
+<script>
+(function () {
+  var root = document.getElementById('{{ _uid }}');
+  var cv = root.nextElementSibling;
+  var NUM_CORRECT = {{ _numC | jsonify }};
+  var DEN_CORRECT = {{ _denC | jsonify }};
+
+  function $(s) { return root.querySelector(s); }
+  var fb = $('.uderive-fb'), checkBtn = $('.uderive-check');
+  var numSels = root.querySelectorAll('.uderive-num .uderive-sel');
+  var denSels = root.querySelectorAll('.uderive-den .uderive-sel');
+
+  function check() {
+    var allFilled = true, allCorrect = true;
+    numSels.forEach(function (sel, i) {
+      if (!sel.value) allFilled = false;
+      if (sel.value !== NUM_CORRECT[i]) allCorrect = false;
+    });
+    denSels.forEach(function (sel, i) {
+      if (!sel.value) allFilled = false;
+      if (sel.value !== DEN_CORRECT[i]) allCorrect = false;
+    });
+    fb.style.display = 'block';
+    if (!allFilled) {
+      fb.className = 'uderive-fb err';
+      fb.textContent = 'Scegli un’unità per ogni simbolo prima di verificare.';
+      return;
+    }
+    if (allCorrect) {
+      fb.className = 'uderive-fb ok';
+      fb.textContent = '✓ Esatto!';
+      checkBtn.disabled = true;
+      numSels.forEach(function (s) { s.disabled = true; });
+      denSels.forEach(function (s) { s.disabled = true; });
+      confetti();
+    } else {
+      fb.className = 'uderive-fb err';
+      fb.textContent = '✗ Non ancora corretto: riprova.';
+    }
+  }
+  checkBtn.addEventListener('click', check);
+
+  function getCanvas() { cv.width = window.innerWidth; cv.height = window.innerHeight; cv.style.display = 'block'; return cv; }
+  function confetti() {
+    var canvas = getCanvas(), ctx = canvas.getContext('2d');
+    var r = root.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height * .4;
+    var cols = ['#0891b2', '#22d3ee', '#059669', '#d97706', '#ec4899', '#a78bfa', '#fbbf24'];
+    var ps = [];
+    for (var k = 0; k < 55; k++) {
+      ps.push({ x: cx + (Math.random() - .5) * 100, y: cy, vx: (Math.random() - .5) * 11, vy: -(Math.random() * 13 + 5),
+        w: Math.random() * 11 + 5, h: Math.random() * 6 + 3, col: cols[k % cols.length],
+        rot: Math.random() * Math.PI * 2, rv: (Math.random() - .5) * .32, a: 1 });
+    }
+    (function frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); var alive = false;
+      ps.forEach(function (p) {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.38; p.rot += p.rv; p.a -= 0.017;
+        if (p.a <= 0) return; alive = true;
+        ctx.save(); ctx.globalAlpha = p.a; ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.col; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+      });
+      if (alive) requestAnimationFrame(frame); else canvas.style.display = 'none';
+    })();
+  }
+
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([root]);
+})();
+</script>
