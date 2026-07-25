@@ -19,6 +19,11 @@ numero: 1
 Tutti noi sappiamo che la forza gravitazionale è quella che ci attrae verso il centro della Terra e che attrae la Terra verso il Sole. Ciò che invece è meno comune è comprendere che **ogni oggetto dotato di massa** (cioè quasi qualsiasi cosa tranne la luce) **è attratto da qualsiasi altro oggetto dotato di massa**. Voi siete attratti dal tavolo che avete di fronte, e lo attraete a vostra volta, e lo stesso vale per ogni granello di sabbia in ogni spiaggia lontana o ogni molecola di aria. Ogni oggetto tende ad unirsi con ogni altro oggetto nell'Universo per via dell'interazione gravitazionale. 
 {% include margin-note-end.html %}
 
+{% include figura.html id="newton-mela"
+   src="/corsi/gif/newton-apple.gif"
+   didascalia="La leggenda (forse vera) della mela caduta sulla testa di Newton, all'origine della sua intuizione sulla gravitazione universale."
+   larghezza="290px" %}
+
 {% include margin-note.html testo="La gravità è la forza più debole della Natura." %}
 Ma, come ci dice l'esperienza quotidiana, questa attrazione è così debole che possiamo trascurarla praticamente sempre, tranne nel caso dei pianeti e delle stelle. Vale a dire, affinché gli effetti della forza gravitazionale siano realmente visibili, ci vogliono masse enormi.  
 La <definizione>gravità</definizione> è la forza più debole presente in Natura.

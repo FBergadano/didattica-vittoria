@@ -17,6 +17,6 @@ Esempio:
      didascalia="La bilancia di torsione di Cavendish." larghezza="280px" %}
 {% endcomment %}
 <figure class="fig-block" id="fig-{{ include.id }}">
-  <img src="{{ include.src | relative_url }}" alt="{{ include.alt | default: include.didascalia }}"{% if include.larghezza %} style="max-width: {{ include.larghezza }};"{% endif %}>
+  <img src="{{ include.src | relative_url }}" alt="{{ include.alt | default: include.didascalia }}"{% if include.larghezza %} style="width: {{ include.larghezza }}; max-width: 100%;"{% endif %}>
   <figcaption><span class="fig-num" data-fig-id="{{ include.id }}">Figura</span> — {{ include.didascalia }}</figcaption>
 </figure>
