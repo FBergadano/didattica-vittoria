@@ -1,6 +1,6 @@
 ---
 layout: capitolo
-title: "Capitolo 6"
+title: "La Teoria della Relatività Speciale"
 corso: fisica-5acd
 corso_titolo: "Fisica 5ª ACD"
 materia: fisica

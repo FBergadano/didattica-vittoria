@@ -1,5 +1,23 @@
 {
   "cSpell.language": "it",
+  "cSpell.ignoreRegExpList": [
+    "\\{%[^%]*%\\}",
+    "<[^>]+>"
+  ],
+  "cSpell.words": [
+    "Jekyll",
+    "kramdown",
+    "webp",
+    "PhET",
+    "Rutherford",
+    "Erwin",
+    "Müller",
+    "Leucippo",
+    "Democrito",
+    "Empedocle",
+    "Afrodite",
+    "Bergadano"
+  ],
   "[latex]": {
     "editor.wordWrap": "on"
   },

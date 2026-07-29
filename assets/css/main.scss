@@ -903,6 +903,12 @@ h1.chapter-title {
 
 @media (max-width: 768px) {
   .page-layout { grid-template-columns: 1fr; }
+  // Un elemento a griglia non si restringe mai sotto la larghezza minima del
+  // proprio contenuto (es. un iframe o un'immagine con larghezza fissa), e
+  // questo può allargare l'intera colonna oltre lo schermo: min-width:0
+  // permette invece a sidebar e contenuto di restringersi normalmente,
+  // lasciando che overflow interni (tabelle, iframe, ecc.) si gestiscano da sé.
+  .sidebar, .main-content { min-width: 0; }
 
   // Sidebar: da colonna verticale a barra orizzontale scorrevole
   .sidebar {
@@ -965,7 +971,9 @@ h1.chapter-title {
   }
 
   // box-imp: nascondi decorazione esterna (nessun margine)
-  .box-imp-deco { display: none; }
+  // (selettore con la stessa specificità della regola base in .box.box-imp,
+  // altrimenti quella vince sempre e la decorazione resta visibile anche qui)
+  .box.box-imp .box-imp-deco { display: none; }
 
   // TOC: nascondi completamente su telefono (la barra progresso è sufficiente)
   .sidebar-toc { display: none; }
@@ -1759,6 +1767,16 @@ cit em, cit i { font-style: normal; }
 .fig-num { font-style: normal; font-weight: 600; color: $text-primary; }
 .fig-ref { color: $cyan; text-decoration: none; font-weight: 600; }
 .fig-ref:hover { text-decoration: underline; }
+
+// Due figure affiancate (responsive: una colonna su mobile)
+.fig-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem 1.4rem;
+  align-items: start;
+  .fig-block { margin: 1.5rem 0; }
+  @media (max-width: 560px) { grid-template-columns: 1fr; }
+}
 
 // ── Esercizio: risposta in notazione scientifica ────────────────────────
 .sciex-widget {
