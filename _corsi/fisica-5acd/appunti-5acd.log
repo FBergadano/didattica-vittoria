@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.7.17)  21 JUL 2026 16:35
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.7.17)  27 JUL 2026 12:03
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2128,26 +2128,26 @@ File: OMXyhex.fd 2013/07/03 v1.1 YH's humble contribution to TeX maths (NP)
 ) [1
 
 
-] [2]
+] [2] [3]
 Capitolo 2.
-[3
+[4
 
-] [4]
+] [5]
 Capitolo 3.
-[5
+[6
 
 ]
 Capitolo 4.
-[6
+[7
 
 ]
 Capitolo 5.
 
-Overfull \hbox (0.36885pt too wide) in paragraph at lines 160--161
+Overfull \hbox (0.36885pt too wide) in paragraph at lines 169--170
 []\TU/TeXGyrePagella(0)/m/n/10.95 essere consapevole della portata storica della scoperta delle onde elet-
  []
 
-[7
+[8
 
 ] (./appunti-5acd.aux)
  ***********
@@ -2170,4 +2170,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  107i,11n,136p,1257b,1135s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on appunti-5acd.pdf (7 pages).
+Output written on appunti-5acd.pdf (8 pages).
