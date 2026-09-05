@@ -54,7 +54,7 @@
   <!-- Sidebar con capitoli -->
   <aside class="sidebar" aria-label="Capitoli del corso">
     <p class="sidebar-course-name">{{ page.title }}</p>
-    <p class="sidebar-course-class">{{ page.classe }} · Liceo Vittoria</p>
+    <p class="sidebar-course-class">Liceo Vittoria</p>
     <nav>
       <ul class="sidebar-nav">
         {% assign capitoli = site.corsi | where: "corso", page.slug | sort: "numero" %}

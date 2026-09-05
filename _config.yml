@@ -29,67 +29,11 @@ defaults:
       type: "corsi"
     values:
       layout: "corso"
-  - scope:
-      path: "classi"
-    values:
-      permalink: /classi/:basename/
 
 # Plugins (GitHub Pages li supporta tutti)
 plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
-
-# Corsi (usato nella navigazione)
-corsi:
-  - id: matematica-3acd
-    nome: "Matematica 3ª ACD"
-    classe: "3ACD"
-    materia: matematica
-    anni: 3
-    capitoli: 6
-  - id: matematica-4acd
-    nome: "Matematica 4ª ACD"
-    classe: "4ACD"
-    materia: matematica
-    anni: 4
-    capitoli: 6
-  - id: fisica-3b
-    nome: "Fisica 3ª B"
-    classe: "3B"
-    materia: fisica
-    anni: 3
-    capitoli: 7
-  - id: fisica-3acd
-    nome: "Fisica 3ª ACD"
-    classe: "3ACD"
-    materia: fisica
-    anni: 3
-    sperimentale: true
-    capitoli: 7
-  - id: fisica-4b
-    nome: "Fisica 4ª B"
-    classe: "4B"
-    materia: fisica
-    anni: 4
-    capitoli: 6
-  - id: fisica-4acd
-    nome: "Fisica 4ª ACD"
-    classe: "4ACD"
-    materia: fisica
-    anni: 4
-    sperimentale: true
-    capitoli: 6
-  - id: fisica-5acd
-    nome: "Fisica 5ª ACD"
-    classe: "5ACD"
-    materia: fisica
-    anni: 5
-    capitoli: 6
-  - id: cittadinanza
-    nome: "Cittadinanza e Prospettive Globali"
-    classe: "tutte"
-    materia: cittadinanza
-    capitoli: 0
 
 exclude:
   - HOWTO.md

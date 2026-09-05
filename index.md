@@ -8,23 +8,21 @@ title: "Bergadano Didattica — Liceo Vittoria"
   <h1 class="hero-title">Matematica e Fisica<br></h1>
   <p class="hero-subtitle">
     Materiale didattico interattivo per i miei corsi al Liceo Vittoria.
-    Scegli la tua classe per accedere agli appunti, simulazioni ed esercizi.
+    Scegli un argomento per accedere agli appunti, simulazioni ed esercizi.
   </p>
 </header>
 
 <main class="courses-section">
   <div class="courses-group">
-    <h2 class="courses-group-title">Scegli la tua classe</h2>
-    <div class="classi-grid">
-      {% for classe in site.data.classi %}
-      <a href="{{ '/classi/' | append: classe.id | append: '/' | relative_url }}" class="classe-card">
-        <p class="classe-card-label">Anno {{ classe.anno }}</p>
-        <p class="classe-card-nome">{{ classe.nome }}</p>
-        <ul class="classe-card-corsi">
-          {% for corso in classe.corsi %}
-          <li class="materia-{{ corso.materia }}">{{ corso.nome }}</li>
-          {% endfor %}
-        </ul>
+    <h2 class="courses-group-title">Scegli un argomento</h2>
+    <div class="courses-grid">
+      {% assign argomenti = site.corsi | where: "layout", "corso" | sort: "ordine" %}
+      {% for corso in argomenti %}
+      {% assign card_class = "phys" %}
+      {% if corso.materia == "cittadinanza" %}{% assign card_class = "citt" %}{% endif %}
+      <a href="{{ corso.url | relative_url }}" class="course-card {{ card_class }}">
+        <p class="card-tag">{{ corso.materia | capitalize }}</p>
+        <p class="card-name">{{ corso.title }}</p>
         <span class="card-arrow" aria-hidden="true">→</span>
       </a>
       {% endfor %}

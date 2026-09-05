@@ -3,7 +3,7 @@ Esercizio numerico interattivo.
 Parametri:
   id      — ID univoco (obbligatorio)
   domande — array JSON: [{"p":"testo domanda","a":valore_numerico,"t":tolleranza_relativa}]
-  titolo  — etichetta in alto (default: "Esercizio")
+  testo   — etichetta in alto (default: "Esercizio")
   hint    — suggerimento facoltativo, mostrato in corsivo sotto il titolo
 
 Esempio:
@@ -11,11 +11,11 @@ Esempio:
     {"p":"Quanti secondi ci sono in 1 giorno?","a":86400,"t":0.0001},
     {"p":"Quanti secondi in un anno? (365,25 giorni)","a":31557600,"t":0.005}
   ]{% endcapture %}
-  {% include iex-num.html id="t8" domande=_d titolo="Esercizio 8" hint="Indizio: 1 h = 3600 s" %}
+  {% include iex-num.html id="t8" domande=_d testo="Esercizio 8" hint="Indizio: 1 h = 3600 s" %}
 {% endcomment %}
 {% assign _id = include.id | default: "inum" %}
 <div class="iex-widget" id="{{ _id }}">
-<p class="iex-lbl">{{ include.titolo | default: "Esercizio" }}</p>
+<p class="iex-lbl">{{ include.testo | default: "Esercizio" }}</p>
 {% if include.hint %}<p class="iex-hint">{{ include.hint }}</p>{% endif %}
 <div id="{{ _id }}-rows"></div>
 </div>
