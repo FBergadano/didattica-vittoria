@@ -1,0 +1,38 @@
+{% comment %}
+Esercizio: risposta numerica libera (non in notazione scientifica), con verifica e tolleranza.
+Usa sci.html invece se la risposta va espressa in notazione scientifica.
+
+Parametri:
+  id     — ID univoco (obbligatorio). Deve essere un identificatore JS valido
+           (lettere/cifre/underscore, senza trattini, senza iniziare con una cifra).
+  valore — valore numerico corretto (obbligatorio)
+  unit   — unità di misura, mostrata in modo permanente accanto al campo, es. "N", "m", "m/s".
+           Da specificare sempre, a meno che il risultato non sia un numero puro (senza unità di misura).
+  tol    — tolleranza percentuale sul valore (default: 1, cioè ±1%)
+
+Esempio:
+  {% include num.html id="numB1" valore="98" unit="J" %}
+{% endcomment %}
+{% assign _tol = include.tol | default: 1 %}
+<div class="iex-ir">
+<input class="iex-m" id="{{ include.id }}" type="text" placeholder="valore" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')nc_{{ include.id }}()">
+{% if include.unit %}<span class="iex-unit">{{ include.unit }}</span>{% endif %}
+<button class="iex-vbtn" onclick="nc_{{ include.id }}()">Verifica</button>
+</div>
+<div class="iex-fb" id="fb-{{ include.id }}"></div>
+<script>
+window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+function nc_{{ include.id }}(){
+  var v=parseFloat(document.getElementById('{{ include.id }}').value.trim().replace(',','.'));
+  var fb=document.getElementById('fb-{{ include.id }}');
+  var target={{ include.valore }};
+  var tol=Math.abs(target)*{{ _tol }}/100;
+  fb.style.display='block';
+  if(!isNaN(v) && Math.abs(v-target)<=tol){
+    fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
+    _shoot(document.getElementById('{{ include.id }}'));
+  } else {
+    fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
+  }
+}
+</script>

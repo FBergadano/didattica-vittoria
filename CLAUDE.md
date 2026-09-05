@@ -10,16 +10,33 @@ Questo è un sito didattico Jekyll su GitHub Pages per i miei studenti.
 
 ## Corsi
 
-| File in `_corsi/` | Nome | Materia | Classe |
-|---|---|---|---|
-| `matematica-3acd.md` | Matematica 3ª ACD | matematica | 3ACD |
-| `matematica-4acd.md` | Matematica 4ª ACD | matematica | 4ACD |
-| `fisica-3b.md` | Fisica 3ª B | fisica | 3B |
-| `fisica-3acd.md` | Fisica 3ª ACD | fisica | 3ACD |
-| `fisica-4b.md` | Fisica 4ª B | fisica | 4B |
-| `fisica-4acd.md` | Fisica 4ª ACD | fisica | 4ACD |
-| `fisica-5acd.md` | Fisica 5ª ACD | fisica | 5ACD |
-| `cittadinanza.md` | Cittadinanza e Prospettive Globali | cittadinanza | tutte |
+Il sito è organizzato per **argomento**, non per classe: ogni argomento è una
+cartella in `_corsi/` con dentro i capitoli numerati (`00_Nome.md`,
+`01_Nome.md`, ...). Il numero all'inizio del nome file è solo una convenzione
+per tenerli ordinati nel finder — l'ordine vero (pagina del corso, link
+"precedente/successivo") dipende **solo** dal campo `numero` nel front matter.
+
+| Cartella in `_corsi/` | Argomento | Materia |
+|---|---|---|
+| `introduzione-alla-fisica/` | Introduzione alla Fisica | fisica |
+| `meccanica/` | Meccanica | fisica |
+| `termodinamica/` | Termodinamica | fisica |
+| `gravitazione-elettromagnetismo/` | La Gravitazione e l'Elettromagnetismo | fisica |
+| `cittadinanza/` | Cittadinanza e Prospettive Globali | cittadinanza |
+
+Ogni argomento ha anche una pagina di presentazione `_corsi/<argomento>.md`
+(layout `corso`) con titolo, `slug` e `ordine` (posizione nella home).
+
+Quest'anno il sito pubblica **solo fisica** (più Cittadinanza). Il materiale
+di matematica non è online: gli appunti LaTeX di matematica e fisica vivono
+solo in `_corsi/Appunti/`, vedi sotto.
+
+### Cartella `_corsi/Appunti/`
+
+Dentro `_corsi/Appunti/<classe>/` (es. `fisica-3b/`, `matematica-4acd/`) stanno
+**solo** i file LaTeX degli appunti (`appunti-*.tex/.pdf/.log/.aux/.out/.synctex.gz`),
+esclusi dalla build Jekyll (vedi `exclude:` in `_config.yml`). Non ci va
+contenuto `.md` del sito: quello vive tutto nelle cartelle per argomento sopra.
 
 ## Regola fondamentale sui file
 
@@ -30,6 +47,20 @@ Fulvio modifica SOLO:
 
 NON toccare mai: `_layouts/`, `_includes/`, `assets/css/main.scss`
 Questi file sono gestiti da Claude e non vanno modificati manualmente.
+
+### Riordinare i capitoli
+
+L'ordine dei capitoli dipende **solo** dal campo `numero` nel front matter, mai
+dal nome del file — per spostare un capitolo dalla posizione 2 alla 3 basta
+cambiare `numero: 2` → `numero: 3`. Rinominare anche il file (`02_X.md` →
+`03_X.md`) è facoltativo: cambia l'URL, ma non è richiesto perché
+l'ordinamento funzioni.
+
+Attenzione: `prev_cap`/`next_cap` cercano una corrispondenza *esatta* di
+`numero` (vedi `_layouts/capitolo.html`), quindi due capitoli con lo stesso
+`numero`, o un buco nella sequenza, rompono quei link — quando riordini,
+aggiorna a cascata anche gli altri capitoli dello stesso argomento se
+necessario.
 
 ## Struttura di un capitolo (da usare sempre)
 
@@ -49,13 +80,13 @@ Testo in Markdown. Formule inline $f(x)$ e display $$\int_a^b f(x)\,dx$$.
 
 ## Box di contenuto disponibili
 
-Tutti i box si aprono con `{% include box-XXX.html titolo="..." %}` e si chiudono con `{% include box-end.html %}`.
+Tutti i box si aprono con `{% include box-XXX.html testo="..." %}` e si chiudono con `{% include box-end.html %}`.
 
 | Include | Colore | Uso |
 |---|---|---|
 | `box-def.html` | cyan | Definizioni |
 | `box-thm.html` | teal | Teoremi, proposizioni |
-| `box-warn.html` | giallo | Attenzione, errori comuni |
+| `box-warn.html` | rosso | Attenzione, errori comuni |
 | `box-ex.html` | viola | Esempi risolti |
 | `box-proof.html` | grigio | Dimostrazioni |
 | `box-note.html` | arancio | Note, approfondimenti |
@@ -63,7 +94,7 @@ Tutti i box si aprono con `{% include box-XXX.html titolo="..." %}` e si chiudon
 
 Esempio:
 ```
-{% include box-def.html titolo="Derivata" %}
+{% include box-def.html testo="Derivata" %}
 La derivata di $f$ in $x_0$ è $f'(x_0) = \lim_{h\to 0}\frac{f(x_0+h)-f(x_0)}{h}$.
 {% include box-end.html %}
 ```
@@ -205,7 +236,7 @@ Soluzione qui.
 {% include video.html id="ID_YOUTUBE" didascalia="Descrizione" %}
 
 # Compiti
-{% include homework.html titolo="Titolo" descrizione="..." link="https://..." %}
+{% include homework.html testo="Titolo" descrizione="..." link="https://..." %}
 ```
 
 ## Formule
@@ -271,7 +302,7 @@ Parametri:
 - `id` — ID univoco del widget (default: "qgf"), usare se ci sono più quiz nella stessa pagina
 
 Ogni domanda: `{"t": "testo", "ok": true/false, "s": "spiegazione"}`.
-Si usa sempre dentro un box: `{% include box-ex.html titolo="Verifica Subito!" %}` ... `{% include box-end.html %}`.
+Si usa sempre dentro un box: `{% include box-ex.html testo="Verifica Subito!" %}` ... `{% include box-end.html %}`.
 
 ## Simulazioni interattive
 

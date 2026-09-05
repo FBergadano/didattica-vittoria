@@ -102,6 +102,35 @@ function toggleFont() {
   update();
 })();
 
+// ── Evita che la punteggiatura subito dopo una formula inline (es. "$F=ma$,")
+//    venga orfanizzata sulla riga successiva. Inserisce un WORD JOINER (U+2060,
+//    invisibile) fra la formula e la punteggiatura: dice al motore di line-breaking
+//    "non spezzare qui", senza toccare white-space (quindi le formule lunghe
+//    possono ancora andare a capo internamente quando serve). Un MutationObserver
+//    copre sia il primo typeset di MathJax sia i re-typeset dinamici dei widget.
+(function() {
+  var PUNCT = /^[,.;:!?)\]]/;
+  function fix(mjx) {
+    if (mjx.getAttribute('display') === 'true') return;
+    if (mjx._punctFixed) return;
+    var next = mjx.nextSibling;
+    if (next && next.nodeType === 3 && PUNCT.test(next.textContent)) {
+      mjx._punctFixed = true;
+      mjx.parentNode.insertBefore(document.createTextNode('\u2060'), next);
+    }
+  }
+  document.querySelectorAll('mjx-container').forEach(fix);
+  new MutationObserver(function(muts) {
+    muts.forEach(function(m) {
+      m.addedNodes.forEach(function(n) {
+        if (n.nodeType !== 1) return;
+        if (n.tagName === 'MJX-CONTAINER') fix(n);
+        else if (n.querySelectorAll) n.querySelectorAll('mjx-container').forEach(fix);
+      });
+    });
+  }).observe(document.body, { childList: true, subtree: true });
+})();
+
 // ── Sidebar TOC: costruisce l'indice e segna la sezione attiva ─
 (function() {
   var toc   = document.getElementById('sidebar-toc');

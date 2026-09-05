@@ -5,7 +5,7 @@ tendina (stesse opzioni per ogni simbolo).
 
 Parametri:
   id                   — ID univoco (obbligatorio)
-  titolo               — titolo mostrato sopra (es. "Trova l'unità di misura di G")
+  testo                — testo mostrato sopra (es. "Trova l'unità di misura di G")
   variabile            — simbolo LaTeX della grandezza da trovare (es. "G")
   numeratore_simboli   — simboli LaTeX al numeratore, separati da "|" (es. "F_G|r^2")
   numeratore_corrette  — unità corrette corrispondenti, stesso ordine (es. "N|m^2")
@@ -14,7 +14,7 @@ Parametri:
   opzioni              — opzioni del menù, uguali per ogni simbolo, separate da "|"
 
 Esempio:
-  {% include unit-derive.html id="ud1" titolo="Trova l'unità di misura di G"
+  {% include unit-derive.html id="ud1" testo="Trova l'unità di misura di G"
      variabile="G"
      numeratore_simboli="F_G|r^2" numeratore_corrette="N|m^2"
      denominatore_simboli="M_1 \cdot M_2" denominatore_corrette="kg^2"
@@ -28,7 +28,7 @@ Esempio:
 {% assign _opts = include.opzioni | split: "|" %}
 
 <div id="{{ _uid }}" class="uderive-widget">
-  {% if include.titolo %}<p class="uderive-title">{{ include.titolo }}</p>{% endif %}
+  {% if include.testo %}<p class="uderive-title">{{ include.testo }}</p>{% endif %}
   <div class="uderive-row">
     <span class="uderive-var">${{ include.variabile }} \;=\;$</span>
     <div class="uderive-frac">
