@@ -4,7 +4,7 @@ title: "Il Moto Rettilineo: Velocità e Accelerazione"
 corso: "meccanica"
 corso_titolo: "Meccanica"
 materia: fisica
-numero: 0
+numero: 1
 ---
 
 *Contenuto in preparazione.*

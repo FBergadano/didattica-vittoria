@@ -1,10 +1,10 @@
 ---
 layout: capitolo
-title: "Capitolo 1"
+title: "Capitolo 4"
 corso: "cittadinanza"
 corso_titolo: "Cittadinanza e Prospettive Globali"
 materia: cittadinanza
-numero: 0
+numero: 4
 ---
 
 *Contenuto in preparazione.*

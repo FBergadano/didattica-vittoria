@@ -1,10 +1,10 @@
 ---
 layout: capitolo
-title: "I Principi della Dinamica"
+title: "I Vettori"
 corso: "meccanica"
 corso_titolo: "Meccanica"
 materia: fisica
-numero: 4
+numero: 2
 ---
 
 *Contenuto in preparazione.*

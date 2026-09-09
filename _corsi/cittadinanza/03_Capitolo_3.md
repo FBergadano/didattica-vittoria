@@ -4,7 +4,7 @@ title: "Capitolo 3"
 corso: "cittadinanza"
 corso_titolo: "Cittadinanza e Prospettive Globali"
 materia: cittadinanza
-numero: 2
+numero: 3
 ---
 
 *Contenuto in preparazione.*

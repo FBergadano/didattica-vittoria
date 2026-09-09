@@ -1,10 +1,10 @@
 ---
 layout: capitolo
-title: "Il Moto nel Piano"
+title: "Le Forze"
 corso: "meccanica"
 corso_titolo: "Meccanica"
 materia: fisica
-numero: 2
+numero: 4
 ---
 
 *Contenuto in preparazione.*

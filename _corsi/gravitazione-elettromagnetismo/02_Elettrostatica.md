@@ -4,7 +4,7 @@ title: "L'Elettrostatica"
 corso: "gravitazione-elettromagnetismo"
 corso_titolo: "La Gravitazione e l'Elettromagnetismo"
 materia: fisica
-numero: 1
+numero: 2
 ---
 
 <cit autore="Empedocle, Sulla Natura">
