@@ -4,7 +4,7 @@ title: "La Teoria della Gravitazione"
 corso: "gravitazione-elettromagnetismo"
 corso_titolo: "La Gravitazione e l'Elettromagnetismo"
 materia: fisica
-numero: 0
+numero: 1
 ---
 
 <cit autore="Bertolt Brecht, Vita di Galileo, scena settima">

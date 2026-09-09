@@ -44,9 +44,5 @@ title: "Bergadano Didattica — Liceo Vittoria"
       <p class="info-item-label">Materie</p>
       <p class="info-item-value">Matematica · Fisica · Cittadinanza</p>
     </div>
-    <div class="info-item">
-      <p class="info-item-label">Anno scolastico</p>
-      <p class="info-item-value">2025–2026</p>
-    </div>
   </div>
 </section>

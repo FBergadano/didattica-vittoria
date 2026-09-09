@@ -4,7 +4,7 @@ title: "La Corrente Elettrica"
 corso: "gravitazione-elettromagnetismo"
 corso_titolo: "La Gravitazione e l'Elettromagnetismo"
 materia: fisica
-numero: 2
+numero: 3
 ---
 
 <cit autore="Alda Merini, La Luce">

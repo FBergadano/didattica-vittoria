@@ -1,6 +1,6 @@
 ---
 layout: capitolo
-title: "Capitolo 2"
+title: "Capitolo 1"
 corso: "cittadinanza"
 corso_titolo: "Cittadinanza e Prospettive Globali"
 materia: cittadinanza

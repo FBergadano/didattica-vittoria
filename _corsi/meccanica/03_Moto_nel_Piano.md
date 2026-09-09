@@ -1,6 +1,6 @@
 ---
 layout: capitolo
-title: "Le Forze"
+title: "Il Moto nel Piano"
 corso: "meccanica"
 corso_titolo: "Meccanica"
 materia: fisica
