@@ -73,7 +73,7 @@ Perché in realtà le cellule all'interno dei nostri muscoli si spostano continu
 | Verso contrario | Negativo | $L<0$ |
 | Perpendicolare | Nullo | $L=0$ |
 
-La seguente animazione riassume i casi appena descritti. Attiva le frecce delle quattro forze per confrontarne il verso con quello dello spostamento e leggere il segno del lavoro che ciascuna compie.
+La seguente animazione riassume i casi appena descritti. Attiva le frecce delle quattro forze per confrontarne il verso con quello dello spostamento e leggere il segno del lavoro che ciascuna compie (ma cerca prima di indovinarle tu!).
 
 <div class="fig-block">
 <div class="worksim" id="worksim-lavoro">
