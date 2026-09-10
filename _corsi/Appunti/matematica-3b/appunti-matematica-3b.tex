@@ -1,0 +1,151 @@
+\documentclass[11pt]{report}
+\input{../../../latex/preamble.tex}
+
+\begin{document}
+\chapter{Equazioni di Secondo Grado}
+Sto facendo delle lezioni sulle equazioni di Secondo Grado, e utilizzo il libro \textit{Le idee della Matematica (Algebra e Geometria, vol. 3)}. 
+
+\section{Introduzione alle equazioni di secondo grado}
+
+\subsection{Ripasso eq 1 grado}
+Chiamare alla lavagna e chiedere di risolvere equazioni di primo grado, generandone sempre di nuove finché non vedo che è chiaro per tutti.
+\begin{enumerate}
+    \item $-\dfrac 23 x -4 = 2,$
+    \item $-\dfrac x2 -2 =2-x$
+    \item $-2(x+1)+\dfrac{x-1}2= 1$
+\end{enumerate}
+
+
+\paragraph{Compiti sul ripasso di equazioni di 1 grado}
+Improvvisazione
+
+\subsection{Quante soluzioni possono avere le equazioni di 2 grado?}
+
+Cosa succede se prendo una qualunque delle equazioni considerate e metto un \lette{alla seconda} sopra la $x$?
+\begin{enumerate}
+    \item $-\dfrac 23 x^2 -4 = 2$ $\rightarrow$ nessuna soluzione
+    \item $-\dfrac 23 x^2 + 4 = 2$ $\rightarrow$ due soluzioni
+    \item $-\dfrac 23 x^2+2=2$ $\rightarrow$ una soluzione.  
+\end{enumerate}
+
+
+Ricordare cosa significa che un certo valore \lette{è una soluzione}.
+
+\begin{mdframed}
+    A seconda dei casi, le equazioni di $2^\circ$ grado possono avere 0, 1 o 2 soluzioni.
+\end{mdframed}
+
+Benvenuti nell'universo delle equazioni di secondo grado! Cominciate già a capire quello che vi aspetta, eh?
+
+Adesso cerchiamo di definire che cos'è un'equazione di secondo grado.
+
+\section{Le equazioni di secondo grado in forma normale}
+
+\textit{[A voce]} Un'equazione di secondo grado è un'equazione in cui compare una incognita alla seconda e non compare nessuna incognita con una potenza più grande di 2.
+
+\begin{mdframed}
+    Un'equazione di $2^\circ$ grado si dice \lette{in forma normale} quando è del tipo
+    $$
+    ax^2+bx+c = 0, \qquad \text{con }a \ne 0,
+    $$
+    dove $ax^2$ è il termine quadratico, $bx$ è il termine lineare e\dots
+\end{mdframed}
+
+Provare a scrivere alcune equazioni in forma normale e riconoscere i valori di $a$, $b$ e $c$, cercando di prevenire i normali equivoci sull'ordine dei termini tipo $-x+x^2+1=0$, sui segni tipo $-x \rightarrow b=1$, sulle frazioni \lette{sottintese} tipo $\frac{x^2}2 \rightarrow a=\frac 12$, sulle operazioni, etc.
+
+Esempi:
+\begin{enumerate}
+    \item $2x^2+3-6x=4x^2+1-x$
+    \item $-\frac{x^2}2+1=0$
+    \item $-2x=3x^2$
+    \item $(2y-1)(3y+2)=1$
+    \item $(x+1)^2-2x=3x$
+    \item $2x^2-3x+4=2x^2$, che non è un'equazione di secondo grado!
+\end{enumerate}
+
+Beh, ora che abbiamo imparato a scrivere le equazioni nella forma normale, dovremo pur imparare a risolvere queste equazioni! Ci sono diversi casi...
+
+\paragraph{Compiti sulle equazioni di secondo grado in forma normale}
+Se finisco la lezione qui assegno qualche esercizio sul ripasso delle equazioni di primo grado e sulla conversione alla forma normale.
+
+
+
+\section{Caso $b=c=0$ (equazioni monomie)}
+
+L'equazione diventa $ax^2=0$. Chiedere se qualcuno ha già idea. Cosa vuol dire che $x=0$ è una soluzione?
+
+Esempi:
+\begin{enumerate}
+    \item $-\frac{x^2}{2900}=0$
+    \item $-3x^2+3=3$
+    \item $-2(x-3)^2=0$
+    \item $-2(x-3)^2 = 12x-18$
+\end{enumerate}
+
+\section{Caso $b=0$ (eq pura)}
+
+L'equazione diventa $ax^2+c=0$. 
+
+
+Esempi:
+\begin{enumerate}
+    \item $-\frac23x^2+1=0$
+    \item $(2x-1)^2=4-4x+x^2$
+    \item $3(2x-1)^2-1=0$
+    \item $2x^2+1=0$
+    \item $-\frac{x^2}{2}=2$
+    \item $(4x+10)^2=-20$
+\end{enumerate}
+
+In generale, prendiamo l'equazione
+$$
+ax^2+c=0
+$$
+e isoliamo la $x^2$:
+$$x^2=-\frac ca \implies x=\pm\sqrt{\frac ca} .$$
+
+\begin{mdframed}
+    Le equazioni pure hanno soluzione solo se $-\frac ca>0$ (cioè se $a$ e $c$ sono discordi). In quel caso, hanno 2 soluzioni, pari a 
+    $$
+    x_{1,2} = \pm\sqrt{\frac ca}.
+    $$
+\end{mdframed}
+
+
+Proviamo la regola su un esempio! \textit{(Improvvisare)}.
+
+\paragraph{Compiti sulle equazioni pure e monomie}
+Se arrivo fin qua posso dare come compiti gli esercizi 22 e 34 sulle equazioni monomie e 21,23,25 su quelle pure.
+
+
+
+\section{Caso $c=0$ (equazioni spurie)}
+
+Esempi:
+\begin{enumerate}
+    \item $2x^2-3x=0$
+    \item $3+\frac x4-\frac {x^2}2=3$
+    \item $-(x-4)=2(x-4)^2$
+\end{enumerate}
+
+Prendi quella in forma generale
+$$
+ax^2+bx=0
+$$
+raccogli e ottieni la seguente regola.
+\begin{mdframed}
+    Per le equazioni senza termine noto (spurie) si raccoglie l'incognita e si utilizza la legge di annullamento del prodotto. Quindi, esistono sempre due soluzioni, di cui una è $0$ e l'altra è $-\frac ba$. 
+\end{mdframed}
+
+\paragraph{Compiti}
+
+
+
+
+
+
+
+
+
+
+\end{document}
