@@ -188,14 +188,14 @@ La seguente animazione riassume i casi appena descritti. Attiva le frecce delle 
   }
 
   function drawLeg(ph,colA,colB){
-    var fx=hipx-6+Math.cos(ph)*14;
+    var fx=hipx-6-Math.cos(ph)*14;
     var lift=Math.max(0,Math.sin(ph))*7;
     var fy=GROUND-1-lift;
-    var kx=(hipx+fx)/2+4, ky=(hipy+fy)/2+7-lift*0.5;
+    var kx=(hipx+fx)/2-4, ky=(hipy+fy)/2+7-lift*0.5;
     bone(hipx,hipy,kx,ky,fx,fy,12,colA);
     bone(hipx,hipy,kx,ky,fx,fy,7,colB);
     ctx.fillStyle=colA;
-    ctx.beginPath(); ctx.ellipse(fx-2,fy+1,9,4.2,0,0,7); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(fx+2,fy+1,9,4.2,0,0,7); ctx.fill();
     return fx;
   }
 
