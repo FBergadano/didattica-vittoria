@@ -12,7 +12,7 @@ numero: 6
 </cit>
 
 {% include margin-note.html testo="L'energia si conserva"%}
-Tutto cambia continuamente: perfino i nostri stessi corpi e le nostre stesse coscienze. Eppure abbiamo sempre creduto che ci sia una realtà sottostante che non cambia, che rimane immutata. La domanda che ci porremo in questo capitolo è ***“che cos'è che rimane uguale e non cambia?”***.  
+Tutto cambia continuamente: gli oggetti attorno a noi e noi stessi cambiamo in ogni momento. Eppure gli uomini hanno sempre creduto che ci sia una realtà sottostante che non cambia, che rimane immutata. La domanda che ci porremo in questo capitolo è ***“che cos'è che rimane uguale e non cambia?”***.  
 Questa “cosa” che non cambia, noi la chiameremo <definizione>energia</definizione>: anche se non abbiamo la più pallida idea di cosa sia veramente.
 {% include margin-note-end.html %}
 
@@ -20,7 +20,7 @@ Questa “cosa” che non cambia, noi la chiameremo <definizione>energia</defini
 L'energia è ciò che non si crea e non si distrugge in nessuna trasformazione. Vale a dire, in **qualsiasi** processo fisico, l'energia **dell'intero sistema** si conserva. Sempre.
 {% include box-end.html %}
 
-L'energia ha molte forme. Anche se non sappiamo esattamente cosa sia l'energia, possiamo avere una buona intuizione di a cosa corrispondano le varie forme di energia.
+L'energia ha molte forme. Anche se non sappiamo esattamente cosa sia l'energia, possiamo avere una buona intuizione di ciò a cui corrispondono le varie forme di energia.
 
 # Il Lavoro
 {% include margin-note.html testo="Il lavoro è una forma di energia" %}
@@ -33,6 +33,8 @@ Immagina di spostare un banco spingendolo orizzontalmente. Lo spostamento ti cos
 - dalla forza che devi applicare (un banco pesante richiederà più forza di uno leggero) 
 - dallo spostamento che compi (uno spostamento piccolo non comporta molta fatica, mentre uno spostamento grande sì).  
 
+Inoltre, è chiaro che la fatica non ha una direzione nello spazio, quindi <u markdown="span">il lavoro è una grandezza ***scalare***</u>.
+
 Quindi, <u markdown="span">sia l'intensità della forza che lo spostamento sono **direttamente proporzionali** al lavoro</u>. 
 Pertanto, il lavoro (che indichiamo con il simbolo $L$) si può esprimere attraverso la formula
 
@@ -44,6 +46,7 @@ Pertanto, il lavoro (che indichiamo con il simbolo $L$) si può esprimere attrav
      posizioni="alto|alto|alto"
   %}
 {% include margin-note-end.html %}
+
 {% include box-warn.html %}
 Ricorda che il modulo della forza corrisponde all'intensità della forza, ovvero alla lunghezza del vettore forza. Quindi, il modulo della forza <u>non può mai essere negativo</u>. Allo stesso modo, $\Delta s$ è una distanza percorsa, quindi anch'essa <u>non può mai essere negativa</u>.
 {% include box-end.html %}
@@ -70,55 +73,307 @@ Perché in realtà le cellule all'interno dei nostri muscoli si spostano continu
 | Verso contrario | Negativo | $L<0$ |
 | Perpendicolare | Nullo | $L=0$ |
 
+La seguente animazione riassume i casi appena descritti. Attiva le frecce delle quattro forze per confrontarne il verso con quello dello spostamento e leggere il segno del lavoro che ciascuna compie.
+
 <div class="fig-block">
-<svg viewBox="0 0 480 250" width="100%" style="max-width:460px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Omino che spinge un tavolo verso destra, con i vettori spostamento, forza applicata, forza di attrito e forza peso">
-<defs>
-  <marker id="omArrowViolet" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
-  <marker id="omArrowTeal" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#0f766e"/></marker>
-  <marker id="omArrowSlate" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#64748b"/></marker>
-  <marker id="omArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
-  <radialGradient id="omHeadGrad" cx="35%" cy="30%" r="70%">
-    <stop offset="0%" stop-color="#fff7ed"/><stop offset="55%" stop-color="#fed7aa"/><stop offset="100%" stop-color="#ea9a4d"/>
-  </radialGradient>
-  <radialGradient id="omTableGrad" cx="35%" cy="30%" r="75%">
-    <stop offset="0%" stop-color="#fff7ed"/><stop offset="55%" stop-color="#fdba74"/><stop offset="100%" stop-color="#ea9a4d"/>
-  </radialGradient>
-</defs>
-
-<line x1="20" y1="215" x2="460" y2="215" stroke="#cbd5e1" stroke-width="2"/>
-
-<!-- tavolo -->
-<line x1="312" y1="164" x2="312" y2="215" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>
-<line x1="388" y1="164" x2="388" y2="215" stroke="#b45309" stroke-width="6" stroke-linecap="round"/>
-<rect x="300" y="150" width="100" height="14" rx="3" fill="url(#omTableGrad)" stroke="#c2740c" stroke-width="1"/>
-
-<!-- omino -->
-<line x1="250" y1="195" x2="224" y2="213" stroke="#93c5fd" stroke-width="11" stroke-linecap="round"/>
-<line x1="250" y1="195" x2="273" y2="211" stroke="#93c5fd" stroke-width="11" stroke-linecap="round"/>
-<line x1="258" y1="152" x2="250" y2="195" stroke="#93c5fd" stroke-width="13" stroke-linecap="round"/>
-<line x1="258" y1="150" x2="297" y2="171" stroke="#93c5fd" stroke-width="10" stroke-linecap="round"/>
-<line x1="258" y1="159" x2="297" y2="184" stroke="#93c5fd" stroke-width="10" stroke-linecap="round"/>
-<circle cx="262" cy="136" r="15" fill="url(#omHeadGrad)"/>
-<ellipse cx="257" cy="131" rx="4" ry="3" fill="#fff" opacity=".55"/>
-
-<!-- spostamento -->
-<line x1="300" y1="90" x2="398" y2="90" stroke="#7c3aed" stroke-width="3" marker-end="url(#omArrowViolet)"/>
-<text x="349" y="76" text-anchor="middle" font-size="15" font-weight="600" fill="#7c3aed">&#916;s</text>
-
-<!-- forza applicata (omino) -->
-<line x1="273" y1="180" x2="317" y2="180" stroke="#0f766e" stroke-width="3" marker-end="url(#omArrowTeal)"/>
-<text x="293" y="200" text-anchor="middle" font-size="14" font-weight="700" fill="#0f766e">L&gt;0</text>
-
-<!-- forza peso -->
-<line x1="335" y1="164" x2="335" y2="206" stroke="#64748b" stroke-width="3" marker-end="url(#omArrowSlate)"/>
-<text x="349" y="190" text-anchor="start" font-size="14" font-weight="700" fill="#64748b">L=0</text>
-
-<!-- attrito -->
-<line x1="432" y1="180" x2="396" y2="180" stroke="#dc2626" stroke-width="3" marker-end="url(#omArrowRed)"/>
-<text x="414" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#dc2626">L&lt;0</text>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="omino-lavoro-segni">Figura</span> — L'omino spinge il tavolo verso destra: lo spostamento $\Delta s$ (viola) è orizzontale. La forza applicata dall'omino (verde) ha lo stesso verso dello spostamento, quindi $L>0$. L'attrito (rosso) si oppone al moto, quindi $L<0$. La forza peso (grigia) è perpendicolare allo spostamento, quindi $L=0$.</figcaption>
+<div class="worksim" id="worksim-lavoro">
+<canvas id="cvLavoroSegni" width="480" height="250" style="width:100%;max-width:460px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: un uomo cammina spingendo un tavolo verso destra e lo fa avanzare; quando esce dalla scena rientra da sinistra. Pulsanti per mostrare le frecce della forza dell'omino, dell'attrito, della forza peso e della reazione vincolare del piano."></canvas>
+<div class="ws-toggles" role="group" aria-label="Mostra le frecce delle forze">
+<button type="button" class="ws-btn" data-force="omino" aria-pressed="false" style="--c:#0f766e">Forza dell'omino</button>
+<button type="button" class="ws-btn" data-force="attrito" aria-pressed="false" style="--c:#dc2626">Attrito</button>
+<button type="button" class="ws-btn" data-force="peso" aria-pressed="false" style="--c:#64748b">Forza peso</button>
+<button type="button" class="ws-btn" data-force="normale" aria-pressed="false" style="--c:#2563eb">Reazione vincolare</button>
 </div>
+<div class="ws-notes" id="ws-lavoro-notes" aria-live="polite"></div>
+</div>
+<figcaption><span class="fig-num" data-fig-id="omino-lavoro-segni">Figura</span> &mdash; L'omino cammina spingendo il tavolo verso destra e lo fa avanzare di uno spostamento $\Delta s$; quando esce dalla scena rientra da sinistra. Attiva le frecce delle quattro forze per confrontarne il verso con quello dello spostamento e leggere il segno del lavoro che ciascuna compie.</figcaption>
+</div>
+
+<style>
+#worksim-lavoro{max-width:460px;margin:0 auto}
+#worksim-lavoro .ws-toggles{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin:.75rem 0 .25rem}
+#worksim-lavoro .ws-btn{--c:#64748b;font:inherit;font-size:.82rem;line-height:1;cursor:pointer;padding:.42rem .8rem;border:1.5px solid var(--c);border-radius:999px;background:#fff;color:var(--c);display:inline-flex;align-items:center;gap:.4rem;transition:background .15s,color .15s}
+#worksim-lavoro .ws-btn::before{content:"";width:.6rem;height:.6rem;border-radius:50%;background:var(--c);flex:none}
+#worksim-lavoro .ws-btn[aria-pressed="true"]{background:var(--c);color:#fff}
+#worksim-lavoro .ws-btn[aria-pressed="true"]::before{background:#fff}
+#worksim-lavoro .ws-notes{display:flex;flex-direction:column;gap:.5rem;margin-top:.55rem}
+#worksim-lavoro .ws-card{--c:#64748b;border-left:4px solid var(--c);background:#f8fafc;border-radius:6px;padding:.5rem .7rem .55rem}
+#worksim-lavoro .ws-card-h{font-size:.78rem;font-weight:700;letter-spacing:.02em;color:var(--c);display:flex;align-items:center;gap:.4rem}
+#worksim-lavoro .ws-card-h .ws-dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--c);flex:none}
+#worksim-lavoro .ws-L{font-size:1.2rem;font-weight:700;color:var(--c);margin:.1rem 0 .15rem}
+#worksim-lavoro .ws-txt{font-size:.85rem;color:#334155}
+@media print{#worksim-lavoro .ws-toggles{display:none}}
+</style>
+
+<script>
+(function(){
+  var cv=document.getElementById('cvLavoroSegni');
+  if(!cv||!cv.getContext) return;
+  var wrap=document.getElementById('worksim-lavoro');
+  var notes=document.getElementById('ws-lavoro-notes');
+  var ctx=cv.getContext('2d');
+  var W=480, H=250, GROUND=215, PERIOD=520;
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=W*dpr; cv.height=H*dpr; ctx.scale(dpr,dpr);
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var SUIT='#93c5fd';
+  var speed=reduce?0:0.9;
+  var t=0, worldX=0, raf=null, drops=[], spawnT=90;
+  var active={omino:false,attrito:false,peso:false,normale:false};
+
+  var FORCES={
+    omino:  {col:'#0f766e', name:'FORZA DELL’OMINO',        L:'L_{\\text{omino}}>0',
+             txt:'La forza dell’omino e lo spostamento hanno lo <strong>stesso verso</strong>.'},
+    attrito:{col:'#dc2626', name:'ATTRITO',                      L:'L_{\\text{att}}<0',
+             txt:'La forza di attrito e lo spostamento hanno <strong>verso opposto</strong>.'},
+    peso:   {col:'#64748b', name:'FORZA PESO',                   L:'L_{\\text{peso}}=0',
+             txt:'La forza peso &egrave; <strong>perpendicolare</strong> allo spostamento.'},
+    normale:{col:'#2563eb', name:'REAZIONE VINCOLARE DEL PIANO', L:'L_{\\text{N}}=0',
+             txt:'La reazione vincolare del piano &egrave; <strong>perpendicolare</strong> allo spostamento.'}
+  };
+
+  function rr(x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+  function shade(hex,p){
+    var n=parseInt(hex.slice(1),16), a=Math.round(2.55*p);
+    var R=Math.max(0,Math.min(255,(n>>16)+a));
+    var G=Math.max(0,Math.min(255,(n>>8&255)+a));
+    var B=Math.max(0,Math.min(255,(n&255)+a));
+    return '#'+(0x1000000+R*65536+G*256+B).toString(16).slice(1);
+  }
+  function bone(x1,y1,cx,cy,x2,y2,w,col){
+    ctx.strokeStyle=col; ctx.lineWidth=w; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.quadraticCurveTo(cx,cy,x2,y2); ctx.stroke();
+  }
+  function arrow(x1,y1,x2,y2,col,lw,hs){
+    var a=Math.atan2(y2-y1,x2-x1);
+    ctx.save();
+    ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=lw; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1);
+    ctx.lineTo(x2-Math.cos(a)*hs*0.5, y2-Math.sin(a)*hs*0.5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-hs*Math.cos(a-0.4), y2-hs*Math.sin(a-0.4));
+    ctx.lineTo(x2-hs*Math.cos(a+0.4), y2-hs*Math.sin(a+0.4));
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+  function tag(txt,x,y,col,size,align){
+    ctx.save();
+    ctx.fillStyle=col;
+    ctx.font='700 '+size+'px ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+    ctx.textAlign=align||'center'; ctx.textBaseline='alphabetic';
+    ctx.fillText(txt,x,y);
+    ctx.restore();
+  }
+
+  var hipx=236, hipy=150, shx=266, shy=126, hnx=298, hny=171, hdx=280, hdy=109;
+
+  function drawBench(){
+    ctx.fillStyle='rgba(15,23,42,.10)';
+    ctx.beginPath(); ctx.ellipse(350,216,52,4,0,0,7); ctx.fill();
+    ctx.strokeStyle='#b45309'; ctx.lineWidth=6; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(312,164); ctx.lineTo(312,215); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(388,164); ctx.lineTo(388,215); ctx.stroke();
+    var g=ctx.createLinearGradient(300,150,400,164);
+    g.addColorStop(0,'#fff7ed'); g.addColorStop(.55,'#fdba74'); g.addColorStop(1,'#ea9a4d');
+    ctx.fillStyle=g; ctx.strokeStyle='#c2740c'; ctx.lineWidth=1;
+    rr(300,150,100,14,3); ctx.fill(); ctx.stroke();
+  }
+
+  function drawLeg(ph,colA,colB){
+    var fx=hipx-6+Math.cos(ph)*14;
+    var lift=Math.max(0,Math.sin(ph))*7;
+    var fy=GROUND-1-lift;
+    var kx=(hipx+fx)/2+4, ky=(hipy+fy)/2+7-lift*0.5;
+    bone(hipx,hipy,kx,ky,fx,fy,12,colA);
+    bone(hipx,hipy,kx,ky,fx,fy,7,colB);
+    ctx.fillStyle=colA;
+    ctx.beginPath(); ctx.ellipse(fx-2,fy+1,9,4.2,0,0,7); ctx.fill();
+    return fx;
+  }
+
+  function drawMan(){
+    var p=reduce?1.15:worldX*0.16;
+    var strain=reduce?0.85:0.55+0.4*Math.abs(Math.sin(p));
+    var dark=shade(SUIT,-45), mid=shade(SUIT,-15), light=shade(SUIT,40);
+
+    ctx.fillStyle='rgba(15,23,42,.13)';
+    ctx.beginPath(); ctx.ellipse(228,215,40,5,0,0,7); ctx.fill();
+
+    var bx=drawLeg(p,dark,mid);
+    var fx2=drawLeg(p+Math.PI,SUIT,light);
+
+    if(!reduce){
+      var px=Math.min(bx,fx2);
+      ctx.strokeStyle='rgba(148,163,184,'+(0.20+0.12*Math.abs(Math.sin(p*2))).toFixed(3)+')';
+      ctx.lineWidth=1.4;
+      for(var d0=0;d0<3;d0++){
+        ctx.beginPath(); ctx.arc(px-6-d0*4, GROUND-2-d0*3, 2+d0, 2.3, 4.6); ctx.stroke();
+      }
+    }
+
+    ctx.strokeStyle=SUIT; ctx.lineCap='round'; ctx.lineWidth=16;
+    ctx.beginPath(); ctx.moveTo(hipx,hipy);
+    ctx.quadraticCurveTo((hipx+shx)/2-4,(hipy+shy)/2-3, shx,shy); ctx.stroke();
+    ctx.strokeStyle=light; ctx.lineWidth=7;
+    ctx.beginPath(); ctx.moveTo(hipx+1,hipy-1);
+    ctx.quadraticCurveTo((hipx+shx)/2-3,(hipy+shy)/2-4, shx,shy-1); ctx.stroke();
+
+    bone(shx-2,shy+2, 284,155, hnx-3,hny+2, 10, dark);
+    bone(shx-2,shy+2, 284,155, hnx-3,hny+2, 6, mid);
+
+    ctx.strokeStyle=dark; ctx.lineWidth=7; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(shx,shy); ctx.lineTo(hdx-2,hdy+10); ctx.stroke();
+    var hg=ctx.createRadialGradient(hdx-5,hdy-6,3,hdx,hdy,17);
+    hg.addColorStop(0,'#fff7ed'); hg.addColorStop(.55,'#fed7aa'); hg.addColorStop(1,'#ea9a4d');
+    ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(hdx,hdy,15,0,7); ctx.fill();
+
+    ctx.strokeStyle='#7c2d12'; ctx.lineCap='round'; ctx.lineWidth=1.6;
+    ctx.beginPath(); ctx.moveTo(hdx+2,hdy-4); ctx.lineTo(hdx+11,hdy-1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(hdx+4,hdy+1); ctx.lineTo(hdx+10,hdy-1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(hdx+3,hdy+7); ctx.lineTo(hdx+12,hdy+6); ctx.stroke();
+    ctx.lineWidth=0.9;
+    ctx.beginPath(); ctx.moveTo(hdx+6,hdy+5.4); ctx.lineTo(hdx+6,hdy+8.4); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(hdx+9,hdy+5.4); ctx.lineTo(hdx+9,hdy+8.0); ctx.stroke();
+
+    var pulse=reduce?0.8:0.30+0.40*Math.abs(Math.sin(t*0.28))+0.25*strain;
+    ctx.strokeStyle='rgba(220,38,38,'+Math.min(1,pulse).toFixed(3)+')';
+    ctx.lineWidth=1.9;
+    for(var k=0;k<3;k++){
+      var aa=-1.15+k*0.42, r0=17, r1=23+(k===1?3:0);
+      ctx.beginPath();
+      ctx.moveTo(hdx+Math.cos(aa)*r0, hdy-5+Math.sin(aa)*r0);
+      ctx.lineTo(hdx+Math.cos(aa)*r1, hdy-5+Math.sin(aa)*r1);
+      ctx.stroke();
+    }
+
+    bone(shx+3,shy, 288,155, hnx,hny, 11, SUIT);
+    bone(shx+4,shy, 289,155, hnx+1,hny, 6, light);
+    ctx.fillStyle=mid; ctx.strokeStyle=dark; ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.arc(hnx,hny-1,5.4,0,7); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(hnx-1,hny+6,4.4,0,7); ctx.fill(); ctx.stroke();
+
+    for(var sd=0;sd<drops.length;sd++){
+      var dd=drops[sd];
+      ctx.save();
+      ctx.globalAlpha=dd.fall?Math.max(0,dd.life):1;
+      ctx.fillStyle='#38bdf8';
+      ctx.beginPath(); ctx.ellipse(hdx+dd.lx, hdy+dd.ly, 1.7, 2.6, 0, 0, 7); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.beginPath(); ctx.ellipse(hdx+dd.lx-0.5, hdy+dd.ly-0.9, 0.5, 0.8, 0, 0, 7); ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function drawForces(){
+    if(active.omino){
+      arrow(270,180,316,180,'#0f766e',3,9);
+      tag('omino',287,194,'#0f766e',10);
+    }
+    if(active.attrito){
+      arrow(420,196,378,196,'#dc2626',3,9);
+      tag('attrito',401,209,'#dc2626',10);
+    }
+    if(active.peso){
+      arrow(348,158,348,210,'#64748b',3,9);
+      tag('peso',340,186,'#64748b',10,'right');
+    }
+    if(active.normale){
+      arrow(366,213,366,162,'#2563eb',3,9);
+      tag('reazione',374,190,'#2563eb',10,'left');
+    }
+  }
+
+  function drawGroup(off){
+    if(off<-440 || off>480) return;
+    ctx.save(); ctx.translate(off,0);
+    drawBench();
+    drawMan();
+    drawForces();
+    ctx.restore();
+  }
+
+  function updateDrops(){
+    if(!reduce && --spawnT<=0){
+      spawnT=150+Math.floor(Math.random()*90);
+      if(drops.length<2) drops.push({lx:3+Math.random()*4, ly:-10, vy:0, life:1, fall:false});
+    }
+    for(var i=drops.length-1;i>=0;i--){
+      var d=drops[i];
+      if(!d.fall){
+        d.ly+=0.55; d.lx+=0.06;
+        if(d.ly>13){ d.fall=true; d.vy=0.5; }
+      } else {
+        d.vy+=0.16; d.ly+=d.vy; d.lx+=0.15; d.life-=0.03;
+      }
+      if(d.life<=0 || hdy+d.ly>219) drops.splice(i,1);
+    }
+  }
+
+  function paint(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=2; ctx.lineCap='butt';
+    ctx.beginPath(); ctx.moveTo(20,GROUND); ctx.lineTo(460,GROUND); ctx.stroke();
+    arrow(300,90,400,90,'#7c3aed',3,9);
+    tag('Δs',350,78,'#7c3aed',15);
+    drawGroup(worldX);
+    drawGroup(worldX-PERIOD);
+  }
+
+  function frame(){
+    t++;
+    if(!reduce){ worldX+=speed; if(worldX>=PERIOD) worldX-=PERIOD; }
+    updateDrops();
+    paint();
+  }
+  function tick(){ frame(); raf=requestAnimationFrame(tick); }
+  function start(){ if(reduce||raf) return; raf=requestAnimationFrame(tick); }
+  function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+
+  function renderNotes(){
+    var order=['omino','attrito','peso','normale'], html='';
+    for(var i=0;i<order.length;i++){
+      var f=order[i]; if(!active[f]) continue;
+      var dc=FORCES[f];
+      html+='<div class="ws-card" style="--c:'+dc.col+'">'
+          + '<div class="ws-card-h"><span class="ws-dot"></span>'+dc.name+'</div>'
+          + '<div class="ws-L">$'+dc.L+'$</div>'
+          + '<div class="ws-txt">'+dc.txt+'</div>'
+          + '</div>';
+    }
+    notes.innerHTML=html;
+    if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([notes]);
+  }
+  var btns=wrap.querySelectorAll('.ws-btn');
+  for(var bi=0;bi<btns.length;bi++){
+    btns[bi].addEventListener('click', function(){
+      var f=this.getAttribute('data-force');
+      active[f]=!active[f];
+      this.setAttribute('aria-pressed', active[f]?'true':'false');
+      renderNotes();
+      if(reduce) paint();
+    });
+  }
+
+  frame();
+  if(!reduce){
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        for(var i=0;i<es.length;i++){ es[i].isIntersecting ? start() : stop(); }
+      },{threshold:0.05}).observe(cv);
+    } else {
+      start();
+    }
+  }
+})();
+</script>
 
 In particolare, poiché l'attrito ha sempre verso opposto rispetto al moto, <u markdown="span">il lavoro compiuto dall'attrito è sempre **negativo**</u>.
 
@@ -359,7 +614,7 @@ Immagina di spingere una bimba su una bici. Finché la stai spingendo, stai comp
 Questa energia è un'energia di movimento, e perciò è detta <definizione>energia cinetica</definizione> (dal greco *“chinéo”*, che vuol dire “muovere”). Essa si indica con il simbolo $K$.
 
 {% include box-thm.html testo="Teorema dell'Energia Cinetica"%}
-Il **lavoro totale** compiuto su un corpo dalla somma di tutte le forze che agiscono su di esso è pari alla variazione della sua energia cinetica. In formule, 
+Il **lavoro totale** compiuto su un corpo <u>dalla somma di tutte le forze</u> che agiscono su di esso è pari alla variazione della sua energia cinetica. In formule, 
 
 $$
 L = \Delta K,
