@@ -12,7 +12,7 @@ numero: 1
 Una delle cose più meravigliose dell'Universo è la sua immensità. L'infinita grandezza della galassia che ci contiene e l'infinita piccolezza degli atomi di cui siamo composti. Noi uomini siamo sospesi a metà tra questi due infiniti, e questo è un fatto che non cesserà mai di meravigliarci.
 
 
-
+<!-- 
 {% capture _system %}Sei il Prof. Bergadano, un professore di Fisica appassionato che insegna in un Liceo Linguistico a Torino. Stai parlando con uno studente di 15-16 anni.
 
 Lo studente ti scrive cosa lo fa sentire infinitamente piccolo, o cosa trova meravigliosamente enorme. Il tuo compito è guidarlo a scoprire il vero ordine di grandezza di quella cosa attraverso una conversazione socratica:
@@ -30,7 +30,7 @@ Scrivi sempre in italiano. Tono caldo, curioso, incoraggiante. Risposte brevi (2
    domanda="<em>Cerca di ricordare una volta in cui hai avvertito la sensazione di essere piccolissimo in confronto a ciò che avevi di fronte. Cos'era</em>?"
    hint="Se non ti ricordi di aver provato questa sensazione, prova a immaginarla."
 %}
-
+ -->
 # Che cosa significa _misurare_?
 
 «Misurare» significa associare **un numero** a una *caratteristica* di un oggetto. Descrivere il mondo con i numeri, significa scegliere <u>di utilizzare il linguaggio della Matematica</u>. Ecco perché la Fisica è fatta di equazioni. Naturalmente, non tutto si può esprimere con i numeri. La Fisica si limita dunque a descrivere solo le caratteristiche misurabili di un oggetto, che si chiamano <definizione>grandezze fisiche</definizione>.
@@ -416,7 +416,7 @@ Notiamo alcune cose.
 </div>
 </div>
 
-Vediamo le risposte che hanno dato i fisici a questo problema.
+Vediamo le risposte che hanno dato i fisici a questi problemi.
 
 # Le unità di misura e il Sistema Internazionale
 
@@ -474,7 +474,7 @@ Queste 7 grandezze definiscono il <definizione>Sistema Internazionale</definizio
 
 ### La differenza tra grandezze fondamentali e grandezze derivate
 Tutte le altre grandezze fisiche possono essere derivate a partire dalle grandezze nella tabella, tramite le leggi della fisica. Sono perciò dette <definizione>grandezze derivate</definizione>.  
-Immaginatevi le 7 grandezze fisiche nella tabella come delle note musicali: esse si combinano in opportuni accordi (le formule della Fisica) e producono un nuovo suono, che è quello delle altre grandezze (come velocità, accelerazione, forza, etc.). Ad esempio, la velocità esprime semplicemente *quanto spazio percorro in un certo tempo*, quindi per misurare la velocità mi basta misurare lo spazio e il tempo.
+Immaginatevi le 7 grandezze fisiche nella tabella come delle note musicali: esse si combinano in opportuni accordi (le formule della Fisica) e producono un nuovo suono, che è quello delle altre grandezze (come velocità, accelerazione, forza, etc.). Ad esempio, la velocità esprime semplicemente *quanto spazio percorro in un certo tempo*, quindi per misurare la velocità (che è una grandezza derivata) mi basta misurare lo spazio e il tempo (che sono grandezze fondamentali).
 <a id="def-si" style="display:block;height:0;overflow:hidden" aria-hidden="true"></a>
 {% include box-imp.html testo="Il Sistema Internazionale di Unità di Misura"%}
 
@@ -692,7 +692,7 @@ m_\text{e} &= 0{,}000\,000\,000\,000\,000\,000\,000\,000\,000\,000\,910\,938\,37
 1093837015 \times 10^{-31}\ \text{kg}.
 \end{aligned}$$
 
-Vedete che in entrambi i casi ho lasciato solo una cifra prima della virgola. Questo modo di scrivere i numeri è proprio la **notazione scientifica**. Chiamiamo <definizione>coefficiente</definizione> il numero di fronte al $10$ e chiamiamo come al solito <definizione>esponente</definizione> la potenza di $10$.
+Vedete che in entrambi i casi abbiamo lasciato solo una cifra prima della virgola. Questo modo di scrivere i numeri è proprio la **notazione scientifica**. Chiamiamo <definizione>coefficiente</definizione> il numero di fronte al $10$ e chiamiamo come al solito <definizione>esponente</definizione> la potenza di $10$.
 
 <div style="text-align:center;margin:1.2rem 0 1.5rem;">
 <svg width="225" height="125" viewBox="0 0 450 250">
@@ -705,6 +705,8 @@ Vedete che in entrambi i casi ho lasciato solo una cifra prima della virgola. Qu
   <text x="366" y="44" font-size="22" fill="#374151" text-anchor="middle" font-weight="bold" font-family="sans-serif">esponente</text>
 </svg>
 </div>
+
+Il coefficiente deve essere maggiore o uguale a 1 e minore di 10. Cioè, $1\le a < 10.$
 
 
 <style>
