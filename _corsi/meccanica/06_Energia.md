@@ -33,7 +33,7 @@ Possiamo intuire il concetto di lavoro pensando alla sensazione di *fatica* che 
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Dall'esempio del banco alla formula del lavoro" %}
-Immagina di spostare un banco spingendolo orizzontalmente. Lo spostamento ti costa fatica, cioè *lavoro*. 
+Immagina di spostare un banco spingendolo orizzontalmente. Lo spostamento ti costa fatica, cioè *lavoro*. Proviamo a comprendere da cosa dipende questa fatica con la seguente animazione.
 
 <div class="lavlab" id="lavoro-lab">
 <div class="lavlab-stage">
