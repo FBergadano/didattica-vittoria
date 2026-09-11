@@ -33,7 +33,7 @@ function chk(){
   else{cok=okc.indexOf(cv)>=0;}
   ic.classList.toggle('ok',cok);ic.classList.toggle('err',!cok);
   ie.classList.toggle('ok',eok);ie.classList.toggle('err',!eok);
-  if(cok&&eok){fb.textContent='✓';fb.className='sci-fb ok';_shoot(btn);}
+  if(cok&&eok){fb.textContent='✓';fb.className='sci-fb ok';_shoot(btn);w.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));}
   else{var sol=w.dataset.sol;fb.textContent=sol?('→ '+sol):'';fb.className='sci-fb err';}
 }
 btn.addEventListener('click',chk);

@@ -1,13 +1,12 @@
 # Fdb version 4
-["xdvipdfmx"] 0 "appunti-matematica-3b.xdv" "appunti-matematica-3b.pdf" "appunti-matematica-3b" 0 -1
-  "appunti-matematica-3b.xdv" 1789136865.59976 68876 5d5fa945fa7e5c3676542bd8a7bb2f0d "xelatex"
+["xdvipdfmx"] 1789137630.64035 "esercizi-matematica-3b.xdv" "esercizi-matematica-3b.pdf" "esercizi-matematica-3b" 1789137631.37905 0
+  "esercizi-matematica-3b.xdv" 1789137630.15061 78160 28fcebb467f5f4c7b5b02f562344f498 "xelatex"
   (generated)
-  "appunti-matematica-3b.pdf"
+  "esercizi-matematica-3b.pdf"
   (rewritten before read)
-["xelatex"] 1789136854.82203 "/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/appunti-matematica-3b.tex" "appunti-matematica-3b.xdv" "appunti-matematica-3b" 1789136866.10759 2
-  "../../../latex/preamble.tex" 1784534361.21135 32548 211d754f564a8551c25f77e9ef69f2ec ""
+["xelatex"] 1789137622.50916 "esercizi-matematica-3b.tex" "esercizi-matematica-3b.xdv" "esercizi-matematica-3b" 1789137631.36639 0
+  "../../../../latex/preamble.tex" 1784534361.21135 32548 211d754f564a8551c25f77e9ef69f2ec ""
   "/etc/texmf/web2c/texmf.cnf" 1784293461.96888 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/appunti-matematica-3b.tex" 1789136828.83648 4924 30dcf0698385dfcdb42fc275d82d1e2e ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -357,14 +356,12 @@
   "/usr/share/texmf/tex/latex/tipa/tipa.sty" 1764712660 21394 82fa9965637ca62399434739ae5998f6 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1784293637 5946946 69ae8bc8924b15d5d8b35b1e757af58e ""
-  "appunti-matematica-3b.aux" 1789136865.59276 2702 e0f2fc6075a9a10b0246b90066047851 "xelatex"
-  "appunti-matematica-3b.out" 1789136865.59876 2023 ecc32b8c2b9d2f171d0a3be273f072f6 "xelatex"
-  "appunti-matematica-3b.tex" 1789136828.83648 4924 30dcf0698385dfcdb42fc275d82d1e2e ""
-  "appunti-matematica-3b.toc" 1789136865.59976 1193 75a032e59f45366635c1cc3bf1c36897 "xelatex"
+  "esercizi-matematica-3b.aux" 1789137630.14661 3645 586a26c3a6ba71b60438d29eed1b7655 "xelatex"
+  "esercizi-matematica-3b.out" 1789137630.14961 1534 fb92ee1ff6ec8e9243aa913ef56692bf "xelatex"
+  "esercizi-matematica-3b.tex" 1789137606.91255 4055 a7133b83486abf30cde3fb8e40c5cf44 ""
   (generated)
-  "appunti-matematica-3b.aux"
-  "appunti-matematica-3b.log"
-  "appunti-matematica-3b.out"
-  "appunti-matematica-3b.toc"
-  "appunti-matematica-3b.xdv"
+  "esercizi-matematica-3b.aux"
+  "esercizi-matematica-3b.log"
+  "esercizi-matematica-3b.out"
+  "esercizi-matematica-3b.xdv"
   (rewritten before read)

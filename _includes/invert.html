@@ -76,13 +76,19 @@ function stateKey(st){
   return VARS.map(function(v){return st.left[v];}).join(',')+'|'+VARS.map(function(v){return st.right[v];}).join(',');
 }
 function isGoal(left,right){
-  var leftOk = VARS.every(function(v){return left[v]===(v===TARGET?1:0);});
-  // La variabile obiettivo deve essere isolata: non deve comparire anche
+  // La variabile obiettivo è considerata isolata sia se compare da sola
+  // a sinistra, sia se compare da sola a destra: lo scambio dei membri
+  // è "gratis" (vedi sotto), quindi non ha senso obbligare lo studente
+  // a farlo solo per finire dal lato "giusto".
+  var leftIsTarget = VARS.every(function(v){return left[v]===(v===TARGET?1:0);});
+  var rightIsTarget = VARS.every(function(v){return right[v]===(v===TARGET?1:0);});
+  // In ogni caso, la variabile obiettivo non deve comparire anche
   // nell'altro membro, altrimenti "isolarla" sarebbe solo una tautologia
   // (es. dividere e poi moltiplicare per la stessa variabile "vince" il
-  // controllo sul membro sinistro senza aver risolto nulla).
+  // controllo su un membro senza aver risolto nulla).
+  var leftFree = !left || left[TARGET] === 0;
   var rightFree = !right || right[TARGET] === 0;
-  return leftOk && rightFree;
+  return (leftIsTarget && rightFree) || (rightIsTarget && leftFree);
 }
 function allMoves(){
   var m=[{type:'swap'}];
@@ -117,27 +123,36 @@ function moveLabel(mv){
   var sq=mv.mag===2?'^2':'';
   return (mv.type==='mul'?'Moltiplica':'Dividi')+' entrambi i membri per $'+LABELS[mv.v]+sq+'$';
 }
+// Ricerca del percorso più breve con lo "scambio dei membri" a costo zero
+// (0-1 BFS: le mosse gratuite vanno in testa alla coda, quelle "vere" in coda).
 function solveMin(){
   var start={left:clone(LEFT0),right:clone(RIGHT0)};
-  var visited={};visited[stateKey(start)]=true;
-  var queue=[{state:start,moves:[]}];
-  var qi=0,moves=allMoves();
-  while(qi<queue.length){
-    var cur=queue[qi++];
+  var moves=allMoves();
+  var dist={};dist[stateKey(start)]=0;
+  var deque=[{state:start,moves:[],cost:0}];
+  while(deque.length){
+    var cur=deque.shift();
+    if(cur.cost>dist[stateKey(cur.state)])continue; // voce superata, ignorala
     if(isGoal(cur.state.left,cur.state.right))return cur.moves;
     for(var m=0;m<moves.length;m++){
       var ns=applyMove(cur.state,moves[m]);
       if(!inRange(ns))continue;
       var k=stateKey(ns);
-      if(visited[k])continue;
-      visited[k]=true;
-      queue.push({state:ns,moves:cur.moves.concat([moves[m]])});
+      var edgeCost=moves[m].type==='swap'?0:1;
+      var nc=cur.cost+edgeCost;
+      if(dist[k]===undefined||nc<dist[k]){
+        dist[k]=nc;
+        var entry={state:ns,moves:cur.moves.concat([moves[m]]),cost:nc};
+        if(edgeCost===0)deque.unshift(entry);else deque.push(entry);
+      }
     }
   }
   return null;
 }
 var MINPATH=solveMin();
-var MINCOUNT=MINPATH?MINPATH.length:null;
+// Lo scambio dei membri non conta come mossa: il numero minimo di mosse
+// è quello delle sole mosse "vere" nel percorso trovato.
+var MINCOUNT=MINPATH?MINPATH.filter(function(mv){return mv.type!=='swap';}).length:null;
 
 function wrapLbl(lbl){return lbl.indexOf('\\')!==-1?'('+lbl+')':lbl;}
 function termPlain(v,e){
@@ -282,6 +297,9 @@ function finish(){
   done=true;
   setMovesEnabled(false);
   updateHistory();
+  // Segnala al contenitore (carosello/quiz) che l'esercizio è stato risolto,
+  // così può contarlo tra quelli corretti (es. per i fuochi d'artificio finali).
+  root.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
   var res=$$('.invx-result');
   res.style.display='block';
   if(count===MINCOUNT){
@@ -307,8 +325,9 @@ function reset(){
   setMovesEnabled(true);
   renderEq();
 }
-function afterMove(ns){
-  left=ns.left;right=ns.right;count++;
+function afterMove(ns,isFree){
+  left=ns.left;right=ns.right;
+  if(!isFree)count++;
   $$('.invx-count').textContent=count;
   animating=false;
   if(isGoal(left,right)){finish();}
@@ -325,7 +344,8 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
     animating=true;setMovesEnabled(false);
 
     if(mv.type==='swap'){
-      renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
+      // Scambiare i membri non conta come mossa.
+      renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns,true);});
       return;
     }
     if(mv.type==='sqrt'){
