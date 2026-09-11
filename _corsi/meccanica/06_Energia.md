@@ -7,13 +7,17 @@ materia: fisica
 numero: 6
 ---
 
-<cit autore="Richard Feynman, Feynman Lectures on Physics">
-È importante rendersi conto che, nella fisica di oggi, non abbiamo alcuna conoscenza di cosa sia l'energia.
+<cit autore="François Villon, Ballata delle dame di un tempo che fu">
+Mais où sont les neiges d'antan?
+(Dove sono le nevi di un tempo?)
 </cit>
 
 {% include margin-note.html testo="L'energia si conserva"%}
-Tutto cambia continuamente: gli oggetti attorno a noi e noi stessi cambiamo in ogni momento. Eppure gli uomini hanno sempre creduto che ci sia una realtà sottostante che non cambia, che rimane immutata. La domanda che ci porremo in questo capitolo è ***“che cos'è che rimane uguale e non cambia?”***.  
-Questa “cosa” che non cambia, noi la chiameremo <definizione>energia</definizione>: anche se non abbiamo la più pallida idea di cosa sia veramente.
+Tutto cambia continuamente: osserviamo in ogni momento forme, colori e sostanze che scompaiono. Eppure ci deve essere una realtà sottostante che non cambia, che rimane immutata, insomma qualcosa che “non si crea e non si distrugge”.  
+Questa “cosa” che non cambia, noi la chiameremo <definizione>energia</definizione>: anche se non abbiamo la più pallida idea di cosa sia veramente. Come diceva uno dei più grandi Fisici del Novecento,
+<cit autore="Richard Feynman, Feynman Lectures on Physics">
+È importante rendersi conto che, nella fisica di oggi, non abbiamo alcuna conoscenza di cosa sia l'energia.
+</cit>
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="Principio di conservazione dell'energia" %}
@@ -29,7 +33,390 @@ Possiamo intuire il concetto di lavoro pensando alla sensazione di *fatica* che 
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Dall'esempio del banco alla formula del lavoro" %}
-Immagina di spostare un banco spingendolo orizzontalmente. Lo spostamento ti costa fatica, cioè *lavoro*. La fatica che devi fare dipende
+Immagina di spostare un banco spingendolo orizzontalmente. Lo spostamento ti costa fatica, cioè *lavoro*. 
+
+<div class="lavlab" id="lavoro-lab">
+<div class="lavlab-stage">
+<canvas id="cvLavoroLab" width="480" height="250" style="width:100%;max-width:380px;height:auto;display:block" role="img" aria-label="Laboratorio interattivo: un omino spinge un banco. Puoi scegliere se il banco ha le rotelle, quanto è pesante e quanto lungo è lo spostamento, poi premere Spingi per vedere quanta fatica costa."></canvas>
+<div class="lavlab-vbar" aria-hidden="true">
+<span class="lavlab-vcap">🥵</span>
+<div class="lavlab-vtrack"><div class="lavlab-vmask" id="lavlabBarMask"></div></div>
+<span class="lavlab-vcap">😊</span>
+</div>
+</div>
+
+<div class="lavlab-controls" role="group" aria-label="Parametri della spinta">
+<span class="lavlab-mini-label">Rotelle</span>
+<button type="button" class="lavlab-pill is-on" data-wheels="0" aria-pressed="true">No</button>
+<button type="button" class="lavlab-pill" data-wheels="1" aria-pressed="false">Sì</button>
+<label class="lavlab-mini"><span>Peso</span><input type="range" id="lavlabWeight" min="0" max="100" value="50" step="1" aria-label="Peso del banco, da leggero a pesante"></label>
+<label class="lavlab-mini"><span>&Delta;s</span><input type="range" id="lavlabDs" min="0" max="100" value="50" step="1" aria-label="Spostamento, da breve a lungo"></label>
+<button type="button" id="lavlabGo" class="lavlab-go">Spingi! &rarr;</button>
+</div>
+<p class="lavlab-caption" id="lavlabCaption">Imposta i parametri e premi &laquo;Spingi!&raquo;</p>
+</div>
+
+<style>
+#lavoro-lab{max-width:460px;margin:1rem auto}
+#lavoro-lab .lavlab-stage{display:flex;align-items:stretch;justify-content:center;gap:10px}
+#lavoro-lab .lavlab-vbar{display:flex;flex-direction:column;align-items:center;gap:3px;width:22px;flex:none}
+#lavoro-lab .lavlab-vcap{font-size:.8rem;line-height:1}
+#lavoro-lab .lavlab-vtrack{position:relative;flex:1;width:12px;min-height:120px;border-radius:999px;overflow:hidden;background:linear-gradient(to top,#22c55e,#eab308 55%,#dc2626)}
+#lavoro-lab .lavlab-vmask{position:absolute;left:0;right:0;top:0;height:97%;background:#e2e8f0;border-radius:999px 999px 0 0;transition:height .15s linear}
+#lavoro-lab .lavlab-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.4rem .5rem;margin-top:.6rem}
+#lavoro-lab .lavlab-mini-label{font-size:.78rem;color:#475569}
+#lavoro-lab .lavlab-pill{font:inherit;font-size:.78rem;padding:.28rem .6rem;border-radius:999px;border:1.5px solid #64748b;background:#fff;color:#64748b;cursor:pointer}
+#lavoro-lab .lavlab-pill.is-on{background:#64748b;color:#fff}
+#lavoro-lab .lavlab-pill:disabled{opacity:.5;cursor:default}
+#lavoro-lab .lavlab-mini{display:flex;align-items:center;gap:.3rem;font-size:.78rem;color:#475569}
+#lavoro-lab .lavlab-mini input[type=range]{width:64px}
+#lavoro-lab .lavlab-mini input:disabled{opacity:.5}
+#lavoro-lab .lavlab-go{font:inherit;font-weight:700;font-size:.82rem;padding:.3rem .8rem;border-radius:999px;border:none;background:#0f766e;color:#fff;cursor:pointer}
+#lavoro-lab .lavlab-go:disabled{opacity:.55;cursor:default}
+#lavoro-lab .lavlab-caption{text-align:center;font-size:.8rem;color:#475569;margin:.4rem 0 0;min-height:1.3em}
+@media print{#lavoro-lab{display:none}}
+</style>
+
+<script>
+(function(){
+  var cv=document.getElementById('cvLavoroLab');
+  if(!cv||!cv.getContext) return;
+  var wrap=document.getElementById('lavoro-lab');
+  var ctx=cv.getContext('2d');
+  var W=480, H=250, GROUND=215;
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=W*dpr; cv.height=H*dpr; ctx.scale(dpr,dpr);
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var SUIT='#93c5fd';
+  var OFF_START=-170;
+
+  var wheelBtns=wrap.querySelectorAll('.lavlab-pill');
+  var weightInput=document.getElementById('lavlabWeight');
+  var dsInput=document.getElementById('lavlabDs');
+  var goBtn=document.getElementById('lavlabGo');
+  var barMask=document.getElementById('lavlabBarMask');
+  var caption=document.getElementById('lavlabCaption');
+
+  var wheels=false, weightVal=0.5, dsVal=0.5;
+  var off=OFF_START, pushing=false, everPushed=false, t=0, raf=null;
+  var fatigue=0, targetFatigue=0, mood=0;
+  var pushStartOff=OFF_START, pushDs=0, stepPerFrame=0;
+  var drops=[], spawnT=180;
+
+  function dsPx(v){ return 40+v*190; }
+  function lerp(a,b,m){ return a+(b-a)*m; }
+
+  function computeTargetFatigue(){
+    var wf=0.5+weightVal*1.5;
+    var mu=wheels?0.12:1;
+    var L=wf*mu*dsPx(dsVal);
+    var Lmin=0.5*0.12*dsPx(0);
+    var Lmax=2.0*1*dsPx(1);
+    var pct=(L-Lmin)/(Lmax-Lmin)*100;
+    return Math.max(3, Math.min(100, pct));
+  }
+
+  var CAPTIONS=[
+    [0,  'Nessuna fatica: il banco si muove quasi da solo.'],
+    [22, 'Poca fatica: uno sforzo leggero.'],
+    [48, 'Fatica moderata: si comincia a sentire.'],
+    [72, 'Molta fatica: l\'omino suda parecchio.'],
+    [90, 'Sfinito! Che lavoraccio.']
+  ];
+  function captionFor(pct){
+    var c=CAPTIONS[0][1];
+    for(var i=0;i<CAPTIONS.length;i++){ if(pct>=CAPTIONS[i][0]) c=CAPTIONS[i][1]; }
+    return c;
+  }
+
+  function rr(x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+  function shade(hex,p){
+    var n=parseInt(hex.slice(1),16), a=Math.round(2.55*p);
+    var R=Math.max(0,Math.min(255,(n>>16)+a));
+    var G=Math.max(0,Math.min(255,(n>>8&255)+a));
+    var B=Math.max(0,Math.min(255,(n&255)+a));
+    return '#'+(0x1000000+R*65536+G*256+B).toString(16).slice(1);
+  }
+  function bone(x1,y1,cx,cy,x2,y2,w,col){
+    ctx.strokeStyle=col; ctx.lineWidth=w; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.quadraticCurveTo(cx,cy,x2,y2); ctx.stroke();
+  }
+  function arrow(x1,y1,x2,y2,col,lw,hs){
+    var a=Math.atan2(y2-y1,x2-x1);
+    ctx.save();
+    ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=lw; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1);
+    ctx.lineTo(x2-Math.cos(a)*hs*0.5, y2-Math.sin(a)*hs*0.5); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-hs*Math.cos(a-0.4), y2-hs*Math.sin(a-0.4));
+    ctx.lineTo(x2-hs*Math.cos(a+0.4), y2-hs*Math.sin(a+0.4));
+    ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+  function tag(txt,x,y,col,size){
+    ctx.save();
+    ctx.fillStyle=col;
+    ctx.font='700 '+size+'px ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+    ctx.fillText(txt,x,y);
+    ctx.restore();
+  }
+
+  var hipx=236, hipy=150, shx=266, shy=126, hnx=298, hny=171, hdx=280, hdy=109;
+
+  function drawBench(wheelsOn, wv){
+    ctx.fillStyle='rgba(15,23,42,.10)';
+    ctx.beginPath(); ctx.ellipse(350,216,52,4,0,0,7); ctx.fill();
+    var legBottom=wheelsOn?206:215;
+    ctx.strokeStyle='#b45309'; ctx.lineWidth=6; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(312,164); ctx.lineTo(312,legBottom); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(388,164); ctx.lineTo(388,legBottom); ctx.stroke();
+    if(wheelsOn){
+      [312,388].forEach(function(lx){
+        ctx.fillStyle='#334155'; ctx.beginPath(); ctx.arc(lx,210,5.5,0,7); ctx.fill();
+        ctx.fillStyle='#94a3b8'; ctx.beginPath(); ctx.arc(lx-1.3,208.7,1.6,0,7); ctx.fill();
+      });
+    }
+    var g=ctx.createLinearGradient(300,150,400,164);
+    g.addColorStop(0,'#fff7ed'); g.addColorStop(.55,'#fdba74'); g.addColorStop(1,'#ea9a4d');
+    ctx.fillStyle=g; ctx.strokeStyle='#c2740c'; ctx.lineWidth=1;
+    rr(300,150,100,14,3); ctx.fill(); ctx.stroke();
+
+    var n=Math.round(wv*3);
+    for(var i=0;i<n;i++){
+      var cw=34, chh=13, cx=350+(i%2?6:-6), cy=150-8-i*12;
+      var base=shade('#c8874a',-i*8);
+      var cg=ctx.createLinearGradient(cx-cw/2,cy,cx+cw/2,cy+chh);
+      cg.addColorStop(0,shade(base,25)); cg.addColorStop(1,base);
+      ctx.fillStyle=cg; ctx.strokeStyle='#7c4a1e'; ctx.lineWidth=1;
+      rr(cx-cw/2,cy,cw,chh,2); ctx.fill(); ctx.stroke();
+    }
+  }
+
+  function drawLeg(ph,colA,colB){
+    var fx=hipx-6-Math.cos(ph)*14;
+    var lift=Math.max(0,Math.sin(ph))*7;
+    var fy=GROUND-1-lift;
+    var kx=(hipx+fx)/2-4, ky=(hipy+fy)/2+7-lift*0.5;
+    bone(hipx,hipy,kx,ky,fx,fy,12,colA);
+    bone(hipx,hipy,kx,ky,fx,fy,7,colB);
+    ctx.fillStyle=colA;
+    ctx.beginPath(); ctx.ellipse(fx+2,fy+1,9,4.2,0,0,7); ctx.fill();
+    return fx;
+  }
+  function drawIdleLegs(dark,mid,light){
+    bone(hipx-3,hipy, hipx-6,183, hipx-9,214, 12, dark);
+    bone(hipx-3,hipy, hipx-6,183, hipx-9,214, 7, mid);
+    bone(hipx+3,hipy, hipx+7,183, hipx+11,214, 12, SUIT);
+    bone(hipx+3,hipy, hipx+7,183, hipx+11,214, 7, light);
+    ctx.fillStyle=dark; ctx.beginPath(); ctx.ellipse(hipx-9,214,9,4.2,0,0,7); ctx.fill();
+    ctx.fillStyle=SUIT; ctx.beginPath(); ctx.ellipse(hipx+11,214,9,4.2,0,0,7); ctx.fill();
+  }
+
+  function drawFace(m){
+    m=Math.max(0,Math.min(1,m));
+    ctx.strokeStyle='#7c2d12'; ctx.lineCap='round'; ctx.lineWidth=1.6;
+    ctx.beginPath();
+    ctx.moveTo(lerp(hdx+3,hdx+2,m), lerp(hdy-7,hdy-4,m));
+    ctx.lineTo(lerp(hdx+10,hdx+11,m), lerp(hdy-8,hdy-1,m));
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(hdx+4, hdy-1);
+    ctx.quadraticCurveTo(hdx+7, lerp(hdy+1.5,hdy-1,m), hdx+10, hdy-1);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(hdx+3, hdy+6);
+    ctx.quadraticCurveTo(hdx+7, lerp(hdy+10,hdy+5,m), hdx+12, hdy+6);
+    ctx.stroke();
+    if(m>0.55){
+      var g=(m-0.55)/0.45;
+      ctx.save(); ctx.globalAlpha=g; ctx.lineWidth=0.9;
+      ctx.beginPath(); ctx.moveTo(hdx+6,hdy+5.6); ctx.lineTo(hdx+6,hdy+8); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(hdx+9,hdy+5.6); ctx.lineTo(hdx+9,hdy+7.6); ctx.stroke();
+      ctx.restore();
+    }
+    if(m>0.22){
+      var g2=(m-0.22)/0.78;
+      ctx.strokeStyle='rgba(220,38,38,'+(g2*(0.35+0.4*Math.abs(Math.sin(t*0.28)))).toFixed(3)+')';
+      ctx.lineWidth=1.8;
+      for(var k=0;k<3;k++){
+        var aa=-1.15+k*0.42, r0=17, r1=23+(k===1?3:0);
+        ctx.beginPath();
+        ctx.moveTo(hdx+Math.cos(aa)*r0, hdy-5+Math.sin(aa)*r0);
+        ctx.lineTo(hdx+Math.cos(aa)*r1, hdy-5+Math.sin(aa)*r1);
+        ctx.stroke();
+      }
+    }
+  }
+
+  function drawMan(pushingNow, moodNow, ph){
+    var dark=shade(SUIT,-45), mid=shade(SUIT,-15), light=shade(SUIT,40);
+
+    ctx.fillStyle='rgba(15,23,42,.13)';
+    ctx.beginPath(); ctx.ellipse(228,GROUND,40,5,0,0,7); ctx.fill();
+
+    if(pushingNow){ drawLeg(ph,dark,mid); drawLeg(ph+Math.PI,SUIT,light); }
+    else { drawIdleLegs(dark,mid,light); }
+
+    ctx.strokeStyle=SUIT; ctx.lineCap='round'; ctx.lineWidth=16;
+    ctx.beginPath(); ctx.moveTo(hipx,hipy);
+    ctx.quadraticCurveTo((hipx+shx)/2-4,(hipy+shy)/2-3, shx,shy); ctx.stroke();
+    ctx.strokeStyle=light; ctx.lineWidth=7;
+    ctx.beginPath(); ctx.moveTo(hipx+1,hipy-1);
+    ctx.quadraticCurveTo((hipx+shx)/2-3,(hipy+shy)/2-4, shx,shy-1); ctx.stroke();
+
+    bone(shx-2,shy+2, 284,155, hnx-3,hny+2, 10, dark);
+    bone(shx-2,shy+2, 284,155, hnx-3,hny+2, 6, mid);
+
+    ctx.strokeStyle=dark; ctx.lineWidth=7; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(shx,shy); ctx.lineTo(hdx-2,hdy+10); ctx.stroke();
+    var hg=ctx.createRadialGradient(hdx-5,hdy-6,3,hdx,hdy,17);
+    hg.addColorStop(0,'#fff7ed'); hg.addColorStop(.55,'#fed7aa'); hg.addColorStop(1,'#ea9a4d');
+    ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(hdx,hdy,15,0,7); ctx.fill();
+
+    drawFace(moodNow);
+
+    bone(shx+3,shy, 288,155, hnx,hny, 11, SUIT);
+    bone(shx+4,shy, 289,155, hnx+1,hny, 6, light);
+    ctx.fillStyle=mid; ctx.strokeStyle=dark; ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.arc(hnx,hny-1,5.4,0,7); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(hnx-1,hny+6,4.4,0,7); ctx.fill(); ctx.stroke();
+
+    for(var sdi=0;sdi<drops.length;sdi++){
+      var dd=drops[sdi];
+      ctx.save();
+      ctx.globalAlpha=dd.fall?Math.max(0,dd.life):1;
+      ctx.fillStyle='#38bdf8';
+      ctx.beginPath(); ctx.ellipse(hdx+dd.lx, hdy+dd.ly, 1.7,2.6,0,0,7); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.7)';
+      ctx.beginPath(); ctx.ellipse(hdx+dd.lx-0.5, hdy+dd.ly-0.9, 0.5,0.8,0,0,7); ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function updateDrops(){
+    if(!reduce && mood>0.15){
+      spawnT--;
+      if(spawnT<=0){
+        spawnT=Math.round(280-mood*190+Math.random()*50);
+        var maxDrops=mood>0.6?2:1;
+        if(drops.length<maxDrops) drops.push({lx:3+Math.random()*4, ly:-10, vy:0, life:1, fall:false});
+      }
+    }
+    for(var i=drops.length-1;i>=0;i--){
+      var d=drops[i];
+      if(!d.fall){
+        d.ly+=0.55; d.lx+=0.06;
+        if(d.ly>13){ d.fall=true; d.vy=0.5; }
+      } else {
+        d.vy+=0.16; d.ly+=d.vy; d.lx+=0.15; d.life-=0.03;
+      }
+      if(d.life<=0 || hdy+d.ly>219) drops.splice(i,1);
+    }
+  }
+
+  function paint(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=2; ctx.lineCap='butt';
+    ctx.beginPath(); ctx.moveTo(20,GROUND); ctx.lineTo(460,GROUND); ctx.stroke();
+
+    var ax=300+OFF_START, bx=ax+dsPx(dsVal);
+    arrow(ax,90,bx,90,'#7c3aed',3,9);
+    tag('Δs',(ax+bx)/2,78,'#7c3aed',14);
+
+    ctx.save(); ctx.translate(off,0);
+    drawBench(wheels,weightVal);
+    var ph=pushing?((off-pushStartOff)*0.16):0;
+    drawMan(pushing,mood,ph);
+    ctx.restore();
+
+    barMask.style.height=(100-fatigue).toFixed(1)+'%';
+  }
+
+  function frame(){
+    t++;
+    if(pushing){
+      off+=stepPerFrame;
+      var progress=Math.min(1,(off-pushStartOff)/pushDs);
+      fatigue=targetFatigue*progress; mood=fatigue/100;
+      caption.textContent=captionFor(fatigue);
+      if(progress>=1){
+        off=pushStartOff+pushDs; pushing=false;
+        fatigue=targetFatigue; mood=fatigue/100;
+        goBtn.disabled=false; goBtn.textContent='Spingi di nuovo →';
+        setControlsDisabled(false);
+        caption.textContent=captionFor(fatigue);
+      }
+    }
+    updateDrops();
+    paint();
+  }
+  function tick(){ frame(); raf=requestAnimationFrame(tick); }
+  function start(){ if(reduce||raf) return; raf=requestAnimationFrame(tick); }
+  function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+
+  function setControlsDisabled(d){
+    weightInput.disabled=d; dsInput.disabled=d;
+    for(var i=0;i<wheelBtns.length;i++) wheelBtns[i].disabled=d;
+  }
+
+  for(var wi=0; wi<wheelBtns.length; wi++){
+    wheelBtns[wi].addEventListener('click', function(){
+      if(pushing) return;
+      wheels=this.getAttribute('data-wheels')==='1';
+      for(var j=0;j<wheelBtns.length;j++){
+        wheelBtns[j].classList.toggle('is-on', wheelBtns[j]===this);
+        wheelBtns[j].setAttribute('aria-pressed', wheelBtns[j]===this?'true':'false');
+      }
+      if(!pushing) paint();
+    });
+  }
+  weightInput.addEventListener('input', function(){ weightVal=this.value/100; if(!pushing) paint(); });
+  dsInput.addEventListener('input', function(){ dsVal=this.value/100; if(!pushing) paint(); });
+
+  goBtn.addEventListener('click', function(){
+    if(pushing) return;
+    everPushed=true;
+    off=OFF_START; pushStartOff=OFF_START; pushDs=dsPx(dsVal);
+    targetFatigue=computeTargetFatigue();
+    drops=[]; spawnT=180;
+    if(reduce){
+      off=pushStartOff+pushDs; fatigue=targetFatigue; mood=fatigue/100;
+      caption.textContent=captionFor(fatigue);
+      paint();
+      return;
+    }
+    fatigue=0; mood=0;
+    var framesNeeded=Math.max(70,pushDs/0.85);
+    stepPerFrame=pushDs/framesNeeded;
+    pushing=true;
+    goBtn.disabled=true; goBtn.textContent='Spinta in corso…';
+    setControlsDisabled(true);
+    caption.textContent='L\'omino sta spingendo...';
+  });
+
+  frame();
+  if(!reduce){
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){
+        for(var i=0;i<es.length;i++){ es[i].isIntersecting?start():stop(); }
+      },{threshold:0.05}).observe(cv);
+    } else {
+      start();
+    }
+  }
+})();
+</script>
+
+La fatica che devi fare dipende
 - dalla forza che devi applicare (un banco pesante richiederà più forza di uno leggero) 
 - dallo spostamento che compi (uno spostamento piccolo non comporta molta fatica, mentre uno spostamento grande sì).  
 
@@ -62,9 +449,11 @@ Quando utilizzate la formula che abbiamo incontrato, dovete fare attenzione al s
 
 Chiaramente, il lavoro può essere nullo anche se uno dei due fattori è nullo, cioè se non viene applicata nessuna forza oppure se non c'è nessuno spostamento. Ad esempio, quando spingiamo un muro, anche se stiamo applicando una forza, non stiamo compiendo lavoro, poiché non c'è spostamento.
 
+Perché allora, secondo te, quando spingiamo il muro facciamo fatica anche se non compiamo lavoro? Prova a immaginare la risposta (è un po' difficile!)
+
 
 {% include spoiler.html testo="Perché allora quando spingiamo il muro facciamo fatica se non compiamo lavoro?"%}
-Perché in realtà le cellule all'interno dei nostri muscoli si spostano continuamente, e anche in modo  piuttosto veloce! Questo spostamento corrisponde a un lavoro, cioè a un dispendio di energia, che è proprio la nostra sensazione di fatica.
+Perché in realtà le cellule all'interno dei nostri muscoli si spostano continuamente, e anche in modo  piuttosto veloce! Quindi c'è una forza che spinge le nostre cellule a contrarsi e c'è uno spostamento. Pertanto, c'è un lavoro, cioè un dispendio di energia, che corrisponde proprio alla nostra sensazione di fatica.
 {% include spoiler-end.html%}
 
 | Spostamento rispetto alla forza | Lavoro | Segno |
