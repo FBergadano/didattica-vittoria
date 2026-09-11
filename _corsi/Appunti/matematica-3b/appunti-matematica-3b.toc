@@ -1,0 +1,14 @@
+\xpg@aux {}{italian}
+\contentsline {chapter}{\numberline {1}Equazioni di Secondo Grado}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Introduzione alle equazioni di secondo grado}{2}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Ripasso eq 1 grado}{2}{subsection.1.1.1}%
+\contentsline {paragraph}{Compiti sul ripasso di equazioni di 1 grado}{2}{paragraph*.2}%
+\contentsline {subsection}{\numberline {1.1.2}Quante soluzioni possono avere le equazioni di 2 grado?}{2}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.2}Le equazioni di secondo grado in forma normale}{3}{section.1.2}%
+\contentsline {paragraph}{Compiti sulle equazioni di secondo grado in forma normale}{3}{paragraph*.3}%
+\contentsline {section}{\numberline {1.3}Caso $b=c=0$ (equazioni monomie)}{4}{section.1.3}%
+\contentsline {section}{\numberline {1.4}Caso $b=0$ (eq pura)}{4}{section.1.4}%
+\contentsline {paragraph}{Compiti sulle equazioni pure e monomie}{5}{paragraph*.4}%
+\contentsline {section}{\numberline {1.5}Caso $c=0$ (equazioni spurie)}{5}{section.1.5}%
+\contentsline {paragraph}{Compiti}{5}{paragraph*.5}%
+\contentsline {section}{\numberline {1.6}Note sul capitolo}{5}{section.1.6}%

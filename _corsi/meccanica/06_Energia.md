@@ -449,7 +449,7 @@ Quando utilizzate la formula che abbiamo incontrato, dovete fare attenzione al s
 
 Chiaramente, il lavoro può essere nullo anche se uno dei due fattori è nullo, cioè se non viene applicata nessuna forza oppure se non c'è nessuno spostamento. Ad esempio, quando spingiamo un muro, anche se stiamo applicando una forza, non stiamo compiendo lavoro, poiché non c'è spostamento.
 
-Perché allora, secondo te, quando spingiamo il muro facciamo fatica anche se non compiamo lavoro? Prova a immaginare la risposta (è un po' difficile!)
+Perché allora, secondo te, quando spingiamo il muro facciamo fatica anche se non compiamo lavoro? Prova a immaginare la risposta (anche se non è facile!)
 
 
 {% include spoiler.html testo="Perché allora quando spingiamo il muro facciamo fatica se non compiamo lavoro?"%}
@@ -837,11 +837,22 @@ $$
 <div class="iex-fb" id="iexLavorofb3"></div>
 </div>
 
+<div class="iex-q" id="iexLavororow4" style="display:none">
+<p class="iex-qt">Un bradipo si sposta pigramente di $12\ \text m$ lungo un ramo perfettamente orizzontale. Quanto lavoro compie su di lui la forza peso durante questo spostamento?</p>
+<div class="iex-choices" id="iexLavorochoices4">
+<button class="iex-choice-btn" data-v="a">$L = mgh$, ma servirebbe conoscere l'altezza per calcolarlo</button>
+<button class="iex-choice-btn" data-v="b">$L=0$, perché lo spostamento è orizzontale e la forza peso è verticale</button>
+<button class="iex-choice-btn" data-v="c">$L = mg\cdot 12\ \text m$, usando i $12\ \text m$ come spostamento nella formula</button>
+<button class="iex-choice-btn" data-v="d">Non si può compiere lavoro se ci si muove così lentamente</button>
+</div>
+<div class="iex-fb" id="iexLavorofb4"></div>
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=4, cur=0, ok=[false,false,false,false];
+  var N=5, cur=0, ok=[false,false,false,false,false];
   function updateDots(){
     var dots=document.querySelectorAll('#iexLavorodots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -899,7 +910,7 @@ $$
           btn.className = btn.className.replace(' wrong','') + ' correct';
           ok[rowIdx] = true; fb.className = 'iex-fb ok';
           fb.innerHTML = '&#10003; Esatto! '+msgOk+(rowIdx<N-1?' <button class="iex-nextbtn" onclick="iexLavoronav(1)">Passo successivo &rarr;</button>':'');
-          shootConf(btn); updateDots();
+          shootConf(btn); updateDots(); checkFinale();
         } else {
           btn.className = btn.className.replace(' correct','') + ' wrong';
           var correctBtn = document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+correctV+'"]');
@@ -912,6 +923,23 @@ $$
     });
   }
 
+  // Fuochi d'artificio finali, quando TUTTE le domande (comprese quelle
+  // annidate come sci.html/invert.html, vedi sotto) sono state risolte.
+  function checkFinale(){
+    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+  // La domanda 1 è un calcolo numerico (sci.html), non una scelta multipla:
+  // ci mettiamo in ascolto del suo evento di completamento per contarla.
+  var _row1=document.getElementById('iexLavororow1');
+  if(_row1)_row1.addEventListener('iex:correct', function(){
+    if(!ok[1]){ ok[1]=true; updateDots(); checkFinale(); }
+  });
+
   wireChoices(0, 'iexLavorochoices0', 'iexLavorofb0', 'b',
     'Il newton si misura in $\\text{kg}\\cdot\\text m/\\text s^2$, quindi il joule dovrebbe contenere $1/\\text s^2$, non $\\text s^2$: qui la potenza di $\\text s$ ha il segno sbagliato.',
     'Non è quella giusta: ricorda che $\\text N = \\text{kg}\\cdot \\text m/\\text s^2$. Sostituendo, tutte le altre relazioni tornano corrette — una sola ha una potenza di $\\text s$ scritta al contrario.');
@@ -923,12 +951,16 @@ $$
   wireChoices(3, 'iexLavorochoices3', 'iexLavorofb3', 'd',
     'Quando forza e spostamento sono opposti il lavoro non è nullo: è negativo! Negli altri tre casi (forza nulla, spostamento nullo, forza e spostamento perpendicolari) il lavoro è invece sempre nullo.',
     'Non è corretto: in questo caso il lavoro è negativo, quindi diverso da zero. Negli altri tre casi il lavoro è invece nullo.');
+
+  wireChoices(4, 'iexLavorochoices4', 'iexLavorofb4', 'b',
+    'La forza peso è verticale, mentre lo spostamento del bradipo è orizzontale: sono perpendicolari, quindi il lavoro è nullo, qualunque sia la distanza percorsa lungo il ramo.',
+    'Non è corretto: pensa alla direzione della forza peso (sempre verticale) rispetto allo spostamento (qui orizzontale). Quando i due sono perpendicolari il lavoro è sempre nullo, indipendentemente dai metri percorsi.');
 })();
 </script>
 
 <div class="iex-widget" id="invCarLavoro">
 <p class="iex-lbl">Isola le altre grandezze</p>
-<p class="iex-hint">Cerca la sequenza più breve di mosse per isolare ciascuna grandezza.</p>
+<p class="iex-hint">Cerca la sequenza più breve di mosse per isolare ciascuna grandezza, poi mettile alla prova con un calcolo numerico.</p>
 <div class="iex-topnav">
 <button class="iex-navbtn" id="invCarLavoroprev" onclick="invCarLavoronav(-1)" disabled>&larr; Prec.</button>
 <div class="iex-dots" id="invCarLavorodots"></div>
@@ -942,8 +974,34 @@ $$
 </div>
 
 <div class="iex-q" id="invCarLavororow1" style="display:none">
+<p class="iex-qt">Durante una gara di traino alla fune su un campo innevato, una squadra tira una slitta per $20\ \text m$ compiendo un lavoro di $4\,000\ \text J$. Con quale forza tirano la slitta?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcInvLavoroF" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numInvLavoroF" valore="200" unit="N" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="invCarLavororow2" style="display:none">
 <div class="iex-nested">
 {% include invert.html id="inv-lavoro-s" variabili="L|F|s" etichette="L|F|\Delta s" sinistra="L" destra="F*s" obiettivo="s" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarLavororow3" style="display:none">
+<p class="iex-qt">Un facchino trascina un baule esercitando una forza costante di $150\ \text N$ e compiendo così un lavoro di $900\ \text J$. Di quanto si è spostato il baule?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcInvLavoroS" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numInvLavoroS" valore="6" unit="m" %}
+</div>
+</div>
+<div style="clear:both"></div>
 </div>
 </div>
 
@@ -951,10 +1009,17 @@ $$
 
 <script>
 window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
-  var cur=0;
+  var cur=0, ok=[];
+  for(var oi=0;oi<N;oi++)ok.push(false);
+  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+  function shootFW(){
+    for(var b=0;b<5;b++)(function(b){setTimeout(function(){
+      window._shoot({getBoundingClientRect:function(){return{left:window.innerWidth*(.1+Math.random()*.8),top:window.innerHeight*(.1+Math.random()*.5),width:0,height:0};}});
+    },b*200);})(b);
+  }
   function updateDots(){
     var dots=document.querySelectorAll('#'+ID+'dots .iex-dot');
-    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
   }
   function show(i){
     document.querySelectorAll('#'+ID+' .iex-q').forEach(function(q){q.style.display='none';});
@@ -976,8 +1041,21 @@ window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
   }
   buildDots();
   window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+  // Ogni esercizio annidato (invert.html o sci.html) segnala da sé quando
+  // viene risolto correttamente: lo contiamo per i fuochi d'artificio finali.
+  for(var k=0;k<N;k++){
+    (function(k){
+      var row=document.getElementById(ID+'row'+k);
+      if(!row)return;
+      row.addEventListener('iex:correct', function(){
+        if(ok[k])return;
+        ok[k]=true; updateDots();
+        if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+      });
+    })(k);
+  }
 };
-setupInvCarousel('invCarLavoro',2);
+setupInvCarousel('invCarLavoro',4);
 </script>
 
 ### Il lavoro si può convertire in altre forme di energia
@@ -1202,7 +1280,7 @@ L'energia cinetica, essendo un'energia, <u>ha la stessa unità di misura del lav
           btn.className = btn.className.replace(' wrong','') + ' correct';
           ok[rowIdx] = true; fb.className = 'iex-fb ok';
           fb.innerHTML = '&#10003; Esatto! '+msgOk+(rowIdx<N-1?' <button class="iex-nextbtn" onclick="iexCineticanav(1)">Passo successivo &rarr;</button>':'');
-          shootConf(btn); updateDots();
+          shootConf(btn); updateDots(); checkFinale();
         } else {
           btn.className = btn.className.replace(' correct','') + ' wrong';
           var correctBtn = document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+correctV+'"]');
@@ -1214,6 +1292,21 @@ L'energia cinetica, essendo un'energia, <u>ha la stessa unità di misura del lav
       });
     });
   }
+
+  // Fuochi d'artificio finali, quando TUTTE le domande (compresa quella
+  // numerica annidata con sci.html, vedi sotto) sono state risolte.
+  function checkFinale(){
+    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+  var _row1=document.getElementById('iexCineticarow1');
+  if(_row1)_row1.addEventListener('iex:correct', function(){
+    if(!ok[1]){ ok[1]=true; updateDots(); checkFinale(); }
+  });
 
   wireChoices(0, 'iexCineticachoices0', 'iexCineticafb0', 'c',
     'L\'energia cinetica è proporzionale al <strong>quadrato</strong> della velocità: se $v$ triplica, $K$ si moltiplica per $3^2=9$.',
@@ -1481,7 +1574,7 @@ $$v = \sqrt{2gh}.$$
           btn.className = btn.className.replace(' wrong','') + ' correct';
           ok[rowIdx] = true; fb.className = 'iex-fb ok';
           fb.innerHTML = '&#10003; Esatto! '+msgOk+(rowIdx<N-1?' <button class="iex-nextbtn" onclick="iexPotenzialenav(1)">Passo successivo &rarr;</button>':'');
-          shootConf(btn); updateDots();
+          shootConf(btn); updateDots(); checkFinale();
         } else {
           btn.className = btn.className.replace(' correct','') + ' wrong';
           var correctBtn = document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+correctV+'"]');
@@ -1493,6 +1586,21 @@ $$v = \sqrt{2gh}.$$
       });
     });
   }
+
+  // Fuochi d'artificio finali, quando TUTTE le domande (compresa quella
+  // numerica annidata con sci.html, vedi sotto) sono state risolte.
+  function checkFinale(){
+    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+  var _row1=document.getElementById('iexPotenzialerow1');
+  if(_row1)_row1.addEventListener('iex:correct', function(){
+    if(!ok[1]){ ok[1]=true; updateDots(); checkFinale(); }
+  });
 
   wireChoices(0, 'iexPotenzialechoices0', 'iexPotenzialefb0', 'a',
     'Aumentando l\'altezza $h$, e con $m$ e $g$ costanti, anche $U_g=mgh$ aumenta.',
@@ -1926,9 +2034,9 @@ Anche se Bob spinge per una distanza quasi doppia, la forza di Alice è più che
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
-Calcola il lavoro compiuto dall'attrito radente su di un corpo di massa $20\ \text{kg}$ che scivola per dieci metri su una superficie orizzontale con coefficiente di attrito $\mu = 0{,}3$. Esprimi il risultato in joule, in notazione scientifica. *(Indizio: ricorda che la formula dell'attrito corrisponde a $F_{\text{att}} = \mu F_\perp$.)*
+Calcola il lavoro compiuto dall'attrito radente su di un corpo di massa $20\ \text{kg}$ che scivola per dieci metri su una superficie orizzontale con coefficiente di attrito $\mu = 0{,}3$. Esprimi il risultato in joule. *(Indizio: ricorda che la formula dell'attrito corrisponde a $F_{\text{att}} = \mu F_\perp$.)*
 
-{% include sci.html prima="$L=$" coeff="-5.88" exp="2" s="$-5{,}88\times10^2\ \text J$" %}
+{% include num.html id="numAttritoRadente" valore="-588" unit="J" %}
 
 {% include ex-sol.html %}
 Su una superficie orizzontale, la forza perpendicolare $F_\perp$ è semplicemente il peso del corpo, $F_\perp = mg$. Quindi la forza di attrito vale
@@ -1995,18 +2103,18 @@ $$F = \frac{L}{\Delta s} = \frac{2{,}4\times10^6\ \text J}{800\ \text m} = 3\tim
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Un trattore applica una forza costante di $800\ \text N$, parallela allo spostamento, e compie un lavoro di $4\times10^5\ \text J$ per trainare un carico lungo un campo. Per quanti metri lo ha trainato? Esprimi il risultato in metri, in notazione scientifica.
+Un trattore applica una forza costante di $800\ \text N$, parallela allo spostamento, e compie un lavoro di $4\times10^5\ \text J$ per trainare un carico lungo un campo. Per quanti metri lo ha trainato?
 
-{% include sci.html prima="$\Delta s=$" coeff="5" exp="2" s="$5\times10^2\ \text m$" %}
+{% include num.html id="numTrattore" valore="500" unit="m" %}
 
 {% include ex-sol.html %}
 $$\Delta s = \frac{L}{F} = \frac{4\times10^5\ \text J}{800\ \text N} = 5\times10^2\ \text m.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Quando esegue un servizio, una tennista lancia la palla (di massa $60\ \text g$) verso l'alto, facendola salire di $1\ \text m$. Trova il lavoro compiuto dalla forza peso. Esprimi il risultato in joule, in notazione scientifica. (Usa $g\approx 10\ \text{m/s}^2$.)
+Quando esegue un servizio, una tennista lancia la palla (di massa $60\ \text g$) verso l'alto, facendola salire di $1\ \text m$. Trova il lavoro compiuto dalla forza peso. Esprimi il risultato in joule. (Usa $g\approx 10\ \text{m/s}^2$.)
 
-{% include sci.html prima="$L=$" coeff="-6" exp="-1" s="$-6\times10^{-1}\ \text J$" %}
+{% include num.html id="numPallina" valore="-0.6" unit="J" %}
 
 {% include ex-sol.html %}
 Convertendo la massa in chilogrammi, $60\ \text g = 0{,}06\ \text{kg}$. La forza peso vale
@@ -2041,14 +2149,14 @@ $$\Delta s = \frac{|L|}{F} = \frac{180\ \text J}{30\ \text N} = 6\ \text m.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Una gatta di massa $4\ \text{kg}$ trasporta uno dei suoi cuccioli, di massa $0{,}5\ \text{kg}$, per la collottola. Nel primo tratto accelera con un'accelerazione di $0{,}5\ \text{m/s}^2$, per $4\ \text m$. Poi procede con velocità costante per $6\ \text m$. Qual è il lavoro totale? Esprimi il risultato in joule, in notazione scientifica.
+Una gatta di massa $4\ \text{kg}$ trasporta uno dei suoi cuccioli, di massa $0{,}5\ \text{kg}$, per la collottola. Nel primo tratto accelera con un'accelerazione di $0{,}5\ \text{m/s}^2$, per $4\ \text m$. Poi procede con velocità costante per $6\ \text m$. Qual è il lavoro totale? Esprimi il risultato in joule.
 
 {% include figura.html id="mamma-gatta"
    src="/corsi/immagini/mamma-gatta.jpeg"
    didascalia="Una gatta trasporta il proprio cucciolo per la collottola."
    larghezza="320px" %}
 
-{% include sci.html prima="$L=$" coeff="1" exp="0" s="$1\ \text J$" %}
+{% include num.html id="numGattaCucciolo" valore="1" unit="J" %}
 
 {% include ex-sol.html %}
 La massa della gatta ($4\ \text{kg}$) non serve: quello che conta è la forza che la gatta esercita **sul cucciolo** per trasportarlo, che dipende solo dalla massa del cucciolo.

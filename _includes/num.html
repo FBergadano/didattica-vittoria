@@ -30,7 +30,12 @@ function nc_{{ include.id }}(){
   fb.style.display='block';
   if(!isNaN(v) && Math.abs(v-target)<=tol){
     fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-    _shoot(document.getElementById('{{ include.id }}'));
+    var inputEl=document.getElementById('{{ include.id }}');
+    _shoot(inputEl);
+    // Segnala al contenitore (carosello/quiz) che l'esercizio è stato risolto,
+    // così può contarlo tra quelli corretti (es. per i fuochi d'artificio finali).
+    var wrapEl=inputEl.closest('.iex-ir');
+    if(wrapEl)wrapEl.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
   } else {
     fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
   }
