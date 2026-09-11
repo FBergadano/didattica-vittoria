@@ -184,7 +184,7 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
   border:1px solid rgba(184,115,51,0.22); border-radius:6px;
   background: var(--cx-surface); overflow:hidden;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-  width: 420px; max-width:100%;
+  width: 320px; max-width:100%;
 }
 .cavx-canvas-wrap canvas { display:block; width:100%; height:auto; }
 .cavx-canvas-cap { font-size:.76rem; color: var(--cx-text2); text-align:center; padding:.5rem .6rem .7rem; font-style:italic; }
@@ -834,11 +834,33 @@ $$
 </div>
 </div>
 
+<div class="iex-q" id="iexGrow5" style="display:none">
+<p class="iex-qt">Se raddoppiassi <strong>contemporaneamente</strong> sia $m_1$, sia $m_2$, sia $r$, come cambierebbe l'intensità della forza gravitazionale?</p>
+<div class="iex-choices" id="iexGchoices5">
+<button class="iex-choice-btn" data-v="a">Raddoppierebbe</button>
+<button class="iex-choice-btn" data-v="b">Diventerebbe 4 volte più intensa</button>
+<button class="iex-choice-btn" data-v="c">Resterebbe invariata</button>
+<button class="iex-choice-btn" data-v="d">Dimezzerebbe</button>
+</div>
+<div class="iex-fb" id="iexGfb5"></div>
+</div>
+
+<div class="iex-q" id="iexGrow6" style="display:none">
+<p class="iex-qt">Una piuma e la Terra si attraggono a vicenda per gravità. Quale delle seguenti affermazioni è corretta?</p>
+<div class="iex-choices" id="iexGchoices6">
+<button class="iex-choice-btn" data-v="a">La Terra attrae la piuma con una forza maggiore di quella con cui la piuma attrae la Terra</button>
+<button class="iex-choice-btn" data-v="b">Le due forze sono uguali in modulo, e opposte in verso</button>
+<button class="iex-choice-btn" data-v="c">Solo la Terra esercita una forza reale: la piuma è troppo leggera per farlo</button>
+<button class="iex-choice-btn" data-v="d">Le due forze dipendono anche dalla massa dell'aria circostante</button>
+</div>
+<div class="iex-fb" id="iexGfb6"></div>
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=5, cur=0, ok=[false,false,false,false,false];
+  var N=7, cur=0, ok=[false,false,false,false,false,false,false];
   function updateDots(){
     var dots=document.querySelectorAll('#iexGdots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -934,6 +956,58 @@ $$
           correctBtn.className = 'iex-choice-btn correct';
           fb.className = 'iex-fb err';
           fb.innerHTML = 'Non è esatto: poiché $F$ è inversamente proporzionale al quadrato di $r$, se $r$ diventa $5r$ la forza diventa $F/5^2 = F/25$, cioè un venticinquesimo del valore iniziale.';
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  })();
+
+  (function initChoices5(){
+    var btns = document.querySelectorAll('#iexGchoices5 .iex-choice-btn');
+    var fb = document.getElementById('iexGfb5');
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === 'c';
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = 'iex-choice-btn correct';
+          ok[5] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! Raddoppiando $m_1$, $m_2$ ed $r$: il numeratore diventa $4$ volte più grande (dal prodotto delle masse raddoppiate), ma anche il denominatore diventa $4$ volte più grande (da $(2r)^2$): i due fattori si semplificano e la forza resta invariata. <button class="iex-nextbtn" onclick="iexGnav(1)">Passo successivo &rarr;</button>';
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = 'iex-choice-btn wrong';
+          var correctBtn = document.querySelector('#iexGchoices5 .iex-choice-btn[data-v="c"]');
+          correctBtn.className = 'iex-choice-btn correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = 'Non è esatto: sostituendo $2m_1$, $2m_2$ e $2r$ nella formula, il fattore $4$ che compare al numeratore (dal prodotto delle masse) si semplifica con il fattore $4$ al denominatore (da $(2r)^2$): la forza resta invariata.';
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  })();
+
+  (function initChoices6(){
+    var btns = document.querySelectorAll('#iexGchoices6 .iex-choice-btn');
+    var fb = document.getElementById('iexGfb6');
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === 'b';
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = 'iex-choice-btn correct';
+          ok[6] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! Per il terzo principio della dinamica, le due forze hanno sempre lo stesso modulo e verso opposto, indipendentemente da quanto siano diverse le due masse: la Terra attrae la piuma esattamente quanto la piuma attrae la Terra.';
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = 'iex-choice-btn wrong';
+          var correctBtn = document.querySelector('#iexGchoices6 .iex-choice-btn[data-v="b"]');
+          correctBtn.className = 'iex-choice-btn correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = 'Non è corretto: per il terzo principio della dinamica, le due forze hanno sempre lo stesso modulo e verso opposto, qualunque sia la differenza fra le due masse.';
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
       });
@@ -2080,6 +2154,7 @@ $$L = -F \times \text{spostamento} = -G\frac{Mm}{r^2} \times r = -G\frac{Mm}{r^{
 Questo lavoro <u>si trasforma interamente in energia potenziale gravitazionale</u>, che indichiamo con $U$:
 
 $$U = -G\frac{Mm}{r}.$$
+
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Perché, in generale, U è negativa" %}
@@ -2284,7 +2359,10 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 {"t":"L'energia potenziale gravitazionale $U$ dipende dalla massa esploratrice $m$.","ok":true,"s":"Sì: infatti $U = mgr$, e $m$ compare esplicitamente nella formula."},
 {"t":"Il potenziale gravitazionale si misura in joule (J).","ok":false,"s":"No: si misura in J/kg, perché è un'energia potenziale divisa per una massa."},
 {"t":"Il lavoro necessario per sollevare un oggetto di massa $m$ per un tratto $r$, vicino alla superficie terrestre, vale $mgr$.","ok":true,"s":"Sì, a patto che $r$ sia piccolo rispetto al raggio terrestre, così che $g$ sia costante."},
-{"t":"Il potenziale gravitazionale $V$ dipende dalla massa esploratrice $m$.","ok":false,"s":"No: proprio come il campo $\\vec g$, il potenziale $V = U/m$ non dipende da $m$, ma solo dalla massa che genera il campo e dalla distanza."}
+{"t":"Il potenziale gravitazionale $V$ dipende dalla massa esploratrice $m$.","ok":false,"s":"No: proprio come il campo $\\vec g$, il potenziale $V = U/m$ non dipende da $m$, ma solo dalla massa che genera il campo e dalla distanza."},
+{"t":"Il potenziale gravitazionale è sempre negativo, qualunque sia la distanza $r$ (finita).","ok":true,"s":"Sì: $V=-GM/r$ è negativo per ogni $r$ finito, e tende a zero solo per $r\\to\\infty$."},
+{"t":"A parità di distanza, l'energia potenziale gravitazionale fra due masse più pesanti è, in valore assoluto, maggiore di quella fra due masse più leggere.","ok":true,"s":"Sì: $|U|=GMm/r$ è direttamente proporzionale al prodotto delle masse."},
+{"t":"Il potenziale gravitazionale $V$ e il campo gravitazionale $\\vec g$ dipendono nello stesso modo dalla distanza $r$.","ok":false,"s":"No: $\\vec g$ dipende da $1/r^2$, mentre $V$ dipende da $1/r$ — proprio come forza ed energia potenziale."}
 ]{% endcapture %}
 {% include quiz.html domande=_qenergia
    label_si="Una grandezza che, come U, dipende dalla massa esploratrice"
@@ -2347,11 +2425,23 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 <div style="clear:both"></div>
 </div>
 </div>
+
+<div class="iex-q" id="iexUVrow2" style="display:none">
+<p class="iex-qt">Se raddoppiassi la distanza $r$, come cambierebbe, in valore assoluto, l'energia potenziale gravitazionale $U$?</p>
+<div class="iex-choices" id="iexUVchoices2">
+<button class="iex-choice-btn" data-v="a">Raddoppierebbe</button>
+<button class="iex-choice-btn" data-v="b">Diventerebbe un quarto</button>
+<button class="iex-choice-btn" data-v="c">Dimezzerebbe</button>
+<button class="iex-choice-btn" data-v="d">Resterebbe invariata</button>
+</div>
+<div class="iex-fb" id="iexUVfb2"></div>
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=2, cur=0, ok=[false,false];
+  var N=3, cur=0, ok=[false,false,false];
   function updateDots(){
     var dots=document.querySelectorAll('#iexUVdots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -2425,6 +2515,32 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 
   window.iexUVcheck0=function(){ checkStage(0, -1.6008e-7, 'J', 'iexUVsol0'); };
   window.iexUVcheck1=function(){ checkStage(1, -1.334e-9, 'J/kg', 'iexUVsol1'); };
+
+  (function initChoices2(){
+    var btns = document.querySelectorAll('#iexUVchoices2 .iex-choice-btn');
+    var fb = document.getElementById('iexUVfb2');
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === 'c';
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = 'iex-choice-btn correct';
+          ok[2] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! A differenza della forza (che dipende da $1/r^2$), l\'energia potenziale $U=-GMm/r$ dipende da $1/r$: raddoppiando $r$, $|U|$ dimezza.';
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = 'iex-choice-btn wrong';
+          var correctBtn = document.querySelector('#iexUVchoices2 .iex-choice-btn[data-v="c"]');
+          correctBtn.className = 'iex-choice-btn correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = 'Non è corretto: $U=-GMm/r$ dipende da $1/r$ (non da $1/r^2$, come invece la forza): raddoppiando $r$, $|U|$ dimezza.';
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  })();
 })();
 </script>
 
@@ -2478,6 +2594,21 @@ Quando il campo è generato da più masse, come nel sistema Terra-Luna, le super
 - **Proprietà fondamentale:** sono sempre perpendicolari alle linee di campo.
 {% include box-end.html %}
 
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qcampo %}[
+{"t":"Le linee di campo gravitazionale sono sempre uscenti dalla massa che le genera.","ok":false,"s":"No: sono sempre entranti, perché la forza gravitazionale è attrattiva."},
+{"t":"Più le linee di campo sono fitte in un punto, più il campo è intenso in quel punto.","ok":true,"s":"Sì: la concentrazione delle linee di campo misura proprio l'intensità del campo."},
+{"t":"Le superfici equipotenziali sono sempre perpendicolari alle linee di campo.","ok":true,"s":"Sì, in ogni punto: spostandosi lungo una superficie equipotenziale non si compie lavoro."},
+{"t":"Se il campo è generato da due masse (come nel sistema Terra-Luna), la traiettoria di caduta di una massa esploratrice è sempre una retta.","ok":false,"s":"No: si incurva, perché in ogni punto risente dell'attrazione di entrambe le masse."},
+{"t":"Per una singola massa sferica, le superfici equipotenziali sono piani paralleli fra loro.","ok":false,"s":"No: sono sfere concentriche alla massa, non piani."},
+{"t":"Il campo gravitazionale generato da più masse in uno stesso punto si ottiene sommando vettorialmente i singoli campi.","ok":true,"s":"Sì, per il principio di sovrapposizione degli effetti, con la regola del parallelogramma."}
+]{% endcapture %}
+{% include quiz.html domande=_qcampo
+   label_si="Un'affermazione vera sulle linee di campo o sulle superfici equipotenziali"
+   label_no="Un'affermazione falsa sulle linee di campo o sulle superfici equipotenziali"
+   id="q-campo" %}
+{% include box-end.html %}
+
 ## Moto di una massa in un campo gravitazionale
 
 Quando una massa $m$ si muove in un campo gravitazionale — ad esempio cadendo verso la massa $M$ che genera il campo, oppure allontanandosene — la sua energia meccanica totale, cioè la somma di energia cinetica ed energia potenziale, si conserva:
@@ -2499,7 +2630,57 @@ Questo ci dice come cambia la velocità della massa $m$ durante il moto:
 - Allontanandosi: $U$ aumenta, $K$ diminuisce → la massa rallenta.
 {% include box-end.html %}
 
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qmoto %}[
+{"t":"Durante il moto in un campo gravitazionale, l'energia cinetica $K$ si conserva da sola.","ok":false,"s":"No: a conservarsi è l'energia meccanica totale $E=K+U$, non $K$ da sola, che infatti cambia continuamente."},
+{"t":"Se una massa si avvicina a $M$, la sua energia cinetica aumenta.","ok":true,"s":"Sì: $U$ diminuisce e, per mantenere $E$ costante, $K$ deve aumentare."},
+{"t":"Se una massa si allontana da $M$, la sua energia potenziale diminuisce.","ok":false,"s":"No: allontanandosi, $U$ aumenta (si avvicina a zero)."},
+{"t":"L'energia meccanica totale $E=K+U$ può cambiare durante il moto, se l'unica forza in gioco è quella gravitazionale.","ok":false,"s":"No: in questo caso $E$ resta sempre costante, proprio perché la forza gravitazionale è una forza centrale."},
+{"t":"Una massa che si allontana dalla massa che genera il campo rallenta.","ok":true,"s":"Sì: l'energia potenziale aumenta, quindi quella cinetica deve diminuire."},
+{"t":"La conservazione dell'energia meccanica vale per la forza gravitazionale perché è una forza centrale.","ok":true,"s":"Sì: è proprio la proprietà, comune a tutte le forze centrali, che permette di definire un'energia potenziale."}
+]{% endcapture %}
+{% include quiz.html domande=_qmoto
+   label_si="Un'affermazione vera sul moto in un campo gravitazionale"
+   label_no="Un'affermazione falsa sul moto in un campo gravitazionale"
+   id="q-moto" %}
+{% include box-end.html %}
+
 # Esercizi di riepilogo
+
+{% include ex.html diff=1 %}
+La forza gravitazionale agisce fra **qualsiasi** coppia di oggetti dotati di massa, quindi anche fra te e la sedia su cui sei seduto in questo momento. Perché allora non la senti mai, nella vita di tutti i giorni?
+{% include ex-sol.html %}
+La forza gravitazionale $F = G\dfrac{m_1 m_2}{r^2}$ dipende dal prodotto delle due masse, moltiplicato per la costante $G \approx 6{,}67\times10^{-11}\ \text{N}\cdot\text m^2/\text{kg}^2$: un numero estremamente piccolo. Gli oggetti che maneggiamo ogni giorno (sedie, libri, persone) hanno masse dell'ordine di pochi chilogrammi o poche decine di chilogrammi: il prodotto $m_1 m_2$ resta comunque piccolo, e moltiplicato per un $G$ così minuscolo dà una forza del tutto trascurabile. Solo quando almeno una delle due masse è enorme (un pianeta, una stella) la forza diventa abbastanza intensa da essere percepibile.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Elisa (massa $55\ \text{kg}$) e Marco (massa $70\ \text{kg}$) sono seduti sullo stesso divano, a mezzo metro di distanza l'uno dall'altra. Calcola l'intensità della forza gravitazionale con cui si attraggono. Esprimi il risultato in notazione scientifica.
+
+{% include sci.html prima="$F=$" coeff="1.03" exp="-6" s="$1{,}03\times10^{-6}\ \text N$" %}
+
+{% include ex-sol.html %}
+$$F = G\frac{m_1 m_2}{r^2} = 6{,}67\times10^{-11}\times\frac{55\times70}{0{,}5^2} \approx 1{,}03\times10^{-6}\ \text N.$$
+
+Una forza di poco più di un milionesimo di newton: totalmente impercettibile, esattamente come previsto nell'esercizio precedente.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+In breve: in cosa consisteva l'apparato usato da Cavendish, e cosa ha permesso di determinare per la prima volta?
+{% include ex-sol.html %}
+L'apparato era la **bilancia di torsione**: un'asta orizzontale sospesa al centro a un filo sottilissimo, con una piccola sfera di massa $m$ a un'estremità. Una sfera grande di massa $M$, posta vicino a essa, la attrae gravitazionalmente e fa ruotare leggermente l'asta, torcendo il filo. Misurando l'angolo di torsione (e quindi la forza) per masse e distanze note, Cavendish riuscì a determinare per la prima volta il valore della **costante di gravitazione universale $G$**.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Due amici, seduti agli estremi opposti di una stanza, si attraggono gravitazionalmente. Il primo ha una massa doppia rispetto al secondo. Confronta i moduli delle due forze che si scambiano: quella con cui il primo attrae il secondo, e quella con cui il secondo attrae il primo.
+{% include ex-sol.html %}
+Per il **terzo principio della dinamica**, le due forze hanno sempre **lo stesso modulo** (e verso opposto), indipendentemente da quanto siano diverse le due masse. Non fa quindi alcuna differenza che uno dei due amici sia più pesante dell'altro: si attraggono a vicenda con la stessa identica intensità.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Il campo gravitazionale generato da una massa $M$ in un punto dipende da $M$ e dalla distanza $r$. Da quale altra grandezza **non** dipende, anche se spesso la si utilizza proprio per misurarlo?
+{% include ex-sol.html %}
+Non dipende dalla <definizione>massa esploratrice</definizione> $m$: anche se per misurare $g$ introduciamo spesso una massa $m$ e calcoliamo $g=F/m$, il risultato non dipende da quale valore di $m$ abbiamo scelto (si semplifica), perché $F$ stessa è proporzionale a $m$.
+{% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
 Verifica che l'unità di misura del campo gravitazionale, il N/kg, coincide con quella di un'accelerazione. (Suggerimento: ricorda che $\text N = \text{kg}\cdot\text m/\text s^2$.)
@@ -2507,6 +2688,98 @@ Verifica che l'unità di misura del campo gravitazionale, il N/kg, coincide con 
 $$\frac{\text N}{\text{kg}} = \frac{\text{kg}\cdot\text m/\text s^2}{\text{kg}} = \frac{\text m}{\text s^2}.$$
 
 È proprio l'unità di misura di un'accelerazione: coerente con il fatto che $g$ **è** un'accelerazione (quella che subirebbe una massa esploratrice lasciata libera in quel punto del campo).
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Due punti $A$ e $B$ si trovano rispettivamente a distanza $r$ e $3r$ da una massa $M$. In quale dei due punti le linee di campo sono più fitte? In quale dei due il campo gravitazionale è più intenso?
+{% include ex-sol.html %}
+Le linee di campo sono più concentrate vicino alla massa: sono quindi più fitte in $A$ (più vicino a $M$). Poiché la concentrazione delle linee misura l'intensità del campo, anche il campo è più intenso in $A$ — coerentemente con $g=GM/r^2$, che è più grande per $r$ più piccolo.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Perché, muovendosi lungo una superficie equipotenziale, non si compie mai lavoro?
+{% include ex-sol.html %}
+Su una superficie equipotenziale il potenziale $V$ (e quindi l'energia potenziale $U$) non cambia, per definizione. Se l'energia potenziale non cambia, la forza gravitazionale non ha compiuto lavoro: le superfici equipotenziali sono infatti sempre perpendicolari alle linee di campo, e uno spostamento perpendicolare alla forza corrisponde sempre a lavoro nullo.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Perché l'energia potenziale gravitazionale $U$ fra due masse è sempre **negativa**, qualunque sia la loro distanza (finita)?
+{% include ex-sol.html %}
+Il segno negativo di $U=-G\dfrac{Mm}{r}$ indica che le due masse sono "legate" dalla reciproca attrazione: per separarle completamente (portarle a distanza infinita, dove $U=0$) bisognerebbe fornire energia dall'esterno. Finché restano a distanza finita, la loro energia potenziale resta sempre inferiore a quella corrispondente alla separazione totale, cioè resta negativa.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Se, in un secondo sistema di due masse, sia $m_1$ sia $m_2$ fossero il **doppio** rispetto a un primo sistema (a parità di distanza $r$), come cambierebbe, in valore assoluto, l'energia potenziale gravitazionale?
+{% include ex-sol.html %}
+$$|U| = G\frac{m_1 m_2}{r}$$
+
+è direttamente proporzionale al **prodotto** delle due masse. Raddoppiando entrambe, il prodotto diventa $2m_1\times2m_2 = 4\,m_1 m_2$: l'energia potenziale (in valore assoluto) **quadruplica**.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Durante la caduta libera di una sonda verso un pianeta, la sua energia cinetica aumenta. Che cosa succede, nello stesso tempo, alla sua energia potenziale e alla sua energia meccanica totale?
+{% include ex-sol.html %}
+L'energia potenziale **diminuisce** (diventa più negativa), esattamente della stessa quantità di cui aumenta l'energia cinetica: l'energia meccanica totale $E=K+U$ **resta costante**, perché la forza gravitazionale è una forza centrale, per cui l'energia si conserva.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Perché conviene usare il linguaggio dell'energia (scalari: energia potenziale $U$ e potenziale $V$) invece di quello delle forze (vettori: $\vec F$ e $\vec g$), quando sono coinvolte molte masse contemporaneamente?
+{% include ex-sol.html %}
+Perché sommare grandezze **scalari** (come $U$ o $V$) significa semplicemente sommare numeri con il loro segno, mentre sommare grandezze **vettoriali** (come $\vec F$ o $\vec g$) richiede la regola del parallelogramma, componente per componente — molto più laborioso quando le masse coinvolte sono tante. Il linguaggio dell'energia è quindi molto più comodo da maneggiare in questi casi, pur descrivendo esattamente la stessa fisica.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Completa il seguente riepilogo: per ciascuna delle quattro grandezze — forza gravitazionale $\vec F$, campo gravitazionale $\vec g$, energia potenziale gravitazionale $U$, potenziale gravitazionale $V$ — indica se è una grandezza vettoriale o scalare, e se dipende da $1/r$ oppure da $1/r^2$.
+{% include ex-sol.html %}
+| Grandezza | Natura | Dipendenza da $r$ |
+|---|:---:|:---:|
+| Forza $\vec F$ | vettore | $1/r^2$ |
+| Campo $\vec g$ | vettore | $1/r^2$ |
+| Energia potenziale $U$ | scalare | $1/r$ |
+| Potenziale $V$ | scalare | $1/r$ |
+
+Le due grandezze vettoriali (forza e campo) dipendono dal quadrato della distanza; le due grandezze scalari (energia potenziale e potenziale) dipendono dalla distanza stessa, e quindi diminuiscono più lentamente allontanandosi.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Nell'esperimento della bilancia di torsione, se dimezzassi la distanza $r$ fra le due sfere, come cambierebbe la forza misurata? (Usa quanto hai osservato nell'animazione della bilancia di Cavendish.)
+{% include ex-sol.html %}
+Poiché $F$ è inversamente proporzionale al **quadrato** della distanza, dimezzando $r$ la forza diventa
+
+$$F' = G\frac{Mm}{(r/2)^2} = G\frac{Mm}{r^2/4} = 4\,G\frac{Mm}{r^2} = 4F,$$
+
+cioè **quadrupla**: esattamente l'opposto di ciò che si osserva raddoppiando $r$ (dove la forza diventa un quarto).
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Se raddoppiassi **contemporaneamente** sia le due masse $m_1$ ed $m_2$, sia la distanza $r$ fra loro, di quanto cambierebbe l'intensità della forza gravitazionale?
+{% include ex-sol.html %}
+Sostituendo $2m_1$, $2m_2$ e $2r$ nella formula:
+
+$$F' = G\frac{(2m_1)(2m_2)}{(2r)^2} = G\frac{4\,m_1 m_2}{4\,r^2} = G\frac{m_1 m_2}{r^2} = F.$$
+
+Il fattore $4$ che compare al numeratore (dal prodotto delle masse raddoppiate) si semplifica esattamente con il fattore $4$ al denominatore (dalla distanza raddoppiata, elevata al quadrato): la forza **resta invariata**.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Giove ha una massa circa $318$ volte quella della Terra, ma orbita attorno al Sole a una distanza mediamente $5{,}2$ volte maggiore di quella Terra-Sole. Di quante volte l'attrazione gravitazionale che Giove esercita sul Sole è più intensa di quella esercitata dalla Terra sul Sole?
+{% include ex-sol.html %}
+La forza gravitazionale è $F = G\dfrac{Mm}{r^2}$: a parità di $G$ e della massa del Sole, il rapporto tra le due forze è
+
+$$\frac{F_{\text{Giove}}}{F_{\text{Terra}}} = \frac{M_{\text{Giove}}/r_{\text{Giove}}^2}{M_{\text{Terra}}/r_{\text{Terra}}^2} = \frac{M_{\text{Giove}}}{M_{\text{Terra}}} \cdot \left(\frac{r_{\text{Terra}}}{r_{\text{Giove}}}\right)^2 = \frac{318}{5{,}2^2} \approx \frac{318}{27} \approx 11{,}8.$$
+
+Nonostante Giove sia molto più lontano dal Sole, la sua massa enorme prevale: attira il Sole con una forza quasi $12$ volte più intensa di quella della Terra.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Su una massa $m$ agiscono contemporaneamente due forze gravitazionali fra loro **perpendicolari**, generate da due masse diverse: una di modulo $F_1 = 3\times10^{-8}\ \text N$, l'altra di modulo $F_2 = 4\times10^{-8}\ \text N$. Trova il modulo della forza totale su $m$. Esprimi il risultato in notazione scientifica.
+
+{% include sci.html prima="$F_{tot}=$" coeff="5" exp="-8" s="$5\times10^{-8}\ \text N$" %}
+
+{% include ex-sol.html %}
+Essendo le due forze perpendicolari, il modulo della loro somma vettoriale si trova con il teorema di Pitagora:
+
+$$F_{tot} = \sqrt{F_1^2 + F_2^2} = \sqrt{(3\times10^{-8})^2+(4\times10^{-8})^2} = \sqrt{9+16}\times10^{-8} = 5\times10^{-8}\ \text N.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -2641,12 +2914,110 @@ Su una massa $m$ agiscono contemporaneamente due forze gravitazionali, $\vec F_1
 </script>
 {% include ex-end.html %}
 
-{% include ex.html diff=3 %}
-Giove ha una massa circa $318$ volte quella della Terra, ma orbita attorno al Sole a una distanza mediamente $5{,}2$ volte maggiore di quella Terra-Sole. Di quante volte l'attrazione gravitazionale che Giove esercita sul Sole è più intensa di quella esercitata dalla Terra sul Sole?
+{% include ex.html diff=2 %}
+La cima del Monte Everest si trova a circa $8\,850\ \text m$ sul livello del mare. Spiega perché il valore di $g$ lassù è, con ottima approssimazione, lo stesso che al livello del mare, anche se le due altezze sono diverse.
 {% include ex-sol.html %}
-La forza gravitazionale è $F = G\dfrac{Mm}{r^2}$: a parità di $G$ e della massa del Sole, il rapporto tra le due forze è
+Il campo gravitazionale dipende dalla distanza $r$ **dal centro della Terra**, non dall'altitudine sul livello del mare in sé. Il raggio terrestre è $R_\oplus\approx6\,371\ \text{km} = 6\,371\,000\ \text m$: gli $8\,850\ \text m$ dell'Everest sono meno dello $0{,}15\%$ di questo valore. La distanza dal centro della Terra cambia quindi in modo del tutto trascurabile fra la vetta e il livello del mare, e con essa $g=GM_\oplus/r^2$ resta, con ottima approssimazione, costante.
+{% include ex-sol-end.html %}
 
-$$\frac{F_{\text{Giove}}}{F_{\text{Terra}}} = \frac{M_{\text{Giove}}/r_{\text{Giove}}^2}{M_{\text{Terra}}/r_{\text{Terra}}^2} = \frac{M_{\text{Giove}}}{M_{\text{Terra}}} \cdot \left(\frac{r_{\text{Terra}}}{r_{\text{Giove}}}\right)^2 = \frac{318}{5{,}2^2} \approx \frac{318}{27} \approx 11{,}8.$$
+{% include ex.html diff=2 %}
+A quale distanza dal centro della Terra il campo gravitazionale vale la **metà** di quello sulla superficie? (Raggio terrestre $R_\oplus \approx 6\,371\ \text{km}$.) Esprimi il risultato in metri, in notazione scientifica.
 
-Nonostante Giove sia molto più lontano dal Sole, la sua massa enorme prevale: attira il Sole con una forza quasi $12$ volte più intensa di quella della Terra.
+{% include sci.html prima="$r=$" coeff="9.01" exp="6" s="$9{,}01\times10^6\ \text m$" %}
+
+{% include ex-sol.html %}
+Vogliamo che $g(r) = \frac12 g(R_\oplus)$, cioè
+
+$$G\frac{M_\oplus}{r^2} = \frac12\, G\frac{M_\oplus}{R_\oplus^2} \quad\Longrightarrow\quad r^2 = 2R_\oplus^2 \quad\Longrightarrow\quad r = R_\oplus\sqrt 2 \approx 6\,371\,000\times1{,}414 \approx 9{,}01\times10^6\ \text m.$$
+
+Cioè a circa $9\,010\ \text{km}$ dal centro — circa $2\,640\ \text{km}$ sopra la superficie.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Il campo gravitazionale associa a ogni punto dello spazio un vettore. Usando questo fatto, spiega perché due linee di campo gravitazionale non possono mai incrociarsi in nessun punto dello spazio.
+{% include ex-sol.html %}
+Se due linee di campo si incrociassero in un punto $P$, in quel punto il campo dovrebbe avere **due direzioni diverse** contemporaneamente (una per ciascuna linea che passa per $P$). Ma il campo gravitazionale associa a ogni punto dello spazio **un solo** vettore, con una sola direzione e un solo verso: due linee non possono quindi mai incrociarsi.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un satellite di massa $500\ \text{kg}$ orbita a $400\ \text{km}$ di altitudine sopra la superficie terrestre (quindi a distanza $r = R_\oplus + 400\ \text{km}$ dal centro della Terra, con $R_\oplus \approx 6\,371\ \text{km}$ e $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$). Calcola la sua energia potenziale gravitazionale. Esprimi il risultato in notazione scientifica.
+
+{% include sci.html prima="$U=$" coeff="-2.94" exp="10" s="$-2{,}94\times10^{10}\ \text J$" %}
+
+{% include ex-sol.html %}
+$$r = 6\,371\,000 + 400\,000 = 6\,771\,000\ \text m,$$
+$$U = -G\frac{M_\oplus\, m}{r} = -6{,}67\times10^{-11}\times\frac{5{,}97\times10^{24}\times500}{6{,}771\times10^6} \approx -2{,}94\times10^{10}\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Calcola il potenziale gravitazionale generato dalla Terra sulla propria superficie ($R_\oplus \approx 6\,371\ \text{km}$, $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$). Esprimi il risultato in notazione scientifica.
+
+{% include sci.html prima="$V=$" coeff="-6.25" exp="7" s="$-6{,}25\times10^7\ \text J/\text{kg}$" %}
+
+{% include ex-sol.html %}
+$$V = -G\frac{M_\oplus}{R_\oplus} = -6{,}67\times10^{-11}\times\frac{5{,}97\times10^{24}}{6{,}371\times10^6} \approx -6{,}25\times10^7\ \text J/\text{kg}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Quanta energia bisogna fornire per allontanare due sfere di massa $1\,000\ \text{kg}$ ciascuna dalla distanza di $10\ \text m$ alla distanza di $20\ \text m$? Esprimi il risultato in notazione scientifica.
+
+{% include sci.html prima="$\Delta U=$" coeff="3.34" exp="-6" s="$3{,}34\times10^{-6}\ \text J$" %}
+
+{% include ex-sol.html %}
+$$\Delta U = U(2r)-U(r) = -G\frac{m_1 m_2}{2r}-\left(-G\frac{m_1 m_2}{r}\right) = G\frac{m_1 m_2}{2r} = 6{,}67\times10^{-11}\times\frac{1\,000\times1\,000}{2\times10} \approx 3{,}34\times10^{-6}\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Il Sole genera un potenziale gravitazionale sia in corrispondenza della Terra, a distanza $r_{\text T}$ da esso, sia in corrispondenza di Giove, a distanza $r_{\text G} = 5{,}2\, r_{\text T}$. Di quante volte il potenziale gravitazionale (in valore assoluto) generato dal Sole è più grande in corrispondenza della Terra rispetto a quanto lo è in corrispondenza di Giove?
+{% include ex-sol.html %}
+$$\frac{|V_{\text T}|}{|V_{\text G}|} = \frac{G M_{\odot}/r_{\text T}}{G M_{\odot}/r_{\text G}} = \frac{r_{\text G}}{r_{\text T}} = 5{,}2.$$
+
+Il potenziale (in valore assoluto) è quindi $5{,}2$ volte più grande in corrispondenza della Terra. A differenza dell'analogo esercizio sulla forza fra Giove e la Terra (dove contava anche la massa di Giove, ed era in gioco il quadrato della distanza), qui non serve nemmeno conoscere le masse dei due pianeti: essendo il potenziale inversamente proporzionale a $r$ (e non a $r^2$), il rapporto dipende **solo** dal rapporto delle distanze.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Due punti si trovano entrambi a distanza $r$ dal centro di una massa sferica $M$, ma in direzioni diverse rispetto a essa. Confronta, nei due punti: il potenziale gravitazionale $V$, e il vettore campo gravitazionale $\vec g$.
+{% include ex-sol.html %}
+Il potenziale $V=-GM/r$ dipende **solo** dalla distanza $r$: essendo la stessa nei due punti, il potenziale è **identico** (i due punti si trovano infatti sulla stessa superficie equipotenziale, una sfera di raggio $r$).  
+Il vettore campo $\vec g$, invece, ha lo stesso **modulo** nei due punti (dipende anch'esso solo da $r$), ma **direzione diversa**: punta sempre verso il centro di $M$, quindi in due punti diversi della stessa sfera punta in due direzioni diverse. Questo è un buon esempio della differenza fra una grandezza scalare ($V$) e una vettoriale ($\vec g$).
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Quanta energia serve per allontanare due masse dalla distanza $r$ alla distanza $2r$? E quanta ne serve per allontanarle da $r$ fino all'infinito? Quale delle due richiede più energia, e di quanto?
+{% include ex-sol.html %}
+L'energia richiesta è la variazione di energia potenziale, $\Delta U = U_{\text{finale}} - U_{\text{iniziale}}$.
+
+**Da $r$ a $2r$:**
+$$\Delta U_1 = U(2r) - U(r) = -G\frac{Mm}{2r} - \left(-G\frac{Mm}{r}\right) = G\frac{Mm}{r} - G\frac{Mm}{2r} = G\frac{Mm}{2r}.$$
+
+**Da $r$ all'infinito** (dove $U(\infty)=0$):
+$$\Delta U_2 = U(\infty) - U(r) = 0 - \left(-G\frac{Mm}{r}\right) = G\frac{Mm}{r}.$$
+
+Confrontando, $\Delta U_2 = 2\,\Delta U_1$: separare completamente le due masse richiede **il doppio** dell'energia necessaria per portarle semplicemente a distanza doppia. Detto altrimenti: **metà** dell'energia totale necessaria per separarle del tutto è già sufficiente per raddoppiare la loro distanza iniziale.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Un meteorite, inizialmente fermo, cade verso la Terra da un'altitudine di $2\,000\ \text{km}$ sopra la superficie. Trascurando l'attrito con l'atmosfera, usa la conservazione dell'energia meccanica per trovare con quale velocità arriva al suolo. ($R_\oplus \approx 6\,371\ \text{km}$, $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$.) Esprimi il risultato in notazione scientifica.
+
+{% include sci.html prima="$v=$" coeff="5.47" exp="3" s="$5{,}47\times10^3\ \text{m/s}$" %}
+
+{% include ex-sol.html %}
+Le distanze dal centro della Terra sono $r_1 = R_\oplus + 2\,000\,000 = 8\,371\,000\ \text m$ (partenza) e $r_2 = R_\oplus = 6\,371\,000\ \text m$ (arrivo al suolo). La conservazione dell'energia meccanica $E=K+U=\text{costante}$, con velocità iniziale nulla, dà
+
+$$\frac12 m v_1^2 - G\frac{M_\oplus m}{r_1} = \frac12 m v_2^2 - G\frac{M_\oplus m}{r_2} \quad\Longrightarrow\quad \frac12 v_2^2 = GM_\oplus\left(\frac1{r_2}-\frac1{r_1}\right),$$
+
+da cui
+
+$$v_2 = \sqrt{2GM_\oplus\left(\frac1{r_2}-\frac1{r_1}\right)} \approx 5{,}47\times10^3\ \text{m/s},$$
+
+cioè quasi $20\,000\ \text{km/h}$: gli impatti dei meteoriti sono violentissimi anche senza alcuna spinta propria, solo per effetto della caduta gravitazionale.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Una sonda spaziale viene lanciata dalla Terra con una certa energia cinetica iniziale, allontanandosi radialmente. Usando $E = K + U = \text{costante}$, e ricordando che l'energia cinetica $K$ non può mai essere negativa, spiega perché: se l'energia meccanica totale $E$ della sonda è negativa, essa non riuscirà mai ad allontanarsi a distanza infinita (prima o poi rallenterà, si fermerà e ricadrà indietro); mentre se $E \geq 0$, la sonda potrà allontanarsi indefinitamente.
+{% include ex-sol.html %}
+Allontanandosi, $r\to\infty$ e quindi $U=-GMm/r \to 0$. Poiché $E=K+U$ resta costante durante tutto il moto, quando $r\to\infty$ si ha $K \to E$.
+
+- Se $E<0$: mano a mano che $r$ aumenta, $U$ (negativa) si avvicina a $0$ dal basso, quindi $K=E-U$ deve **diminuire** per mantenere $E$ costante — e prima che $U$ raggiunga $0$, $K$ si annullerebbe (diventando negativa, il che è impossibile). La sonda deve quindi fermarsi a una distanza finita, dove $K=0$, per poi ricadere.
+- Se $E\geq0$: anche quando $r\to\infty$ e $U\to0$, resta $K=E-U\geq0$: la sonda può continuare ad allontanarsi indefinitamente, arrivando all'infinito con energia cinetica $K=E\geq0$ (cioè, se $E=0$, arrivandoci "appena", con velocità che tende a zero).
 {% include ex-sol-end.html %}
