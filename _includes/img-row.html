@@ -1,0 +1,26 @@
+{% comment %}
+Riga di immagini/gif della stessa dimensione, affiancate (responsive: vanno a
+capo su schermi stretti). A differenza di figura.html, non hanno una
+didascalia numerata: usale per un confronto visivo rapido, non per una vera
+e propria Figura citata nel testo.
+
+Parametri:
+  immagini  — percorsi delle immagini, dalla root del sito, separati da "|" (obbligatorio)
+  alt       — testo alternativo per ciascuna, separati da "|" (opzionale)
+  larghezza — larghezza CSS di ciascun riquadro, es. "170px" (opzionale, default "170px")
+  altezza   — altezza CSS di ciascun riquadro (opzionale, default = larghezza)
+
+Esempio:
+  {% include img-row.html
+     immagini="/corsi/gif/a.webp|/corsi/gif/b.webp|/corsi/gif/c.webp"
+     alt="Descrizione A|Descrizione B|Descrizione C" larghezza="170px" %}
+{% endcomment %}
+{% assign _imgs = include.immagini | split: "|" %}
+{% assign _alts = include.alt | default: "" | split: "|" %}
+{% assign _w = include.larghezza | default: "170px" %}
+{% assign _h = include.altezza | default: _w %}
+<div class="img-row">
+{% for src in _imgs %}
+<img src="{{ src | relative_url }}" alt="{{ _alts[forloop.index0] | default: '' }}" style="width:{{ _w }}; height:{{ _h }};" loading="lazy">
+{% endfor %}
+</div>

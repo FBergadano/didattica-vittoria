@@ -1786,6 +1786,45 @@ cit em, cit i { font-style: normal; }
   @media (max-width: 560px) { grid-template-columns: 1fr; }
 }
 
+// Riga di immagini/gif della stessa dimensione, senza didascalia numerata
+// (vedi img-row.html): quante ce ne stanno per riga, il resto va a capo.
+.img-row {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+  gap: .8rem; margin: 1.5rem auto;
+}
+.img-row img {
+  object-fit: cover; border-radius: 8px; border: 1px solid $border;
+  box-shadow: 0 4px 16px rgba(0,0,0,.08); display: block;
+}
+
+// ── Staffetta storica: due ritratti collegati da una freccia ────────────
+.staffetta {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1rem; margin: 1.8rem auto; max-width: 520px; flex-wrap: wrap;
+}
+.staffetta-persona { flex: 0 0 auto; text-align: center; width: 190px; }
+.staffetta-persona img {
+  width: 165px; height: 165px; object-fit: cover; border-radius: 50%;
+  border: 3px solid var(--accent, #{$teal});
+  box-shadow: 0 3px 12px rgba(0,0,0,.15);
+  display: block; margin: 0 auto;
+}
+.staffetta-nome { margin: .4rem 0 .05rem; font-weight: 700; font-size: .92rem; color: $text-primary; }
+.staffetta-ruolo { margin: 0; font-size: .78rem; color: $text-secondary; line-height: 1.15; }
+.staffetta-freccia {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  flex: 1 1 70px; min-width: 60px;
+}
+.staffetta-label {
+  font-size: .74rem; font-style: italic; color: var(--accent, #{$teal});
+  white-space: nowrap; margin-bottom: .1rem;
+}
+.staffetta-arrow { font-size: 1.9rem; line-height: 1; color: var(--accent, #{$teal}); }
+@media (max-width: 480px) {
+  .staffetta { flex-direction: column; gap: .3rem; }
+  .staffetta-arrow { display: inline-block; transform: rotate(90deg); margin: .2rem 0; }
+}
+
 // ── Esercizio: risposta in notazione scientifica ────────────────────────
 .sciex-widget {
   background: #fff; border: 1px solid $border; border-radius: 10px;
