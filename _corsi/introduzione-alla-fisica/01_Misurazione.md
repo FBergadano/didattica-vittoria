@@ -2332,11 +2332,9 @@ Ci sarà in generale molto utile convertire tutti i multipli dei secondi (minuti
 ]{% endcapture %}
 {% include iex-num.html id="t8" domande=_d8 testo="Esercizio 8 — Secondi in un giorno e in un anno" hint="Indizio: 1 giorno = 24 h, 1 h = 60 min, 1 min = 60 s. Per l'anno considera 365,25 giorni medi (anni bisestili ogni 4 anni)." %}
 
-{% capture _d9 %}[
-  {"p":"Quanti secondi ci sono in un <strong>secolo</strong>? (Scrivi in notazione scientifica, es. <code>3.16e9</code>)","a":3.15576e9,"t":0.005},
-  {"p":"Quanti secondi ci sono in un <strong>millennio</strong>?","a":3.15576e10,"t":0.005}
-]{% endcapture %}
-{% include iex-num.html id="t9" domande=_d9 testo="Esercizio 9 — Secondi in un secolo e in un millennio" %}
+<p class="iex-lbl">Esercizio 9 — Secondi in un secolo e in un millennio</p>
+{% include sci.html prima="Un secolo =" coeff="3.15576,3.16,3.2" exp="9" s="3,15576 × 10⁹ s" %}
+{% include sci.html prima="Un millennio =" coeff="3.15576,3.16,3.2" exp="10" s="3,15576 × 10¹⁰ s" %}
 
 <div class="calc-flow">
 {% include calc-margin.html id="calc1" %}

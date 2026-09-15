@@ -1,0 +1,34 @@
+{% comment %}
+Piccola "vignetta": due ritratti collegati da una freccia, per mostrare il
+passaggio di testimone fra due figure storiche — tipicamente chi sviluppa
+una teoria e chi la dimostra sperimentalmente, magari a distanza di tempo.
+
+Parametri:
+  id                  — ID univoco (opzionale, default "staffetta")
+  img1, nome1, ruolo1 — immagine, nome e ruolo/didascalia sotto il primo ritratto
+  img2, nome2, ruolo2 — idem per il secondo
+  intervallo          — etichetta sopra la freccia, es. "Cent'anni dopo"
+
+Esempio:
+  {% include staffetta-storica.html
+     img1="/corsi/immagini/isaac_newton_ritratto.jpg" nome1="Newton" ruolo1="Sviluppa la teoria"
+     img2="/corsi/immagini/henry_cavendish_ritratto.jpg" nome2="Cavendish" ruolo2="Prova sperimentalmente"
+     intervallo="Cent'anni dopo" %}
+{% endcomment %}
+{% assign _sid = include.id | default: "staffetta" %}
+<div class="staffetta" id="{{ _sid }}">
+  <div class="staffetta-persona">
+    <img src="{{ include.img1 | relative_url }}" alt="{{ include.nome1 }}">
+    <p class="staffetta-nome">{{ include.nome1 }}</p>
+    <p class="staffetta-ruolo">{{ include.ruolo1 }}</p>
+  </div>
+  <div class="staffetta-freccia">
+    <span class="staffetta-label">{{ include.intervallo }}</span>
+    <span class="staffetta-arrow" aria-hidden="true">&#10230;</span>
+  </div>
+  <div class="staffetta-persona">
+    <img src="{{ include.img2 | relative_url }}" alt="{{ include.nome2 }}">
+    <p class="staffetta-nome">{{ include.nome2 }}</p>
+    <p class="staffetta-ruolo">{{ include.ruolo2 }}</p>
+  </div>
+</div>

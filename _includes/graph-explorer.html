@@ -20,10 +20,12 @@ Parametri:
                     valore realmente usato nella formula è valore_comodo × scala (es. 6×10²⁴).
                     Usalo per evitare numeri in notazione scientifica sui controlli, mantenendo
                     però il calcolo (e i "passaggi numerici") sul valore fisico vero.
-  min / max       — estremi di ciascuna variabile, nello stesso "numero comodo" dello slider
-                    (cioè PRIMA di moltiplicare per scala), separati da "|" (opzionali: se
-                    omessi, ogni variabile va di default da 0,01 a 20). Digitando un valore
-                    fuori da [min, max] il widget lo rifiuta, con un messaggio d'errore.
+  min / max       — estremi di ciascuna variabile per lo SLIDER e per il dominio della curva
+                    completa, nello stesso "numero comodo" dello slider (cioè PRIMA di
+                    moltiplicare per scala), separati da "|" (opzionali: se omessi, ogni
+                    variabile va di default da 0,01 a 20). Non limitano il valore digitato a
+                    mano nel campo di calcolo: lì lo studente può inserire qualunque numero,
+                    e gli assi si adattano di conseguenza.
   default         — valore iniziale dello slider per ciascuna variabile (idem), separati da "|"
   step            — incremento dello slider per ciascuna variabile (opzionale, default (max-min)/200)
   costanti        — nomi delle costanti fisiche fisse nella formula, separati da "|" (opzionale)
@@ -43,6 +45,9 @@ Parametri:
   y_unita         — unità/etichetta della variabile dipendente (con l'eventuale moltiplicatore)
   y_scala         — moltiplicatore per la variabile dipendente (opzionale, default 1): l'asse
                     verticale mostra valore_vero / y_scala.
+  solo_positivi   — "true" se tutte le variabili rappresentano grandezze che non possono essere
+                    negative (masse, distanze, ecc.): il campo di calcolo rifiuta lo zero e i
+                    valori negativi (opzionale, default: non rifiuta nulla).
 
 Esempio:
   {% include graph-explorer.html id="ge-campo"
@@ -153,6 +158,7 @@ Esempio:
   var YLABEL={{ include.y_etichetta | default: include.y_simbolo | jsonify }};
   var YUNIT={{ include.y_unita | jsonify }};
   var YSCALE={{ include.y_scala | default: 1 }};
+  var SOLO_POSITIVI={% if include.solo_positivi %}true{% else %}false{% endif %};
 
   var fn=new Function(VARS.concat(CONSTS).join(','), 'return ('+FORMULA+');');
   function evalAtReal(realVals){
@@ -297,6 +303,19 @@ Esempio:
     }).join(' &nbsp;·&nbsp; ');
   }
 
+  // Accetta solo cifre, un separatore decimale (virgola o punto) e un
+  // eventuale segno meno iniziale: niente "e"/"E" (notazione scientifica),
+  // niente altre lettere. Il filtro agisce ad ogni tasto premuto, quindi un
+  // carattere non ammesso sparisce subito invece di essere accettato e poi
+  // rifiutato al calcolo.
+  xinputEl.addEventListener('input', function(){
+    var v=xinputEl.value;
+    var clean=v.replace(/[^0-9.,-]/g,'').replace(/(?!^)-/g,'');
+    var seenSep=false;
+    clean=clean.replace(/[.,]/g, function(ch){ if(seenSep) return ''; seenSep=true; return ch; });
+    if(clean!==v) xinputEl.value=clean;
+  });
+
   calcBtn.addEventListener('click', function(){
     var xi=idx(xVar);
     var raw=xinputEl.value.trim().replace(',','.');
@@ -307,8 +326,8 @@ Esempio:
       typeset(stepsEl);
       return;
     }
-    if(xval<MINS[xi]||xval>MAXS[xi]){
-      stepsEl.innerHTML='<div class="gexp-err">Il valore deve essere compreso fra '+fmtHtml(MINS[xi])+' e '+fmtHtml(MAXS[xi])+' '+UNITS[xi]+'.</div>';
+    if(SOLO_POSITIVI && xval<=0){
+      stepsEl.innerHTML='<div class="gexp-err">$'+LABELS[xi]+'$ deve essere un valore positivo, maggiore di zero.</div>';
       typeset(stepsEl);
       return;
     }
@@ -364,14 +383,31 @@ Esempio:
     }
     return pts;
   }
-  function computeAxes(curve){
-    var xi=idx(xVar);
-    axisX=niceAxis(MINS[xi], MAXS[xi], 6);
-    var ys=curve.map(function(p){return p.y;}).concat(points.map(function(p){return p.y;}));
-    var lo=Math.min.apply(null,ys), hi=Math.max.apply(null,ys);
+  // Prima che lo studente inserisca un punto non c'è ancora nulla da
+  // inquadrare: si mostrano numeri piccoli (1, 2, 3, 4, 5), non l'intero
+  // dominio dello slider (che per certe grandezze fisiche può essere enorme
+  // o minuscolo). Appena esiste almeno un punto (o la curva è visibile), la
+  // scala si ridimensiona SOLO su quei valori — anche se sono molto più
+  // piccoli del range di default (es. una forza gravitazionale ~1e-9 N):
+  // altrimenti un punto reale ma minuscolo resterebbe schiacciato a "zero"
+  // su una scala 0–5 che non gli appartiene più. Un piccolo margine oltre
+  // l'estremo più lontano da zero evita che il punto tocchi il bordo.
+  var AXIS_DEFAULT_LO=0, AXIS_DEFAULT_HI=5;
+  function axisRangeFor(pointVals, curveVals, maxTicks){
+    var vs=pointVals.slice();
+    if(curveVisible) vs=vs.concat(curveVals);
+    if(!vs.length) return niceAxis(AXIS_DEFAULT_LO, AXIS_DEFAULT_HI, maxTicks);
+    var lo=Math.min.apply(null,vs), hi=Math.max.apply(null,vs);
     if(lo>0) lo=0; // le grandezze fisiche mostrate partono quasi sempre da 0
     if(hi<0) hi=0;
-    axisY=niceAxis(lo, hi, 5);
+    var span=hi-lo;
+    hi+=span*0.08;
+    if(lo<0) lo-=span*0.08;
+    return niceAxis(lo, hi, maxTicks);
+  }
+  function computeAxes(curve){
+    axisX=axisRangeFor(points.map(function(p){return p.x;}), curve.map(function(p){return p.x;}), 6);
+    axisY=axisRangeFor(points.map(function(p){return p.y;}), curve.map(function(p){return p.y;}), 5);
   }
   function mapX(x){ return PAD_L+(x-axisX.min)/(axisX.max-axisX.min)*PLOT_W; }
   function mapY(y){ return PAD_T+PLOT_H-(y-axisY.min)/(axisY.max-axisY.min)*PLOT_H; }
@@ -400,21 +436,35 @@ Esempio:
     var y0px = (axisY.min<=0 && axisY.max>=0) ? mapY(0) : PAD_T+PLOT_H;
     var x0px = (axisX.min<=0 && axisX.max>=0) ? mapX(0) : PAD_L;
 
+    // Etichette delle tacche via foreignObject + MathJax (come le etichette
+    // degli assi più sotto), non testo SVG puro: un <sup> HTML dentro un
+    // <text> SVG non è markup valido lì, quindi l'esponente di "×10ⁿ" non
+    // veniva disegnato. fmtLatex già gestisce la notazione scientifica.
+    function tickLabel(refX, refY, value, hAlign, vAlign){
+      var w=60, h=18;
+      var x = hAlign==='center' ? refX-w/2 : refX-w;
+      var y = vAlign==='center' ? refY-h/2 : refY;
+      var fo=svgEl('foreignObject',{x:x,y:y,width:w,height:h});
+      var div=document.createElement('div');
+      div.setAttribute('xmlns','http://www.w3.org/1999/xhtml');
+      div.style.cssText='font-size:11px;line-height:1;color:#334155;height:100%;display:flex;align-items:center;justify-content:'+(hAlign==='center'?'center':'flex-end')+';white-space:nowrap;';
+      div.innerHTML='$'+fmtLatex(value)+'$';
+      fo.appendChild(div);
+      svg.appendChild(fo);
+    }
     // tacche asse x (saltando quella a x=0, che coincide con l'incrocio)
     axisX.ticks.forEach(function(t){
       if(Math.abs(t)<1e-9) return;
       var px=mapX(t);
       svg.appendChild(svgEl('line',{x1:px,y1:y0px-5,x2:px,y2:y0px+5,stroke:'#1e293b','stroke-width':1.6}));
-      var lbl=svgEl('text',{x:px,y:y0px+18,'font-size':11,fill:'#334155','text-anchor':'middle'});
-      lbl.innerHTML=fmtHtml(t); svg.appendChild(lbl);
+      tickLabel(px, y0px+8, t, 'center', 'top');
     });
     // tacche asse y (saltando quella a y=0)
     axisY.ticks.forEach(function(t){
       if(Math.abs(t)<1e-9) return;
       var py=mapY(t);
       svg.appendChild(svgEl('line',{x1:x0px-5,y1:py,x2:x0px+5,y2:py,stroke:'#1e293b','stroke-width':1.6}));
-      var lbl=svgEl('text',{x:x0px-9,y:py+3.5,'font-size':11,fill:'#334155','text-anchor':'end'});
-      lbl.innerHTML=fmtHtml(t); svg.appendChild(lbl);
+      tickLabel(x0px-9, py, t, 'end', 'center');
     });
 
     // curva (sotto agli assi, sopra alle tacche va bene comunque: gli assi sono sottili)

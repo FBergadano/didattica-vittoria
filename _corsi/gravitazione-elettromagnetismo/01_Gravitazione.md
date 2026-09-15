@@ -30,6 +30,13 @@ La <definizione>gravità</definizione> è la forza più debole presente in Natur
 # La legge di Gravitazione Universale
 La teoria che vedremo in questo capitolo fu essenzialmente formulata nel 1687 dal pazzo più geniale della storia della Fisica: Newton. 
 Fu solo dopo più di un secolo, nel 1798, che Cavendish riuscì a dimostrare **sperimentialmente**, in un laboratorio, la legge trovata da Newton.  
+
+{% include staffetta-storica.html
+   img1="/corsi/immagini/isaac_newton_ritratto.jpg" nome1="Newton" ruolo1="Sviluppa la teoria"
+   img2="/corsi/immagini/henry_cavendish_ritratto.jpg" nome2="Cavendish" ruolo2="Prova sperimentalmente"
+   intervallo="Cent'anni dopo" %}
+
+
 Noi faremo il processo contrario, guarderemo prima l'esperimento di Cavendish e alla luce di quello interpreteremo la legge di Newton.
 
 {% include spoiler.html testo="Se sei curioso sulla follia di Newton, apri qui" %}
@@ -67,7 +74,12 @@ Cavendish costruì il seguente apparato sperimentale, la cosiddetta <definizione
    didascalia="La bilancia di torsione di Cavendish."
    larghezza="280px" %}
 
+{% include margin-note.html testo="Alcuni dettagli dell'esperimento" %}
+Cavendish conosceva (tramite misurazioni precedenti) la forza necessaria per ruotare il bilancere di un certo angolo. Quindi, misurando l'angolo di rotazione, fu capace di misurare l'intensità dell'attrazione tra le masse.
+
 Nella realtà la rotazione era così minuscola che Cavendish dovette leggerla con uno specchietto fissato al filo, che rifletteva un fascio di luce su una scala lontana; nella nostra animazione, per semplicità, la scala è mostrata direttamente attorno al bilancere.
+
+{% include margin-note-end.html %}
 
 Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
 
@@ -279,24 +291,29 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
   // oltre un certo angolo, altrimenti le sfere si toccherebbero: il vincolo è
   // sull'ANGOLO massimo raggiungibile (un fermo meccanico), non sulla
   // lunghezza dell'asta né sulla posizione di M, che restano quelle richieste.
-  // Il contatto vero e proprio avverrebbe a ~10,5°: un margine di soli 14°
-  // lascia un distacco troppo sottile per leggersi bene a schermo (e in
-  // proiezione 3D, con sfere di raggio diverso, può sembrare un contatto
-  // anche quando non lo è). Con 20° il distacco fra le superfici è di
-  // circa 25 mm — più del diametro della sfera piccola — chiaramente
-  // visibile per ogni combinazione di masse.
-  var THETA_SAFE_MARGIN = 20 * Math.PI / 180;
+  // Il contatto vero e proprio avverrebbe a ~10,5°. Un margine di 20° lascia
+  // sì ~25 mm di distacco reale fra le superfici, ma va giudicato DOPO la
+  // proiezione prospettica, non prima: la direzione bilancere→M è quasi
+  // allineata con la profondità della scena, quindi quei 25 mm vengono
+  // schiacciati a meno di 2 px a schermo — le sfere sembrano toccarsi anche
+  // se non si toccano. Con 30° il distacco reale sale a ~50 mm, che restano
+  // visibili (~15 px, verificati nella proiezione) anche dopo la
+  // compressione prospettica, per ogni combinazione di masse.
+  var THETA_SAFE_MARGIN = 30 * Math.PI / 180;
   var ANGLE_LIMIT = THETA_M - THETA_SAFE_MARGIN;
 
   // Partendo da 90° (il doppio di prima) e con un'oscillazione voluta doppia
   // rispetto a prima, la rigidità del filo va ricalibrata per ciascuna coppia
   // di masse: i valori sono scelti in modo che nessuna combinazione tocchi il
-  // fermo, restando comunque crescenti con la massa.
+  // fermo, restando comunque crescenti con la massa. Il valore per 40,4 era
+  // per errore appena sotto la soglia critica: senza un vero equilibrio
+  // stabile, il bilancere accelerava sempre verso M fino a sbattere contro
+  // il fermo meccanico (da qui la collisione visibile).
   var K_WIRE_TABLE = {
     '20,2': 4.02e-8,
     '40,2': 6.10e-8,
     '20,4': 6.10e-8,
-    '40,4': 1.13e-7
+    '40,4': 1.15e-7
   };
   var STEP = 2e6, CONV_EPS = 1e-5;
   function currentKWire() {
@@ -330,6 +347,12 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
   function rDist(angle) {
     return Math.sqrt(D_M * D_M + LR * LR - 2 * D_M * LR * Math.cos(angle - THETA_M));
   }
+  // Distanza di riferimento (posizione di partenza) per la forza mostrata nello
+  // scenario "masse". L'angolo di equilibrio dipende anch'esso dalla massa
+  // scelta: leggere la forza lì mescolerebbe l'effetto di M/m con quello di r,
+  // e raddoppiare una massa non raddoppierebbe la forza mostrata. Leggendola
+  // invece sempre alla stessa r, il valore è puramente proporzionale a M·m.
+  var R_REF = rDist(THETA_INITIAL);
   function angleFromR(r) {
     var cosVal = (D_M * D_M + LR * LR - r * r) / (2 * D_M * LR);
     cosVal = Math.max(-1, Math.min(1, cosVal));
@@ -351,7 +374,8 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
     return mant.toFixed(2) + ' × 10<sup>' + e + '</sup>';
   }
   function updateReadouts() {
-    fValEl.innerHTML = fmtSci(force());
+    var r = (scenario === 'mass') ? R_REF : rDist(state.angle);
+    fValEl.innerHTML = fmtSci(G * state.M * state.m / (r * r));
     if (scenario === 'r') rCurEl.textContent = (rDist(state.angle) * 100).toFixed(1).replace('.', ',');
   }
 
@@ -735,11 +759,11 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
 
 Verifica con l'animazione che:
 
-- nello scenario "Dipendenza dalle masse", premendo "Avvia" il bilancere ruota lentamente verso la sfera grande e si ferma in una posizione di equilibrio (o al più contro il fermo meccanico): aumentando la massa $M$ oppure la massa $m$, l'angolo finale raggiunto (e quindi l'intensità della forza) è più grande;
+- nello scenario "Dipendenza dalle masse", la forza mostrata si aggiorna subito quando scegli $M$ e $m$, misurata sempre alla stessa distanza: raddoppiando una delle due masse la forza raddoppia esattamente (confronta pure i valori mostrati per le diverse combinazioni). Premendo "Avvia" il bilancere ruota lentamente verso la sfera grande e si ferma in una posizione di equilibrio — è la stessa attrazione che stai misurando, resa visibile: più le masse sono grandi, più il bilancere ruota;
 - nello scenario "Dipendenza da r", i pulsanti spostano davvero il bilancere alla nuova distanza (indicata dalla linea tratteggiata $r$): raddoppiando $r$ l'intensità della forza non si dimezza, ma diventa un quarto; triplicando $r$ diventa un nono; quadruplicando $r$ diventa un sedicesimo — <u markdown="span">proprio quello che significa dire che $F$ è inversamente proporzionale al **quadrato** della distanza</u>, verificabile confrontando il valore di $F$ prima e dopo ogni cambio.
 
 {% include margin-note.html testo="Dall'esperimento alla formula di Newton" %}
-Cavendish dedusse così che il modulo della forza gravitazionale fra due corpi è **direttamente proporzionale al prodotto delle loro masse** e **inversamente proporzionale al quadrato della distanza**. Cioè, la forza gravitazionale tra due masse $m_1$ ed $m_2$ è descritta dalla seguente equazione
+Cavendish dedusse così che il modulo della forza gravitazionale fra due corpi è <u markdown="span">**direttamente proporzionale al prodotto delle loro masse** e **inversamente proporzionale al quadrato della distanza**</u>. Cioè, la forza gravitazionale tra due masse $m_1$ ed $m_2$ è descritta dalla seguente equazione
 
 {% include eq-annotated.html
    id="fga1"
@@ -1122,7 +1146,7 @@ Esplora tu stesso come cambia $F$ al variare di una fra $m_1$, $m_2$ e $r$.
    min="1e2|1e2|1" max="1e6|1e6|100" default="1e3|1e3|10"
    costanti="G" costanti_valori="6.67e-11"
    formula="G*m1*m2/(r*r)" formula_latex="G\dfrac{m_1 \cdot m_2}{r^2}"
-   y_simbolo="F" y_unita="N" %}
+   y_simbolo="F" y_unita="N" solo_positivi="true" %}
 
 <div class="iex-widget" id="invCarForza">
 <p class="iex-lbl">Isola le altre grandezze</p>
@@ -1355,24 +1379,31 @@ Chiaramente, da un punto di vista matematico, “togliere la $m$” come abbiamo
    id="fga1"
    formula="g = \dfrac{F}{m}"
    frammenti="g|F|m"
-   etichette="modulo del campo gravitazionale (N/kg)|modulo della forza gravitazionale tra $M$ ed $m$ (N)|massa che si trova nel campo ma che non genera il campo (kg)"
+   etichette="modulo del campo gravitazionale (N/kg)|modulo della forza gravitazionale tra la massa $M$ che genera il campo e la massa  $m$ che si trova nel campo (N)|massa che si trova nel campo ma che non genera il campo (kg)"
    posizioni="alto|alto|basso"
 %}
 
 {% include margin-note-end.html %}
 
-{% include box-imp.html testo="Il campo generato da una massa M" %}
-Il campo gravitazionale generato da una massa $M$, a distanza $r$ da essa, ha modulo
-$$g = G\,\dfrac{M}{r^2} = \dfrac{F}{m}.$$
-Il campo **non dipende** dalla massa esploratrice $m$: dipende solo da $M$ (che lo genera) e da $r$ (il punto in cui lo si misura).
-{% include box-end.html %}
 
 {% include margin-note.html testo="L'unità di misura del campo gravitazionale è il N/kg" %}
 Osserviamo quindi anche che <u markdown="span">l'unità di misura del campo gravitazionale corrisponde all'unità di misura di $F$ (il newton N) diviso l'unità della massa (kg), cioè corrisponde a N/kg.</u> 
 {% include margin-note-end.html %}
+
 {% include margin-note.html testo="Massa esploratrice"%}
 Inoltre, nonostante nella formula compaia la massa $m$, ricordiamo che il campo $g$ **non** dipende da essa (come visto prima, si semplifica con la $m$ contenuta in $F$). Spesso però ci capiterà di introdurre, all'interno di un certo campo generato da una massa $M$ una seconda massa $m$, di modo da misurare la forza di attrazione, da cui poi si ottiene il campo secondo la formula appena data. Pertanto, questa massa è chiamata <definizione>massa esploratrice</definizione> (nel senso che “esplora” il campo).
 {% include margin-note-end.html %}
+
+{% include box-imp.html testo="Il campo generato da una massa M" %}
+Il campo gravitazionale generato da una massa $M$, a distanza $r$ da essa, ha modulo
+
+$$g = G\,\dfrac{M}{r^2} = \dfrac{F}{m}.$$
+
+L'unità di misura del campo, pertanto, corrisponde a N/kg.  
+Inoltre, il campo **non dipende** dalla massa esploratrice $m$: dipende solo da $M$ (che lo genera) e da $r$ (il punto in cui lo si misura).  
+{% include box-end.html %}
+
+
 
 Esplora tu stesso come cambia $g$ al variare di $M$ o di $r$.
 
@@ -1381,7 +1412,7 @@ Esplora tu stesso come cambia $g$ al variare di $M$ o di $r$.
    min="1e23|6.371e6" max="2e25|2.5e7" default="5.97e24|6.371e6"
    costanti="G" costanti_valori="6.67e-11"
    formula="G*M/(r*r)" formula_latex="G\dfrac{M}{r^2}"
-   y_simbolo="g" y_unita="N/kg" %}
+   y_simbolo="g" y_unita="N/kg" solo_positivi="true" %}
 
 <div class="iex-widget" id="invCarCampo">
 <p class="iex-lbl">Isola le altre grandezze</p>
@@ -2203,7 +2234,7 @@ Esplora tu stesso come cambia $U$ al variare di $M$, di $m$ o di $r$.
    min="0.1|0.1|1" max="20|10|30" default="6|0.5|6.4"
    costanti="G" costanti_valori="6.67e-11"
    formula="-G*M*m/r" formula_latex="-G\dfrac{M \cdot m}{r}"
-   y_simbolo="U" y_unita="GJ" y_scala="1e9" %}
+   y_simbolo="U" y_unita="GJ" y_scala="1e9" solo_positivi="true" %}
 
 <div class="iex-widget" id="invCarEnergia">
 <p class="iex-lbl">Isola le altre grandezze</p>
@@ -2297,7 +2328,7 @@ Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
    min="0.1|1" max="20|30" default="6|6.4"
    costanti="G" costanti_valori="6.67e-11"
    formula="-G*M/r" formula_latex="-G\dfrac{M}{r}"
-   y_simbolo="V" y_unita="MJ/kg" y_scala="1e6" %}
+   y_simbolo="V" y_unita="MJ/kg" y_scala="1e6" solo_positivi="true" %}
 
 <div class="iex-widget" id="invCarPot">
 <p class="iex-lbl">Isola le altre grandezze</p>

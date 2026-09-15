@@ -1808,13 +1808,13 @@ In questa situazione, l'energia meccanica non fa che trasformarsi continuamente 
 
 
 {% include box-thm.html testo="Teorema di conservazione dell'energia meccanica" %}
-<u markdown="span">In un sistema **isolato**</u>, l'energia meccanica</u> si conserva, cioè <u markdown="span">resta **costante** nel tempo</u>. 
+<u markdown="span">In un sistema **isolato**, l'energia meccanica si conserva</u>, cioè <u markdown="span">resta **costante** nel tempo</u>. 
 
 $$
 E = K+U \quad \text{è costante.}
 $$
 
-Ovvero, indicando con il pedice $i$ la situazione iniziale e con $f$ quella finale, possiamo scrivere che pe run sistema isolato
+Ovvero, indicando con il pedice $i$ la situazione iniziale e con $f$ quella finale, possiamo scrivere che per un sistema isolato
 
 $$
 K_i+U_i = K_f+U_f.
@@ -2474,13 +2474,151 @@ In effetti, nel momento dell'urto, la palla comprime il pavimento, compiendo qui
 
 ## La Dissipazione dell'Energia: il Calore
 
-Il teorema appena enunciato vale solo **in assenza di attrito**. Nella realtà, però, quasi tutti i moti che osserviamo sono soggetti anche ad attriti o ad altre forze dissipative (come la resistenza dell'aria): in loro presenza, parte dell'energia meccanica non si conserva più, perché viene via via convertita in <definizione>calore</definizione>. È proprio questo che succede alla palla da bowling nell'animazione qui sopra, non appena tocca il pavimento.
+Sappiamo che <u>l'attrito dissipa dell'energia</u>, compiendo un lavoro **negativo** sul corpo. Ad esempio, un corpo che striscia su una superificie orizzontale soggetta ad attrito rallenta fino a fermarsi., perdendo perciò tutta l'energia cinetica che aveva. Dove va a finire questa energia?  
+L'energia non è scomparsa — non potrebbe, per il principio di conservazione dell'energia visto all'inizio del capitolo: si è convertita in <definizione>calore</definizione>.
 
-Consideriamo ora un corpo che striscia su una superficie in presenza di attrito, rallentando fino a fermarsi completamente. Inizialmente il corpo aveva una certa energia cinetica $K$, che ha perso del tutto fermandosi; restando però sempre alla stessa altezza, la sua energia potenziale $U$ non è cambiata. La sua energia meccanica $E=K+U$, dunque, è diminuita: non si è conservata. Dov'è finita l'energia mancante?
+Un esperimento semplice per visualizzare questo concetto è sfregare le proprie mani l'una contro l'altra: l'attrito dissipa l'energia cinetica delle mani e sentiamo che esse si riscaldano. La stessa cosa succede con la punta di un trapano che si riscalda, o con un fiammifero che si accende: in tutti questi casi il lavoro si converte prima in energia cinetica, che a sua volta viene dissipata sotto forma di calore dall'attrito.
 
-L'energia non è scomparsa — non potrebbe, per il principio di conservazione dell'energia visto all'inizio del capitolo: si è convertita in calore.
+{% include img-row.html
+   immagini="/corsi/gif/alcaraz-rubbing-hands.webp|/corsi/gif/drill-heating-up.webp|/corsi/gif/fiammifero.webp"
+   alt="Sfregamento delle mani che si riscaldano per attrito|Punta di un trapano che si riscalda per attrito|Un fiammifero che si accende per attrito"
+   larghezza="170px" %}
 
-Un esperimento semplice per visualizzare questo concetto è sfregare le proprie mani l'una contro l'altra: l'attrito dissipa l'energia cinetica delle mani e sentiamo che esse si riscaldano. La stessa cosa succede con la punta di un trapano che si riscalda, o con un pezzo di legno appuntito che sfrega su un altro pezzetto di legno per accendere un fuoco: in tutti questi casi il lavoro si converte prima in energia cinetica, che a sua volta viene dissipata sotto forma di calore dall'attrito.
+
+Utilizzando questo fatto, puoi spiegare anche un famoso esperimento che circola sul web: si può cuocere un pollo prendendolo a schiaffi?
+{% include spoiler.html testo="Mostra la soluzione" %}
+Sì. Infatti, ogni schiaffo corrisponde a una forza che provoca una compressione nel pollo, cioè uno spostamento. Se ci sono sia forza sia spostamento, allora c'è lavoro. Il lavoro non viene convertito in energia cinetica né potenziale. Cioè, viene dissipato subito (tramite delle vibrazioni nel pollo) che finiscono per riscaldare il pollo. Più sotto puoi trovare un esercizio che chiede di calcolare il numero di schiaffi necessario.
+{% include spoiler-end.html %}
+
+{% include box-imp.html testo="Il calore" %}
+L'energia meccanica che viene dissipata si converte in **calore** (simbolo $Q$). Pertanto, anche il calore è una forma di energia e perciò la sua unità di misura è il joule.
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qCalore %}[
+{"t":"Il calore è la stessa cosa dell'energia meccanica: sono due nomi per la stessa grandezza.","ok":false,"s":"No: il calore è l'energia meccanica dissipata, cioè quella che un sistema non isolato perde a causa dell'attrito — non è l'energia meccanica del sistema stesso."},
+{"t":"Il calore si misura in joule, come tutte le altre forme di energia.","ok":true,"s":"Sì: essendo una forma di energia, condivide la stessa unità di misura del lavoro, dell'energia cinetica e di quella potenziale."},
+{"t":"Se un corpo rallenta fino a fermarsi a causa dell'attrito, l'energia cinetica persa si trasforma interamente in calore.","ok":true,"s":"Sì: è proprio il lavoro negativo dell'attrito, dissipato sotto forma di calore."},
+{"t":"Più l'attrito è intenso, meno calore viene prodotto a parità di spostamento.","ok":false,"s":"No, è vero il contrario: un attrito più intenso significa una forza d'attrito maggiore, quindi — a parità di spostamento — più lavoro dissipato, cioè più calore."}
+]{% endcapture %}
+{% include quiz.html domande=_qCalore id="q-calore" senza_esempi="true" %}
+{% include box-end.html %}
+
+<div class="iex-widget" id="iexCalore">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexCaloreprev" onclick="iexCalorenav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexCaloredots"></div>
+<button class="iex-navbtn" id="iexCalorenext" onclick="iexCalorenav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexCalorerow0">
+<p class="iex-qt">Un blocco di massa $2\ \text{kg}$ scivola su un pavimento con una velocità di $4\ \text{m/s}$. A causa dell'attrito rallenta fino a fermarsi. Quanto calore si è prodotto?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcCalore0" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numCalore0" valore="16" unit="J" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexCalorerow1" style="display:none">
+<p class="iex-qt">Un libro viene trascinato per $3\ \text m$ su un tavolo, mentre l'attrito esercita su di esso una forza di $4\ \text N$ nel verso opposto al moto. Quanto calore viene prodotto?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcCalore1" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numCalore1" valore="12" unit="J" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexCalorerow2" style="display:none">
+<p class="iex-qt">Sfregando le mani, si compie un lavoro di $6\ \text J$ contro un attrito di $30\ \text N$. Per quale distanza si sono mosse le mani?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcCalore2" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numCalore2" valore="0.2" unit="m" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var N=3, cur=0, ok=[false,false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexCaloredots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexCalore .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexCalorerow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexCaloreprev').disabled=(i===0);
+    document.getElementById('iexCalorenext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexCaloredots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexCalorenav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  function checkFinale(){
+    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+
+  // Tutte e tre le domande sono calcoli numerici (num.html), non scelte
+  // multiple: ci mettiamo in ascolto del loro evento di completamento.
+  for(var i=0;i<N;i++)(function(i){
+    var el=document.getElementById('iexCalorerow'+i);
+    if(el)el.addEventListener('iex:correct', function(){
+      if(!ok[i]){ ok[i]=true; updateDots(); checkFinale(); }
+    });
+  })(i);
+})();
+</script>
 
 Prova tu stesso a esplorare la conservazione — e la dissipazione — dell'energia meccanica con questa simulazione:
 
@@ -2491,6 +2629,67 @@ Prova tu stesso a esplorare la conservazione — e la dissipazione — dell'ener
 
 
 # Esercizi di Riepilogo
+
+### Mettiti alla prova: ripasso veloce
+
+Prima di affrontare gli esercizi veri e propri, un ripasso rapido su tutto il capitolo.
+
+{% include ex.html diff=1 %}
+Vero o falso?
+
+{% capture _qRipEnergia %}[
+{"t":"Se una forza è perpendicolare allo spostamento del corpo su cui agisce, il lavoro che compie è nullo.","ok":true,"s":"Sì: nella formula del lavoro conta solo la componente della forza lungo lo spostamento, e una forza perpendicolare non ne ha nessuna."},
+{"t":"L'energia cinetica è direttamente proporzionale alla velocità del corpo.","ok":false,"s":"No: $K=\\frac12mv^2$ è proporzionale al quadrato della velocità, non alla velocità stessa."},
+{"t":"L'attrito può, in certi casi, far aumentare l'energia meccanica di un sistema.","ok":false,"s":"No: l'attrito compie sempre un lavoro negativo, quindi diminuisce sempre l'energia meccanica."},
+{"t":"In un sistema isolato, l'energia meccanica totale resta costante nel tempo.","ok":true,"s":"Sì, è proprio il teorema di conservazione dell'energia meccanica: $K_i+U_i=K_f+U_f$."},
+{"t":"Un corpo fermo non può avere energia meccanica.","ok":false,"s":"No: un corpo fermo può comunque possedere energia potenziale (ad esempio se è sollevato da terra), quindi un'energia meccanica non nulla."},
+{"t":"Il calore è una forma di energia, e si misura anch'esso in joule.","ok":true,"s":"Sì: il calore è l'energia meccanica dissipata, quindi condivide la stessa unità di misura di tutte le energie, il joule."}
+]{% endcapture %}
+{% include quiz.html domande=_qRipEnergia id="q-ripasso-energia" senza_esempi="true" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Abbina ogni grandezza alla formula corrispondente.
+
+{% capture _matchEnergia %}[
+  {"l":"Lavoro","r":"$L=F\\cdot\\Delta s$"},
+  {"l":"Energia cinetica","r":"$K=\\frac12mv^2$"},
+  {"l":"Energia potenziale gravitazionale","r":"$U_g=mgh$"},
+  {"l":"Energia meccanica","r":"$E=K+U$"},
+  {"l":"Velocità di impatto al suolo (caduta libera)","r":"$v_f=\\sqrt{2gh_i}$"}
+]{% endcapture %}
+{% include match.html id="match-formule-energia" dati=_matchEnergia col1="Grandezza" col3="Formula" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Classifica ciascuna situazione.
+
+{% capture _sortIsolati %}[
+  {"t":"Un pendolo che oscilla nel vuoto, senza attrito","c":0},
+  {"t":"Una palla che rotola su un prato, rallentando per attrito","c":1},
+  {"t":"Un satellite in orbita, lontano da ogni attrito","c":0},
+  {"t":"Una massa che scivola lungo un piano inclinato perfettamente liscio","c":0},
+  {"t":"Un bambino spinto da un adulto su un'altalena","c":1}
+]{% endcapture %}
+{% include sort.html id="sort-isolato-nonisolato" dati=_sortIsolati col0="Sistema isolato" col1="Sistema non isolato" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Completa le frasi.
+
+{% include fill.html prima="Se il lavoro totale compiuto su un corpo è positivo, la sua energia cinetica" tipo="drop" opts="aumenta|diminuisce|resta invariata" ok="aumenta" dopo="." s="Per il teorema dell'energia cinetica, $L=\Delta K$: se $L>0$ allora anche $\Delta K>0$." %}
+
+{% include fill.html prima="Un sistema che non scambia energia con il resto dell'Universo si dice" ok="isolato,isolata" dopo="." s="Un sistema isolato conserva la propria energia meccanica nel tempo." %}
+
+{% include fill.html prima="L'energia meccanica dissipata da un sistema non isolato (ad esempio a causa dell'attrito) si trasforma in" ok="calore" dopo="." s="Il calore è proprio la forma in cui finisce l'energia meccanica non conservata." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Vero o falso?
+
+{% include tf.html q="Il lavoro compiuto da una forza dipende solo dalla componente della forza lungo lo spostamento." ok=true s="Esatto: le componenti perpendicolari allo spostamento non contribuiscono al lavoro." %}
+{% include tf.html q="Raddoppiando la velocità di un corpo, a parità di massa, la sua energia cinetica raddoppia." ok=false s="No: l'energia cinetica è proporzionale al quadrato della velocità, quindi raddoppiando $v$, $K$ quadruplica." %}
+{% include ex-end.html %}
 
 ### Esercizi sulla formula del lavoro
 
@@ -2873,7 +3072,7 @@ Anche se Bob spinge per una distanza quasi doppia, la forza di Alice è più che
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
-Calcola il lavoro compiuto dall'attrito radente su di un corpo di massa $20\ \text{kg}$ che scivola per dieci metri su una superficie orizzontale con coefficiente di attrito $\mu = 0{,}3$. Esprimi il risultato in joule. *(Indizio: ricorda che la formula dell'attrito corrisponde a $F_{\text{att}} = \mu F_\perp$.)*
+Calcola il lavoro compiuto dall'attrito radente su di un corpo di massa $20\ \text{kg}$ che scivola per dieci metri su una superficie orizzontale con coefficiente di attrito $\mu = 0{,}3$ (usa $g\approx 9{,}8\ \text{m/s}^2$). Esprimi il risultato in joule. *(Indizio: ricorda che la formula dell'attrito corrisponde a $F_{\text{att}} = \mu F_\perp$.)*
 
 {% include num.html id="numAttritoRadente" valore="-588" unit="J" %}
 
@@ -3342,9 +3541,12 @@ $$F = \frac{\Delta U_g}{h} = \frac{800\ \text J}{4\ \text m} = 200\ \text N.$$
 
 ### Esercizi sull'energia meccanica e sul calore
 
+Prima di iniziare, fissiamo le idee su cosa sia un sistema isolato.
+
+{% include frayer.html id="frayer-sistema-isolato" termine="Sistema isolato" %}
 
 {% include ex.html diff=1 %}
-Il fratellino di Marco gioca con uno yo-yo di massa $60\ \text g$. Lo yo-yo scende, srotolandosi, da fermo per un tratto di $0{,}9\ \text m$: trascurando l'attrito, quanta energia cinetica ha acquistato?
+Il fratellino di Marco gioca con uno yo-yo di massa $60\ \text g$. Lo yo-yo scende, srotolandosi, da fermo per un tratto di $0{,}9\ \text m$: trascurando l'attrito, quanta energia cinetica ha acquistato? (Usa $g\approx 10\ \text{m/s}^2$.)
 
 {% include num.html id="numYoyo" valore="0.54" unit="J" %}
 
@@ -3355,7 +3557,7 @@ $$K = U_i - U_f = mgh = 0{,}06\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \t
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
-Una bambina su un'altalena viene tirata indietro finché non si trova a $0{,}45\ \text m$ di altezza rispetto al punto più basso, poi lasciata andare da ferma. Trascurando l'attrito, con che velocità passa per il punto più basso?
+Una bambina su un'altalena viene tirata indietro finché non si trova a $0{,}45\ \text m$ di altezza rispetto al punto più basso, poi lasciata andare da ferma. Trascurando l'attrito, con che velocità passa per il punto più basso? (Usa $g\approx 10\ \text{m/s}^2$.)
 
 {% include num.html id="numAltalena1" valore="3" unit="m/s" %}
 
@@ -3365,19 +3567,8 @@ Una bambina su un'altalena viene tirata indietro finché non si trova a $0{,}45\
 $$v = \sqrt{2gh} = \sqrt{2\times 10\ \text{m/s}^2\times 0{,}45\ \text m} = \sqrt 9 = 3\ \text{m/s}.$$
 {% include ex-sol-end.html %}
 
-{% include ex.html diff=1 %}
-Il pendolo di un vecchio orologio a muro, di massa $0{,}5\ \text{kg}$, viene spostato lateralmente fino a un'altezza di $0{,}8\ \text m$ rispetto al punto più basso della sua oscillazione, e lì lasciato fermo. Prendendo come riferimento il punto più basso, qual è la sua energia meccanica in quell'istante?
-
-{% include num.html id="numPendoloE" valore="4" unit="J" %}
-
-{% include ex-sol.html %}
-Il pendolo è fermo, quindi tutta la sua energia meccanica è potenziale ($K=0$):
-
-$$E = K+U = 0 + mgh = 0{,}5\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}8\ \text m = 4\ \text J.$$
-{% include ex-sol-end.html %}
-
 {% include ex.html diff=2 %}
-Un'altra bambina, su un'altra altalena (trascura sempre l'attrito), passa per il punto più basso con una velocità di $5\ \text{m/s}$. Con che velocità passa per un punto che si trova $1{,}05\ \text m$ più in alto rispetto al punto più basso?
+Un'altra bambina, su un'altra altalena (trascura sempre l'attrito, usa $g\approx 10\ \text{m/s}^2$), passa per il punto più basso con una velocità di $5\ \text{m/s}$. Con che velocità passa per un punto che si trova $1{,}05\ \text m$ più in alto rispetto al punto più basso?
 
 {% include num.html id="numAltalena2" valore="2" unit="m/s" %}
 
@@ -3391,8 +3582,19 @@ La massa si semplifica; isoliamo $v$:
 $$v = \sqrt{v_{\text{basso}}^2 - 2gh} = \sqrt{(5\ \text{m/s})^2 - 2\times 10\ \text{m/s}^2\times 1{,}05\ \text m} = \sqrt{25-21} = \sqrt 4 = 2\ \text{m/s}.$$
 {% include ex-sol-end.html %}
 
+{% include ex.html diff=1 %}
+Il pendolo di un vecchio orologio a muro, di massa $0{,}5\ \text{kg}$, viene spostato lateralmente fino a un'altezza di $0{,}8\ \text m$ rispetto al punto più basso della sua oscillazione, e lì lasciato fermo (usa $g\approx 10\ \text{m/s}^2$). Prendendo come riferimento il punto più basso, qual è la sua energia meccanica in quell'istante?
+
+{% include num.html id="numPendoloE" valore="4" unit="J" %}
+
+{% include ex-sol.html %}
+Il pendolo è fermo, quindi tutta la sua energia meccanica è potenziale ($K=0$):
+
+$$E = K+U = 0 + mgh = 0{,}5\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}8\ \text m = 4\ \text J.$$
+{% include ex-sol-end.html %}
+
 {% include ex.html diff=2 %}
-Uno skater in uno skatepark parte da un punto della rampa alto $3\ \text m$, già in movimento con una velocità di $3\ \text{m/s}$, e scende (trascurando l'attrito) fino a un punto alto $1\ \text m$. Con che velocità passa da quel punto?
+Uno skater in uno skatepark parte da un punto della rampa alto $3\ \text m$, già in movimento con una velocità di $3\ \text{m/s}$, e scende (trascurando l'attrito, usa $g\approx 10\ \text{m/s}^2$) fino a un punto alto $1\ \text m$. Con che velocità passa da quel punto?
 
 {% include num.html id="numSkater" valore="7" unit="m/s" %}
 
@@ -3418,7 +3620,7 @@ $$E = K = \frac12 mv^2 \quad\Rightarrow\quad v = \sqrt{\frac{2E}{m}} = \sqrt{\fr
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=3 %}
-In un bowling, una palla di massa $6\ \text{kg}$ cade da uno scaffale alto $1{,}2\ \text m$ e rimbalza sul pavimento fino a raggiungere di nuovo un'altezza massima di soli $0{,}3\ \text m$. Quanta energia si è convertita in calore durante l'urto con il pavimento?
+In un bowling, una palla di massa $6\ \text{kg}$ cade da uno scaffale alto $1{,}2\ \text m$ e rimbalza sul pavimento fino a raggiungere di nuovo un'altezza massima di soli $0{,}3\ \text m$. Quanta energia si è convertita in calore durante l'urto con il pavimento? (Usa $g\approx 10\ \text{m/s}^2$.)
 
 {% include num.html id="numBowlingCalore" valore="54" unit="J" %}
 
@@ -3431,7 +3633,7 @@ si è convertita in calore nell'urto con il pavimento.
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=3 %}
-Uno slittino di massa $4\ \text{kg}$ scivola lungo una discesa innevata, partendo da fermo da un'altezza di $5\ \text m$. A causa dell'attrito con la neve, in fondo alla discesa la sua velocità è di soli $8\ \text{m/s}$ (minore di quella che avrebbe senza attrito). Quanta energia si è convertita in calore lungo la discesa?
+Uno slittino di massa $4\ \text{kg}$ scivola lungo una discesa innevata, partendo da fermo da un'altezza di $5\ \text m$. A causa dell'attrito con la neve, in fondo alla discesa la sua velocità è di soli $8\ \text{m/s}$ (minore di quella che avrebbe senza attrito). Quanta energia si è convertita in calore lungo la discesa? (Usa $g\approx 10\ \text{m/s}^2$.)
 
 {% include num.html id="numSlittinoCalore" valore="72" unit="J" %}
 
@@ -3440,3 +3642,26 @@ Se non ci fosse stato attrito, l'energia meccanica si sarebbe conservata e tutta
 
 $$\Delta E = U_i - K_f = mgh - \frac12 mv^2 = 4\ \text{kg}\times 10\ \text{m/s}^2\times 5\ \text m - \frac12\times 4\ \text{kg}\times(8\ \text{m/s})^2 = 200\ \text J - 128\ \text J = 72\ \text J.$$
 {% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Torniamo all'esperimento (immaginario!) del "pollo cotto a schiaffi". Supponi che ogni schiaffo comprima il pollo di $2{,}5\ \text{cm}$ esercitando una forza di $40\ \text N$, e che tutto il lavoro compiuto si dissipi istantaneamente in calore. Sapendo che per cuocere completamente il pollo servono circa $2\times10^5\ \text J$ di calore, quanti schiaffi sarebbero necessari?
+
+{% include sci.html prima="Numero di schiaffi $=$" coeff="2" exp="5" s="2 × 10⁵ schiaffi" %}
+
+{% include ex-sol.html %}
+Il lavoro — e quindi il calore — prodotto da un singolo schiaffo è
+
+$$L_{\text{schiaffo}} = F\cdot \Delta s = 40\ \text N \times 0{,}025\ \text m = 1\ \text J.$$
+
+Per ottenere i $2\times10^5\ \text J$ necessari a cuocere il pollo servono quindi
+
+$$n = \frac{2\times10^5\ \text J}{1\ \text J} = 2\times10^5 \text{ schiaffi},$$
+
+cioè 200 000 schiaffi — un numero completamente assurdo, che spiega bene perché non è davvero un modo pratico per cucinare un pollo!
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Prova a scrivere con parole tue, senza guardare indietro nel capitolo, cosa significa che l'energia meccanica di un sistema "si conserva".
+
+{% include def-compare.html id="dc-conservazione" testo="L'energia meccanica di un sistema si conserva quando…" label="Confronta con la definizione nel testo" %}
+{% include ex-end.html %}
