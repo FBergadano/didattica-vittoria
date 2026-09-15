@@ -3,5 +3,17 @@
   <p class="fill-def-prompt">{{ include.prompt }}</p>
   <textarea id="{{ include.id }}" placeholder="Scrivi qui la tua risposta…"
             aria-label="{{ include.prompt | escape }}"></textarea>
-  <p class="fill-def-note">💡 Questa sezione è per la tua pratica — le risposte non vengono salvate sul server.</p>
+  <p class="fill-def-note">💡 La tua risposta resta salvata solo su questo browser — non viene inviata a nessun server.</p>
 </div>
+<script>
+(function(){
+  var id='{{ include.id }}',ta=document.getElementById(id);
+  var s=_lvLoad('filldef',id);
+  if(s)ta.value=s.v;
+  var t;
+  ta.addEventListener('input',function(){
+    clearTimeout(t);
+    t=setTimeout(function(){_lvSave('filldef',id,{v:ta.value});},400);
+  });
+})();
+</script>

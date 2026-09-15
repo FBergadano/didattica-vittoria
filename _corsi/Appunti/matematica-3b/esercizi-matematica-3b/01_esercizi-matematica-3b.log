@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.7.17)  15 SEP 2026 08:48
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.7.17)  15 SEP 2026 08:49
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/esercizi-matematica-3b.tex
-(/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/esercizi-matematica-3b.tex
+**/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/01_esercizi-matematica-3b.tex
+(/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/01_esercizi-matematica-3b.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -1958,8 +1958,8 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'polyglossia' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'italian'.
- (./esercizi-matematica-3b.aux)
-\openout1 = `esercizi-matematica-3b.aux'.
+ (./01_esercizi-matematica-3b.aux)
+\openout1 = `01_esercizi-matematica-3b.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 4.
 LaTeX Font Info:    ... okay on input line 4.
@@ -2084,9 +2084,9 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count587
 Package hyperref Info: Link coloring ON on input line 4.
- (./esercizi-matematica-3b.out) (./esercizi-matematica-3b.out)
+ (./01_esercizi-matematica-3b.out) (./01_esercizi-matematica-3b.out)
 \@outlinefile=\write4
-\openout4 = `esercizi-matematica-3b.out'.
+\openout4 = `01_esercizi-matematica-3b.out'.
 
 
 
@@ -2190,7 +2190,7 @@ Package mdframed Info: mdframed detected package amsthm
 Capitolo 2.
 [4
 
-] [5] (./esercizi-matematica-3b.aux)
+] [5] (./01_esercizi-matematica-3b.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -2199,16 +2199,16 @@ L3 programming layer <2026-01-19>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package rerunfilecheck Info: File `esercizi-matematica-3b.out' has not changed.
+Package rerunfilecheck Info: File `01_esercizi-matematica-3b.out' has not changed.
 (rerunfilecheck)             Checksum: FB92EE1FF6EC8E9243AA913EF56692BF;1534.
  ) 
 Here is how much of TeX's memory you used:
  82933 strings out of 468173
- 2033927 string characters out of 5435520
- 3132573 words of memory out of 5000000
+ 2033984 string characters out of 5435520
+ 3132606 words of memory out of 5000000
  110555 multiletter control sequences out of 15000+600000
  636284 words of font info for 110 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 107i,11n,136p,1304b,1125s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 107i,11n,136p,1307b,1125s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on esercizi-matematica-3b.xdv (5 pages, 78160 bytes).
+Output written on 01_esercizi-matematica-3b.xdv (5 pages, 78160 bytes).

@@ -1,0 +1,195 @@
+{% comment %}
+Animazione in loop: un bambino salta su un tappeto elastico.
+Mostra lo scambio di energia potenziale gravitazionale (U_g), cinetica (K)
+ed elastica (U_el) durante la caduta e il rimbalzo sul tappeto.
+Lo zero dell'energia potenziale gravitazionale (e quindi anche l'altezza h
+indicata dalla riga tratteggiata) è preso nel punto di massima estensione
+del tappeto, cioè nel punto più basso raggiunto dal bambino.
+Nessun testo/formula sovrapposto: l'animazione è puramente visiva.
+Nessun parametro.
+{% endcomment %}
+<div class="tpl-widget" id="trampolinoLab">
+<div class="tpl-stage">
+<div class="tpl-canvas-wrap">
+<canvas class="tpl-canvas" id="tplCanvas" width="640" height="320" role="img" aria-label="Animazione: un bambino cade su un tappeto elastico, scambiando energia potenziale gravitazionale, cinetica ed elastica"></canvas>
+</div>
+<div class="tpl-vbar" aria-hidden="true">
+<div class="tpl-barcol">
+<span class="tpl-vlabel" style="color:#d97706">U<sub>g</sub></span>
+<div class="tpl-vtrack tpl-vtrack-ug"><div class="tpl-vmask" id="tplUgMask"></div></div>
+</div>
+<div class="tpl-barcol">
+<span class="tpl-vlabel" style="color:#0f766e">K</span>
+<div class="tpl-vtrack tpl-vtrack-k"><div class="tpl-vmask" id="tplKMask"></div></div>
+</div>
+<div class="tpl-barcol">
+<span class="tpl-vlabel" style="color:#7c3aed">U<sub>el</sub></span>
+<div class="tpl-vtrack tpl-vtrack-uel"><div class="tpl-vmask" id="tplUelMask"></div></div>
+</div>
+</div>
+</div>
+</div>
+
+<style>
+#trampolinoLab{max-width:680px;margin:1.3rem auto;padding:.9rem 1rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+#trampolinoLab .tpl-stage{display:flex;align-items:stretch;justify-content:center;gap:14px;}
+#trampolinoLab .tpl-canvas-wrap{position:relative;flex:1 1 460px;max-width:540px;}
+#trampolinoLab .tpl-canvas{width:100%;height:auto;display:block;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
+#trampolinoLab .tpl-vbar{display:flex;flex-direction:row;gap:8px;flex:none;}
+#trampolinoLab .tpl-barcol{display:flex;flex-direction:column;align-items:center;gap:3px;width:26px;}
+#trampolinoLab .tpl-vlabel{font-weight:700;font-size:.78rem;line-height:1;}
+#trampolinoLab .tpl-vtrack{position:relative;flex:1;width:14px;min-height:160px;border-radius:999px;overflow:hidden;}
+#trampolinoLab .tpl-vtrack-ug{background:#d97706;}
+#trampolinoLab .tpl-vtrack-k{background:#0f766e;}
+#trampolinoLab .tpl-vtrack-uel{background:#7c3aed;}
+#trampolinoLab .tpl-vmask{position:absolute;left:0;right:0;top:0;height:0%;background:#fff;border-radius:999px 999px 0 0;transition:height .1s linear;}
+@media print{#trampolinoLab{display:none!important;}}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('trampolinoLab');
+  if(!root) return;
+  var canvas=document.getElementById('tplCanvas');
+  var ctx=canvas.getContext('2d');
+  var W=640,H=320;
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var ugMask=document.getElementById('tplUgMask'), kMask=document.getElementById('tplKMask'), uelMask=document.getElementById('tplUelMask');
+
+  var topY=50, surfaceY=180, maxDepress=55;
+  var bottomY=surfaceY+maxDepress; // punto di massima estensione: qui U_g=0
+  var frameLeftX=150, frameRightX=490, childX=(frameLeftX+frameRightX)/2;
+  var legsBottomY=275, groundY=290;
+  var rulerX=85;
+
+  var PHASES=[
+    {name:'pauseTop', dur:1500, kind:'top'},
+    {name:'falling', dur:750, kind:'fall'},
+    {name:'compressing', dur:550, kind:'compress'},
+    {name:'pauseBottom', dur:350, kind:'pausebottom'},
+    {name:'rebounding', dur:550, kind:'rebound'},
+    {name:'rising', dur:750, kind:'rise'}
+  ];
+  var phaseIdx=0, phaseT0=null, raf=null;
+
+  function ease(u){ return (1-Math.cos(u*Math.PI))/2; }
+
+  function drawRuler(x, top, bottom){
+    ctx.save();
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1.4; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x,top); ctx.lineTo(x,bottom); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(x-6,top); ctx.lineTo(x+6,top); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x-6,bottom); ctx.lineTo(x+6,bottom); ctx.stroke();
+    ctx.fillStyle='#475569'; ctx.font='italic 16px Georgia, serif';
+    ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillText('h', x+10, (top+bottom)/2);
+    ctx.restore();
+  }
+
+  function drawTrampoline(dipFrac){
+    var matY=surfaceY+maxDepress*dipFrac;
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(frameLeftX,surfaceY); ctx.lineTo(frameLeftX-16,legsBottomY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(frameRightX,surfaceY); ctx.lineTo(frameRightX+16,legsBottomY); ctx.stroke();
+    ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(60,groundY); ctx.lineTo(580,groundY); ctx.stroke();
+    ctx.strokeStyle='#64748b'; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(frameLeftX,surfaceY); ctx.lineTo(frameRightX,surfaceY); ctx.stroke();
+    ctx.strokeStyle='#334155'; ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath();
+    ctx.moveTo(frameLeftX,surfaceY);
+    ctx.lineTo(childX,matY);
+    ctx.lineTo(frameRightX,surfaceY);
+    ctx.stroke();
+    ctx.fillStyle='#64748b';
+    ctx.beginPath(); ctx.arc(frameLeftX,surfaceY,4,0,7); ctx.fill();
+    ctx.beginPath(); ctx.arc(frameRightX,surfaceY,4,0,7); ctx.fill();
+  }
+
+  function drawChild(x,y){
+    ctx.save();
+    ctx.strokeStyle='#1e293b'; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(x-3,y-2); ctx.lineTo(x-9,y+11); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+3,y-2); ctx.lineTo(x+9,y+11); ctx.stroke();
+    ctx.strokeStyle='#0ea5e9'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(x-6,y-19); ctx.lineTo(x-15,y-29); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+6,y-19); ctx.lineTo(x+15,y-29); ctx.stroke();
+    ctx.fillStyle='#0ea5e9';
+    ctx.beginPath(); ctx.ellipse(x,y-12,9,13,0,0,7); ctx.fill();
+    // testa
+    ctx.fillStyle='#fcd9b8';
+    ctx.beginPath(); ctx.arc(x,y-30,9,0,7); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.2)'; ctx.lineWidth=1; ctx.stroke();
+    // faccia: occhi e sorriso
+    ctx.fillStyle='#1e293b';
+    ctx.beginPath(); ctx.arc(x-3.2,y-32,1.1,0,7); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+3.2,y-32,1.1,0,7); ctx.fill();
+    ctx.strokeStyle='#7c2d12'; ctx.lineWidth=1.2; ctx.lineCap='round';
+    ctx.beginPath(); ctx.arc(x,y-29,3.4,0.15*Math.PI,0.85*Math.PI); ctx.stroke();
+    ctx.restore();
+  }
+
+  function energiesFromY(y){
+    var ug=(bottomY-y)/(bottomY-topY);
+    ug=Math.max(0,Math.min(1,ug));
+    var cd = y>surfaceY ? (y-surfaceY)/(bottomY-surfaceY) : 0;
+    cd=Math.max(0,Math.min(1,cd));
+    var uel=cd*cd;
+    var k=1-ug-uel;
+    if(k<0)k=0;
+    return {Ug:ug, K:k, Uel:uel, dip:cd};
+  }
+
+  function updateBars(ug,k,uel){
+    ugMask.style.height=((1-ug)*100)+'%';
+    kMask.style.height=((1-k)*100)+'%';
+    uelMask.style.height=((1-uel)*100)+'%';
+  }
+
+  function childYFor(ph,u){
+    if(ph.kind==='top') return topY;
+    if(ph.kind==='fall') return topY+(surfaceY-topY)*u*u;
+    if(ph.kind==='compress') return surfaceY+maxDepress*ease(u);
+    if(ph.kind==='pausebottom') return bottomY;
+    if(ph.kind==='rebound') return surfaceY+maxDepress*(1-ease(u));
+    return topY+(surfaceY-topY)*(1-u)*(1-u); // rise
+  }
+
+  function frame(now){
+    if(phaseT0===null) phaseT0=now;
+    var ph=PHASES[phaseIdx];
+    var elapsed=now-phaseT0;
+    var u=Math.min(1, elapsed/ph.dur);
+    var childY=childYFor(ph,u);
+    var e=energiesFromY(childY);
+
+    ctx.clearRect(0,0,W,H);
+    if(childY<bottomY-0.5) drawRuler(rulerX, childY, bottomY);
+    drawTrampoline(e.dip);
+    drawChild(childX, childY);
+    updateBars(e.Ug, e.K, e.Uel);
+
+    if(!reduce){
+      if(elapsed>=ph.dur){
+        phaseIdx=(phaseIdx+1)%PHASES.length;
+        phaseT0=now;
+      }
+      raf=requestAnimationFrame(frame);
+    }
+  }
+
+  function start(){ if(reduce||raf) return; raf=requestAnimationFrame(frame); }
+  function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+
+  if(reduce){
+    frame(performance.now());
+  } else if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.isIntersecting?start():stop(); });
+    },{threshold:0.05}).observe(canvas);
+  } else {
+    start();
+  }
+})();
+</script>

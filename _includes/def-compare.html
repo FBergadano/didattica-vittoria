@@ -17,3 +17,15 @@ Esempio:
 <textarea class="defcmp-area" id="dca-{{ _did }}" rows="4" placeholder="Scrivi qui la tua risposta…" spellcheck="false"></textarea>
 {% if include.link %}<a class="defcmp-link" href="{{ include.link }}">{{ include.label | default: "Confronta con la definizione nel testo" }}</a>{% endif %}
 </div>
+<script>
+(function(){
+  var id='{{ _did }}',ta=document.getElementById('dca-'+id);
+  var s=_lvLoad('defcmp',id);
+  if(s)ta.value=s.v;
+  var t;
+  ta.addEventListener('input',function(){
+    clearTimeout(t);
+    t=setTimeout(function(){_lvSave('defcmp',id,{v:ta.value});},400);
+  });
+})();
+</script>

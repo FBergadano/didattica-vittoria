@@ -1,0 +1,92 @@
+{% comment %}
+Animazione in loop, continua e mai interrotta: uno yo-yo che sale e scende
+(oscillazione armonica verticale, nessuna pausa/discontinuità).
+Nessuna barra di progresso, nessun testo sovrapposto: solo l'animazione.
+Nessun parametro.
+{% endcomment %}
+<div class="yoyo-widget" id="yoyoLab">
+<div class="yoyo-stage">
+<canvas class="yoyo-canvas" id="yoyoCanvas" width="360" height="320" role="img" aria-label="Animazione: uno yo-yo sale e scende senza mai fermarsi"></canvas>
+</div>
+</div>
+
+<style>
+#yoyoLab{max-width:400px;margin:1.3rem auto;padding:.9rem 1rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+#yoyoLab .yoyo-stage{display:flex;justify-content:center;}
+#yoyoLab .yoyo-canvas{width:100%;max-width:320px;height:auto;display:block;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
+@media print{#yoyoLab{display:none!important;}}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('yoyoLab');
+  if(!root) return;
+  var canvas=document.getElementById('yoyoCanvas');
+  var ctx=canvas.getContext('2d');
+  var W=360,H=320;
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  var x=210, anchorY=40, yTop=90, yBottom=250;
+  var mid=(yTop+yBottom)/2, amp=(yBottom-yTop)/2;
+  var periodMs=2400, omega=2*Math.PI/periodMs;
+  var rulerX=60;
+  var raf=null, t0=null;
+
+  function drawRuler(rx, top, bottom){
+    ctx.save();
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1.4; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(rx,top); ctx.lineTo(rx,bottom); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(rx-6,top); ctx.lineTo(rx+6,top); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(rx-6,bottom); ctx.lineTo(rx+6,bottom); ctx.stroke();
+    ctx.fillStyle='#475569'; ctx.font='italic 16px Georgia, serif';
+    ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillText('h', rx+10, (top+bottom)/2);
+    ctx.restore();
+  }
+
+  function sphere(cx,cy,r,c1,c2){
+    ctx.save();
+    var g=ctx.createRadialGradient(cx-r*0.35,cy-r*0.4,r*0.15,cx,cy,r);
+    g.addColorStop(0,c1); g.addColorStop(1,c2);
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,r,0,7); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.25)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.restore();
+  }
+
+  function draw(y, spin){
+    ctx.clearRect(0,0,W,H);
+    if(y<yBottom-0.5) drawRuler(rulerX, y, yBottom);
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(x,anchorY); ctx.lineTo(x,y); ctx.stroke();
+    ctx.fillStyle='#334155'; ctx.beginPath(); ctx.arc(x,anchorY,4,0,7); ctx.fill();
+    sphere(x,y,17,'#ddd6fe','#7c3aed');
+    ctx.strokeStyle='rgba(255,255,255,.8)'; ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(x+Math.cos(spin)*10, y+Math.sin(spin)*10);
+    ctx.lineTo(x-Math.cos(spin)*10, y-Math.sin(spin)*10);
+    ctx.stroke();
+  }
+
+  function frame(now){
+    if(t0===null) t0=now;
+    var elapsed=now-t0;
+    var y=mid+amp*Math.cos(omega*elapsed);
+    draw(y, elapsed*0.006);
+    if(!reduce) raf=requestAnimationFrame(frame);
+  }
+
+  function start(){ if(reduce||raf) return; raf=requestAnimationFrame(frame); }
+  function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+
+  if(reduce){
+    draw(yTop, 0);
+  } else if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.isIntersecting?start():stop(); });
+    },{threshold:0.05}).observe(canvas);
+  } else {
+    start();
+  }
+})();
+</script>

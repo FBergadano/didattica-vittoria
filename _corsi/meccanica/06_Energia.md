@@ -1359,17 +1359,17 @@ Immagina di comprimere una molla spingendo con la mano. Poiché eserciti una for
    src="/corsi/gif/compressing-string.gif"
    didascalia="Comprimendo la molla, applichi una forza lungo uno spostamento: stai compiendo un lavoro. Il risultato di questo lavoro è immagazzinato dentro la molla."
    larghezza="250px" %}
-Tuttavia, nel momento in cui la tua mano si ferma, lo spostamento finisce e quindi il lavoro diventa nullo. D'altra parte, niente si sta muovendo, quindi non c'è energia cinetica. Deve quindi esistere una nuova energia, immagazzinata dentro la molla, che potrebbe portarla, *potenzialmente*, ad esplodere. Questa energia si chiama pertanto <definizione>energia potenziale</definizione>.
+Tuttavia, nel momento in cui la tua mano si ferma, lo spostamento finisce e quindi il lavoro diventa nullo. D'altra parte, niente si sta muovendo, quindi non c'è energia cinetica. Deve quindi esistere una nuova energia, immagazzinata dentro la molla, che potrebbe portarla, *potenzialmente*, ad esplodere. Questa energia si chiama pertanto <definizione>energia potenziale</definizione>. Nel caso di una molla, si parla di <definizione>energia potenziale elastica</definizione>.
 
 La stessa cosa succede quando solleviamo un peso. 
 {% include figura.html id="bimbo-sollevamento-pesi"
    src="/corsi/gif/bimbo_solleva_pesi.webp"
    didascalia="Sollevando il peso, si applica una forza lungo uno spostamento: stai compiendo un lavoro. Il risultato di questo lavoro è che il peso si trova a un'altezza da cui può cadere, acquisendo velocità e quindi energia cinetica."
    larghezza="300px" %}
-Per sollevare il peso compiamo un lavoro, ma quando poi lo manteniamo fisso a una certa altezza il lavoro è nullo e poiché tutto è fermo non c'è energia cinetica. Anche in questo caso, quindi, l'energia è immagazzinata dentro il corpo, che ora ha il *potenziale* di cadere. Il corpo ha dunque una certa **energia potenziale**.
+Per sollevare il peso compiamo un lavoro, ma quando poi lo manteniamo fisso a una certa altezza il lavoro è nullo e poiché tutto è fermo non c'è energia cinetica. Anche in questo caso, quindi, l'energia è immagazzinata dentro il corpo, che ora ha il *potenziale* di cadere. Il corpo ha dunque una certa **energia potenziale**. In questo caso, si parla di <definizione>energia potenziale gravitazionale</definizione>.
 
 
-Da questi due esempi comprendiamo che, a differenza dell'energia cinetica, <u>esistono diversi tipi di energia potenziale</u>. Ciascuno, ha la propria formula. In questo capitolo, ci concentreremo in particolare sull'<definizione>energia potenziale gravitazionale</definizione>.
+Da questi due esempi comprendiamo che, a differenza dell'energia cinetica, <u>esistono diversi tipi di energia potenziale</u>. Ciascuno, ha la propria formula. In questo capitolo, ci concentreremo in particolare sull'energia potenziale gravitazionale.
 {% include margin-note-end.html %}
 
 
@@ -1382,21 +1382,24 @@ Da questi due esempi comprendiamo che, a differenza dell'energia cinetica, <u>es
 Dall'esempio del sollevamento di un peso, possiamo anche trovare la formula per l'energia potenziale gravitazionale. Infatti, immagina di sollevare una massa $m$ da un'altezza $h_i$ a un'altezza $h_f$. Prendiamo la nostra solita formula del lavoro $L = F\cdot \Delta s$ e applichiamola a questo caso. Nella formula,
 - $F$ è il modulo della forza peso $F_{\text{peso}}=mg$, dove $g$ è l'accelerazione gravitazionale del pianeta;
 - $\Delta s$ è la distanza percorsa, che in questo caso corrisponde alla differenza di altezza $\Delta h$;
-- notiamo che la forza peso (diretta verso il basso) è opposta allo spostamento (diretto verso l'alto), quindi nella nostra formula dobbiamo aggiungere un meno. Quindi, il lavoro svolto dalla forza peso è
+- notiamo che la forza peso (diretta verso il basso) è opposta allo spostamento (diretto verso l'alto), quindi nella nostra formula dobbiamo aggiungere un meno. Pertanto, il lavoro svolto dalla forza peso è
 
 $$
 L = -mg \cdot \Delta h.
 $$
 
-Poiché tutto il lavoro si converte in una variazione dell'energia potenziale gravitazionale, allora
+Poiché, come abbiamo detto prima, sappiamo che tutto il lavoro si converte in una variazione dell'energia potenziale gravitazionale, allora possiamo scrivere che
 
 $$
-U_g = mgh
+L = - \Delta U_g.
 $$
 
-e quindi 
+Uguagliando le due formule per $L$, possiamo comprendere che la formula dell'energia potenziale è
 
-$$L=-\Delta U_g.$$
+$$
+U_g = mgh.
+$$
+
 {% include margin-note-end.html %}
 
 ### L'unità di misura dell'Energia Potenziale
@@ -1411,52 +1414,26 @@ Anche l'energia potenziale, essendo un'energia, <u>ha la stessa unità di misura
      posizioni="alto|basso|alto|basso|alto"
   %}
 
-# Il Calore
 
-Ora considera un corpo che striscia su una superficie in presenza di attrito, rallentando fino a fermarsi completamente. Inizialmente il corpo aveva una certa energia cinetica, che poi ha perso quando si è fermato. Eppure, chiaramente, non ha guadagnato energia potenziale. Dov'è finita allora l'energia?
+{% include box-imp.html testo="Energia Potenziale Gravitazionale" %}
+Il lavoro svolto dalla forza peso per variare l'altezza di un corpo è pari a
 
-L'energia non è scomparsa: si è convertita in calore.  
-Un esperimento semplice per visualizzare questo concetto è sfregare le proprie mani l'una contro l'altra. L'attrito dissipa l'energia cinetica delle mani e sentiamo che esse si riscaldano.  
-La stessa cosa succede con la punta di un trapano che si riscalda o con un pezzo di legno appuntito che sfrega su un altro pezzetto di legno per accendere un fuoco. In tutti questi casi, il lavoro si converte in energia cinetica che a sua volta viene dissipata sotto forma di calore dall'attrito.
+$$L_{\text{peso}}= - \Delta U_g,$$
 
-# Esempi di riepilogo
-Vediamo ora come la descrizione dell'energia si possa applicare ad alcuni fenomeni quotidiani.
+dove $U_g$ è l'energia potenziale gravitazionale, la cui formula corrisponde a 
 
-### La caduta di un corpo
+$$U_g = mgh,$$
 
-{% include margin-note.html testo="Dalla caduta di un corpo alla velocità d'impatto" %}
-Vediamo ora un'applicazione di quanto abbiamo imparato: la caduta di un corpo di massa $m$ da un'altezza $h$, lasciato cadere da fermo.
+ove $m$ è la massa del corpo, $g$ è l'accelerazione gravitazionale e $h$ è l'altezza. 
 
-Durante la caduta, l'energia potenziale gravitazionale si trasforma via via in energia cinetica:
-- all'inizio della caduta, all'altezza $h$, tutta l'energia è potenziale e la velocità è ancora nulla;
-- a metà caduta, una parte dell'energia è ancora potenziale e l'altra parte si è già trasformata in energia cinetica;
-- appena prima dell'impatto, all'altezza $0$, tutta l'energia è ormai cinetica.
+L'unità di misura dell'energia potenziale gravitazionale è il joule (J).
 
-Al momento dell'impatto, anche questa energia cinetica si trasforma ulteriormente: parte di essa fa vibrare il pavimento e l'aria circostante. Quando queste vibrazioni dell'aria raggiungono il nostro orecchio, fanno vibrare il timpano: è così che percepiamo il rumore dell'urto. Quando poi anche queste vibrazioni si affievoliscono resta solo il calore, che si diffonde man mano nello spazio.
 
-{% include phet-sim.html id="energy-skate-park"
-   src="https://phet.colorado.edu/sims/html/energy-skate-park/latest/energy-skate-park_all.html"
-   didascalia="Simulazione PhET: fai scorrere lo skater lungo la pista e osserva come l'energia potenziale si trasforma in energia cinetica (e viceversa). Prova ad attivare l'attrito, e osserva come parte dell'energia si trasforma in calore."
-   altezza="550px" %}
+{% include box-end.html %}
 
 
 
-Possiamo usare questa catena di trasformazioni per calcolare la velocità con cui il corpo arriva al suolo. Trascurando l'attrito dell'aria, tutta l'energia potenziale iniziale si trasforma in energia cinetica finale, cioè $U_g=K$:
 
-$$mgh = \frac12 mv^2.$$
-
-Notiamo che la massa $m$ compare su entrambi i lati e si semplifica (quindi <u markdown="span">**tutti i corpi cadono con la stessa velocità**, indipendentemente dalla loro massa</u>!):
-
-$$gh = \frac12 v^2.$$
-
-Scambiando i membri e moltiplicando per 2 si ottiene
-
-$$v^2 = 2gh$$
-
-Ora ci basta prendere la radice quadrata su entrambi i membri per ottenere
-
-$$v = \sqrt{2gh}.$$
-{% include margin-note-end.html %}
 
 <div class="iex-widget" id="iexPotenziale">
 <p class="iex-lbl">Verifica Subito!</p>
@@ -1649,6 +1626,868 @@ $$v = \sqrt{2gh}.$$
 setupInvCarousel('invCarPotenziale',3);
 </script>
 
+# L'Energia Meccanica e il Calore
+
+{% include margin-note.html testo="Definizione dell'energia meccanica" %}
+Abbiamo visto che un corpo in movimento possiede energia cinetica $K$, mentre un corpo sollevato possiede energia potenziale $U_g$ e un corpo elastico (come una molla) può possedere un'energia potenziale elastica $U_{\text{el}}$. In generale, un corpo può essere dotato di molti tipi di energia allo stesso tempo. In quel caso, <u>la sua energia è semplicemente la somma delle sue energie</u>. Chiamiamo <definizione>energia meccanica</definizione> $E$ questa somma.
+{% include margin-note-end.html %}
+
+{% include box-imp.html testo="L'energia meccanica" %}
+
+L'energia meccanica è la somma dell'energia cinetica e tutte le energie potenziali che stanno agendo sul corpo:
+
+$$E = K + U,$$
+
+dove $U$ racchiude tutti i tipi di energia potenziale (ad esempio, elastica e gravitazionale).  
+Naturalmente, essendo $E$ un'energia, <u>si misura anch'essa in joule</u>.
+{% include box-end.html %}
+
+<div class="iex-widget" id="iexEnergiaMeccanica">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexEnergiaMeccanicaprev" onclick="iexEnergiaMeccanicanav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexEnergiaMeccanicadots"></div>
+<button class="iex-navbtn" id="iexEnergiaMeccanicanext" onclick="iexEnergiaMeccanicanav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexEnergiaMeccanicarow0">
+<p class="iex-qt">Un gatto salta giù da uno scaffale: mentre è ancora a mezz'aria, possiede un'energia cinetica di $12\ \text J$ e un'energia potenziale gravitazionale di $8\ \text J$ (rispetto al pavimento). Qual è la sua energia meccanica totale in quell'istante?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcEmecc0" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numEmecc0" valore="20" unit="J" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexEnergiaMeccanicarow1" style="display:none">
+<p class="iex-qt">In un flipper, la pallina è appoggiata sulla molla del lanciatore, tutta compressa e pronta a scattare: la molla possiede un'energia potenziale elastica di $3\ \text J$. La pallina si trova inoltre a un'altezza tale da avere un'energia potenziale gravitazionale di $1\ \text J$. Poiché non si è ancora mossa, la sua energia cinetica è nulla. Qual è l'energia meccanica totale del sistema?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcEmecc1" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numEmecc1" valore="4" unit="J" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexEnergiaMeccanicarow2" style="display:none">
+<p class="iex-qt">Una mongolfiera in volo possiede un'energia meccanica di $500\ \text J$. In un certo istante, la sua energia cinetica è di $120\ \text J$. Quanta energia potenziale gravitazionale possiede, in quello stesso istante?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcEmecc2" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numEmecc2" valore="380" unit="J" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexEnergiaMeccanicarow3" style="display:none">
+<p class="iex-qt">Un airone in volo, di massa $2\ \text{kg}$, possiede un'energia meccanica di $100\ \text J$. In un dato istante, la sua energia cinetica è di $20\ \text J$. A quale altezza dal suolo si trova, in quello stesso istante? (Usa $g\approx 10\ \text{m/s}^2$.)</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcEmecc3" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numEmecc3" valore="4" unit="m" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var N=4, cur=0, ok=[false,false,false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexEnergiaMeccanicadots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexEnergiaMeccanica .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexEnergiaMeccanicarow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexEnergiaMeccanicaprev').disabled=(i===0);
+    document.getElementById('iexEnergiaMeccanicanext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexEnergiaMeccanicadots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexEnergiaMeccanicanav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  function checkFinale(){
+    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+
+  // Tutte e quattro le domande sono calcoli numerici (num.html), non scelte
+  // multiple: ci mettiamo in ascolto del loro evento di completamento.
+  for(var i=0;i<N;i++)(function(i){
+    var el=document.getElementById('iexEnergiaMeccanicarow'+i);
+    if(el)el.addEventListener('iex:correct', function(){
+      if(!ok[i]){ ok[i]=true; updateDots(); checkFinale(); }
+    });
+  })(i);
+})();
+</script>
+
+## I Sistemi Isolati e la Conservazione dell'Energia Meccanica
+
+{% include box-imp.html testo="I sistemi isolati" %}
+Un sistema si dice <definizione>isolato</definizione> se esso non scambia energia con il resto dell'Universo.
+{% include box-end.html %}
+
+<div class="fig-block">
+<svg viewBox="0 0 360 300" width="100%" style="max-width:300px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Diagramma di Venn: un sistema isolato dentro l'Universo, senza alcuna freccia di scambio di energia">
+  <defs>
+    <radialGradient id="univGradIso" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#f5f8ff"/><stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <radialGradient id="sysGradIso" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#fffbeb"/><stop offset="100%" stop-color="#fde68a"/>
+    </radialGradient>
+  </defs>
+  <circle cx="180" cy="160" r="130" fill="url(#univGradIso)" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="180" y="50" text-anchor="middle" font-size="15" font-weight="600" fill="#1e40af">Universo</text>
+  <circle cx="180" cy="180" r="62" fill="url(#sysGradIso)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="180" y="185" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">Sistema</text>
+
+  <line x1="180" y1="146" x2="180" y2="98" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="5 4"/>
+  <line x1="164" y1="112" x2="196" y2="132" stroke="#dc2626" stroke-width="3"/>
+  <line x1="196" y1="112" x2="164" y2="132" stroke="#dc2626" stroke-width="3"/>
+  <foreignObject x="196" y="108" width="60" height="26">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:15px;font-weight:600;color:#dc2626;">$L=0$</div>
+  </foreignObject>
+</svg>
+<figcaption><span class="fig-num" data-fig-id="venn-sistema-isolato">Figura</span> — In un sistema isolato non può esserci nessuno scambio di energia (nessuna freccia attraversa il confine) con il resto dell'Universo.</figcaption>
+</div>
+
+Quindi <u markdown="span">su un sistema isolato **non** si compie lavoro</u> (in particolare, non c'è l'attrito).  
+I sistemi isolati sono perciò quelli che <u markdown="span">**conservano** la propria energia: non la cedono e non ne acquistano</u>.  
+In questa situazione, l'energia meccanica non fa che trasformarsi continuamente da potenziale a cinetica e viceversa, senza mai disperdersi.
+
+
+{% include box-thm.html testo="Teorema di conservazione dell'energia meccanica" %}
+<u markdown="span">In un sistema **isolato**</u>, l'energia meccanica</u> si conserva, cioè <u markdown="span">resta **costante** nel tempo</u>. 
+
+$$
+E = K+U \quad \text{è costante.}
+$$
+
+Ovvero, indicando con il pedice $i$ la situazione iniziale e con $f$ quella finale, possiamo scrivere che pe run sistema isolato
+
+$$
+K_i+U_i = K_f+U_f.
+$$
+
+{% include box-end.html %}
+
+Questo fatto così semplice è capace di descrivere un'immensa quantità di fenomeni molto diversi. È importante provare a usare il linguaggio dell'energia meccanica per descrivere alcuni fenomeni semplici, perché è uno strumento molto potente che ci tornerà molto spesso utile. 
+
+## Alcuni esempi di applicazione della conservazione dell'energia meccanica.
+
+Proviamo quindi a mettere questo concetto in azione, con alcuni esempi concreti.
+
+### Un bambino su un tappeto elastico
+
+Guarda ad esempio cosa succede dal punto di vista energetico a un bambino che salta su un tappeto elastico:
+
+
+{% include trampolino-lab.html %}
+
+Prova a ricostruire tu stesso, passo per passo, come cambia l'energia del bambino lungo tutto il ciclo (nota che ora prendiamo come riferimento per l'altezza, e quindi per l'energia potenziale gravitazionale nulla, proprio il punto di massima estensione del tappeto):
+
+<div class="tplcz-widget" id="tplCloze">
+<ul class="tplcz-list">
+
+<li>Inizialmente il bambino si trova a un'altezza $h_i$ rispetto al punto di massima estensione del tappeto, con velocità nulla: tutta la sua energia meccanica è
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="mgh_i"><option value="">—</option><option>mgh_i</option><option>K</option><option>Ug</option><option>Uel</option><option>K+Ug</option><option>K+Uel</option><option>Ug+Uel</option><option>K+Ug+Uel</option></select>.</li>
+
+<li>Successivamente, cadendo, converte progressivamente la sua energia potenziale in energia cinetica: $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh_i</option><option>K</option><option>Ug</option><option>Uel</option><option>K+Ug</option><option>K+Uel</option><option>Ug+Uel</option><option>K+Ug+Uel</option></select>.</li>
+
+<li>Quando tocca il tappeto, comincia a rallentare mentre il tappeto si incurva sotto di lui, accumulando
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale elastica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>; quando si ferma nel punto più basso (il punto di massima estensione del tappeto), tutta la sua energia è diventata
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale elastica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="Uel"><option value="">—</option><option>mgh_i</option><option>K</option><option>Ug</option><option>Uel</option><option>K+Ug</option><option>K+Uel</option><option>Ug+Uel</option><option>K+Ug+Uel</option></select>.</li>
+
+<li>Il tappeto comincia poi a distendersi e il bambino torna a muoversi verso l'alto, acquistando anche quota: l'energia immagazzinata nel tappeto si converte quindi in
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica e potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>.</li>
+
+<li>Infine, quando il bambino è di nuovo in aria e continua a salire, perde velocità: la sua energia si trasforma gradualmente da
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>
+a
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh_i</option><option>K</option><option>Ug</option><option>Uel</option><option>K+Ug</option><option>K+Uel</option><option>Ug+Uel</option><option>K+Ug+Uel</option></select>, finché non si ferma di nuovo all'altezza $h_i$ e il ciclo ricomincia.</li>
+
+</ul>
+
+<p>Nella realtà, il tappeto non sarebbe perfettamente elastico, per cui il bambino dovrebbe piegare le gambe e compiere un certo <select class="fill-sel tplcz-blank" data-ans="lavoro"><option value="">—</option><option>lavoro</option><option>calore</option><option>energia cinetica</option><option>energia potenziale</option></select> per tornare all'altezza iniziale (per questo fa fatica!).</p>
+
+<div class="tplcz-actions"><button class="tplcz-vbtn" id="tplClozeCheck" type="button">Verifica tutto</button></div>
+<div class="tplcz-fb" id="tplClozeFb"></div>
+</div>
+
+<style>
+#tplCloze{margin:1rem 0}
+#tplCloze .tplcz-list{padding-left:1.2rem;margin:.4rem 0}
+#tplCloze .tplcz-list li{margin:.5rem 0}
+#tplCloze .tplcz-blank.ok{border-color:#15803d!important;box-shadow:0 0 0 1px #15803d}
+#tplCloze .tplcz-blank.err{border-color:#dc2626!important;box-shadow:0 0 0 1px #dc2626}
+#tplCloze .tplcz-actions{margin:.7rem 0 .3rem}
+#tplCloze .tplcz-vbtn{background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:.35rem .9rem;cursor:pointer;font-size:.88rem}
+#tplCloze .tplcz-fb{font-size:.88rem;min-height:1.2rem}
+#tplCloze .tplcz-fb.ok{color:#15803d;font-weight:600}
+#tplCloze .tplcz-fb.err{color:#dc2626}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('tplCloze');
+  if(!root) return;
+
+  function canon(s){
+    s=(s||'').toString().toLowerCase().replace(/\$/g,'').replace(/\s+/g,'').replace(/_/g,'').replace(/[{}]/g,'').replace(/\*/g,'');
+    var terms=s.split('+').filter(Boolean).sort();
+    return terms.join('+');
+  }
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect?el.getBoundingClientRect():el, cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+
+  var checkBtn=document.getElementById('tplClozeCheck');
+  var fb=document.getElementById('tplClozeFb');
+  checkBtn.addEventListener('click', function(){
+    var blanks=root.querySelectorAll('.tplcz-blank');
+    var total=blanks.length, correct=0;
+    blanks.forEach(function(b){
+      var ok=canon(b.value)===canon(b.dataset.ans);
+      b.classList.remove('ok','err');
+      b.classList.add(ok?'ok':'err');
+      if(ok)correct++;
+    });
+    fb.style.display='block';
+    if(correct===total){
+      fb.className='tplcz-fb ok';
+      fb.innerHTML='&#10003; Tutto corretto! Hai ricostruito perfettamente il ciclo di scambio energetico.';
+      shootConf(checkBtn);
+      setTimeout(shootFW,500);
+    } else {
+      fb.className='tplcz-fb err';
+      fb.innerHTML='Hai '+correct+' risposte corrette su '+total+'. Controlla i campi evidenziati in rosso e riprova.';
+    }
+  });
+})();
+</script>
+
+
+### Il pendolo
+
+Lo stesso scambio fra energia potenziale ed energia cinetica avviene in moltissime altre situazioni. Osserva ad esempio un pendolo che oscilla avanti e indietro senza mai fermarsi:
+
+{% include pendolo-lab.html %}
+
+Prova a descrivere anche tu, passo per passo, come cambia la sua energia lungo l'oscillazione (l'altezza $h$ è misurata rispetto al punto più basso della sua traiettoria):
+
+<div class="tplcz-widget" id="pendCloze">
+<ul class="tplcz-list">
+
+<li>Quando il pendolo si trova al punto più alto della sua oscillazione, a un'altezza $h$ rispetto al punto più basso, la sua velocità è nulla: tutta la sua energia meccanica è
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="mgh"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Scendendo verso il punto più basso, il pendolo converte progressivamente la sua energia potenziale in energia cinetica: $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Quando il pendolo passa per il punto più basso della sua oscillazione, la sua energia meccanica è tutta
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="K"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Risalendo dall'altro lato, il pendolo rallenta: la sua energia si trasforma gradualmente da
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>
+a
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>, finché non si ferma di nuovo alla stessa altezza $h$ (questa volta dal lato opposto) e il ciclo ricomincia.</li>
+
+</ul>
+<div class="tplcz-actions"><button class="tplcz-vbtn" id="pendClozeCheck" type="button">Verifica tutto</button></div>
+<div class="tplcz-fb" id="pendClozeFb"></div>
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('pendCloze');
+  if(!root) return;
+  function canon(s){
+    s=(s||'').toString().toLowerCase().replace(/\$/g,'').replace(/\s+/g,'').replace(/_/g,'').replace(/[{}]/g,'').replace(/\*/g,'');
+    var terms=s.split('+').filter(Boolean).sort();
+    return terms.join('+');
+  }
+  function shootConf(el){
+    var r=el.getBoundingClientRect?el.getBoundingClientRect():el, cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+  var checkBtn=document.getElementById('pendClozeCheck');
+  var fb=document.getElementById('pendClozeFb');
+  checkBtn.addEventListener('click', function(){
+    var blanks=root.querySelectorAll('.tplcz-blank');
+    var total=blanks.length, correct=0;
+    blanks.forEach(function(b){
+      var ok=canon(b.value)===canon(b.dataset.ans);
+      b.classList.remove('ok','err');
+      b.classList.add(ok?'ok':'err');
+      if(ok)correct++;
+    });
+    fb.style.display='block';
+    if(correct===total){
+      fb.className='tplcz-fb ok';
+      fb.innerHTML='&#10003; Tutto corretto! Hai ricostruito perfettamente il ciclo di scambio energetico.';
+      shootConf(checkBtn);
+      setTimeout(shootFW,500);
+    } else {
+      fb.className='tplcz-fb err';
+      fb.innerHTML='Hai '+correct+' risposte corrette su '+total+'. Controlla i campi evidenziati in rosso e riprova.';
+    }
+  });
+})();
+</script>
+
+### Lo yo-yo
+
+Un altro esempio dello stesso fenomeno è uno yo-yo che sale e scende lungo il suo filo, senza mai fermarsi:
+
+{% include yoyo-lab.html %}
+
+Anche qui, prova a descrivere come cambia la sua energia (l'altezza $h$ è misurata rispetto al punto più basso della sua corsa):
+
+<div class="tplcz-widget" id="yoyoCloze">
+<ul class="tplcz-list">
+
+<li>Quando lo yo-yo si trova al punto più alto della sua corsa, a un'altezza $h$ rispetto al punto più basso, la sua velocità è nulla: tutta la sua energia meccanica è
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="mgh"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Scendendo, lo yo-yo converte progressivamente la sua energia potenziale in energia cinetica: $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Quando lo yo-yo raggiunge il punto più basso della sua corsa, la sua energia meccanica è tutta
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="K"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Risalendo di nuovo verso l'alto, lo yo-yo rallenta: la sua energia si trasforma gradualmente da
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>
+a
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>, finché non si ferma di nuovo all'altezza $h$ e il ciclo ricomincia.</li>
+
+</ul>
+<div class="tplcz-actions"><button class="tplcz-vbtn" id="yoyoClozeCheck" type="button">Verifica tutto</button></div>
+<div class="tplcz-fb" id="yoyoClozeFb"></div>
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('yoyoCloze');
+  if(!root) return;
+  function canon(s){
+    s=(s||'').toString().toLowerCase().replace(/\$/g,'').replace(/\s+/g,'').replace(/_/g,'').replace(/[{}]/g,'').replace(/\*/g,'');
+    var terms=s.split('+').filter(Boolean).sort();
+    return terms.join('+');
+  }
+  function shootConf(el){
+    var r=el.getBoundingClientRect?el.getBoundingClientRect():el, cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+  var checkBtn=document.getElementById('yoyoClozeCheck');
+  var fb=document.getElementById('yoyoClozeFb');
+  checkBtn.addEventListener('click', function(){
+    var blanks=root.querySelectorAll('.tplcz-blank');
+    var total=blanks.length, correct=0;
+    blanks.forEach(function(b){
+      var ok=canon(b.value)===canon(b.dataset.ans);
+      b.classList.remove('ok','err');
+      b.classList.add(ok?'ok':'err');
+      if(ok)correct++;
+    });
+    fb.style.display='block';
+    if(correct===total){
+      fb.className='tplcz-fb ok';
+      fb.innerHTML='&#10003; Tutto corretto! Hai ricostruito perfettamente il ciclo di scambio energetico.';
+      shootConf(checkBtn);
+      setTimeout(shootFW,500);
+    } else {
+      fb.className='tplcz-fb err';
+      fb.innerHTML='Hai '+correct+' risposte corrette su '+total+'. Controlla i campi evidenziati in rosso e riprova.';
+    }
+  });
+})();
+</script>
+
+
+
+
+
+### La velocità di impatto
+
+{% include margin-note.html testo="Dalla caduta di un corpo alla velocità d'impatto" %}
+Vediamo ora un'applicazione di quanto abbiamo imparato: la caduta di un corpo di massa $m$ da un'altezza iniziale $h_i$, lasciato cadere da fermo.
+
+Durante la caduta, l'energia potenziale gravitazionale si trasforma via via in energia cinetica:
+- all'inizio della caduta, all'altezza $h_i$, tutta l'energia è potenziale e la velocità è ancora nulla, quindi $E=U_g=mgh_i$;
+- a metà caduta, una parte dell'energia è ancora potenziale e l'altra parte si è già trasformata in energia cinetica: $E=K+U_g$;
+- appena prima dell'impatto, all'altezza $0$, tutta l'energia è ormai cinetica e perciò $E = K = \frac 12 mv_f^2$.
+
+Possiamo usare questa catena di trasformazioni per calcolare la velocità con cui il corpo arriva al suolo. Trascurando l'attrito dell'aria, tutta l'energia potenziale iniziale si trasforma in energia cinetica finale, cioè $U_g=K$:
+
+$$mgh_i = \frac12 mv_f^2.$$
+
+Notiamo che la massa $m$ compare su entrambi i lati e si semplifica (quindi <u markdown="span">**tutti i corpi cadono con la stessa velocità**, indipendentemente dalla loro massa</u>!):
+
+$$gh_i = \frac12 v_f^2.$$
+
+Scambiando i membri e moltiplicando per 2 si ottiene
+
+$$v_f^2 = 2gh_i$$
+
+Ora ci basta prendere la radice quadrata su entrambi i membri per ottenere
+
+$$v_f = \sqrt{2gh_i}.$$
+
+
+{% include margin-note-end.html %}
+
+
+{% include box-imp.html testo="Velocità di impatto di un corpo in caduta libera"%}
+In assenza di attriti, per la conservazione dell'energia meccanica, un corpo di massa $m$ che cade da un'altezza iniziale $h_i$ impatta il suolo con una velocità pari a 
+
+$$v_f = \sqrt{2gh_i}.$$
+
+{% include box-end.html %}
+
+<div class="iex-widget" id="invCarImpatto">
+<p class="iex-lbl">Isola le altre grandezze</p>
+<p class="iex-hint">Cerca la sequenza più breve di mosse per isolare ciascuna grandezza.</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="invCarImpattoprev" onclick="invCarImpattonav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="invCarImpattodots"></div>
+<button class="iex-navbtn" id="invCarImpattonext" onclick="invCarImpattonav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="invCarImpattorow0">
+<div class="iex-nested">
+{% include invert.html id="inv-impatto-g" variabili="vf|g|h|due" etichette="v_f|g|h_i|2" sinistra="vf*vf" destra="due*g*h" obiettivo="g" radice_iniziale="1" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarImpattorow1" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-impatto-h" variabili="vf|g|h|due" etichette="v_f|g|h_i|2" sinistra="vf*vf" destra="due*g*h" obiettivo="h" radice_iniziale="1" %}
+</div>
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('invCarImpatto',2);
+</script>
+
+<div class="iex-widget" id="iexImpatto">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexImpattoprev" onclick="iexImpattonav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexImpattodots"></div>
+<button class="iex-navbtn" id="iexImpattonext" onclick="iexImpattonav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexImpattorow0">
+<p class="iex-qt">Su un pianeta alieno con un'accelerazione di gravità di $g\approx 20\ \text{m/s}^2$, un drone da esplorazione precipita da un'altezza di $10\ \text m$. Con quale velocità tocca il suolo?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcImpatto0" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numImpatto0" valore="20" unit="m/s" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexImpattorow1" style="display:none">
+<p class="iex-qt">Su una piccola luna ghiacciata, dove $g\approx 4\ \text{m/s}^2$, una sonda rilascia un campione roccioso da un'altezza di $0{,}2\ \text{km}$. Con quale velocità il campione arriva al suolo?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcImpatto1" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numImpatto1" valore="40" unit="m/s" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexImpattorow2" style="display:none">
+<p class="iex-qt">Sulla Terra (usa $g\approx 10\ \text{m/s}^2$), una noce di cocco si stacca da una palma e tocca il suolo con una velocità di $30\ \text{m/s}$. Da quale altezza è caduta?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcImpatto2" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numImpatto2" valore="45" unit="m" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var N=3, cur=0, ok=[false,false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexImpattodots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexImpatto .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexImpattorow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexImpattoprev').disabled=(i===0);
+    document.getElementById('iexImpattonext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexImpattodots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexImpattonav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  function checkFinale(){
+    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+
+  // Tutte e tre le domande sono calcoli numerici (num.html), non scelte
+  // multiple: ci mettiamo in ascolto del loro evento di completamento.
+  for(var i=0;i<N;i++)(function(i){
+    var el=document.getElementById('iexImpattorow'+i);
+    if(el)el.addEventListener('iex:correct', function(){
+      if(!ok[i]){ ok[i]=true; updateDots(); checkFinale(); }
+    });
+  })(i);
+})();
+</script>
+
+## I Sistemi non Isolati e la Conservazione dell'Energia Meccanica Totale
+
+{% include box-imp.html testo="Sistemi non isolati" %}
+Un sistema si dice <definizione>non isolato</definizione> se scambia energia con una parte del resto dell'Universo.
+{% include box-end.html %}
+
+In questo caso, il sistema può **perdere** energia oppure **acquistare** energia, a seconda dei casi. Ad esempio, un corpo in movimento soggetto ad attrito **perde** energia meccanica, mentre un corpo su cui viene applicata una forza fino a produrne uno spostamento **acquista** energia meccanica.   
+In ogni caso, <u markdown="span">l'energia **non** può scomparire nel nulla né comparire dal nulla</u>, quindi viene fornita dall'Universo oppure finisce nel resto dell'Universo.
+
+In generale, vale il seguente teorema.
+
+{% include box-thm.html testo="Teorema di Conservazione dell'Energia Meccanica Totale" %}
+
+Un sistema che scambia lavoro con il resto dell'Universo varia la sua energia meccanica secondo la legge
+
+$$
+\Delta E=L.
+$$
+
+Ci sono quindi tre situazioni:
+- se $L>0$, allora $\Delta E>0$ e quindi l'energia meccanica aumenta;
+- se $L=0,$ allora $\Delta E=0$ e quindi l'energia è costante;
+- se $L<0,$ allora $\Delta E<0$ e quindi l'energia meccanica diminuisce.
+
+{% include box-end.html %}
+
+<div class="fig-block">
+<svg viewBox="0 0 360 300" width="100%" style="max-width:300px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Diagramma di Venn: un sistema non isolato dentro l'Universo, con una freccia entrante di lavoro positivo e una uscente di lavoro negativo">
+  <defs>
+    <radialGradient id="univGradNonIso" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#f5f8ff"/><stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <radialGradient id="sysGradNonIso" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#fffbeb"/><stop offset="100%" stop-color="#fde68a"/>
+    </radialGradient>
+    <marker id="lInArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#15803d"/></marker>
+    <marker id="lOutArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  </defs>
+  <circle cx="180" cy="160" r="130" fill="url(#univGradNonIso)" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="180" y="50" text-anchor="middle" font-size="15" font-weight="600" fill="#1e40af">Universo</text>
+  <circle cx="180" cy="180" r="62" fill="url(#sysGradNonIso)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="180" y="185" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">Sistema</text>
+
+  <line x1="90" y1="120" x2="140" y2="152" stroke="#15803d" stroke-width="3" marker-end="url(#lInArrow)"/>
+  <foreignObject x="42" y="88" width="50" height="26">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:15px;font-weight:600;color:#15803d;">$L>0$</div>
+  </foreignObject>
+
+  <line x1="222" y1="212" x2="272" y2="244" stroke="#dc2626" stroke-width="3" marker-end="url(#lOutArrow)"/>
+  <foreignObject x="272" y="240" width="50" height="26">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:15px;font-weight:600;color:#dc2626;">$L<0$</div>
+  </foreignObject>
+</svg>
+<figcaption><span class="fig-num" data-fig-id="venn-sistema-non-isolato">Figura</span> — In un sistema non isolato l'energia può entrare (lavoro positivo, $L>0$) o uscire (lavoro negativo, $L<0$) attraversando il confine con il resto dell'Universo.</figcaption>
+</div>
+
+Ad esempio, l'attrito compie sempre un lavoro negativo, perciò diminuisce l'energia meccanica, mentre un motore compie sempre un lavoro positivo, perciò aumenta l'energia meccanica.
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qlavene %}[
+{"t":"Se su un sistema si compie un lavoro positivo, la sua energia meccanica aumenta.","ok":true,"s":"Sì: per il teorema $\\Delta E = L$, se $L>0$ allora anche $\\Delta E>0$."},
+{"t":"L'attrito può, in certi casi, aumentare l'energia meccanica di un sistema.","ok":false,"s":"No: l'attrito compie sempre un lavoro negativo, quindi diminuisce sempre l'energia meccanica, mai il contrario."},
+{"t":"Un motore che compie lavoro su un sistema ne diminuisce sempre l'energia meccanica.","ok":false,"s":"No, è vero il contrario: un motore compie lavoro positivo, quindi aumenta l'energia meccanica del sistema."},
+{"t":"Se il lavoro totale compiuto su un sistema è nullo, la sua energia meccanica resta costante.","ok":true,"s":"Sì: per $\\Delta E=L$, se $L=0$ allora $\\Delta E=0$, cioè l'energia non cambia."}
+]{% endcapture %}
+{% include quiz.html domande=_qlavene
+   label_si="Un esempio di lavoro che fa aumentare l'energia meccanica"
+   label_no="Un esempio di lavoro che la fa diminuire"
+   id="q-lavoro-energia" %}
+{% include box-end.html %}
+
+### La palla da bowling
+
+Consideriamo l'esempio di una palla da bowling che cade.
+
+{% include bowling-lab.html %}
+
+Inizialmente, come già sappiamo l'energia meccanica è solo potenziale gravitazionale. Man mano che cade, essa si trasforma in energia cinetica.   
+Quando però la palla tocca il pavimento, la sua energia potenziale è nulla e dopo pochi istanti vediamo che la palla è ferma, quindi perde anche tutta la sua energia cinetica. Questo significa che la sua energia è stata dissipata.
+
+In effetti, nel momento dell'urto, la palla comprime il pavimento, compiendo quindi un lavoro e cedendo quindi energia al pavimento. Il pavimento riprende presto la sua forma originaria, dissipando l'energia sotto forma di vibrazioni (quindi anch'esso compie un lavoro). Le vibrazioni del pavimento fanno inoltre vibrare l'aria (compiendo un ulteriore lavoro) che giunge fino al nostro timpano e lo fa vibrare (compiendo lavoro). La vibrazione del timpano viene infine convertita in suono.  
+(Se attivi l'animazione, infatti, sentirai il rumore della palla che colpisce il suolo).
+
+## La Dissipazione dell'Energia: il Calore
+
+Il teorema appena enunciato vale solo **in assenza di attrito**. Nella realtà, però, quasi tutti i moti che osserviamo sono soggetti anche ad attriti o ad altre forze dissipative (come la resistenza dell'aria): in loro presenza, parte dell'energia meccanica non si conserva più, perché viene via via convertita in <definizione>calore</definizione>. È proprio questo che succede alla palla da bowling nell'animazione qui sopra, non appena tocca il pavimento.
+
+Consideriamo ora un corpo che striscia su una superficie in presenza di attrito, rallentando fino a fermarsi completamente. Inizialmente il corpo aveva una certa energia cinetica $K$, che ha perso del tutto fermandosi; restando però sempre alla stessa altezza, la sua energia potenziale $U$ non è cambiata. La sua energia meccanica $E=K+U$, dunque, è diminuita: non si è conservata. Dov'è finita l'energia mancante?
+
+L'energia non è scomparsa — non potrebbe, per il principio di conservazione dell'energia visto all'inizio del capitolo: si è convertita in calore.
+
+Un esperimento semplice per visualizzare questo concetto è sfregare le proprie mani l'una contro l'altra: l'attrito dissipa l'energia cinetica delle mani e sentiamo che esse si riscaldano. La stessa cosa succede con la punta di un trapano che si riscalda, o con un pezzo di legno appuntito che sfrega su un altro pezzetto di legno per accendere un fuoco: in tutti questi casi il lavoro si converte prima in energia cinetica, che a sua volta viene dissipata sotto forma di calore dall'attrito.
+
+Prova tu stesso a esplorare la conservazione — e la dissipazione — dell'energia meccanica con questa simulazione:
+
+{% include phet-sim.html id="energy-skate-park"
+   src="https://phet.colorado.edu/sims/html/energy-skate-park/latest/energy-skate-park_all.html"
+   didascalia="Simulazione PhET: fai scorrere lo skater lungo la pista e osserva come l'energia potenziale si trasforma in energia cinetica (e viceversa). Prova ad attivare l'attrito, e osserva come parte dell'energia si trasforma in calore."
+   altezza="550px" %}
 
 
 # Esercizi di Riepilogo
@@ -2499,4 +3338,105 @@ Un pescatore issa sulla banchina una cassa di pesce, sollevandola di $4\ \text m
 Il lavoro compiuto contro la gravità (che si trasforma in energia potenziale) è $L=F\cdot\Delta s$, dove qui $F$ è proprio il peso della cassa e $\Delta s$ è l'altezza $h$. Isoliamo $F$:
 
 $$F = \frac{\Delta U_g}{h} = \frac{800\ \text J}{4\ \text m} = 200\ \text N.$$
+{% include ex-sol-end.html %}
+
+### Esercizi sull'energia meccanica e sul calore
+
+
+{% include ex.html diff=1 %}
+Il fratellino di Marco gioca con uno yo-yo di massa $60\ \text g$. Lo yo-yo scende, srotolandosi, da fermo per un tratto di $0{,}9\ \text m$: trascurando l'attrito, quanta energia cinetica ha acquistato?
+
+{% include num.html id="numYoyo" valore="0.54" unit="J" %}
+
+{% include ex-sol.html %}
+Convertendo la massa, $60\ \text g = 0{,}06\ \text{kg}$. In assenza di attrito, l'energia meccanica si conserva: tutta l'energia potenziale persa si ritrova come energia cinetica guadagnata,
+
+$$K = U_i - U_f = mgh = 0{,}06\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \text m = 0{,}54\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Una bambina su un'altalena viene tirata indietro finché non si trova a $0{,}45\ \text m$ di altezza rispetto al punto più basso, poi lasciata andare da ferma. Trascurando l'attrito, con che velocità passa per il punto più basso?
+
+{% include num.html id="numAltalena1" valore="3" unit="m/s" %}
+
+{% include ex-sol.html %}
+È la stessa situazione di un corpo lasciato cadere da un'altezza $h$: tutta l'energia potenziale iniziale si trasforma in energia cinetica, quindi $mgh=\frac12 mv^2$, da cui $v=\sqrt{2gh}$:
+
+$$v = \sqrt{2gh} = \sqrt{2\times 10\ \text{m/s}^2\times 0{,}45\ \text m} = \sqrt 9 = 3\ \text{m/s}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Il pendolo di un vecchio orologio a muro, di massa $0{,}5\ \text{kg}$, viene spostato lateralmente fino a un'altezza di $0{,}8\ \text m$ rispetto al punto più basso della sua oscillazione, e lì lasciato fermo. Prendendo come riferimento il punto più basso, qual è la sua energia meccanica in quell'istante?
+
+{% include num.html id="numPendoloE" valore="4" unit="J" %}
+
+{% include ex-sol.html %}
+Il pendolo è fermo, quindi tutta la sua energia meccanica è potenziale ($K=0$):
+
+$$E = K+U = 0 + mgh = 0{,}5\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}8\ \text m = 4\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un'altra bambina, su un'altra altalena (trascura sempre l'attrito), passa per il punto più basso con una velocità di $5\ \text{m/s}$. Con che velocità passa per un punto che si trova $1{,}05\ \text m$ più in alto rispetto al punto più basso?
+
+{% include num.html id="numAltalena2" valore="2" unit="m/s" %}
+
+{% include ex-sol.html %}
+L'energia meccanica si conserva, quindi è la stessa nei due punti:
+
+$$\frac12 m v_{\text{basso}}^2 = \frac12 m v^2 + mgh.$$
+
+La massa si semplifica; isoliamo $v$:
+
+$$v = \sqrt{v_{\text{basso}}^2 - 2gh} = \sqrt{(5\ \text{m/s})^2 - 2\times 10\ \text{m/s}^2\times 1{,}05\ \text m} = \sqrt{25-21} = \sqrt 4 = 2\ \text{m/s}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Uno skater in uno skatepark parte da un punto della rampa alto $3\ \text m$, già in movimento con una velocità di $3\ \text{m/s}$, e scende (trascurando l'attrito) fino a un punto alto $1\ \text m$. Con che velocità passa da quel punto?
+
+{% include num.html id="numSkater" valore="7" unit="m/s" %}
+
+{% include ex-sol.html %}
+L'energia meccanica si conserva fra i due punti:
+
+$$\frac12 m v_1^2 + mgh_1 = \frac12 m v_2^2 + mgh_2.$$
+
+La massa si semplifica; isoliamo $v_2$:
+
+$$v_2 = \sqrt{v_1^2 + 2g(h_1-h_2)} = \sqrt{(3\ \text{m/s})^2 + 2\times 10\ \text{m/s}^2\times(3\ \text m - 1\ \text m)} = \sqrt{9+40} = \sqrt{49} = 7\ \text{m/s}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un pendolo di un orologio a muro, di massa $0{,}5\ \text{kg}$, ha un'energia meccanica di $4\ \text J$ (rispetto al punto più basso della sua oscillazione). Con che velocità passa per quel punto più basso?
+
+{% include num.html id="numPendoloV" valore="4" unit="m/s" %}
+
+{% include ex-sol.html %}
+Nel punto più basso tutta l'energia meccanica è cinetica ($U=0$, prendendolo come riferimento):
+
+$$E = K = \frac12 mv^2 \quad\Rightarrow\quad v = \sqrt{\frac{2E}{m}} = \sqrt{\frac{2\times 4\ \text J}{0{,}5\ \text{kg}}} = \sqrt{16} = 4\ \text{m/s}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+In un bowling, una palla di massa $6\ \text{kg}$ cade da uno scaffale alto $1{,}2\ \text m$ e rimbalza sul pavimento fino a raggiungere di nuovo un'altezza massima di soli $0{,}3\ \text m$. Quanta energia si è convertita in calore durante l'urto con il pavimento?
+
+{% include num.html id="numBowlingCalore" valore="54" unit="J" %}
+
+{% include ex-sol.html %}
+Sia appena prima di cadere sia nel punto più alto del rimbalzo la palla è ferma, quindi in entrambi i casi la sua energia meccanica è tutta potenziale. Se l'energia meccanica si fosse conservata, la palla sarebbe rimbalzata fino alla stessa altezza di partenza: il fatto che risalga solo fino a $0{,}3\ \text m$ significa che l'energia mancante,
+
+$$\Delta E = U_i - U_f = mg(h_i-h_f) = 6\ \text{kg}\times 10\ \text{m/s}^2\times(1{,}2\ \text m - 0{,}3\ \text m) = 6\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \text m = 54\ \text J,$$
+
+si è convertita in calore nell'urto con il pavimento.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Uno slittino di massa $4\ \text{kg}$ scivola lungo una discesa innevata, partendo da fermo da un'altezza di $5\ \text m$. A causa dell'attrito con la neve, in fondo alla discesa la sua velocità è di soli $8\ \text{m/s}$ (minore di quella che avrebbe senza attrito). Quanta energia si è convertita in calore lungo la discesa?
+
+{% include num.html id="numSlittinoCalore" valore="72" unit="J" %}
+
+{% include ex-sol.html %}
+Se non ci fosse stato attrito, l'energia meccanica si sarebbe conservata e tutta l'energia potenziale iniziale si sarebbe trasformata in energia cinetica finale. L'energia effettivamente dissipata sotto forma di calore è allora la differenza fra l'energia potenziale iniziale e l'energia cinetica finale realmente osservata:
+
+$$\Delta E = U_i - K_f = mgh - \frac12 mv^2 = 4\ \text{kg}\times 10\ \text{m/s}^2\times 5\ \text m - \frac12\times 4\ \text{kg}\times(8\ \text{m/s})^2 = 200\ \text J - 128\ \text J = 72\ \text J.$$
 {% include ex-sol-end.html %}

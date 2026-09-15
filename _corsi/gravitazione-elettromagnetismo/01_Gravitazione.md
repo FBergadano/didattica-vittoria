@@ -75,8 +75,6 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
 
   <div class="cavx-head">
     <span class="cavx-badge">Londra · 1798</span>
-    <h4 class="cavx-title">La Bilancia di Torsione di Cavendish</h4>
-    <p class="cavx-sub">Una piccola sfera (<em>m</em>) all'estremità di un'asta sospesa a un filo, dentro un involucro di vetro con una scala graduata. All'altra estremità, un piattino indica la posizione sulla scala. Una sfera grande (<em>M</em>), appesa al tappo vicino alla parete di vetro, la attrae.</p>
   </div>
 
   <div class="cavx-scenario-tabs">
@@ -88,42 +86,44 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
       <canvas class="cavx-app" width="400" height="480"></canvas>
       <p class="cavx-canvas-cap">L'asta ruota verso la sfera grande (rotazione amplificata per essere visibile)</p>
     </div>
-  </div>
 
-  <p class="cavx-meter">Forza rilevata: <span class="cavx-fval">—</span> N</p>
+    <div class="cavx-sidebar">
+      <p class="cavx-meter">Forza rilevata:<br><span class="cavx-fval">—</span> N</p>
 
-  <div class="cavx-panel cavx-panel-mass">
-    <div class="cavx-controls">
-      <div class="cavx-control-group">
-        <span class="cavx-control-label">Massa grande <em>M</em></span>
-        <div class="cavx-choice-row">
-          <button class="cavx-choice cavx-Mbtn active" data-val="20">20 kg</button>
-          <button class="cavx-choice cavx-Mbtn" data-val="40">40 kg</button>
+      <div class="cavx-panel cavx-panel-mass">
+        <div class="cavx-controls">
+          <div class="cavx-control-group">
+            <span class="cavx-control-label">Massa grande <em>M</em></span>
+            <div class="cavx-choice-row">
+              <button class="cavx-choice cavx-Mbtn active" data-val="20">20 kg</button>
+              <button class="cavx-choice cavx-Mbtn" data-val="40">40 kg</button>
+            </div>
+          </div>
+
+          <div class="cavx-centre-controls">
+            <button class="cavx-btn-main cavx-play">▶ Avvia</button>
+            <button class="cavx-btn-rev cavx-reset">↺ Allontana</button>
+          </div>
+
+          <div class="cavx-control-group">
+            <span class="cavx-control-label">Massa piccola <em>m</em></span>
+            <div class="cavx-choice-row">
+              <button class="cavx-choice cavx-mbtn active" data-val="2">2 kg</button>
+              <button class="cavx-choice cavx-mbtn" data-val="4">4 kg</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="cavx-centre-controls">
-        <button class="cavx-btn-main cavx-play">▶ Avvia</button>
-        <button class="cavx-btn-rev cavx-reset">↺ Allontana</button>
-      </div>
-
-      <div class="cavx-control-group">
-        <span class="cavx-control-label">Massa piccola <em>m</em></span>
-        <div class="cavx-choice-row">
-          <button class="cavx-choice cavx-mbtn active" data-val="2">2 kg</button>
-          <button class="cavx-choice cavx-mbtn" data-val="4">4 kg</button>
-        </div>
+      <div class="cavx-panel cavx-panel-r" style="display:none">
+        <p class="cavx-rstudy-info">
+          Distanza attuale <em>r</em> = <span class="cavx-r-cur">—</span> cm<br>
+          Forza prima del cambio: <span class="cavx-r-fbefore">—</span> N
+        </p>
+        <div class="cavx-rstudy-btns"></div>
+        <p class="cavx-rstudy-ratio">&nbsp;</p>
       </div>
     </div>
-  </div>
-
-  <div class="cavx-panel cavx-panel-r" style="display:none">
-    <p class="cavx-rstudy-info">
-      Distanza attuale <em>r</em> = <span class="cavx-r-cur">—</span> cm &nbsp;·&nbsp;
-      Forza prima del cambio: <span class="cavx-r-fbefore">—</span> N
-    </p>
-    <div class="cavx-rstudy-btns"></div>
-    <p class="cavx-rstudy-ratio">&nbsp;</p>
   </div>
 
   <div class="cavx-legend">
@@ -149,7 +149,7 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
   background: var(--cx-bg);
   color: var(--cx-text);
   border-radius: 10px;
-  padding: 1.8rem 1.6rem 1.6rem;
+  padding: 1.2rem 1.1rem 1rem;
   margin: 2rem 0;
   position: relative;
   overflow: hidden;
@@ -162,14 +162,11 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
   pointer-events:none;
 }
 .cavx-widget * { box-sizing: border-box; }
-.cavx-head { text-align:center; margin-bottom:1.1rem; position:relative; z-index:1; }
-.cavx-badge { font-size:.7rem; letter-spacing:.32em; color: var(--cx-copper); text-transform:uppercase; display:block; margin-bottom:.5rem; }
-.cavx-title { font-family: Georgia, serif; font-size:1.4rem; font-weight:700; color: var(--cx-text); margin: 0 0 .5rem; }
-.cavx-sub { font-size:.92rem; color: var(--cx-text2); font-style:italic; max-width:520px; margin:0 auto; line-height:1.6; }
-.cavx-sub em { color: var(--cx-copper-bright); font-style:italic; }
+.cavx-head { text-align:center; margin-bottom:.6rem; position:relative; z-index:1; }
+.cavx-badge { font-size:.7rem; letter-spacing:.32em; color: var(--cx-copper); text-transform:uppercase; display:block; }
 
 .cavx-scenario-tabs {
-  display:flex; justify-content:center; gap:.5rem; margin-bottom:1.2rem; position:relative; z-index:1;
+  display:flex; justify-content:center; gap:.5rem; margin-bottom:.8rem; position:relative; z-index:1;
 }
 .cavx-tab {
   padding:.5rem 1.1rem; border-radius:20px; cursor:pointer;
@@ -179,28 +176,31 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
 .cavx-tab:hover { border-color: var(--cx-copper); color: var(--cx-copper-bright); }
 .cavx-tab.active { background: var(--cx-copper); border-color: var(--cx-copper); color: var(--cx-bg); font-weight:700; }
 
-.cavx-stage { display:flex; gap:1rem; justify-content:center; position:relative; z-index:1; }
+.cavx-stage { display:flex; gap:1rem; justify-content:center; align-items:flex-start; flex-wrap:wrap; position:relative; z-index:1; }
 .cavx-canvas-wrap {
   border:1px solid rgba(184,115,51,0.22); border-radius:6px;
   background: var(--cx-surface); overflow:hidden;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-  width: 320px; max-width:100%;
+  width: 260px; max-width:100%; flex:none;
 }
 .cavx-canvas-wrap canvas { display:block; width:100%; height:auto; }
-.cavx-canvas-cap { font-size:.76rem; color: var(--cx-text2); text-align:center; padding:.5rem .6rem .7rem; font-style:italic; }
+.cavx-canvas-cap { font-size:.72rem; color: var(--cx-text2); text-align:center; padding:.4rem .5rem .55rem; font-style:italic; }
 
+.cavx-sidebar {
+  display:flex; flex-direction:column; justify-content:space-between; gap:.6rem;
+  flex:1 1 160px; max-width:190px; min-width:150px;
+}
 .cavx-meter {
-  text-align:center; font-size:.85rem; color: var(--cx-text2);
-  margin: .8rem 0 0; position:relative; z-index:1;
+  text-align:center; font-size:.8rem; color: var(--cx-text2); line-height:1.4; margin:0;
 }
 .cavx-fval { color: var(--cx-amber); font-weight:600; }
 
-.cavx-panel { position:relative; z-index:1; margin-top:1.2rem; }
+.cavx-panel { position:relative; z-index:1; }
 
 .cavx-controls {
-  display:grid; grid-template-columns:1fr auto 1fr; gap:1.3rem; align-items:center;
+  display:flex; flex-direction:column; gap:.7rem; align-items:stretch;
 }
-.cavx-control-group { display:flex; flex-direction:column; gap:.45rem; align-items:center; }
+.cavx-control-group { display:flex; flex-direction:column; gap:.4rem; align-items:center; }
 .cavx-control-label { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color: var(--cx-text2); text-align:center; }
 
 .cavx-choice-row { display:flex; gap:.5rem; }
@@ -228,22 +228,20 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
 }
 .cavx-btn-rev:hover, .cavx-rbtn:hover { border-color: var(--cx-copper); color: var(--cx-copper-bright); background: rgba(184,115,51,.12); }
 
-.cavx-panel-r { display:flex; flex-direction:column; align-items:center; gap:.7rem; }
-.cavx-rstudy-info { font-size:.85rem; color: var(--cx-text2); text-align:center; margin:0; }
+.cavx-panel-r { display:flex; flex-direction:column; align-items:stretch; gap:.6rem; }
+.cavx-rstudy-info { font-size:.78rem; color: var(--cx-text2); text-align:center; margin:0; line-height:1.5; }
 .cavx-r-cur, .cavx-r-fbefore { color: var(--cx-rline); font-weight:600; }
-.cavx-rstudy-btns { display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
-.cavx-rstudy-ratio { color: var(--cx-copper-bright); font-style:italic; font-size:.85rem; min-height:1.3em; text-align:center; margin:0; }
+.cavx-rstudy-btns { display:flex; flex-direction:column; gap:.4rem; }
+.cavx-rstudy-btns .cavx-rbtn { width:100%; }
+.cavx-rstudy-ratio { color: var(--cx-copper-bright); font-style:italic; font-size:.78rem; min-height:1.3em; text-align:center; margin:0; }
 
 .cavx-legend {
-  display:flex; gap:1.2rem; flex-wrap:wrap; justify-content:center;
-  margin-top:1.3rem; font-size:.8rem; color: var(--cx-text2); position:relative; z-index:1;
+  display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;
+  margin-top:.9rem; font-size:.78rem; color: var(--cx-text2); position:relative; z-index:1;
 }
 .cavx-legend-item { display:flex; align-items:center; gap:.4rem; }
 .cavx-legend-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
 
-@media (max-width: 640px) {
-  .cavx-controls { grid-template-columns: 1fr; }
-}
 @media print { .cavx-widget { display:none !important; } }
 </style>
 
@@ -281,9 +279,13 @@ Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
   // oltre un certo angolo, altrimenti le sfere si toccherebbero: il vincolo è
   // sull'ANGOLO massimo raggiungibile (un fermo meccanico), non sulla
   // lunghezza dell'asta né sulla posizione di M, che restano quelle richieste.
-  // Il margine è il minimo che lascia ancora un piccolo distacco visibile fra
-  // le sfere (il contatto vero e proprio avverrebbe a ~10,5°).
-  var THETA_SAFE_MARGIN = 14 * Math.PI / 180;
+  // Il contatto vero e proprio avverrebbe a ~10,5°: un margine di soli 14°
+  // lascia un distacco troppo sottile per leggersi bene a schermo (e in
+  // proiezione 3D, con sfere di raggio diverso, può sembrare un contatto
+  // anche quando non lo è). Con 20° il distacco fra le superfici è di
+  // circa 25 mm — più del diametro della sfera piccola — chiaramente
+  // visibile per ogni combinazione di masse.
+  var THETA_SAFE_MARGIN = 20 * Math.PI / 180;
   var ANGLE_LIMIT = THETA_M - THETA_SAFE_MARGIN;
 
   // Partendo da 90° (il doppio di prima) e con un'oscillazione voluta doppia
@@ -1113,6 +1115,15 @@ sempre con i vettori di lunghezza uguale, anche se le masse sono diverse.
 
 {% include box-end.html %}
 
+Esplora tu stesso come cambia $F$ al variare di una fra $m_1$, $m_2$ e $r$.
+
+{% include graph-explorer.html id="ge-forza"
+   variabili="m1|m2|r" etichette="m_1|m_2|r" unita="kg|kg|m"
+   min="1e2|1e2|1" max="1e6|1e6|100" default="1e3|1e3|10"
+   costanti="G" costanti_valori="6.67e-11"
+   formula="G*m1*m2/(r*r)" formula_latex="G\dfrac{m_1 \cdot m_2}{r^2}"
+   y_simbolo="F" y_unita="N" %}
+
 <div class="iex-widget" id="invCarForza">
 <p class="iex-lbl">Isola le altre grandezze</p>
 <p class="iex-hint">Per ciascuna grandezza, cerca la sequenza più breve di mosse, poi appuntala sul quaderno in un punto facile da ritrovare: ti servirà spesso.</p>
@@ -1362,6 +1373,15 @@ Osserviamo quindi anche che <u markdown="span">l'unità di misura del campo grav
 {% include margin-note.html testo="Massa esploratrice"%}
 Inoltre, nonostante nella formula compaia la massa $m$, ricordiamo che il campo $g$ **non** dipende da essa (come visto prima, si semplifica con la $m$ contenuta in $F$). Spesso però ci capiterà di introdurre, all'interno di un certo campo generato da una massa $M$ una seconda massa $m$, di modo da misurare la forza di attrazione, da cui poi si ottiene il campo secondo la formula appena data. Pertanto, questa massa è chiamata <definizione>massa esploratrice</definizione> (nel senso che “esplora” il campo).
 {% include margin-note-end.html %}
+
+Esplora tu stesso come cambia $g$ al variare di $M$ o di $r$.
+
+{% include graph-explorer.html id="ge-campo"
+   variabili="M|r" unita="kg|m"
+   min="1e23|6.371e6" max="2e25|2.5e7" default="5.97e24|6.371e6"
+   costanti="G" costanti_valori="6.67e-11"
+   formula="G*M/(r*r)" formula_latex="G\dfrac{M}{r^2}"
+   y_simbolo="g" y_unita="N/kg" %}
 
 <div class="iex-widget" id="invCarCampo">
 <p class="iex-lbl">Isola le altre grandezze</p>
@@ -1850,7 +1870,9 @@ Anche in questo caso possiamo pensare alle linee di campo come alle traiettorie 
 
 # Energia Gravitazionale
 
-Finora abbiamo descritto la gravità nel linguaggio delle forze e dei campi. Esiste però un modo alternativo di raccontare la stessa fisica, quello dell'<definizione>energia</definizione>: è una descrizione molto ricca ed elegante, che ci permetterà di collegare in modo naturale grandezze apparentemente lontane fra loro, come la velocità di un corpo e la sua distanza da un altro.
+Finora abbiamo descritto la gravità nel linguaggio delle forze e dei campi. In teoria, questo linguaggio può descrivere anche un sistema di molte masse, ma per farlo ha bisogno di sommare vettorialmente tutti i campi e tutte le forze. E questo non è facile: sommare vettorialmente tante forze può essere un problema difficile.
+
+Possiamo però sostituire il linguaggio delle forze e dei campi con un altro del tutto analogo, dove le grandezze non sono vettoriali ma scalari: quello dell'<definizione>energia</definizione>. È una descrizione molto ricca ed elegante, che ci permetterà di collegare in modo naturale grandezze apparentemente lontane fra loro, come la velocità di un corpo immerso in un campo gravitazionale e la distanza dalla massa che genera il campo (vedi la <a href="#moto-di-una-massa-in-un-campo-gravitazionale">sezione sul moto di una massa in un campo gravitazionale</a>,).
 
 ## Energia potenziale gravitazionale
 {% include margin-note.html testo="Perché possiamo parlare di energia potenziale?"%}
@@ -2174,6 +2196,15 @@ Le due scritture sono **la stessa identica formula**: nella prima usiamo diretta
 - **Unità di misura:** essendo un'energia, si misura in joule (J).
 {% include box-end.html %}
 
+Esplora tu stesso come cambia $U$ al variare di $M$, di $m$ o di $r$.
+
+{% include graph-explorer.html id="ge-energia"
+   variabili="M|m|r" unita="×10²⁴ kg|t|×10⁶ m" scala="1e24|1000|1e6"
+   min="0.1|0.1|1" max="20|10|30" default="6|0.5|6.4"
+   costanti="G" costanti_valori="6.67e-11"
+   formula="-G*M*m/r" formula_latex="-G\dfrac{M \cdot m}{r}"
+   y_simbolo="U" y_unita="GJ" y_scala="1e9" %}
+
 <div class="iex-widget" id="invCarEnergia">
 <p class="iex-lbl">Isola le altre grandezze</p>
 <p class="iex-hint">Come sopra: cerca la sequenza più breve, poi appuntala sul quaderno. Qui sotto lavoriamo con il <strong>modulo</strong> delle formule (senza il segno meno): il segno resta invariato durante tutti i passaggi, quindi puoi pensare tranquillamente alla versione con il meno davanti.</p>
@@ -2258,6 +2289,15 @@ Analizziamo l'unità di misura di $V$: essendo il rapporto fra un'energia (J) e 
 - **Formula:** $V = \dfrac{U}{m} = -gr = -G\dfrac{M}{r}$ — sempre valida, per qualunque distanza $r$.
 - **Unità di misura:** J/kg.
 {% include box-end.html %}
+
+Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
+
+{% include graph-explorer.html id="ge-potenziale"
+   variabili="M|r" unita="×10²⁴ kg|×10⁶ m" scala="1e24|1e6"
+   min="0.1|1" max="20|30" default="6|6.4"
+   costanti="G" costanti_valori="6.67e-11"
+   formula="-G*M/r" formula_latex="-G\dfrac{M}{r}"
+   y_simbolo="V" y_unita="MJ/kg" y_scala="1e6" %}
 
 <div class="iex-widget" id="invCarPot">
 <p class="iex-lbl">Isola le altre grandezze</p>
@@ -2648,6 +2688,86 @@ Questo ci dice come cambia la velocità della massa $m$ durante il moto:
 # Esercizi di riepilogo
 
 {% include ex.html diff=1 %}
+Abbina ogni grandezza al proprio simbolo e alla propria unità di misura.
+
+{% capture _d_grav_unita %}[
+{"l":"Forza gravitazionale","m":"F","r":"N"},
+{"l":"Campo gravitazionale","m":"g","r":"N/kg"},
+{"l":"Energia potenziale gravitazionale","m":"U","r":"J"},
+{"l":"Potenziale gravitazionale","m":"V","r":"J/kg"},
+{"l":"Costante di gravitazione universale","m":"G","r":"N·m²/kg²"}
+]{% endcapture %}
+{% include match.html id="matchGravUnita" dati=_d_grav_unita col1="Grandezza" col2="Simbolo" col3="Unità SI" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Smista le seguenti affermazioni: sono vere o false per la forza gravitazionale?
+
+{% capture _s_vero_falso_grav %}[
+{"t":"È sempre attrattiva, mai repulsiva","c":0},
+{"t":"È inversamente proporzionale al quadrato della distanza","c":0},
+{"t":"Ha lo stesso modulo su entrambi i corpi (terzo principio della dinamica)","c":0},
+{"t":"È una forza centrale","c":0},
+{"t":"Diventa repulsiva se le due masse sono molto vicine","c":1},
+{"t":"Non dipende affatto dalle masse dei due corpi, solo dalla distanza","c":1},
+{"t":"È più intensa quando le masse sono lontane fra loro","c":1}
+]{% endcapture %}
+{% include sort.html id="sortVeroFalsoGrav" dati=_s_vero_falso_grav col0="Vero" col1="Falso" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Perché è possibile definire un'energia potenziale per la forza gravitazionale?
+<div class="iex-choices" id="mcqCentrale">
+<button class="iex-choice-btn" data-v="a">Perché è sempre attrattiva</button>
+<button class="iex-choice-btn" data-v="b">Perché è una forza centrale</button>
+<button class="iex-choice-btn" data-v="c">Perché la massa esploratrice è arbitraria</button>
+<button class="iex-choice-btn" data-v="d">Perché la costante $G$ è universale</button>
+</div>
+<div class="iex-fb" id="mcqCentralefb"></div>
+<script>
+(function(){
+  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+  var btns=document.querySelectorAll('#mcqCentrale .iex-choice-btn');
+  var fb=document.getElementById('mcqCentralefb');
+  var correctV='b';
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.disabled) return;
+      btns.forEach(function(b){ b.disabled = true; });
+      var correct = btn.dataset.v === correctV;
+      fb.style.display = 'block';
+      if(correct){
+        btn.className = 'iex-choice-btn correct';
+        fb.className = 'iex-fb ok';
+        fb.innerHTML = '&#10003; Esatto! È proprio la proprietà di essere una forza <strong>centrale</strong> (avere come direzione la retta che congiunge i due corpi) — comune a tutte le forze centrali, non solo a quella gravitazionale — a rendere possibile definire un\'energia potenziale.';
+        _shoot(btn);
+      } else {
+        btn.className = 'iex-choice-btn wrong';
+        var cb=document.querySelector('#mcqCentrale .iex-choice-btn[data-v="b"]');
+        cb.className = 'iex-choice-btn correct';
+        fb.className = 'iex-fb err';
+        fb.innerHTML = 'Non è corretto: è la proprietà di essere una forza <strong>centrale</strong> a permettere di definire un\'energia potenziale — non tutte le forze lo consentono.';
+      }
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+    });
+  });
+})();
+</script>
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Completa le frasi.
+
+{% include fill.html prima="La forza gravitazionale fra due masse è sempre" tipo="drop" opts="attrattiva|repulsiva|nulla" ok="attrattiva" dopo="." s="Non è mai repulsiva, a differenza di altre forze che vedrai più avanti (come quella elettrica fra cariche dello stesso segno)." %}
+
+{% include fill.html prima="Il vettore campo gravitazionale generato da una massa $M$ punta sempre" tipo="drop" opts="verso|in direzione opposta a|perpendicolarmente a" ok="verso" dopo=" $M$." s="Coerentemente con il fatto che la forza gravitazionale è sempre attrattiva." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+{% include tf.html q="La Luna attrae la Terra con una forza minore di quella con cui la Terra attrae la Luna, perché la Luna ha una massa molto più piccola." ok=false s="No: per il terzo principio della dinamica, le due forze sono sempre uguali in modulo (e opposte in verso), qualunque sia la differenza fra le due masse." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
 La forza gravitazionale agisce fra **qualsiasi** coppia di oggetti dotati di massa, quindi anche fra te e la sedia su cui sei seduto in questo momento. Perché allora non la senti mai, nella vita di tutti i giorni?
 {% include ex-sol.html %}
 La forza gravitazionale $F = G\dfrac{m_1 m_2}{r^2}$ dipende dal prodotto delle due masse, moltiplicato per la costante $G \approx 6{,}67\times10^{-11}\ \text{N}\cdot\text m^2/\text{kg}^2$: un numero estremamente piccolo. Gli oggetti che maneggiamo ogni giorno (sedie, libri, persone) hanno masse dell'ordine di pochi chilogrammi o poche decine di chilogrammi: il prodotto $m_1 m_2$ resta comunque piccolo, e moltiplicato per un $G$ così minuscolo dà una forza del tutto trascurabile. Solo quando almeno una delle due masse è enorme (un pianeta, una stella) la forza diventa abbastanza intensa da essere percepibile.
@@ -2740,6 +2860,82 @@ Completa il seguente riepilogo: per ciascuna delle quattro grandezze — forza g
 
 Le due grandezze vettoriali (forza e campo) dipendono dal quadrato della distanza; le due grandezze scalari (energia potenziale e potenziale) dipendono dalla distanza stessa, e quindi diminuiscono più lentamente allontanandosi.
 {% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un martello e una piuma, lasciati cadere nello stesso campo gravitazionale (in assenza di attrito con l'aria), arrivano al suolo con la stessa accelerazione, pur avendo massa molto diversa. Usa il **secondo principio della dinamica** ($a = F/m$), insieme alla legge di gravitazione universale, per dimostrarlo.
+{% include ex-sol.html %}
+Chiamiamo $m$ la massa dell'oggetto che cade (martello o piuma) e $M$ la massa del pianeta. La forza gravitazionale su di esso è $F = G\dfrac{Mm}{r^2}$. Per il secondo principio della dinamica, la sua accelerazione è
+
+$$a = \frac{F}{m} = \frac{1}{m}\cdot G\frac{Mm}{r^2} = G\frac{M}{r^2}.$$
+
+La massa $m$ dell'oggetto che cade si semplifica completamente: l'accelerazione $a$ non dipende da essa, ma solo da $M$ (la massa del pianeta) e da $r$. Un martello e una piuma, alla stessa distanza $r$ dal centro del pianeta, subiscono quindi esattamente la stessa accelerazione — che, non a caso, è proprio il campo gravitazionale $g = GM/r^2$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Sai già che $G$ si misura in $\text N\cdot\text m^2/\text{kg}^2$. Usando il **secondo principio della dinamica** ($\text N = \text{kg}\cdot\text m/\text s^2$) per riscrivere il newton, qual è l'unità di misura di $G$ espressa soltanto in termini delle unità fondamentali del Sistema Internazionale (kg, m, s)?
+<div class="iex-choices" id="mcqUnitaG">
+<button class="iex-choice-btn" data-v="a">$\text{kg}\cdot\text m^2/\text s^2$</button>
+<button class="iex-choice-btn" data-v="b">$\text{kg}/(\text m\cdot\text s^2)$</button>
+<button class="iex-choice-btn" data-v="c">$\text m^3/(\text{kg}\cdot\text s^2)$</button>
+<button class="iex-choice-btn" data-v="d">$\text m^2/(\text{kg}\cdot\text s)$</button>
+</div>
+<div class="iex-fb" id="mcqUnitaGfb"></div>
+<script>
+(function(){
+  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+  var btns=document.querySelectorAll('#mcqUnitaG .iex-choice-btn');
+  var fb=document.getElementById('mcqUnitaGfb');
+  var correctV='c';
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.disabled) return;
+      btns.forEach(function(b){ b.disabled = true; });
+      var correct = btn.dataset.v === correctV;
+      fb.style.display = 'block';
+      if(correct){
+        btn.className = 'iex-choice-btn correct';
+        fb.className = 'iex-fb ok';
+        fb.innerHTML = '&#10003; Esatto! Sostituendo $\\text N = \\text{kg}\\cdot\\text m/\\text s^2$: $[G] = \\dfrac{\\text{kg}\\cdot\\text m/\\text s^2 \\cdot \\text m^2}{\\text{kg}^2} = \\dfrac{\\text m^3}{\\text{kg}\\cdot\\text s^2}$.';
+        _shoot(btn);
+      } else {
+        btn.className = 'iex-choice-btn wrong';
+        var cb=document.querySelector('#mcqUnitaG .iex-choice-btn[data-v="c"]');
+        cb.className = 'iex-choice-btn correct';
+        fb.className = 'iex-fb err';
+        fb.innerHTML = 'Non è corretto: sostituendo $\\text N = \\text{kg}\\cdot\\text m/\\text s^2$ in $\\text N\\cdot\\text m^2/\\text{kg}^2$, un fattore $\\text{kg}$ si semplifica e resta $\\text m^3/(\\text{kg}\\cdot\\text s^2)$.';
+      }
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+    });
+  });
+})();
+</script>
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Il grafico seguente mostra come due grandezze diminuiscono, all'aumentare della distanza $r$: la curva <strong style="color:#dc2626">rossa</strong> e la curva <strong style="color:#0891b2">blu</strong>. Una delle due rappresenta l'andamento di forza e campo gravitazionale; l'altra, quello di energia potenziale e potenziale gravitazionale.
+
+<div class="fig-block">
+<svg viewBox="0 0 320 220" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Due curve che decrescono con la distanza r, una più rapidamente dell'altra, senza etichette">
+  <defs>
+    <marker id="graphFEArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#475569"/></marker>
+  </defs>
+  <line x1="40" y1="195" x2="40" y2="18" stroke="#475569" stroke-width="1.5" marker-end="url(#graphFEArrow)"/>
+  <line x1="35" y1="190" x2="308" y2="190" stroke="#475569" stroke-width="1.5" marker-end="url(#graphFEArrow)"/>
+  <text x="312" y="194" font-size="13" fill="#475569">r</text>
+  <text x="18" y="22" font-size="12" fill="#475569">valore</text>
+
+  <polyline points="40.0,20.0 42.7,71.9 45.5,103.3 48.2,123.6 50.9,137.5 53.7,147.5 59.2,160.5 64.6,168.3 70.1,173.4 75.6,176.9 81.1,179.4 94.7,183.2 108.4,185.3 122.1,186.5 135.8,187.3 149.5,187.9 163.2,188.3 176.8,188.6 190.5,188.8 204.2,189.0 217.9,189.1 231.6,189.2 245.3,189.3 258.9,189.4 272.6,189.5 286.3,189.5 300.0,189.6" fill="none" stroke="#dc2626" stroke-width="2.2"/>
+  <polyline points="40.0,20.0 42.7,48.3 45.5,68.6 48.2,83.8 50.9,95.6 53.7,105.0 59.2,119.2 64.6,129.3 70.1,136.9 75.6,142.8 81.1,147.5 94.7,156.0 108.4,161.7 122.1,165.7 135.8,168.8 149.5,171.1 163.2,173.0 176.8,174.5 190.5,175.8 204.2,176.9 217.9,177.9 231.6,178.7 245.3,179.4 258.9,180.0 272.6,180.6 286.3,181.1 300.0,181.5" fill="none" stroke="#0891b2" stroke-width="2.2"/>
+</svg>
+<figcaption><span class="fig-num" data-fig-id="graph-forza-energia-blank">Figura</span> — Due andamenti al decrescere di $1/r^2$ (una curva) e $1/r$ (l'altra curva), senza etichette: a te capire quale sia quale.</figcaption>
+</div>
+
+Completa le frasi.
+
+{% include fill.html prima="La curva <strong style='color:#dc2626'>rossa</strong>, che decresce più rapidamente, rappresenta l'andamento di" tipo="drop" opts="forza e campo|energia potenziale e potenziale" ok="forza e campo" dopo="." s="Forza e campo sono inversamente proporzionali al QUADRATO della distanza: decrescono più rapidamente." %}
+
+{% include fill.html prima="La curva <strong style='color:#0891b2'>blu</strong>, che decresce più lentamente, rappresenta l'andamento di" tipo="drop" opts="forza e campo|energia potenziale e potenziale" ok="energia potenziale e potenziale" dopo="." s="Energia potenziale e potenziale sono inversamente proporzionali alla distanza stessa (non al suo quadrato): decrescono più lentamente." %}
+{% include ex-end.html %}
 
 {% include ex.html diff=2 %}
 Nell'esperimento della bilancia di torsione, se dimezzassi la distanza $r$ fra le due sfere, come cambierebbe la forza misurata? (Usa quanto hai osservato nell'animazione della bilancia di Cavendish.)

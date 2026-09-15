@@ -1,13 +1,13 @@
 # Fdb version 4
-["xdvipdfmx"] 1789454944.94964 "esercizi-matematica-3b.xdv" "esercizi-matematica-3b.pdf" "esercizi-matematica-3b" 1789454945.72744 0
-  "esercizi-matematica-3b.xdv" 1789454944.55593 78160 274328b62b5e3620c62ae43c94b0c3e3 "xelatex"
+["xdvipdfmx"] 1789454965.38744 "01_esercizi-matematica-3b.xdv" "01_esercizi-matematica-3b.pdf" "01_esercizi-matematica-3b" 1789454966.13076 0
+  "01_esercizi-matematica-3b.xdv" 1789454965.00487 78160 fb9b956b45d5bf8d1b1549471f061ec0 "xelatex"
   (generated)
-  "esercizi-matematica-3b.pdf"
+  "01_esercizi-matematica-3b.pdf"
   (rewritten before read)
-["xelatex"] 1789454935.11618 "/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/esercizi-matematica-3b.tex" "esercizi-matematica-3b.xdv" "esercizi-matematica-3b" 1789454945.71271 0
+["xelatex"] 1789454956.49826 "/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/01_esercizi-matematica-3b.tex" "01_esercizi-matematica-3b.xdv" "01_esercizi-matematica-3b" 1789454966.11784 0
   "../../../../latex/preamble.tex" 1784534361.21135 32548 211d754f564a8551c25f77e9ef69f2ec ""
   "/etc/texmf/web2c/texmf.cnf" 1784293461.96888 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/esercizi-matematica-3b.tex" 1789454934.46691 4055 a7133b83486abf30cde3fb8e40c5cf44 ""
+  "/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/01_esercizi-matematica-3b.tex" 1789454934.46691 4055 a7133b83486abf30cde3fb8e40c5cf44 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -357,11 +357,12 @@
   "/usr/share/texmf/tex/latex/tipa/tipa.sty" 1764712660 21394 82fa9965637ca62399434739ae5998f6 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1784293637 5946946 69ae8bc8924b15d5d8b35b1e757af58e ""
-  "esercizi-matematica-3b.aux" 1789454944.55189 3645 586a26c3a6ba71b60438d29eed1b7655 "xelatex"
-  "esercizi-matematica-3b.out" 1789454944.55489 1534 fb92ee1ff6ec8e9243aa913ef56692bf "xelatex"
+  "01_esercizi-matematica-3b.aux" 1789454965.00087 3645 586a26c3a6ba71b60438d29eed1b7655 "xelatex"
+  "01_esercizi-matematica-3b.out" 1789454965.00387 1534 fb92ee1ff6ec8e9243aa913ef56692bf "xelatex"
+  "01_esercizi-matematica-3b.tex" 1789454934.46691 4055 a7133b83486abf30cde3fb8e40c5cf44 ""
   (generated)
-  "esercizi-matematica-3b.aux"
-  "esercizi-matematica-3b.log"
-  "esercizi-matematica-3b.out"
-  "esercizi-matematica-3b.xdv"
+  "01_esercizi-matematica-3b.aux"
+  "01_esercizi-matematica-3b.log"
+  "01_esercizi-matematica-3b.out"
+  "01_esercizi-matematica-3b.xdv"
   (rewritten before read)

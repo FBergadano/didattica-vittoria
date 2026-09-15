@@ -1,0 +1,87 @@
+{% comment %}
+Animazione in loop, continua e mai interrotta: un pendolo che oscilla
+avanti e indietro (oscillazione armonica, nessuna pausa/discontinuità).
+Nessuna barra di progresso, nessun testo sovrapposto: solo l'animazione.
+Nessun parametro.
+{% endcomment %}
+<div class="pend-widget" id="pendoloLab">
+<div class="pend-stage">
+<canvas class="pend-canvas" id="pendCanvas" width="460" height="300" role="img" aria-label="Animazione: un pendolo oscilla avanti e indietro senza mai fermarsi"></canvas>
+</div>
+</div>
+
+<style>
+#pendoloLab{max-width:480px;margin:1.3rem auto;padding:.9rem 1rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+#pendoloLab .pend-stage{display:flex;justify-content:center;}
+#pendoloLab .pend-canvas{width:100%;max-width:420px;height:auto;display:block;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
+@media print{#pendoloLab{display:none!important;}}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('pendoloLab');
+  if(!root) return;
+  var canvas=document.getElementById('pendCanvas');
+  var ctx=canvas.getContext('2d');
+  var W=460,H=300;
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  var pivot={x:230,y:40}, L=190, thetaMax=50*Math.PI/180;
+  var periodMs=2400, omega=2*Math.PI/periodMs;
+  var rulerX=55;
+  var raf=null, t0=null;
+
+  function drawRuler(x, top, bottom){
+    ctx.save();
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1.4; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x,top); ctx.lineTo(x,bottom); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(x-6,top); ctx.lineTo(x+6,top); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x-6,bottom); ctx.lineTo(x+6,bottom); ctx.stroke();
+    ctx.fillStyle='#475569'; ctx.font='italic 16px Georgia, serif';
+    ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillText('h', x+10, (top+bottom)/2);
+    ctx.restore();
+  }
+
+  function sphere(x,y,r,c1,c2){
+    ctx.save();
+    var g=ctx.createRadialGradient(x-r*0.35,y-r*0.4,r*0.15,x,y,r);
+    g.addColorStop(0,c1); g.addColorStop(1,c2);
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.25)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.restore();
+  }
+
+  function draw(theta){
+    ctx.clearRect(0,0,W,H);
+    var botY=pivot.y+L;
+    var bx=pivot.x+L*Math.sin(theta), by=pivot.y+L*Math.cos(theta);
+    if(by<botY-0.5) drawRuler(rulerX, by, botY);
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(pivot.x,pivot.y); ctx.lineTo(bx,by); ctx.stroke();
+    ctx.fillStyle='#334155'; ctx.beginPath(); ctx.arc(pivot.x,pivot.y,4,0,7); ctx.fill();
+    sphere(bx,by,15,'#fde68a','#d97706');
+  }
+
+  function frame(now){
+    if(t0===null) t0=now;
+    var theta=thetaMax*Math.cos(omega*(now-t0));
+    draw(theta);
+    if(!reduce) raf=requestAnimationFrame(frame);
+  }
+
+  function start(){ if(reduce||raf) return; raf=requestAnimationFrame(frame); }
+  function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
+
+  if(reduce){
+    draw(thetaMax);
+  } else if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ e.isIntersecting?start():stop(); });
+    },{threshold:0.05}).observe(canvas);
+  } else {
+    start();
+  }
+})();
+</script>

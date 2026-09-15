@@ -1,0 +1,34 @@
+{% comment %}
+Funzioni condivise per salvare le risposte degli esercizi nel browser
+dello studente (localStorage, nessun login/account). Vanno incluse nel
+<head>, prima del contenuto della pagina, perché i widget (tf, fill,
+num, sci, quiz, match, sort, ecc.) le richiamano nel loro <script>
+inline appena la pagina viene disegnata.
+{% endcomment %}
+<script>
+(function() {
+  // Ogni pagina ha il proprio namespace (location.pathname): non serve
+  // coordinarsi fra widget di pagine diverse, anche se riusano lo stesso id.
+  // "V" permette in futuro di invalidare tutte le risposte salvate
+  // cambiando semplicemente questo prefisso (es. dopo una revisione
+  // grossa dei contenuti che rende le vecchie risposte non pertinenti).
+  var V = 'v1';
+  function key(ns, id) { return 'lv-ans:' + V + ':' + location.pathname + ':' + ns + ':' + id; }
+  window._lvSave = function(ns, id, data) {
+    try { localStorage.setItem(key(ns, id), JSON.stringify(data)); } catch (e) {}
+  };
+  window._lvLoad = function(ns, id) {
+    try { var v = localStorage.getItem(key(ns, id)); return v ? JSON.parse(v) : null; } catch (e) { return null; }
+  };
+  window._lvClear = function(ns, id) {
+    try { localStorage.removeItem(key(ns, id)); } catch (e) {}
+  };
+  // Hash breve e stabile di una stringa, usato come id per i widget
+  // (tf, fill) che non ne ricevono uno esplicito dall'autore.
+  window._lvHash = function(s) {
+    var h = 0; s = String(s);
+    for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; }
+    return (h >>> 0).toString(36);
+  };
+})();
+</script>
