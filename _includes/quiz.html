@@ -27,6 +27,7 @@
   </div>
   <div class="qgf-fine" style="display:none">
     <p class="qgf-fine-title">🎉 Quiz completato!</p>
+    <div class="qgf-recap" style="display:none"></div>
     {% unless include.senza_esempi %}
     <p>Ora tocca a te. Scrivi un esempio e un controesempio.</p>
     <div class="qgf-field"><label>{{ _label_si }}</label><input class="qgf-inp-si" type="text"></div>
@@ -34,6 +35,7 @@
     <button class="qgf-confirm">Conferma</button>
     <p class="qgf-msg"></p>
     {% endunless %}
+    <button class="qgf-redo" style="margin-top:1rem;">↺ Rifai il quiz</button>
   </div>
 </div>
 <canvas class="qgf-canvas"></canvas>
@@ -43,7 +45,8 @@
 var root=document.getElementById('{{ _qid }}');
 var cv=root.nextElementSibling;
 var Q={{ include.domande }};
-var i=0,allOk=true;
+var QID='{{ _qid }}';
+var i=0,allOk=true,results=[];
 function $$(s){return root.querySelector(s);}
 
 function prog(){
@@ -90,6 +93,7 @@ function esito(ok,corrDesc){
   fb.style.display='block';
   if(ok){fb.className='qgf-fb ok';fb.textContent='✓ Corretto! '+q.s;confetti();}
   else{fb.className='qgf-fb err';fb.textContent='✗ '+corrDesc+q.s;allOk=false;}
+  results[i]=ok;
   var nx=$$('.qgf-next');nx.style.display='inline-block';
   nx.textContent=i<Q.length-1?'Avanti →':'Vedi risultato →';
   typeset(fb);
@@ -107,6 +111,12 @@ function checkFill(){
   var ok=accepted.indexOf(normFill(val))!==-1;
   esito(ok,'Non corretto. ');
 }
+function saveRun(extra){
+  var prev=_lvLoad('quiz',QID)||{};
+  var data={results:results,allOk:allOk,esempioSi:prev.esempioSi||'',esempioNo:prev.esempioNo||''};
+  if(extra)Object.assign(data,extra);
+  _lvSave('quiz',QID,data);
+}
 function nextQ(){
   i++;
   if(i<Q.length){show();}
@@ -116,6 +126,8 @@ function nextQ(){
     $$('.qgf-card').style.display='none';
     $$('.qgf-fine').style.display='block';
     if(allOk)fireworks();
+    saveRun();
+    renderRecap(results,allOk);
   }
 }
 function concludi(){
@@ -123,6 +135,24 @@ function concludi(){
   if(!si||!no){msg.style.color='#b91c1c';msg.textContent='Compila entrambi i campi.';return;}
   msg.style.color='#15803d';
   msg.textContent='✓ Bene! Hai scritto «'+si+'» e «'+no+'». Confronta con un compagno!';
+  saveRun({esempioSi:si,esempioNo:no});
+}
+function renderRecap(res,ok){
+  var recap=$$('.qgf-recap'),correct=res.filter(Boolean).length;
+  var html='<p><strong>Risultato: '+correct+' / '+Q.length+' corrette.</strong></p><ul class="qgf-recap-list">';
+  Q.forEach(function(q,idx){html+='<li class="'+(res[idx]?'ok':'err')+'">'+(res[idx]?'✓':'✗')+' '+q.t+'</li>';});
+  html+='</ul>';
+  recap.innerHTML=html;
+  recap.style.display='block';
+  typeset(recap);
+}
+function redo(){
+  _lvClear('quiz',QID);
+  i=0;allOk=true;results=[];
+  $$('.qgf-recap').style.display='none';$$('.qgf-recap').innerHTML='';
+  $$('.qgf-fine').style.display='none';
+  $$('.qgf-card').style.display='block';
+  show();
 }
 
 $$('.qgf-btn-si').addEventListener('click',function(){risposta(true);});
@@ -131,6 +161,7 @@ $$('.qgf-fill-check').addEventListener('click',checkFill);
 $$('.qgf-next').addEventListener('click',nextQ);
 var confirmBtn=$$('.qgf-confirm');
 if(confirmBtn)confirmBtn.addEventListener('click',concludi);
+$$('.qgf-redo').addEventListener('click',redo);
 
 function getCanvas(){cv.width=window.innerWidth;cv.height=window.innerHeight;cv.style.display='block';return cv;}
 function confetti(){
@@ -184,6 +215,19 @@ function fireworks(){
   })();
 }
 
-show();
+var saved=_lvLoad('quiz',QID);
+if(saved&&saved.results&&saved.results.length===Q.length){
+  results=saved.results.slice();
+  allOk=saved.allOk;
+  $$('.qgf-prog-fill').style.width='100%';
+  $$('.qgf-prog-txt').textContent='Completato!';
+  $$('.qgf-card').style.display='none';
+  $$('.qgf-fine').style.display='block';
+  renderRecap(results,allOk);
+  if(saved.esempioSi&&$$('.qgf-inp-si'))$$('.qgf-inp-si').value=saved.esempioSi;
+  if(saved.esempioNo&&$$('.qgf-inp-no'))$$('.qgf-inp-no').value=saved.esempioNo;
+} else {
+  show();
+}
 })();
 </script>

@@ -28,7 +28,8 @@ function nc_{{ include.id }}(){
   var target={{ include.valore }};
   var tol=Math.abs(target)*{{ _tol }}/100;
   fb.style.display='block';
-  if(!isNaN(v) && Math.abs(v-target)<=tol){
+  var ok=!isNaN(v) && Math.abs(v-target)<=tol;
+  if(ok){
     fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
     var inputEl=document.getElementById('{{ include.id }}');
     _shoot(inputEl);
@@ -39,5 +40,15 @@ function nc_{{ include.id }}(){
   } else {
     fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
   }
+  _lvSave('num','{{ include.id }}',{v:document.getElementById('{{ include.id }}').value,ok:ok});
 }
+document.addEventListener('DOMContentLoaded',function(){
+  var s=_lvLoad('num','{{ include.id }}');
+  if(!s)return;
+  var inp=document.getElementById('{{ include.id }}'),fb=document.getElementById('fb-{{ include.id }}');
+  inp.value=s.v;
+  fb.style.display='block';
+  fb.className='iex-fb '+(s.ok?'ok':'err');
+  fb.innerHTML=s.ok?'&#10003; Esatto!':'Non è corretto. Riprova.';
+});
 </script>

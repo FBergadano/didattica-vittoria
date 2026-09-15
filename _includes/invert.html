@@ -20,6 +20,13 @@ Parametri:
               tale variabile compare al quadrato nell'equazione di partenza). Serve solo per
               isolare una variabile che compare al quadrato (es. r in g=GM/r²): usare SOLO in
               quei casi, non aggiungere di default agli altri invert.html del sito.
+  radice_iniziale — (opzionale) se presente (es. "1"), l'equazione di partenza viene mostrata
+              GIÀ sotto radice quadrata (dimezzando gli esponenti di "sinistra"/"destra" così
+              come scritti), e fra le mosse disponibili compare "eleva al quadrato entrambi i
+              membri" (raddoppia tutti gli esponenti) per tornare alla forma senza radice.
+              Serve per un'equazione del tipo v=√(2gh): si scrive sinistra/destra nella forma
+              SENZA radice (v*v = due*g*h) e si isola normalmente g o h — NON v, che è già
+              isolato nell'equazione mostrata. Usare SOLO in questi casi, non insieme a "radice".
 
 Esempio:
   {% include invert.html id="inv-y" variabili="x|y|z" sinistra="x" destra="y/z" obiettivo="y" %}
@@ -39,6 +46,7 @@ Esempio:
     {% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}{% if include.radice and v == include.obiettivo %}<button class="invx-btn" data-type="mul" data-v="{{ v }}" data-mag="2">× <span class="invx-btnsym">${{ lbl }}^2$</span></button>{% else %}<button class="invx-btn" data-type="mul" data-v="{{ v }}">× <span class="invx-btnsym">${{ lbl }}$</span></button>{% endif %}{% endfor %}
     {% for v in _vars %}{% assign idx = forloop.index0 %}{% assign lbl = _labels_raw[idx] | default: v %}{% if include.radice and v == include.obiettivo %}<button class="invx-btn" data-type="div" data-v="{{ v }}" data-mag="2">÷ <span class="invx-btnsym">${{ lbl }}^2$</span></button>{% else %}<button class="invx-btn" data-type="div" data-v="{{ v }}">÷ <span class="invx-btnsym">${{ lbl }}$</span></button>{% endif %}{% endfor %}
     {% if include.radice %}<button class="invx-btn invx-sqrt" data-type="sqrt">√ Radice quadrata di entrambi i membri</button>{% endif %}
+    {% if include.radice_iniziale %}<button class="invx-btn invx-square" data-type="square">² Eleva al quadrato entrambi i membri</button>{% endif %}
   </div>
   <div class="invx-history"></div>
   <div class="invx-footer">
@@ -56,6 +64,7 @@ var LABELS={ {{ _labelmap_json }} };
 var TARGET='{{ include.obiettivo }}';
 var RANGE=4;
 var ALLOW_SQRT={% if include.radice %}true{% else %}false{% endif %};
+var ALLOW_SQUARE={% if include.radice_iniziale %}true{% else %}false{% endif %};
 
 function parseExpr(s){
   var d={};
@@ -70,6 +79,11 @@ function parseExpr(s){
 }
 var LEFT0=parseExpr('{{ include.sinistra }}');
 var RIGHT0=parseExpr('{{ include.destra }}');
+if(ALLOW_SQUARE){
+  // L'equazione va mostrata già "sotto radice": dimezziamo subito tutti
+  // gli esponenti scritti in sinistra/destra (che vanno passati SENZA radice).
+  VARS.forEach(function(v){LEFT0[v]=LEFT0[v]/2;RIGHT0[v]=RIGHT0[v]/2;});
+}
 
 function clone(d){var o={};VARS.forEach(function(v){o[v]=d[v];});return o;}
 function stateKey(st){
@@ -100,6 +114,7 @@ function allMoves(){
     }
   });
   if(ALLOW_SQRT)m.push({type:'sqrt'});
+  if(ALLOW_SQUARE)m.push({type:'square'});
   return m;
 }
 function inRange(st){
@@ -113,6 +128,11 @@ function applyMove(st,mv){
     VARS.forEach(function(v){nl[v]=left[v]/2;nr[v]=right[v]/2;});
     return {left:nl,right:nr};
   }
+  if(mv.type==='square'){
+    var nl2={},nr2={};
+    VARS.forEach(function(v){nl2[v]=left[v]*2;nr2[v]=right[v]*2;});
+    return {left:nl2,right:nr2};
+  }
   var d=(mv.type==='mul'?1:-1)*(mv.mag||1);
   left[mv.v]+=d;right[mv.v]+=d;
   return {left:left,right:right};
@@ -120,6 +140,7 @@ function applyMove(st,mv){
 function moveLabel(mv){
   if(mv.type==='swap')return 'Scambia i membri';
   if(mv.type==='sqrt')return 'Estrai la radice quadrata di entrambi i membri';
+  if(mv.type==='square')return 'Eleva al quadrato entrambi i membri';
   var sq=mv.mag===2?'^2':'';
   return (mv.type==='mul'?'Moltiplica':'Dividi')+' entrambi i membri per $'+LABELS[mv.v]+sq+'$';
 }
@@ -336,7 +357,7 @@ function afterMove(ns,isFree){
 root.querySelectorAll('.invx-btn').forEach(function(btn){
   btn.addEventListener('click',function(){
     if(done||animating)return;
-    var mv=btn.dataset.type==='swap'||btn.dataset.type==='sqrt'?{type:btn.dataset.type}:{type:btn.dataset.type,v:btn.dataset.v,mag:btn.dataset.mag?parseInt(btn.dataset.mag,10):1};
+    var mv=btn.dataset.type==='swap'||btn.dataset.type==='sqrt'||btn.dataset.type==='square'?{type:btn.dataset.type}:{type:btn.dataset.type,v:btn.dataset.v,mag:btn.dataset.mag?parseInt(btn.dataset.mag,10):1};
     var ns=applyMove({left:left,right:right},mv);
     if(!inRange(ns))return;
     prevLeft=clone(left);prevRight=clone(right);lastMoveDesc=moveLabel(mv);
@@ -351,6 +372,13 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
     if(mv.type==='sqrt'){
       var preLatex='\\sqrt{'+toLatexInner(left)+'} = \\sqrt{'+toLatexInner(right)+'}';
       renderStage(preLatex,{hold:1700},function(){
+        renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
+      });
+      return;
+    }
+    if(mv.type==='square'){
+      var preLatexSq='\\left('+toLatex(left)+'\\right)^2 = \\left('+toLatex(right)+'\\right)^2';
+      renderStage(preLatexSq,{hold:1700},function(){
         renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
       });
       return;

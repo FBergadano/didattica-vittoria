@@ -1,0 +1,238 @@
+{% comment %}
+Animazione attivata da un pulsante: una palla da bowling (coi tre fori
+tipici) cade, tocca il pavimento — che si incurva leggermente — con un
+suono d'impatto e piccole vibrazioni disegnate nel terreno e nell'aria,
+poi resta a terra: l'energia non torna interamente U come prima.
+Due barre di progresso, U e K. Nessun parametro.
+{% endcomment %}
+<div class="emec-widget" id="emecScenari">
+<div class="emec-stage">
+<canvas class="emec-canvas" id="emecCanvas" width="460" height="250" role="img" aria-label="Animazione: una palla da bowling cade e resta a terra, perdendo energia nell'urto col pavimento"></canvas>
+<div class="emec-vbar" aria-hidden="true">
+<span class="emec-vlabel" style="color:#d97706">U</span>
+<div class="emec-vtrack emec-vtrack-u"><div class="emec-vmask" id="emecUmask"></div></div>
+<div class="emec-vtrack emec-vtrack-k"><div class="emec-vmask" id="emecKmask"></div></div>
+<span class="emec-vlabel" style="color:#0f766e">K</span>
+</div>
+</div>
+<div class="emec-actions"><button type="button" class="emec-dropbtn" id="emecDropBtn">Fai cadere la palla</button></div>
+<p class="emec-caption" id="emecCaption">La palla cade: $U$ si trasforma in $K$. Ma quando tocca il pavimento, l'energia non torna interamente $U$ come prima: una parte è andata perduta.</p>
+</div>
+
+<style>
+#emecScenari{max-width:460px;margin:1.3rem auto;padding:.9rem 1rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+#emecScenari .emec-stage{display:flex;align-items:stretch;justify-content:center;gap:12px;}
+#emecScenari .emec-canvas{flex:1 1 320px;max-width:360px;width:100%;height:auto;display:block;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
+#emecScenari .emec-vbar{display:flex;flex-direction:column;align-items:center;gap:3px;width:26px;flex:none;}
+#emecScenari .emec-vlabel{font-weight:700;font-size:.85rem;line-height:1;}
+#emecScenari .emec-vtrack{position:relative;flex:1;width:14px;min-height:70px;border-radius:999px;overflow:hidden;}
+#emecScenari .emec-vtrack-u{background:#d97706;}
+#emecScenari .emec-vtrack-k{background:#0f766e;}
+#emecScenari .emec-vmask{position:absolute;left:0;right:0;top:0;height:0%;background:#fff;border-radius:999px 999px 0 0;transition:height .1s linear;}
+#emecScenari .emec-actions{text-align:center;margin:.7rem 0 0;}
+#emecScenari .emec-dropbtn{background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.85rem;}
+#emecScenari .emec-dropbtn:disabled{background:#c4b5fd;cursor:default;}
+#emecScenari .emec-caption{font-size:.82rem;color:#475569;text-align:center;margin:.6rem 0 0;min-height:2.6em;}
+@media print{#emecScenari{display:none!important;}}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('emecScenari');
+  if(!root) return;
+  var canvas=document.getElementById('emecCanvas');
+  var ctx=canvas.getContext('2d');
+  var W=460,H=250;
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var umask=document.getElementById('emecUmask'), kmask=document.getElementById('emecKmask');
+  var dropBtn=document.getElementById('emecDropBtn');
+
+  var cfg={ x:230, yTop:55, yBottom:206, ground:222, R:16 };
+  var DISS_PHASES=[
+    {name:'falling', dur:900},
+    {name:'impact', dur:400},
+    {name:'pauseBottom', dur:900},
+    {name:'resetting', dur:350}
+  ];
+  var phaseIdx=0, phaseT0=null, raf=null, running=false;
+  var impactT0=null; // performance.now() al momento dell'urto, per suono/vibrazioni/incurvatura
+
+  function drawRuler(x, top, bottom){
+    ctx.save();
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1.4; ctx.setLineDash([4,4]);
+    ctx.beginPath(); ctx.moveTo(x,top); ctx.lineTo(x,bottom); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(x-6,top); ctx.lineTo(x+6,top); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x-6,bottom); ctx.lineTo(x+6,bottom); ctx.stroke();
+    ctx.fillStyle='#475569'; ctx.font='italic 15px Georgia, serif';
+    ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillText('h', x+10, (top+bottom)/2);
+    ctx.restore();
+  }
+
+  // Palla da bowling: sfera scura con i tre fori tipici (a triangolo).
+  function bowlingBall(x,y,r,alpha){
+    ctx.save();
+    ctx.globalAlpha = (alpha===undefined?1:alpha);
+    var g=ctx.createRadialGradient(x-r*0.35,y-r*0.4,r*0.15,x,y,r);
+    g.addColorStop(0,'#475569'); g.addColorStop(1,'#0f172a');
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.35)'; ctx.lineWidth=1; ctx.stroke();
+    // i tre fori, disposti a triangolo, come su una vera palla da bowling
+    ctx.fillStyle='#0f172a';
+    var hr=r*0.11, dx=r*0.22, dy=r*0.28;
+    ctx.beginPath(); ctx.arc(x, y-dy, hr, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(x-dx, y-dy*0.15, hr, 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+dx, y-dy*0.15, hr, 0, 7); ctx.fill();
+    ctx.restore();
+  }
+
+  // Pavimento che si incurva leggermente nel punto d'urto, ammortizzando l'impatto.
+  function drawGround(dip){
+    var y0=cfg.ground+cfg.R;
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=2.5; ctx.lineCap='round';
+    ctx.beginPath();
+    ctx.moveTo(90,y0);
+    if(dip>0.001){
+      ctx.quadraticCurveTo(cfg.x,y0+dip,420,y0);
+    } else {
+      ctx.lineTo(420,y0);
+    }
+    ctx.stroke();
+  }
+
+  // Vibrazioni leggere: piccole increspature nel terreno vicino al punto
+  // d'urto, e alcuni cerchi concentrici che si espandono nell'aria.
+  function drawVibrations(t){
+    // t: secondi trascorsi dall'urto
+    if(t==null || t>1.0) return;
+    var groundY=cfg.ground+cfg.R;
+    // increspature nel terreno
+    ctx.save();
+    var gAmp=6*Math.exp(-t*5);
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=1;
+    ctx.globalAlpha=Math.max(0,0.6-t*0.6);
+    ctx.beginPath();
+    for(var dx=-70;dx<=70;dx+=4){
+      var yy=groundY+2+gAmp*Math.sin((dx/9)-t*16)*Math.exp(-Math.abs(dx)/55);
+      if(dx===-70) ctx.moveTo(cfg.x+dx,yy); else ctx.lineTo(cfg.x+dx,yy);
+    }
+    ctx.stroke();
+    ctx.restore();
+    // increspature nell'aria: archi concentrici che si allargano verso l'alto
+    ctx.save();
+    ctx.strokeStyle='#64748b'; ctx.lineWidth=1;
+    for(var k=0;k<3;k++){
+      var t0=k*0.14;
+      if(t<t0) continue;
+      var rt=t-t0;
+      var radius=rt*95;
+      if(radius>62) continue;
+      var op=Math.max(0,0.5-rt*0.85);
+      if(op<=0) continue;
+      ctx.globalAlpha=op;
+      ctx.beginPath();
+      ctx.arc(cfg.x, groundY, radius, Math.PI, 2*Math.PI);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function draw(heightFrac, ballAlpha, vibT, groundDip){
+    ctx.clearRect(0,0,W,H);
+    var by=cfg.yTop+(cfg.yBottom-cfg.yTop)*(1-heightFrac);
+    if(by<cfg.ground-0.5) drawRuler(55, by, cfg.ground);
+    drawGround(groundDip||0);
+    drawVibrations(vibT);
+    bowlingBall(cfg.x,by,cfg.R,ballAlpha);
+  }
+
+  function updateBars(u,k){
+    umask.style.height=((1-u)*100)+'%';
+    kmask.style.height=((1-k)*100)+'%';
+  }
+
+  // Sintetizza un breve "tonfo" con la Web Audio API (nessun file audio da caricare).
+  var actx=null;
+  function playThud(){
+    try{
+      if(!actx){ var AC=window.AudioContext||window.webkitAudioContext; if(!AC)return; actx=new AC(); }
+      if(actx.state==='suspended') actx.resume();
+      var t0=actx.currentTime;
+      var osc=actx.createOscillator(), gain=actx.createGain();
+      osc.type='sine'; osc.frequency.setValueAtTime(150,t0); osc.frequency.exponentialRampToValueAtTime(60,t0+0.18);
+      gain.gain.setValueAtTime(0.001,t0);
+      gain.gain.exponentialRampToValueAtTime(0.55,t0+0.012);
+      gain.gain.exponentialRampToValueAtTime(0.001,t0+0.28);
+      osc.connect(gain); gain.connect(actx.destination);
+      osc.start(t0); osc.stop(t0+0.3);
+    }catch(e){/* ignora: l'audio non è essenziale alla comprensione */}
+  }
+
+  function frame(now){
+    if(phaseT0===null) phaseT0=now;
+    var ph=DISS_PHASES[phaseIdx];
+    var elapsed=now-phaseT0;
+    var u=Math.min(1, elapsed/ph.dur);
+    var heightFrac=1, ballAlpha=1, Ufrac=1, Kfrac=0, groundDip=0;
+
+    if(ph.name==='falling'){ heightFrac=1-u*u; Ufrac=heightFrac; Kfrac=1-heightFrac; }
+    else if(ph.name==='impact'){
+      heightFrac=0; Ufrac=0; Kfrac=1-u;
+      if(impactT0===null){ impactT0=now; playThud(); }
+    }
+    else if(ph.name==='pauseBottom'){ heightFrac=0; Ufrac=0; Kfrac=0; }
+    else { // resetting
+      heightFrac = u<0.5?0:1;
+      ballAlpha = u<0.5 ? (1-u*2) : ((u-0.5)*2);
+      Ufrac=0; Kfrac=0;
+    }
+
+    var vibT = impactT0!==null ? (now-impactT0)/1000 : null;
+    if(vibT!==null && vibT<=0.5) groundDip=7*Math.exp(-vibT*7);
+
+    draw(heightFrac, ballAlpha, vibT, groundDip);
+    updateBars(Ufrac, Kfrac);
+
+    if(elapsed>=ph.dur){
+      phaseIdx++;
+      phaseT0=now;
+      if(phaseIdx>=DISS_PHASES.length){
+        running=false;
+        impactT0=null;
+        dropBtn.disabled=false;
+        drawIdle();
+        return;
+      }
+    }
+    raf=requestAnimationFrame(frame);
+  }
+
+  function drawIdle(){
+    ctx.clearRect(0,0,W,H);
+    drawRuler(55, cfg.yTop, cfg.ground);
+    drawGround(0);
+    bowlingBall(cfg.x,cfg.yTop,cfg.R,1);
+    updateBars(1,0);
+  }
+
+  function startDrop(){
+    if(running) return;
+    running=true;
+    dropBtn.disabled=true;
+    phaseIdx=0; phaseT0=null; impactT0=null;
+    if(reduce){
+      // Mostra solo il fotogramma finale, senza animare.
+      draw(0,1,null,0);
+      updateBars(0,0);
+      running=false;
+      dropBtn.disabled=false;
+      return;
+    }
+    raf=requestAnimationFrame(frame);
+  }
+
+  dropBtn.addEventListener('click', startDrop);
+  drawIdle();
+})();
+</script>

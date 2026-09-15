@@ -80,7 +80,8 @@ Esempio:
     var expOk = exp === TARGET_EXP;
     var unitOk = unit === TARGET_UNIT;
     fb.style.display = 'block';
-    if (coefOk && expOk && unitOk) {
+    var allOk = coefOk && expOk && unitOk;
+    if (allOk) {
       fb.className = 'sciex-fb ok';
       fb.innerHTML = '✓ Corretto! ' + EXPLAIN;
       checkBtn.disabled = true; coefEl.disabled = true; expEl.disabled = true; unitEl.disabled = true;
@@ -93,8 +94,23 @@ Esempio:
       fb.className = 'sciex-fb err';
       fb.textContent = '✗ Controlla: ' + parts.join(', ') + '.';
     }
+    _lvSave('sciex', '{{ _sid }}', { coef: coefEl.value, exp: expEl.value, unit: unitEl.value, ok: allOk });
   }
   checkBtn.addEventListener('click', check);
+  (function restore() {
+    var s = _lvLoad('sciex', '{{ _sid }}');
+    if (!s) return;
+    coefEl.value = s.coef; expEl.value = s.exp; unitEl.value = s.unit;
+    fb.style.display = 'block';
+    if (s.ok) {
+      fb.className = 'sciex-fb ok';
+      fb.innerHTML = '✓ Corretto! ' + EXPLAIN;
+      checkBtn.disabled = true; coefEl.disabled = true; expEl.disabled = true; unitEl.disabled = true;
+    } else {
+      fb.className = 'sciex-fb err';
+      fb.textContent = 'Ultimo tentativo salvato: non ancora corretto.';
+    }
+  })();
 
   function getCanvas() { cv.width = window.innerWidth; cv.height = window.innerHeight; cv.style.display = 'block'; return cv; }
   function confetti() {

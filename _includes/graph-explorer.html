@@ -1,0 +1,460 @@
+{% comment %}
+Widget generico "Prova tu: esplora il grafico" — da inserire dopo una formula
+appena introdotta nella teoria. Lo studente sceglie quale variabile mettere
+in ascissa, imposta le altre con gli slider, digita un valore di x e vede i
+passaggi numerici (sostituzione ed esecuzione dei calcoli) più il punto
+corrispondente sul grafico; un pulsante mostra poi la curva continua. Assi in
+stile "tavola alla lavagna": due sole frecce spesse con tacche, niente griglia.
+
+Parametri:
+  id              — ID univoco (obbligatorio)
+  titolo          — intestazione (opzionale, default "Esplora il grafico")
+  variabili       — nomi delle variabili esplorabili (slider/assi), separati da "|", es. "M|r"
+  etichette       — simboli LaTeX corrispondenti, separati da "|" (opzionale, default = variabili)
+  unita           — unità/etichetta mostrata su slider e asse per ciascuna variabile, separate da "|".
+                    Se una variabile ha un ordine di grandezza scomodo (es. una massa planetaria),
+                    usa "scala" (sotto) per farla comparire come numero comodo, e scrivi qui
+                    l'unità con il moltiplicatore, es. "×10²⁴ kg" invece di "kg".
+  scala           — moltiplicatore per ciascuna variabile, separati da "|" (opzionale, default 1
+                    per tutte). Lo slider e l'asse mostrano SEMPRE il valore comodo (es. "6"); il
+                    valore realmente usato nella formula è valore_comodo × scala (es. 6×10²⁴).
+                    Usalo per evitare numeri in notazione scientifica sui controlli, mantenendo
+                    però il calcolo (e i "passaggi numerici") sul valore fisico vero.
+  min / max       — estremi di ciascuna variabile, nello stesso "numero comodo" dello slider
+                    (cioè PRIMA di moltiplicare per scala), separati da "|" (opzionali: se
+                    omessi, ogni variabile va di default da 0,01 a 20). Digitando un valore
+                    fuori da [min, max] il widget lo rifiuta, con un messaggio d'errore.
+  default         — valore iniziale dello slider per ciascuna variabile (idem), separati da "|"
+  step            — incremento dello slider per ciascuna variabile (opzionale, default (max-min)/200)
+  costanti        — nomi delle costanti fisiche fisse nella formula, separati da "|" (opzionale)
+  costanti_valori — valori numerici corrispondenti, separati da "|" (obbligatorio se costanti è presente)
+  formula         — espressione JS della funzione, in termini di variabili+costanti (valori VERI,
+                    già moltiplicati per scala — se ne occupa il widget), es. "G*M/(r*r)"
+  formula_latex   — la stessa formula in LaTeX, con le ETICHETTE (non i nomi JS) usate come
+                    token da sostituire, es. "G\dfrac{M}{r^2}". Un solo backslash: Liquid
+                    non lo tratta in modo speciale, e "jsonify" lo raddoppia da sé per il JS
+                    (mettendone due a mano si finirebbe con un "\\dfrac" — un a-capo LaTeX,
+                    non un dfrac — che MathJax non sa interpretare). Se compaiono due simboli
+                    adiacenti (es. M ed m), separali sempre con "\cdot" ("M \cdot m", mai "Mm"):
+                    senza uno spazio o un comando fra loro non c'è un confine di parola su cui
+                    agganciare la sostituzione.
+  y_simbolo       — simbolo della variabile dipendente, es. "g" (obbligatorio)
+  y_etichetta     — simbolo LaTeX (opzionale, default = y_simbolo)
+  y_unita         — unità/etichetta della variabile dipendente (con l'eventuale moltiplicatore)
+  y_scala         — moltiplicatore per la variabile dipendente (opzionale, default 1): l'asse
+                    verticale mostra valore_vero / y_scala.
+
+Esempio:
+  {% include graph-explorer.html id="ge-campo"
+     variabili="M|r" unita="×10²⁴ kg|×10⁶ m" scala="1e24|1e6"
+     min="0.1|1" max="20|30" default="6|6.4"
+     costanti="G" costanti_valori="6.67e-11"
+     formula="G*M/(r*r)" formula_latex="G\dfrac{M}{r^2}"
+     y_simbolo="g" y_unita="N/kg" %}
+{% endcomment %}
+{% assign _gid = include.id | default: "gexp" %}
+{% assign _vars = include.variabili | split: "|" %}
+{% assign _labels = include.etichette | default: include.variabili | split: "|" %}
+{% comment %} min/max di default (0,01–20) ripetuti una volta per variabile, se non specificati. {% endcomment %}
+{% assign _min_default = "" %}
+{% assign _max_default = "" %}
+{% for v in _vars %}
+{% assign _min_default = _min_default | append: "0.01" %}
+{% assign _max_default = _max_default | append: "20" %}
+{% unless forloop.last %}{% assign _min_default = _min_default | append: "|" %}{% assign _max_default = _max_default | append: "|" %}{% endunless %}
+{% endfor %}
+{% assign _min_str = include.min | default: _min_default %}
+{% assign _max_str = include.max | default: _max_default %}
+
+<div class="gexp-widget" id="{{ _gid }}">
+<p class="gexp-lbl">{{ include.titolo | default: "Prova tu: esplora il grafico" }}</p>
+
+<div class="gexp-axispick" id="{{ _gid }}-axispick" role="radiogroup" aria-label="Scegli la variabile sull'asse orizzontale">
+<span class="gexp-axispick-lbl">Ascissa:</span>
+{% for v in _vars %}<button type="button" class="gexp-pill{% if forloop.first %} is-on{% endif %}" data-var="{{ v }}" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}">${{ _labels[forloop.index0] }}$</button>{% endfor %}
+</div>
+
+<div class="gexp-body">
+<div class="gexp-plotwrap">
+<svg class="gexp-svg" id="{{ _gid }}-svg" viewBox="0 0 480 380" role="img" aria-label="Grafico interattivo"></svg>
+<div class="gexp-actions">
+<button type="button" class="gexp-btn gexp-curvebtn" id="{{ _gid }}-curvebtn">Mostra grafico completo</button>
+<button type="button" class="gexp-btn gexp-clearbtn" id="{{ _gid }}-clearbtn">↺ Cancella punti</button>
+</div>
+</div>
+
+<div class="gexp-controls" id="{{ _gid }}-controls"></div>
+</div>
+
+<div class="gexp-calc">
+<div class="gexp-calc-row">
+<label class="gexp-calc-label" id="{{ _gid }}-xlabel" for="{{ _gid }}-xinput"></label>
+<input type="text" inputmode="decimal" class="gexp-xinput" id="{{ _gid }}-xinput" placeholder="valore">
+<span class="gexp-calc-unit" id="{{ _gid }}-xunit"></span>
+<button type="button" class="gexp-btn gexp-calcbtn" id="{{ _gid }}-calcbtn">Calcola →</button>
+</div>
+<div class="gexp-steps" id="{{ _gid }}-steps" style="display:none"></div>
+<div class="gexp-points" id="{{ _gid }}-points"></div>
+</div>
+</div>
+
+<style>
+.gexp-widget{max-width:640px;margin:1.3rem auto;padding:.9rem 1rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+.gexp-lbl{font-weight:700;font-size:.88rem;color:#0f766e;margin:0 0 .5rem;text-align:center;}
+.gexp-axispick{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.35rem;margin-bottom:.6rem;}
+.gexp-axispick-lbl{font-size:.78rem;color:#475569;margin-right:.1rem;}
+.gexp-pill{font:inherit;font-size:.78rem;padding:.26rem .65rem;border-radius:999px;border:1.5px solid #7c3aed;background:#fff;color:#7c3aed;cursor:pointer;}
+.gexp-pill.is-on{background:#7c3aed;color:#fff;}
+.gexp-body{display:flex;flex-wrap:wrap;gap:.8rem;align-items:flex-start;justify-content:center;}
+.gexp-plotwrap{flex:1 1 340px;max-width:400px;}
+.gexp-svg{width:100%;height:auto;display:block;background:#fff;}
+.gexp-actions{display:flex;flex-wrap:wrap;gap:.35rem;justify-content:center;margin-top:.4rem;}
+.gexp-btn{font:inherit;font-size:.74rem;padding:.32rem .6rem;border-radius:999px;border:1.5px solid #64748b;background:#fff;color:#475569;cursor:pointer;}
+.gexp-btn:hover{border-color:#0f766e;color:#0f766e;}
+.gexp-curvebtn.is-on{background:#7c3aed;border-color:#7c3aed;color:#fff;}
+.gexp-controls{flex:1 1 170px;min-width:150px;max-width:210px;display:flex;flex-direction:column;gap:.5rem;}
+.gexp-slider{display:flex;flex-direction:column;gap:.15rem;}
+.gexp-slider-top{display:flex;justify-content:space-between;align-items:baseline;font-size:.76rem;color:#334155;}
+.gexp-slider-val{color:#0f766e;font-weight:600;}
+.gexp-slider input[type=range]{width:100%;}
+.gexp-calc{margin-top:.7rem;border-top:1px dashed #e2e8f0;padding-top:.55rem;}
+.gexp-calc-row{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;justify-content:center;}
+.gexp-calc-label{font-size:.84rem;color:#334155;}
+.gexp-xinput{font:inherit;font-size:.82rem;padding:.28rem .45rem;border:1.5px solid #cbd5e1;border-radius:5px;width:6.5em;}
+.gexp-calc-unit{font-size:.76rem;color:#64748b;}
+.gexp-calcbtn{border-color:#0f766e;color:#0f766e;font-weight:600;}
+.gexp-calcbtn:hover{background:#0f766e;color:#fff;}
+.gexp-steps{margin-top:.5rem;background:#f8fafc;border-left:3px solid #0f766e;border-radius:0 6px 6px 0;padding:.45rem .7rem;font-size:.84rem;color:#334155;}
+.gexp-steps .gexp-err{color:#b91c1c;}
+.gexp-steps > div{margin:.12rem 0;}
+.gexp-points{margin-top:.4rem;font-size:.74rem;color:#64748b;}
+.gexp-points b{color:#0f766e;}
+@media print{.gexp-widget{display:none!important;}}
+</style>
+
+<script>
+(function(){
+  var ID='{{ _gid }}';
+  var root=document.getElementById(ID);
+  if(!root) return;
+  var VARS={{ include.variabili | split: "|" | jsonify }};
+  var LABELS={{ _labels | jsonify }};
+  var UNITS={{ include.unita | split: "|" | jsonify }};
+  var MINS={{ _min_str | split: "|" | jsonify }}.map(Number);
+  var MAXS={{ _max_str | split: "|" | jsonify }}.map(Number);
+  var DEFAULTS={{ include.default | split: "|" | jsonify }}.map(Number);
+  {% if include.step %}var STEPS={{ include.step | split: "|" | jsonify }}.map(Number);{% else %}var STEPS=MINS.map(function(m,i){return (MAXS[i]-m)/200;});{% endif %}
+  {% if include.scala %}var SCALES={{ include.scala | split: "|" | jsonify }}.map(Number);{% else %}var SCALES=VARS.map(function(){return 1;});{% endif %}
+  var CONSTS={% if include.costanti %}{{ include.costanti | split: "|" | jsonify }}{% else %}[]{% endif %};
+  var CONSTVALS={% if include.costanti_valori %}{{ include.costanti_valori | split: "|" | jsonify }}.map(Number){% else %}[]{% endif %};
+  var FORMULA={{ include.formula | jsonify }};
+  var FORMULA_LATEX={{ include.formula_latex | jsonify }};
+  var YSYM={{ include.y_simbolo | jsonify }};
+  var YLABEL={{ include.y_etichetta | default: include.y_simbolo | jsonify }};
+  var YUNIT={{ include.y_unita | jsonify }};
+  var YSCALE={{ include.y_scala | default: 1 }};
+
+  var fn=new Function(VARS.concat(CONSTS).join(','), 'return ('+FORMULA+');');
+  function evalAtReal(realVals){
+    return fn.apply(null, VARS.map(function(v){return realVals[v];}).concat(CONSTVALS));
+  }
+  // Costruisce i valori VERI (già moltiplicati per la scala) da usare nella
+  // formula, a partire dai "numeri comodi" mostrati su slider/assi.
+  // overrideVar/overrideDisplay permettono di sostituire al volo il valore
+  // dell'asse corrente senza aver aggiornato state[] (usato per calcolare un
+  // punto o campionare la curva senza toccare lo slider nascosto).
+  function realVals(overrideVar, overrideDisplay){
+    var o={};
+    VARS.forEach(function(v,i){
+      var disp = (v===overrideVar) ? overrideDisplay : state[v];
+      o[v] = disp*SCALES[i];
+    });
+    return o;
+  }
+
+  var state={};
+  VARS.forEach(function(v,i){ state[v]=DEFAULTS[i]; });
+  var xVar=VARS[0];
+  var points=[]; // {x,y} valori COMODI (display) nel significato dell'attuale xVar
+  var curveVisible=false;
+  function idx(v){ return VARS.indexOf(v); }
+
+  function fmtHtml(x){
+    if(x===0||!isFinite(x)) return '0';
+    var ax=Math.abs(x);
+    if(ax>=0.01 && ax<10000){
+      var s=parseFloat(x.toPrecision(3)).toString();
+      return s.replace('.',',').replace('-','&minus;');
+    }
+    var e=Math.floor(Math.log10(ax));
+    var m=x/Math.pow(10,e);
+    return m.toFixed(2).replace('.',',')+'&times;10<sup>'+e+'</sup>';
+  }
+  function fmtLatex(x){
+    if(x===0||!isFinite(x)) return '0';
+    var ax=Math.abs(x);
+    var body, sci=false;
+    if(ax>=0.01 && ax<10000){
+      body=parseFloat(x.toPrecision(3)).toString().replace('.','{,}');
+    } else {
+      sci=true;
+      var e=Math.floor(Math.log10(ax));
+      var m=x/Math.pow(10,e);
+      body=m.toFixed(2).replace('.','{,}')+'\\times10^{'+e+'}';
+    }
+    // Le parentesi sono indispensabili non solo per i numeri negativi, ma
+    // anche per la notazione scientifica: senza, un template come "r^2" con
+    // r sostituito da "6,37×10⁶" darebbe "6,37×10⁶^2" (esponente sbagliato)
+    // invece di "(6,37×10⁶)²".
+    return (x<0 || sci) ? '\\left('+body+'\\right)' : body;
+  }
+  function typeset(el){ if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]); }
+
+  // ---------- pannello variabili / assi ----------
+  var axispick=document.getElementById(ID+'-axispick');
+  var controlsEl=document.getElementById(ID+'-controls');
+  var xlabelEl=document.getElementById(ID+'-xlabel');
+  var xunitEl=document.getElementById(ID+'-xunit');
+  var xinputEl=document.getElementById(ID+'-xinput');
+
+  function buildControls(){
+    controlsEl.innerHTML='';
+    VARS.forEach(function(v,i){
+      if(v===xVar) return;
+      var wrap=document.createElement('div'); wrap.className='gexp-slider';
+      var top=document.createElement('div'); top.className='gexp-slider-top';
+      var lab=document.createElement('span'); lab.innerHTML='$'+LABELS[i]+'$';
+      var val=document.createElement('span'); val.className='gexp-slider-val';
+      top.appendChild(lab); top.appendChild(val);
+      var inp=document.createElement('input'); inp.type='range';
+      inp.min=MINS[i]; inp.max=MAXS[i]; inp.step=STEPS[i]; inp.value=state[v];
+      function upd(){ val.innerHTML=fmtHtml(state[v])+'&ensp;'+UNITS[i]; }
+      upd(); typeset(top);
+      inp.addEventListener('input', function(){
+        state[v]=parseFloat(inp.value); upd();
+        clearPoints(); recomputeAndRender();
+      });
+      wrap.appendChild(top); wrap.appendChild(inp);
+      controlsEl.appendChild(wrap);
+    });
+    var xi=idx(xVar);
+    xlabelEl.innerHTML='$'+LABELS[xi]+' =$';
+    xunitEl.textContent=UNITS[xi];
+    xinputEl.value='';
+    typeset(xlabelEl);
+  }
+
+  axispick.querySelectorAll('.gexp-pill').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.dataset.var===xVar) return;
+      axispick.querySelectorAll('.gexp-pill').forEach(function(b){ b.classList.remove('is-on'); b.setAttribute('aria-pressed','false'); });
+      btn.classList.add('is-on'); btn.setAttribute('aria-pressed','true');
+      xVar=btn.dataset.var;
+      curveVisible=false; curveBtn.classList.remove('is-on'); curveBtn.textContent='Mostra grafico completo';
+      clearPoints();
+      buildControls();
+      recomputeAndRender();
+    });
+  });
+
+  // ---------- calcolo e passaggi ----------
+  var stepsEl=document.getElementById(ID+'-steps');
+  var pointsEl=document.getElementById(ID+'-points');
+  var calcBtn=document.getElementById(ID+'-calcbtn');
+
+  function computeStepsAndValue(xvalDisplay){
+    var rv=realVals(xVar, xvalDisplay);
+    var y=evalAtReal(rv)/YSCALE;
+    var latex1='$'+YLABEL+' = '+FORMULA_LATEX+'$';
+    var sub=FORMULA_LATEX;
+    // La sostituzione avviene per ETICHETTA LaTeX (es. "m_1"), non per il
+    // nome JS della variabile (es. "m1"): è l'etichetta a comparire
+    // letteralmente dentro formula_latex. Le etichette più lunghe vanno
+    // sostituite per prime (evita che una più corta "morda" un pezzo di
+    // una più lunga), e vanno racchiuse fra \b: per questo, in formula_latex,
+    // due simboli adiacenti come M ed m vanno sempre separati (es. "M \cdot m",
+    // mai "Mm"), altrimenti non ci sarebbe un confine di parola fra loro.
+    // I valori sostituiti sono quelli VERI (dopo la scala), non i numeri
+    // comodi mostrati sugli slider.
+    var tokens=VARS.map(function(v,i){ return {tok:LABELS[i], val:rv[v]}; })
+      .concat(CONSTS.map(function(c,i){ return {tok:c, val:CONSTVALS[i]}; }));
+    tokens.sort(function(a,b){ return b.tok.length-a.tok.length; });
+    tokens.forEach(function(t){
+      var esc=t.tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      var re=new RegExp('\\b'+esc+'\\b','g');
+      sub=sub.replace(re, fmtLatex(t.val));
+    });
+    var latex2='$'+YLABEL+' = '+sub+'$';
+    var latex3='$'+YLABEL+' = '+fmtLatex(y)+'\\ \\text{'+YUNIT+'}$';
+    return {y:y, html:'<div>'+latex1+'</div><div>'+latex2+'</div><div><strong>'+latex3+'</strong></div>'};
+  }
+
+  function renderPointsList(){
+    if(!points.length){ pointsEl.textContent=''; return; }
+    var xi=idx(xVar);
+    pointsEl.innerHTML='Punti calcolati: '+points.map(function(p){
+      return '('+'<b>'+fmtHtml(p.x)+'</b>'+' '+UNITS[xi]+' , '+'<b>'+fmtHtml(p.y)+'</b>'+' '+YUNIT+')';
+    }).join(' &nbsp;·&nbsp; ');
+  }
+
+  calcBtn.addEventListener('click', function(){
+    var xi=idx(xVar);
+    var raw=xinputEl.value.trim().replace(',','.');
+    var xval=parseFloat(raw);
+    stepsEl.style.display='block';
+    if(raw===''||isNaN(xval)){
+      stepsEl.innerHTML='<div class="gexp-err">Digita un valore numerico per $'+LABELS[xi]+'$.</div>';
+      typeset(stepsEl);
+      return;
+    }
+    if(xval<MINS[xi]||xval>MAXS[xi]){
+      stepsEl.innerHTML='<div class="gexp-err">Il valore deve essere compreso fra '+fmtHtml(MINS[xi])+' e '+fmtHtml(MAXS[xi])+' '+UNITS[xi]+'.</div>';
+      typeset(stepsEl);
+      return;
+    }
+    var r=computeStepsAndValue(xval);
+    stepsEl.innerHTML=r.html;
+    typeset(stepsEl);
+    points.push({x:xval,y:r.y});
+    renderPointsList();
+    recomputeAndRender();
+  });
+  xinputEl.addEventListener('keydown', function(e){ if(e.key==='Enter') calcBtn.click(); });
+
+  function clearPoints(){
+    points=[]; stepsEl.style.display='none'; stepsEl.innerHTML=''; renderPointsList();
+  }
+  document.getElementById(ID+'-clearbtn').addEventListener('click', function(){ clearPoints(); recomputeAndRender(); });
+
+  // ---------- "numeri comodi" per gli assi (algoritmo di Heckbert) ----------
+  function niceNum(range, round){
+    var exp=Math.floor(Math.log10(range));
+    var frac=range/Math.pow(10,exp), nice;
+    if(round){
+      if(frac<1.5) nice=1; else if(frac<3) nice=2; else if(frac<7) nice=5; else nice=10;
+    } else {
+      if(frac<=1) nice=1; else if(frac<=2) nice=2; else if(frac<=5) nice=5; else nice=10;
+    }
+    return nice*Math.pow(10,exp);
+  }
+  function niceAxis(lo, hi, maxTicks){
+    if(lo===hi){ lo-=1; hi+=1; }
+    var range=niceNum(hi-lo, false);
+    var step=niceNum(range/(maxTicks-1), true);
+    var niceMin=Math.floor(lo/step)*step;
+    var niceMax=Math.ceil(hi/step)*step;
+    var ticks=[];
+    var n=Math.round((niceMax-niceMin)/step);
+    for(var k=0;k<=n;k++) ticks.push(Math.round((niceMin+k*step)/step)*step);
+    return {min:niceMin, max:niceMax, step:step, ticks:ticks};
+  }
+
+  // ---------- grafico SVG ----------
+  var svg=document.getElementById(ID+'-svg');
+  var curveBtn=document.getElementById(ID+'-curvebtn');
+  var PAD_L=52,PAD_R=26,PAD_T=22,PAD_B=38,W=480,H=380;
+  var PLOT_W=W-PAD_L-PAD_R, PLOT_H=H-PAD_T-PAD_B;
+  var axisX={min:0,max:1}, axisY={min:0,max:1};
+
+  function sampleCurve(){
+    var xi=idx(xVar), n=80, pts=[];
+    for(var k=0;k<=n;k++){
+      var x=MINS[xi]+(MAXS[xi]-MINS[xi])*k/n;
+      pts.push({x:x, y:evalAtReal(realVals(xVar,x))/YSCALE});
+    }
+    return pts;
+  }
+  function computeAxes(curve){
+    var xi=idx(xVar);
+    axisX=niceAxis(MINS[xi], MAXS[xi], 6);
+    var ys=curve.map(function(p){return p.y;}).concat(points.map(function(p){return p.y;}));
+    var lo=Math.min.apply(null,ys), hi=Math.max.apply(null,ys);
+    if(lo>0) lo=0; // le grandezze fisiche mostrate partono quasi sempre da 0
+    if(hi<0) hi=0;
+    axisY=niceAxis(lo, hi, 5);
+  }
+  function mapX(x){ return PAD_L+(x-axisX.min)/(axisX.max-axisX.min)*PLOT_W; }
+  function mapY(y){ return PAD_T+PLOT_H-(y-axisY.min)/(axisY.max-axisY.min)*PLOT_H; }
+  function svgEl(tag,attrs){
+    var e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+    for(var k in attrs) e.setAttribute(k,attrs[k]);
+    return e;
+  }
+
+  function recomputeAndRender(){
+    var curve=sampleCurve();
+    computeAxes(curve);
+    render(curve);
+  }
+
+  function render(curve){
+    curve = curve || sampleCurve();
+    svg.innerHTML='';
+    var xi=idx(xVar);
+    var defs=svgEl('defs',{});
+    var marker=svgEl('marker',{id:ID+'-arrow',markerWidth:8,markerHeight:8,refX:6,refY:4,orient:'auto'});
+    marker.appendChild(svgEl('path',{d:'M0,0.4 L7.4,4 L0,7.6 L1.9,4 Z',fill:'#1e293b'}));
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+
+    var y0px = (axisY.min<=0 && axisY.max>=0) ? mapY(0) : PAD_T+PLOT_H;
+    var x0px = (axisX.min<=0 && axisX.max>=0) ? mapX(0) : PAD_L;
+
+    // tacche asse x (saltando quella a x=0, che coincide con l'incrocio)
+    axisX.ticks.forEach(function(t){
+      if(Math.abs(t)<1e-9) return;
+      var px=mapX(t);
+      svg.appendChild(svgEl('line',{x1:px,y1:y0px-5,x2:px,y2:y0px+5,stroke:'#1e293b','stroke-width':1.6}));
+      var lbl=svgEl('text',{x:px,y:y0px+18,'font-size':11,fill:'#334155','text-anchor':'middle'});
+      lbl.innerHTML=fmtHtml(t); svg.appendChild(lbl);
+    });
+    // tacche asse y (saltando quella a y=0)
+    axisY.ticks.forEach(function(t){
+      if(Math.abs(t)<1e-9) return;
+      var py=mapY(t);
+      svg.appendChild(svgEl('line',{x1:x0px-5,y1:py,x2:x0px+5,y2:py,stroke:'#1e293b','stroke-width':1.6}));
+      var lbl=svgEl('text',{x:x0px-9,y:py+3.5,'font-size':11,fill:'#334155','text-anchor':'end'});
+      lbl.innerHTML=fmtHtml(t); svg.appendChild(lbl);
+    });
+
+    // curva (sotto agli assi, sopra alle tacche va bene comunque: gli assi sono sottili)
+    if(curveVisible){
+      var d=curve.map(function(p,i){ return (i===0?'M':'L')+mapX(p.x).toFixed(1)+','+mapY(p.y).toFixed(1); }).join(' ');
+      svg.appendChild(svgEl('path',{d:d,fill:'none',stroke:'#7c3aed','stroke-width':2.4}));
+    }
+    // punti
+    points.forEach(function(p){
+      svg.appendChild(svgEl('circle',{cx:mapX(p.x),cy:mapY(p.y),r:4.5,fill:'#0f766e',stroke:'#fff','stroke-width':1.5}));
+    });
+
+    // assi: due frecce spesse, disegnate PER ULTIME (sopra alla curva e ai punti)
+    var xStart=Math.max(PAD_L-14, mapX(axisX.min)-10);
+    var xEnd=mapX(axisX.max)+14;
+    svg.appendChild(svgEl('line',{x1:xStart,y1:y0px,x2:xEnd,y2:y0px,stroke:'#1e293b','stroke-width':2.6,'stroke-linecap':'round','marker-end':'url(#'+ID+'-arrow)'}));
+    var yStart=Math.min(PAD_T+PLOT_H+14, mapY(axisY.min)+10);
+    var yEnd=mapY(axisY.max)-14;
+    svg.appendChild(svgEl('line',{x1:x0px,y1:yStart,x2:x0px,y2:yEnd,stroke:'#1e293b','stroke-width':2.6,'stroke-linecap':'round','marker-end':'url(#'+ID+'-arrow)'}));
+
+    // etichette assi (LaTeX via foreignObject), appena oltre la punta della freccia
+    var fox=svgEl('foreignObject',{x:xEnd-16,y:y0px+8,width:70,height:22});
+    var dx=document.createElement('div'); dx.setAttribute('xmlns','http://www.w3.org/1999/xhtml');
+    dx.style.cssText='font-size:13px;color:#1e293b;'; dx.innerHTML='$'+LABELS[xi]+'$';
+    fox.appendChild(dx); svg.appendChild(fox);
+    var foy=svgEl('foreignObject',{x:x0px+8,y:yEnd-10,width:90,height:22});
+    var dy=document.createElement('div'); dy.setAttribute('xmlns','http://www.w3.org/1999/xhtml');
+    dy.style.cssText='font-size:13px;color:#1e293b;'; dy.innerHTML='$'+YLABEL+'$';
+    foy.appendChild(dy); svg.appendChild(foy);
+    typeset(svg);
+  }
+
+  curveBtn.addEventListener('click', function(){
+    curveVisible=!curveVisible;
+    curveBtn.classList.toggle('is-on',curveVisible);
+    curveBtn.textContent=curveVisible?'Nascondi la curva':'Mostra grafico completo';
+    recomputeAndRender();
+  });
+
+  buildControls();
+  recomputeAndRender();
+})();
+</script>

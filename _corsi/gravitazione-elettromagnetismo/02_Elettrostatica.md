@@ -2041,8 +2041,6 @@ Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa i
 
   <div class="coulx-head">
     <span class="coulx-badge">Parigi · 1785</span>
-    <h4 class="coulx-title">La Bilancia di Torsione di Coulomb</h4>
-    <p class="coulx-sub">Una piccola sfera carica (<em>q</em>) all'estremità di un'asta sospesa a un filo, dentro un involucro di vetro con una scala graduata. All'altra estremità, un piattino indica la posizione sulla scala. Una sfera carica fissa (<em>Q</em>), appesa al tappo vicino alla parete di vetro, la attrae o la respinge a seconda dei segni scelti.</p>
   </div>
 
   <div class="coulx-scenario-tabs">
@@ -2054,50 +2052,52 @@ Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa i
       <canvas class="coulx-app" width="400" height="480"></canvas>
       <p class="coulx-canvas-cap">L'asta ruota avvicinandosi o allontanandosi dalla sferetta fissa, a seconda dei segni scelti (rotazione amplificata per essere visibile)</p>
     </div>
-  </div>
 
-  <p class="coulx-meter">Forza rilevata: <span class="coulx-fval">—</span> N</p>
+    <div class="coulx-sidebar">
+      <p class="coulx-meter">Forza rilevata:<br><span class="coulx-fval">—</span> N</p>
 
-  <div class="coulx-panel coulx-panel-charge">
-    <div class="coulx-controls">
-      <div class="coulx-control-group">
-        <span class="coulx-control-label">Carica fissa <em>Q</em></span>
-        <div class="coulx-choice-row">
-          <button class="coulx-choice coulx-Qsign active" data-sign="1">+</button>
-          <button class="coulx-choice coulx-Qsign" data-sign="-1">−</button>
-        </div>
-        <div class="coulx-choice-row">
-          <button class="coulx-choice coulx-Qbtn active" data-val="20">20 nC</button>
-          <button class="coulx-choice coulx-Qbtn" data-val="40">40 nC</button>
+      <div class="coulx-panel coulx-panel-charge">
+        <div class="coulx-controls">
+          <div class="coulx-control-group">
+            <span class="coulx-control-label">Carica fissa <em>Q</em></span>
+            <div class="coulx-choice-row">
+              <button class="coulx-choice coulx-Qsign active" data-sign="1">+</button>
+              <button class="coulx-choice coulx-Qsign" data-sign="-1">−</button>
+            </div>
+            <div class="coulx-choice-row">
+              <button class="coulx-choice coulx-Qbtn active" data-val="20">20 nC</button>
+              <button class="coulx-choice coulx-Qbtn" data-val="40">40 nC</button>
+            </div>
+          </div>
+
+          <div class="coulx-centre-controls">
+            <button class="coulx-btn-main coulx-play">▶ Avvia</button>
+            <button class="coulx-btn-rev coulx-reset">↺ Ricomincia</button>
+          </div>
+
+          <div class="coulx-control-group">
+            <span class="coulx-control-label">Carica mobile <em>q</em></span>
+            <div class="coulx-choice-row">
+              <button class="coulx-choice coulx-qsign active" data-sign="1">+</button>
+              <button class="coulx-choice coulx-qsign" data-sign="-1">−</button>
+            </div>
+            <div class="coulx-choice-row">
+              <button class="coulx-choice coulx-qbtn active" data-val="2">2 nC</button>
+              <button class="coulx-choice coulx-qbtn" data-val="4">4 nC</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="coulx-centre-controls">
-        <button class="coulx-btn-main coulx-play">▶ Avvia</button>
-        <button class="coulx-btn-rev coulx-reset">↺ Ricomincia</button>
-      </div>
-
-      <div class="coulx-control-group">
-        <span class="coulx-control-label">Carica mobile <em>q</em></span>
-        <div class="coulx-choice-row">
-          <button class="coulx-choice coulx-qsign active" data-sign="1">+</button>
-          <button class="coulx-choice coulx-qsign" data-sign="-1">−</button>
-        </div>
-        <div class="coulx-choice-row">
-          <button class="coulx-choice coulx-qbtn active" data-val="2">2 nC</button>
-          <button class="coulx-choice coulx-qbtn" data-val="4">4 nC</button>
-        </div>
+      <div class="coulx-panel coulx-panel-r" style="display:none">
+        <p class="coulx-rstudy-info">
+          Distanza attuale <em>r</em> = <span class="coulx-r-cur">—</span> cm<br>
+          Forza prima del cambio: <span class="coulx-r-fbefore">—</span> N
+        </p>
+        <div class="coulx-rstudy-btns"></div>
+        <p class="coulx-rstudy-ratio">&nbsp;</p>
       </div>
     </div>
-  </div>
-
-  <div class="coulx-panel coulx-panel-r" style="display:none">
-    <p class="coulx-rstudy-info">
-      Distanza attuale <em>r</em> = <span class="coulx-r-cur">—</span> cm &nbsp;·&nbsp;
-      Forza prima del cambio: <span class="coulx-r-fbefore">—</span> N
-    </p>
-    <div class="coulx-rstudy-btns"></div>
-    <p class="coulx-rstudy-ratio">&nbsp;</p>
   </div>
 
   <div class="coulx-legend">
@@ -2123,7 +2123,7 @@ Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa i
   background: var(--clx-bg);
   color: var(--clx-text);
   border-radius: 10px;
-  padding: 1.8rem 1.6rem 1.6rem;
+  padding: 1.2rem 1.1rem 1rem;
   margin: 2rem 0;
   position: relative;
   overflow: hidden;
@@ -2136,14 +2136,11 @@ Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa i
   pointer-events:none;
 }
 .coulx-widget * { box-sizing: border-box; }
-.coulx-head { text-align:center; margin-bottom:1.1rem; position:relative; z-index:1; }
-.coulx-badge { font-size:.7rem; letter-spacing:.32em; color: var(--clx-copper); text-transform:uppercase; display:block; margin-bottom:.5rem; }
-.coulx-title { font-family: Georgia, serif; font-size:1.4rem; font-weight:700; color: var(--clx-text); margin: 0 0 .5rem; }
-.coulx-sub { font-size:.92rem; color: var(--clx-text2); font-style:italic; max-width:520px; margin:0 auto; line-height:1.6; }
-.coulx-sub em { color: var(--clx-copper-bright); font-style:italic; }
+.coulx-head { text-align:center; margin-bottom:.6rem; position:relative; z-index:1; }
+.coulx-badge { font-size:.7rem; letter-spacing:.32em; color: var(--clx-copper); text-transform:uppercase; display:block; }
 
 .coulx-scenario-tabs {
-  display:flex; justify-content:center; gap:.5rem; margin-bottom:1.2rem; position:relative; z-index:1;
+  display:flex; justify-content:center; gap:.5rem; margin-bottom:.8rem; position:relative; z-index:1;
 }
 .coulx-tab {
   padding:.5rem 1.1rem; border-radius:20px; cursor:pointer;
@@ -2153,28 +2150,31 @@ Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa i
 .coulx-tab:hover { border-color: var(--clx-copper); color: var(--clx-copper-bright); }
 .coulx-tab.active { background: var(--clx-copper); border-color: var(--clx-copper); color: var(--clx-bg); font-weight:700; }
 
-.coulx-stage { display:flex; gap:1rem; justify-content:center; position:relative; z-index:1; }
+.coulx-stage { display:flex; gap:1rem; justify-content:center; align-items:flex-start; flex-wrap:wrap; position:relative; z-index:1; }
 .coulx-canvas-wrap {
   border:1px solid rgba(184,115,51,0.22); border-radius:6px;
   background: var(--clx-surface); overflow:hidden;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-  width: 420px; max-width:100%;
+  width: 260px; max-width:100%; flex:none;
 }
 .coulx-canvas-wrap canvas { display:block; width:100%; height:auto; }
-.coulx-canvas-cap { font-size:.76rem; color: var(--clx-text2); text-align:center; padding:.5rem .6rem .7rem; font-style:italic; }
+.coulx-canvas-cap { font-size:.72rem; color: var(--clx-text2); text-align:center; padding:.4rem .5rem .55rem; font-style:italic; }
 
+.coulx-sidebar {
+  display:flex; flex-direction:column; justify-content:space-between; gap:.6rem;
+  flex:1 1 160px; max-width:190px; min-width:150px;
+}
 .coulx-meter {
-  text-align:center; font-size:.85rem; color: var(--clx-text2);
-  margin: .8rem 0 0; position:relative; z-index:1;
+  text-align:center; font-size:.8rem; color: var(--clx-text2); line-height:1.4; margin:0;
 }
 .coulx-fval { color: var(--clx-amber); font-weight:600; }
 
-.coulx-panel { position:relative; z-index:1; margin-top:1.2rem; }
+.coulx-panel { position:relative; z-index:1; }
 
 .coulx-controls {
-  display:grid; grid-template-columns:1fr auto 1fr; gap:1.3rem; align-items:center;
+  display:flex; flex-direction:column; gap:.6rem; align-items:stretch;
 }
-.coulx-control-group { display:flex; flex-direction:column; gap:.45rem; align-items:center; }
+.coulx-control-group { display:flex; flex-direction:column; gap:.35rem; align-items:center; }
 .coulx-control-label { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color: var(--clx-text2); text-align:center; }
 
 .coulx-choice-row { display:flex; gap:.5rem; }
@@ -2202,22 +2202,20 @@ Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa i
 }
 .coulx-btn-rev:hover, .coulx-rbtn:hover { border-color: var(--clx-copper); color: var(--clx-copper-bright); background: rgba(184,115,51,.12); }
 
-.coulx-panel-r { display:flex; flex-direction:column; align-items:center; gap:.7rem; }
-.coulx-rstudy-info { font-size:.85rem; color: var(--clx-text2); text-align:center; margin:0; }
+.coulx-panel-r { display:flex; flex-direction:column; align-items:stretch; gap:.6rem; }
+.coulx-rstudy-info { font-size:.78rem; color: var(--clx-text2); text-align:center; margin:0; line-height:1.5; }
 .coulx-r-cur, .coulx-r-fbefore { color: var(--clx-rline); font-weight:600; }
-.coulx-rstudy-btns { display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
-.coulx-rstudy-ratio { color: var(--clx-copper-bright); font-style:italic; font-size:.85rem; min-height:1.3em; text-align:center; margin:0; }
+.coulx-rstudy-btns { display:flex; flex-direction:column; gap:.4rem; }
+.coulx-rstudy-btns .coulx-rbtn { width:100%; }
+.coulx-rstudy-ratio { color: var(--clx-copper-bright); font-style:italic; font-size:.78rem; min-height:1.3em; text-align:center; margin:0; }
 
 .coulx-legend {
-  display:flex; gap:1.2rem; flex-wrap:wrap; justify-content:center;
-  margin-top:1.3rem; font-size:.8rem; color: var(--clx-text2); position:relative; z-index:1;
+  display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;
+  margin-top:.9rem; font-size:.78rem; color: var(--clx-text2); position:relative; z-index:1;
 }
 .coulx-legend-item { display:flex; align-items:center; gap:.4rem; }
 .coulx-legend-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
 
-@media (max-width: 640px) {
-  .coulx-controls { grid-template-columns: 1fr; }
-}
 @media print { .coulx-widget { display:none !important; } }
 </style>
 
@@ -2260,8 +2258,11 @@ Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa i
   // bilancere si avvicina a Q proprio come nel caso gravitazionale: serve
   // quindi un vero fermo meccanico ANGLE_NEAR (stessa distanza di sicurezza,
   // ricalcolata allo stesso modo, usata per la bilancia di Cavendish) per
-  // impedire che le sfere si tocchino (il contatto vero avverrebbe a ~10,5°).
-  var ANGLE_NEAR = THETA_M - 14 * Math.PI / 180;
+  // impedire che le sfere si tocchino. Il contatto vero avverrebbe a ~10,5°:
+  // un margine di 20° lascia un distacco di circa 25 mm fra le superfici —
+  // più del diametro della sfera piccola — chiaramente visibile anche in
+  // proiezione 3D, per ogni combinazione di cariche.
+  var ANGLE_NEAR = THETA_M - 20 * Math.PI / 180;
   var ANGLE_FAR = THETA_M - 170 * Math.PI / 180;
   // Partendo da 90° (il doppio di prima) e con un'oscillazione voluta doppia
   // rispetto a prima, la rigidità del filo va ricalibrata per i due casi:
