@@ -439,7 +439,8 @@ Ricorda che il modulo della forza corrisponde all'intensità della forza, ovvero
 {% include box-end.html %}
 
 
-Anche se l'abbiamo derivata per un caso specifico (spostare un banco), questa formula vale in generale. Il lavoro è definito come il prodotto tra una forza e uno spostamento. 
+Anche se l'abbiamo derivata per un caso specifico (spostare un banco), questa formula vale in generale. Il lavoro è definito come il prodotto tra una forza e uno spostamento.  
+Semplicemente, quando la utilizziamo in generale, dobbiamo fare attenzione ai segni!
 
 ### Il lavoro può essere positivo, negativo o nullo
 Quando utilizzate la formula che abbiamo incontrato, dovete fare attenzione al segno. Infatti, in generale, <u>il lavoro può essere sia positivo, sia negativo, sia nullo</u>. 
@@ -456,11 +457,11 @@ Perché allora, secondo te, quando spingiamo il muro facciamo fatica anche se no
 Perché in realtà le cellule all'interno dei nostri muscoli si spostano continuamente, e anche in modo  piuttosto veloce! Quindi c'è una forza che spinge le nostre cellule a contrarsi e c'è uno spostamento. Pertanto, c'è un lavoro, cioè un dispendio di energia, che corrisponde proprio alla nostra sensazione di fatica.
 {% include spoiler-end.html%}
 
-| Spostamento rispetto alla forza | Lavoro | Segno |
+| Spostamento rispetto alla forza | Lavoro | Formula da utilizzare |
 |---|---|---|
-| Stesso verso | Positivo | $L>0$ |
-| Verso contrario | Negativo | $L<0$ |
-| Perpendicolare | Nullo | $L=0$ |
+| Stesso verso | Positivo $(L>0)$ | $L=F\cdot \Delta s$ |
+| Verso contrario | Negativo $(L<0)$ | $L=-F\cdot \Delta s$ |
+| Perpendicolare | Nullo $(L=0)$ | $L=0$ |
 
 La seguente animazione riassume i casi appena descritti. Attiva le frecce delle quattro forze per confrontarne il verso con quello dello spostamento e leggere il segno del lavoro che ciascuna compie (ma cerca prima di indovinarle tu!).
 
@@ -2474,7 +2475,7 @@ In effetti, nel momento dell'urto, la palla comprime il pavimento, compiendo qui
 
 ## La Dissipazione dell'Energia: il Calore
 
-Sappiamo che <u>l'attrito dissipa dell'energia</u>, compiendo un lavoro **negativo** sul corpo. Ad esempio, un corpo che striscia su una superificie orizzontale soggetta ad attrito rallenta fino a fermarsi., perdendo perciò tutta l'energia cinetica che aveva. Dove va a finire questa energia?  
+Sappiamo che <u>l'attrito dissipa dell'energia</u>, compiendo un lavoro **negativo** sul corpo. Ad esempio, un corpo che striscia su una superificie orizzontale soggetta ad attrito rallenta fino a fermarsi, perdendo perciò tutta l'energia cinetica che aveva. Dove va a finire questa energia?  
 L'energia non è scomparsa — non potrebbe, per il principio di conservazione dell'energia visto all'inizio del capitolo: si è convertita in <definizione>calore</definizione>.
 
 Un esperimento semplice per visualizzare questo concetto è sfregare le proprie mani l'una contro l'altra: l'attrito dissipa l'energia cinetica delle mani e sentiamo che esse si riscaldano. La stessa cosa succede con la punta di un trapano che si riscalda, o con un fiammifero che si accende: in tutti questi casi il lavoro si converte prima in energia cinetica, che a sua volta viene dissipata sotto forma di calore dall'attrito.

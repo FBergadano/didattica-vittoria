@@ -2682,13 +2682,107 @@ Quando il campo è generato da più masse, come nel sistema Terra-Luna, le super
 
 ## Moto di una massa in un campo gravitazionale
 
-Quando una massa $m$ si muove in un campo gravitazionale — ad esempio cadendo verso la massa $M$ che genera il campo, oppure allontanandosene — la sua energia meccanica totale, cioè la somma di energia cinetica ed energia potenziale, si conserva:
+### L'accelerazione
 
-$$E = K + U = \frac{1}{2}mv^2 - G\frac{Mm}{r} = \text{costante}.$$
+Quando una massa $m$ si muove in un campo gravitazionale $\vec g$, essa è soggetta ad una forza. Ricordando che, per il secondo principio della dinamica,
 
-{% include margin-note.html testo="Perché l'energia si conserva" %}
-La forza gravitazionale è una forza centrale — l'abbiamo osservato all'inizio del capitolo. Per questo tipo di forze si può sempre definire un'energia potenziale, e ciò garantisce che l'energia meccanica totale $E = K + U$ resti costante durante il moto, anche se $K$ e $U$ cambiano continuamente l'una a spese dell'altra.
-{% include margin-note-end.html %}
+$$\vec F = m \vec a,$$
+
+essa è dunque soggetta anche a un'accelerazione. Confrontando con l'equazione che lega la forza al campo gravitazionale $\vec F = m \vec g,$ comprendiamo che possiamo identificare il campo gravitazionale con l'accelerazione a cui è soggetta la massa $m$. 
+
+{% include box-imp.html testo="L'accelerazione di una massa in un campo gravitazioanle" %}
+Una massa immersa in un campo gravitazionale $\vec g$ è soggetta a un'accelerazione che corrisponde in modulo direzione e verso al campo $\vec g$.
+{% include box-end.html %}
+
+Ricordando poi che ogni accelerazione $\vec a$ è definita come la variazione della velocità nel tempo
+
+$$\vec a = \frac{\Delta \vec v}{\Delta t},$$
+
+possiamo quindi dire che il campo gravitazionale corrisponde alla variazione della velocità della massa nel tempo:
+
+$$\vec g = \frac{\Delta \vec v}{\Delta t}.$$
+
+Infatti, puoi provare con il seguente esercizio che l'unità di misura del campo (il N/kg) corrisponde all'unità di misura dell'accelerazione (il m/s²).
+
+<div class="iex-widget" id="iexNkg">
+<p class="iex-lbl">Verifica Subito!</p>
+<p class="iex-hint">Segui i passaggi per scoprire che l'unità di misura del campo, il N/kg, corrisponde proprio a quella dell'accelerazione.</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexNkgprev" onclick="iexNkgnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexNkgdots"></div>
+<button class="iex-navbtn" id="iexNkgnext" onclick="iexNkgnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexNkgrow0">
+<p class="iex-qt">Parti dalla formula $g = \dfrac{F}{m}$ e sostituisci ogni grandezza con la propria unità di misura.</p>
+<div class="iex-nested">
+{% include unit-derive.html id="ud-g-Nkg" testo="Trova l'unità di misura di g"
+   variabile="g"
+   numeratore_simboli="F" numeratore_corrette="N"
+   denominatore_simboli="m" denominatore_corrette="kg"
+   opzioni="N|kg|J|m|s" %}
+</div>
+</div>
+
+<div class="iex-q" id="iexNkgrow1" style="display:none">
+<p class="iex-qt">Il newton è a sua volta un'unità derivata. Parti dal secondo principio della dinamica $F = ma$ e scopri di che cosa è fatto un newton, sostituendo massa e accelerazione con le loro unità.</p>
+<div class="iex-nested">
+{% include unit-derive.html id="ud-N-Nkg" testo="Trova l'unità di misura di N"
+   variabile="N"
+   numeratore_simboli="m|a" numeratore_corrette="kg|m/s²"
+   opzioni="kg|m/s²|N|s|m" %}
+</div>
+</div>
+
+<div class="iex-q" id="iexNkgrow2" style="display:none">
+<p class="iex-qt">Ottimo: ora sai che $\text N = \text{kg}\cdot\text m/\text s^2$. Sostituiscilo al posto di N in N/kg e semplifica: a che cosa corrisponde?</p>
+<div class="iex-choices" id="iexNkgchoices2">
+<button class="iex-choice-btn" data-v="a">$\text m/\text s^2$</button>
+<button class="iex-choice-btn" data-v="b">$\text{kg}\cdot\text m/\text s^2$</button>
+<button class="iex-choice-btn" data-v="c">$\text{kg}/\text s^2$</button>
+<button class="iex-choice-btn" data-v="d">$\text s^2/\text m$</button>
+</div>
+<div class="iex-fb" id="iexNkgfb2"></div>
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('iexNkg',3);
+(function(){
+  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+  var btns=document.querySelectorAll('#iexNkgchoices2 .iex-choice-btn');
+  var fb=document.getElementById('iexNkgfb2');
+  var correctV='a';
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.disabled) return;
+      btns.forEach(function(b){ b.disabled = true; });
+      var correct = btn.dataset.v === correctV;
+      fb.style.display = 'block';
+      if(correct){
+        btn.className = 'iex-choice-btn correct';
+        fb.className = 'iex-fb ok';
+        fb.innerHTML = '&#10003; Esatto! $\\dfrac{\\text N}{\\text{kg}} = \\dfrac{\\text{kg}\\cdot\\text m/\\text s^2}{\\text{kg}} = \\text m/\\text s^2$: il kg si semplifica, e resta proprio l\'unità di un\'accelerazione.';
+        _shoot(btn);
+      } else {
+        btn.className = 'iex-choice-btn wrong';
+        var cb=document.querySelector('#iexNkgchoices2 .iex-choice-btn[data-v="a"]');
+        cb.className = 'iex-choice-btn correct';
+        fb.className = 'iex-fb err';
+        fb.innerHTML = 'Non è corretto: sostituendo $\\text N = \\text{kg}\\cdot\\text m/\\text s^2$ in $\\text N/\\text{kg}$, il fattore kg si semplifica e resta $\\text m/\\text s^2$.';
+      }
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+    });
+  });
+})();
+</script>
+
+### L'Energia Meccanica
+
+Finché il corpo non è soggetto ad attriti (o altre forze non conservative) <u>esso conserva la sua energia meccanica totale</u>, cioè la somma di energia cinetica ed energia potenziale:
+
+$$E = K + U = \frac{1}{2}mv^2 - G\frac{Mm}{r} \quad \text{è costante nel tempo}.$$
 
 Questo ci dice come cambia la velocità della massa $m$ durante il moto:
 

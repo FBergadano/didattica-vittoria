@@ -24,7 +24,15 @@ body {
 }
 
 // Accessible font override
-body.accessible-font * {
+body.accessible-font {
+  font-size: 19px;
+  line-height: 1.9;
+}
+// Le formule (MathJax, output CHTML) sono escluse: usano font matematici
+// propri, diversi per ogni simbolo (radici, underbrace, parentesi estensibili,
+// ecc.), impossibili da sostituire correttamente con un font generico — vanno
+// quindi lasciate sempre uguali a come appaiono col font standard.
+body.accessible-font :not(mjx-container, mjx-container *) {
   font-family: $font-accessible !important;
   letter-spacing: 0.01em;
   word-spacing: 0.05em;

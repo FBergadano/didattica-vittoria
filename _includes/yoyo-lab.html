@@ -29,6 +29,7 @@ Nessun parametro.
   var x=210, anchorY=40, yTop=90, yBottom=250;
   var mid=(yTop+yBottom)/2, amp=(yBottom-yTop)/2;
   var periodMs=2400, omega=2*Math.PI/periodMs;
+  var spinK=0.15;
   var rulerX=60;
   var raf=null, t0=null;
 
@@ -72,7 +73,7 @@ Nessun parametro.
     if(t0===null) t0=now;
     var elapsed=now-t0;
     var y=mid+amp*Math.cos(omega*elapsed);
-    draw(y, elapsed*0.006);
+    draw(y, spinK*(y-mid));
     if(!reduce) raf=requestAnimationFrame(frame);
   }
 
@@ -80,7 +81,7 @@ Nessun parametro.
   function stop(){ if(raf){ cancelAnimationFrame(raf); raf=null; } }
 
   if(reduce){
-    draw(yTop, 0);
+    draw(yTop, spinK*(yTop-mid));
   } else if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){
       es.forEach(function(e){ e.isIntersecting?start():stop(); });
