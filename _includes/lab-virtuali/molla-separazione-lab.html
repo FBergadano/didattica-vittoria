@@ -1,0 +1,120 @@
+{% comment %}
+Animazione: due masse vengono allontanate di un tratto r, mentre i vettori
+della forza gravitazionale (attrattiva) le tirano continuamente l'una verso
+l'altra, come una molla in tensione — usata per introdurre il lavoro fatto
+contro la forza gravitazionale e l'energia potenziale. Nessun parametro.
+{% endcomment %}
+<div class="vdrag-widget" id="springSep">
+<div class="lift-flow">
+<svg id="springSep-svg" viewBox="0 0 380 200" width="100%" style="max-width:340px;height:auto;display:block;" role="img" aria-label="Animazione: due masse vengono allontanate mentre i vettori della forza gravitazionale le tirano l'una verso l'altra">
+<defs>
+  <radialGradient id="sepM" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
+  <radialGradient id="sepm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0f9ff"/><stop offset="55%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#38bdf8"/></radialGradient>
+  <marker id="sepArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+</defs>
+
+<line id="springSep-rline" x1="160" y1="50" x2="220" y2="50" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
+<line id="springSep-rtickL" x1="160" y1="44" x2="160" y2="56" stroke="#94a3b8" stroke-width="1.5"/>
+<line id="springSep-rtickR" x1="220" y1="44" x2="220" y2="56" stroke="#94a3b8" stroke-width="1.5"/>
+<text id="springSep-rlabel" x="190" y="38" text-anchor="middle" font-size="14" fill="#64748b">r</text>
+
+<line id="springSep-arrowA" x1="0" y1="100" x2="0" y2="100" stroke="#dc2626" stroke-width="2.5" marker-end="url(#sepArrow)"/>
+<line id="springSep-arrowB" x1="0" y1="100" x2="0" y2="100" stroke="#dc2626" stroke-width="2.5" marker-end="url(#sepArrow)"/>
+
+<circle id="springSep-m" cx="160" cy="100" r="20" fill="url(#sepm)"/>
+<text id="springSep-mlabel" x="160" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#0369a1">m</text>
+<circle id="springSep-M" cx="220" cy="100" r="28" fill="url(#sepM)"/>
+<text id="springSep-Mlabel" x="220" y="106" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">M</text>
+</svg>
+
+<p class="lift-eq">
+<span class="lift-fixed" id="springSep-fixed">$L=$</span> <span class="lift-var" id="springSep-var"></span>
+</p>
+</div>
+
+<div class="vdrag-actions">
+<button class="vdrag-check" id="springSep-go">Separa le masse!</button>
+<button class="vdrag-reset" id="springSep-reset" style="display:none;">&#8635; Ricomincia</button>
+</div>
+</div>
+
+<script>
+(function(){
+  var ID='springSep';
+  var m=document.getElementById(ID+'-m'), M=document.getElementById(ID+'-M');
+  var mlabel=document.getElementById(ID+'-mlabel'), Mlabel=document.getElementById(ID+'-Mlabel');
+  var arrowA=document.getElementById(ID+'-arrowA'), arrowB=document.getElementById(ID+'-arrowB');
+  var rline=document.getElementById(ID+'-rline'), rtickL=document.getElementById(ID+'-rtickL'), rtickR=document.getElementById(ID+'-rtickR'), rlabel=document.getElementById(ID+'-rlabel');
+  var goBtn=document.getElementById(ID+'-go'), resetBtn=document.getElementById(ID+'-reset');
+  var fixedEl=document.getElementById(ID+'-fixed'), varEl=document.getElementById(ID+'-var');
+  var STAGES=['-F \\times \\text{spostamento}','-G\\dfrac{Mm}{r^2} \\times r','-G\\dfrac{Mm}{r^{\\cancel{2}}} \\times \\cancel{r}','-G\\dfrac{Mm}{r}'];
+  var FADE=300;
+
+  function setStage(i){
+    var tex='$'+STAGES[i]+'$';
+    function apply(){
+      varEl.innerHTML=tex;
+      if(window.MathJax && MathJax.typesetPromise){
+        MathJax.typesetPromise([varEl]).then(function(){ varEl.style.opacity=1; });
+      } else {
+        varEl.style.opacity=1;
+      }
+    }
+    if(varEl.innerHTML===''){ apply(); }
+    else { varEl.style.opacity=0; setTimeout(apply,FADE); }
+  }
+
+  var X_START_m=160, X_START_M=220, X_END_m=60, X_END_M=320, R_m=20, R_M=28, Y=100;
+  var R_START=X_START_M-X_START_m;
+  var ARROW_MAX=30, ARROW_MIN=6;
+
+  function render(t){
+    var xm = X_START_m + (X_END_m-X_START_m)*t;
+    var xM = X_START_M + (X_END_M-X_START_M)*t;
+    m.setAttribute('cx',xm); mlabel.setAttribute('x',xm);
+    M.setAttribute('cx',xM); Mlabel.setAttribute('x',xM);
+
+    var r=xM-xm;
+    var alen=Math.max(ARROW_MIN, Math.min(ARROW_MAX, ARROW_MAX*(R_START/r)*(R_START/r)));
+    arrowA.setAttribute('x1',xm+R_m+4); arrowA.setAttribute('y1',Y); arrowA.setAttribute('x2',xm+R_m+4+alen); arrowA.setAttribute('y2',Y);
+    arrowB.setAttribute('x1',xM-R_M-4); arrowB.setAttribute('y1',Y); arrowB.setAttribute('x2',xM-R_M-4-alen); arrowB.setAttribute('y2',Y);
+
+    rline.setAttribute('x1',xm); rline.setAttribute('x2',xM);
+    rtickL.setAttribute('x1',xm); rtickL.setAttribute('x2',xm);
+    rtickR.setAttribute('x1',xM); rtickR.setAttribute('x2',xM);
+    rlabel.setAttribute('x',(xm+xM)/2);
+  }
+  render(0);
+
+  function resetAll(){
+    render(0);
+    fixedEl.style.opacity=0;
+    varEl.style.opacity=0; varEl.innerHTML='';
+    goBtn.style.display='inline-block'; goBtn.disabled=false;
+    resetBtn.style.display='none';
+  }
+
+  goBtn.addEventListener('click',function(){
+    goBtn.disabled=true;
+    var t0=performance.now(), DUR=1400;
+    function step(now){
+      var t=Math.min(1,(now-t0)/DUR);
+      var e=t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
+      render(e);
+      if(t<1){ requestAnimationFrame(step); }
+      else {
+        goBtn.style.display='none';
+        resetBtn.style.display='inline-block';
+        fixedEl.style.opacity=1;
+        setTimeout(function(){ setStage(0); },250);
+        setTimeout(function(){ setStage(1); },2100);
+        setTimeout(function(){ setStage(2); },3950);
+        setTimeout(function(){ setStage(3); },5800);
+      }
+    }
+    requestAnimationFrame(step);
+  });
+
+  resetBtn.addEventListener('click',resetAll);
+})();
+</script>

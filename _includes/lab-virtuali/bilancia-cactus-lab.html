@@ -1,0 +1,135 @@
+{% comment %}
+Animazione: una bilancia digitale pesa un vaso con un cactus. Un pulsante
+"Porta il Sole" fa evaporare lentamente l'acqua del cactus, la cui massa
+vera diminuisce con continuità — ma di una quantità troppo piccola perché la
+bilancia (che mostra solo un numero discreto) riesca a rilevarla. Serve a
+introdurre la distinzione fra instabilità della grandezza misurata e
+imprecisione dello strumento. Nessun parametro.
+{% endcomment %}
+<div style="margin:1.5rem 0;background:#fefce8;border-radius:10px;padding:1rem;border:1px solid #e5d58a;">
+<p style="margin:0 0 0.5rem;font-size:13px;color:#374151;font-family:Georgia,serif;"><strong>Bilancia digitale e vaso con il cactus</strong> — la bilancia può misurare la massa solo con una certa precisione.</p>
+<canvas id="cv-bildig" width="560" height="225" style="display:block;max-width:100%;border-radius:6px;margin:0 auto;"></canvas>
+<div style="text-align:center;margin-top:0.6rem;">
+  <button id="btn-sole" style="padding:0.3rem 1rem;background:#d97706;color:#fff;border:none;border-radius:5px;cursor:pointer;font-family:Georgia,serif;font-size:13px;">☀️ Porta il Sole</button>
+</div>
+</div>
+<script>
+(function(){
+var cv=document.getElementById('cv-bildig');
+if(!cv)return;
+var ctx=cv.getContext('2d');
+var W=cv.width,H=cv.height;
+var trueMass=3241.2;
+var sunActive=false,sunX=W+60,SUN_TX=W*.87,SUN_Y=48;
+var t=0,ptcls=[];
+function disp(){return Math.round(trueMass);}
+function fmt(m){var s=m.toFixed(1).split('.');return s[0].replace(/\B(?=(\d{3})+$)/,' ')+','+s[1];}
+function evapRate(){return sunActive?Math.min(1,Math.max(0,(SUN_TX+60-sunX)/60)):0;}
+function loop(){
+  t++;ctx.clearRect(0,0,W,H);
+  var bgg=ctx.createLinearGradient(0,0,0,H);
+  bgg.addColorStop(0,sunActive?'#fffbeb':'#f0f5fa');bgg.addColorStop(1,sunActive?'#fef3c7':'#e8eef8');
+  ctx.fillStyle=bgg;ctx.fillRect(0,0,W,H);
+  if(sunActive&&sunX>SUN_TX)sunX-=1.3;
+  var er=evapRate();
+  if(sunActive){
+    ctx.save();ctx.translate(sunX,SUN_Y);
+    var nr=12;ctx.save();
+    for(var i=0;i<nr;i++){
+      ctx.rotate(Math.PI*2/nr);
+      var ri=30+3*Math.sin(t*.07+i*.5),ro=46+5*Math.sin(t*.07+i*.5);
+      ctx.strokeStyle='rgba(251,191,36,.85)';ctx.lineWidth=3.5;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(ri,0);ctx.lineTo(ro,0);ctx.stroke();
+    }
+    ctx.restore();
+    var sg=ctx.createRadialGradient(0,0,3,0,0,27);
+    sg.addColorStop(0,'#fef08a');sg.addColorStop(.7,'#fbbf24');sg.addColorStop(1,'#f59e0b');
+    ctx.fillStyle=sg;ctx.beginPath();ctx.arc(0,0,27,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#92400e';
+    ctx.beginPath();ctx.arc(-8,-4,3,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(8,-4,3,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#92400e';ctx.lineWidth=1.8;ctx.lineCap='round';
+    ctx.beginPath();ctx.arc(0,4,9,.2,Math.PI-.2);ctx.stroke();
+    ctx.restore();
+  }
+  if(er>.05&&t%8===0&&trueMass>3240.8)
+    ptcls.push({x:145+(Math.random()-.5)*14,y:57,vx:(Math.random()-.5)*.4,vy:-(0.5+Math.random()*.5),l:1,ph:Math.random()*6.28});
+  ptcls=ptcls.filter(function(p){p.y+=p.vy;p.x+=p.vx+.4*Math.sin(t*.09+p.ph);p.l-=.013;return p.l>0;});
+  ptcls.forEach(function(p){
+    ctx.save();ctx.globalAlpha=p.l*.75;
+    ctx.strokeStyle='#93c5fd';ctx.lineWidth=1.8;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(p.x,p.y);
+    var mx=p.x+5*Math.sin(p.ph+t*.09);
+    ctx.bezierCurveTo(mx,p.y-6,mx-4,p.y-12,p.x,p.y-17);
+    ctx.stroke();ctx.restore();
+  });
+  if(trueMass>3240.8)trueMass-=.0012*er;
+  var cx=145,by=172;
+  ctx.fillStyle='rgba(0,0,0,.1)';ctx.beginPath();ctx.ellipse(cx+3,by+52,82,9,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#9ca3af';ctx.fillRect(cx-72,by+42,16,10);ctx.fillRect(cx+56,by+42,16,10);
+  var bg2=ctx.createLinearGradient(cx-78,by,cx+78,by+42);
+  bg2.addColorStop(0,'#e5e7eb');bg2.addColorStop(.4,'#f9fafb');bg2.addColorStop(1,'#d1d5db');
+  ctx.fillStyle=bg2;ctx.beginPath();ctx.roundRect(cx-78,by+10,156,42,[0,0,8,8]);ctx.fill();
+  ctx.strokeStyle='#9ca3af';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(cx-78,by+10,156,42,[0,0,8,8]);ctx.stroke();
+  var pg2=ctx.createLinearGradient(cx-80,by-2,cx+80,by+12);
+  pg2.addColorStop(0,'#ddd');pg2.addColorStop(.5,'#f5f5f5');pg2.addColorStop(1,'#ccc');
+  ctx.fillStyle=pg2;ctx.beginPath();ctx.roundRect(cx-80,by,160,13,[4,4,0,0]);ctx.fill();
+  ctx.strokeStyle='#aaa';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(cx-80,by,160,13,[4,4,0,0]);ctx.stroke();
+  var lx=cx-52,ly=by+15;
+  ctx.fillStyle='#030f03';ctx.beginPath();ctx.roundRect(lx,ly,104,28,3);ctx.fill();
+  ctx.fillStyle='#0d2b0d';ctx.beginPath();ctx.roundRect(lx+2,ly+2,100,24,2);ctx.fill();
+  ctx.fillStyle='#7cfc00';ctx.font='bold 19px monospace';ctx.textAlign='right';
+  ctx.fillText(disp()+' g',lx+98,ly+20);ctx.textAlign='left';
+  // vaso: il fondo siede esattamente sulla superficie della piattaforma (y=by)
+  ctx.fillStyle='rgba(0,0,0,.07)';ctx.beginPath();ctx.ellipse(cx+2,by-1,21,5,0,0,Math.PI*2);ctx.fill();
+  var ptg=ctx.createLinearGradient(cx-20,by-40,cx+20,by);
+  ptg.addColorStop(0,'#c2410c');ptg.addColorStop(1,'#7c2d12');
+  ctx.fillStyle=ptg;
+  ctx.beginPath();ctx.moveTo(cx-20,by-40);ctx.lineTo(cx+20,by-40);ctx.lineTo(cx+15,by);ctx.lineTo(cx-15,by);ctx.closePath();ctx.fill();
+  var rg2=ctx.createLinearGradient(0,by-44,0,by-36);
+  rg2.addColorStop(0,'#ea580c');rg2.addColorStop(1,'#b45309');
+  ctx.fillStyle=rg2;ctx.beginPath();ctx.roundRect(cx-23,by-44,46,8,2);ctx.fill();
+  ctx.fillStyle='#3b2008';ctx.beginPath();ctx.ellipse(cx,by-40,18,5,0,0,Math.PI*2);ctx.fill();
+  var ctg=ctx.createLinearGradient(cx-10,0,cx+10,0);
+  ctg.addColorStop(0,'#166534');ctg.addColorStop(.4,'#22c55e');ctg.addColorStop(1,'#166534');
+  ctx.fillStyle=ctg;ctx.beginPath();ctx.roundRect(cx-11,by-125,22,80,8);ctx.fill();
+  ctx.fillStyle='#16a34a';
+  ctx.beginPath();ctx.moveTo(cx-10,by-100);ctx.quadraticCurveTo(cx-36,by-98,cx-34,by-73);ctx.quadraticCurveTo(cx-26,by-67,cx-19,by-71);ctx.quadraticCurveTo(cx-13,by-82,cx-10,by-90);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.moveTo(cx+10,by-92);ctx.quadraticCurveTo(cx+34,by-90,cx+32,by-65);ctx.quadraticCurveTo(cx+24,by-59,cx+17,by-63);ctx.quadraticCurveTo(cx+11,by-75,cx+10,by-82);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='rgba(240,235,200,.8)';ctx.lineWidth=.8;
+  for(var sy=by-118;sy<by-45;sy+=13){
+    ctx.beginPath();ctx.moveTo(cx-11,sy);ctx.lineTo(cx-16,sy-3);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx+11,sy);ctx.lineTo(cx+16,sy-3);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,sy-2);ctx.lineTo(cx,sy-7);ctx.stroke();
+  }
+  ctx.fillStyle='#dc2626';
+  for(var f=0;f<5;f++){var fa=f/5*Math.PI*2;ctx.beginPath();ctx.ellipse(cx+Math.cos(fa)*5,by-125+Math.sin(fa)*3,4,3,fa,0,Math.PI*2);ctx.fill();}
+  ctx.fillStyle='#fbbf24';ctx.beginPath();ctx.arc(cx,by-125,3.5,0,Math.PI*2);ctx.fill();
+  var tx=W*.47;
+  ctx.fillStyle='#374151';ctx.font='13px Georgia,serif';ctx.textAlign='left';
+  ctx.fillText('Lettura della bilancia:',tx,72);
+  ctx.font='bold 24px monospace';ctx.fillStyle='#065f46';
+  ctx.fillText(disp()+' g',tx,97);
+  ctx.strokeStyle='#d1d5db';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(tx,112);ctx.lineTo(W-20,112);ctx.stroke();
+  ctx.font='13px Georgia,serif';ctx.fillStyle='#374151';
+  ctx.fillText('Valore vero della massa del vaso:',tx,132);
+  ctx.font='bold 22px monospace';
+  ctx.fillStyle=sunActive&&trueMass<3241.1?'#b91c1c':'#1d4ed8';
+  ctx.fillText(fmt(trueMass)+' g',tx,157);
+  if(sunActive&&er>.1){
+    ctx.font='italic 12px Georgia,serif';ctx.fillStyle='#6b7280';
+    ctx.fillText("Il sole fa evaporare l’acqua…",tx,182);
+    if(trueMass<3241.1){
+      ctx.font='bold 11px Georgia,serif';ctx.fillStyle='#374151';
+      ctx.fillText('La bilancia non lo rileva!',tx,198);
+    }
+  }
+  requestAnimationFrame(loop);
+}
+document.getElementById('btn-sole').addEventListener('click',function(){
+  if(!sunActive){sunActive=true;this.textContent='☀️ Sole in arrivo…';this.disabled=true;}
+});
+loop();
+})();
+</script>

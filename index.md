@@ -15,21 +15,55 @@ title: "Bergadano Didattica — Liceo Vittoria"
 </header>
 
 <main class="courses-section">
+
+  {% assign corsi_matematica = site.corsi | where: "layout", "corso" | where: "materia", "matematica" | sort: "ordine" %}
+  {% if corsi_matematica.size > 0 %}
   <div class="courses-group">
-    <h2 class="courses-group-title">Scegli un argomento</h2>
+    <h2 class="courses-group-title">Matematica</h2>
     <div class="courses-grid">
-      {% assign argomenti = site.corsi | where: "layout", "corso" | sort: "ordine" %}
-      {% for corso in argomenti %}
-      {% assign card_class = "phys" %}
-      {% if corso.materia == "cittadinanza" %}{% assign card_class = "citt" %}{% endif %}
-      <a href="{{ corso.url | relative_url }}" class="course-card {{ card_class }}">
-        <p class="card-tag">{{ corso.materia | capitalize }}</p>
+      {% for corso in corsi_matematica %}
+      <a href="{{ corso.url | relative_url }}" class="course-card math">
+        <p class="card-tag">Matematica</p>
         <p class="card-name">{{ corso.title }}</p>
         <span class="card-arrow" aria-hidden="true">→</span>
       </a>
       {% endfor %}
     </div>
   </div>
+  {% endif %}
+
+  {% assign corsi_fisica = site.corsi | where: "layout", "corso" | where: "materia", "fisica" | sort: "ordine" %}
+  {% if corsi_fisica.size > 0 %}
+  <div class="courses-group">
+    <h2 class="courses-group-title">Fisica</h2>
+    <div class="courses-grid">
+      {% for corso in corsi_fisica %}
+      <a href="{{ corso.url | relative_url }}" class="course-card phys">
+        <p class="card-tag">Fisica</p>
+        <p class="card-name">{{ corso.title }}</p>
+        <span class="card-arrow" aria-hidden="true">→</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% assign corsi_cittadinanza = site.corsi | where: "layout", "corso" | where: "materia", "cittadinanza" | sort: "ordine" %}
+  {% if corsi_cittadinanza.size > 0 %}
+  <div class="courses-group">
+    <h2 class="courses-group-title">Cittadinanza</h2>
+    <div class="courses-grid">
+      {% for corso in corsi_cittadinanza %}
+      <a href="{{ corso.url | relative_url }}" class="course-card citt">
+        <p class="card-tag">Cittadinanza</p>
+        <p class="card-name">{{ corso.title }}</p>
+        <span class="card-arrow" aria-hidden="true">→</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
 </main>
 
 <section class="info-strip">

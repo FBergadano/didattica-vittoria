@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "streetsidesoftware.code-spell-checker",
-    "streetsidesoftware.code-spell-checker-italian"
+    "streetsidesoftware.code-spell-checker-italian",
+    "sissel.shopify-liquid"
   ]
 }

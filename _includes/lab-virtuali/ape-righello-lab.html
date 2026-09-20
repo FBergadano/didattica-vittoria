@@ -1,0 +1,100 @@
+{% comment %}
+Animazione: un'ape cammina lungo un righello mentre lo studente cerca di
+stimarne la lunghezza, per far sperimentare quanto sia difficile leggere con
+precisione una misura in condizioni sfavorevoli. Nessun parametro.
+{% endcomment %}
+<div style="margin:1.5rem 0;background:#f0fdf4;border-radius:10px;padding:1rem;border:1px solid #bbf7d0;">
+<p style="margin:0 0 0.5rem;font-size:13px;color:#374151;font-family:Georgia,serif;"><strong>L'ape sul righello</strong> — riesci a stimarne la lunghezza mentre cammina?</p>
+<canvas id="cv-bee" width="520" height="165" style="display:block;max-width:100%;border-radius:6px;margin:0 auto;"></canvas>
+<div style="margin-top:0.6rem;display:flex;gap:0.5rem;align-items:center;justify-content:center;flex-wrap:wrap;">
+  <label style="font-size:13px;font-family:Georgia,serif;color:#374151;">La tua stima (mm):</label>
+  <input id="inp-bee" type="text" placeholder="es. 14,5" style="width:62px;padding:0.2rem 0.4rem;border:1px solid #9ca3af;border-radius:4px;font-size:13px;font-family:monospace;">
+  <button id="btn-bee-submit" style="padding:0.3rem 0.9rem;background:#166534;color:#fff;border:none;border-radius:4px;cursor:pointer;font-family:Georgia,serif;font-size:13px;">Rivela la risposta</button>
+</div>
+<p id="fb-bee" style="text-align:center;font-size:13px;font-family:Georgia,serif;color:#374151;margin:0.4rem 0 0;min-height:1.3em;"></p>
+</div>
+<script>
+(function(){
+var cv=document.getElementById('cv-bee');
+if(!cv)return;
+var ctx=cv.getContext('2d');
+var W=cv.width,H=cv.height;
+var RX0=28,RX1=W-28,RY=102,RH=28,MM=70;
+var PXM=(RX1-RX0)/MM;
+var BL=13.7,BLpx=BL*PXM;
+var bx=RX0,spd=2.2,paused=false,revealed=false,t=0;
+function drawRuler(){
+  var rg=ctx.createLinearGradient(0,RY,0,RY+RH);
+  rg.addColorStop(0,'#f7e980');rg.addColorStop(.6,'#e8d858');rg.addColorStop(1,'#c8b830');
+  ctx.fillStyle=rg;ctx.beginPath();ctx.roundRect(RX0,RY,RX1-RX0,RH,2);ctx.fill();
+  ctx.strokeStyle='#a09030';ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(RX0,RY,RX1-RX0,RH,2);ctx.stroke();
+  for(var mm=0;mm<=MM;mm++){
+    var x=RX0+mm*PXM;
+    var tl=mm%10===0?20:mm%5===0?13:6;
+    ctx.strokeStyle='#3a2800';ctx.lineWidth=mm%10===0?1.5:.8;
+    ctx.beginPath();ctx.moveTo(x,RY);ctx.lineTo(x,RY+tl);ctx.stroke();
+    if(mm%10===0){ctx.fillStyle='#2a1800';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText(mm,x,RY+RH-2);ctx.textAlign='left';}
+  }
+  ctx.fillStyle='#5a4800';ctx.font='10px Georgia,serif';ctx.textAlign='right';
+  ctx.fillText('mm',RX1-2,RY+RH-2);ctx.textAlign='left';
+}
+function drawBee(bleft){
+  if(bleft+BLpx<RX0-5||bleft>RX1+5)return;
+  var bcx=bleft+BLpx/2,bcy=RY-18;
+  var bw=BLpx/2,bh=10,bob=Math.sin(t*.18)*2;
+  ctx.save();ctx.translate(bcx,bcy+bob);
+  var wf=Math.abs(Math.sin(t*.28));
+  ctx.fillStyle='rgba(200,235,255,.65)';ctx.strokeStyle='rgba(100,160,220,.5)';ctx.lineWidth=.8;
+  ctx.beginPath();ctx.ellipse(-7,-bh-8+wf*3,13,6,-.3,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.ellipse(7,-bh-8+wf*3,13,6,.3,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.ellipse(-5,-bh-3+wf*2,9,4,-.2,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.ellipse(5,-bh-3+wf*2,9,4,.2,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.save();
+  ctx.beginPath();ctx.ellipse(0,0,bw,bh,0,0,Math.PI*2);ctx.clip();
+  ctx.fillStyle='#f5c000';ctx.fillRect(-bw,-bh,bw*2,bh*2);
+  ctx.fillStyle='#1a1200';
+  [-1,0,1,2].forEach(function(i){ctx.fillRect(-bw+i*bw*.5,-bh,bw*.28,bh*2);});
+  ctx.restore();
+  ctx.strokeStyle='#7a5000';ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(0,0,bw,bh,0,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#2a1800';ctx.beginPath();ctx.arc(-bw-7,0,8,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-bw-9,-2,2.5,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#000';ctx.beginPath();ctx.arc(-bw-9,-2,1.2,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#1a0a00';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(-bw-5,-7);ctx.quadraticCurveTo(-bw-14,-20,-bw-12,-27);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(-bw-2,-7);ctx.quadraticCurveTo(-bw-5,-20,-bw+2,-25);ctx.stroke();
+  ctx.fillStyle='#1a0a00';
+  ctx.beginPath();ctx.arc(-bw-12,-27,2,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(-bw+2,-25,2,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#7a5000';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(bw,0);ctx.lineTo(bw+7,0);ctx.stroke();
+  ctx.restore();
+}
+function loop(){
+  t++;ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#f8fdf0';ctx.fillRect(0,0,W,H);
+  if(!paused){bx+=spd;if(bx>RX1)bx=RX0-BLpx;}
+  ctx.fillStyle='#374151';ctx.font='bold 13px Georgia,serif';ctx.textAlign='center';
+  ctx.fillText("Quanto è lunga l’ape?",W/2,20);
+  ctx.font='12px Georgia,serif';ctx.fillStyle='#6b7280';
+  ctx.fillText("Osserva l’ape muoversi sul righello e stima la sua lunghezza (in mm)",W/2,38);
+  ctx.textAlign='left';
+  drawRuler();drawBee(bx);
+  if(revealed){
+    ctx.fillStyle='#1d4ed8';ctx.font='bold 14px monospace';ctx.textAlign='center';
+    ctx.fillText('Lunghezza vera: '+BL.toFixed(1)+' mm',W/2,H-10);
+    ctx.textAlign='left';
+  }
+  requestAnimationFrame(loop);
+}
+document.getElementById('btn-bee-submit').addEventListener('click',function(){
+  var fb=document.getElementById('fb-bee');
+  var v=parseFloat(document.getElementById('inp-bee').value.replace(',','.'));
+  if(isNaN(v)){fb.style.color='#b91c1c';fb.textContent='Inserisci un numero (es. 14,5).';return;}
+  revealed=true;
+  var d=Math.abs(v-BL);
+  fb.style.color=d<.3?'#15803d':d<1.5?'#ca8a04':'#b91c1c';
+  fb.textContent=d<.3?'Bravissimo! Valore vero: '+BL.toFixed(1)+' mm — scarto: '+d.toFixed(1)+' mm.':d<1.5?'Buona stima! Valore vero: '+BL.toFixed(1)+' mm. Scarto: '+d.toFixed(1)+' mm.':'Lontano! Valore vero: '+BL.toFixed(1)+' mm. Scarto: '+d.toFixed(1)+' mm.';
+});
+loop();
+})();
+</script>

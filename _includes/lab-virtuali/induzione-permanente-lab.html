@@ -1,0 +1,109 @@
+{% comment %}
+Animazione a pulsante, a più stadi: mostra come rendere permanente la carica
+indotta per polarizzazione — si avvicina il bastoncino carico, si collega la
+messa a terra, si scollega, si allontana il bastoncino: il conduttore resta
+carico positivamente in modo permanente. Nessun parametro.
+{% endcomment %}
+<div class="indg-widget indg-stage-0" id="indgWidget">
+<svg viewBox="0 0 420 230" style="max-width:400px;width:100%;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: come rendere permanente la carica indotta per induzione, collegando e scollegando la messa a terra">
+<defs>
+  <linearGradient id="indgRodG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+  <radialGradient id="indgMetalG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#94a3b8"/></radialGradient>
+</defs>
+
+<g id="indgRod" transform="translate(45,95)">
+  <rect x="0" y="-45" width="26" height="90" rx="8" fill="url(#indgRodG)"/>
+  <text x="13" y="-55" text-anchor="middle" font-size="12" fill="#1e3a8a" font-weight="700">bastoncino (−)</text>
+  <text x="13" y="-18" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
+  <text x="13" y="8" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
+  <text x="13" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
+</g>
+
+<g transform="translate(300,95)">
+  <circle r="40" fill="url(#indgMetalG)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text class="indg-sym indg-p1" x="20" y="4" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
+  <text class="indg-sym indg-n1" x="10" y="21.3" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="indg-sym indg-p2" x="-10" y="21.3" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
+  <text class="indg-sym indg-n2" x="-20" y="4" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="indg-sym indg-p3" x="-10" y="-13.3" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
+  <text class="indg-sym indg-n3" x="10" y="-13.3" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
+</g>
+
+<g class="indg-ground" transform="translate(300,135)">
+  <line class="indg-wire" x1="0" y1="0" x2="0" y2="52"/>
+  <circle class="indg-plug" cx="0" cy="0" r="3.5"/>
+  <g transform="translate(0,52)">
+    <line class="indg-gline" x1="-17" y1="0" x2="17" y2="0"/>
+    <line class="indg-gline" x1="-10" y1="7" x2="10" y2="7"/>
+    <line class="indg-gline" x1="-4" y1="14" x2="4" y2="14"/>
+  </g>
+  <text x="24" y="60" font-size="11" fill="#6b7280" text-anchor="start">terra</text>
+</g>
+</svg>
+<button class="indg-btn" id="indgBtn">Avvicina il bastoncino ▶</button>
+<p class="indg-caption">Il conduttore è neutro: cariche positive e negative sono distribuite uniformemente.</p>
+</div>
+
+<style>
+.indg-widget { margin: 1.6rem auto; max-width: 400px; text-align: center; }
+#indgRod, .indg-sym { transition: transform .9s ease, opacity .7s ease; }
+.indg-wire, .indg-gline { stroke:#94a3b8; stroke-width:3; stroke-dasharray:4 4; opacity:.55; transition: all .5s ease; }
+.indg-plug { fill:#94a3b8; transition: fill .5s ease; }
+.indg-stage-2 .indg-wire, .indg-stage-2 .indg-gline { stroke:#16a34a; stroke-dasharray:none; opacity:1; }
+.indg-stage-2 .indg-plug { fill:#16a34a; }
+
+.indg-stage-1 #indgRod, .indg-stage-2 #indgRod, .indg-stage-3 #indgRod { transform: translate(209px,95px); }
+.indg-stage-0 #indgRod, .indg-stage-4 #indgRod { transform: translate(45px,95px); }
+
+.indg-stage-1 .indg-p1, .indg-stage-2 .indg-p1, .indg-stage-3 .indg-p1 { transform: translate(-46px,-14px); }
+.indg-stage-1 .indg-p2, .indg-stage-2 .indg-p2, .indg-stage-3 .indg-p2 { transform: translate(-16px,-3.3px); }
+.indg-stage-1 .indg-p3, .indg-stage-2 .indg-p3, .indg-stage-3 .indg-p3 { transform: translate(-22px,17.3px); }
+.indg-stage-1 .indg-n1 { transform: translate(16px,-31.3px); }
+.indg-stage-1 .indg-n2 { transform: translate(46px,14px); }
+.indg-stage-1 .indg-n3 { transform: translate(22px,17.3px); }
+
+.indg-stage-2 .indg-n1, .indg-stage-3 .indg-n1, .indg-stage-4 .indg-n1 { transform: translate(10px,45px); opacity:0; }
+.indg-stage-2 .indg-n2, .indg-stage-3 .indg-n2, .indg-stage-4 .indg-n2 { transform: translate(35px,55px); opacity:0; }
+.indg-stage-2 .indg-n3, .indg-stage-3 .indg-n3, .indg-stage-4 .indg-n3 { transform: translate(18px,60px); opacity:0; }
+
+.indg-stage-4 .indg-p1 { transform: translate(-20px,-27px); }
+.indg-stage-4 .indg-p2 { transform: translate(-10px,-9.8px); }
+.indg-stage-4 .indg-p3 { transform: translate(30px,24.8px); }
+
+.indg-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .88rem; margin-top: .4rem; }
+.indg-btn:hover { background: #e2e8f0; }
+.indg-caption { min-height: 3em; font-size: .85rem; font-style: italic; color: #6b7280; margin-top: .5rem; max-width: 380px; margin-left: auto; margin-right: auto; }
+@media print { .indg-widget { display: none; } }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('indgWidget');
+  if(!root) return;
+  var btn = root.querySelector('.indg-btn');
+  var caption = root.querySelector('.indg-caption');
+  var stage = 0;
+  var STAGES = [
+    { label: 'Avvicina il bastoncino ▶',
+      caption: 'Il conduttore è neutro: cariche positive e negative sono distribuite uniformemente.' },
+    { label: 'Collega la messa a terra ▶',
+      caption: 'Il bastoncino carico negativamente polarizza il conduttore: le cariche positive si avvicinano, le negative si allontanano. Il conduttore resta comunque neutro nel complesso.' },
+    { label: 'Scollega la messa a terra ▶',
+      caption: 'Collegando un filo a terra, le cariche negative — respinte dal bastoncino — fluiscono via: il conduttore comincia a perdere elettroni.' },
+    { label: 'Allontana il bastoncino ▶',
+      caption: 'Scollegata la terra mentre il bastoncino è ancora vicino, gli elettroni persi non possono più tornare indietro: il conduttore ha ora un eccesso permanente di carica positiva.' },
+    { label: '↺ Ricomincia da capo',
+      caption: 'Allontanato il bastoncino, le cariche positive rimaste si distribuiscono uniformemente su tutto il conduttore: è rimasto carico positivamente, in modo permanente!' }
+  ];
+  function render(){
+    root.className = 'indg-widget indg-stage-' + stage;
+    btn.textContent = STAGES[stage].label;
+    caption.textContent = STAGES[stage].caption;
+  }
+  btn.addEventListener('click', function(){
+    stage = (stage + 1) % STAGES.length;
+    render();
+  });
+  render();
+})();
+</script>

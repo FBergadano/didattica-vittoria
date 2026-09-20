@@ -1,0 +1,59 @@
+{% comment %}
+Esercizio a carosello (Prova tu!) sulla forza peso. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexPeso">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexPesoprev" onclick="iexPesonav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexPesodots"></div>
+<button class="iex-navbtn" id="iexPesonext" onclick="iexPesonav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexPesorow0">
+<p class="iex-qt">Una valigia ha una massa di $20\ \text{kg}$. Quanto vale il suo peso sulla superficie terrestre? (Usa $g\approx 10\ \text{m/s}^2$.)</p>
+{% include num.html id="numPeso1" valore="200" unit="N" %}
+</div>
+
+<div class="iex-q" id="iexPesorow1" style="display:none">
+<p class="iex-qt">Un pacco, appoggiato al pavimento, esercita su di esso una forza peso di $150\ \text N$. Qual è la sua massa? (Usa $g\approx 10\ \text{m/s}^2$.)</p>
+{% include num.html id="numPeso2" valore="15" unit="kg" %}
+</div>
+
+</div>
+
+<script>
+(function(){
+  var N=2, cur=0, ok=[false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexPesodots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexPeso .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexPesorow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexPesoprev').disabled=(i===0);
+    document.getElementById('iexPesonext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexPesodots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexPesonav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  for(var i=0;i<N;i++)(function(i){
+    var el=document.getElementById('iexPesorow'+i);
+    if(el)el.addEventListener('iex:correct', function(){
+      if(!ok[i]){ ok[i]=true; updateDots(); }
+    });
+  })(i);
+})();
+</script>

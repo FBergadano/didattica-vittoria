@@ -1,0 +1,29 @@
+{% comment %}
+Esercizio a carosello: isola le grandezze nella formula dell'energia cinetica, usando invert.html. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="invCarCinetica">
+<p class="iex-lbl">Isola le altre grandezze</p>
+<p class="iex-hint">Cerca la sequenza più breve di mosse per isolare ciascuna grandezza.</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="invCarCineticaprev" onclick="invCarCineticanav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="invCarCineticadots"></div>
+<button class="iex-navbtn" id="invCarCineticanext" onclick="invCarCineticanav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="invCarCineticarow0">
+<div class="iex-nested">
+{% include invert.html id="inv-cinetica-m" variabili="K|m|v|due" etichette="K|m|v|2" sinistra="K" destra="m*v*v/due" obiettivo="m" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarCineticarow1" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-cinetica-v" variabili="K|m|v|due" etichette="K|m|v|2" sinistra="K" destra="m*v*v/due" obiettivo="v" radice="1" %}
+</div>
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('invCarCinetica',2);
+</script>

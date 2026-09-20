@@ -1,0 +1,257 @@
+{% comment %}
+Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexG">
+<p class="iex-lbl">Verifica Subito!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexGprev" onclick="iexGnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexGdots"></div>
+<button class="iex-navbtn" id="iexGnext" onclick="iexGnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexGrow0">
+<div class="calc-flow">
+{% include calc-margin.html id="calcG" %}
+<div class="calc-flow-body">
+<p class="iex-qt">Calcola il modulo della forza gravitazionale fra la Terra e il Sole, sapendo che la massa della Terra è $M_\oplus = 5{,}97 \times 10^{24}\ \text{kg}$, la massa del Sole è $M_\odot = 1{,}99 \times 10^{30}\ \text{kg}$ e che la distanza Terra-Sole è $r = 1{,}496 \times 10^{11}\ \text{m}$. Esprimi il risultato in notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="iexGm0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')iexGcheck0()">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="iexGe0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')iexGcheck0()"></sup></span>
+<select class="iex-unit" id="iexGu0">
+<option value="">unità</option>
+<option value="N">N</option>
+<option value="kg">kg</option>
+<option value="m">m</option>
+<option value="kg/m">kg/m</option>
+<option value="N/m">N/m</option>
+</select>
+<button class="iex-vbtn" onclick="iexGcheck0()">Verifica</button>
+</div>
+<div class="iex-fb" id="iexGfb0"></div>
+<div class="iex-sol" id="iexGsol0">Soluzione: <strong>3,54 &times; 10<sup>22</sup> N</strong> — una forza enorme (35 mila miliardi di miliardi di Newton!): eppure è proprio questa forza a tenere la Terra in orbita.</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexGrow1" style="display:none">
+<p class="iex-qt">Se la distanza Terra-Sole <strong>quintuplicasse</strong>, come cambierebbe l'intensità della forza gravitazionale fra i due corpi?</p>
+<div class="iex-choices" id="iexGchoices1">
+<button class="iex-choice-btn" data-v="a">quintuplicherebbe</button>
+<button class="iex-choice-btn" data-v="b">diventerebbe un quinto del valore iniziale</button>
+<button class="iex-choice-btn" data-v="c">diventerebbe un decimo del valore iniziale</button>
+<button class="iex-choice-btn" data-v="d">diventerebbe un venticinquesimo del valore iniziale</button>
+</div>
+<div class="iex-fb" id="iexGfb1"></div>
+</div>
+
+<div class="iex-q" id="iexGrow2" style="display:none">
+<p class="iex-qt">Prima di poter verificare il tuo risultato, isola $G$ nella formula.</p>
+<div class="iex-nested">
+{% include invert.html id="inv-G" variabili="Fg|G|Ma|Mb|r"
+   sinistra="Fg" destra="G*Ma*Mb/r/r" obiettivo="G"
+   etichette="F|G|m_1|m_2|r" %}
+</div>
+</div>
+
+<div class="iex-q" id="iexGrow3" style="display:none">
+<p class="iex-qt">Isola ora $r$ nella stessa formula.</p>
+<div class="iex-nested">
+{% include invert.html id="inv-G-r" variabili="Fg|G|Ma|Mb|r"
+   sinistra="Fg" destra="G*Ma*Mb/r/r" obiettivo="r"
+   etichette="F|G|m_1|m_2|r" radice="1" %}
+</div>
+</div>
+
+<div class="iex-q" id="iexGrow4" style="display:none">
+<p class="iex-qt">Ora che hai isolato $G = \dfrac{F \cdot r^2}{m_1 \cdot m_2}$, sostituisci ogni grandezza con la propria unità di misura.</p>
+<div class="iex-nested">
+{% include unit-derive.html id="ud-G" testo="Trova l'unità di misura di G"
+   variabile="G"
+   numeratore_simboli="F|r^2" numeratore_corrette="N|m²"
+   denominatore_simboli="m_1 \cdot m_2" denominatore_corrette="kg²"
+   opzioni="N|kg|kg²|m|m²" %}
+</div>
+</div>
+
+<div class="iex-q" id="iexGrow5" style="display:none">
+<p class="iex-qt">Se raddoppiassi <strong>contemporaneamente</strong> sia $m_1$, sia $m_2$, sia $r$, come cambierebbe l'intensità della forza gravitazionale?</p>
+<div class="iex-choices" id="iexGchoices5">
+<button class="iex-choice-btn" data-v="a">Raddoppierebbe</button>
+<button class="iex-choice-btn" data-v="b">Diventerebbe 4 volte più intensa</button>
+<button class="iex-choice-btn" data-v="c">Resterebbe invariata</button>
+<button class="iex-choice-btn" data-v="d">Dimezzerebbe</button>
+</div>
+<div class="iex-fb" id="iexGfb5"></div>
+</div>
+
+<div class="iex-q" id="iexGrow6" style="display:none">
+<p class="iex-qt">Una piuma e la Terra si attraggono a vicenda per gravità. Quale delle seguenti affermazioni è corretta?</p>
+<div class="iex-choices" id="iexGchoices6">
+<button class="iex-choice-btn" data-v="a">La Terra attrae la piuma con una forza maggiore di quella con cui la piuma attrae la Terra</button>
+<button class="iex-choice-btn" data-v="b">Le due forze sono uguali in modulo, e opposte in verso</button>
+<button class="iex-choice-btn" data-v="c">Solo la Terra esercita una forza reale: la piuma è troppo leggera per farlo</button>
+<button class="iex-choice-btn" data-v="d">Le due forze dipendono anche dalla massa dell'aria circostante</button>
+</div>
+<div class="iex-fb" id="iexGfb6"></div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var N=7, cur=0, ok=[false,false,false,false,false,false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexGdots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexG .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexGrow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexGprev').disabled=(i===0);
+    document.getElementById('iexGnext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexGdots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Passo '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexGnav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  function parseMant(s){ var c=s.trim(); if(c.indexOf(',')!==-1)c=c.replace(',','.'); return parseFloat(c); }
+  function parseExp(s){ return parseInt(s.trim().replace('−','-'),10); }
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  window.showSol = window.showSol || function(id){ document.getElementById(id).style.display='block'; };
+
+  window.iexGcheck0=function(){
+    var mv=parseMant(document.getElementById('iexGm0').value);
+    var ev=parseExp(document.getElementById('iexGe0').value);
+    var uv=document.getElementById('iexGu0').value;
+    var fb=document.getElementById('iexGfb0');
+    var vb=document.querySelector('#iexGrow0 .iex-vbtn');
+    // Il controllo è sul VALORE combinato (coefficiente × 10^esponente), non
+    // sulle due cifre separatamente: 35,4×10^21 ed 3,54×10^22 sono lo stesso
+    // numero, anche se solo la seconda è nella forma "canonica".
+    var userVal = (!isNaN(mv) && !isNaN(ev)) ? mv*Math.pow(10,ev) : NaN;
+    var targetVal = 3.54*Math.pow(10,22);
+    var valOk = !isNaN(userVal) && Math.abs(userVal-targetVal)/Math.abs(targetVal) <= 0.02;
+    var uOk = uv==='N';
+    if(valOk && uOk){
+      ok[0]=true; fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto! <button class="iex-nextbtn" onclick="iexGnav(1)">Passo successivo &rarr;</button>';
+      shootConf(vb); updateDots();
+    } else {
+      fb.className='iex-fb err';
+      var parts=[];
+      if(!valOk)parts.push('il valore (coefficiente &times; 10 elevato all\'esponente)');
+      if(!uOk)parts.push('l\'unità di misura');
+      fb.innerHTML='Non è esatto. Controlla: '+parts.join(', ')+'. Oppure <button class="iex-lbtn" onclick="showSol(\'iexGsol0\')">vedi la soluzione</button>.';
+    }
+  };
+
+  (function initChoices1(){
+    var btns = document.querySelectorAll('#iexGchoices1 .iex-choice-btn');
+    var fb = document.getElementById('iexGfb1');
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === 'd';
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = 'iex-choice-btn correct';
+          ok[1] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! Poiché $F$ è inversamente proporzionale al quadrato di $r$, se $r$ diventa $5r$ la forza diventa $F/5^2 = F/25$: un venticinquesimo del valore iniziale. <button class="iex-nextbtn" onclick="iexGnav(1)">Passo successivo &rarr;</button>';
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = 'iex-choice-btn wrong';
+          var correctBtn = document.querySelector('#iexGchoices1 .iex-choice-btn[data-v="d"]');
+          correctBtn.className = 'iex-choice-btn correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = 'Non è esatto: poiché $F$ è inversamente proporzionale al quadrato di $r$, se $r$ diventa $5r$ la forza diventa $F/5^2 = F/25$, cioè un venticinquesimo del valore iniziale.';
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  })();
+
+  (function initChoices5(){
+    var btns = document.querySelectorAll('#iexGchoices5 .iex-choice-btn');
+    var fb = document.getElementById('iexGfb5');
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === 'c';
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = 'iex-choice-btn correct';
+          ok[5] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! Raddoppiando $m_1$, $m_2$ ed $r$: il numeratore diventa $4$ volte più grande (dal prodotto delle masse raddoppiate), ma anche il denominatore diventa $4$ volte più grande (da $(2r)^2$): i due fattori si semplificano e la forza resta invariata. <button class="iex-nextbtn" onclick="iexGnav(1)">Passo successivo &rarr;</button>';
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = 'iex-choice-btn wrong';
+          var correctBtn = document.querySelector('#iexGchoices5 .iex-choice-btn[data-v="c"]');
+          correctBtn.className = 'iex-choice-btn correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = 'Non è esatto: sostituendo $2m_1$, $2m_2$ e $2r$ nella formula, il fattore $4$ che compare al numeratore (dal prodotto delle masse) si semplifica con il fattore $4$ al denominatore (da $(2r)^2$): la forza resta invariata.';
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  })();
+
+  (function initChoices6(){
+    var btns = document.querySelectorAll('#iexGchoices6 .iex-choice-btn');
+    var fb = document.getElementById('iexGfb6');
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === 'b';
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = 'iex-choice-btn correct';
+          ok[6] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! Per il terzo principio della dinamica, le due forze hanno sempre lo stesso modulo e verso opposto, indipendentemente da quanto siano diverse le due masse: la Terra attrae la piuma esattamente quanto la piuma attrae la Terra.';
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = 'iex-choice-btn wrong';
+          var correctBtn = document.querySelector('#iexGchoices6 .iex-choice-btn[data-v="b"]');
+          correctBtn.className = 'iex-choice-btn correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = 'Non è corretto: per il terzo principio della dinamica, le due forze hanno sempre lo stesso modulo e verso opposto, qualunque sia la differenza fra le due masse.';
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  })();
+})();
+</script>

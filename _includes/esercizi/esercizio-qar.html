@@ -1,0 +1,69 @@
+{% comment %}
+Esercizio a carosello sulle equivalenze fra misure di area. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="qar" style="margin-top:1rem;">
+<p class="iex-lbl">Esercizio — conversioni di aree</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="qarprev" onclick="qarNav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="qardots"></div>
+<button class="iex-navbtn" id="qarnext" onclick="qarNav(1)">Succ. &rarr;</button>
+</div>
+<div class="iex-q" id="qarrow0">
+<p class="iex-qt"><strong>i)</strong> Quanti cm&#178; ci sono in 1 dm&#178;? (1 dm = 10 cm)</p>
+<div class="iex-ir"><input class="iex-m" id="qarinp0" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qarCheck(0)"><button class="iex-vbtn" onclick="qarCheck(0)">Verifica</button></div>
+<div class="iex-fb" id="qarfb0"></div>
+<div class="iex-sol" id="qarsol0">1 dm = 10 cm &rarr; 1 dm&sup2; = 10&sup2; cm&sup2; = <strong>100 cm&sup2;</strong>.</div>
+</div>
+<div class="iex-q" id="qarrow1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Quanti m&#178; ci sono in 1 km&#178;? (1 km = 10&#179; m)</p>
+<div class="iex-ir"><input class="iex-m" id="qarinp1" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qarCheck(1)"><button class="iex-vbtn" onclick="qarCheck(1)">Verifica</button></div>
+<div class="iex-fb" id="qarfb1"></div>
+<div class="iex-sol" id="qarsol1">1 km = 10&sup3; m &rarr; 1 km&sup2; = (10&sup3;)&sup2; m&sup2; = 10&sup6; m&sup2; = <strong>1 000 000 m&sup2;</strong>.</div>
+</div>
+<div class="iex-q" id="qarrow2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Quanti mm&#178; ci sono in 1 cm&#178;? (1 cm = 10 mm)</p>
+<div class="iex-ir"><input class="iex-m" id="qarinp2" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qarCheck(2)"><button class="iex-vbtn" onclick="qarCheck(2)">Verifica</button></div>
+<div class="iex-fb" id="qarfb2"></div>
+<div class="iex-sol" id="qarsol2">1 cm = 10 mm &rarr; 1 cm&sup2; = 10&sup2; mm&sup2; = <strong>100 mm&sup2;</strong>.</div>
+</div>
+<div class="iex-q" id="qarrow3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Quanti dm&#178; ci sono in 3,5 m&#178;?</p>
+<div class="iex-ir"><input class="iex-m" id="qarinp3" type="text" placeholder="?" size="12" onkeydown="if(event.key==='Enter')qarCheck(3)"><button class="iex-vbtn" onclick="qarCheck(3)">Verifica</button></div>
+<div class="iex-fb" id="qarfb3"></div>
+<div class="iex-sol" id="qarsol3">1 m&sup2; = 100 dm&sup2; &rarr; 3,5 m&sup2; = 3,5 &times; 100 dm&sup2; = <strong>350 dm&sup2;</strong>.</div>
+</div>
+</div>
+<script>
+(function(){
+var QAR=[{a:100,t:0.0001},{a:1000000,t:0.0001},{a:100,t:0.0001},{a:350,t:0.0001}];
+var qarok=[false,false,false,false];
+var qarc=[0],NQAR=4;
+function parseVA(s){s=s.trim().replace(/\s+/g,'').replace(/,/,'.');s=s.replace(/[×x·]\s*10\^?\(?(-?\d+\.?\d*)\)?/i,'e$1');s=s.replace(/\*\s*10\^?\(?(-?\d+)\)?/,'e$1');return parseFloat(s);}
+function shootCA(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<55;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);}}
+function shootFWA(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootCA({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
+window.showSolA=function(id){var el=document.getElementById(id);if(el)el.style.display='block';};
+function buildDotsA(N,showFn){var c=document.getElementById('qardots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+function updDotsA(){var dots=document.querySelectorAll('#qardots .iex-dot');for(var i=0;i<NQAR;i++)dots[i].className='iex-dot'+(i===qarc[0]?' cur':'')+(qarok[i]?' ok':'');}
+window.qarShow=function(i){document.querySelectorAll('#qar .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('qarrow'+i).style.display='block';qarc[0]=i;document.getElementById('qarprev').disabled=(i===0);document.getElementById('qarnext').disabled=(i===NQAR-1);updDotsA();}
+window.qarNav=function(d){window.qarShow(Math.max(0,Math.min(NQAR-1,qarc[0]+d)));};
+window.qarCheck=function(i){
+  var inp=document.getElementById('qarinp'+i);
+  var fb=document.getElementById('qarfb'+i);
+  var vb=inp?inp.parentElement.querySelector('button'):null;
+  if(!inp||!fb)return;
+  var v=parseVA(inp.value);
+  if(isNaN(v)){fb.className='iex-fb err';fb.innerHTML='Inserisci un numero valido.';return;}
+  var q=QAR[i],ok=q.a===0?Math.abs(v)<1e-10:Math.abs((v-q.a)/q.a)<=q.t;
+  if(ok){
+    qarok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<NQAR-1?' <button class="iex-nextbtn" onclick="qarShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    if(vb)shootCA(vb);updDotsA();
+    if(qarok.every(function(x){return x;}))setTimeout(shootFWA,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolA(\'qarsol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+buildDotsA(NQAR,window.qarShow);
+})();
+</script>

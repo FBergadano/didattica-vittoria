@@ -1,0 +1,83 @@
+{% comment %}
+Animazione a passi (avanti/indietro/auto/reset): mostra la virgola di un
+numero molto grande (la massa del Sole) "saltare" verso sinistra un passo
+alla volta, con l'esponente della notazione scientifica che cresce di 1 ad
+ogni passo. Nessun parametro.
+{% endcomment %}
+<div style="margin:1.5rem 0;background:#fafaf8;border-radius:8px;padding:0.85rem 1rem 0.7rem;border:1px solid #e5e7eb;">
+<p style="margin:0 0 0.5rem;font-size:13px;color:#374151;">Guarda la virgola saltare verso sinistra: ad ogni passo l'esponente cresce di 1.</p>
+<canvas id="cv-sun-anim" width="540" height="82" style="display:block;max-width:100%;"></canvas>
+<div style="display:flex;gap:0.4rem;margin-top:0.5rem;flex-wrap:wrap;align-items:center;">
+<button onclick="sunAnim.prev()" style="padding:0.2rem 0.65rem;background:#fff;border:1px solid #d1d5db;border-radius:4px;cursor:pointer;font-size:13px;">&#8592;</button>
+<button onclick="sunAnim.next()" style="padding:0.2rem 0.65rem;background:#0891b2;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;">Successivo &#8594;</button>
+<button onclick="sunAnim.auto()" style="padding:0.2rem 0.65rem;background:#0f766e;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;">&#9654; Auto</button>
+<button onclick="sunAnim.reset()" style="padding:0.2rem 0.65rem;background:#fff;border:1px solid #d1d5db;border-radius:4px;cursor:pointer;font-size:13px;">&#8635;</button>
+</div>
+</div>
+<script>
+var sunAnim=(function(){
+var cv=document.getElementById('cv-sun-anim');
+if(!cv)return{};
+var ctx=cv.getContext('2d');
+var W=540,H=82;
+var str='1989100000000000000000000000000',N=str.length;
+var MAXSTEP=N-1,step=0,timer=null;
+var CY='#0891b2',DW=14,PAD=8,NY=30,AY=41,AD=14;
+var SF='Georgia,"Times New Roman",serif';
+function cxL(k){return PAD+(N-k)*DW;}
+function draw(k){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fafaf8';ctx.fillRect(0,0,W,H);
+  ctx.textBaseline='alphabetic';ctx.textAlign='left';
+  ctx.font='14px '+SF;
+  for(var i=0;i<N-k;i++){
+    ctx.fillStyle=i<5?'#0f766e':'#666';
+    ctx.fillText(str[i],PAD+i*DW,NY);
+  }
+  ctx.font='bold 14px '+SF;
+  ctx.fillStyle=k===0?'#d1d5db':CY;
+  ctx.fillText(',',cxL(k),NY);
+  var rTrim=str.slice(N-k,N).replace(/0+$/,'');
+  ctx.font='14px '+SF;ctx.fillStyle='#111';
+  for(var i=0;i<rTrim.length;i++){
+    ctx.fillText(rTrim[i],PAD+(N-k+1+i)*DW,NY);
+  }
+  var ex=PAD+(N+1)*DW+5,t='×10';
+  ctx.font='12px sans-serif';
+  ctx.fillStyle=k===0?'#d1d5db':'#222';
+  ctx.fillText(t,ex,NY);
+  ctx.font='bold 10px sans-serif';
+  ctx.fillStyle=k===0?'#d1d5db':CY;
+  ctx.fillText(''+k,ex+ctx.measureText(t).width+1,NY-8);
+  for(var i=1;i<=k;i++){
+    var x1=cxL(i-1)+DW/2,x2=cxL(i)+DW/2;
+    var mx=(x1+x2)/2,cy2=AY+AD,last=(i===k);
+    ctx.strokeStyle=CY;ctx.lineWidth=last?2:1.2;
+    ctx.beginPath();ctx.moveTo(x1,AY);ctx.quadraticCurveTo(mx,cy2,x2,AY);ctx.stroke();
+    var ang=Math.atan2(AY-cy2,x2-mx),sz=last?7:4;
+    ctx.save();ctx.translate(x2,AY);ctx.rotate(ang);
+    ctx.fillStyle=CY;ctx.beginPath();
+    ctx.moveTo(0,0);ctx.lineTo(-sz,-sz/2.5);ctx.lineTo(-sz,sz/2.5);ctx.closePath();ctx.fill();
+    ctx.restore();
+  }
+  ctx.fillStyle='#9ca3af';ctx.font='10px sans-serif';ctx.textAlign='center';
+  ctx.fillText(k===0?'Numero di partenza — premi Successivo':'Salto '+k+' di '+MAXSTEP,W/2,H-5);
+  ctx.textAlign='left';
+}
+function getDelay(s){return s<2?1000:s<4?500:300;}
+function autoStep(){
+  if(step>=MAXSTEP){timer=null;return;}
+  timer=setTimeout(function(){step++;draw(step);autoStep();},getDelay(step));
+}
+function next(){if(step<MAXSTEP){step++;draw(step);}}
+function prev(){if(step>0){step--;draw(step);}}
+function reset(){if(timer){clearTimeout(timer);timer=null;}step=0;draw(0);}
+function auto(){
+  if(timer){clearTimeout(timer);timer=null;return;}
+  if(step>=MAXSTEP)step=0;
+  autoStep();
+}
+draw(0);
+return{next:next,prev:prev,reset:reset,auto:auto};
+})();
+</script>

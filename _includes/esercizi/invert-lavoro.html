@@ -1,0 +1,102 @@
+{% comment %}
+Esercizio a carosello: isola le grandezze nella formula del lavoro, usando invert.html. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="invCarLavoro">
+<p class="iex-lbl">Isola le altre grandezze</p>
+<p class="iex-hint">Cerca la sequenza più breve di mosse per isolare ciascuna grandezza, poi mettile alla prova con un calcolo numerico.</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="invCarLavoroprev" onclick="invCarLavoronav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="invCarLavorodots"></div>
+<button class="iex-navbtn" id="invCarLavoronext" onclick="invCarLavoronav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="invCarLavororow0">
+<div class="iex-nested">
+{% include invert.html id="inv-lavoro-F" variabili="L|F|s" etichette="L|F|\Delta s" sinistra="L" destra="F*s" obiettivo="F" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarLavororow1" style="display:none">
+<p class="iex-qt">Durante una gara di traino alla fune su un campo innevato, una squadra tira una slitta per $20\ \text m$ compiendo un lavoro di $4\,000\ \text J$. Con quale forza tirano la slitta?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcInvLavoroF" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numInvLavoroF" valore="200" unit="N" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="invCarLavororow2" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-lavoro-s" variabili="L|F|s" etichette="L|F|\Delta s" sinistra="L" destra="F*s" obiettivo="s" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarLavororow3" style="display:none">
+<p class="iex-qt">Un facchino trascina un baule esercitando una forza costante di $150\ \text N$ e compiendo così un lavoro di $900\ \text J$. Di quanto si è spostato il baule?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcInvLavoroS" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include num.html id="numInvLavoroS" valore="6" unit="m" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
+  var cur=0, ok=[];
+  for(var oi=0;oi<N;oi++)ok.push(false);
+  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+  function shootFW(){
+    for(var b=0;b<5;b++)(function(b){setTimeout(function(){
+      window._shoot({getBoundingClientRect:function(){return{left:window.innerWidth*(.1+Math.random()*.8),top:window.innerHeight*(.1+Math.random()*.5),width:0,height:0};}});
+    },b*200);})(b);
+  }
+  function updateDots(){
+    var dots=document.querySelectorAll('#'+ID+'dots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#'+ID+' .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById(ID+'row'+i).style.display='block';
+    cur=i;
+    document.getElementById(ID+'prev').disabled=(i===0);
+    document.getElementById(ID+'next').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById(ID+'dots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Passo '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+  // Ogni esercizio annidato (invert.html o sci.html) segnala da sé quando
+  // viene risolto correttamente: lo contiamo per i fuochi d'artificio finali.
+  for(var k=0;k<N;k++){
+    (function(k){
+      var row=document.getElementById(ID+'row'+k);
+      if(!row)return;
+      row.addEventListener('iex:correct', function(){
+        if(ok[k])return;
+        ok[k]=true; updateDots();
+        if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+      });
+    })(k);
+  }
+};
+setupInvCarousel('invCarLavoro',4);
+</script>

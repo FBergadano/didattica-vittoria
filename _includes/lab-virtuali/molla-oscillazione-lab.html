@@ -1,0 +1,167 @@
+{% comment %}
+Animazione: si trascina una massa azzurra allontanandola da una massa gialla
+fissa, poi la si rilascia e la si osserva accelerare tornando indietro,
+attratta gravitazionalmente. Un pulsante permette di visualizzare, al posto
+dei vettori forza, una molla che si allunga e si comprime, per suggerire
+l'analogia fra energia potenziale gravitazionale ed elastica. Nessun
+parametro.
+{% endcomment %}
+<div class="vdrag-widget" id="springOsc">
+<p class="vdrag-hint">Trascina la massa azzurra per allontanarla dalla massa gialla (fissa), poi lasciala andare: osserva come accelera tornando indietro. Con il pulsante puoi mostrare la molla al posto dei vettori forza.</p>
+<svg id="springOsc-svg" viewBox="0 0 390 180" width="100%" style="max-width:360px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Animazione interattiva: trascina la massa azzurra e rilasciala per vederla accelerare verso la massa gialla, fissa">
+<defs>
+  <radialGradient id="springOscM" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
+  <radialGradient id="springOscm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0f9ff"/><stop offset="55%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#38bdf8"/></radialGradient>
+  <marker id="springOscArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+</defs>
+<g id="springOsc-spring" style="display:none;">
+<path id="springOsc-body" d="" fill="none" stroke="#94a3b8" stroke-width="4.5" stroke-linecap="round"/>
+<path id="springOsc-shine" d="" fill="none" stroke="#f1f5f9" stroke-width="1.4" stroke-linecap="round" opacity=".85"/>
+</g>
+<g id="springOsc-vectors">
+<line id="springOsc-arrowM" x1="0" y1="0" x2="0" y2="0" stroke="#dc2626" stroke-width="2.5" marker-end="url(#springOscArrow)"/>
+<line id="springOsc-arrowm" x1="0" y1="0" x2="0" y2="0" stroke="#dc2626" stroke-width="2.5" marker-end="url(#springOscArrow)"/>
+</g>
+
+<g id="springOsc-gauge" opacity="0">
+  <text x="350" y="18" text-anchor="middle" font-size="10" font-weight="600" fill="#334155">Energia</text>
+  <text x="350" y="29" text-anchor="middle" font-size="10" font-weight="600" fill="#334155">immagazzinata</text>
+  <rect x="340" y="35" width="20" height="110" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
+  <rect id="springOsc-gaugeFill" x="340" y="145" width="20" height="0" rx="4" fill="#16a34a"/>
+</g>
+
+<circle id="springOsc-M" cx="90" cy="90" r="26" fill="url(#springOscM)"/>
+<circle id="springOsc-m" cx="136" cy="90" r="20" fill="url(#springOscm)" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-reset" id="springOsc-toggle">Mostra molla</button>
+</div>
+</div>
+
+<script>
+(function(){
+  var svg=document.getElementById('springOsc-svg');
+  var m=document.getElementById('springOsc-m'), M=document.getElementById('springOsc-M');
+  var body=document.getElementById('springOsc-body'), shine=document.getElementById('springOsc-shine');
+  var springGroup=document.getElementById('springOsc-spring'), vectorsGroup=document.getElementById('springOsc-vectors');
+  var arrowM=document.getElementById('springOsc-arrowM'), arrowm=document.getElementById('springOsc-arrowm');
+  var gauge=document.getElementById('springOsc-gauge'), gaugeFill=document.getElementById('springOsc-gaugeFill');
+  var toggleBtn=document.getElementById('springOsc-toggle');
+  var springVisible=false;
+  toggleBtn.addEventListener('click',function(){
+    springVisible=!springVisible;
+    springGroup.style.display=springVisible?'':'none';
+    vectorsGroup.style.display=springVisible?'none':'';
+    toggleBtn.textContent=springVisible?'Mostra vettori forza':'Mostra molla';
+  });
+  var Rm=20, RM=26;
+  var MIN_DIST=RM+Rm, STRETCH_REF=150;
+  var AMP_MAX=13, AMP_MIN=3.5;
+  var GAUGE_H=110, GAUGE_BOTTOM=145;
+  var X_MIN=20, X_MAX=270, Y_MIN=20, Y_MAX=160;
+  var Mx=90, My=90;
+  var xm=136, ym=90;
+  var dragging=false, animId=null;
+
+  function springPath(p0x,p0y,p1x,p1y,amp,n,lead){
+    var dx=p1x-p0x, dy=p1y-p0y, dist=Math.hypot(dx,dy)||1;
+    var ux=dx/dist, uy=dy/dist, px=-uy, py=ux;
+    var lc=Math.min(lead, dist/2-1);
+    var ax=p0x+ux*lc, ay=p0y+uy*lc, bx=p1x-ux*lc, by=p1y-uy*lc;
+    var d='M'+p0x.toFixed(1)+','+p0y.toFixed(1)+' L'+ax.toFixed(1)+','+ay.toFixed(1);
+    for(var i=0;i<n;i++){
+      var t1=(i+1)/n, midT=(i+0.5)/n;
+      var sx=ax+(bx-ax)*t1, sy=ay+(by-ay)*t1;
+      var mx=ax+(bx-ax)*midT, my=ay+(by-ay)*midT;
+      var dir=(i%2===0)?-1:1;
+      var cx=mx+px*dir*amp, cy=my+py*dir*amp;
+      d+=' Q'+cx.toFixed(1)+','+cy.toFixed(1)+' '+sx.toFixed(1)+','+sy.toFixed(1);
+    }
+    return d+' L'+p1x.toFixed(1)+','+p1y.toFixed(1);
+  }
+
+  function render(){
+    m.setAttribute('cx',xm); m.setAttribute('cy',ym);
+
+    var dist=Math.hypot(xm-Mx,ym-My);
+    var stretchFrac=Math.max(0,Math.min(1,(dist-MIN_DIST)/STRETCH_REF));
+    var amp=AMP_MAX-(AMP_MAX-AMP_MIN)*stretchFrac;
+
+    var d=springPath(Mx,My,xm,ym,amp,7,12);
+    body.setAttribute('d',d); shine.setAttribute('d',d);
+
+    var ux=(dist>1e-6)?(Mx-xm)/dist:1, uy=(dist>1e-6)?(My-ym)/dist:0;
+    var ARROW_LEN=22;
+    arrowm.setAttribute('x1',xm+ux*(Rm+4)); arrowm.setAttribute('y1',ym+uy*(Rm+4));
+    arrowm.setAttribute('x2',xm+ux*(Rm+4+ARROW_LEN)); arrowm.setAttribute('y2',ym+uy*(Rm+4+ARROW_LEN));
+    arrowM.setAttribute('x1',Mx-ux*(RM+4)); arrowM.setAttribute('y1',My-uy*(RM+4));
+    arrowM.setAttribute('x2',Mx-ux*(RM+4+ARROW_LEN)); arrowM.setAttribute('y2',My-uy*(RM+4+ARROW_LEN));
+
+    var fillH=GAUGE_H*stretchFrac;
+    gaugeFill.setAttribute('height',fillH);
+    gaugeFill.setAttribute('y',GAUGE_BOTTOM-fillH);
+    gauge.setAttribute('opacity',Math.min(1,stretchFrac*5));
+  }
+  render();
+
+  function toSvgPoint(clientX,clientY){
+    var pt=svg.createSVGPoint();
+    pt.x=clientX; pt.y=clientY;
+    var mtx=svg.getScreenCTM().inverse();
+    return pt.matrixTransform(mtx);
+  }
+
+  function clampPoint(x,y){
+    x=Math.max(X_MIN,Math.min(X_MAX,x));
+    y=Math.max(Y_MIN,Math.min(Y_MAX,y));
+    var dx=x-Mx, dy=y-My, dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<MIN_DIST){
+      if(dist<1e-6){ dx=1; dy=0; dist=1; }
+      var k=MIN_DIST/dist;
+      x=Mx+dx*k; y=My+dy*k;
+    }
+    return {x:x,y:y};
+  }
+
+  function onMove(e){
+    e.preventDefault();
+    var p=toSvgPoint(e.clientX,e.clientY);
+    var c=clampPoint(p.x,p.y);
+    xm=c.x; ym=c.y;
+    render();
+  }
+  function onUp(e){
+    m.removeEventListener('pointermove',onMove);
+    m.removeEventListener('pointerup',onUp);
+    dragging=false;
+    m.style.cursor='grab';
+    startReturn();
+  }
+  m.addEventListener('pointerdown',function(e){
+    e.preventDefault();
+    if(animId){ cancelAnimationFrame(animId); animId=null; }
+    dragging=true;
+    m.style.cursor='grabbing';
+    m.setPointerCapture(e.pointerId);
+    m.addEventListener('pointermove',onMove);
+    m.addEventListener('pointerup',onUp);
+  });
+
+  function startReturn(){
+    var x0=xm, y0=ym;
+    var dx=x0-Mx, dy=y0-My, dist=Math.hypot(dx,dy)||1;
+    var ux=dx/dist, uy=dy/dist;
+    var tx=Mx+ux*MIN_DIST, ty=My+uy*MIN_DIST;
+    var t0=performance.now(), DUR=900;
+    function step(now){
+      var t=Math.min(1,(now-t0)/DUR);
+      var e=t*t;
+      xm=x0+(tx-x0)*e; ym=y0+(ty-y0)*e;
+      render();
+      if(t<1){ animId=requestAnimationFrame(step); }
+      else { animId=null; }
+    }
+    animId=requestAnimationFrame(step);
+  }
+})();
+</script>

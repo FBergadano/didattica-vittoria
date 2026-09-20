@@ -1,0 +1,49 @@
+{% comment %}
+Animazione: un diagramma che illustra visivamente come, in una frazione
+numeratore/denominatore, aumentare il numeratore (a parità di denominatore)
+faccia crescere il risultato, e viceversa aumentare il denominatore lo
+faccia diminuire. Nessun parametro.
+{% endcomment %}
+<div style="margin:0.75rem 0 1rem;background:#f0e8dc;border-radius:8px;padding:0.75rem 0.85rem 0.6rem;border:1px solid #c8b898;text-align:center;">
+<canvas id="cv-propdiag" width="420" height="180" style="display:block;max-width:100%;margin:0 auto;"></canvas>
+</div>
+<script>
+(function(){
+var cv=document.getElementById('cv-propdiag'),ctx=cv.getContext('2d');
+var W=420,H=180;
+function arrow(x0,y0,cx,cy,x1,y1,color){
+  ctx.strokeStyle=color;ctx.lineWidth=2.2;
+  ctx.beginPath();ctx.moveTo(x0,y0);ctx.quadraticCurveTo(cx,cy,x1,y1);ctx.stroke();
+  var ang=Math.atan2(y1-cy,x1-cx);
+  ctx.fillStyle=color;
+  ctx.beginPath();
+  ctx.moveTo(x1,y1);
+  ctx.lineTo(x1-9*Math.cos(ang-0.4),y1-9*Math.sin(ang-0.4));
+  ctx.lineTo(x1-9*Math.cos(ang+0.4),y1-9*Math.sin(ang+0.4));
+  ctx.closePath();ctx.fill();
+}
+ctx.clearRect(0,0,W,H);
+ctx.fillStyle='#faf8f4';ctx.fillRect(0,0,W,H);
+
+var green='#15803d',orange='#c2410c',dark='#1a202c';
+
+arrow(70,72,130,18,178,52,green);
+ctx.fillStyle=green;ctx.font='bold 12px Georgia,serif';ctx.textAlign='center';
+ctx.fillText('direttamente proporzionale',125,16);
+
+arrow(70,118,130,172,178,138,orange);
+ctx.fillStyle=orange;ctx.font='bold 12px Georgia,serif';
+ctx.fillText('inversamente proporzionale',125,178);
+
+ctx.textAlign='left';ctx.fillStyle=dark;
+ctx.font='italic bold 36px Georgia,serif';
+ctx.fillText('x',52,102);
+ctx.font='bold 30px Georgia,serif';
+ctx.fillText('=',98,102);
+ctx.font='italic bold 30px Georgia,serif';
+ctx.fillText('y',187,80);
+ctx.fillText('z',187,134);
+ctx.strokeStyle=dark;ctx.lineWidth=2.2;
+ctx.beginPath();ctx.moveTo(160,92);ctx.lineTo(212,92);ctx.stroke();
+})();
+</script>

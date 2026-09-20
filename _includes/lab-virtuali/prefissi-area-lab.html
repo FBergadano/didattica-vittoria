@@ -1,0 +1,146 @@
+{% comment %}
+Strumento: si scelgono un prefisso di partenza e uno di arrivo (per misure di
+area) da due menu a tendina e si preme "Mostra" per visualizzare sulla retta
+dei prefissi il fattore di conversione, con l'esponente raddoppiato rispetto
+al caso lineare. Nessun parametro.
+{% endcomment %}
+<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1.1rem 1.4rem;margin:1.2rem 0 1.5rem;">
+<p style="font-size:.92rem;font-weight:bold;margin:0 0 .6rem;color:#374151;">Retta dei prefissi per le <em>aree</em> — ogni passo vale il doppio</p>
+<div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:.9rem;">
+<label style="font-size:.92rem;">Da:&ensp;<select id="pfxa-from" style="border:1px solid #d1d5db;border-radius:5px;padding:.25rem .5rem;">
+<option value="0">pico (p)</option><option value="1">nano (n)</option><option value="2">micro (μ)</option>
+<option value="3">milli (m)</option><option value="4">centi (c)</option><option value="5">deci (d)</option>
+<option value="6">base (—)</option><option value="7">deca (da)</option><option value="8">etto (h)</option>
+<option value="9" selected>kilo (k)</option><option value="10">Mega (M)</option><option value="11">Giga (G)</option><option value="12">Tera (T)</option>
+</select></label>
+<label style="font-size:.92rem;">A:&ensp;<select id="pfxa-to" style="border:1px solid #d1d5db;border-radius:5px;padding:.25rem .5rem;">
+<option value="0">pico (p)</option><option value="1">nano (n)</option><option value="2">micro (μ)</option>
+<option value="3">milli (m)</option><option value="4">centi (c)</option><option value="5">deci (d)</option>
+<option value="6" selected>base (—)</option><option value="7">deca (da)</option><option value="8">etto (h)</option>
+<option value="9">kilo (k)</option><option value="10">Mega (M)</option><option value="11">Giga (G)</option><option value="12">Tera (T)</option>
+</select></label>
+<button id="pfxa-go" style="background:#0f766e;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.92rem;">Mostra</button>
+</div>
+<canvas id="pfxa-canvas" style="max-width:100%;display:block;"></canvas>
+<div id="pfxa-expl" style="margin-top:.75rem;font-size:.92rem;min-height:2.5rem;color:#374151;">Scegli i prefissi e clicca <strong>Mostra</strong>.</div>
+</div>
+
+<script>
+(function(){
+var MULT=2;
+var PFX_A=[{sym:"p",name:"pico",exp:-12,col:"#7c3aed",big:true},{sym:"n",name:"nano",exp:-9,col:"#4f46e5",big:true},{sym:"μ",name:"micro",exp:-6,col:"#2563eb",big:true},{sym:"m",name:"milli",exp:-3,col:"#0891b2",big:true},{sym:"c",name:"centi",exp:-2,col:"#0d9488",big:false},{sym:"d",name:"deci",exp:-1,col:"#16a34a",big:false},{sym:"—",name:"base",exp:0,col:"#6b7280",big:false},{sym:"da",name:"deca",exp:1,col:"#ca8a04",big:false},{sym:"h",name:"etto",exp:2,col:"#d97706",big:false},{sym:"k",name:"kilo",exp:3,col:"#ea580c",big:true},{sym:"M",name:"Mega",exp:6,col:"#dc2626",big:true},{sym:"G",name:"Giga",exp:9,col:"#be185d",big:true},{sym:"T",name:"Tera",exp:12,col:"#7e22ce",big:true}];
+var STEP_A=[3,3,3,1,1,1,1,1,1,3,3,3];
+var XSA=[25,90,155,220,255,290,325,360,395,430,495,560,625];
+var WA=660,HA=135,LYA=62;
+var cva=document.getElementById('pfxa-canvas');
+var ctxa=cva.getContext('2d');
+var fromA=document.getElementById('pfxa-from');
+var toA=document.getElementById('pfxa-to');
+var goA=document.getElementById('pfxa-go');
+var explA=document.getElementById('pfxa-expl');
+var dprA=window.devicePixelRatio||1;
+cva.width=WA*dprA; cva.height=HA*dprA;
+cva.style.width=WA+'px'; cva.style.height=HA+'px';
+ctxa.scale(dprA,dprA);
+function supA(n){var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};return n.toString().split('').map(function(c){return m[c]||c;}).join('');}
+function drawA(hlF,hlT,dotX,dotCol,labels){
+  ctxa.clearRect(0,0,WA,HA);
+  var g=ctxa.createLinearGradient(20,0,625,0);
+  g.addColorStop(0,'rgba(124,58,237,.1)');g.addColorStop(.5,'rgba(107,114,128,.03)');g.addColorStop(1,'rgba(126,34,206,.1)');
+  ctxa.fillStyle=g;ctxa.fillRect(20,LYA-2,605,4);
+  ctxa.strokeStyle='#374151';ctxa.lineWidth=2;ctxa.setLineDash([]);
+  ctxa.beginPath();ctxa.moveTo(20,LYA);ctxa.lineTo(633,LYA);ctxa.stroke();
+  ctxa.fillStyle='#374151';ctxa.beginPath();ctxa.moveTo(637,LYA);ctxa.lineTo(627,LYA-5);ctxa.lineTo(627,LYA+5);ctxa.fill();
+  ctxa.font='10px sans-serif';ctxa.textAlign='left';ctxa.fillText('grandezza',641,LYA+4);
+  for(var i=0;i<PFX_A.length;i++){
+    var p=PFX_A[i],x=XSA[i],hl=(i===hlF||i===hlT);
+    if(p.big){
+      ctxa.strokeStyle=p.col;ctxa.lineWidth=hl?3:2;ctxa.setLineDash([]);
+      ctxa.beginPath();ctxa.moveTo(x,LYA-14);ctxa.lineTo(x,LYA+14);ctxa.stroke();
+      if(hl){ctxa.strokeStyle=p.col;ctxa.lineWidth=1.8;ctxa.setLineDash([3,2]);ctxa.beginPath();ctxa.arc(x,LYA,18,0,Math.PI*2);ctxa.stroke();ctxa.setLineDash([]);}
+      ctxa.fillStyle=p.col;ctxa.font='bold 14px sans-serif';ctxa.textAlign='center';ctxa.fillText(p.sym,x,LYA-22);
+      ctxa.font='13px sans-serif';ctxa.fillText('10'+supA(p.exp*MULT),x,LYA+27);
+      ctxa.font='12px sans-serif';ctxa.fillText(p.name,x,LYA+40);
+    } else {
+      var li=i-4,up=(li%2===0);
+      ctxa.strokeStyle=p.col;ctxa.lineWidth=hl?2.5:1.5;ctxa.setLineDash([]);
+      if(up){
+        ctxa.beginPath();ctxa.moveTo(x,LYA-26);ctxa.lineTo(x,LYA+5);ctxa.stroke();
+        if(hl){ctxa.strokeStyle=p.col;ctxa.lineWidth=1.8;ctxa.setLineDash([3,2]);ctxa.beginPath();ctxa.arc(x,LYA,14,0,Math.PI*2);ctxa.stroke();ctxa.setLineDash([]);}
+        ctxa.fillStyle=p.col;ctxa.font='bold 12px sans-serif';ctxa.textAlign='center';ctxa.fillText(p.sym,x,LYA-32);
+        ctxa.font='12px sans-serif';ctxa.fillText('10'+supA(p.exp*MULT),x,LYA-46);
+      } else {
+        ctxa.beginPath();ctxa.moveTo(x,LYA-5);ctxa.lineTo(x,LYA+26);ctxa.stroke();
+        if(hl){ctxa.strokeStyle=p.col;ctxa.lineWidth=1.8;ctxa.setLineDash([3,2]);ctxa.beginPath();ctxa.arc(x,LYA,14,0,Math.PI*2);ctxa.stroke();ctxa.setLineDash([]);}
+        ctxa.fillStyle=p.col;ctxa.font='bold 12px sans-serif';ctxa.textAlign='center';ctxa.fillText(p.sym,x,LYA+33);
+        ctxa.font='12px sans-serif';ctxa.fillText('10'+supA(p.exp*MULT),x,LYA+48);
+      }
+    }
+  }
+  if(dotX!==null){ctxa.beginPath();ctxa.arc(dotX,LYA,9,0,Math.PI*2);ctxa.fillStyle=dotCol||'#f59e0b';ctxa.fill();ctxa.strokeStyle='#fff';ctxa.lineWidth=2.5;ctxa.stroke();}
+  if(labels)labels.forEach(function(l){ctxa.fillStyle=l.col||'#111';ctxa.font='bold 12px sans-serif';ctxa.textAlign='center';ctxa.fillText(l.text,l.x,l.y);});
+}
+var runA=false;
+drawA(-1,-1,null,null,null);
+goA.addEventListener('click',function(){
+  if(runA)return;
+  var fi=parseInt(fromA.value),ti=parseInt(toA.value);
+  if(fi===ti){explA.innerHTML='I due prefissi coincidono: nessuna conversione necessaria.';drawA(fi,ti,XSA[fi],PFX_A[fi].col,null);return;}
+  runA=true;goA.disabled=true;
+  var dir=(ti>fi)?1:-1,nSteps=Math.abs(ti-fi),stepIdx=0,cumExp=0;
+  function doStep(){
+    if(stepIdx>=nSteps){
+      drawA(fi,ti,XSA[ti],PFX_A[ti].col,null);
+      ctxa.save();ctxa.strokeStyle='#f59e0b';ctxa.lineWidth=2.5;ctxa.setLineDash([5,3]);
+      var ay=LYA-36;
+      ctxa.beginPath();ctxa.moveTo(XSA[fi],ay);ctxa.lineTo(XSA[ti],ay);ctxa.stroke();ctxa.setLineDash([]);
+      ctxa.fillStyle='#f59e0b';ctxa.beginPath();
+      if(ti>fi){ctxa.moveTo(XSA[ti]+2,ay);ctxa.lineTo(XSA[ti]-9,ay-5);ctxa.lineTo(XSA[ti]-9,ay+5);}
+      else{ctxa.moveTo(XSA[ti]-2,ay);ctxa.lineTo(XSA[ti]+9,ay-5);ctxa.lineTo(XSA[ti]+9,ay+5);}
+      ctxa.fill();ctxa.restore();
+      if(cumExp!==0){
+        var ctotA=cumExp>=0?'×10'+supA(cumExp):'÷10'+supA(-cumExp);
+        ctxa.save();ctxa.fillStyle='#0f766e';ctxa.font='bold 13px sans-serif';ctxa.textAlign='center';
+        ctxa.fillText('Fattore totale per le aree: '+ctotA,(XSA[fi]+XSA[ti])/2,ay-8);ctxa.restore();
+      }
+      var expDiff=(PFX_A[fi].exp-PFX_A[ti].exp)*MULT;
+      var fname=PFX_A[fi].name==='base'?'(unità base)':PFX_A[fi].name;
+      var tname=PFX_A[ti].name==='base'?'(unità base)':PFX_A[ti].name;
+      var fsym=PFX_A[fi].sym==='—'?'':PFX_A[fi].sym;
+      var tsym=PFX_A[ti].sym==='—'?'':PFX_A[ti].sym;
+      var rule;
+      if(expDiff>0)rule='<strong>moltiplica per 10<sup>'+expDiff+'</sup></strong>';
+      else if(expDiff<0)rule='<strong>dividi per 10<sup>'+(-expDiff)+'</sup></strong>';
+      else rule='nessun fattore';
+      explA.innerHTML='Per le <strong>aree</strong>: da <strong>'+fname+'</strong> a <strong>'+tname+'</strong>: '+rule+'.'
+        +' Equivalenza: <strong>1&thinsp;'+fsym+'X² = 10<sup>'+expDiff+'</sup>&thinsp;'+tsym+'X²</strong>.';
+      runA=false;goA.disabled=false;return;
+    }
+    var curI=fi+stepIdx*dir,nxtI=curI+dir,seIdx=(dir>0)?curI:nxtI;
+    var sExp=STEP_A[seIdx]*MULT;
+    var op=dir>0?'÷':'×';
+    var lbl=op+'10'+supA(sExp),lblCol=dir>0?'#dc2626':'#0f766e';
+    var x0=XSA[curI],x1=XSA[nxtI],midX=(x0+x1)/2;
+    var nextCumExp=cumExp+(dir>0?-sExp:sExp);
+    var t0=null;
+    function frame(ts){
+      if(!t0)t0=ts;
+      var prog=Math.min((ts-t0)/400,1);
+      var cx=x0+(x1-x0)*prog;
+      drawA(fi,-1,cx,'#f59e0b',[{x:midX,y:LYA-52,text:lbl,col:lblCol}]);
+      if(cumExp!==0){
+        var cpfxA=cumExp>=0?'×10'+supA(cumExp):'÷10'+supA(-cumExp);
+        ctxa.save();ctxa.fillStyle='rgba(15,118,110,.8)';ctxa.font='bold 11px sans-serif';ctxa.textAlign='right';
+        ctxa.fillText('Finora: '+cpfxA,WA-8,HA-8);ctxa.restore();
+      }
+      if(prog<1){requestAnimationFrame(frame);}
+      else{cumExp=nextCumExp;stepIdx++;setTimeout(doStep,250);}
+    }
+    requestAnimationFrame(frame);
+  }
+  explA.innerHTML='Animazione in corso…';
+  drawA(fi,-1,XSA[fi],'#f59e0b',null);
+  setTimeout(doStep,400);
+});
+})();
+</script>

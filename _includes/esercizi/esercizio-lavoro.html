@@ -1,0 +1,177 @@
+{% comment %}
+Esercizio a carosello (Verifica Subito!) sul lavoro. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexLavoro">
+<p class="iex-lbl">Verifica Subito!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexLavoroprev" onclick="iexLavoronav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexLavorodots"></div>
+<button class="iex-navbtn" id="iexLavoronext" onclick="iexLavoronav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexLavororow0">
+<p class="iex-qt">Quale delle seguenti relazioni fra unità di misura è <strong>sbagliata</strong>?</p>
+<div class="iex-choices" id="iexLavorochoices0">
+<button class="iex-choice-btn" data-v="a">$\text J = \text N\cdot \text m$</button>
+<button class="iex-choice-btn" data-v="b">$\text J = \text{kg}\cdot \text m^2\cdot \text s^2$</button>
+<button class="iex-choice-btn" data-v="c">$\text J = \text{kg}\cdot\frac{\text m}{\text s^2}\cdot \text m$</button>
+<button class="iex-choice-btn" data-v="d">$\text J = \text{kg}\cdot\frac{\text m^2}{\text s^2}$</button>
+</div>
+<div class="iex-fb" id="iexLavorofb0"></div>
+</div>
+
+<div class="iex-q" id="iexLavororow1" style="display:none">
+<p class="iex-qt">Un bue ara un campo per un'intera giornata, esercitando sull'aratro una forza costante di $800\ \text N$. Fra andate e ritorni lungo i solchi, in tutto il giorno percorre $8\,000\ \text m$. Quanto lavoro ha compiuto il bue? Esprimi il risultato in joule, in notazione scientifica.</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcLavoro" %}
+<div class="calc-flow-body">
+<div class="iex-nested">
+{% include sci.html prima="$L=$" coeff="6.4" exp="6" s="$6{,}4\times10^6\ \text J$" %}
+</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexLavororow2" style="display:none">
+<p class="iex-qt">In quale di queste situazioni il lavoro è <strong>negativo</strong>?</p>
+<div class="iex-choices" id="iexLavorochoices2">
+<button class="iex-choice-btn" data-v="a">Il lavoro svolto dai freni di un treno che frena</button>
+<button class="iex-choice-btn" data-v="b">Il lavoro svolto dal motore di un treno che accelera</button>
+<button class="iex-choice-btn" data-v="c">Il lavoro svolto dalla forza peso su un sasso che cade</button>
+<button class="iex-choice-btn" data-v="d">Il lavoro svolto dalla forza normale su un blocco che scivola su un piano orizzontale</button>
+</div>
+<div class="iex-fb" id="iexLavorofb2"></div>
+</div>
+
+<div class="iex-q" id="iexLavororow3" style="display:none">
+<p class="iex-qt">In quale di queste situazioni il lavoro <strong>non</strong> è nullo?</p>
+<div class="iex-choices" id="iexLavorochoices3">
+<button class="iex-choice-btn" data-v="a">La forza applicata è nulla</button>
+<button class="iex-choice-btn" data-v="b">Lo spostamento è nullo</button>
+<button class="iex-choice-btn" data-v="c">Forza e spostamento sono perpendicolari</button>
+<button class="iex-choice-btn" data-v="d">Forza e spostamento sono opposti</button>
+</div>
+<div class="iex-fb" id="iexLavorofb3"></div>
+</div>
+
+<div class="iex-q" id="iexLavororow4" style="display:none">
+<p class="iex-qt">Un bradipo si sposta pigramente di $12\ \text m$ lungo un ramo perfettamente orizzontale. Quanto lavoro compie su di lui la forza peso durante questo spostamento?</p>
+<div class="iex-choices" id="iexLavorochoices4">
+<button class="iex-choice-btn" data-v="a">$L = mgh$, ma servirebbe conoscere l'altezza per calcolarlo</button>
+<button class="iex-choice-btn" data-v="b">$L=0$, perché lo spostamento è orizzontale e la forza peso è verticale</button>
+<button class="iex-choice-btn" data-v="c">$L = mg\cdot 12\ \text m$, usando i $12\ \text m$ come spostamento nella formula</button>
+<button class="iex-choice-btn" data-v="d">Non si può compiere lavoro se ci si muove così lentamente</button>
+</div>
+<div class="iex-fb" id="iexLavorofb4"></div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var N=5, cur=0, ok=[false,false,false,false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexLavorodots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexLavoro .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexLavororow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexLavoroprev').disabled=(i===0);
+    document.getElementById('iexLavoronext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexLavorodots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexLavoronav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  function wireChoices(rowIdx, choicesId, fbId, correctV, msgOk, msgErr){
+    var btns = document.querySelectorAll('#'+choicesId+' .iex-choice-btn');
+    var fb = document.getElementById(fbId);
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === correctV;
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = btn.className.replace(' wrong','') + ' correct';
+          ok[rowIdx] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! '+msgOk+(rowIdx<N-1?' <button class="iex-nextbtn" onclick="iexLavoronav(1)">Passo successivo &rarr;</button>':'');
+          shootConf(btn); updateDots(); checkFinale();
+        } else {
+          btn.className = btn.className.replace(' correct','') + ' wrong';
+          var correctBtn = document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+correctV+'"]');
+          correctBtn.className = correctBtn.className.replace(' wrong','') + ' correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = msgErr;
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  }
+
+  // Fuochi d'artificio finali, quando TUTTE le domande (comprese quelle
+  // annidate come sci.html/invert.html, vedi sotto) sono state risolte.
+  function checkFinale(){
+    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+  // La domanda 1 è un calcolo numerico (sci.html), non una scelta multipla:
+  // ci mettiamo in ascolto del suo evento di completamento per contarla.
+  var _row1=document.getElementById('iexLavororow1');
+  if(_row1)_row1.addEventListener('iex:correct', function(){
+    if(!ok[1]){ ok[1]=true; updateDots(); checkFinale(); }
+  });
+
+  wireChoices(0, 'iexLavorochoices0', 'iexLavorofb0', 'b',
+    'Il newton si misura in $\\text{kg}\\cdot\\text m/\\text s^2$, quindi il joule dovrebbe contenere $1/\\text s^2$, non $\\text s^2$: qui la potenza di $\\text s$ ha il segno sbagliato.',
+    'Non è quella giusta: ricorda che $\\text N = \\text{kg}\\cdot \\text m/\\text s^2$. Sostituendo, tutte le altre relazioni tornano corrette — una sola ha una potenza di $\\text s$ scritta al contrario.');
+
+  wireChoices(2, 'iexLavorochoices2', 'iexLavorofb2', 'a',
+    'I freni esercitano una forza di attrito diretta in verso opposto al moto: forza e spostamento sono opposti, quindi il lavoro è negativo.',
+    'Non è corretto: pensa alla direzione della forza rispetto allo spostamento. Solo in un caso la forza si oppone al moto.');
+
+  wireChoices(3, 'iexLavorochoices3', 'iexLavorofb3', 'd',
+    'Quando forza e spostamento sono opposti il lavoro non è nullo: è negativo! Negli altri tre casi (forza nulla, spostamento nullo, forza e spostamento perpendicolari) il lavoro è invece sempre nullo.',
+    'Non è corretto: in questo caso il lavoro è negativo, quindi diverso da zero. Negli altri tre casi il lavoro è invece nullo.');
+
+  wireChoices(4, 'iexLavorochoices4', 'iexLavorofb4', 'b',
+    'La forza peso è verticale, mentre lo spostamento del bradipo è orizzontale: sono perpendicolari, quindi il lavoro è nullo, qualunque sia la distanza percorsa lungo il ramo.',
+    'Non è corretto: pensa alla direzione della forza peso (sempre verticale) rispetto allo spostamento (qui orizzontale). Quando i due sono perpendicolari il lavoro è sempre nullo, indipendentemente dai metri percorsi.');
+})();
+</script>

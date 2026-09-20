@@ -1,0 +1,65 @@
+{% comment %}
+Esercizio interattivo: due pulsanti (Anna/Bruno) con stipendi espressi in
+unità diverse (al mese con tredicesima, all'anno); lo studente clicca chi
+pensa guadagni di più e riceve un riscontro. Nessun parametro.
+{% endcomment %}
+<div style="margin:0.75rem 0 0;background:#f0e8dc;border-radius:8px;padding:0.75rem 0.85rem 0.6rem;border:1px solid #c8b898;">
+<div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+<button id="btn-anna" style="flex:1;min-width:160px;padding:0.65rem 0.75rem;background:#fff;border:2px solid #c8b898;border-radius:8px;cursor:pointer;font-family:Georgia,serif;text-align:left;">
+<span style="display:block;font-size:14px;font-weight:bold;color:#3a2c10;">Anna</span>
+<span style="display:block;font-size:12px;color:#6b5530;margin-top:0.2rem;">1400 €/mese + tredicesima</span>
+</button>
+<button id="btn-bruno" style="flex:1;min-width:160px;padding:0.65rem 0.75rem;background:#fff;border:2px solid #c8b898;border-radius:8px;cursor:pointer;font-family:Georgia,serif;text-align:left;">
+<span style="display:block;font-size:14px;font-weight:bold;color:#3a2c10;">Bruno</span>
+<span style="display:block;font-size:12px;color:#6b5530;margin-top:0.2rem;">18 000 €/anno</span>
+</button>
+</div>
+<p id="fb-salary" style="margin:0.5rem 0 0;font-size:13px;font-family:Georgia,serif;min-height:1.3em;"></p>
+</div>
+<script>
+(function(){
+var answered=false;
+var btnA=document.getElementById('btn-anna'),btnB=document.getElementById('btn-bruno'),fb=document.getElementById('fb-salary');
+function pick(name,el){
+  if(answered)return;
+  if(name==='anna'){
+    answered=true;
+    el.style.borderColor='#15803d';el.style.background='#f0fdf4';
+    fb.style.color='#15803d';
+    fb.textContent='✓ Esatto! Con la tredicesima Anna incassa 13 mensilità in un anno: 1400 × 13 = 18 200 €, contro i 18 000 € di Bruno.';
+    confettiSalary();
+  } else {
+    el.style.borderColor='#b91c1c';el.style.background='#fef2f2';
+    fb.style.color='#b91c1c';
+    fb.textContent='✗ Non proprio: prova a calcolare quante mensilità riceve davvero Anna in un anno, tredicesima compresa.';
+  }
+}
+btnA.addEventListener('click',function(){pick('anna',btnA);});
+btnB.addEventListener('click',function(){pick('bruno',btnB);});
+function confettiSalary(){
+  var canvas=document.createElement('canvas');
+  canvas.style.position='fixed';canvas.style.top=0;canvas.style.left=0;canvas.style.pointerEvents='none';canvas.style.zIndex=9999;
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  document.body.appendChild(canvas);
+  var ctx=canvas.getContext('2d');
+  var r=btnA.getBoundingClientRect(),cx=(r.left+r.right)/2,cy=r.top;
+  var cols=['#0891b2','#22d3ee','#059669','#d97706','#ec4899','#a78bfa','#fbbf24'];
+  var ps=[];
+  for(var k=0;k<55;k++){
+    ps.push({x:cx+(Math.random()-.5)*140,y:cy,vx:(Math.random()-.5)*11,vy:-(Math.random()*13+5),
+      w:Math.random()*11+5,h:Math.random()*6+3,col:cols[k%cols.length],
+      rot:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.32,a:1});
+  }
+  (function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);var alive=false;
+    ps.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;p.vy+=0.38;p.rot+=p.rv;p.a-=0.017;
+      if(p.a<=0)return;alive=true;
+      ctx.save();ctx.globalAlpha=p.a;ctx.translate(p.x,p.y);ctx.rotate(p.rot);
+      ctx.fillStyle=p.col;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+    });
+    if(alive)requestAnimationFrame(frame);else document.body.removeChild(canvas);
+  })();
+}
+})();
+</script>

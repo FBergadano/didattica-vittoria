@@ -1,0 +1,47 @@
+{% comment %}
+Esercizio a carosello: isola le grandezze nella formula del potenziale gravitazionale, usando invert.html. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="invCarPot">
+<p class="iex-lbl">Isola le altre grandezze</p>
+<p class="iex-hint">Come sempre: minor numero di mosse possibile, poi sul quaderno. Anche qui lavoriamo con il <strong>modulo</strong> (senza il segno meno), che resta invariato durante i passaggi.</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="invCarPotprev" onclick="invCarPotnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="invCarPotdots"></div>
+<button class="iex-navbtn" id="invCarPotnext" onclick="invCarPotnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="invCarPotrow0">
+<div class="iex-nested">
+{% include invert.html id="inv-pot1-U" variabili="V|U|m" sinistra="V" destra="U/m" obiettivo="U" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarPotrow1" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-pot1-m" variabili="V|U|m" sinistra="V" destra="U/m" obiettivo="m" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarPotrow2" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-pot2-G" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="G" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarPotrow3" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-pot2-M" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="M" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarPotrow4" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-pot2-r" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="r" %}
+</div>
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('invCarPot',5);
+</script>

@@ -1,0 +1,157 @@
+{% comment %}
+Esercizio a completamento (cloze) sulle trasformazioni di energia durante il rimbalzo su un trampolino. Nessun parametro.
+{% endcomment %}
+<div class="tplcz-widget" id="tplCloze">
+<ul class="tplcz-list">
+
+<li>Inizialmente il bambino si trova a un'altezza $h_i$ rispetto al punto di massima estensione del tappeto, con velocità nulla: tutta la sua energia meccanica è
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="mgh_i"><option value="">—</option><option>mgh_i</option><option>K</option><option>Ug</option><option>Uel</option><option>K+Ug</option><option>K+Uel</option><option>Ug+Uel</option><option>K+Ug+Uel</option></select>.</li>
+
+<li>Successivamente, cadendo, converte progressivamente la sua energia potenziale in energia cinetica: $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh_i</option><option>K</option><option>Ug</option><option>Uel</option><option>K+Ug</option><option>K+Uel</option><option>Ug+Uel</option><option>K+Ug+Uel</option></select>.</li>
+
+<li>Quando tocca il tappeto, comincia a rallentare mentre il tappeto si incurva sotto di lui, accumulando
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale elastica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>; quando si ferma nel punto più basso (il punto di massima estensione del tappeto), tutta la sua energia è diventata
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale elastica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="Uel"><option value="">—</option><option>mgh_i</option><option>K</option><option>Ug</option><option>Uel</option><option>K+Ug</option><option>K+Uel</option><option>Ug+Uel</option><option>K+Ug+Uel</option></select>.</li>
+
+<li>Il tappeto comincia poi a distendersi e il bambino torna a muoversi verso l'alto, acquistando anche quota: l'energia immagazzinata nel tappeto si converte quindi in
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica e potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>.</li>
+
+<li>Infine, quando il bambino è di nuovo in aria e continua a salire, perde velocità: la sua energia si trasforma gradualmente da
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>
+a
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia potenziale elastica</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+<option>energia cinetica e potenziale elastica</option>
+<option>energia potenziale gravitazionale ed elastica</option>
+<option>tutte e tre le forme di energia</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh_i</option><option>K</option><option>Ug</option><option>Uel</option><option>K+Ug</option><option>K+Uel</option><option>Ug+Uel</option><option>K+Ug+Uel</option></select>, finché non si ferma di nuovo all'altezza $h_i$ e il ciclo ricomincia.</li>
+
+</ul>
+
+<p>Nella realtà, il tappeto non sarebbe perfettamente elastico, per cui il bambino dovrebbe piegare le gambe e compiere un certo <select class="fill-sel tplcz-blank" data-ans="lavoro"><option value="">—</option><option>lavoro</option><option>calore</option><option>energia cinetica</option><option>energia potenziale</option></select> per tornare all'altezza iniziale (per questo fa fatica!).</p>
+
+<div class="tplcz-actions"><button class="tplcz-vbtn" id="tplClozeCheck" type="button">Verifica tutto</button></div>
+<div class="tplcz-fb" id="tplClozeFb"></div>
+</div>
+
+<style>
+#tplCloze{margin:1rem 0}
+#tplCloze .tplcz-list{padding-left:1.2rem;margin:.4rem 0}
+#tplCloze .tplcz-list li{margin:.5rem 0}
+#tplCloze .tplcz-blank.ok{border-color:#15803d!important;box-shadow:0 0 0 1px #15803d}
+#tplCloze .tplcz-blank.err{border-color:#dc2626!important;box-shadow:0 0 0 1px #dc2626}
+#tplCloze .tplcz-actions{margin:.7rem 0 .3rem}
+#tplCloze .tplcz-vbtn{background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:.35rem .9rem;cursor:pointer;font-size:.88rem}
+#tplCloze .tplcz-fb{font-size:.88rem;min-height:1.2rem}
+#tplCloze .tplcz-fb.ok{color:#15803d;font-weight:600}
+#tplCloze .tplcz-fb.err{color:#dc2626}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('tplCloze');
+  if(!root) return;
+
+  function canon(s){
+    s=(s||'').toString().toLowerCase().replace(/\$/g,'').replace(/\s+/g,'').replace(/_/g,'').replace(/[{}]/g,'').replace(/\*/g,'');
+    var terms=s.split('+').filter(Boolean).sort();
+    return terms.join('+');
+  }
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect?el.getBoundingClientRect():el, cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+
+  var checkBtn=document.getElementById('tplClozeCheck');
+  var fb=document.getElementById('tplClozeFb');
+  checkBtn.addEventListener('click', function(){
+    var blanks=root.querySelectorAll('.tplcz-blank');
+    var total=blanks.length, correct=0;
+    blanks.forEach(function(b){
+      var ok=canon(b.value)===canon(b.dataset.ans);
+      b.classList.remove('ok','err');
+      b.classList.add(ok?'ok':'err');
+      if(ok)correct++;
+    });
+    fb.style.display='block';
+    if(correct===total){
+      fb.className='tplcz-fb ok';
+      fb.innerHTML='&#10003; Tutto corretto! Hai ricostruito perfettamente il ciclo di scambio energetico.';
+      shootConf(checkBtn);
+      setTimeout(shootFW,500);
+    } else {
+      fb.className='tplcz-fb err';
+      fb.innerHTML='Hai '+correct+' risposte corrette su '+total+'. Controlla i campi evidenziati in rosso e riprova.';
+    }
+  });
+})();
+</script>

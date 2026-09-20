@@ -1,0 +1,14 @@
+{% comment %}
+Utilità di pagina: rinumera in automatico tutte le etichette "Esercizio" trovate nella pagina, nell'ordine in cui compaiono. Nessun parametro.
+{% endcomment %}
+<script>
+(function(){
+  var n=0;
+  document.querySelectorAll('.iex-lbl').forEach(function(el){
+    if(/^Esercizio/.test(el.textContent.trim())){
+      n++;
+      el.textContent=el.textContent.trim().replace(/^Esercizio[\s ]*\d*[\s ]*(?:[—–\-][\s ]*)?/,'Esercizio '+n+' — ');
+    }
+  });
+})();
+</script>

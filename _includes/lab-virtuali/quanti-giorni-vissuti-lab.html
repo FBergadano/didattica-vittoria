@@ -1,0 +1,46 @@
+{% comment %}
+Esercizio: lo studente inserisce la propria data di nascita e verifica il numero di giorni vissuti, espresso in notazione scientifica. Nessun parametro.
+{% endcomment %}
+<div class="sci-wrap" id="dob-sci">
+<span class="sci-nota"><input class="sci-c" id="dob-c" type="text" autocomplete="off"><span class="sci-x">&times;&thinsp;10<span class="sci-pow"><input class="sci-e" id="dob-e" type="text" autocomplete="off"></span></span></span>
+</div>
+
+<div style="margin:.5rem 0 .2rem;display:flex;align-items:center;gap:.25rem;flex-wrap:wrap;font-size:.88rem;color:#6b7280">
+Per la verifica — data di nascita:
+<input type="number" id="dob-d" min="1" max="31" placeholder="GG" style="width:3rem;font-size:.88rem;border:1.5px solid #d1d5db;border-radius:5px;padding:.12rem .3rem;text-align:center">
+<span>/</span>
+<input type="number" id="dob-m" min="1" max="12" placeholder="MM" style="width:3rem;font-size:.88rem;border:1.5px solid #d1d5db;border-radius:5px;padding:.12rem .3rem;text-align:center">
+<span>/</span>
+<input type="number" id="dob-y" min="1900" max="2026" placeholder="AAAA" style="width:4.5rem;font-size:.88rem;border:1.5px solid #d1d5db;border-radius:5px;padding:.12rem .3rem;text-align:center">
+<button id="dob-v" style="background:var(--accent);color:#fff;border:none;border-radius:5px;padding:.15rem .65rem;cursor:pointer;font-size:.86rem">✓ Verifica</button>
+<span class="sci-fb" id="dob-fb"></span>
+</div>
+<script>
+(function(){
+window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+var ic=document.getElementById('dob-c'),ie=document.getElementById('dob-e');
+var vBtn=document.getElementById('dob-v'),fb=document.getElementById('dob-fb');
+vBtn.addEventListener('click',function(){
+  var d=parseInt(document.getElementById('dob-d').value);
+  var m=parseInt(document.getElementById('dob-m').value);
+  var y=parseInt(document.getElementById('dob-y').value);
+  if(isNaN(d)||isNaN(m)||isNaN(y)||d<1||d>31||m<1||m>12||y<1900||y>2026){
+    fb.textContent='Inserisci una data valida.';fb.className='sci-fb err';return;
+  }
+  var dob=new Date(y,m-1,d),today=new Date();
+  var totalDays=Math.floor((today-dob)/86400000);
+  if(totalDays<=0){fb.textContent='Data non valida.';fb.className='sci-fb err';return;}
+  var exp=Math.floor(Math.log10(totalDays));
+  var coeffExact=totalDays/Math.pow(10,exp);
+  var cv=parseFloat(ic.value.trim().replace(',','.').replace('−','-'));
+  var ev=parseInt(ie.value.trim().replace('−','-'));
+  var cok=!isNaN(cv)&&Math.abs(cv-coeffExact)<0.1;
+  var eok=ev===exp;
+  ic.classList.toggle('ok',cok);ic.classList.toggle('err',!cok);
+  ie.classList.toggle('ok',eok);ie.classList.toggle('err',!eok);
+  if(cok&&eok){fb.textContent='✓ Corretto! Hai vissuto '+totalDays+' giorni.';fb.className='sci-fb ok';_shoot(vBtn);}
+  else{fb.textContent='→ '+coeffExact.toFixed(1)+' × 10^'+exp+' ('+totalDays+' giorni)';fb.className='sci-fb err';}
+});
+[ic,ie].forEach(function(el){el.addEventListener('keydown',function(e){if(e.key==='Enter')vBtn.click();});});
+})();
+</script>

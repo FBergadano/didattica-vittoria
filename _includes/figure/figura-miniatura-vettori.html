@@ -1,0 +1,23 @@
+{% comment %}
+Figura statica: miniatura di due vettori disegnati orizzontalmente. Nessun parametro.
+{% endcomment %}
+<div style="text-align:center;margin:.4rem 0 .2rem;">
+<svg viewBox="0 0 240 100" width="220" height="92" style="display:block;margin:0 auto;" role="img" aria-label="Miniatura del disegno dei vettori, orizzontale">
+<defs>
+  <radialGradient id="sphAzzurraMini" cx="35%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#f0f9ff"/><stop offset="55%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#38bdf8"/>
+  </radialGradient>
+  <radialGradient id="sphRosaMini" cx="35%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
+  </radialGradient>
+  <marker id="dvArrowRedMini" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  <marker id="dvArrowPurpleMini" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+</defs>
+<g transform="translate(128,50) scale(0.5) translate(-266,-100)">
+  <circle cx="100" cy="100" r="28" fill="url(#sphAzzurraMini)"/>
+  <circle cx="400" cy="100" r="60" fill="url(#sphRosaMini)"/>
+  <line x1="100" y1="100" x2="222" y2="100" stroke="#dc2626" stroke-width="3.5" marker-end="url(#dvArrowRedMini)"/>
+  <line x1="400" y1="100" x2="278" y2="100" stroke="#7c3aed" stroke-width="3.5" marker-end="url(#dvArrowPurpleMini)"/>
+</g>
+</svg>
+</div>
