@@ -1,0 +1,32 @@
+{% comment %}
+Figura statica: diagramma di Venn di un sistema non isolato, con una freccia entrante di lavoro positivo e una uscente di lavoro negativo. Nessun parametro.
+{% endcomment %}
+<div class="fig-block">
+<svg viewBox="0 0 360 300" width="100%" style="max-width:300px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Diagramma di Venn: un sistema non isolato dentro l'Universo, con una freccia entrante di lavoro positivo e una uscente di lavoro negativo">
+  <defs>
+    <radialGradient id="univGradNonIso" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#f5f8ff"/><stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <radialGradient id="sysGradNonIso" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#fffbeb"/><stop offset="100%" stop-color="#fde68a"/>
+    </radialGradient>
+    <marker id="lInArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#15803d"/></marker>
+    <marker id="lOutArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  </defs>
+  <circle cx="180" cy="160" r="130" fill="url(#univGradNonIso)" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="180" y="50" text-anchor="middle" font-size="15" font-weight="600" fill="#1e40af">Universo</text>
+  <circle cx="180" cy="180" r="62" fill="url(#sysGradNonIso)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="180" y="185" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">Sistema</text>
+
+  <line x1="90" y1="120" x2="140" y2="152" stroke="#15803d" stroke-width="3" marker-end="url(#lInArrow)"/>
+  <foreignObject x="42" y="88" width="50" height="26">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:15px;font-weight:600;color:#15803d;">$L>0$</div>
+  </foreignObject>
+
+  <line x1="222" y1="212" x2="272" y2="244" stroke="#dc2626" stroke-width="3" marker-end="url(#lOutArrow)"/>
+  <foreignObject x="272" y="240" width="50" height="26">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:15px;font-weight:600;color:#dc2626;">$L<0$</div>
+  </foreignObject>
+</svg>
+<figcaption><span class="fig-num" data-fig-id="venn-sistema-non-isolato">Figura</span> — In un sistema non isolato l'energia può entrare (lavoro positivo, $L>0$) o uscire (lavoro negativo, $L<0$) attraversando il confine con il resto dell'Universo.</figcaption>
+</div>

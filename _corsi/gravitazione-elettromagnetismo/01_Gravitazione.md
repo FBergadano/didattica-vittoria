@@ -83,679 +83,7 @@ Nella realtà la rotazione era così minuscola che Cavendish dovette leggerla co
 
 Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
 
-<div id="cavx1" class="cavx-widget">
-
-  <div class="cavx-head">
-    <span class="cavx-badge">Londra · 1798</span>
-  </div>
-
-  <div class="cavx-scenario-tabs">
-    <button class="cavx-tab active" data-scenario="mass">Dipendenza dalle masse</button>
-    <button class="cavx-tab" data-scenario="r">Dipendenza da r</button>
-  </div>
-  <div class="cavx-stage">
-    <div class="cavx-canvas-wrap">
-      <canvas class="cavx-app" width="400" height="480"></canvas>
-      <p class="cavx-canvas-cap">L'asta ruota verso la sfera grande (rotazione amplificata per essere visibile)</p>
-    </div>
-
-    <div class="cavx-sidebar">
-      <p class="cavx-meter">Forza rilevata:<br><span class="cavx-fval">—</span> N</p>
-
-      <div class="cavx-panel cavx-panel-mass">
-        <div class="cavx-controls">
-          <div class="cavx-control-group">
-            <span class="cavx-control-label">Massa grande <em>M</em></span>
-            <div class="cavx-choice-row">
-              <button class="cavx-choice cavx-Mbtn active" data-val="20">20 kg</button>
-              <button class="cavx-choice cavx-Mbtn" data-val="40">40 kg</button>
-            </div>
-          </div>
-
-          <div class="cavx-centre-controls">
-            <button class="cavx-btn-main cavx-play">▶ Avvia</button>
-            <button class="cavx-btn-rev cavx-reset">↺ Allontana</button>
-          </div>
-
-          <div class="cavx-control-group">
-            <span class="cavx-control-label">Massa piccola <em>m</em></span>
-            <div class="cavx-choice-row">
-              <button class="cavx-choice cavx-mbtn active" data-val="2">2 kg</button>
-              <button class="cavx-choice cavx-mbtn" data-val="4">4 kg</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="cavx-panel cavx-panel-r" style="display:none">
-        <p class="cavx-rstudy-info">
-          Distanza attuale <em>r</em> = <span class="cavx-r-cur">—</span> cm<br>
-          Forza prima del cambio: <span class="cavx-r-fbefore">—</span> N
-        </p>
-        <div class="cavx-rstudy-btns"></div>
-        <p class="cavx-rstudy-ratio">&nbsp;</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="cavx-legend">
-    <div class="cavx-legend-item"><span class="cavx-legend-dot" style="background:#e8983a"></span> Sfera grande (M)</div>
-    <div class="cavx-legend-item"><span class="cavx-legend-dot" style="background:#c7ccd4"></span> Sfera piccola (m)</div>
-    <div class="cavx-legend-item"><span class="cavx-legend-dot" style="background:#d8d8d8"></span> Piattino indicatore</div>
-  </div>
-
-</div>
-
-<style>
-.cavx-widget {
-  --cx-bg: #0a0c10;
-  --cx-surface: #10141c;
-  --cx-copper: #b87333;
-  --cx-copper-bright: #e8983a;
-  --cx-amber: #ff9a00;
-  --cx-glow: rgba(184,115,51,0.4);
-  --cx-text: #e8d5b0;
-  --cx-text2: #9a8060;
-  --cx-rline: #6fd3d9;
-  font-family: 'Crimson Text', Georgia, serif;
-  background: var(--cx-bg);
-  color: var(--cx-text);
-  border-radius: 10px;
-  padding: 1.2rem 1.1rem 1rem;
-  margin: 2rem 0;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.35);
-}
-.cavx-widget::before {
-  content:'';
-  position:absolute; inset:0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(184,115,51,0.08) 0%, transparent 60%);
-  pointer-events:none;
-}
-.cavx-widget * { box-sizing: border-box; }
-.cavx-head { text-align:center; margin-bottom:.6rem; position:relative; z-index:1; }
-.cavx-badge { font-size:.7rem; letter-spacing:.32em; color: var(--cx-copper); text-transform:uppercase; display:block; }
-
-.cavx-scenario-tabs {
-  display:flex; justify-content:center; gap:.5rem; margin-bottom:.8rem; position:relative; z-index:1;
-}
-.cavx-tab {
-  padding:.5rem 1.1rem; border-radius:20px; cursor:pointer;
-  background:transparent; border:1px solid rgba(184,115,51,.4); color: var(--cx-text2);
-  font-family: Georgia, serif; font-size:.85rem; transition:all .2s;
-}
-.cavx-tab:hover { border-color: var(--cx-copper); color: var(--cx-copper-bright); }
-.cavx-tab.active { background: var(--cx-copper); border-color: var(--cx-copper); color: var(--cx-bg); font-weight:700; }
-
-.cavx-stage { display:flex; gap:1rem; justify-content:center; align-items:flex-start; flex-wrap:wrap; position:relative; z-index:1; }
-.cavx-canvas-wrap {
-  border:1px solid rgba(184,115,51,0.22); border-radius:6px;
-  background: var(--cx-surface); overflow:hidden;
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-  width: 260px; max-width:100%; flex:none;
-}
-.cavx-canvas-wrap canvas { display:block; width:100%; height:auto; }
-.cavx-canvas-cap { font-size:.72rem; color: var(--cx-text2); text-align:center; padding:.4rem .5rem .55rem; font-style:italic; }
-
-.cavx-sidebar {
-  display:flex; flex-direction:column; justify-content:space-between; gap:.6rem;
-  flex:1 1 160px; max-width:190px; min-width:150px;
-}
-.cavx-meter {
-  text-align:center; font-size:.8rem; color: var(--cx-text2); line-height:1.4; margin:0;
-}
-.cavx-fval { color: var(--cx-amber); font-weight:600; }
-
-.cavx-panel { position:relative; z-index:1; }
-
-.cavx-controls {
-  display:flex; flex-direction:column; gap:.7rem; align-items:stretch;
-}
-.cavx-control-group { display:flex; flex-direction:column; gap:.4rem; align-items:center; }
-.cavx-control-label { font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; color: var(--cx-text2); text-align:center; }
-
-.cavx-choice-row { display:flex; gap:.5rem; }
-.cavx-choice {
-  padding:.4rem .7rem; border-radius:3px; cursor:pointer;
-  background:transparent; border:1px solid rgba(184,115,51,.4); color: var(--cx-text2);
-  font-family: Georgia, serif; font-size:.85rem; transition:all .2s;
-}
-.cavx-choice:hover { border-color: var(--cx-copper); color: var(--cx-copper-bright); }
-.cavx-choice.active { background: var(--cx-copper); border-color: var(--cx-copper); color: var(--cx-bg); font-weight:700; }
-
-.cavx-centre-controls { display:flex; flex-direction:column; align-items:center; gap:.55rem; }
-.cavx-btn-main, .cavx-btn-rev, .cavx-rbtn {
-  padding:.55rem 1.15rem; border-radius:3px; cursor:pointer;
-  font-family: Georgia, serif; font-size:.86rem; letter-spacing:.04em;
-  white-space:nowrap; transition:all .25s;
-}
-.cavx-btn-main {
-  background:transparent; border:1.4px solid var(--cx-copper); color: var(--cx-copper-bright);
-}
-.cavx-btn-main:hover { background: rgba(184,115,51,.18); }
-.cavx-btn-main.active { background: var(--cx-copper); color: var(--cx-bg); }
-.cavx-btn-rev, .cavx-rbtn {
-  background:transparent; border:1px solid rgba(184,115,51,.4); color: var(--cx-text2);
-}
-.cavx-btn-rev:hover, .cavx-rbtn:hover { border-color: var(--cx-copper); color: var(--cx-copper-bright); background: rgba(184,115,51,.12); }
-
-.cavx-panel-r { display:flex; flex-direction:column; align-items:stretch; gap:.6rem; }
-.cavx-rstudy-info { font-size:.78rem; color: var(--cx-text2); text-align:center; margin:0; line-height:1.5; }
-.cavx-r-cur, .cavx-r-fbefore { color: var(--cx-rline); font-weight:600; }
-.cavx-rstudy-btns { display:flex; flex-direction:column; gap:.4rem; }
-.cavx-rstudy-btns .cavx-rbtn { width:100%; }
-.cavx-rstudy-ratio { color: var(--cx-copper-bright); font-style:italic; font-size:.78rem; min-height:1.3em; text-align:center; margin:0; }
-
-.cavx-legend {
-  display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;
-  margin-top:.9rem; font-size:.78rem; color: var(--cx-text2); position:relative; z-index:1;
-}
-.cavx-legend-item { display:flex; align-items:center; gap:.4rem; }
-.cavx-legend-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
-
-@media print { .cavx-widget { display:none !important; } }
-</style>
-
-<script>
-(function(){
-  var root = document.getElementById('cavx1');
-  if (!root) return;
-  function $(s){ return root.querySelector(s); }
-
-  var G = 6.674e-11;
-
-  // Raggi delle sfere: fissi, non cambiano scegliendo un valore di massa diverso.
-  var RM_VIS = 0.020;
-  var Rm_VIS = 0.010;
-
-  // Geometria dell'apparato (in metri): base, vetro e coperchio hanno lo stesso
-  // raggio (un cilindro uniforme). L'anello graduato ha lo stesso diametro
-  // della gabbia a quell'altezza. Il bilancere ha lunghezza totale
-  // ℓ = 2(R - r_m): la sferetta, orbitando, sfiora la parete di vetro.
-  // La massa grande tocca la parete dal lato opposto.
-  var BASE_R = 0.17, BASE_H = 0.02;
-  var GLASS_R = 0.17, GLASS_H = 0.32;
-  var LID_R = 0.17, LID_H = 0.02;
-  var TUBE_R = 0.022, TUBE_H = 0.06;
-  var KNOB_R = 0.026;
-  var LR = GLASS_R - Rm_VIS;   // raggio dell'orbita della massa piccola sul bilancere
-  var D_M = GLASS_R - RM_VIS;  // la massa grande tocca la parete di vetro
-  var ROD_Y = BASE_H + GLASS_H * 0.42;
-  var RING_R = GLASS_R;
-  var THETA_M = Math.PI; // la massa grande sta a sinistra
-
-  var THETA_INITIAL = THETA_M - 90 * Math.PI / 180; // condizione iniziale: 90° da M
-
-  // Con m e M così vicine alla parete, il bilancere non può avvicinarsi a M
-  // oltre un certo angolo, altrimenti le sfere si toccherebbero: il vincolo è
-  // sull'ANGOLO massimo raggiungibile (un fermo meccanico), non sulla
-  // lunghezza dell'asta né sulla posizione di M, che restano quelle richieste.
-  // Il contatto vero e proprio avverrebbe a ~10,5°. Un margine di 20° lascia
-  // sì ~25 mm di distacco reale fra le superfici, ma va giudicato DOPO la
-  // proiezione prospettica, non prima: la direzione bilancere→M è quasi
-  // allineata con la profondità della scena, quindi quei 25 mm vengono
-  // schiacciati a meno di 2 px a schermo — le sfere sembrano toccarsi anche
-  // se non si toccano. Con 30° il distacco reale sale a ~50 mm, che restano
-  // visibili (~15 px, verificati nella proiezione) anche dopo la
-  // compressione prospettica, per ogni combinazione di masse.
-  var THETA_SAFE_MARGIN = 30 * Math.PI / 180;
-  var ANGLE_LIMIT = THETA_M - THETA_SAFE_MARGIN;
-
-  // Partendo da 90° (il doppio di prima) e con un'oscillazione voluta doppia
-  // rispetto a prima, la rigidità del filo va ricalibrata per ciascuna coppia
-  // di masse: i valori sono scelti in modo che nessuna combinazione tocchi il
-  // fermo, restando comunque crescenti con la massa. Il valore per 40,4 era
-  // per errore appena sotto la soglia critica: senza un vero equilibrio
-  // stabile, il bilancere accelerava sempre verso M fino a sbattere contro
-  // il fermo meccanico (da qui la collisione visibile).
-  var K_WIRE_TABLE = {
-    '20,2': 4.02e-8,
-    '40,2': 6.10e-8,
-    '20,4': 6.10e-8,
-    '40,4': 1.15e-7
-  };
-  var STEP = 2e6, CONV_EPS = 1e-5;
-  function currentKWire() {
-    return K_WIRE_TABLE[state.M + ',' + state.m];
-  }
-
-  // ─── Scenario "dipendenza da r" ─────────────────────────────────────────
-  var R0 = 0.068; // distanza iniziale: 4×R0 resta comunque dentro la gabbia
-  var TRANSITIONS = {
-    1: [{ to: 2, label: 'Raddoppia r' }, { to: 3, label: 'Triplica r' }, { to: 4, label: 'Quadruplica r' }],
-    2: [{ to: 1, label: 'Dividi per 2' }, { to: 4, label: 'Raddoppia ancora' }],
-    3: [{ to: 1, label: 'Dividi per 3' }],
-    4: [{ to: 1, label: 'Dividi per 4' }, { to: 2, label: 'Dividi per 2' }]
-  };
-  var rMultiplier = 1;
-
-  var state = { M: 20, m: 2, angle: THETA_INITIAL, mode: 'manual' };
-  var scenario = 'mass';
-
-  var fValEl = $('.cavx-fval');
-  var playBtn = $('.cavx-play'), resetBtn = $('.cavx-reset');
-  var MBtns = root.querySelectorAll('.cavx-Mbtn');
-  var mBtns = root.querySelectorAll('.cavx-mbtn');
-  var tabs = root.querySelectorAll('.cavx-tab');
-  var panelMass = $('.cavx-panel-mass'), panelR = $('.cavx-panel-r');
-  var rBtnsContainer = $('.cavx-rstudy-btns');
-  var rCurEl = $('.cavx-r-cur'), rFBeforeEl = $('.cavx-r-fbefore'), rRatioEl = $('.cavx-rstudy-ratio');
-
-  var appCv = $('.cavx-app'), appCtx = appCv.getContext('2d');
-
-  function rDist(angle) {
-    return Math.sqrt(D_M * D_M + LR * LR - 2 * D_M * LR * Math.cos(angle - THETA_M));
-  }
-  // Distanza di riferimento (posizione di partenza) per la forza mostrata nello
-  // scenario "masse". L'angolo di equilibrio dipende anch'esso dalla massa
-  // scelta: leggere la forza lì mescolerebbe l'effetto di M/m con quello di r,
-  // e raddoppiare una massa non raddoppierebbe la forza mostrata. Leggendola
-  // invece sempre alla stessa r, il valore è puramente proporzionale a M·m.
-  var R_REF = rDist(THETA_INITIAL);
-  function angleFromR(r) {
-    var cosVal = (D_M * D_M + LR * LR - r * r) / (2 * D_M * LR);
-    cosVal = Math.max(-1, Math.min(1, cosVal));
-    return THETA_M - Math.acos(cosVal);
-  }
-  function force() {
-    var r = rDist(state.angle);
-    return G * state.M * state.m / (r * r);
-  }
-  function torqueGravity(angle) {
-    var rr = rDist(angle);
-    var f = G * state.M * state.m / (rr * rr);
-    return -f * LR * D_M * Math.sin(angle - THETA_M) / rr;
-  }
-  function fmtSci(x) {
-    if (x === 0) return '0';
-    var e = Math.floor(Math.log10(Math.abs(x)));
-    var mant = x / Math.pow(10, e);
-    return mant.toFixed(2) + ' × 10<sup>' + e + '</sup>';
-  }
-  function updateReadouts() {
-    var r = (scenario === 'mass') ? R_REF : rDist(state.angle);
-    fValEl.innerHTML = fmtSci(G * state.M * state.m / (r * r));
-    if (scenario === 'r') rCurEl.textContent = (rDist(state.angle) * 100).toFixed(1).replace('.', ',');
-  }
-
-  // ─── Pulsanti dello studio r (dipendono dallo stato corrente) ──────────
-  function renderRButtons() {
-    rBtnsContainer.innerHTML = '';
-    TRANSITIONS[rMultiplier].forEach(function (tr) {
-      var b = document.createElement('button');
-      b.className = 'cavx-rbtn';
-      b.textContent = tr.label;
-      b.addEventListener('click', function () { goToMultiplier(tr.to); });
-      rBtnsContainer.appendChild(b);
-    });
-  }
-  var rAnimId = null;
-  function goToMultiplier(newK) {
-    var oldK = rMultiplier;
-    var Fbefore = force();
-    rFBeforeEl.innerHTML = fmtSci(Fbefore);
-    rRatioEl.textContent = '';
-    var targetAngle = angleFromR(R0 * newK);
-    var startAngle = state.angle;
-    if (rAnimId) cancelAnimationFrame(rAnimId);
-    var t0 = performance.now(), DUR = 1400;
-    function step(now) {
-      var t = Math.min(1, (now - t0) / DUR);
-      var eased = 1 - Math.pow(1 - t, 3);
-      state.angle = startAngle + (targetAngle - startAngle) * eased;
-      if (t < 1) {
-        rAnimId = requestAnimationFrame(step);
-      } else {
-        state.angle = targetAngle;
-        rMultiplier = newK;
-        renderRButtons();
-        var Fafter = force();
-        var distRatio = newK / oldK;
-        rRatioEl.textContent = 'distanza ×' + distRatio.toFixed(distRatio % 1 === 0 ? 0 : 2) +
-          '  →  forza ×' + (Fafter / Fbefore).toFixed(4) +
-          '  (cioè 1/' + Math.round(distRatio * distRatio) + ')';
-      }
-    }
-    rAnimId = requestAnimationFrame(step);
-  }
-
-  // ─── Cambio di scenario ─────────────────────────────────────────────────
-  tabs.forEach(function (t) {
-    t.addEventListener('click', function () {
-      tabs.forEach(function (x) { x.classList.remove('active'); });
-      t.classList.add('active');
-      scenario = t.dataset.scenario;
-      if (rAnimId) { cancelAnimationFrame(rAnimId); rAnimId = null; }
-      if (scenario === 'mass') {
-        panelMass.style.display = '';
-        panelR.style.display = 'none';
-        state.mode = 'manual';
-        state.angle = THETA_INITIAL;
-        playBtn.textContent = '▶ Avvia';
-        playBtn.classList.remove('active');
-      } else {
-        panelMass.style.display = 'none';
-        panelR.style.display = 'flex';
-        state.mode = 'manual';
-        rMultiplier = 1;
-        state.angle = angleFromR(R0);
-        renderRButtons();
-        rFBeforeEl.textContent = '—';
-        rRatioEl.textContent = ' ';
-      }
-    });
-  });
-
-  // ─── Proiezione 3D ──────────────────────────────────────────────────────
-  var AZIMUTH = 20 * Math.PI / 180;
-  var TILT = 24 * Math.PI / 180;
-  var FOCAL = 1.6;
-  var PXM = 720;
-  var CX = 200, CY = 400;
-
-  function rotY(p) {
-    var c = Math.cos(AZIMUTH), s = Math.sin(AZIMUTH);
-    return { x: p.x * c + p.z * s, y: p.y, z: -p.x * s + p.z * c };
-  }
-  function rotX(p) {
-    var c = Math.cos(TILT), s = Math.sin(TILT);
-    return { x: p.x, y: p.y * c - p.z * s, z: p.y * s + p.z * c };
-  }
-  function project(x, y, z) {
-    var p = rotX(rotY({ x: x, y: y, z: z }));
-    var persp = FOCAL / (FOCAL + p.z);
-    return { sx: CX + p.x * persp * PXM, sy: CY - p.y * persp * PXM, scale: persp };
-  }
-  function circlePts(radius, y, n) {
-    var pts = [];
-    for (var i = 0; i <= n; i++) {
-      var a = (i / n) * Math.PI * 2;
-      pts.push(project(radius * Math.cos(a), y, radius * Math.sin(a)));
-    }
-    return pts;
-  }
-  function pathThrough(ctx, pts) {
-    ctx.beginPath();
-    pts.forEach(function (p, i) { i === 0 ? ctx.moveTo(p.sx, p.sy) : ctx.lineTo(p.sx, p.sy); });
-  }
-  function sphereAt(ctx, proj, radiusM, colInner, colOuter) {
-    var rpx = radiusM * PXM * proj.scale;
-    var g = ctx.createRadialGradient(
-      proj.sx - rpx * 0.35, proj.sy - rpx * 0.4, rpx * 0.1,
-      proj.sx, proj.sy, rpx
-    );
-    g.addColorStop(0, colInner);
-    g.addColorStop(1, colOuter);
-    ctx.beginPath();
-    ctx.arc(proj.sx, proj.sy, rpx, 0, Math.PI * 2);
-    ctx.fillStyle = g;
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.35)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-    return rpx;
-  }
-  // Piattino: disco verticale (perpendicolare alla base), piantato all'estremità del bilancere.
-  function verticalPlateAt(ctx, cx3, cy3, cz3, radialX, radialZ, radiusM, color) {
-    var pts = [];
-    for (var i = 0; i <= 24; i++) {
-      var a = (i / 24) * Math.PI * 2;
-      var px = cx3 + radialX * radiusM * Math.cos(a);
-      var py = cy3 + radiusM * Math.sin(a);
-      var pz = cz3 + radialZ * radiusM * Math.cos(a);
-      pts.push(project(px, py, pz));
-    }
-    pathThrough(ctx, pts);
-    ctx.closePath();
-    ctx.fillStyle = color;
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.3)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-  }
-
-  // Direzione della luce (nel piano orizzontale XZ), usata sia per le pareti
-  // laterali del disco sia per il riflesso sulla faccia superiore.
-  var LIGHT_X = -0.7, LIGHT_Z = 0.71;
-  function lerpColor(c1, c2, t) {
-    var r1 = parseInt(c1.slice(1, 3), 16), g1 = parseInt(c1.slice(3, 5), 16), b1 = parseInt(c1.slice(5, 7), 16);
-    var r2 = parseInt(c2.slice(1, 3), 16), g2 = parseInt(c2.slice(3, 5), 16), b2 = parseInt(c2.slice(5, 7), 16);
-    var r = Math.round(r1 + (r2 - r1) * t), g = Math.round(g1 + (g2 - g1) * t), b = Math.round(b1 + (b2 - b1) * t);
-    return 'rgb(' + r + ',' + g + ',' + b + ')';
-  }
-  function drawDisc(y0, y1, radius, colSideDark, colSideLight, colTopDark, colTopLight) {
-    var n = 40;
-    var top = circlePts(radius, y1, n);
-    var bot = circlePts(radius, y0, n);
-    ctx_strokeQuadStrip(bot, top, colSideDark, colSideLight, n);
-    pathThrough(appCtx, bot); appCtx.closePath();
-    appCtx.fillStyle = colSideDark; appCtx.fill();
-    pathThrough(appCtx, top); appCtx.closePath();
-    var cx = 0, cy = 0;
-    top.forEach(function (p) { cx += p.sx; cy += p.sy; });
-    cx /= top.length; cy /= top.length;
-    var rpx = radius * PXM;
-    var g = appCtx.createRadialGradient(
-      cx + LIGHT_X * rpx * 0.35, cy - LIGHT_Z * rpx * 0.2, rpx * 0.08,
-      cx, cy, rpx * 1.1
-    );
-    g.addColorStop(0, colTopLight);
-    g.addColorStop(1, colTopDark);
-    appCtx.fillStyle = g;
-    appCtx.fill();
-    appCtx.strokeStyle = 'rgba(0,0,0,.3)';
-    appCtx.lineWidth = 1.5;
-    appCtx.stroke();
-  }
-  function ctx_strokeQuadStrip(bot, top, colorDark, colorLight, n) {
-    for (var i = 0; i < bot.length - 1; i++) {
-      var midAngle = ((i + 0.5) / n) * Math.PI * 2;
-      var nx = Math.cos(midAngle), nz = Math.sin(midAngle);
-      var b = (nx * LIGHT_X + nz * LIGHT_Z + 1) / 2;
-      appCtx.fillStyle = lerpColor(colorDark, colorLight, b);
-      appCtx.beginPath();
-      appCtx.moveTo(bot[i].sx, bot[i].sy);
-      appCtx.lineTo(bot[i + 1].sx, bot[i + 1].sy);
-      appCtx.lineTo(top[i + 1].sx, top[i + 1].sy);
-      appCtx.lineTo(top[i].sx, top[i].sy);
-      appCtx.closePath();
-      appCtx.fill();
-    }
-  }
-  function drawGlass(y0, y1, radius) {
-    var top = circlePts(radius, y1, 32);
-    var bot = circlePts(radius, y0, 32);
-    appCtx.strokeStyle = 'rgba(200,225,235,.2)';
-    appCtx.lineWidth = 1.3;
-    for (var i = 0; i < top.length; i += 8) {
-      appCtx.beginPath();
-      appCtx.moveTo(bot[i].sx, bot[i].sy);
-      appCtx.lineTo(top[i].sx, top[i].sy);
-      appCtx.stroke();
-    }
-    pathThrough(appCtx, bot); appCtx.closePath(); appCtx.stroke();
-    pathThrough(appCtx, top); appCtx.closePath(); appCtx.stroke();
-  }
-
-  function drawApparatus() {
-    var W = appCv.width, H = appCv.height;
-    appCtx.clearRect(0, 0, W, H);
-    var bg = appCtx.createRadialGradient(W / 2, H * 0.35, 0, W / 2, H / 2, W * 1.1);
-    bg.addColorStop(0, '#161210');
-    bg.addColorStop(1, '#0a0c10');
-    appCtx.fillStyle = bg;
-    appCtx.fillRect(0, 0, W, H);
-
-    drawDisc(0, BASE_H, BASE_R, '#3a2812', '#7a5530', '#6e4a28', '#c9a06a');
-    drawGlass(BASE_H, BASE_H + GLASS_H, GLASS_R);
-
-    // scala graduata, fissa, attorno al bilancere: stesso diametro della gabbia
-    var ring = circlePts(RING_R, ROD_Y, 60);
-    pathThrough(appCtx, ring);
-    appCtx.strokeStyle = 'rgba(232,213,176,.55)';
-    appCtx.lineWidth = 2;
-    appCtx.stroke();
-    for (var i = 0; i < 60; i++) {
-      var a = (i / 60) * Math.PI * 2;
-      var r1 = RING_R - (i % 5 === 0 ? 0.014 : 0.008);
-      var p1 = project(r1 * Math.cos(a), ROD_Y, r1 * Math.sin(a));
-      var p2 = project(RING_R * Math.cos(a), ROD_Y, RING_R * Math.sin(a));
-      appCtx.beginPath();
-      appCtx.moveTo(p1.sx, p1.sy);
-      appCtx.lineTo(p2.sx, p2.sy);
-      appCtx.stroke();
-    }
-
-    var lidTopY = BASE_H + GLASS_H + LID_H;
-    var knobY = lidTopY + TUBE_H;
-    var Mx = D_M * Math.cos(THETA_M), Mz = D_M * Math.sin(THETA_M);
-
-    // filo di supporto della massa grande: dal perno sul tappo giù fino a M
-    var pPegTop = project(Mx, lidTopY, Mz);
-    var pMFix = project(Mx, ROD_Y, Mz);
-    appCtx.strokeStyle = 'rgba(225,225,232,.9)';
-    appCtx.lineWidth = 2.2;
-    appCtx.beginPath();
-    appCtx.moveTo(pPegTop.sx, pPegTop.sy);
-    appCtx.lineTo(pMFix.sx, pMFix.sy);
-    appCtx.stroke();
-
-    // filo di sospensione del bilancere: dal tappo (vicino alla manopola) fino al centro
-    var pivotTop = project(0, knobY, 0);
-    var pivot = project(0, ROD_Y, 0);
-    appCtx.beginPath();
-    appCtx.moveTo(pivotTop.sx, pivotTop.sy);
-    appCtx.lineTo(pivot.sx, pivot.sy);
-    appCtx.stroke();
-
-    // bilancere: massa piccola m su un lato, piattino verticale sull'altro
-    var angle = state.angle;
-    var mPos = { x: LR * Math.cos(angle), y: ROD_Y, z: LR * Math.sin(angle) };
-    var platePos = { x: -mPos.x, y: ROD_Y, z: -mPos.z };
-    var pm = project(mPos.x, mPos.y, mPos.z);
-    var pPlateCenter = project(platePos.x, platePos.y, platePos.z);
-
-    appCtx.strokeStyle = '#c87c3a';
-    appCtx.lineWidth = 6;
-    appCtx.lineCap = 'round';
-    appCtx.beginPath();
-    appCtx.moveTo(pPlateCenter.sx, pPlateCenter.sy);
-    appCtx.lineTo(pm.sx, pm.sy);
-    appCtx.stroke();
-
-    appCtx.beginPath();
-    appCtx.arc(pivot.sx, pivot.sy, 4.5, 0, Math.PI * 2);
-    appCtx.fillStyle = '#e8d5b0';
-    appCtx.fill();
-
-    var radialLen = Math.sqrt(platePos.x * platePos.x + platePos.z * platePos.z) || 1;
-    var radialX = platePos.x / radialLen, radialZ = platePos.z / radialLen;
-    verticalPlateAt(appCtx, platePos.x, platePos.y, platePos.z, radialX, radialZ, Rm_VIS * 1.5, '#d8d8d8');
-
-    sphereAt(appCtx, pm, Rm_VIS, '#dfe6ee', '#5b6672');
-    sphereAt(appCtx, pMFix, RM_VIS, '#ffdca0', '#a9701e');
-
-    appCtx.font = 'italic 16px Georgia, serif';
-    appCtx.textAlign = 'center';
-    appCtx.fillStyle = '#c7ccd4';
-    appCtx.fillText('m', pm.sx, pm.sy - Rm_VIS * PXM * pm.scale - 10);
-    appCtx.fillStyle = '#e8983a';
-    appCtx.fillText('M', pMFix.sx, pMFix.sy - RM_VIS * PXM * pMFix.scale - 12);
-
-    // linea tratteggiata "r", solo nello scenario di studio della distanza
-    if (scenario === 'r') {
-      appCtx.save();
-      appCtx.setLineDash([7, 6]);
-      appCtx.strokeStyle = '#6fd3d9';
-      appCtx.lineWidth = 2;
-      appCtx.beginPath();
-      appCtx.moveTo(pMFix.sx, pMFix.sy);
-      appCtx.lineTo(pm.sx, pm.sy);
-      appCtx.stroke();
-      appCtx.restore();
-      appCtx.font = 'italic 16px Georgia, serif';
-      appCtx.fillStyle = '#6fd3d9';
-      appCtx.textAlign = 'center';
-      appCtx.fillText('r', (pMFix.sx + pm.sx) / 2, (pMFix.sy + pm.sy) / 2 - 9);
-    }
-
-    var topRim = circlePts(GLASS_R, BASE_H + GLASS_H, 32);
-    pathThrough(appCtx, topRim); appCtx.closePath();
-    appCtx.strokeStyle = 'rgba(200,225,235,.4)'; appCtx.lineWidth = 1.3; appCtx.stroke();
-
-    drawDisc(BASE_H + GLASS_H, lidTopY, LID_R, '#3a2812', '#7a5530', '#6e4a28', '#c9a06a');
-
-    // perno sul tappo, dove è fissato il filo della massa grande (visibile dall'alto)
-    var pPeg = project(Mx, lidTopY + 0.008, Mz);
-    sphereAt(appCtx, pPeg, 0.012, '#d8dce0', '#6a6f75');
-
-    drawGlass(lidTopY, knobY, TUBE_R);
-    var pKnob = project(0, knobY + KNOB_R * 0.6, 0);
-    sphereAt(appCtx, pKnob, KNOB_R, '#e8b060', '#8a5a20');
-  }
-
-  function loop() {
-    if (state.mode === 'dynamic') {
-      var net = torqueGravity(state.angle) - currentKWire() * (state.angle - THETA_INITIAL);
-      var delta = net * STEP;
-      var newAngle = state.angle + delta;
-      if (newAngle >= ANGLE_LIMIT) {
-        // fermo meccanico: il bilancere non può avvicinarsi oltre, per non
-        // far toccare le sfere.
-        state.angle = ANGLE_LIMIT;
-        state.mode = 'manual';
-        playBtn.textContent = '▶ Avvia';
-        playBtn.classList.remove('active');
-      } else if (Math.abs(delta) < CONV_EPS) {
-        // convergenza raggiunta: la forza smette di cambiare esattamente
-        // quando il bilancere smette di ruotare.
-        state.mode = 'manual';
-        playBtn.textContent = '▶ Avvia';
-        playBtn.classList.remove('active');
-      } else {
-        state.angle = newAngle;
-      }
-    }
-    updateReadouts();
-    drawApparatus();
-    requestAnimationFrame(loop);
-  }
-
-  function selectChoice(btns, val, prop) {
-    btns.forEach(function (b) { b.classList.toggle('active', +b.dataset.val === val); });
-    state[prop] = val;
-  }
-  MBtns.forEach(function (b) {
-    b.addEventListener('click', function () { selectChoice(MBtns, +b.dataset.val, 'M'); });
-  });
-  mBtns.forEach(function (b) {
-    b.addEventListener('click', function () { selectChoice(mBtns, +b.dataset.val, 'm'); });
-  });
-
-  playBtn.addEventListener('click', function () {
-    if (state.mode === 'dynamic') {
-      state.mode = 'manual';
-      playBtn.textContent = '▶ Avvia';
-      playBtn.classList.remove('active');
-    } else {
-      state.mode = 'dynamic';
-      state.angle = THETA_INITIAL;
-      playBtn.textContent = '⏸ Ferma';
-      playBtn.classList.add('active');
-    }
-  });
-  resetBtn.addEventListener('click', function () {
-    state.mode = 'manual';
-    state.angle = THETA_INITIAL;
-    playBtn.textContent = '▶ Avvia';
-    playBtn.classList.remove('active');
-  });
-
-  updateReadouts();
-  loop();
-})();
-</script>
+{% include lab-virtuali/cavendish-lab.html %}
 
 Verifica con l'animazione che:
 
@@ -787,260 +115,7 @@ $$
 {% include margin-note-end.html %}
 
 
-<div class="iex-widget" id="iexG">
-<p class="iex-lbl">Verifica Subito!</p>
-<div class="iex-topnav">
-<button class="iex-navbtn" id="iexGprev" onclick="iexGnav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="iexGdots"></div>
-<button class="iex-navbtn" id="iexGnext" onclick="iexGnav(1)">Succ. &rarr;</button>
-</div>
-
-<div class="iex-q" id="iexGrow0">
-<div class="calc-flow">
-{% include calc-margin.html id="calcG" %}
-<div class="calc-flow-body">
-<p class="iex-qt">Calcola il modulo della forza gravitazionale fra la Terra e il Sole, sapendo che la massa della Terra è $M_\oplus = 5{,}97 \times 10^{24}\ \text{kg}$, la massa del Sole è $M_\odot = 1{,}99 \times 10^{30}\ \text{kg}$ e che la distanza Terra-Sole è $r = 1{,}496 \times 10^{11}\ \text{m}$. Esprimi il risultato in notazione scientifica.</p>
-<div class="iex-ir">
-<input class="iex-m" id="iexGm0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')iexGcheck0()">
-<span>&times;&thinsp;10<sup><input class="iex-e" id="iexGe0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')iexGcheck0()"></sup></span>
-<select class="iex-unit" id="iexGu0">
-<option value="">unità</option>
-<option value="N">N</option>
-<option value="kg">kg</option>
-<option value="m">m</option>
-<option value="kg/m">kg/m</option>
-<option value="N/m">N/m</option>
-</select>
-<button class="iex-vbtn" onclick="iexGcheck0()">Verifica</button>
-</div>
-<div class="iex-fb" id="iexGfb0"></div>
-<div class="iex-sol" id="iexGsol0">Soluzione: <strong>3,54 &times; 10<sup>22</sup> N</strong> — una forza enorme (35 mila miliardi di miliardi di Newton!): eppure è proprio questa forza a tenere la Terra in orbita.</div>
-</div>
-<div style="clear:both"></div>
-</div>
-</div>
-
-<div class="iex-q" id="iexGrow1" style="display:none">
-<p class="iex-qt">Se la distanza Terra-Sole <strong>quintuplicasse</strong>, come cambierebbe l'intensità della forza gravitazionale fra i due corpi?</p>
-<div class="iex-choices" id="iexGchoices1">
-<button class="iex-choice-btn" data-v="a">quintuplicherebbe</button>
-<button class="iex-choice-btn" data-v="b">diventerebbe un quinto del valore iniziale</button>
-<button class="iex-choice-btn" data-v="c">diventerebbe un decimo del valore iniziale</button>
-<button class="iex-choice-btn" data-v="d">diventerebbe un venticinquesimo del valore iniziale</button>
-</div>
-<div class="iex-fb" id="iexGfb1"></div>
-</div>
-
-<div class="iex-q" id="iexGrow2" style="display:none">
-<p class="iex-qt">Prima di poter verificare il tuo risultato, isola $G$ nella formula.</p>
-<div class="iex-nested">
-{% include invert.html id="inv-G" variabili="Fg|G|Ma|Mb|r"
-   sinistra="Fg" destra="G*Ma*Mb/r/r" obiettivo="G"
-   etichette="F|G|m_1|m_2|r" %}
-</div>
-</div>
-
-<div class="iex-q" id="iexGrow3" style="display:none">
-<p class="iex-qt">Isola ora $r$ nella stessa formula.</p>
-<div class="iex-nested">
-{% include invert.html id="inv-G-r" variabili="Fg|G|Ma|Mb|r"
-   sinistra="Fg" destra="G*Ma*Mb/r/r" obiettivo="r"
-   etichette="F|G|m_1|m_2|r" radice="1" %}
-</div>
-</div>
-
-<div class="iex-q" id="iexGrow4" style="display:none">
-<p class="iex-qt">Ora che hai isolato $G = \dfrac{F \cdot r^2}{m_1 \cdot m_2}$, sostituisci ogni grandezza con la propria unità di misura.</p>
-<div class="iex-nested">
-{% include unit-derive.html id="ud-G" testo="Trova l'unità di misura di G"
-   variabile="G"
-   numeratore_simboli="F|r^2" numeratore_corrette="N|m²"
-   denominatore_simboli="m_1 \cdot m_2" denominatore_corrette="kg²"
-   opzioni="N|kg|kg²|m|m²" %}
-</div>
-</div>
-
-<div class="iex-q" id="iexGrow5" style="display:none">
-<p class="iex-qt">Se raddoppiassi <strong>contemporaneamente</strong> sia $m_1$, sia $m_2$, sia $r$, come cambierebbe l'intensità della forza gravitazionale?</p>
-<div class="iex-choices" id="iexGchoices5">
-<button class="iex-choice-btn" data-v="a">Raddoppierebbe</button>
-<button class="iex-choice-btn" data-v="b">Diventerebbe 4 volte più intensa</button>
-<button class="iex-choice-btn" data-v="c">Resterebbe invariata</button>
-<button class="iex-choice-btn" data-v="d">Dimezzerebbe</button>
-</div>
-<div class="iex-fb" id="iexGfb5"></div>
-</div>
-
-<div class="iex-q" id="iexGrow6" style="display:none">
-<p class="iex-qt">Una piuma e la Terra si attraggono a vicenda per gravità. Quale delle seguenti affermazioni è corretta?</p>
-<div class="iex-choices" id="iexGchoices6">
-<button class="iex-choice-btn" data-v="a">La Terra attrae la piuma con una forza maggiore di quella con cui la piuma attrae la Terra</button>
-<button class="iex-choice-btn" data-v="b">Le due forze sono uguali in modulo, e opposte in verso</button>
-<button class="iex-choice-btn" data-v="c">Solo la Terra esercita una forza reale: la piuma è troppo leggera per farlo</button>
-<button class="iex-choice-btn" data-v="d">Le due forze dipendono anche dalla massa dell'aria circostante</button>
-</div>
-<div class="iex-fb" id="iexGfb6"></div>
-</div>
-
-</div>
-
-<script>
-(function(){
-  var N=7, cur=0, ok=[false,false,false,false,false,false,false];
-  function updateDots(){
-    var dots=document.querySelectorAll('#iexGdots .iex-dot');
-    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
-  }
-  function show(i){
-    document.querySelectorAll('#iexG .iex-q').forEach(function(q){q.style.display='none';});
-    document.getElementById('iexGrow'+i).style.display='block';
-    cur=i;
-    document.getElementById('iexGprev').disabled=(i===0);
-    document.getElementById('iexGnext').disabled=(i===N-1);
-    updateDots();
-  }
-  function buildDots(){
-    var c=document.getElementById('iexGdots');
-    for(var j=0;j<N;j++){
-      var d=document.createElement('span');
-      d.className='iex-dot'+(j===0?' cur':'');
-      d.title='Passo '+(j+1);
-      (function(j){ d.onclick=function(){ show(j); }; })(j);
-      c.appendChild(d);
-    }
-  }
-  buildDots();
-  window.iexGnav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
-
-  function parseMant(s){ var c=s.trim(); if(c.indexOf(',')!==-1)c=c.replace(',','.'); return parseFloat(c); }
-  function parseExp(s){ return parseInt(s.trim().replace('−','-'),10); }
-
-  function shootConf(el){
-    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
-    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
-    for(var i=0;i<55;i++){
-      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
-      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
-      document.body.appendChild(p);
-      (function(p,vx,vy,x,y){
-        var op=1;
-        function step(){
-          vy+=.28; x+=vx; y+=vy; op-=.016;
-          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
-          if(op>0)requestAnimationFrame(step); else p.remove();
-        }
-        requestAnimationFrame(step);
-      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
-    }
-  }
-
-  window.showSol = window.showSol || function(id){ document.getElementById(id).style.display='block'; };
-
-  window.iexGcheck0=function(){
-    var mv=parseMant(document.getElementById('iexGm0').value);
-    var ev=parseExp(document.getElementById('iexGe0').value);
-    var uv=document.getElementById('iexGu0').value;
-    var fb=document.getElementById('iexGfb0');
-    var vb=document.querySelector('#iexGrow0 .iex-vbtn');
-    // Il controllo è sul VALORE combinato (coefficiente × 10^esponente), non
-    // sulle due cifre separatamente: 35,4×10^21 ed 3,54×10^22 sono lo stesso
-    // numero, anche se solo la seconda è nella forma "canonica".
-    var userVal = (!isNaN(mv) && !isNaN(ev)) ? mv*Math.pow(10,ev) : NaN;
-    var targetVal = 3.54*Math.pow(10,22);
-    var valOk = !isNaN(userVal) && Math.abs(userVal-targetVal)/Math.abs(targetVal) <= 0.02;
-    var uOk = uv==='N';
-    if(valOk && uOk){
-      ok[0]=true; fb.className='iex-fb ok';
-      fb.innerHTML='&#10003; Esatto! <button class="iex-nextbtn" onclick="iexGnav(1)">Passo successivo &rarr;</button>';
-      shootConf(vb); updateDots();
-    } else {
-      fb.className='iex-fb err';
-      var parts=[];
-      if(!valOk)parts.push('il valore (coefficiente &times; 10 elevato all\'esponente)');
-      if(!uOk)parts.push('l\'unità di misura');
-      fb.innerHTML='Non è esatto. Controlla: '+parts.join(', ')+'. Oppure <button class="iex-lbtn" onclick="showSol(\'iexGsol0\')">vedi la soluzione</button>.';
-    }
-  };
-
-  (function initChoices1(){
-    var btns = document.querySelectorAll('#iexGchoices1 .iex-choice-btn');
-    var fb = document.getElementById('iexGfb1');
-    btns.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        if(btn.disabled) return;
-        btns.forEach(function(b){ b.disabled = true; });
-        var correct = btn.dataset.v === 'd';
-        fb.style.display = 'block';
-        if(correct){
-          btn.className = 'iex-choice-btn correct';
-          ok[1] = true; fb.className = 'iex-fb ok';
-          fb.innerHTML = '&#10003; Esatto! Poiché $F$ è inversamente proporzionale al quadrato di $r$, se $r$ diventa $5r$ la forza diventa $F/5^2 = F/25$: un venticinquesimo del valore iniziale. <button class="iex-nextbtn" onclick="iexGnav(1)">Passo successivo &rarr;</button>';
-          shootConf(btn); updateDots();
-        } else {
-          btn.className = 'iex-choice-btn wrong';
-          var correctBtn = document.querySelector('#iexGchoices1 .iex-choice-btn[data-v="d"]');
-          correctBtn.className = 'iex-choice-btn correct';
-          fb.className = 'iex-fb err';
-          fb.innerHTML = 'Non è esatto: poiché $F$ è inversamente proporzionale al quadrato di $r$, se $r$ diventa $5r$ la forza diventa $F/5^2 = F/25$, cioè un venticinquesimo del valore iniziale.';
-        }
-        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-      });
-    });
-  })();
-
-  (function initChoices5(){
-    var btns = document.querySelectorAll('#iexGchoices5 .iex-choice-btn');
-    var fb = document.getElementById('iexGfb5');
-    btns.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        if(btn.disabled) return;
-        btns.forEach(function(b){ b.disabled = true; });
-        var correct = btn.dataset.v === 'c';
-        fb.style.display = 'block';
-        if(correct){
-          btn.className = 'iex-choice-btn correct';
-          ok[5] = true; fb.className = 'iex-fb ok';
-          fb.innerHTML = '&#10003; Esatto! Raddoppiando $m_1$, $m_2$ ed $r$: il numeratore diventa $4$ volte più grande (dal prodotto delle masse raddoppiate), ma anche il denominatore diventa $4$ volte più grande (da $(2r)^2$): i due fattori si semplificano e la forza resta invariata. <button class="iex-nextbtn" onclick="iexGnav(1)">Passo successivo &rarr;</button>';
-          shootConf(btn); updateDots();
-        } else {
-          btn.className = 'iex-choice-btn wrong';
-          var correctBtn = document.querySelector('#iexGchoices5 .iex-choice-btn[data-v="c"]');
-          correctBtn.className = 'iex-choice-btn correct';
-          fb.className = 'iex-fb err';
-          fb.innerHTML = 'Non è esatto: sostituendo $2m_1$, $2m_2$ e $2r$ nella formula, il fattore $4$ che compare al numeratore (dal prodotto delle masse) si semplifica con il fattore $4$ al denominatore (da $(2r)^2$): la forza resta invariata.';
-        }
-        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-      });
-    });
-  })();
-
-  (function initChoices6(){
-    var btns = document.querySelectorAll('#iexGchoices6 .iex-choice-btn');
-    var fb = document.getElementById('iexGfb6');
-    btns.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        if(btn.disabled) return;
-        btns.forEach(function(b){ b.disabled = true; });
-        var correct = btn.dataset.v === 'b';
-        fb.style.display = 'block';
-        if(correct){
-          btn.className = 'iex-choice-btn correct';
-          ok[6] = true; fb.className = 'iex-fb ok';
-          fb.innerHTML = '&#10003; Esatto! Per il terzo principio della dinamica, le due forze hanno sempre lo stesso modulo e verso opposto, indipendentemente da quanto siano diverse le due masse: la Terra attrae la piuma esattamente quanto la piuma attrae la Terra.';
-          shootConf(btn); updateDots();
-        } else {
-          btn.className = 'iex-choice-btn wrong';
-          var correctBtn = document.querySelector('#iexGchoices6 .iex-choice-btn[data-v="b"]');
-          correctBtn.className = 'iex-choice-btn correct';
-          fb.className = 'iex-fb err';
-          fb.innerHTML = 'Non è corretto: per il terzo principio della dinamica, le due forze hanno sempre lo stesso modulo e verso opposto, qualunque sia la differenza fra le due masse.';
-        }
-        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-      });
-    });
-  })();
-})();
-</script>
+{% include esercizi/verifica-cavendish.html %}
 
 ### Direzione e verso della Forza Gravitazionale
 
@@ -1052,49 +127,7 @@ Il modulo $F = G\,\dfrac{m_1 \cdot m_2}{r^2}$ ci dice *quanto* vale la forza gra
 
 Questo significa che i vettori si disegnano nel seguente modo.
 
-<div class="fig-block">
-<svg viewBox="0 0 400 320" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Vettori della forza gravitazionale fra due masse, disposte con un'inclinazione di 35 gradi">
-  <defs>
-    <radialGradient id="sphAzzurra" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#f0f9ff"/>
-      <stop offset="55%" stop-color="#7dd3fc"/>
-      <stop offset="100%" stop-color="#38bdf8"/>
-    </radialGradient>
-    <radialGradient id="sphRosa" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#fffbeb"/>
-      <stop offset="55%" stop-color="#fde68a"/>
-      <stop offset="100%" stop-color="#fbbf24"/>
-    </radialGradient>
-    <marker id="dvArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
-      <path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/>
-    </marker>
-    <marker id="dvArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
-      <path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/>
-    </marker>
-  </defs>
-
-  <line x1="174.4" y1="122.8" x2="207.2" y2="145.7" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
-
-  <circle cx="67.9" cy="48.2" r="28" fill="url(#sphAzzurra)"/>
-  <ellipse cx="65.5" cy="34.3" rx="9" ry="6" fill="#ffffff" opacity=".55"/>
-  <text x="40.4" y="87.5" text-anchor="middle" font-size="15" font-weight="600" fill="#0369a1">m&#8321;</text>
-
-  <circle cx="313.7" cy="220.3" r="60" fill="url(#sphRosa)"/>
-  <ellipse cx="308.3" cy="189.7" rx="18" ry="12" fill="#ffffff" opacity=".5"/>
-  <text x="267.8" y="285.8" text-anchor="middle" font-size="17" font-weight="600" fill="#92400e">m&#8322;</text>
-
-  <line x1="67.9" y1="48.2" x2="167.9" y2="118.2" stroke="#dc2626" stroke-width="3.5" marker-end="url(#dvArrowRed)"/>
-  <foreignObject x="106.8" y="24.1" width="100" height="26">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:14px;color:#dc2626;">$\vec F_{2\to1}$</div>
-  </foreignObject>
-
-  <line x1="313.7" y1="220.3" x2="213.7" y2="150.3" stroke="#7c3aed" stroke-width="3.5" marker-end="url(#dvArrowPurple)"/>
-  <foreignObject x="195.2" y="86.1" width="100" height="26">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:14px;color:#7c3aed;">$\vec F_{1\to2}$</div>
-  </foreignObject>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="dir-verso-gravita">Figura</span> — I due vettori hanno origine nel centro della rispettiva massa: sono <strong>uguali in modulo</strong> ma di <strong>verso opposto</strong>, anche se le due masse sono molto diverse fra loro.</figcaption>
-</div>
+{% include figure/figura-dir-verso-gravita.html %}
 
 {% include margin-note.html testo="Forze centrali" %}
 Le forze che, come quella gravitazionale, hanno come direzione la retta che passa per i centri dei corpi si chiamano <definizione>forze centrali</definizione>. Queste forze hanno delle proprietà molto importanti, come cominceremo a vedere nella <a href="#energia-potenziale-gravitazionale">sezione sull'energia potenziale</a>, più sotto.
@@ -1114,26 +147,7 @@ Quindi, la massa grande attrae la massa piccola tanto quanto la massa piccola at
 - **Modulo:** $F = G\,\dfrac{m_1 \cdot m_2}{r^2}$.
 - **Direzione e verso:** si disegna così:
 
-<div style="text-align:center;margin:.4rem 0 .2rem;">
-<svg viewBox="0 0 240 100" width="220" height="92" style="display:block;margin:0 auto;" role="img" aria-label="Miniatura del disegno dei vettori, orizzontale">
-<defs>
-  <radialGradient id="sphAzzurraMini" cx="35%" cy="30%" r="70%">
-    <stop offset="0%" stop-color="#f0f9ff"/><stop offset="55%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#38bdf8"/>
-  </radialGradient>
-  <radialGradient id="sphRosaMini" cx="35%" cy="30%" r="70%">
-    <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
-  </radialGradient>
-  <marker id="dvArrowRedMini" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
-  <marker id="dvArrowPurpleMini" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
-</defs>
-<g transform="translate(128,50) scale(0.5) translate(-266,-100)">
-  <circle cx="100" cy="100" r="28" fill="url(#sphAzzurraMini)"/>
-  <circle cx="400" cy="100" r="60" fill="url(#sphRosaMini)"/>
-  <line x1="100" y1="100" x2="222" y2="100" stroke="#dc2626" stroke-width="3.5" marker-end="url(#dvArrowRedMini)"/>
-  <line x1="400" y1="100" x2="278" y2="100" stroke="#7c3aed" stroke-width="3.5" marker-end="url(#dvArrowPurpleMini)"/>
-</g>
-</svg>
-</div>
+{% include figure/figura-miniatura-vettori.html %}
 
 sempre con i vettori di lunghezza uguale, anche se le masse sono diverse.
 
@@ -1148,75 +162,7 @@ Esplora tu stesso come cambia $F$ al variare di una fra $m_1$, $m_2$ e $r$.
    formula="G*m1*m2/(r*r)" formula_latex="G\dfrac{m_1 \cdot m_2}{r^2}"
    y_simbolo="F" y_unita="N" solo_positivi="true" %}
 
-<div class="iex-widget" id="invCarForza">
-<p class="iex-lbl">Isola le altre grandezze</p>
-<p class="iex-hint">Per ciascuna grandezza, cerca la sequenza più breve di mosse, poi appuntala sul quaderno in un punto facile da ritrovare: ti servirà spesso.</p>
-<div class="iex-topnav">
-<button class="iex-navbtn" id="invCarForzaprev" onclick="invCarForzanav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="invCarForzadots"></div>
-<button class="iex-navbtn" id="invCarForzanext" onclick="invCarForzanav(1)">Succ. &rarr;</button>
-</div>
-
-<div class="iex-q" id="invCarForzarow0">
-<div class="iex-nested">
-{% include invert.html id="inv-forza-G" variabili="F|G|Ma|Mb|r" etichette="F|G|m_1|m_2|r"
-   sinistra="F" destra="G*Ma*Mb/r/r" obiettivo="G" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarForzarow1" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-forza-Ma" variabili="F|G|Ma|Mb|r" etichette="F|G|m_1|m_2|r"
-   sinistra="F" destra="G*Ma*Mb/r/r" obiettivo="Ma" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarForzarow2" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-forza-Mb" variabili="F|G|Ma|Mb|r" etichette="F|G|m_1|m_2|r"
-   sinistra="F" destra="G*Ma*Mb/r/r" obiettivo="Mb" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarForzarow3" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-forza-r" variabili="F|G|Ma|Mb|r" etichette="F|G|m_1|m_2|r"
-   sinistra="F" destra="G*Ma*Mb/r/r" obiettivo="r" radice="1" %}
-</div>
-</div>
-
-</div>
-
-<script>
-window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
-  var cur=0;
-  function updateDots(){
-    var dots=document.querySelectorAll('#'+ID+'dots .iex-dot');
-    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'');
-  }
-  function show(i){
-    document.querySelectorAll('#'+ID+' .iex-q').forEach(function(q){q.style.display='none';});
-    document.getElementById(ID+'row'+i).style.display='block';
-    cur=i;
-    document.getElementById(ID+'prev').disabled=(i===0);
-    document.getElementById(ID+'next').disabled=(i===N-1);
-    updateDots();
-  }
-  function buildDots(){
-    var c=document.getElementById(ID+'dots');
-    for(var j=0;j<N;j++){
-      var d=document.createElement('span');
-      d.className='iex-dot'+(j===0?' cur':'');
-      d.title='Passo '+(j+1);
-      (function(j){ d.onclick=function(){ show(j); }; })(j);
-      c.appendChild(d);
-    }
-  }
-  buildDots();
-  window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
-};
-setupInvCarousel('invCarForza',4);
-</script>
+{% include esercizi/invert-forza-gravitazionale.html %}
 
 
 Utilizza questa simulazione per sperimentare con la forza gravitazionale!
@@ -1239,69 +185,18 @@ $$\vec F_{tot} = \vec F_1 + \vec F_2 + \dots$$
 
 Poiché le forze sono vettori, per sommarle non basta sommarne i moduli: vanno sommate **come vettori**, con la stessa regola del parallelogramma già vista per la somma di due vettori qualsiasi.
 
-<div class="fig-block">
-<svg viewBox="0 0 360 220" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: le due forze e la loro somma vettoriale">
-  <defs>
-    <radialGradient id="pmM1" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
-    </radialGradient>
-    <radialGradient id="pmM2" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#f0fdfa"/><stop offset="55%" stop-color="#99f6e4"/><stop offset="100%" stop-color="#5eead4"/>
-    </radialGradient>
-    <radialGradient id="pmMm" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/>
-    </radialGradient>
-    <marker id="pmArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
-    <marker id="pmArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
-    <marker id="pmArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
-    <style>
-      #pmAnim .pm-s1 { animation: pmFade1 7s ease-in-out infinite; }
-      #pmAnim .pm-s2 { animation: pmFade2 7s ease-in-out infinite; }
-      #pmAnim .pm-s3 { animation: pmFade3 7s ease-in-out infinite; }
-      @keyframes pmFade1 { 0%,4%{opacity:0} 10%,86%{opacity:1} 94%,100%{opacity:0} }
-      @keyframes pmFade2 { 0%,34%{opacity:0} 40%,86%{opacity:1} 94%,100%{opacity:0} }
-      @keyframes pmFade3 { 0%,64%{opacity:0} 70%,86%{opacity:1} 94%,100%{opacity:0} }
-    </style>
-  </defs>
-  <g id="pmAnim">
-    <circle cx="60" cy="50" r="30" fill="url(#pmM1)"/>
-    <ellipse cx="50" cy="40" rx="9" ry="6" fill="#fff" opacity=".5"/>
-    <text x="60" y="55" text-anchor="middle" font-size="13" font-weight="600" fill="#92400e">M&#8321;</text>
-
-    <circle cx="320" cy="140" r="38" fill="url(#pmM2)"/>
-    <ellipse cx="306" cy="126" rx="11" ry="7" fill="#fff" opacity=".5"/>
-    <text x="320" y="146" text-anchor="middle" font-size="14" font-weight="600" fill="#0f766e">M&#8322;</text>
-
-    <circle cx="180" cy="170" r="16" fill="url(#pmMm)"/>
-    <ellipse cx="175" cy="165" rx="5" ry="3" fill="#fff" opacity=".6"/>
-    <text x="180" y="175" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">m</text>
-
-    <g class="pm-s1">
-      <line x1="180" y1="170" x2="116" y2="106" stroke="#dc2626" stroke-width="3" marker-end="url(#pmArrowRed)"/>
-      <text x="82" y="84" font-size="14" fill="#dc2626">F&#8321;</text>
-      <line x1="180" y1="170" x2="268" y2="151" stroke="#7c3aed" stroke-width="3" marker-end="url(#pmArrowPurple)"/>
-      <text x="280" y="150" font-size="14" fill="#7c3aed">F&#8322;</text>
-    </g>
-
-    <g class="pm-s2">
-      <line x1="116" y1="106" x2="204" y2="88" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5 4"/>
-      <line x1="268" y1="151" x2="204" y2="88" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/>
-    </g>
-
-    <g class="pm-s3">
-      <line x1="180" y1="170" x2="204" y2="88" stroke="#16a34a" stroke-width="3.5" marker-end="url(#pmArrowGreen)"/>
-      <text x="206" y="72" font-size="15" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
-    </g>
-  </g>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="somma-forze">Figura</span> — Animazione in loop: prima compaiono le singole forze $\vec F_1$ e $\vec F_2$, poi le linee tratteggiate che completano il parallelogramma, infine la forza totale $\vec F_{tot}$.</figcaption>
-</div>
+{% include figure/figura-somma-forze.html %}
 
 Nell'animazione sopra, i moduli di $\vec F_1$ e $\vec F_2$ si ottengono con la legge di Newton:
 
 $$
 F_1 = G \frac{M_1 \cdot m}{r^2}, \qquad\qquad F_2 = G \frac{M_2\cdot m}{r^2} 
 $$
+
+Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta in un contesto concreto — con quattro scenari diversi.
+
+{% include esercizi/parallelogramma-scenari.html %}
+
 
 # Il Campo Gravitazionale
 
@@ -1414,107 +309,13 @@ Esplora tu stesso come cambia $g$ al variare di $M$ o di $r$.
    formula="G*M/(r*r)" formula_latex="G\dfrac{M}{r^2}"
    y_simbolo="g" y_unita="N/kg" solo_positivi="true" %}
 
-<div class="iex-widget" id="invCarCampo">
-<p class="iex-lbl">Isola le altre grandezze</p>
-<p class="iex-hint">Per ciascuna grandezza, cerca la sequenza più breve di mosse, poi appuntala sul quaderno in un punto facile da ritrovare: ti servirà spesso.</p>
-<div class="iex-topnav">
-<button class="iex-navbtn" id="invCarCampoprev" onclick="invCarCamponav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="invCarCampodots"></div>
-<button class="iex-navbtn" id="invCarCamponext" onclick="invCarCamponav(1)">Succ. &rarr;</button>
-</div>
-
-<div class="iex-q" id="invCarCamporow0">
-<div class="iex-nested">
-{% include invert.html id="inv-campo-G" variabili="g|G|M|r" sinistra="g" destra="G*M/r/r" obiettivo="G" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarCamporow1" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-campo-M" variabili="g|G|M|r" sinistra="g" destra="G*M/r/r" obiettivo="M" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarCamporow2" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-campo-r" variabili="g|G|M|r" sinistra="g" destra="G*M/r/r" obiettivo="r" radice="1" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarCamporow3" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-campo-F" variabili="g|F|m" sinistra="g" destra="F/m" obiettivo="F" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarCamporow4" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-campo-m" variabili="g|F|m" sinistra="g" destra="F/m" obiettivo="m" %}
-</div>
-</div>
-
-</div>
-
-<script>
-window.setupInvCarousel=function(ID,N){
-  var cur=0;
-  function updateDots(){
-    var dots=document.querySelectorAll('#'+ID+'dots .iex-dot');
-    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'');
-  }
-  function show(i){
-    document.querySelectorAll('#'+ID+' .iex-q').forEach(function(q){q.style.display='none';});
-    document.getElementById(ID+'row'+i).style.display='block';
-    cur=i;
-    document.getElementById(ID+'prev').disabled=(i===0);
-    document.getElementById(ID+'next').disabled=(i===N-1);
-    updateDots();
-  }
-  function buildDots(){
-    var c=document.getElementById(ID+'dots');
-    for(var j=0;j<N;j++){
-      var d=document.createElement('span');
-      d.className='iex-dot'+(j===0?' cur':'');
-      d.title='Passo '+(j+1);
-      (function(j){ d.onclick=function(){ show(j); }; })(j);
-      c.appendChild(d);
-    }
-  }
-  buildDots();
-  window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
-};
-setupInvCarousel('invCarCampo',5);
-</script>
+{% include esercizi/invert-campo-gravitazionale.html %}
 
 ### Direzione e verso del vettore campo gravitazionale
 
 Si sceglie di dare, per convenzione, al vettore campo gravitazionale $\vec g$ lo stesso verso del vettore forza $\vec F$. Quindi, il campo generato dalla massa $M$ in punto $P$ a distanza $r$ si disegna così:
 
-<div class="fig-block">
-<svg viewBox="0 0 380 180" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Vettore campo gravitazionale in un punto a distanza r dalla massa M">
-  <defs>
-    <radialGradient id="gvecM" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
-    </radialGradient>
-    <marker id="gvecArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#0891b2"/></marker>
-  </defs>
-  <line x1="70" y1="90" x2="280" y2="90" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
-  <text x="175" y="80" text-anchor="middle" font-size="14" fill="#64748b">r</text>
-
-  <circle cx="70" cy="90" r="40" fill="url(#gvecM)"/>
-  <ellipse cx="58" cy="76" rx="12" ry="8" fill="#fff" opacity=".5"/>
-  <text x="70" y="96" text-anchor="middle" font-size="16" font-weight="600" fill="#92400e">M</text>
-
-  <circle cx="280" cy="90" r="5" fill="#475569"/>
-  <text x="280" y="112" text-anchor="middle" font-size="13" fill="#475569">P</text>
-
-  <line x1="280" y1="90" x2="216" y2="90" stroke="#0891b2" stroke-width="3.5" marker-end="url(#gvecArrow)"/>
-  <foreignObject x="222" y="52" width="50" height="26">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:15px;font-weight:600;color:#0891b2;">$\vec g$</div>
-  </foreignObject>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="vettore-campo-g">Figura</span> — Il vettore campo gravitazionale $\vec g$ nel punto $P$, a distanza $r$ dalla massa $M$: punta sempre verso il centro di $M$.</figcaption>
-</div>
+{% include figure/figura-vettore-campo-g.html %}
 
 Cioè, così come nel caso del vettore forza gravitazionale, <u markdown="span">il vettore punta sempre verso il centro della massa che genera il campo</u>.  
 {% include margin-note.html testo="La formula più completa che lega campo e forza" %}
@@ -1535,6 +336,22 @@ Questa espressione è insomma molto più completa della precedente $g = F/m$, pe
 Sulla superficie di un pianeta (o di una stella), $\vec g$ è un vettore che <u markdown="span">punta sempre verso il centro</u> del pianeta — cioè, localmente, "verso il basso". Inoltre, poiché tutti i punti della superficie si trovano, con ottima approssimazione, alla <u markdown="span">stessa distanza dal centro</u> (il raggio del pianeta), <u markdown="span">anche il modulo di $\vec g$ è praticamente costante</u> su tutta la superficie. Per la Terra, questo valore vale circa $g \approx 9{,}81\ \text{m/s}^2$.
 {% include margin-note-end.html %}
 
+### Sovrapposizione degli effetti per il campo gravitazionale
+
+Anche per il campo gravitazionale vale lo stesso <definizione>principio di sovrapposizione degli effetti</definizione> già visto per le forze: se in un certo punto dello spazio sono presenti più masse $M_1, M_2, \dots$, ciascuna genera lì il proprio campo <u markdown="span">esattamente come se le altre non ci fossero</u>. Il campo totale in quel punto è la somma **vettoriale** di tutti questi campi:
+
+$$\vec g_{tot} = \vec g_1 + \vec g_2 + \dots$$
+
+{% include figure/figura-somma-campi.html %}
+
+{% include box-imp.html testo="Sovrapposizione degli effetti (campo)" %}
+Se più masse generano un campo nello stesso punto, il campo totale in quel punto è la somma vettoriale (con la regola del parallelogramma) dei singoli campi generati da ciascuna massa — esattamente come accade per le forze:
+
+$$\vec g_{tot} = \vec g_1 + \vec g_2 + \cdots.$$
+
+{% include box-end.html %}
+
+
 ## Le linee di campo
 
 Abbiamo detto che il campo gravitazionale associa a ogni punto dello spazio un vettore. Ma chiaramente per disegnare il campo gravitazionale non potremmo certamente disegnare un vettore per ogni punto: sarebbero un'infinità di vettori tutti sovrapposti l'uno all'altro. Possiamo però trovare una soluzione molto intuitiva.  
@@ -1545,359 +362,47 @@ Considera il seguente esempio di campo vettoriale, che associa ad ogni punto del
    didascalia="Le frecce indicano il vettore velocità della corrente marina punto per punto."
    larghezza="300px" %}
 
-Come puoi vedere, i vettori si dispongono secondo delle linee. È quindi possibile, invece di disegnare ogni vettore, sostituirli con delle linee che si chiamano <definizione>linee di campo</definizione>. Nel caso di una singola massa sferica che genera il campo le linee si disegnano così:
-
-<div class="fig-block">
-<svg viewBox="0 0 320 320" width="100%" style="max-width:280px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Linee di campo gravitazionale radiali entranti nella massa M">
-  <defs>
-    <radialGradient id="flinesM" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
-    </radialGradient>
-    <marker id="flinesArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#0891b2"/></marker>
-  </defs>
-  <line x1="300" y1="160" x2="206" y2="160" stroke="#0891b2" stroke-width="2" marker-end="url(#flinesArrow)"/>
-  <line x1="259" y1="259" x2="192.5" y2="192.5" stroke="#0891b2" stroke-width="2" marker-end="url(#flinesArrow)"/>
-  <line x1="160" y1="300" x2="160" y2="206" stroke="#0891b2" stroke-width="2" marker-end="url(#flinesArrow)"/>
-  <line x1="61" y1="259" x2="127.5" y2="192.5" stroke="#0891b2" stroke-width="2" marker-end="url(#flinesArrow)"/>
-  <line x1="20" y1="160" x2="114" y2="160" stroke="#0891b2" stroke-width="2" marker-end="url(#flinesArrow)"/>
-  <line x1="61" y1="61" x2="127.5" y2="127.5" stroke="#0891b2" stroke-width="2" marker-end="url(#flinesArrow)"/>
-  <line x1="160" y1="20" x2="160" y2="114" stroke="#0891b2" stroke-width="2" marker-end="url(#flinesArrow)"/>
-  <line x1="259" y1="61" x2="192.5" y2="127.5" stroke="#0891b2" stroke-width="2" marker-end="url(#flinesArrow)"/>
-  <circle cx="160" cy="160" r="38" fill="url(#flinesM)"/>
-  <ellipse cx="146" cy="146" rx="11" ry="8" fill="#fff" opacity=".5"/>
-  <text x="160" y="166" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">M</text>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="linee-di-campo">Figura</span> — Le linee di campo sono radiali e sempre entranti nella massa $M$: più vicine (e quindi più concentrate) accanto a $M$, più diradate lontano da essa.</figcaption>
-</div>
-
-Da questa immagine notiamo alcune proprietà importanti delle linee di campo.
+Come puoi vedere, i vettori si dispongono secondo delle linee. È quindi possibile, invece di disegnare ogni vettore, sostituirli con delle linee che si chiamano <definizione>linee di campo</definizione>. 
 
 {% include box-imp.html testo="Le linee di campo" %}
-1. Le linee sono radiali alla massa (cioè sono come i raggi del Sole).
+
+Le linee di campo sono linee <u>in ogni punto tangenti alla direzione del vettore campo gravitazionale in quel punto</u>.
+
+{% include box-end.html %}
+
+Osserva come si costruisce una linea di campo a partire dai vettori: si dispongono prima i vettori del campo $\vec g$ uno via l'altro, poi si traccia la linea che li unisce, e infine vedi comparire, punto per punto, la retta tangente alla curva in quel punto: nota che ogni vettore giace esattamente su di essa.
+
+{% include lab-virtuali/linea-tangente-lab.html %}
+
+Nel caso di una singola massa sferica che genera il campo, poiché il vettore $\vec g$ indica sempre verso la massa, le linee si disegnano così:
+
+{% include figure/figura-linee-di-campo.html %}
+
+Da questa immagine notiamo alcune proprietà importanti delle linee di campo <u>generate da una singola massa</u>.
+
+
+1. Le linee sono radiali alla massa (cioè sono come i raggi del Sole 🌞).
 2. Le linee sono più concentrate vicino alla massa e sono più rarefatte lontano da essa. Infatti <u markdown="span">la concentrazione di linee di campo misura l'intensità del campo in quel punto</u>.
 3. Le linee di campo hanno sempre verso **entrante** nella massa che genera il campo.
-{% include box-end.html %}
+
+
 
 Le linee di campo hanno anche un altro significato molto intuitivo: sono le traiettorie che seguirebbe una <definizione>massa esploratrice</definizione> lasciata cadere, da ferma, in un punto qualsiasi del campo. Provalo tu stesso: trascina la massa esploratrice (pallina grigia) in un punto qualsiasi attorno alla massa $M$ e lasciala andare — osserva come "cade" muovendosi sempre più velocemente (proprio come ci si aspetta, avvicinandosi a $M$), seguendo esattamente una linea di campo.
 
-<div class="vdrag-widget" id="fline1">
-<p class="vdrag-hint">Trascina la pallina grigia in un punto qualsiasi e lasciala andare: osserva la traiettoria che percorre cadendo verso $M$. Ripeti in più punti per "disegnare" più linee di campo.</p>
-<svg id="fline1-svg" viewBox="0 0 320 320" width="100%" style="max-width:300px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Simulazione: traiettoria di una massa esploratrice che cade verso M">
-<defs>
-  <radialGradient id="flsimM" cx="35%" cy="30%" r="70%">
-    <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
-  </radialGradient>
-  <radialGradient id="flsimMass" cx="35%" cy="30%" r="70%">
-    <stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#94a3b8"/>
-  </radialGradient>
-</defs>
-<line x1="300" y1="160" x2="206" y2="160" stroke="#0891b2" stroke-width="1" opacity=".15"/>
-<line x1="259" y1="259" x2="192.5" y2="192.5" stroke="#0891b2" stroke-width="1" opacity=".15"/>
-<line x1="160" y1="300" x2="160" y2="206" stroke="#0891b2" stroke-width="1" opacity=".15"/>
-<line x1="61" y1="259" x2="127.5" y2="192.5" stroke="#0891b2" stroke-width="1" opacity=".15"/>
-<line x1="20" y1="160" x2="114" y2="160" stroke="#0891b2" stroke-width="1" opacity=".15"/>
-<line x1="61" y1="61" x2="127.5" y2="127.5" stroke="#0891b2" stroke-width="1" opacity=".15"/>
-<line x1="160" y1="20" x2="160" y2="114" stroke="#0891b2" stroke-width="1" opacity=".15"/>
-<line x1="259" y1="61" x2="192.5" y2="127.5" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+{% include lab-virtuali/traiettoria-campo-singolo-lab.html %}
 
-<g id="fline1-trails"></g>
-
-<circle cx="160" cy="160" r="38" fill="url(#flsimM)"/>
-<ellipse cx="146" cy="146" rx="11" ry="8" fill="#fff" opacity=".5"/>
-<text x="160" y="166" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">M</text>
-
-<circle id="fline1-mass" cx="270" cy="270" r="10" fill="url(#flsimMass)" stroke="#475569" stroke-width="1.5" style="cursor:grab;touch-action:none;"/>
-</svg>
-<div class="vdrag-actions">
-<button class="vdrag-reset" id="fline1-clear">&#8635; Cancella tracce</button>
-</div>
-</div>
-
-<script>
-(function(){
-  var ID='fline1';
-  var svg=document.getElementById(ID+'-svg');
-  var mass=document.getElementById(ID+'-mass');
-  var trails=document.getElementById(ID+'-trails');
-  var clearBtn=document.getElementById(ID+'-clear');
-  var CENTER={x:160,y:160}, M_R=38, GAP=10, MIN_DIST=M_R+GAP, BOUND=18;
-  var START={x:270,y:270};
-  var falling=false;
-
-  function toSvgPoint(clientX,clientY){
-    var pt=svg.createSVGPoint();
-    pt.x=clientX; pt.y=clientY;
-    var m=svg.getScreenCTM().inverse();
-    return pt.matrixTransform(m);
-  }
-
-  function clampPoint(x,y){
-    x=Math.max(BOUND,Math.min(320-BOUND,x));
-    y=Math.max(BOUND,Math.min(320-BOUND,y));
-    var dx=x-CENTER.x, dy=y-CENTER.y, dist=Math.sqrt(dx*dx+dy*dy);
-    if(dist<MIN_DIST){
-      if(dist<1e-6){ dx=1; dy=0; dist=1; }
-      var k=MIN_DIST/dist;
-      x=CENTER.x+dx*k; y=CENTER.y+dy*k;
-    }
-    return {x:x,y:y};
-  }
-
-  function setMass(x,y){ mass.setAttribute('cx',x); mass.setAttribute('cy',y); }
-
-  function onMove(e){
-    e.preventDefault();
-    var p=toSvgPoint(e.clientX,e.clientY);
-    var c=clampPoint(p.x,p.y);
-    setMass(c.x,c.y);
-  }
-  function onUp(e){
-    mass.removeEventListener('pointermove',onMove);
-    mass.removeEventListener('pointerup',onUp);
-    startFall(parseFloat(mass.getAttribute('cx')),parseFloat(mass.getAttribute('cy')));
-  }
-  mass.addEventListener('pointerdown',function(e){
-    if(falling) return;
-    e.preventDefault();
-    mass.setPointerCapture(e.pointerId);
-    mass.addEventListener('pointermove',onMove);
-    mass.addEventListener('pointerup',onUp);
-  });
-
-  function startFall(x0,y0){
-    var dx=x0-CENTER.x, dy=y0-CENTER.y, dist=Math.sqrt(dx*dx+dy*dy);
-    if(dist<1e-6){ dx=1; dy=0; dist=1; }
-    var ux=dx/dist, uy=dy/dist;
-    var tx=CENTER.x+ux*MIN_DIST, ty=CENTER.y+uy*MIN_DIST;
-
-    var line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',x0); line.setAttribute('y1',y0);
-    line.setAttribute('x2',tx); line.setAttribute('y2',ty);
-    line.setAttribute('stroke','#0891b2'); line.setAttribute('stroke-width','2');
-    line.setAttribute('opacity','.4');
-    trails.appendChild(line);
-
-    falling=true; mass.style.cursor='default';
-    var DUR=900, t0=performance.now();
-    function step(now){
-      var t=Math.min(1,(now-t0)/DUR);
-      var e=t*t;
-      setMass(x0+(tx-x0)*e, y0+(ty-y0)*e);
-      if(t<1){ requestAnimationFrame(step); }
-      else {
-        falling=false; mass.style.cursor='grab';
-        setTimeout(function(){ setMass(START.x,START.y); },250);
-      }
-    }
-    requestAnimationFrame(step);
-  }
-
-  clearBtn.addEventListener('click',function(){
-    trails.innerHTML='';
-    falling=false; mass.style.cursor='grab';
-    setMass(START.x,START.y);
-  });
-})();
-</script>
-
-### Sovrapposizione degli effetti per il campo gravitazionale
-
-Anche per il campo gravitazionale vale lo stesso <definizione>principio di sovrapposizione degli effetti</definizione> già visto per le forze: se in un certo punto dello spazio sono presenti più masse $M_1, M_2, \dots$, ciascuna genera lì il proprio campo <u markdown="span">esattamente come se le altre non ci fossero</u>. Il campo totale in quel punto è la somma **vettoriale** di tutti questi campi:
-
-$$\vec g_{tot} = \vec g_1 + \vec g_2 + \dots$$
-
-<div class="fig-block">
-<svg viewBox="0 0 360 220" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Somma vettoriale dei campi generati da due masse in uno stesso punto">
-  <defs>
-    <radialGradient id="gsM1" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
-    </radialGradient>
-    <radialGradient id="gsM2" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#f0fdfa"/><stop offset="55%" stop-color="#99f6e4"/><stop offset="100%" stop-color="#5eead4"/>
-    </radialGradient>
-    <marker id="gsArrow1" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#0891b2"/></marker>
-    <marker id="gsArrow2" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#6366f1"/></marker>
-    <marker id="gsArrowTot" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
-  </defs>
-  <circle cx="60" cy="50" r="30" fill="url(#gsM1)"/>
-  <ellipse cx="50" cy="40" rx="9" ry="6" fill="#fff" opacity=".5"/>
-  <text x="60" y="55" text-anchor="middle" font-size="13" font-weight="600" fill="#92400e">M&#8321;</text>
-  <circle cx="320" cy="140" r="38" fill="url(#gsM2)"/>
-  <ellipse cx="306" cy="126" rx="11" ry="7" fill="#fff" opacity=".5"/>
-  <text x="320" y="146" text-anchor="middle" font-size="14" font-weight="600" fill="#0f766e">M&#8322;</text>
-
-  <circle cx="180" cy="170" r="5" fill="#475569"/>
-  <text x="180" y="188" text-anchor="middle" font-size="12" fill="#475569">P</text>
-
-  <line x1="116" y1="106" x2="204" y2="88" stroke="#6366f1" stroke-width="2" stroke-dasharray="5 4"/>
-  <line x1="268" y1="151" x2="204" y2="88" stroke="#0891b2" stroke-width="2" stroke-dasharray="5 4"/>
-
-  <line x1="180" y1="170" x2="116" y2="106" stroke="#0891b2" stroke-width="3" marker-end="url(#gsArrow1)"/>
-  <text x="98" y="98" font-size="14" fill="#0891b2">g&#8321;</text>
-  <line x1="180" y1="170" x2="268" y2="151" stroke="#6366f1" stroke-width="3" marker-end="url(#gsArrow2)"/>
-  <text x="272" y="150" font-size="14" fill="#6366f1">g&#8322;</text>
-  <line x1="180" y1="170" x2="204" y2="88" stroke="#16a34a" stroke-width="3.5" marker-end="url(#gsArrowTot)"/>
-  <foreignObject x="205" y="52" width="60" height="26">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:14px;font-weight:600;color:#16a34a;">$\vec g_{tot}$</div>
-  </foreignObject>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="somma-campi">Figura</span> — Nel punto $P$, i campi $\vec g_1$ e $\vec g_2$ generati da $M_1$ e $M_2$ si sommano vettorialmente (regola del parallelogramma) nel campo totale $\vec g_{tot}$.</figcaption>
-</div>
-
-{% include box-imp.html testo="Sovrapposizione degli effetti (campo)" %}
-Se più masse generano un campo nello stesso punto, il campo totale in quel punto è la somma vettoriale (con la regola del parallelogramma) dei singoli campi generati da ciascuna massa — esattamente come accade per le forze:
-
-$$\vec g_{tot} = \vec g_1 + \vec g_2 + \cdots.$$
-
-{% include box-end.html %}
 
 ### Linee di campo in presenza di più masse
 
-Cosa succede se il campo è generato da **più masse insieme**, come ad esempio nel sistema Terra-Luna? Come abbiamo appena visto, il campo totale in ogni punto è la somma vettoriale dei campi generati da ciascuna massa. Le linee di campo, però, non sono più delle semplici rette radiali: si incurvano, perché in ogni punto risentono dell'attrazione di **entrambe** le masse, come si vede in questa immagine:
+Cosa succede se il campo è generato da **più masse insieme**, come ad esempio nel sistema Terra-Luna? Come abbiamo appena visto, il campo totale in ogni punto è la somma vettoriale dei campi generati da ciascuna massa. Le linee di campo, però, non sono più delle semplici rette radiali: si incurvano, perché in ogni punto risentono dell'attrazione di **entrambe** le masse, apparendo quindi come nella seguente immagine.
 
-{% include figura.html id="earth-moon-field"
-   src="/corsi/immagini/earth-moon-field.png"
-   didascalia="Le linee di campo del sistema Terra-Luna: non più rette, ma curve che risentono dell'attrazione di entrambe le masse."
-   larghezza="420px" %}
+Prova tu stesso a verificare che questa è la forma delle linee di campo secondo la definizione data prima: clicca in un punto qualsiasi dell'immagine (fuori dai due corpi) per vedere comparire i due vettori $\vec g_T$ e $\vec g_L$ generati da Terra e Luna in quel punto, la loro somma $\vec g_{tot}$ secondo la regola del parallelogramma, e la retta tangente alla linea di campo risultante in quel punto.
+
+{% include lab-virtuali/campo-terra-luna-lab.html %}
 
 Anche in questo caso possiamo pensare alle linee di campo come alle traiettorie di una massa esploratrice lasciata cadere, da ferma, in un punto qualsiasi. Prova tu stesso, questa volta con due masse (una grande, come la Terra, e una piccola, come la Luna): la pallina non cadrà più lungo una semplice retta, ma seguirà un percorso curvo, deciso dall'attrazione combinata delle due masse.
 
-<div class="vdrag-widget" id="fline2">
-<p class="vdrag-hint">Trascina la pallina rosa in un punto qualsiasi e lasciala andare: osserva il percorso curvo che segue, tirata da entrambe le masse.</p>
-<svg id="fline2-svg" viewBox="0 0 320 320" width="100%" style="max-width:300px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Simulazione: traiettoria di una massa esploratrice nel campo di due masse">
-<defs>
-  <radialGradient id="fl2Earth" cx="35%" cy="30%" r="70%">
-    <stop offset="0%" stop-color="#ecfeff"/><stop offset="55%" stop-color="#67e8f9"/><stop offset="100%" stop-color="#0891b2"/>
-  </radialGradient>
-  <radialGradient id="fl2Moon" cx="35%" cy="30%" r="70%">
-    <stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#94a3b8"/>
-  </radialGradient>
-  <radialGradient id="fl2Mass" cx="35%" cy="30%" r="70%">
-    <stop offset="0%" stop-color="#fdf2f8"/><stop offset="55%" stop-color="#f9a8d4"/><stop offset="100%" stop-color="#ec4899"/>
-  </radialGradient>
-</defs>
-
-<g id="fline2-trails"></g>
-
-<circle cx="110" cy="170" r="34" fill="url(#fl2Earth)"/>
-<ellipse cx="98" cy="157" rx="10" ry="7" fill="#fff" opacity=".5"/>
-<text x="110" y="176" text-anchor="middle" font-size="13" font-weight="600" fill="#0e7490">T</text>
-
-<circle cx="225" cy="110" r="15" fill="url(#fl2Moon)"/>
-<ellipse cx="220" cy="105" rx="4.5" ry="3" fill="#fff" opacity=".6"/>
-<text x="225" y="114" text-anchor="middle" font-size="10" font-weight="600" fill="#475569">L</text>
-
-<circle id="fline2-mass" cx="270" cy="280" r="9" fill="url(#fl2Mass)" stroke="#be185d" stroke-width="1.5" style="cursor:grab;touch-action:none;"/>
-</svg>
-<div class="vdrag-actions">
-<button class="vdrag-reset" id="fline2-clear">&#8635; Cancella tracce</button>
-</div>
-</div>
-
-<script>
-(function(){
-  var ID='fline2';
-  var svg=document.getElementById(ID+'-svg');
-  var mass=document.getElementById(ID+'-mass');
-  var trails=document.getElementById(ID+'-trails');
-  var clearBtn=document.getElementById(ID+'-clear');
-  var EARTH={x:110,y:170,r:34}, MOON={x:225,y:110,r:15};
-  var K1=2200, K2=260, SOFTEN=12, GAP=6, BOUND=14, MAXSTEPS=500;
-  var KMOVE=6, MAXSTEP=7, MINSTEP=0.8;
-  var START={x:270,y:280};
-  var falling=false;
-
-  function toSvgPoint(clientX,clientY){
-    var pt=svg.createSVGPoint();
-    pt.x=clientX; pt.y=clientY;
-    var m=svg.getScreenCTM().inverse();
-    return pt.matrixTransform(m);
-  }
-
-  function clampDrag(x,y){
-    x=Math.max(BOUND,Math.min(320-BOUND,x));
-    y=Math.max(BOUND,Math.min(320-BOUND,y));
-    [EARTH,MOON].forEach(function(b){
-      var dx=x-b.x, dy=y-b.y, dist=Math.sqrt(dx*dx+dy*dy), minD=b.r+GAP+6;
-      if(dist<minD){
-        if(dist<1e-6){ dx=1; dy=0; dist=1; }
-        var k=minD/dist; x=b.x+dx*k; y=b.y+dy*k;
-      }
-    });
-    return {x:x,y:y};
-  }
-
-  function setMass(x,y){ mass.setAttribute('cx',x); mass.setAttribute('cy',y); }
-
-  function onMove(e){
-    e.preventDefault();
-    var p=toSvgPoint(e.clientX,e.clientY);
-    var c=clampDrag(p.x,p.y);
-    setMass(c.x,c.y);
-  }
-  function onUp(e){
-    mass.removeEventListener('pointermove',onMove);
-    mass.removeEventListener('pointerup',onUp);
-    simulateFall(parseFloat(mass.getAttribute('cx')),parseFloat(mass.getAttribute('cy')));
-  }
-  mass.addEventListener('pointerdown',function(e){
-    if(falling) return;
-    e.preventDefault();
-    mass.setPointerCapture(e.pointerId);
-    mass.addEventListener('pointermove',onMove);
-    mass.addEventListener('pointerup',onUp);
-  });
-
-  function accel(x,y,body,k){
-    var dx=body.x-x, dy=body.y-y, r=Math.max(Math.sqrt(dx*dx+dy*dy),SOFTEN);
-    var a=k/(r*r);
-    return {ax:a*dx/r, ay:a*dy/r};
-  }
-
-  function simulateFall(x0,y0){
-    falling=true; mass.style.cursor='default';
-    var x=x0,y=y0,step=0;
-    var pts=[x+','+y];
-    function frame(){
-      step++;
-      // Nessuna inerzia: lo spostamento ad ogni istante è preso nella
-      // direzione del campo *in quel punto* (non dipende dal moto precedente),
-      // così la pallina segue esattamente la linea di campo, non una traiettoria "reale".
-      var a1=accel(x,y,EARTH,K1), a2=accel(x,y,MOON,K2);
-      var fx=a1.ax+a2.ax, fy=a1.ay+a2.ay;
-      var dx=fx*KMOVE, dy=fy*KMOVE, dlen=Math.hypot(dx,dy);
-      if(dlen>MAXSTEP){ dx*=MAXSTEP/dlen; dy*=MAXSTEP/dlen; }
-      else if(dlen>0 && dlen<MINSTEP){ dx*=MINSTEP/dlen; dy*=MINSTEP/dlen; }
-      x+=dx; y+=dy;
-      pts.push(x.toFixed(1)+','+y.toFixed(1));
-      setMass(x,y);
-      var distE=Math.hypot(x-EARTH.x,y-EARTH.y), distM=Math.hypot(x-MOON.x,y-MOON.y);
-      var landed=(distE<EARTH.r+GAP)||(distM<MOON.r+GAP);
-      var escaped=(x<0||x>320||y<0||y>320);
-      if(!landed && !escaped && step<MAXSTEPS){
-        requestAnimationFrame(frame);
-      } else {
-        var poly=document.createElementNS('http://www.w3.org/2000/svg','polyline');
-        poly.setAttribute('points',pts.join(' '));
-        poly.setAttribute('fill','none');
-        poly.setAttribute('stroke','#ec4899');
-        poly.setAttribute('stroke-width','2');
-        poly.setAttribute('opacity','.45');
-        trails.appendChild(poly);
-        falling=false; mass.style.cursor='grab';
-        setTimeout(function(){ setMass(START.x,START.y); },250);
-      }
-    }
-    requestAnimationFrame(frame);
-  }
-
-  clearBtn.addEventListener('click',function(){
-    trails.innerHTML='';
-    falling=false; mass.style.cursor='grab';
-    setMass(START.x,START.y);
-  });
-})();
-</script>
+{% include lab-virtuali/traiettoria-campo-doppio-lab.html %}
 
 # Energia Gravitazionale
 
@@ -1914,165 +419,7 @@ La proprietà accennata sopra che caratterizza **tutte** le forze centrali (cio�
 Quando due masse si trovano a una certa distanza, c'è dell'energia "immagazzinata" tra loro, come se fossero connesse da una molla in tensione: se lasciamo che si avvicinino spontaneamente, attratte dalla gravità, questa energia si sprigiona sotto forma di <definizione>energia cinetica</definizione>. L'energia immagazzinata da due masse per effetti della forza di gravità si chiama <definizione>energia potenziale gravitazionale</definizione>.
 {% include margin-note-end.html %}
 
-<div class="vdrag-widget" id="springOsc">
-<p class="vdrag-hint">Trascina la massa azzurra per allontanarla dalla massa gialla (fissa), poi lasciala andare: osserva come accelera tornando indietro. Con il pulsante puoi mostrare la molla al posto dei vettori forza.</p>
-<svg id="springOsc-svg" viewBox="0 0 390 180" width="100%" style="max-width:360px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Animazione interattiva: trascina la massa azzurra e rilasciala per vederla accelerare verso la massa gialla, fissa">
-<defs>
-  <radialGradient id="springOscM" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
-  <radialGradient id="springOscm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0f9ff"/><stop offset="55%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#38bdf8"/></radialGradient>
-  <marker id="springOscArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
-</defs>
-<g id="springOsc-spring" style="display:none;">
-<path id="springOsc-body" d="" fill="none" stroke="#94a3b8" stroke-width="4.5" stroke-linecap="round"/>
-<path id="springOsc-shine" d="" fill="none" stroke="#f1f5f9" stroke-width="1.4" stroke-linecap="round" opacity=".85"/>
-</g>
-<g id="springOsc-vectors">
-<line id="springOsc-arrowM" x1="0" y1="0" x2="0" y2="0" stroke="#dc2626" stroke-width="2.5" marker-end="url(#springOscArrow)"/>
-<line id="springOsc-arrowm" x1="0" y1="0" x2="0" y2="0" stroke="#dc2626" stroke-width="2.5" marker-end="url(#springOscArrow)"/>
-</g>
-
-<g id="springOsc-gauge" opacity="0">
-  <text x="350" y="18" text-anchor="middle" font-size="10" font-weight="600" fill="#334155">Energia</text>
-  <text x="350" y="29" text-anchor="middle" font-size="10" font-weight="600" fill="#334155">immagazzinata</text>
-  <rect x="340" y="35" width="20" height="110" rx="4" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.5"/>
-  <rect id="springOsc-gaugeFill" x="340" y="145" width="20" height="0" rx="4" fill="#16a34a"/>
-</g>
-
-<circle id="springOsc-M" cx="90" cy="90" r="26" fill="url(#springOscM)"/>
-<circle id="springOsc-m" cx="136" cy="90" r="20" fill="url(#springOscm)" style="cursor:grab;touch-action:none;"/>
-</svg>
-<div class="vdrag-actions">
-<button class="vdrag-reset" id="springOsc-toggle">Mostra molla</button>
-</div>
-</div>
-
-<script>
-(function(){
-  var svg=document.getElementById('springOsc-svg');
-  var m=document.getElementById('springOsc-m'), M=document.getElementById('springOsc-M');
-  var body=document.getElementById('springOsc-body'), shine=document.getElementById('springOsc-shine');
-  var springGroup=document.getElementById('springOsc-spring'), vectorsGroup=document.getElementById('springOsc-vectors');
-  var arrowM=document.getElementById('springOsc-arrowM'), arrowm=document.getElementById('springOsc-arrowm');
-  var gauge=document.getElementById('springOsc-gauge'), gaugeFill=document.getElementById('springOsc-gaugeFill');
-  var toggleBtn=document.getElementById('springOsc-toggle');
-  var springVisible=false;
-  toggleBtn.addEventListener('click',function(){
-    springVisible=!springVisible;
-    springGroup.style.display=springVisible?'':'none';
-    vectorsGroup.style.display=springVisible?'none':'';
-    toggleBtn.textContent=springVisible?'Mostra vettori forza':'Mostra molla';
-  });
-  var Rm=20, RM=26;
-  var MIN_DIST=RM+Rm, STRETCH_REF=150;
-  var AMP_MAX=13, AMP_MIN=3.5;
-  var GAUGE_H=110, GAUGE_BOTTOM=145;
-  var X_MIN=20, X_MAX=270, Y_MIN=20, Y_MAX=160;
-  var Mx=90, My=90;
-  var xm=136, ym=90;
-  var dragging=false, animId=null;
-
-  function springPath(p0x,p0y,p1x,p1y,amp,n,lead){
-    var dx=p1x-p0x, dy=p1y-p0y, dist=Math.hypot(dx,dy)||1;
-    var ux=dx/dist, uy=dy/dist, px=-uy, py=ux;
-    var lc=Math.min(lead, dist/2-1);
-    var ax=p0x+ux*lc, ay=p0y+uy*lc, bx=p1x-ux*lc, by=p1y-uy*lc;
-    var d='M'+p0x.toFixed(1)+','+p0y.toFixed(1)+' L'+ax.toFixed(1)+','+ay.toFixed(1);
-    for(var i=0;i<n;i++){
-      var t1=(i+1)/n, midT=(i+0.5)/n;
-      var sx=ax+(bx-ax)*t1, sy=ay+(by-ay)*t1;
-      var mx=ax+(bx-ax)*midT, my=ay+(by-ay)*midT;
-      var dir=(i%2===0)?-1:1;
-      var cx=mx+px*dir*amp, cy=my+py*dir*amp;
-      d+=' Q'+cx.toFixed(1)+','+cy.toFixed(1)+' '+sx.toFixed(1)+','+sy.toFixed(1);
-    }
-    return d+' L'+p1x.toFixed(1)+','+p1y.toFixed(1);
-  }
-
-  function render(){
-    m.setAttribute('cx',xm); m.setAttribute('cy',ym);
-
-    var dist=Math.hypot(xm-Mx,ym-My);
-    var stretchFrac=Math.max(0,Math.min(1,(dist-MIN_DIST)/STRETCH_REF));
-    var amp=AMP_MAX-(AMP_MAX-AMP_MIN)*stretchFrac;
-
-    var d=springPath(Mx,My,xm,ym,amp,7,12);
-    body.setAttribute('d',d); shine.setAttribute('d',d);
-
-    var ux=(dist>1e-6)?(Mx-xm)/dist:1, uy=(dist>1e-6)?(My-ym)/dist:0;
-    var ARROW_LEN=22;
-    arrowm.setAttribute('x1',xm+ux*(Rm+4)); arrowm.setAttribute('y1',ym+uy*(Rm+4));
-    arrowm.setAttribute('x2',xm+ux*(Rm+4+ARROW_LEN)); arrowm.setAttribute('y2',ym+uy*(Rm+4+ARROW_LEN));
-    arrowM.setAttribute('x1',Mx-ux*(RM+4)); arrowM.setAttribute('y1',My-uy*(RM+4));
-    arrowM.setAttribute('x2',Mx-ux*(RM+4+ARROW_LEN)); arrowM.setAttribute('y2',My-uy*(RM+4+ARROW_LEN));
-
-    var fillH=GAUGE_H*stretchFrac;
-    gaugeFill.setAttribute('height',fillH);
-    gaugeFill.setAttribute('y',GAUGE_BOTTOM-fillH);
-    gauge.setAttribute('opacity',Math.min(1,stretchFrac*5));
-  }
-  render();
-
-  function toSvgPoint(clientX,clientY){
-    var pt=svg.createSVGPoint();
-    pt.x=clientX; pt.y=clientY;
-    var mtx=svg.getScreenCTM().inverse();
-    return pt.matrixTransform(mtx);
-  }
-
-  function clampPoint(x,y){
-    x=Math.max(X_MIN,Math.min(X_MAX,x));
-    y=Math.max(Y_MIN,Math.min(Y_MAX,y));
-    var dx=x-Mx, dy=y-My, dist=Math.sqrt(dx*dx+dy*dy);
-    if(dist<MIN_DIST){
-      if(dist<1e-6){ dx=1; dy=0; dist=1; }
-      var k=MIN_DIST/dist;
-      x=Mx+dx*k; y=My+dy*k;
-    }
-    return {x:x,y:y};
-  }
-
-  function onMove(e){
-    e.preventDefault();
-    var p=toSvgPoint(e.clientX,e.clientY);
-    var c=clampPoint(p.x,p.y);
-    xm=c.x; ym=c.y;
-    render();
-  }
-  function onUp(e){
-    m.removeEventListener('pointermove',onMove);
-    m.removeEventListener('pointerup',onUp);
-    dragging=false;
-    m.style.cursor='grab';
-    startReturn();
-  }
-  m.addEventListener('pointerdown',function(e){
-    e.preventDefault();
-    if(animId){ cancelAnimationFrame(animId); animId=null; }
-    dragging=true;
-    m.style.cursor='grabbing';
-    m.setPointerCapture(e.pointerId);
-    m.addEventListener('pointermove',onMove);
-    m.addEventListener('pointerup',onUp);
-  });
-
-  function startReturn(){
-    var x0=xm, y0=ym;
-    var dx=x0-Mx, dy=y0-My, dist=Math.hypot(dx,dy)||1;
-    var ux=dx/dist, uy=dy/dist;
-    var tx=Mx+ux*MIN_DIST, ty=My+uy*MIN_DIST;
-    var t0=performance.now(), DUR=900;
-    function step(now){
-      var t=Math.min(1,(now-t0)/DUR);
-      var e=t*t;
-      xm=x0+(tx-x0)*e; ym=y0+(ty-y0)*e;
-      render();
-      if(t<1){ animId=requestAnimationFrame(step); }
-      else { animId=null; }
-    }
-    animId=requestAnimationFrame(step);
-  }
-})();
-</script>
+{% include lab-virtuali/molla-oscillazione-lab.html %}
 
 {% include margin-note.html testo="Calcolare l'energia potenziale" %}
 Per calcolare quanta energia è immagazzinata tra due masse $M$ ed $m$ a distanza $r$, immaginiamo di partire da due masse inizialmente unite (a contatto) e di allontanarle fino alla distanza che ci interessa. Il lavoro che dobbiamo compiere per allontanarle, vincendo la loro attrazione reciproca, <u markdown="span">si trasforma interamente in **energia potenziale gravitazionale**</u>. Quindi per calcolare l'energia potenziale dobbiamo calcolare il lavoro compiuto.
@@ -2080,120 +427,7 @@ Per calcolare quanta energia è immagazzinata tra due masse $M$ ed $m$ a distanz
 
 Osserva l'animazione seguente: allontanando le due masse di un tratto $r$, la forza gravitazionale (attrattiva) si oppone sempre allo spostamento, come una molla in tensione.
 
-<div class="vdrag-widget" id="springSep">
-<div class="lift-flow">
-<svg id="springSep-svg" viewBox="0 0 380 200" width="100%" style="max-width:340px;height:auto;display:block;" role="img" aria-label="Animazione: due masse vengono allontanate mentre i vettori della forza gravitazionale le tirano l'una verso l'altra">
-<defs>
-  <radialGradient id="sepM" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
-  <radialGradient id="sepm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0f9ff"/><stop offset="55%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#38bdf8"/></radialGradient>
-  <marker id="sepArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
-</defs>
-
-<line id="springSep-rline" x1="160" y1="50" x2="220" y2="50" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
-<line id="springSep-rtickL" x1="160" y1="44" x2="160" y2="56" stroke="#94a3b8" stroke-width="1.5"/>
-<line id="springSep-rtickR" x1="220" y1="44" x2="220" y2="56" stroke="#94a3b8" stroke-width="1.5"/>
-<text id="springSep-rlabel" x="190" y="38" text-anchor="middle" font-size="14" fill="#64748b">r</text>
-
-<line id="springSep-arrowA" x1="0" y1="100" x2="0" y2="100" stroke="#dc2626" stroke-width="2.5" marker-end="url(#sepArrow)"/>
-<line id="springSep-arrowB" x1="0" y1="100" x2="0" y2="100" stroke="#dc2626" stroke-width="2.5" marker-end="url(#sepArrow)"/>
-
-<circle id="springSep-m" cx="160" cy="100" r="20" fill="url(#sepm)"/>
-<text id="springSep-mlabel" x="160" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#0369a1">m</text>
-<circle id="springSep-M" cx="220" cy="100" r="28" fill="url(#sepM)"/>
-<text id="springSep-Mlabel" x="220" y="106" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">M</text>
-</svg>
-
-<p class="lift-eq">
-<span class="lift-fixed" id="springSep-fixed">$L=$</span> <span class="lift-var" id="springSep-var"></span>
-</p>
-</div>
-
-<div class="vdrag-actions">
-<button class="vdrag-check" id="springSep-go">Separa le masse!</button>
-<button class="vdrag-reset" id="springSep-reset" style="display:none;">&#8635; Ricomincia</button>
-</div>
-</div>
-
-<script>
-(function(){
-  var ID='springSep';
-  var m=document.getElementById(ID+'-m'), M=document.getElementById(ID+'-M');
-  var mlabel=document.getElementById(ID+'-mlabel'), Mlabel=document.getElementById(ID+'-Mlabel');
-  var arrowA=document.getElementById(ID+'-arrowA'), arrowB=document.getElementById(ID+'-arrowB');
-  var rline=document.getElementById(ID+'-rline'), rtickL=document.getElementById(ID+'-rtickL'), rtickR=document.getElementById(ID+'-rtickR'), rlabel=document.getElementById(ID+'-rlabel');
-  var goBtn=document.getElementById(ID+'-go'), resetBtn=document.getElementById(ID+'-reset');
-  var fixedEl=document.getElementById(ID+'-fixed'), varEl=document.getElementById(ID+'-var');
-  var STAGES=['-F \\times \\text{spostamento}','-G\\dfrac{Mm}{r^2} \\times r','-G\\dfrac{Mm}{r^{\\cancel{2}}} \\times \\cancel{r}','-G\\dfrac{Mm}{r}'];
-  var FADE=300;
-
-  function setStage(i){
-    var tex='$'+STAGES[i]+'$';
-    function apply(){
-      varEl.innerHTML=tex;
-      if(window.MathJax && MathJax.typesetPromise){
-        MathJax.typesetPromise([varEl]).then(function(){ varEl.style.opacity=1; });
-      } else {
-        varEl.style.opacity=1;
-      }
-    }
-    if(varEl.innerHTML===''){ apply(); }
-    else { varEl.style.opacity=0; setTimeout(apply,FADE); }
-  }
-
-  var X_START_m=160, X_START_M=220, X_END_m=60, X_END_M=320, R_m=20, R_M=28, Y=100;
-  var R_START=X_START_M-X_START_m;
-  var ARROW_MAX=30, ARROW_MIN=6;
-
-  function render(t){
-    var xm = X_START_m + (X_END_m-X_START_m)*t;
-    var xM = X_START_M + (X_END_M-X_START_M)*t;
-    m.setAttribute('cx',xm); mlabel.setAttribute('x',xm);
-    M.setAttribute('cx',xM); Mlabel.setAttribute('x',xM);
-
-    var r=xM-xm;
-    var alen=Math.max(ARROW_MIN, Math.min(ARROW_MAX, ARROW_MAX*(R_START/r)*(R_START/r)));
-    arrowA.setAttribute('x1',xm+R_m+4); arrowA.setAttribute('y1',Y); arrowA.setAttribute('x2',xm+R_m+4+alen); arrowA.setAttribute('y2',Y);
-    arrowB.setAttribute('x1',xM-R_M-4); arrowB.setAttribute('y1',Y); arrowB.setAttribute('x2',xM-R_M-4-alen); arrowB.setAttribute('y2',Y);
-
-    rline.setAttribute('x1',xm); rline.setAttribute('x2',xM);
-    rtickL.setAttribute('x1',xm); rtickL.setAttribute('x2',xm);
-    rtickR.setAttribute('x1',xM); rtickR.setAttribute('x2',xM);
-    rlabel.setAttribute('x',(xm+xM)/2);
-  }
-  render(0);
-
-  function resetAll(){
-    render(0);
-    fixedEl.style.opacity=0;
-    varEl.style.opacity=0; varEl.innerHTML='';
-    goBtn.style.display='inline-block'; goBtn.disabled=false;
-    resetBtn.style.display='none';
-  }
-
-  goBtn.addEventListener('click',function(){
-    goBtn.disabled=true;
-    var t0=performance.now(), DUR=1400;
-    function step(now){
-      var t=Math.min(1,(now-t0)/DUR);
-      var e=t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
-      render(e);
-      if(t<1){ requestAnimationFrame(step); }
-      else {
-        goBtn.style.display='none';
-        resetBtn.style.display='inline-block';
-        fixedEl.style.opacity=1;
-        setTimeout(function(){ setStage(0); },250);
-        setTimeout(function(){ setStage(1); },2100);
-        setTimeout(function(){ setStage(2); },3950);
-        setTimeout(function(){ setStage(3); },5800);
-      }
-    }
-    requestAnimationFrame(step);
-  });
-
-  resetBtn.addEventListener('click',resetAll);
-})();
-</script>
+{% include lab-virtuali/molla-separazione-lab.html %}
 
 Il lavoro fatto dalla forza gravitazionale mentre le due masse si allontanano di un tratto $r$ è 
 
@@ -2236,62 +470,7 @@ Esplora tu stesso come cambia $U$ al variare di $M$, di $m$ o di $r$.
    formula="-G*M*m/r" formula_latex="-G\dfrac{M \cdot m}{r}"
    y_simbolo="U" y_unita="GJ" y_scala="1e9" solo_positivi="true" %}
 
-<div class="iex-widget" id="invCarEnergia">
-<p class="iex-lbl">Isola le altre grandezze</p>
-<p class="iex-hint">Come sopra: cerca la sequenza più breve, poi appuntala sul quaderno. Qui sotto lavoriamo con il <strong>modulo</strong> delle formule (senza il segno meno): il segno resta invariato durante tutti i passaggi, quindi puoi pensare tranquillamente alla versione con il meno davanti.</p>
-<div class="iex-topnav">
-<button class="iex-navbtn" id="invCarEnergiaprev" onclick="invCarEnergianav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="invCarEnergiadots"></div>
-<button class="iex-navbtn" id="invCarEnergianext" onclick="invCarEnergianav(1)">Succ. &rarr;</button>
-</div>
-
-<div class="iex-q" id="invCarEnergiarow0">
-<div class="iex-nested">
-{% include invert.html id="inv-en1-m" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="m" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarEnergiarow1" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-en1-g" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="g" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarEnergiarow2" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-en1-r" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="r" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarEnergiarow3" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-en2-G" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="G" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarEnergiarow4" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-en2-M" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="M" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarEnergiarow5" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-en2-m" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="m" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarEnergiarow6" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-en2-r" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="r" %}
-</div>
-</div>
-
-</div>
-
-<script>
-setupInvCarousel('invCarEnergia',7);
-</script>
+{% include esercizi/invert-energia-potenziale.html %}
 
 ## Potenziale gravitazionale
 
@@ -2330,50 +509,7 @@ Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
    formula="-G*M/r" formula_latex="-G\dfrac{M}{r}"
    y_simbolo="V" y_unita="MJ/kg" y_scala="1e6" solo_positivi="true" %}
 
-<div class="iex-widget" id="invCarPot">
-<p class="iex-lbl">Isola le altre grandezze</p>
-<p class="iex-hint">Come sempre: minor numero di mosse possibile, poi sul quaderno. Anche qui lavoriamo con il <strong>modulo</strong> (senza il segno meno), che resta invariato durante i passaggi.</p>
-<div class="iex-topnav">
-<button class="iex-navbtn" id="invCarPotprev" onclick="invCarPotnav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="invCarPotdots"></div>
-<button class="iex-navbtn" id="invCarPotnext" onclick="invCarPotnav(1)">Succ. &rarr;</button>
-</div>
-
-<div class="iex-q" id="invCarPotrow0">
-<div class="iex-nested">
-{% include invert.html id="inv-pot1-U" variabili="V|U|m" sinistra="V" destra="U/m" obiettivo="U" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarPotrow1" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-pot1-m" variabili="V|U|m" sinistra="V" destra="U/m" obiettivo="m" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarPotrow2" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-pot2-G" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="G" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarPotrow3" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-pot2-M" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="M" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarPotrow4" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-pot2-r" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="r" %}
-</div>
-</div>
-
-</div>
-
-<script>
-setupInvCarousel('invCarPot',5);
-</script>
+{% include esercizi/invert-potenziale.html %}
 
 ### Confronto tra le formule
 
@@ -2394,26 +530,7 @@ C'è poi un'altra differenza importante, che riguarda **come** queste grandezze 
 Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u markdown="span">energia potenziale e potenziale diminuiscono molto più lentamente, all'aumentare della distanza, rispetto a forza e campo</u> — come si vede confrontando i due grafici:
 {% include margin-note-end.html %}
 
-<div class="fig-block">
-<svg viewBox="0 0 320 220" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Confronto fra come diminuiscono, all'aumentare della distanza, forza e campo (inversamente proporzionali al quadrato della distanza) ed energia potenziale e potenziale (inversamente proporzionali alla distanza)">
-  <defs>
-    <marker id="cmpArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#475569"/></marker>
-  </defs>
-  <line x1="40" y1="195" x2="40" y2="18" stroke="#475569" stroke-width="1.5" marker-end="url(#cmpArrow)"/>
-  <line x1="35" y1="190" x2="308" y2="190" stroke="#475569" stroke-width="1.5" marker-end="url(#cmpArrow)"/>
-  <text x="312" y="194" font-size="13" fill="#475569">r</text>
-  <text x="18" y="22" font-size="12" fill="#475569">valore</text>
-
-  <polyline points="40.0,20.0 42.7,71.9 45.5,103.3 48.2,123.6 50.9,137.5 53.7,147.5 59.2,160.5 64.6,168.3 70.1,173.4 75.6,176.9 81.1,179.4 94.7,183.2 108.4,185.3 122.1,186.5 135.8,187.3 149.5,187.9 163.2,188.3 176.8,188.6 190.5,188.8 204.2,189.0 217.9,189.1 231.6,189.2 245.3,189.3 258.9,189.4 272.6,189.5 286.3,189.5 300.0,189.6" fill="none" stroke="#dc2626" stroke-width="2.2"/>
-  <polyline points="40.0,20.0 42.7,48.3 45.5,68.6 48.2,83.8 50.9,95.6 53.7,105.0 59.2,119.2 64.6,129.3 70.1,136.9 75.6,142.8 81.1,147.5 94.7,156.0 108.4,161.7 122.1,165.7 135.8,168.8 149.5,171.1 163.2,173.0 176.8,174.5 190.5,175.8 204.2,176.9 217.9,177.9 231.6,178.7 245.3,179.4 258.9,180.0 272.6,180.6 286.3,181.1 300.0,181.5" fill="none" stroke="#6366f1" stroke-width="2.2"/>
-
-  <line x1="150" y1="205" x2="170" y2="205" stroke="#dc2626" stroke-width="2.5"/>
-  <text x="175" y="209" font-size="12" fill="#dc2626">F, g &prop; 1/r&sup2;</text>
-  <line x1="230" y1="205" x2="250" y2="205" stroke="#6366f1" stroke-width="2.5"/>
-  <text x="255" y="209" font-size="12" fill="#6366f1">U, V &prop; 1/r</text>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="confronto-decadimento">Figura</span> — A parità di distanza iniziale, la curva di energia potenziale e potenziale (inversamente proporzionali alla distanza) resta molto più "alta" di quella di forza e campo (inversamente proporzionali al quadrato della distanza), man mano che $r$ cresce.</figcaption>
-</div>
+{% include figure/figura-confronto-decadimento.html %}
 
 {% include box-imp.html testo="Confronto tra le quattro grandezze" %}
 
@@ -2441,212 +558,13 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
    id="q-energia" %}
 {% include box-end.html %}
 
-<div class="iex-widget" id="iexUV">
-<p class="iex-lbl">Verifica Subito!</p>
-<div class="iex-topnav">
-<button class="iex-navbtn" id="iexUVprev" onclick="iexUVnav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="iexUVdots"></div>
-<button class="iex-navbtn" id="iexUVnext" onclick="iexUVnav(1)">Succ. &rarr;</button>
-</div>
-
-<div class="iex-q" id="iexUVrow0">
-<div class="calc-flow">
-{% include calc-margin.html id="calcUV0" %}
-<div class="calc-flow-body">
-<p class="iex-qt">Due persone, di massa $m_1 = 80\ \text{kg}$ e $m_2 = 60\ \text{kg}$, si trovano a una distanza $r = 2\ \text{m}$ l'una dall'altra. Calcola l'energia potenziale gravitazionale $U$ del sistema. Esprimi il risultato in notazione scientifica.</p>
-<div class="iex-ir">
-<input class="iex-m" id="iexUVm0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')iexUVcheck0()">
-<span>&times;&thinsp;10<sup><input class="iex-e" id="iexUVe0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')iexUVcheck0()"></sup></span>
-<select class="iex-unit" id="iexUVu0">
-<option value="">unità</option>
-<option value="J">J</option>
-<option value="N">N</option>
-<option value="kg">kg</option>
-<option value="J/kg">J/kg</option>
-</select>
-<button class="iex-vbtn" onclick="iexUVcheck0()">Verifica</button>
-</div>
-<div class="iex-fb" id="iexUVfb0"></div>
-<div class="iex-sol" id="iexUVsol0">Soluzione: <strong>-1,60 &times; 10<sup>-7</sup> J</strong> — infatti $U = -G\dfrac{m_1 m_2}{r} = -6{,}67\times10^{-11}\times\dfrac{80\times60}{2}$ (negativa: le due masse sono "legate" dalla reciproca attrazione).</div>
-</div>
-<div style="clear:both"></div>
-</div>
-</div>
-
-<div class="iex-q" id="iexUVrow1" style="display:none">
-<div class="calc-flow">
-{% include calc-margin.html id="calcUV1" %}
-<div class="calc-flow-body">
-<p class="iex-qt">Calcola ora il potenziale gravitazionale $V$ generato dalla sola massa $m_1 = 80\ \text{kg}$ (la prima persona) a una distanza $r = 4\ \text{m}$ da essa. Esprimi il risultato in notazione scientifica.</p>
-<div class="iex-ir">
-<input class="iex-m" id="iexUVm1" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')iexUVcheck1()">
-<span>&times;&thinsp;10<sup><input class="iex-e" id="iexUVe1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')iexUVcheck1()"></sup></span>
-<select class="iex-unit" id="iexUVu1">
-<option value="">unità</option>
-<option value="J/kg">J/kg</option>
-<option value="J">J</option>
-<option value="N">N</option>
-<option value="kg">kg</option>
-</select>
-<button class="iex-vbtn" onclick="iexUVcheck1()">Verifica</button>
-</div>
-<div class="iex-fb" id="iexUVfb1"></div>
-<div class="iex-sol" id="iexUVsol1">Soluzione: <strong>-1,33 &times; 10<sup>-9</sup> J/kg</strong> — infatti $V = -G\dfrac{m_1}{r} = -6{,}67\times10^{-11}\times\dfrac{80}{4}$.</div>
-</div>
-<div style="clear:both"></div>
-</div>
-</div>
-
-<div class="iex-q" id="iexUVrow2" style="display:none">
-<p class="iex-qt">Se raddoppiassi la distanza $r$, come cambierebbe, in valore assoluto, l'energia potenziale gravitazionale $U$?</p>
-<div class="iex-choices" id="iexUVchoices2">
-<button class="iex-choice-btn" data-v="a">Raddoppierebbe</button>
-<button class="iex-choice-btn" data-v="b">Diventerebbe un quarto</button>
-<button class="iex-choice-btn" data-v="c">Dimezzerebbe</button>
-<button class="iex-choice-btn" data-v="d">Resterebbe invariata</button>
-</div>
-<div class="iex-fb" id="iexUVfb2"></div>
-</div>
-
-</div>
-
-<script>
-(function(){
-  var N=3, cur=0, ok=[false,false,false];
-  function updateDots(){
-    var dots=document.querySelectorAll('#iexUVdots .iex-dot');
-    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
-  }
-  function show(i){
-    document.querySelectorAll('#iexUV .iex-q').forEach(function(q){q.style.display='none';});
-    document.getElementById('iexUVrow'+i).style.display='block';
-    cur=i;
-    document.getElementById('iexUVprev').disabled=(i===0);
-    document.getElementById('iexUVnext').disabled=(i===N-1);
-    updateDots();
-  }
-  function buildDots(){
-    var c=document.getElementById('iexUVdots');
-    for(var j=0;j<N;j++){
-      var d=document.createElement('span');
-      d.className='iex-dot'+(j===0?' cur':'');
-      d.title='Passo '+(j+1);
-      (function(j){ d.onclick=function(){ show(j); }; })(j);
-      c.appendChild(d);
-    }
-  }
-  buildDots();
-  window.iexUVnav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
-
-  function parseMant(s){ var c=s.trim(); if(c.indexOf(',')!==-1)c=c.replace(',','.'); return parseFloat(c); }
-  function parseExp(s){ return parseInt(s.trim().replace('−','-'),10); }
-
-  function shootConf(el){
-    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
-    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
-    for(var i=0;i<55;i++){
-      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
-      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
-      document.body.appendChild(p);
-      (function(p,vx,vy,x,y){
-        var op=1;
-        function step(){
-          vy+=.28; x+=vx; y+=vy; op-=.016;
-          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
-          if(op>0)requestAnimationFrame(step); else p.remove();
-        }
-        requestAnimationFrame(step);
-      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
-    }
-  }
-
-  window.showSol = window.showSol || function(id){ document.getElementById(id).style.display='block'; };
-
-  function checkStage(idx, targetVal, targetUnit, solId){
-    var mv=parseMant(document.getElementById('iexUVm'+idx).value);
-    var ev=parseExp(document.getElementById('iexUVe'+idx).value);
-    var uv=document.getElementById('iexUVu'+idx).value;
-    var fb=document.getElementById('iexUVfb'+idx);
-    var vb=document.querySelector('#iexUVrow'+idx+' .iex-vbtn');
-    var userVal = (!isNaN(mv) && !isNaN(ev)) ? mv*Math.pow(10,ev) : NaN;
-    var valOk = !isNaN(userVal) && Math.abs(userVal-targetVal)/Math.abs(targetVal) <= 0.02;
-    var uOk = uv===targetUnit;
-    if(valOk && uOk){
-      ok[idx]=true; fb.className='iex-fb ok';
-      fb.innerHTML='&#10003; Esatto!'+(idx<N-1?' <button class="iex-nextbtn" onclick="iexUVnav(1)">Passo successivo &rarr;</button>':'');
-      shootConf(vb); updateDots();
-    } else {
-      fb.className='iex-fb err';
-      var parts=[];
-      if(!valOk)parts.push('il valore (coefficiente &times; 10 elevato all\'esponente)');
-      if(!uOk)parts.push('l\'unità di misura');
-      fb.innerHTML='Non è esatto. Controlla: '+parts.join(', ')+'. Oppure <button class="iex-lbtn" onclick="showSol(\''+solId+'\')">vedi la soluzione</button>.';
-    }
-  }
-
-  window.iexUVcheck0=function(){ checkStage(0, -1.6008e-7, 'J', 'iexUVsol0'); };
-  window.iexUVcheck1=function(){ checkStage(1, -1.334e-9, 'J/kg', 'iexUVsol1'); };
-
-  (function initChoices2(){
-    var btns = document.querySelectorAll('#iexUVchoices2 .iex-choice-btn');
-    var fb = document.getElementById('iexUVfb2');
-    btns.forEach(function(btn){
-      btn.addEventListener('click', function(){
-        if(btn.disabled) return;
-        btns.forEach(function(b){ b.disabled = true; });
-        var correct = btn.dataset.v === 'c';
-        fb.style.display = 'block';
-        if(correct){
-          btn.className = 'iex-choice-btn correct';
-          ok[2] = true; fb.className = 'iex-fb ok';
-          fb.innerHTML = '&#10003; Esatto! A differenza della forza (che dipende da $1/r^2$), l\'energia potenziale $U=-GMm/r$ dipende da $1/r$: raddoppiando $r$, $|U|$ dimezza.';
-          shootConf(btn); updateDots();
-        } else {
-          btn.className = 'iex-choice-btn wrong';
-          var correctBtn = document.querySelector('#iexUVchoices2 .iex-choice-btn[data-v="c"]');
-          correctBtn.className = 'iex-choice-btn correct';
-          fb.className = 'iex-fb err';
-          fb.innerHTML = 'Non è corretto: $U=-GMm/r$ dipende da $1/r$ (non da $1/r^2$, come invece la forza): raddoppiando $r$, $|U|$ dimezza.';
-        }
-        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-      });
-    });
-  })();
-})();
-</script>
+{% include esercizi/esercizio-energia-potenziale.html %}
 
 ## Superfici equipotenziali
 
 Poiché il potenziale gravitazionale $V$ generato da una massa $M$ dipende solo dalla distanza $r$ da essa ($V = -G\dfrac{M}{r}$), tutti i punti a distanza $r$ da $M$ hanno lo stesso potenziale. L'insieme di questi punti forma una superficie, chiamata <definizione>superficie equipotenziale</definizione>: per una singola massa sferica, le superfici equipotenziali sono semplicemente sfere concentriche a $M$.
 
-<div class="fig-block">
-<svg viewBox="0 0 300 300" width="100%" style="max-width:280px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Superfici equipotenziali concentriche attorno a una massa sferica M">
-  <defs>
-    <radialGradient id="eqpM" cx="35%" cy="30%" r="70%">
-      <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
-    </radialGradient>
-    <marker id="eqpArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#0891b2"/></marker>
-  </defs>
-
-  <circle cx="150" cy="150" r="130" fill="none" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4 3"/>
-  <circle cx="150" cy="150" r="98" fill="none" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4 3"/>
-  <circle cx="150" cy="150" r="66" fill="none" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4 3"/>
-  <circle cx="150" cy="150" r="38" fill="none" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="4 3"/>
-
-  <line x1="150" y1="150" x2="228" y2="72" stroke="#0891b2" stroke-width="2" marker-end="url(#eqpArrow)"/>
-  <foreignObject x="220" y="38" width="80" height="24">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px;font-weight:600;color:#0891b2;">$V$ cresce</div>
-  </foreignObject>
-  <text x="180" y="116" font-size="12" fill="#0891b2">V&#8321;</text>
-  <text x="200" y="96" font-size="12" fill="#0891b2">V&#8322;</text>
-  <text x="222" y="74" font-size="12" fill="#0891b2">V&#8323;</text>
-
-  <circle cx="150" cy="150" r="18" fill="url(#eqpM)"/>
-  <ellipse cx="144" cy="144" rx="5" ry="3.5" fill="#fff" opacity=".5"/>
-  <text x="150" y="155" text-anchor="middle" font-size="13" font-weight="600" fill="#92400e">M</text>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="equipotenziali-sfera">Figura</span> — Le superfici equipotenziali di una singola massa sferica sono sfere concentriche a $M$: $V_1 < V_2 < V_3 < 0$, poiché il potenziale (negativo) cresce, avvicinandosi a zero, man mano che ci si allontana da $M$.</figcaption>
-</div>
+{% include figure/figura-equipotenziali-sfera.html %}
 
 {% include margin-note.html testo="Superfici equipotenziali e linee di campo" %}
 Le superfici equipotenziali sono sempre **perpendicolari** alle linee di campo, in ogni punto. Infatti, muovendosi lungo una superficie equipotenziale il potenziale non cambia: non si compie quindi lavoro spostandosi in quella direzione. Il campo, invece, compie lavoro proprio quando ci si sposta lungo la sua direzione — le due direzioni devono perciò essere sempre perpendicolari.
@@ -2682,7 +600,37 @@ Quando il campo è generato da più masse, come nel sistema Terra-Luna, le super
 
 ## Moto di una massa in un campo gravitazionale
 
-### L'accelerazione
+### La Forza Peso
+
+Quando una massa $m$ si trova sulla (o vicino alla) superficie di un pianeta, la forza gravitazionale che il pianeta esercita su di essa si chiama <definizione>forza peso</definizione> e si indica con $\vec P$. Dalla definizione di campo, $\vec F = m\vec g$, otteniamo semplicemente
+
+$$\vec P = m\vec g:$$
+
+è lo stesso identico prodotto massa per campo, solo con un nome diverso quando parliamo di un corpo vicino alla superficie di un pianeta. Come il campo $\vec g$, anche $\vec P$ punta verso il centro del pianeta.
+
+{% include box-imp.html testo="La forza peso" %}
+La forza peso $\vec P = m\vec g$ è la forza con cui un pianeta attrae un corpo di massa $m$ vicino alla sua superficie. Si misura in newton, come ogni altra forza.
+{% include box-end.html %}
+
+{% include box-warn.html testo="Massa e peso non sono la stessa cosa" %}
+La <definizione>massa</definizione> $m$ (in kg) è una proprietà del corpo stesso, e non cambia mai. Il <definizione>peso</definizione> $P$ (in N), invece, è una forza e dipende anche dal campo gravitazionale del luogo in cui il corpo si trova: uno stesso astronauta ha la stessa massa sulla Terra e sulla Luna, ma un peso diverso, perché $g$ è diverso nei due luoghi (circa $9{,}8\ \text{m/s}^2$ sulla Terra, contro circa $1{,}6\ \text{m/s}^2$ sulla Luna).
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qpeso %}[
+{"t":"La forza peso e la massa di un corpo sono la stessa grandezza, misurata in unità diverse.","ok":false,"s":"No: sono due grandezze diverse. La massa (kg) è una proprietà invariante del corpo; il peso (N) è una forza, e dipende anche dal valore di $g$ nel luogo in cui ci si trova."},
+{"t":"Il peso di un corpo dipende dal valore del campo gravitazionale nel luogo in cui si trova.","ok":true,"s":"Sì: $P=mg$, quindi a parità di massa, un $g$ diverso dà un peso diverso."},
+{"t":"Un astronauta ha la stessa massa sulla Terra e sulla Luna.","ok":true,"s":"Sì: la massa è una proprietà del corpo stesso, indipendente dal luogo in cui si trova."},
+{"t":"Un astronauta pesa lo stesso sulla Terra e sulla Luna.","ok":false,"s":"No: il peso dipende da $g$, che sulla Luna è circa 6 volte più piccolo che sulla Terra — quindi l'astronauta pesa molto meno."},
+{"t":"La forza peso è diretta verso il centro del pianeta che la genera.","ok":true,"s":"Sì, come il campo gravitazionale $\\vec g$ a cui è associata."}
+]{% endcapture %}
+{% include quiz.html domande=_qpeso
+   id="q-peso" senza_esempi="true" %}
+{% include box-end.html %}
+
+{% include esercizi/esercizio-forza-peso.html %}
+
+### L'Accelerazione Gravitazionale
 
 Quando una massa $m$ si muove in un campo gravitazionale $\vec g$, essa è soggetta ad una forza. Ricordando che, per il secondo principio della dinamica,
 
@@ -2691,92 +639,25 @@ $$\vec F = m \vec a,$$
 essa è dunque soggetta anche a un'accelerazione. Confrontando con l'equazione che lega la forza al campo gravitazionale $\vec F = m \vec g,$ comprendiamo che possiamo identificare il campo gravitazionale con l'accelerazione a cui è soggetta la massa $m$. 
 
 {% include box-imp.html testo="L'accelerazione di una massa in un campo gravitazioanle" %}
-Una massa immersa in un campo gravitazionale $\vec g$ è soggetta a un'accelerazione che corrisponde in modulo direzione e verso al campo $\vec g$.
+L'accelerazione $\vec a$ di una massa immersa in un campo gravitazionale $\vec g$ è uguale al campo: 
+
+$$\vec a = \vec g.$$
+
+
 {% include box-end.html %}
 
-Ricordando poi che ogni accelerazione $\vec a$ è definita come la variazione della velocità nel tempo
-
-$$\vec a = \frac{\Delta \vec v}{\Delta t},$$
-
-possiamo quindi dire che il campo gravitazionale corrisponde alla variazione della velocità della massa nel tempo:
+{% include box-ricorda.html testo="Dall'accelerazione al campo" %}
+Ricorda che l'accelerazione è definita come $\vec a = \dfrac{\Delta \vec v}{\Delta t}$. Poiché il campo gravitazionale altro non è che l'accelerazione della massa $m$, possiamo sostituire $a$ con $g$:
 
 $$\vec g = \frac{\Delta \vec v}{\Delta t}.$$
 
+{% include box-end.html %}
+
 Infatti, puoi provare con il seguente esercizio che l'unità di misura del campo (il N/kg) corrisponde all'unità di misura dell'accelerazione (il m/s²).
 
-<div class="iex-widget" id="iexNkg">
-<p class="iex-lbl">Verifica Subito!</p>
-<p class="iex-hint">Segui i passaggi per scoprire che l'unità di misura del campo, il N/kg, corrisponde proprio a quella dell'accelerazione.</p>
-<div class="iex-topnav">
-<button class="iex-navbtn" id="iexNkgprev" onclick="iexNkgnav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="iexNkgdots"></div>
-<button class="iex-navbtn" id="iexNkgnext" onclick="iexNkgnav(1)">Succ. &rarr;</button>
-</div>
+{% include esercizi/unita-nkg.html %}
 
-<div class="iex-q" id="iexNkgrow0">
-<p class="iex-qt">Parti dalla formula $g = \dfrac{F}{m}$ e sostituisci ogni grandezza con la propria unità di misura.</p>
-<div class="iex-nested">
-{% include unit-derive.html id="ud-g-Nkg" testo="Trova l'unità di misura di g"
-   variabile="g"
-   numeratore_simboli="F" numeratore_corrette="N"
-   denominatore_simboli="m" denominatore_corrette="kg"
-   opzioni="N|kg|J|m|s" %}
-</div>
-</div>
-
-<div class="iex-q" id="iexNkgrow1" style="display:none">
-<p class="iex-qt">Il newton è a sua volta un'unità derivata. Parti dal secondo principio della dinamica $F = ma$ e scopri di che cosa è fatto un newton, sostituendo massa e accelerazione con le loro unità.</p>
-<div class="iex-nested">
-{% include unit-derive.html id="ud-N-Nkg" testo="Trova l'unità di misura di N"
-   variabile="N"
-   numeratore_simboli="m|a" numeratore_corrette="kg|m/s²"
-   opzioni="kg|m/s²|N|s|m" %}
-</div>
-</div>
-
-<div class="iex-q" id="iexNkgrow2" style="display:none">
-<p class="iex-qt">Ottimo: ora sai che $\text N = \text{kg}\cdot\text m/\text s^2$. Sostituiscilo al posto di N in N/kg e semplifica: a che cosa corrisponde?</p>
-<div class="iex-choices" id="iexNkgchoices2">
-<button class="iex-choice-btn" data-v="a">$\text m/\text s^2$</button>
-<button class="iex-choice-btn" data-v="b">$\text{kg}\cdot\text m/\text s^2$</button>
-<button class="iex-choice-btn" data-v="c">$\text{kg}/\text s^2$</button>
-<button class="iex-choice-btn" data-v="d">$\text s^2/\text m$</button>
-</div>
-<div class="iex-fb" id="iexNkgfb2"></div>
-</div>
-
-</div>
-
-<script>
-setupInvCarousel('iexNkg',3);
-(function(){
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  var btns=document.querySelectorAll('#iexNkgchoices2 .iex-choice-btn');
-  var fb=document.getElementById('iexNkgfb2');
-  var correctV='a';
-  btns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      if(btn.disabled) return;
-      btns.forEach(function(b){ b.disabled = true; });
-      var correct = btn.dataset.v === correctV;
-      fb.style.display = 'block';
-      if(correct){
-        btn.className = 'iex-choice-btn correct';
-        fb.className = 'iex-fb ok';
-        fb.innerHTML = '&#10003; Esatto! $\\dfrac{\\text N}{\\text{kg}} = \\dfrac{\\text{kg}\\cdot\\text m/\\text s^2}{\\text{kg}} = \\text m/\\text s^2$: il kg si semplifica, e resta proprio l\'unità di un\'accelerazione.';
-        _shoot(btn);
-      } else {
-        btn.className = 'iex-choice-btn wrong';
-        var cb=document.querySelector('#iexNkgchoices2 .iex-choice-btn[data-v="a"]');
-        cb.className = 'iex-choice-btn correct';
-        fb.className = 'iex-fb err';
-        fb.innerHTML = 'Non è corretto: sostituendo $\\text N = \\text{kg}\\cdot\\text m/\\text s^2$ in $\\text N/\\text{kg}$, il fattore kg si semplifica e resta $\\text m/\\text s^2$.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% include esercizi/esercizio-accelerazione.html %}
 
 ### L'Energia Meccanica
 
@@ -2797,7 +678,7 @@ Questo ci dice come cambia la velocità della massa $m$ durante il moto:
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qmoto %}[
-{"t":"Durante il moto in un campo gravitazionale, l'energia cinetica $K$ si conserva da sola.","ok":false,"s":"No: a conservarsi è l'energia meccanica totale $E=K+U$, non $K$ da sola, che infatti cambia continuamente."},
+{"t":"Durante il moto in un campo gravitazionale, l'energia cinetica $K$ si conserva, in assenza di attriti.","ok":false,"s":"No: a conservarsi è l'energia meccanica totale $E=K+U$, non $K$ da sola, che infatti cambia continuamente."},
 {"t":"Se una massa si avvicina a $M$, la sua energia cinetica aumenta.","ok":true,"s":"Sì: $U$ diminuisce e, per mantenere $E$ costante, $K$ deve aumentare."},
 {"t":"Se una massa si allontana da $M$, la sua energia potenziale diminuisce.","ok":false,"s":"No: allontanandosi, $U$ aumenta (si avvicina a zero)."},
 {"t":"L'energia meccanica totale $E=K+U$ può cambiare durante il moto, se l'unica forza in gioco è quella gravitazionale.","ok":false,"s":"No: in questo caso $E$ resta sempre costante, proprio perché la forza gravitazionale è una forza centrale."},
@@ -2936,10 +817,86 @@ $$\frac{\text N}{\text{kg}} = \frac{\text{kg}\cdot\text m/\text s^2}{\text{kg}} 
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
+Un oggetto di massa $8\ \text{kg}$ viene portato dalla Terra alla Luna, dove il campo gravitazionale $g_{\text{Luna}}$ vale circa un sesto di quello terrestre. Vero o falso?
+
+{% include tf.html q="Sulla Luna, la massa dell'oggetto resta $8\ \text{kg}$." ok=true s="Sì: la massa è una proprietà del corpo stesso, non dipende dal luogo in cui si trova." %}
+{% include tf.html q="Sulla Luna, anche il peso dell'oggetto resta lo stesso che sulla Terra." ok=false s="No: il peso $P=mg$ dipende da $g$, che sulla Luna è molto più piccolo — quindi l'oggetto pesa molto meno (circa un sesto)." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Su un pianeta il cui campo gravitazionale ha modulo $g = 4\ \text{m/s}^2$, un masso ha un peso di $600\ \text N$. Qual è la sua massa?
+
+{% include num.html id="numPesoMassa" valore="150" unit="kg" %}
+
+{% include ex-sol.html %}
+Dalla formula del peso $P=mg$, isolando $m$:
+
+$$m = \frac{P}{g} = \frac{600\ \text N}{4\ \text{m/s}^2} = 150\ \text{kg}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Una massa, inizialmente ferma, si trova in un punto dello spazio dove il campo gravitazionale ha modulo $g = 5\ \text{m/s}^2$. Dopo quanto tempo la sua velocità raggiunge $30\ \text{m/s}$?
+
+{% include num.html id="numAccelDt" valore="6" unit="s" %}
+
+{% include ex-sol.html %}
+Dalla definizione di accelerazione, $g = \Delta v/\Delta t$, isolando $\Delta t$ (e ricordando che, partendo da ferma, $\Delta v$ coincide con la velocità finale):
+
+$$\Delta t = \frac{\Delta v}{g} = \frac{30\ \text{m/s}}{5\ \text{m/s}^2} = 6\ \text s.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Se il campo gravitazionale in un punto raddoppiasse, a parità di tempo trascorso, come cambierebbe la variazione di velocità $\Delta v$ di una massa lì lasciata cadere da ferma?
+<div class="iex-choices" id="mcqAccelDouble">
+<button class="iex-choice-btn" data-v="a">Raddoppierebbe</button>
+<button class="iex-choice-btn" data-v="b">Diventerebbe 4 volte più grande</button>
+<button class="iex-choice-btn" data-v="c">Dimezzerebbe</button>
+<button class="iex-choice-btn" data-v="d">Resterebbe invariata</button>
+</div>
+<div class="iex-fb" id="mcqAccelDoublefb"></div>
+<script>
+(function(){
+  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+  var btns=document.querySelectorAll('#mcqAccelDouble .iex-choice-btn');
+  var fb=document.getElementById('mcqAccelDoublefb');
+  var correctV='a';
+  btns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      if(btn.disabled) return;
+      btns.forEach(function(b){ b.disabled = true; });
+      var correct = btn.dataset.v === correctV;
+      fb.style.display = 'block';
+      if(correct){
+        btn.className = 'iex-choice-btn correct';
+        fb.className = 'iex-fb ok';
+        fb.innerHTML = '&#10003; Esatto! $\\Delta v = g\\cdot\\Delta t$: a parità di $\\Delta t$, $\\Delta v$ è direttamente proporzionale a $g$, quindi raddoppiando $g$ raddoppia anche $\\Delta v$.';
+        _shoot(btn);
+      } else {
+        btn.className = 'iex-choice-btn wrong';
+        var cb=document.querySelector('#mcqAccelDouble .iex-choice-btn[data-v="a"]');
+        cb.className = 'iex-choice-btn correct';
+        fb.className = 'iex-fb err';
+        fb.innerHTML = 'Non è corretto: $\\Delta v = g\\cdot\\Delta t$ è direttamente proporzionale a $g$ (non al suo quadrato, né inversamente proporzionale), quindi raddoppiando $g$ raddoppia anche $\\Delta v$.';
+      }
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+    });
+  });
+})();
+</script>
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
 Due punti $A$ e $B$ si trovano rispettivamente a distanza $r$ e $3r$ da una massa $M$. In quale dei due punti le linee di campo sono più fitte? In quale dei due il campo gravitazionale è più intenso?
 {% include ex-sol.html %}
 Le linee di campo sono più concentrate vicino alla massa: sono quindi più fitte in $A$ (più vicino a $M$). Poiché la concentrazione delle linee misura l'intensità del campo, anche il campo è più intenso in $A$ — coerentemente con $g=GM/r^2$, che è più grande per $r$ più piccolo.
 {% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Vero o falso, sulla definizione di linea di campo?
+
+{% include tf.html q="In ogni suo punto, una linea di campo è tangente al vettore campo in quel punto." ok=true s="Sì, è proprio così che una linea di campo è definita." %}
+{% include tf.html q="Una linea di campo può essere disegnata come una qualunque linea, purché passi abbastanza vicino alla massa che genera il campo." ok=false s="No: passare vicino alla massa non basta. La condizione che definisce una linea di campo è che sia tangente, in ogni suo punto, al vettore campo in quel punto." %}
+{% include ex-end.html %}
 
 {% include ex.html diff=1 %}
 Perché, muovendosi lungo una superficie equipotenziale, non si compie mai lavoro?
@@ -3039,21 +996,7 @@ Sai già che $G$ si misura in $\text N\cdot\text m^2/\text{kg}^2$. Usando il **s
 {% include ex.html diff=2 %}
 Il grafico seguente mostra come due grandezze diminuiscono, all'aumentare della distanza $r$: la curva <strong style="color:#dc2626">rossa</strong> e la curva <strong style="color:#0891b2">blu</strong>. Una delle due rappresenta l'andamento di forza e campo gravitazionale; l'altra, quello di energia potenziale e potenziale gravitazionale.
 
-<div class="fig-block">
-<svg viewBox="0 0 320 220" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Due curve che decrescono con la distanza r, una più rapidamente dell'altra, senza etichette">
-  <defs>
-    <marker id="graphFEArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#475569"/></marker>
-  </defs>
-  <line x1="40" y1="195" x2="40" y2="18" stroke="#475569" stroke-width="1.5" marker-end="url(#graphFEArrow)"/>
-  <line x1="35" y1="190" x2="308" y2="190" stroke="#475569" stroke-width="1.5" marker-end="url(#graphFEArrow)"/>
-  <text x="312" y="194" font-size="13" fill="#475569">r</text>
-  <text x="18" y="22" font-size="12" fill="#475569">valore</text>
-
-  <polyline points="40.0,20.0 42.7,71.9 45.5,103.3 48.2,123.6 50.9,137.5 53.7,147.5 59.2,160.5 64.6,168.3 70.1,173.4 75.6,176.9 81.1,179.4 94.7,183.2 108.4,185.3 122.1,186.5 135.8,187.3 149.5,187.9 163.2,188.3 176.8,188.6 190.5,188.8 204.2,189.0 217.9,189.1 231.6,189.2 245.3,189.3 258.9,189.4 272.6,189.5 286.3,189.5 300.0,189.6" fill="none" stroke="#dc2626" stroke-width="2.2"/>
-  <polyline points="40.0,20.0 42.7,48.3 45.5,68.6 48.2,83.8 50.9,95.6 53.7,105.0 59.2,119.2 64.6,129.3 70.1,136.9 75.6,142.8 81.1,147.5 94.7,156.0 108.4,161.7 122.1,165.7 135.8,168.8 149.5,171.1 163.2,173.0 176.8,174.5 190.5,175.8 204.2,176.9 217.9,177.9 231.6,178.7 245.3,179.4 258.9,180.0 272.6,180.6 286.3,181.1 300.0,181.5" fill="none" stroke="#0891b2" stroke-width="2.2"/>
-</svg>
-<figcaption><span class="fig-num" data-fig-id="graph-forza-energia-blank">Figura</span> — Due andamenti al decrescere di $1/r^2$ (una curva) e $1/r$ (l'altra curva), senza etichette: a te capire quale sia quale.</figcaption>
-</div>
+{% include figure/figura-grafico-decadimento-vuoto.html %}
 
 Completa le frasi.
 
@@ -3106,133 +1049,7 @@ $$F_{tot} = \sqrt{F_1^2 + F_2^2} = \sqrt{(3\times10^{-8})^2+(4\times10^{-8})^2} 
 {% include ex.html diff=2 %}
 Su una massa $m$ agiscono contemporaneamente due forze gravitazionali, $\vec F_1$ (dovuta a $M_1$) e $\vec F_2$ (dovuta a $M_2$), come in figura.
 
-<div class="vdrag-widget" id="vdrag1">
-<p class="vdrag-hint">Trascina il pallino verde fino al nodo della griglia che rappresenta $\vec F_{tot} = \vec F_1 + \vec F_2$ (regola del parallelogramma).</p>
-<svg id="vdrag1-svg" viewBox="0 0 320 320" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Griglia interattiva per la somma vettoriale">
-<defs>
-  <radialGradient id="vdM1" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
-  <radialGradient id="vdM2" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0fdfa"/><stop offset="55%" stop-color="#99f6e4"/><stop offset="100%" stop-color="#5eead4"/></radialGradient>
-  <radialGradient id="vdMm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></radialGradient>
-  <marker id="vdArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
-  <marker id="vdArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
-  <marker id="vdArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
-</defs>
-{% for i in (0..9) %}<line x1="{{ i | times: 30 | plus: 20 }}" y1="20" x2="{{ i | times: 30 | plus: 20 }}" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="{{ i | times: 30 | plus: 20 }}" x2="290" y2="{{ i | times: 30 | plus: 20 }}" stroke="#e2e8f0" stroke-width="1"/>{% endfor %}
-
-<circle cx="140" cy="230" r="24" fill="url(#vdM1)"/>
-<text x="140" y="234" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">M&#8321;</text>
-<circle cx="80" cy="170" r="20" fill="url(#vdM2)"/>
-<text x="80" y="174" text-anchor="middle" font-size="12" font-weight="600" fill="#0f766e">M&#8322;</text>
-<circle cx="50" cy="260" r="13" fill="url(#vdMm)"/>
-<text x="50" y="264" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">m</text>
-
-<line x1="50" y1="260" x2="140" y2="230" stroke="#dc2626" stroke-width="3" marker-end="url(#vdArrowRed)"/>
-<text x="150" y="222" font-size="13" fill="#dc2626">F&#8321;</text>
-<line x1="50" y1="260" x2="80" y2="170" stroke="#7c3aed" stroke-width="3" marker-end="url(#vdArrowPurple)"/>
-<text x="88" y="162" font-size="13" fill="#7c3aed">F&#8322;</text>
-
-<line id="vdrag1-line" x1="50" y1="260" x2="230" y2="80" stroke="#16a34a" stroke-width="3" marker-end="url(#vdArrowGreen)"/>
-<text id="vdrag1-label" x="238" y="76" font-size="13" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
-<circle id="vdrag1-handle" cx="230" cy="80" r="11" fill="#16a34a" stroke="#fff" stroke-width="2" style="cursor:grab;touch-action:none;"/>
-</svg>
-<div class="vdrag-actions">
-<button class="vdrag-check" id="vdrag1-check">Verifica</button>
-<button class="vdrag-reset" id="vdrag1-reset">&#8635; Ricomincia</button>
-</div>
-<div class="vdrag-fb" id="vdrag1-fb"></div>
-</div>
-
-<script>
-(function(){
-  var ID='vdrag1';
-  var svg=document.getElementById(ID+'-svg');
-  var handle=document.getElementById(ID+'-handle');
-  var line=document.getElementById(ID+'-line');
-  var label=document.getElementById(ID+'-label');
-  var fb=document.getElementById(ID+'-fb');
-  var checkBtn=document.getElementById(ID+'-check');
-  var resetBtn=document.getElementById(ID+'-reset');
-  var START={x:230,y:80};
-  var UNIT=30, MIN=20, MAX=290;
-  var TARGET={x:170,y:140};
-  var solved=false;
-
-  function clamp(v){ return Math.max(MIN,Math.min(MAX,v)); }
-  function snap(v){ return Math.round((clamp(v)-MIN)/UNIT)*UNIT+MIN; }
-
-  function toSvgPoint(clientX,clientY){
-    var pt=svg.createSVGPoint();
-    pt.x=clientX; pt.y=clientY;
-    var m=svg.getScreenCTM().inverse();
-    return pt.matrixTransform(m);
-  }
-
-  function moveHandle(x,y){
-    handle.setAttribute('cx',x); handle.setAttribute('cy',y);
-    line.setAttribute('x2',x); line.setAttribute('y2',y);
-    label.setAttribute('x',x+8); label.setAttribute('y',y-6);
-  }
-
-  function onMove(e){
-    e.preventDefault();
-    var p=toSvgPoint(e.clientX,e.clientY);
-    moveHandle(clamp(p.x),clamp(p.y));
-  }
-  function onUp(e){
-    handle.removeEventListener('pointermove',onMove);
-    handle.removeEventListener('pointerup',onUp);
-    var x=snap(parseFloat(handle.getAttribute('cx')));
-    var y=snap(parseFloat(handle.getAttribute('cy')));
-    moveHandle(x,y);
-  }
-  handle.addEventListener('pointerdown',function(e){
-    if(solved) return;
-    e.preventDefault();
-    handle.setPointerCapture(e.pointerId);
-    fb.style.display='none';
-    handle.addEventListener('pointermove',onMove);
-    handle.addEventListener('pointerup',onUp);
-  });
-
-  function shootConf(el){
-    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
-    var cl=['#16a34a','#0891b2','#7c3aed','#f59e0b','#dc2626','#ec4899'];
-    for(var i=0;i<50;i++){
-      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
-      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
-      document.body.appendChild(p);
-      (function(p,vx,vy,x,y){
-        var op=1;
-        function step(){ vy+=.28; x+=vx; y+=vy; op-=.016; p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op; if(op>0)requestAnimationFrame(step); else p.remove(); }
-        requestAnimationFrame(step);
-      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
-    }
-  }
-
-  checkBtn.addEventListener('click',function(){
-    var x=snap(parseFloat(handle.getAttribute('cx')));
-    var y=snap(parseFloat(handle.getAttribute('cy')));
-    fb.style.display='block';
-    if(x===TARGET.x && y===TARGET.y){
-      solved=true;
-      fb.className='vdrag-fb ok';
-      fb.innerHTML='&#10003; Esatto! Quello è il vertice del parallelogramma opposto a $m$: la diagonale da $m$ a quel punto è proprio $\\vec F_{tot}$.';
-      handle.style.cursor='default';
-      shootConf(checkBtn);
-    } else {
-      fb.className='vdrag-fb err';
-      fb.innerHTML='Non ancora. Completa il parallelogramma che ha $\\vec F_1$ e $\\vec F_2$ come lati, e trascina il pallino sul suo vertice opposto a $m$.';
-    }
-    if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-  });
-
-  resetBtn.addEventListener('click',function(){
-    solved=false; handle.style.cursor='grab';
-    moveHandle(START.x,START.y);
-    fb.style.display='none';
-  });
-})();
-</script>
+{% include lab-virtuali/vdrag-somma-forze-lab.html %}
 {% include ex-end.html %}
 
 {% include ex.html diff=2 %}

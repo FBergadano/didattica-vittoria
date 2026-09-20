@@ -1,0 +1,326 @@
+{% comment %}
+Animazione: un pozzo "spaccato" mostrato in due versioni affiancate. A
+sinistra, un omino (stesso stile grafico del laboratorio "spinta del
+banco") solleva un secchio da 5 litri girando a mano il verricello. A
+destra, una pompa fa risalire gli stessi 5 litri d'acqua lungo un tubo,
+facendoli sgorgare in superficie con velocità appena superiore a zero.
+Un pulsante "Avvia" fa partire i due scenari insieme: entrambi sollevano
+la stessa quantità d'acqua alla stessa altezza (stesso lavoro), ma in un
+tempo molto diverso. Nessun parametro.
+{% endcomment %}
+
+<style>
+#pozzoPotWidget { max-width:480px; margin:1.2rem auto; text-align:center; }
+#pozzoPotWidget canvas { width:100%; max-width:480px; height:auto; display:block; margin:0 auto; background:#eff6ff; border-radius:10px; }
+#pozzoPotWidget .pp-controls { margin-top:.7rem; }
+#pozzoPotWidget button { font-size:.85rem; font-weight:700; padding:.4rem 1.1rem; border-radius:999px; border:none; background:#0f766e; color:#fff; cursor:pointer; }
+#pozzoPotWidget button:hover { background:#0d6660; }
+#pozzoPotWidget button:disabled { opacity:.55; cursor:default; }
+#pozzoPotWidget .pp-caption { text-align:center; font-size:.86rem; font-weight:600; color:#0e7490; min-height:1.3em; margin-top:.6rem; }
+@media print { #pozzoPotWidget { display:none !important; } }
+</style>
+
+<div class="vdrag-widget" id="pozzoPotWidget">
+<canvas id="pp-canvas" width="480" height="320" role="img" aria-label="Due pozzi affiancati: a sinistra un omino solleva a mano un secchio di 5 litri con un verricello, a destra una pompa fa risalire 5 litri d'acqua lungo un tubo fino in superficie"></canvas>
+<div class="pp-controls"><button type="button" id="pp-go">&#9654; Avvia</button></div>
+<p class="pp-caption" id="pp-caption">Premi Avvia: i due pozzi sollevano la stessa quantità d'acqua, alla stessa altezza.</p>
+</div>
+
+<script>
+(function(){
+  var cv=document.getElementById('pp-canvas');
+  if(!cv||!cv.getContext) return;
+  var ctx=cv.getContext('2d');
+  var W=480,H=320;
+  var dpr=Math.min(window.devicePixelRatio||1,2);
+  cv.width=W*dpr; cv.height=H*dpr; ctx.scale(dpr,dpr);
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var SUIT='#93c5fd';
+
+  var goBtn=document.getElementById('pp-go');
+  var caption=document.getElementById('pp-caption');
+
+  var SURF=98, BOTTOM=300, WATER_TOP=274;
+  var TIME_MANO=11000, TIME_POMPA=2800;
+
+  var running=false, done=false, t0=null, raf=null;
+  var pMano=0, pPompa=0;
+  var drips=[]; // {y, life}
+  var pumpAngle=0;
+
+  function rr(x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+  function shade(hex,p){
+    var n=parseInt(hex.slice(1),16), a=Math.round(2.55*p);
+    var R=Math.max(0,Math.min(255,(n>>16)+a));
+    var G=Math.max(0,Math.min(255,(n>>8&255)+a));
+    var B=Math.max(0,Math.min(255,(n&255)+a));
+    return '#'+(0x1000000+R*65536+G*256+B).toString(16).slice(1);
+  }
+  function bone(x1,y1,cx,cy,x2,y2,w,col){
+    ctx.strokeStyle=col; ctx.lineWidth=w; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.quadraticCurveTo(cx,cy,x2,y2); ctx.stroke();
+  }
+  function lerp(a,b,m){ return a+(b-a)*m; }
+  function easeInOut(x){ return x<0.5 ? 2*x*x : 1-Math.pow(-2*x+2,2)/2; }
+  function solveElbow(sx,sy,hx,hy,L1,L2){
+    var dx=hx-sx, dy=hy-sy;
+    var d=Math.hypot(dx,dy);
+    d=Math.max(Math.abs(L1-L2)+0.5, Math.min(L1+L2-0.5, d));
+    var a=Math.atan2(dy,dx);
+    var cosA=(L1*L1+d*d-L2*L2)/(2*L1*d);
+    cosA=Math.max(-1,Math.min(1,cosA));
+    var elbowAngle=Math.acos(cosA);
+    var ea=a-elbowAngle;
+    return {x:sx+Math.cos(ea)*L1, y:sy+Math.sin(ea)*L1};
+  }
+
+  function earthCutaway(cx){
+    var lx=cx-100, rx=cx+100, shL=cx-35, shR=cx+35;
+    var g=ctx.createLinearGradient(0,SURF,0,BOTTOM+10);
+    g.addColorStop(0,'#c8874a'); g.addColorStop(1,'#8a5a2e');
+    ctx.fillStyle=g;
+    ctx.fillRect(lx,SURF,shL-lx,BOTTOM+10-SURF);
+    ctx.fillRect(shR,SURF,rx-shR,BOTTOM+10-SURF);
+    ctx.strokeStyle='rgba(255,255,255,.18)'; ctx.lineWidth=1;
+    for(var yy=SURF+8; yy<BOTTOM+6; yy+=11){
+      ctx.beginPath(); ctx.moveTo(lx+2,yy); ctx.lineTo(shL-2,yy+7); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(shR+2,yy); ctx.lineTo(rx-2,yy+7); ctx.stroke();
+    }
+    ctx.fillStyle='#7cae52';
+    ctx.fillRect(lx,SURF-6,rx-lx,7);
+    // pozzo (vuoto) e acqua
+    ctx.fillStyle='#dff0fb';
+    ctx.fillRect(shL,SURF,shR-shL,BOTTOM-SURF);
+    var wg=ctx.createLinearGradient(0,WATER_TOP,0,BOTTOM);
+    wg.addColorStop(0,'#7dd3fc'); wg.addColorStop(1,'#0369a1');
+    ctx.fillStyle=wg;
+    ctx.fillRect(shL,WATER_TOP,shR-shL,BOTTOM-WATER_TOP);
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(shL,SURF); ctx.lineTo(shL,BOTTOM); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(shR,SURF); ctx.lineTo(shR,BOTTOM); ctx.stroke();
+    return {shL:shL, shR:shR};
+  }
+
+  function drawWindlass(cx, angle){
+    var shL=cx-35, shR=cx+35;
+    ctx.fillStyle='#92603a';
+    ctx.fillRect(shL+2,SURF-30,10,32);
+    ctx.fillRect(shR-12,SURF-30,10,32);
+    var dg=ctx.createLinearGradient(shL,SURF-38,shR,SURF-26);
+    dg.addColorStop(0,'#d9a066'); dg.addColorStop(.5,'#a9713f'); dg.addColorStop(1,'#8a5a2e');
+    ctx.fillStyle=dg; ctx.strokeStyle='#6b4423'; ctx.lineWidth=1.2;
+    rr(shL+2,SURF-38,shR-shL-4,12,4); ctx.fill(); ctx.stroke();
+    // manovella
+    var ax=shR-7, ay=SURF-32, r=15;
+    var hx=ax+Math.cos(angle)*r, hy=ay+Math.sin(angle)*r;
+    ctx.strokeStyle='#57534e'; ctx.lineWidth=3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(hx,hy); ctx.stroke();
+    ctx.fillStyle='#334155'; ctx.beginPath(); ctx.arc(ax,ay,3,0,7); ctx.fill();
+    ctx.fillStyle='#1c1917'; ctx.beginPath(); ctx.arc(hx,hy,4,0,7); ctx.fill();
+    return {drumX:(shL+shR)/2, drumY:SURF-32, handX:hx, handY:hy};
+  }
+
+  function drawBucket(x,y){
+    ctx.fillStyle='#94a3b8'; ctx.strokeStyle='#475569'; ctx.lineWidth=1.4;
+    ctx.beginPath();
+    ctx.moveTo(x-11,y-9); ctx.lineTo(x+11,y-9); ctx.lineTo(x+9,y+11); ctx.lineTo(x-9,y+11);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle='#475569'; ctx.lineWidth=1.3;
+    ctx.beginPath(); ctx.moveTo(x-9,y-9); ctx.quadraticCurveTo(x,y-18,x+9,y-9); ctx.stroke();
+    ctx.fillStyle='#0369a1'; ctx.font='700 8px ui-sans-serif,system-ui,sans-serif'; ctx.textAlign='center';
+    ctx.fillText('5 L', x, y+4);
+  }
+
+  function drawMan(cx, handTarget, mood){
+    var x=cx+40, groundY=SURF;
+    var hipx=x, hipy=groundY-26, shx=x+2, shy=groundY-48, hdx=x+4, hdy=groundY-60;
+    var dark=shade(SUIT,-45), mid=shade(SUIT,-15), light=shade(SUIT,40);
+    ctx.fillStyle='rgba(15,23,42,.13)';
+    ctx.beginPath(); ctx.ellipse(x,groundY,16,3.4,0,0,7); ctx.fill();
+    // gambe (idle)
+    bone(hipx-3,hipy, hipx-6,hipy+14, hipx-8,groundY, 9, dark);
+    bone(hipx-3,hipy, hipx-6,hipy+14, hipx-8,groundY, 5, mid);
+    bone(hipx+3,hipy, hipx+6,hipy+14, hipx+9,groundY, 9, SUIT);
+    bone(hipx+3,hipy, hipx+6,hipy+14, hipx+9,groundY, 5, light);
+    // busto
+    ctx.strokeStyle=SUIT; ctx.lineCap='round'; ctx.lineWidth=13;
+    ctx.beginPath(); ctx.moveTo(hipx,hipy); ctx.lineTo(shx,shy); ctx.stroke();
+    // braccio fisso (dietro)
+    bone(shx-2,shy+2, shx-9,shy+12, shx-8,shy+20, 6, mid);
+    // testa
+    var hg=ctx.createRadialGradient(hdx-3,hdy-4,2,hdx,hdy,11);
+    hg.addColorStop(0,'#fff7ed'); hg.addColorStop(.55,'#fed7aa'); hg.addColorStop(1,'#ea9a4d');
+    ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(hdx,hdy,9,0,7); ctx.fill();
+    ctx.strokeStyle='#7c2d12'; ctx.lineWidth=1.3; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(hdx-2,hdy-1); ctx.quadraticCurveTo(hdx+1,hdy+1,hdx+4,hdy-1); ctx.stroke();
+    if(mood>0.3){
+      ctx.strokeStyle='rgba(220,38,38,'+((mood-0.3)*0.6).toFixed(2)+')'; ctx.lineWidth=1.3;
+      for(var k=0;k<2;k++){
+        var aa=-1.3+k*0.5;
+        ctx.beginPath();
+        ctx.moveTo(hdx+Math.cos(aa)*11, hdy-4+Math.sin(aa)*11);
+        ctx.lineTo(hdx+Math.cos(aa)*15, hdy-4+Math.sin(aa)*15);
+        ctx.stroke();
+      }
+    }
+    // braccio che gira la manovella: due segmenti (avambraccio+braccio) con gomito vero
+    var L1=19, L2=19;
+    var elbow=solveElbow(shx,shy,handTarget.x,handTarget.y,L1,L2);
+    bone(shx,shy, (shx+elbow.x)/2,(shy+elbow.y)/2, elbow.x,elbow.y, 7, SUIT);
+    bone(shx+1,shy, (shx+elbow.x)/2+1,(shy+elbow.y)/2, elbow.x+1,elbow.y, 4, light);
+    bone(elbow.x,elbow.y, (elbow.x+handTarget.x)/2,(elbow.y+handTarget.y)/2, handTarget.x,handTarget.y, 6, mid);
+    bone(elbow.x,elbow.y, (elbow.x+handTarget.x)/2,(elbow.y+handTarget.y)/2+1, handTarget.x,handTarget.y, 3.5, dark);
+    ctx.fillStyle=mid; ctx.beginPath(); ctx.arc(elbow.x,elbow.y,3,0,7); ctx.fill();
+    ctx.fillStyle=dark; ctx.beginPath(); ctx.arc(handTarget.x,handTarget.y,3.2,0,7); ctx.fill();
+  }
+
+  function drawPumpSide(cx, prog){
+    var g=earthCutaway(cx);
+    var pipeX=g.shR-16, pipeW=9;
+    var pipeTop=SURF+10, pipeBottom=BOTTOM-14;
+    ctx.fillStyle='#57534e';
+    ctx.fillRect(pipeX,pipeTop,pipeW,pipeBottom-pipeTop);
+    ctx.strokeStyle='#3f3d38'; ctx.lineWidth=1;
+    ctx.strokeRect(pipeX,pipeTop,pipeW,pipeBottom-pipeTop);
+    // pompa
+    var pg=ctx.createLinearGradient(cx-24,SURF-32,cx+24,SURF-6);
+    pg.addColorStop(0,'#94a3b8'); pg.addColorStop(1,'#475569');
+    ctx.fillStyle=pg; ctx.strokeStyle='#1e293b'; ctx.lineWidth=1.3;
+    rr(g.shL+3,SURF-32,44,26,5); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#1e293b'; ctx.font='700 8px ui-sans-serif,system-ui,sans-serif'; ctx.textAlign='center';
+    ctx.fillText('pompa', g.shL+25, SURF-16);
+    // volano rotante: gira solo finché la pompa non ha finito i suoi 5 L
+    var pumpActive=running && prog<1;
+    if(pumpActive) pumpAngle=t*0.25;
+    var fx=g.shL+16, fy=SURF-19;
+    ctx.strokeStyle='#0f172a'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(fx,fy,6,0,7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(fx,fy); ctx.lineTo(fx+Math.cos(pumpAngle)*6,fy+Math.sin(pumpAngle)*6); ctx.stroke();
+    // beccuccio
+    var spoutX=g.shL+47, spoutY=SURF-14;
+    ctx.strokeStyle='#334155'; ctx.lineWidth=5; ctx.lineCap='round';
+    ctx.beginPath(); ctx.moveTo(g.shL+45,SURF-18); ctx.lineTo(spoutX,spoutY); ctx.stroke();
+    // vaschetta di raccolta
+    var bx=spoutX-14, by=SURF-6, bw=28, bh=12;
+    ctx.strokeStyle='#475569'; ctx.lineWidth=1.4; ctx.fillStyle='#f1f5f9';
+    ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx+bw,by); ctx.lineTo(bx+bw-2,by+bh); ctx.lineTo(bx+2,by+bh); ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    var fillH=Math.max(0,Math.min(1,prog))*bh;
+    ctx.save();
+    ctx.beginPath(); ctx.moveTo(bx,by); ctx.lineTo(bx+bw,by); ctx.lineTo(bx+bw-2,by+bh); ctx.lineTo(bx+2,by+bh); ctx.closePath(); ctx.clip();
+    ctx.fillStyle='#38bdf8'; ctx.fillRect(bx,by+bh-fillH,bw,fillH);
+    ctx.restore();
+    ctx.fillStyle='#0369a1'; ctx.font='700 7px ui-sans-serif,system-ui,sans-serif';
+    ctx.fillText((5*prog).toFixed(1)+' L', bx+bw/2, by+bh+9);
+
+    // acqua che sale nel tubo: si ferma appena la pompa ha finito
+    if(pumpActive){
+      ctx.save();
+      ctx.beginPath(); ctx.rect(pipeX,pipeTop+2,pipeW,(pipeBottom-4)-(pipeTop+2)); ctx.clip();
+      var speed=(t*2.6)%18;
+      for(var yy=pipeBottom-4-speed; yy>pipeTop-2; yy-=18){
+        ctx.fillStyle='rgba(56,189,248,.85)';
+        rr(pipeX+1,yy,pipeW-2,10,2); ctx.fill();
+      }
+      ctx.restore();
+    }
+    // goccia che sgorga piano (velocità quasi nulla)
+    if(pumpActive){
+      for(var i=0;i<drips.length;i++){
+        var d=drips[i];
+        ctx.fillStyle='rgba(56,189,248,.9)';
+        ctx.beginPath(); ctx.ellipse(spoutX, spoutY+2+d.y, 2, 2.8, 0, 0, 7); ctx.fill();
+      }
+    }
+  }
+
+  function drawManoSide(cx, prog){
+    var g=earthCutaway(cx);
+    var angle=prog*Math.PI*2*7;
+    var w=drawWindlass(cx, angle);
+    var bucketY=lerp(WATER_TOP-6, SURF-16, easeInOut(prog));
+    ctx.strokeStyle='#a8a29e'; ctx.lineWidth=1.6;
+    ctx.beginPath(); ctx.moveTo(w.drumX,w.drumY+6); ctx.lineTo(w.drumX,bucketY-11); ctx.stroke();
+    drawBucket(w.drumX, bucketY);
+    var mood=Math.min(1,prog*1.3);
+    drawMan(cx, {x:w.handX,y:w.handY}, running?mood:0);
+  }
+
+  var t=0;
+  function paint(){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#0f172a'; ctx.font='700 13px ui-sans-serif,system-ui,sans-serif'; ctx.textAlign='center';
+    ctx.fillText('A mano', 120, 16);
+    ctx.fillText('Con la pompa', 360, 16);
+
+    drawManoSide(120, pMano);
+    drawPumpSide(360, pPompa);
+
+    ctx.strokeStyle='#cbd5e1'; ctx.setLineDash([4,4]); ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(240,10); ctx.lineTo(240,312); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle='#1e293b'; ctx.font='700 10px ui-sans-serif,system-ui,sans-serif'; ctx.textAlign='center';
+    ctx.fillText((5*pMano).toFixed(1)+' L · '+(TIME_MANO*pMano/1000).toFixed(1)+' s', 120, 316);
+    ctx.fillText((5*pPompa).toFixed(1)+' L · '+(TIME_POMPA*pPompa/1000).toFixed(1)+' s', 360, 316);
+  }
+
+  function spawnDrip(){
+    if(pPompa<1) drips.push({y:0,vy:0.12,life:1});
+  }
+  var dripSpawnT=0;
+  function updateDrips(dt){
+    dripSpawnT-=dt;
+    if(dripSpawnT<=0 && running && pPompa<1){ spawnDrip(); dripSpawnT=260; }
+    for(var i=drips.length-1;i>=0;i--){
+      var d=drips[i];
+      d.vy+=0.01; d.y+=d.vy;
+      if(d.y>16) drips.splice(i,1);
+    }
+  }
+
+  function frame(ts){
+    if(t0===null) t0=ts;
+    var elapsed=ts-t0;
+    t++;
+    pMano=Math.max(0,Math.min(1,elapsed/TIME_MANO));
+    pPompa=Math.max(0,Math.min(1,elapsed/TIME_POMPA));
+    updateDrips(16);
+    paint();
+    if(pMano>=1 && pPompa>=1){
+      running=false; done=true;
+      goBtn.disabled=false; goBtn.textContent='↺ Ricomincia';
+      caption.textContent='Stesso lavoro (5 L sollevati alla stessa altezza in entrambi i casi), ma in un tempo molto diverso!';
+      raf=null;
+      return;
+    }
+    raf=requestAnimationFrame(frame);
+  }
+
+  goBtn.addEventListener('click', function(){
+    if(running) return;
+    running=true; done=false; t0=null; t=0; drips=[]; dripSpawnT=0; pumpAngle=0;
+    pMano=0; pPompa=0;
+    goBtn.disabled=true; goBtn.textContent='In corso…';
+    caption.textContent='I due pozzi sollevano 5 litri d’acqua alla stessa altezza: guarda il tempo.';
+    if(reduce){
+      pMano=1; pPompa=1; paint();
+      running=false; done=true;
+      goBtn.disabled=false; goBtn.textContent='↺ Ricomincia';
+      caption.textContent='Stesso lavoro (5 L sollevati alla stessa altezza in entrambi i casi), ma in un tempo molto diverso!';
+      return;
+    }
+    raf=requestAnimationFrame(frame);
+  });
+
+  paint();
+})();
+</script>

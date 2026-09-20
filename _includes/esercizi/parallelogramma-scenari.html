@@ -1,0 +1,544 @@
+{% comment %}
+Esercizio a carosello (4 scenari) sulla regola del parallelogramma per la somma di forze gravitazionali. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="vdragSov">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="vdragSovprev" onclick="vdragSovnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="vdragSovdots"></div>
+<button class="iex-navbtn" id="vdragSovnext" onclick="vdragSovnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="vdragSovrow0">
+<div class="vdrag-widget" id="vdragSov0">
+<p class="vdrag-hint">Due asteroidi, di massa $M_1 = 3\times10^8\ \text{kg}$ e $M_2 = 1\times10^8\ \text{kg}$, si trovano rispettivamente a $r_1 = 2\ \text{km}$ e $r_2 = 1{,}5\ \text{km}$ da una sonda di massa $m = 1\,000\ \text{kg}$, e la attirano contemporaneamente. Con la legge di Newton, $F_1 = GM_1m/r_1^2 \approx 5\times10^{-6}\ \text N$ e $F_2 = GM_2m/r_2^2 \approx 3\times10^{-6}\ \text N$, nelle direzioni indicate in figura. Trascina il pallino verde fino al nodo della griglia che rappresenta $\vec F_{tot} = \vec F_1 + \vec F_2$ (regola del parallelogramma).</p>
+<svg id="vdragSov0-svg" viewBox="0 0 320 320" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Griglia interattiva per la somma vettoriale di due forze gravitazionali">
+<defs>
+  <radialGradient id="vdragSov0gM1" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
+  <radialGradient id="vdragSov0gM2" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0fdfa"/><stop offset="55%" stop-color="#99f6e4"/><stop offset="100%" stop-color="#5eead4"/></radialGradient>
+  <radialGradient id="vdragSov0gMm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></radialGradient>
+  <marker id="vdragSov0ArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  <marker id="vdragSov0ArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+  <marker id="vdragSov0ArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
+</defs>
+{% for i in (0..9) %}<line x1="{{ i | times: 30 | plus: 20 }}" y1="20" x2="{{ i | times: 30 | plus: 20 }}" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="{{ i | times: 30 | plus: 20 }}" x2="290" y2="{{ i | times: 30 | plus: 20 }}" stroke="#e2e8f0" stroke-width="1"/>{% endfor %}
+
+<circle cx="200" cy="290" r="24" fill="url(#vdragSov0gM1)"/>
+<text x="200" y="294" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">M&#8321;</text>
+<circle cx="80" cy="110" r="18" fill="url(#vdragSov0gM2)"/>
+<text x="80" y="114" text-anchor="middle" font-size="11" font-weight="600" fill="#0f766e">M&#8322;</text>
+<circle cx="50" cy="260" r="13" fill="url(#vdragSov0gMm)"/>
+<text x="50" y="264" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">m</text>
+
+<line x1="50" y1="260" x2="200" y2="290" stroke="#dc2626" stroke-width="3" marker-end="url(#vdragSov0ArrowRed)"/>
+<text x="150" y="310" font-size="13" fill="#dc2626">F&#8321;</text>
+<line x1="50" y1="260" x2="80" y2="110" stroke="#7c3aed" stroke-width="3" marker-end="url(#vdragSov0ArrowPurple)"/>
+<text x="88" y="105" font-size="13" fill="#7c3aed">F&#8322;</text>
+
+<line id="vdragSov0-line" x1="50" y1="260" x2="140" y2="80" stroke="#16a34a" stroke-width="3" marker-end="url(#vdragSov0ArrowGreen)"/>
+<text id="vdragSov0-label" x="148" y="74" font-size="13" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
+<circle id="vdragSov0-handle" cx="140" cy="80" r="11" fill="#16a34a" stroke="#fff" stroke-width="2" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-check" id="vdragSov0-check">Verifica</button>
+<button class="vdrag-reset" id="vdragSov0-reset">&#8635; Ricomincia</button>
+</div>
+<div class="vdrag-fb" id="vdragSov0-fb"></div>
+</div>
+</div>
+
+<div class="iex-q" id="vdragSovrow1" style="display:none">
+<div class="vdrag-widget" id="vdragSov1">
+<p class="vdrag-hint">Due lune di un pianeta gigante, di massa $M_1 = 2\times10^8\ \text{kg}$ ($r_1=1{,}8\ \text{km}$) e $M_2 = 5\times10^7\ \text{kg}$ ($r_2=1\ \text{km}$), attirano contemporaneamente una sonda di massa $m=1\,000\ \text{kg}$. Con la legge di Newton, $F_1 \approx 4\times10^{-6}\ \text N$ e $F_2 \approx 3\times10^{-6}\ \text N$, nelle direzioni indicate in figura. Trascina il pallino verde fino al nodo della griglia che rappresenta $\vec F_{tot} = \vec F_1 + \vec F_2$ (regola del parallelogramma).</p>
+<svg id="vdragSov1-svg" viewBox="0 0 320 320" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Griglia interattiva per la somma vettoriale di due forze gravitazionali">
+<defs>
+  <radialGradient id="vdragSov1gM1" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
+  <radialGradient id="vdragSov1gM2" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0fdfa"/><stop offset="55%" stop-color="#99f6e4"/><stop offset="100%" stop-color="#5eead4"/></radialGradient>
+  <radialGradient id="vdragSov1gMm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></radialGradient>
+  <marker id="vdragSov1ArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  <marker id="vdragSov1ArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+  <marker id="vdragSov1ArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
+</defs>
+{% for i in (0..9) %}<line x1="{{ i | times: 30 | plus: 20 }}" y1="20" x2="{{ i | times: 30 | plus: 20 }}" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="{{ i | times: 30 | plus: 20 }}" x2="290" y2="{{ i | times: 30 | plus: 20 }}" stroke="#e2e8f0" stroke-width="1"/>{% endfor %}
+
+<circle cx="200" cy="80" r="22" fill="url(#vdragSov1gM1)"/>
+<text x="200" y="84" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">M&#8321;</text>
+<circle cx="80" cy="230" r="20" fill="url(#vdragSov1gM2)"/>
+<text x="80" y="234" text-anchor="middle" font-size="11" font-weight="600" fill="#0f766e">M&#8322;</text>
+<circle cx="50" cy="50" r="13" fill="url(#vdragSov1gMm)"/>
+<text x="50" y="54" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">m</text>
+
+<line x1="50" y1="50" x2="200" y2="80" stroke="#dc2626" stroke-width="3" marker-end="url(#vdragSov1ArrowRed)"/>
+<text x="140" y="38" font-size="13" fill="#dc2626">F&#8321;</text>
+<line x1="50" y1="50" x2="80" y2="230" stroke="#7c3aed" stroke-width="3" marker-end="url(#vdragSov1ArrowPurple)"/>
+<text x="95" y="145" font-size="13" fill="#7c3aed">F&#8322;</text>
+
+<line id="vdragSov1-line" x1="50" y1="50" x2="170" y2="170" stroke="#16a34a" stroke-width="3" marker-end="url(#vdragSov1ArrowGreen)"/>
+<text id="vdragSov1-label" x="178" y="164" font-size="13" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
+<circle id="vdragSov1-handle" cx="170" cy="170" r="11" fill="#16a34a" stroke="#fff" stroke-width="2" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-check" id="vdragSov1-check">Verifica</button>
+<button class="vdrag-reset" id="vdragSov1-reset">&#8635; Ricomincia</button>
+</div>
+<div class="vdrag-fb" id="vdragSov1-fb"></div>
+</div>
+</div>
+
+<div class="iex-q" id="vdragSovrow2" style="display:none">
+<div class="vdrag-widget" id="vdragSov2">
+<p class="vdrag-hint">Un asteroide, di massa $M_1 = 4\times10^8\ \text{kg}$ ($r_1=2{,}5\ \text{km}$), e una cometa, di massa $M_2 = 6\times10^7\ \text{kg}$ ($r_2=1{,}2\ \text{km}$), attirano contemporaneamente una sonda di massa $m=1\,000\ \text{kg}$ mentre attraversa il sistema solare. Con la legge di Newton, $F_1 \approx 4\times10^{-6}\ \text N$ e $F_2 \approx 3\times10^{-6}\ \text N$, nelle direzioni indicate in figura. Trascina il pallino verde fino al nodo della griglia che rappresenta $\vec F_{tot} = \vec F_1 + \vec F_2$ (regola del parallelogramma).</p>
+<svg id="vdragSov2-svg" viewBox="0 0 320 320" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Griglia interattiva per la somma vettoriale di due forze gravitazionali">
+<defs>
+  <radialGradient id="vdragSov2gM1" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
+  <radialGradient id="vdragSov2gM2" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0fdfa"/><stop offset="55%" stop-color="#99f6e4"/><stop offset="100%" stop-color="#5eead4"/></radialGradient>
+  <radialGradient id="vdragSov2gMm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></radialGradient>
+  <marker id="vdragSov2ArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  <marker id="vdragSov2ArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+  <marker id="vdragSov2ArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
+</defs>
+{% for i in (0..9) %}<line x1="{{ i | times: 30 | plus: 20 }}" y1="20" x2="{{ i | times: 30 | plus: 20 }}" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="{{ i | times: 30 | plus: 20 }}" x2="290" y2="{{ i | times: 30 | plus: 20 }}" stroke="#e2e8f0" stroke-width="1"/>{% endfor %}
+
+<circle cx="140" cy="80" r="22" fill="url(#vdragSov2gM1)"/>
+<text x="140" y="84" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">M&#8321;</text>
+<circle cx="260" cy="230" r="18" fill="url(#vdragSov2gM2)"/>
+<text x="260" y="234" text-anchor="middle" font-size="11" font-weight="600" fill="#0f766e">M&#8322;</text>
+<circle cx="290" cy="50" r="13" fill="url(#vdragSov2gMm)"/>
+<text x="290" y="54" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">m</text>
+
+<line x1="290" y1="50" x2="140" y2="80" stroke="#dc2626" stroke-width="3" marker-end="url(#vdragSov2ArrowRed)"/>
+<text x="190" y="38" font-size="13" fill="#dc2626">F&#8321;</text>
+<line x1="290" y1="50" x2="260" y2="230" stroke="#7c3aed" stroke-width="3" marker-end="url(#vdragSov2ArrowPurple)"/>
+<text x="272" y="145" font-size="13" fill="#7c3aed">F&#8322;</text>
+
+<line id="vdragSov2-line" x1="290" y1="50" x2="170" y2="170" stroke="#16a34a" stroke-width="3" marker-end="url(#vdragSov2ArrowGreen)"/>
+<text id="vdragSov2-label" x="178" y="164" font-size="13" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
+<circle id="vdragSov2-handle" cx="170" cy="170" r="11" fill="#16a34a" stroke="#fff" stroke-width="2" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-check" id="vdragSov2-check">Verifica</button>
+<button class="vdrag-reset" id="vdragSov2-reset">&#8635; Ricomincia</button>
+</div>
+<div class="vdrag-fb" id="vdragSov2-fb"></div>
+</div>
+</div>
+
+<div class="iex-q" id="vdragSovrow3" style="display:none">
+<div class="vdrag-widget" id="vdragSov3">
+<p class="vdrag-hint">Le due stelle di un sistema binario, di massa $M_1 = 8\times10^8\ \text{kg}$ ($r_1=3\ \text{km}$) e $M_2 = 3\times10^8\ \text{kg}$ ($r_2=2\ \text{km}$), attirano contemporaneamente un piccolo pianeta di massa $m=1\,000\ \text{kg}$. Con la legge di Newton, $F_1 \approx 6\times10^{-6}\ \text N$ e $F_2 \approx 5\times10^{-6}\ \text N$, nelle direzioni indicate in figura. Trascina il pallino verde fino al nodo della griglia che rappresenta $\vec F_{tot} = \vec F_1 + \vec F_2$ (regola del parallelogramma).</p>
+<svg id="vdragSov3-svg" viewBox="0 0 320 320" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Griglia interattiva per la somma vettoriale di due forze gravitazionali">
+<defs>
+  <radialGradient id="vdragSov3gM1" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
+  <radialGradient id="vdragSov3gM2" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0fdfa"/><stop offset="55%" stop-color="#99f6e4"/><stop offset="100%" stop-color="#5eead4"/></radialGradient>
+  <radialGradient id="vdragSov3gMm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/></radialGradient>
+  <marker id="vdragSov3ArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  <marker id="vdragSov3ArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+  <marker id="vdragSov3ArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
+</defs>
+{% for i in (0..9) %}<line x1="{{ i | times: 30 | plus: 20 }}" y1="20" x2="{{ i | times: 30 | plus: 20 }}" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="{{ i | times: 30 | plus: 20 }}" x2="290" y2="{{ i | times: 30 | plus: 20 }}" stroke="#e2e8f0" stroke-width="1"/>{% endfor %}
+
+<circle cx="200" cy="260" r="24" fill="url(#vdragSov3gM1)"/>
+<text x="200" y="264" text-anchor="middle" font-size="12" font-weight="600" fill="#92400e">M&#8321;</text>
+<circle cx="80" cy="110" r="20" fill="url(#vdragSov3gM2)"/>
+<text x="80" y="114" text-anchor="middle" font-size="11" font-weight="600" fill="#0f766e">M&#8322;</text>
+<circle cx="50" cy="290" r="13" fill="url(#vdragSov3gMm)"/>
+<text x="50" y="294" text-anchor="middle" font-size="11" font-weight="600" fill="#475569">m</text>
+
+<line x1="50" y1="290" x2="200" y2="260" stroke="#dc2626" stroke-width="3" marker-end="url(#vdragSov3ArrowRed)"/>
+<text x="150" y="270" font-size="13" fill="#dc2626">F&#8321;</text>
+<line x1="50" y1="290" x2="80" y2="110" stroke="#7c3aed" stroke-width="3" marker-end="url(#vdragSov3ArrowPurple)"/>
+<text x="95" y="200" font-size="13" fill="#7c3aed">F&#8322;</text>
+
+<line id="vdragSov3-line" x1="50" y1="290" x2="170" y2="170" stroke="#16a34a" stroke-width="3" marker-end="url(#vdragSov3ArrowGreen)"/>
+<text id="vdragSov3-label" x="178" y="164" font-size="13" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
+<circle id="vdragSov3-handle" cx="170" cy="170" r="11" fill="#16a34a" stroke="#fff" stroke-width="2" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-check" id="vdragSov3-check">Verifica</button>
+<button class="vdrag-reset" id="vdragSov3-reset">&#8635; Ricomincia</button>
+</div>
+<div class="vdrag-fb" id="vdragSov3-fb"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('vdragSov',4);
+</script>
+
+<script>
+(function(){
+  var ID='vdragSov0';
+  var svg=document.getElementById(ID+'-svg');
+  var handle=document.getElementById(ID+'-handle');
+  var line=document.getElementById(ID+'-line');
+  var label=document.getElementById(ID+'-label');
+  var fb=document.getElementById(ID+'-fb');
+  var checkBtn=document.getElementById(ID+'-check');
+  var resetBtn=document.getElementById(ID+'-reset');
+  var START={x:140,y:80};
+  var UNIT=30, MIN=20, MAX=290;
+  var TARGET={x:230,y:140};
+  var solved=false;
+
+  function clamp(v){ return Math.max(MIN,Math.min(MAX,v)); }
+  function snap(v){ return Math.round((clamp(v)-MIN)/UNIT)*UNIT+MIN; }
+
+  function toSvgPoint(clientX,clientY){
+    var pt=svg.createSVGPoint();
+    pt.x=clientX; pt.y=clientY;
+    var m=svg.getScreenCTM().inverse();
+    return pt.matrixTransform(m);
+  }
+
+  function moveHandle(x,y){
+    handle.setAttribute('cx',x); handle.setAttribute('cy',y);
+    line.setAttribute('x2',x); line.setAttribute('y2',y);
+    label.setAttribute('x',x+8); label.setAttribute('y',y-6);
+  }
+
+  function onMove(e){
+    e.preventDefault();
+    var p=toSvgPoint(e.clientX,e.clientY);
+    moveHandle(clamp(p.x),clamp(p.y));
+  }
+  function onUp(e){
+    handle.removeEventListener('pointermove',onMove);
+    handle.removeEventListener('pointerup',onUp);
+    var x=snap(parseFloat(handle.getAttribute('cx')));
+    var y=snap(parseFloat(handle.getAttribute('cy')));
+    moveHandle(x,y);
+  }
+  handle.addEventListener('pointerdown',function(e){
+    if(solved) return;
+    e.preventDefault();
+    handle.setPointerCapture(e.pointerId);
+    fb.style.display='none';
+    handle.addEventListener('pointermove',onMove);
+    handle.addEventListener('pointerup',onUp);
+  });
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#16a34a','#0891b2','#7c3aed','#f59e0b','#dc2626','#ec4899'];
+    for(var i=0;i<50;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){ vy+=.28; x+=vx; y+=vy; op-=.016; p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op; if(op>0)requestAnimationFrame(step); else p.remove(); }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  checkBtn.addEventListener('click',function(){
+    var x=snap(parseFloat(handle.getAttribute('cx')));
+    var y=snap(parseFloat(handle.getAttribute('cy')));
+    fb.style.display='block';
+    if(x===TARGET.x && y===TARGET.y){
+      solved=true;
+      fb.className='vdrag-fb ok';
+      fb.innerHTML='&#10003; Esatto! Quello è il vertice del parallelogramma opposto a $m$: la diagonale da $m$ a quel punto è proprio $\\vec F_{tot}$.';
+      handle.style.cursor='default';
+      shootConf(checkBtn);
+      var row=document.getElementById('vdragSovrow0');
+      if(row) row.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
+    } else {
+      fb.className='vdrag-fb err';
+      fb.innerHTML='Non ancora. Completa il parallelogramma che ha $\\vec F_1$ e $\\vec F_2$ come lati, e trascina il pallino sul suo vertice opposto a $m$.';
+    }
+    if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+  });
+
+  resetBtn.addEventListener('click',function(){
+    solved=false; handle.style.cursor='grab';
+    moveHandle(START.x,START.y);
+    fb.style.display='none';
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var ID='vdragSov1';
+  var svg=document.getElementById(ID+'-svg');
+  var handle=document.getElementById(ID+'-handle');
+  var line=document.getElementById(ID+'-line');
+  var label=document.getElementById(ID+'-label');
+  var fb=document.getElementById(ID+'-fb');
+  var checkBtn=document.getElementById(ID+'-check');
+  var resetBtn=document.getElementById(ID+'-reset');
+  var START={x:170,y:170};
+  var UNIT=30, MIN=20, MAX=290;
+  var TARGET={x:230,y:260};
+  var solved=false;
+
+  function clamp(v){ return Math.max(MIN,Math.min(MAX,v)); }
+  function snap(v){ return Math.round((clamp(v)-MIN)/UNIT)*UNIT+MIN; }
+
+  function toSvgPoint(clientX,clientY){
+    var pt=svg.createSVGPoint();
+    pt.x=clientX; pt.y=clientY;
+    var m=svg.getScreenCTM().inverse();
+    return pt.matrixTransform(m);
+  }
+
+  function moveHandle(x,y){
+    handle.setAttribute('cx',x); handle.setAttribute('cy',y);
+    line.setAttribute('x2',x); line.setAttribute('y2',y);
+    label.setAttribute('x',x+8); label.setAttribute('y',y-6);
+  }
+
+  function onMove(e){
+    e.preventDefault();
+    var p=toSvgPoint(e.clientX,e.clientY);
+    moveHandle(clamp(p.x),clamp(p.y));
+  }
+  function onUp(e){
+    handle.removeEventListener('pointermove',onMove);
+    handle.removeEventListener('pointerup',onUp);
+    var x=snap(parseFloat(handle.getAttribute('cx')));
+    var y=snap(parseFloat(handle.getAttribute('cy')));
+    moveHandle(x,y);
+  }
+  handle.addEventListener('pointerdown',function(e){
+    if(solved) return;
+    e.preventDefault();
+    handle.setPointerCapture(e.pointerId);
+    fb.style.display='none';
+    handle.addEventListener('pointermove',onMove);
+    handle.addEventListener('pointerup',onUp);
+  });
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#16a34a','#0891b2','#7c3aed','#f59e0b','#dc2626','#ec4899'];
+    for(var i=0;i<50;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){ vy+=.28; x+=vx; y+=vy; op-=.016; p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op; if(op>0)requestAnimationFrame(step); else p.remove(); }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  checkBtn.addEventListener('click',function(){
+    var x=snap(parseFloat(handle.getAttribute('cx')));
+    var y=snap(parseFloat(handle.getAttribute('cy')));
+    fb.style.display='block';
+    if(x===TARGET.x && y===TARGET.y){
+      solved=true;
+      fb.className='vdrag-fb ok';
+      fb.innerHTML='&#10003; Esatto! Quello è il vertice del parallelogramma opposto a $m$: la diagonale da $m$ a quel punto è proprio $\\vec F_{tot}$.';
+      handle.style.cursor='default';
+      shootConf(checkBtn);
+      var row=document.getElementById('vdragSovrow1');
+      if(row) row.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
+    } else {
+      fb.className='vdrag-fb err';
+      fb.innerHTML='Non ancora. Completa il parallelogramma che ha $\\vec F_1$ e $\\vec F_2$ come lati, e trascina il pallino sul suo vertice opposto a $m$.';
+    }
+    if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+  });
+
+  resetBtn.addEventListener('click',function(){
+    solved=false; handle.style.cursor='grab';
+    moveHandle(START.x,START.y);
+    fb.style.display='none';
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var ID='vdragSov2';
+  var svg=document.getElementById(ID+'-svg');
+  var handle=document.getElementById(ID+'-handle');
+  var line=document.getElementById(ID+'-line');
+  var label=document.getElementById(ID+'-label');
+  var fb=document.getElementById(ID+'-fb');
+  var checkBtn=document.getElementById(ID+'-check');
+  var resetBtn=document.getElementById(ID+'-reset');
+  var START={x:170,y:170};
+  var UNIT=30, MIN=20, MAX=290;
+  var TARGET={x:110,y:260};
+  var solved=false;
+
+  function clamp(v){ return Math.max(MIN,Math.min(MAX,v)); }
+  function snap(v){ return Math.round((clamp(v)-MIN)/UNIT)*UNIT+MIN; }
+
+  function toSvgPoint(clientX,clientY){
+    var pt=svg.createSVGPoint();
+    pt.x=clientX; pt.y=clientY;
+    var m=svg.getScreenCTM().inverse();
+    return pt.matrixTransform(m);
+  }
+
+  function moveHandle(x,y){
+    handle.setAttribute('cx',x); handle.setAttribute('cy',y);
+    line.setAttribute('x2',x); line.setAttribute('y2',y);
+    label.setAttribute('x',x+8); label.setAttribute('y',y-6);
+  }
+
+  function onMove(e){
+    e.preventDefault();
+    var p=toSvgPoint(e.clientX,e.clientY);
+    moveHandle(clamp(p.x),clamp(p.y));
+  }
+  function onUp(e){
+    handle.removeEventListener('pointermove',onMove);
+    handle.removeEventListener('pointerup',onUp);
+    var x=snap(parseFloat(handle.getAttribute('cx')));
+    var y=snap(parseFloat(handle.getAttribute('cy')));
+    moveHandle(x,y);
+  }
+  handle.addEventListener('pointerdown',function(e){
+    if(solved) return;
+    e.preventDefault();
+    handle.setPointerCapture(e.pointerId);
+    fb.style.display='none';
+    handle.addEventListener('pointermove',onMove);
+    handle.addEventListener('pointerup',onUp);
+  });
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#16a34a','#0891b2','#7c3aed','#f59e0b','#dc2626','#ec4899'];
+    for(var i=0;i<50;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){ vy+=.28; x+=vx; y+=vy; op-=.016; p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op; if(op>0)requestAnimationFrame(step); else p.remove(); }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  checkBtn.addEventListener('click',function(){
+    var x=snap(parseFloat(handle.getAttribute('cx')));
+    var y=snap(parseFloat(handle.getAttribute('cy')));
+    fb.style.display='block';
+    if(x===TARGET.x && y===TARGET.y){
+      solved=true;
+      fb.className='vdrag-fb ok';
+      fb.innerHTML='&#10003; Esatto! Quello è il vertice del parallelogramma opposto a $m$: la diagonale da $m$ a quel punto è proprio $\\vec F_{tot}$.';
+      handle.style.cursor='default';
+      shootConf(checkBtn);
+      var row=document.getElementById('vdragSovrow2');
+      if(row) row.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
+    } else {
+      fb.className='vdrag-fb err';
+      fb.innerHTML='Non ancora. Completa il parallelogramma che ha $\\vec F_1$ e $\\vec F_2$ come lati, e trascina il pallino sul suo vertice opposto a $m$.';
+    }
+    if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+  });
+
+  resetBtn.addEventListener('click',function(){
+    solved=false; handle.style.cursor='grab';
+    moveHandle(START.x,START.y);
+    fb.style.display='none';
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var ID='vdragSov3';
+  var svg=document.getElementById(ID+'-svg');
+  var handle=document.getElementById(ID+'-handle');
+  var line=document.getElementById(ID+'-line');
+  var label=document.getElementById(ID+'-label');
+  var fb=document.getElementById(ID+'-fb');
+  var checkBtn=document.getElementById(ID+'-check');
+  var resetBtn=document.getElementById(ID+'-reset');
+  var START={x:170,y:170};
+  var UNIT=30, MIN=20, MAX=290;
+  var TARGET={x:230,y:80};
+  var solved=false;
+
+  function clamp(v){ return Math.max(MIN,Math.min(MAX,v)); }
+  function snap(v){ return Math.round((clamp(v)-MIN)/UNIT)*UNIT+MIN; }
+
+  function toSvgPoint(clientX,clientY){
+    var pt=svg.createSVGPoint();
+    pt.x=clientX; pt.y=clientY;
+    var m=svg.getScreenCTM().inverse();
+    return pt.matrixTransform(m);
+  }
+
+  function moveHandle(x,y){
+    handle.setAttribute('cx',x); handle.setAttribute('cy',y);
+    line.setAttribute('x2',x); line.setAttribute('y2',y);
+    label.setAttribute('x',x+8); label.setAttribute('y',y-6);
+  }
+
+  function onMove(e){
+    e.preventDefault();
+    var p=toSvgPoint(e.clientX,e.clientY);
+    moveHandle(clamp(p.x),clamp(p.y));
+  }
+  function onUp(e){
+    handle.removeEventListener('pointermove',onMove);
+    handle.removeEventListener('pointerup',onUp);
+    var x=snap(parseFloat(handle.getAttribute('cx')));
+    var y=snap(parseFloat(handle.getAttribute('cy')));
+    moveHandle(x,y);
+  }
+  handle.addEventListener('pointerdown',function(e){
+    if(solved) return;
+    e.preventDefault();
+    handle.setPointerCapture(e.pointerId);
+    fb.style.display='none';
+    handle.addEventListener('pointermove',onMove);
+    handle.addEventListener('pointerup',onUp);
+  });
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#16a34a','#0891b2','#7c3aed','#f59e0b','#dc2626','#ec4899'];
+    for(var i=0;i<50;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){ vy+=.28; x+=vx; y+=vy; op-=.016; p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op; if(op>0)requestAnimationFrame(step); else p.remove(); }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  checkBtn.addEventListener('click',function(){
+    var x=snap(parseFloat(handle.getAttribute('cx')));
+    var y=snap(parseFloat(handle.getAttribute('cy')));
+    fb.style.display='block';
+    if(x===TARGET.x && y===TARGET.y){
+      solved=true;
+      fb.className='vdrag-fb ok';
+      fb.innerHTML='&#10003; Esatto! Quello è il vertice del parallelogramma opposto a $m$: la diagonale da $m$ a quel punto è proprio $\\vec F_{tot}$.';
+      handle.style.cursor='default';
+      shootConf(checkBtn);
+      var row=document.getElementById('vdragSovrow3');
+      if(row) row.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
+    } else {
+      fb.className='vdrag-fb err';
+      fb.innerHTML='Non ancora. Completa il parallelogramma che ha $\\vec F_1$ e $\\vec F_2$ come lati, e trascina il pallino sul suo vertice opposto a $m$.';
+    }
+    if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+  });
+
+  resetBtn.addEventListener('click',function(){
+    solved=false; handle.style.cursor='grab';
+    moveHandle(START.x,START.y);
+    fb.style.display='none';
+  });
+})();
+</script>

@@ -467,6 +467,8 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
                 .box-label { color: $box-proof-border; } }
   &.box-note  { background: $box-note-bg;  border-color: $box-note-border;
                 .box-label { color: $box-note-border; } }
+  &.box-ricorda { background: $box-ricorda-bg; border-color: $box-ricorda-border;
+                .box-label { color: $box-ricorda-border; } }
 
   &.box-imp {
     border-left: none;

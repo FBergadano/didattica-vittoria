@@ -1,0 +1,27 @@
+{% comment %}
+Figura statica: diagramma di Venn di un sistema isolato dentro l'Universo, senza scambi di energia. Nessun parametro.
+{% endcomment %}
+<div class="fig-block">
+<svg viewBox="0 0 360 300" width="100%" style="max-width:300px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Diagramma di Venn: un sistema isolato dentro l'Universo, senza alcuna freccia di scambio di energia">
+  <defs>
+    <radialGradient id="univGradIso" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#f5f8ff"/><stop offset="100%" stop-color="#dbeafe"/>
+    </radialGradient>
+    <radialGradient id="sysGradIso" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#fffbeb"/><stop offset="100%" stop-color="#fde68a"/>
+    </radialGradient>
+  </defs>
+  <circle cx="180" cy="160" r="130" fill="url(#univGradIso)" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="180" y="50" text-anchor="middle" font-size="15" font-weight="600" fill="#1e40af">Universo</text>
+  <circle cx="180" cy="180" r="62" fill="url(#sysGradIso)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="180" y="185" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">Sistema</text>
+
+  <line x1="180" y1="146" x2="180" y2="98" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="5 4"/>
+  <line x1="164" y1="112" x2="196" y2="132" stroke="#dc2626" stroke-width="3"/>
+  <line x1="196" y1="112" x2="164" y2="132" stroke="#dc2626" stroke-width="3"/>
+  <foreignObject x="196" y="108" width="60" height="26">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:15px;font-weight:600;color:#dc2626;">$L=0$</div>
+  </foreignObject>
+</svg>
+<figcaption><span class="fig-num" data-fig-id="venn-sistema-isolato">Figura</span> — In un sistema isolato non può esserci nessuno scambio di energia (nessuna freccia attraversa il confine) con il resto dell'Universo.</figcaption>
+</div>

@@ -1,0 +1,102 @@
+{% comment %}
+Animazione-esercizio: due confezioni di riso disegnate su un canvas (prezzo e
+peso riportati sulla confezione stessa); lo studente clicca quella più
+conveniente al chilo e riceve un riscontro. Nessun parametro.
+{% endcomment %}
+<div style="margin:0.75rem 0 0;background:#f0e8dc;border-radius:8px;padding:0.75rem 0.85rem 0.6rem;border:1px solid #c8b898;">
+<canvas id="cv-riso" width="440" height="190" style="display:block;max-width:100%;border-radius:5px;cursor:pointer;touch-action:manipulation;"></canvas>
+<p id="fb-riso" style="margin:0.5rem 0 0;font-size:13px;font-family:Georgia,serif;min-height:1.3em;"></p>
+</div>
+<script>
+var simRiso=(function(){
+var cv=document.getElementById('cv-riso'),ctx=cv.getContext('2d');
+var W=440,H=190;
+var bags=[
+  {cx:130,cy:100,kg:3,eur:6},
+  {cx:310,cy:100,kg:5,eur:8}
+];
+var correct=1, answered=false, lastPick=-1, tries=0;
+
+function drawBag(b,i){
+  var cx=b.cx,cy=b.cy,bw=76,bh=84,tw=46;
+  var hi=answered?(i===correct?'ok':(i===lastPick?'err':null)):null;
+  ctx.save();ctx.translate(cx,cy);
+  ctx.fillStyle='rgba(0,0,0,0.1)';ctx.beginPath();ctx.ellipse(4,bh/2+7,bw/2*0.8,7,0,0,Math.PI*2);ctx.fill();
+  var bg=ctx.createLinearGradient(-bw/2,0,bw/2,0);
+  bg.addColorStop(0,'#e8dcc0');bg.addColorStop(0.3,'#f5ecd8');bg.addColorStop(0.7,'#f5ecd8');bg.addColorStop(1,'#d8c8a0');
+  ctx.fillStyle=bg;
+  ctx.beginPath();ctx.moveTo(-tw/2,-bh/2);ctx.lineTo(tw/2,-bh/2);ctx.lineTo(bw/2,bh/2);ctx.lineTo(-bw/2,bh/2);ctx.closePath();ctx.fill();
+  ctx.strokeStyle=hi==='ok'?'#15803d':hi==='err'?'#b91c1c':'#a89060';
+  ctx.lineWidth=hi?3:1;ctx.stroke();
+  ctx.strokeStyle='#8a7040';ctx.lineWidth=2.2;
+  ctx.beginPath();ctx.arc(0,-bh/2-7,5,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.85)';ctx.strokeStyle='#b8a880';ctx.lineWidth=0.8;
+  ctx.fillRect(-28,-7,56,14);ctx.strokeRect(-28,-7,56,14);
+  ctx.fillStyle='#5a4520';ctx.font='bold 10px Georgia,serif';ctx.textAlign='center';
+  ctx.fillText('RISO '+b.kg+' kg',0,3);
+  ctx.restore();
+  ctx.fillStyle='#3a2c10';ctx.font='bold 14px Georgia,serif';ctx.textAlign='center';
+  ctx.fillText(b.eur+' €',cx,cy+bh/2+24);
+  ctx.textAlign='left';
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  var g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#faf6ec');g.addColorStop(1,'#f0e8d8');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#6b5530';ctx.font='12px Georgia,serif';ctx.textAlign='center';
+  ctx.fillText('Confezione A',bags[0].cx,22);
+  ctx.fillText('Confezione B',bags[1].cx,22);
+  ctx.textAlign='left';
+  bags.forEach(drawBag);
+}
+function xy(e,t){var r=cv.getBoundingClientRect(),s=t?e.touches[0]:e;return{x:(s.clientX-r.left)*(W/r.width),y:(s.clientY-r.top)*(H/r.height)};}
+function hit(x,y){
+  for(var i=0;i<bags.length;i++){var b=bags[i];if(Math.abs(x-b.cx)<42&&Math.abs(y-b.cy)<48)return i;}
+  return -1;
+}
+function pick(i){
+  lastPick=i;
+  var fb=document.getElementById('fb-riso');
+  if(i===correct){
+    answered=true;fb.style.color='#15803d';
+    fb.textContent='✓ Esatto! La confezione B costa 1,6 €/kg contro i 2 €/kg della A: conviene di più.';
+    confettiRiso();
+  } else {
+    tries++;
+    fb.style.color='#b91c1c';
+    fb.textContent='✗ Non è la scelta più conveniente. Calcola il prezzo al chilo di entrambe e riprova.'+(tries>=2?' Puoi anche guardare la soluzione qui sotto.':'');
+  }
+  draw();
+}
+cv.addEventListener('click',function(e){if(answered)return;var p=xy(e);var i=hit(p.x,p.y);if(i>=0)pick(i);});
+cv.addEventListener('touchstart',function(e){if(answered)return;e.preventDefault();var p=xy(e,1);var i=hit(p.x,p.y);if(i>=0)pick(i);},{passive:false});
+function confettiRiso(){
+  var canvas=document.createElement('canvas');
+  canvas.style.position='fixed';canvas.style.top=0;canvas.style.left=0;canvas.style.pointerEvents='none';canvas.style.zIndex=9999;
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  document.body.appendChild(canvas);
+  var cctx=canvas.getContext('2d');
+  var r=cv.getBoundingClientRect(),ccx=r.left+r.width/2,ccy=r.top+r.height*0.4;
+  var cols=['#0891b2','#22d3ee','#059669','#d97706','#ec4899','#a78bfa','#fbbf24'];
+  var ps=[];
+  for(var k=0;k<55;k++){
+    ps.push({x:ccx+(Math.random()-.5)*100,y:ccy,vx:(Math.random()-.5)*11,vy:-(Math.random()*13+5),
+      w:Math.random()*11+5,h:Math.random()*6+3,col:cols[k%cols.length],
+      rot:Math.random()*Math.PI*2,rv:(Math.random()-.5)*.32,a:1});
+  }
+  (function frame(){
+    cctx.clearRect(0,0,canvas.width,canvas.height);var alive=false;
+    ps.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;p.vy+=0.38;p.rot+=p.rv;p.a-=0.017;
+      if(p.a<=0)return;alive=true;
+      cctx.save();cctx.globalAlpha=p.a;cctx.translate(p.x,p.y);cctx.rotate(p.rot);
+      cctx.fillStyle=p.col;cctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);cctx.restore();
+    });
+    if(alive)requestAnimationFrame(frame);else document.body.removeChild(canvas);
+  })();
+}
+draw();
+return{};
+})();
+</script>

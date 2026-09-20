@@ -1,0 +1,60 @@
+{% comment %}
+Figura statica: due forze e la loro somma vettoriale secondo la regola del parallelogramma. Nessun parametro.
+{% endcomment %}
+<div class="fig-block">
+<svg viewBox="0 0 360 220" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: le due forze e la loro somma vettoriale">
+  <defs>
+    <radialGradient id="pmM1" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
+    </radialGradient>
+    <radialGradient id="pmM2" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f0fdfa"/><stop offset="55%" stop-color="#99f6e4"/><stop offset="100%" stop-color="#5eead4"/>
+    </radialGradient>
+    <radialGradient id="pmMm" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#cbd5e1"/>
+    </radialGradient>
+    <marker id="pmArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+    <marker id="pmArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+    <marker id="pmArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
+    <style>
+      #pmAnim .pm-s1 { animation: pmFade1 7s ease-in-out infinite; }
+      #pmAnim .pm-s2 { animation: pmFade2 7s ease-in-out infinite; }
+      #pmAnim .pm-s3 { animation: pmFade3 7s ease-in-out infinite; }
+      @keyframes pmFade1 { 0%,4%{opacity:0} 10%,86%{opacity:1} 94%,100%{opacity:0} }
+      @keyframes pmFade2 { 0%,34%{opacity:0} 40%,86%{opacity:1} 94%,100%{opacity:0} }
+      @keyframes pmFade3 { 0%,64%{opacity:0} 70%,86%{opacity:1} 94%,100%{opacity:0} }
+    </style>
+  </defs>
+  <g id="pmAnim">
+    <circle cx="60" cy="50" r="30" fill="url(#pmM1)"/>
+    <ellipse cx="50" cy="40" rx="9" ry="6" fill="#fff" opacity=".5"/>
+    <text x="60" y="55" text-anchor="middle" font-size="13" font-weight="600" fill="#92400e">M&#8321;</text>
+
+    <circle cx="320" cy="140" r="38" fill="url(#pmM2)"/>
+    <ellipse cx="306" cy="126" rx="11" ry="7" fill="#fff" opacity=".5"/>
+    <text x="320" y="146" text-anchor="middle" font-size="14" font-weight="600" fill="#0f766e">M&#8322;</text>
+
+    <circle cx="180" cy="170" r="16" fill="url(#pmMm)"/>
+    <ellipse cx="175" cy="165" rx="5" ry="3" fill="#fff" opacity=".6"/>
+    <text x="180" y="175" text-anchor="middle" font-size="12" font-weight="600" fill="#475569">m</text>
+
+    <g class="pm-s1">
+      <line x1="180" y1="170" x2="116" y2="106" stroke="#dc2626" stroke-width="3" marker-end="url(#pmArrowRed)"/>
+      <text x="82" y="84" font-size="14" fill="#dc2626">F&#8321;</text>
+      <line x1="180" y1="170" x2="268" y2="151" stroke="#7c3aed" stroke-width="3" marker-end="url(#pmArrowPurple)"/>
+      <text x="280" y="150" font-size="14" fill="#7c3aed">F&#8322;</text>
+    </g>
+
+    <g class="pm-s2">
+      <line x1="116" y1="106" x2="204" y2="88" stroke="#7c3aed" stroke-width="2" stroke-dasharray="5 4"/>
+      <line x1="268" y1="151" x2="204" y2="88" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4"/>
+    </g>
+
+    <g class="pm-s3">
+      <line x1="180" y1="170" x2="204" y2="88" stroke="#16a34a" stroke-width="3.5" marker-end="url(#pmArrowGreen)"/>
+      <text x="206" y="72" font-size="15" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
+    </g>
+  </g>
+</svg>
+<figcaption><span class="fig-num" data-fig-id="somma-forze">Figura</span> — Animazione in loop: prima compaiono le singole forze $\vec F_1$ e $\vec F_2$, poi le linee tratteggiate che completano il parallelogramma, infine la forza totale $\vec F_{tot}$.</figcaption>
+</div>

@@ -1,0 +1,238 @@
+{% comment %}
+Due esercizi a carosello sulla notazione scientifica (potenze di 10/ordini di grandezza; conversioni), con script condivisi. Nessun parametro.
+{% endcomment %}
+<style>
+.iex-widget{background:#ecfeff;border-left:4px solid #0e7490;border-radius:0 8px 8px 0;padding:1.2rem 1.5rem;margin:1.5rem 0;}
+.iex-lbl{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0e7490;margin:0 0 .8rem;}
+.iex-topnav{display:flex;align-items:center;gap:.6rem;margin-bottom:1.1rem;flex-wrap:wrap;}
+.iex-navbtn{background:#cffafe;color:#0e7490;border:1px solid #67e8f9;border-radius:5px;padding:.22rem .7rem;cursor:pointer;font-size:.85rem;}
+.iex-navbtn:hover:not(:disabled){background:#a5f3fc;}
+.iex-navbtn:disabled{opacity:.35;cursor:default;}
+.iex-dots{display:flex;gap:.3rem;align-items:center;}
+.iex-dot{width:11px;height:11px;border-radius:50%;background:#a5f3fc;cursor:pointer;transition:background .18s;}
+.iex-dot.cur{background:#0e7490;}
+.iex-dot.ok{background:#0f766e;}
+.iex-qt{margin:0 0 .6rem;font-size:.95rem;line-height:1.55;}
+.iex-note{color:#6b7280;font-style:italic;font-size:.87em;display:block;margin-top:.15rem;}
+.iex-ir{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;margin:.5rem 0;}
+.iex-m{border:1.5px solid #67e8f9;border-radius:5px;padding:.22rem .45rem;font-size:1rem;font-family:Georgia,serif;width:84px;background:#fff;}
+.iex-m:focus{outline:none;border-color:#0e7490;box-shadow:0 0 0 2px #cffafe;}
+.iex-e{border:1px solid #67e8f9;border-radius:3px;padding:.03rem .22rem;font-size:1em;font-family:Georgia,serif;width:34px;background:#fff;}
+.iex-e:focus{outline:none;border-color:#0e7490;}
+.iex-full{border:1.5px solid #67e8f9;border-radius:5px;padding:.22rem .45rem;font-size:1rem;font-family:Georgia,serif;min-width:185px;max-width:100%;background:#fff;}
+.iex-full:focus{outline:none;border-color:#0e7490;box-shadow:0 0 0 2px #cffafe;}
+.iex-vbtn{background:#0e7490;color:#fff;border:none;border-radius:5px;padding:.25rem .9rem;cursor:pointer;font-size:.9rem;}
+.iex-vbtn:hover{background:#0c6b82;}
+.iex-fb{font-size:.88rem;margin-top:.4rem;min-height:1.1em;}
+.iex-fb.ok{color:#0f766e;font-weight:600;}
+.iex-fb.err{color:#dc2626;}
+.iex-lbtn{background:none;border:none;color:#0e7490;cursor:pointer;font-size:.85rem;text-decoration:underline;padding:0;margin:0 .25rem;}
+.iex-nextbtn{background:#0f766e;color:#fff;border:none;border-radius:5px;padding:.18rem .7rem;cursor:pointer;font-size:.85rem;margin-left:.5rem;}
+.iex-nextbtn:hover{background:#0d6660;}
+.iex-sol{display:none;margin-top:.45rem;background:#fef9c3;border-left:3px solid #ca8a04;padding:.35rem .75rem;border-radius:4px;font-size:.88rem;color:#713f12;}
+</style>
+
+<div class="iex-widget" id="iex1">
+<p class="iex-lbl">Esercizio 1 — Notazione scientifica</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="ex1prev" onclick="ex1nav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="ex1dots"></div>
+<button class="iex-navbtn" id="ex1next" onclick="ex1nav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="ex1row0">
+<p class="iex-qt"><strong>i)</strong> Il numero di galassie nell'Universo: $n_\text{galassie} = 2\,000\,000\,000\,000\ \text{galassie}$<span class="iex-note">(e immaginatevi quanto grande è una singola galassia!)</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex1m0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex1check(0)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex1e0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex1check(0)"></sup></span>
+<button class="iex-vbtn" onclick="ex1check(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex1fb0"></div>
+<div class="iex-sol" id="ex1sol0">Soluzione: <strong>2 &times; 10<sup>12</sup></strong></div>
+</div>
+
+<div class="iex-q" id="ex1row1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Il numero di stelle in una galassia è in media pari a circa $400\,000\,000\,000\ \text{stelle}$. Esprimilo in notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex1m1" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex1check(1)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex1e1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex1check(1)"></sup></span>
+<button class="iex-vbtn" onclick="ex1check(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex1fb1"></div>
+<div class="iex-sol" id="ex1sol1">Soluzione: <strong>4 &times; 10<sup>11</sup></strong></div>
+</div>
+
+<div class="iex-q" id="ex1row2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Il raggio di una molecola d'acqua: $r_{\text{H}_2\text{O}} = 0{,}0000000001375\ \text{m}$<span class="iex-note">(immaginatevi quanto è piccola!)</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex1m2" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex1check(2)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex1e2" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex1check(2)"></sup></span>
+<button class="iex-vbtn" onclick="ex1check(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex1fb2"></div>
+<div class="iex-sol" id="ex1sol2">Soluzione: <strong>1,375 &times; 10<sup>&minus;10</sup></strong> m</div>
+</div>
+
+<div class="iex-q" id="ex1row3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Il numero (approssimativo) di molecole d'acqua in un bicchiere: $n_{\text{molecole}} = 8\,360\,576\,000\,000\,000\,000\,000\,000\ \text{molecole}$<span class="iex-note">(la prossima volta che bevete un bicchiere d'acqua, pensateci!)</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex1m3" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex1check(3)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex1e3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex1check(3)"></sup></span>
+<button class="iex-vbtn" onclick="ex1check(3)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex1fb3"></div>
+<div class="iex-sol" id="ex1sol3">Soluzione: <strong>8,360576 &times; 10<sup>24</sup></strong> (oppure arrotondato: 8,36 &times; 10<sup>24</sup>)</div>
+</div>
+
+<div class="iex-q" id="ex1row4" style="display:none">
+<p class="iex-qt"><strong>v)</strong> L'intensità luminosa del Sole: $i_\text{S} = 83\,200\,000\,000\,000\,000\,000\,000\,000\ \text{cd}$<span class="iex-note">(la «candela» è veramente la luce emessa da una singola candela...)</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex1m4" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex1check(4)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex1e4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex1check(4)"></sup></span>
+<button class="iex-vbtn" onclick="ex1check(4)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex1fb4"></div>
+<div class="iex-sol" id="ex1sol4">Soluzione: <strong>8,32 &times; 10<sup>25</sup></strong> cd</div>
+</div>
+
+<div class="iex-q" id="ex1row5" style="display:none">
+<p class="iex-qt"><strong>vi)</strong> Il raggio di un atomo di idrogeno: $R_\text{H} = 0{,}000\,000\,0000529\ \text{m}$<span class="iex-note">(molto più piccolo del raggio di una molecola d'acqua, anche se l'acqua è fatta da atomi di idrogeno!)</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex1m5" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex1check(5)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex1e5" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex1check(5)"></sup></span>
+<button class="iex-vbtn" onclick="ex1check(5)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex1fb5"></div>
+<div class="iex-sol" id="ex1sol5">Soluzione: <strong>5,29 &times; 10<sup>&minus;11</sup></strong> m</div>
+</div>
+
+<div class="iex-q" id="ex1row6" style="display:none">
+<p class="iex-qt"><strong>vii)</strong> L'Universo è una sfera di raggio $r_\text{Universo} = 435\,000\,000\,000\,000\,000\,000\,000\,000\ \text{m}$. Esprimi questo numero in notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex1m6" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex1check(6)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex1e6" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex1check(6)"></sup></span>
+<button class="iex-vbtn" onclick="ex1check(6)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex1fb6"></div>
+<div class="iex-sol" id="ex1sol6">Soluzione: <strong>4,35 &times; 10<sup>26</sup></strong> m</div>
+</div>
+
+</div>
+
+<div class="iex-widget" id="iex2" style="margin-top:2rem;">
+<p class="iex-lbl">Esercizio 2 — Da notazione scientifica a numero normale</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="ex2prev" onclick="ex2nav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="ex2dots"></div>
+<button class="iex-navbtn" id="ex2next" onclick="ex2nav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="ex2row0">
+<p class="iex-qt"><strong>i)</strong> La velocità della luce nel vuoto: $c = 2{,}997\,924\,58 \times 10^8\ \dfrac{\text{m}}{\text{s}}$<span class="iex-note">(la luce che arriva al tuo occhio in questo momento viaggia a questa velocità!)</span></p>
+<div class="iex-ir">
+<input class="iex-full" id="ex2inp0" type="text" placeholder="es: 123 456 789" onkeydown="if(event.key==='Enter')ex2check(0)">
+<button class="iex-vbtn" onclick="ex2check(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex2fb0"></div>
+<div class="iex-sol" id="ex2sol0">Soluzione: <strong>299 792 458 m/s</strong></div>
+</div>
+
+<div class="iex-q" id="ex2row1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Il diametro di un globulo rosso: $d_\text{globulo rosso} = 8{,}6 \times 10^{-6}\ \text{m}$<span class="iex-note">(pensa a quanto sono minuscole queste cellule!)</span></p>
+<div class="iex-ir">
+<input class="iex-full" id="ex2inp1" type="text" placeholder="?" onkeydown="if(event.key==='Enter')ex2check(1)">
+<button class="iex-vbtn" onclick="ex2check(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex2fb1"></div>
+<div class="iex-sol" id="ex2sol1">Soluzione: <strong>0,0000086 m</strong></div>
+</div>
+
+<div class="iex-q" id="ex2row2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Il numero di globuli rossi in un uomo medio: $n_\text{globuli rossi} = 2{,}5\times 10^{13}\ \text{globuli rossi}$<span class="iex-note">(è più grande del numero di stelle nella Via Lattea, la nostra galassia)</span></p>
+<div class="iex-ir">
+<input class="iex-full" id="ex2inp2" type="text" placeholder="?" onkeydown="if(event.key==='Enter')ex2check(2)">
+<button class="iex-vbtn" onclick="ex2check(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex2fb2"></div>
+<div class="iex-sol" id="ex2sol2">Soluzione: <strong>25 000 000 000 000</strong> globuli rossi</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+var Q1=[
+  {m:2,e:12,mt:0.001},
+  {m:4,e:11,mt:0.001},
+  {m:1.375,e:-10,mt:0.006},
+  {m:8.360576,e:24,mt:0.01},
+  {m:8.32,e:25,mt:0.005},
+  {m:5.29,e:-11,mt:0.005},
+  {m:4.35,e:26,mt:0.005}
+];
+var Q2=[{v:299792458,tol:0.0001},{v:8.6e-6,tol:0.001},{v:2.5e13,tol:0.001}];
+var ex1ok=[false,false,false,false,false,false,false];
+var ex2ok=[false,false,false];
+var ex1cur=0,ex2cur=0,N1=7,N2=3;
+
+function parseMant(s){var c=s.trim();if(c.indexOf(',')!==-1)c=c.replace(',','.');return parseFloat(c);}
+function parseExp(s){return parseInt(s.trim().replace('−','-'),10);}
+function parseNum(s){var c=s.trim().replace(/\s/g,'');if(c.indexOf(',')!==-1){c=c.replace(/\./g,'').replace(',','.');}else if((c.match(/\./g)||[]).length>1){c=c.replace(/\./g,'');}return parseFloat(c);}
+function shootConf(el){
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+  for(var i=0;i<55;i++){
+    var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;
+    p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+    document.body.appendChild(p);
+    (function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+  }
+}
+function shootFW(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
+function showSol(id){document.getElementById(id).style.display='block';}
+function updateDots(pfx,cur,ok,N){var dots=document.querySelectorAll('#'+pfx+'dots .iex-dot');for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');}
+function ex1show(i){document.querySelectorAll('#iex1 .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('ex1row'+i).style.display='block';ex1cur=i;document.getElementById('ex1prev').disabled=(i===0);document.getElementById('ex1next').disabled=(i===N1-1);updateDots('ex1',i,ex1ok,N1);setTimeout(function(){var inp=document.querySelector('#ex1row'+i+' .iex-m');if(inp&&!ex1ok[i])inp.focus();},60);}
+function ex2show(i){document.querySelectorAll('#iex2 .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('ex2row'+i).style.display='block';ex2cur=i;document.getElementById('ex2prev').disabled=(i===0);document.getElementById('ex2next').disabled=(i===N2-1);updateDots('ex2',i,ex2ok,N2);setTimeout(function(){var inp=document.querySelector('#ex2row'+i+' .iex-full');if(inp&&!ex2ok[i])inp.focus();},60);}
+function buildDots(pfx,N,showFn){var c=document.getElementById(pfx+'dots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+buildDots('ex1',N1,ex1show);
+buildDots('ex2',N2,ex2show);
+window.showSol=showSol;
+window.ex1show=ex1show;
+window.ex2show=ex2show;
+window.ex1nav=function(d){if(ex1cur+d>=0&&ex1cur+d<N1)ex1show(ex1cur+d);};
+window.ex2nav=function(d){if(ex2cur+d>=0&&ex2cur+d<N2)ex2show(ex2cur+d);};
+window.ex1check=function(i){
+  var mv=parseMant(document.getElementById('ex1m'+i).value);
+  var ev=parseExp(document.getElementById('ex1e'+i).value);
+  var fb=document.getElementById('ex1fb'+i);
+  var vb=document.querySelector('#ex1row'+i+' .iex-vbtn');
+  var q=Q1[i];
+  var mOk=!isNaN(mv)&&(q.m===0?mv===0:Math.abs(mv-q.m)/Math.abs(q.m)<=q.mt);
+  var eOk=!isNaN(ev)&&ev===q.e;
+  if(mOk&&eOk){
+    ex1ok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<N1-1?' <button class="iex-nextbtn" onclick="ex1show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    shootConf(vb);updateDots('ex1',ex1cur,ex1ok,N1);
+    if(ex1ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSol(\'ex1sol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+window.ex2check=function(i){
+  var v=parseNum(document.getElementById('ex2inp'+i).value);
+  var fb=document.getElementById('ex2fb'+i);
+  var vb=document.querySelector('#ex2row'+i+' .iex-vbtn');
+  var q=Q2[i];
+  if(!isNaN(v)&&Math.abs(v-q.v)/Math.abs(q.v)<=q.tol){
+    ex2ok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<N2-1?' <button class="iex-nextbtn" onclick="ex2show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    shootConf(vb);updateDots('ex2',ex2cur,ex2ok,N2);
+    if(ex2ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSol(\'ex2sol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+})();
+</script>

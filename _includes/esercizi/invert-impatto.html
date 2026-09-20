@@ -1,0 +1,29 @@
+{% comment %}
+Esercizio a carosello: isola le grandezze nella formula della velocità di impatto, usando invert.html. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="invCarImpatto">
+<p class="iex-lbl">Isola le altre grandezze</p>
+<p class="iex-hint">Cerca la sequenza più breve di mosse per isolare ciascuna grandezza.</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="invCarImpattoprev" onclick="invCarImpattonav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="invCarImpattodots"></div>
+<button class="iex-navbtn" id="invCarImpattonext" onclick="invCarImpattonav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="invCarImpattorow0">
+<div class="iex-nested">
+{% include invert.html id="inv-impatto-g" variabili="vf|g|h|due" etichette="v_f|g|h_i|2" sinistra="vf*vf" destra="due*g*h" obiettivo="g" radice_iniziale="1" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarImpattorow1" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-impatto-h" variabili="vf|g|h|due" etichette="v_f|g|h_i|2" sinistra="vf*vf" destra="due*g*h" obiettivo="h" radice_iniziale="1" %}
+</div>
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('invCarImpatto',2);
+</script>

@@ -1,0 +1,169 @@
+{% comment %}
+Animazione interattiva: una pizza disegnata su un canvas, con pulsanti +/-
+per aggiungere o togliere fette totali e amici a tavola, per far scoprire in
+modo diretto la proporzionalità diretta (fette totali) e inversa (numero di
+amici) rispetto alle fette a testa. Nessun parametro.
+{% endcomment %}
+<div style="margin:0.75rem 0 0;background:#f0e8dc;border-radius:8px;padding:0.85rem 0.9rem 0.75rem;border:1px solid #c8b898;">
+<p style="margin:0 0 0.5rem;font-size:13px;font-family:Georgia,serif;"><strong>Prova tu: aggiungi fette e amici</strong></p>
+<canvas id="cv-pizza" width="440" height="230" style="display:block;max-width:100%;border-radius:5px;"></canvas>
+<div style="display:flex;gap:1.2rem;flex-wrap:wrap;margin-top:0.65rem;align-items:center;">
+<div style="display:flex;align-items:center;gap:0.4rem;">
+<span style="font-size:13px;font-family:Georgia,serif;color:#5a3c18;">Fette totali:</span>
+<button onclick="simPizza.chFette(-1)" style="width:26px;height:26px;background:#8b5e30;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:15px;line-height:1;">−</button>
+<span id="val-fette" style="font-weight:bold;min-width:1.6em;text-align:center;display:inline-block;font-family:Georgia,serif;">8</span>
+<button onclick="simPizza.chFette(1)" style="width:26px;height:26px;background:#8b5e30;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:15px;line-height:1;">+</button>
+</div>
+<div style="display:flex;align-items:center;gap:0.4rem;">
+<span style="font-size:13px;font-family:Georgia,serif;color:#5a3c18;">Amici:</span>
+<button onclick="simPizza.chAmici(-1)" style="width:26px;height:26px;background:#1a4d6a;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:15px;line-height:1;">−</button>
+<span id="val-amici" style="font-weight:bold;min-width:1.6em;text-align:center;display:inline-block;font-family:Georgia,serif;">4</span>
+<button onclick="simPizza.chAmici(1)" style="width:26px;height:26px;background:#1a4d6a;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:15px;line-height:1;">+</button>
+</div>
+</div>
+<p id="fb-pizza" style="margin:0.6rem 0 0;font-size:14px;font-family:Georgia,serif;font-weight:bold;color:#3a2c10;"></p>
+</div>
+<script>
+var simPizza=(function(){
+var cv=document.getElementById('cv-pizza'),ctx=cv.getContext('2d');
+var W=440,H=230;
+var SLICES=8;
+var fette=8,amici=4;
+var FMIN=1,FMAX=24,AMIN=1,AMAX=12;
+var TWOPI=Math.PI*2;
+var pepperoni=[],basil=[];
+for(var p=0;p<8;p++){pepperoni.push({a:(p*0.9+0.35)%TWOPI,r:0.3+0.4*((p*37)%10)/10});}
+for(var b=0;b<4;b++){basil.push({a:(b*1.45+0.9)%TWOPI,r:0.2+0.5*((b*53)%10)/10});}
+
+function fmt(v){
+  if(Math.abs(v-Math.round(v))<1e-9)return String(Math.round(v));
+  return v.toFixed(2).replace('.',',');
+}
+function composeLabel(f){
+  var whole=Math.floor(f/SLICES),rem=f%SLICES,parts=[];
+  if(whole>0)parts.push(whole+(whole===1?' pizza':' pizze'));
+  if(rem>0)parts.push(rem+(rem===1?' fetta':' fette'));
+  return parts.join(' e ');
+}
+function drawPizza(cx,cy,R,present){
+  if(present<=0)return;
+  var frac=present/SLICES;
+  var startA=-Math.PI/2, endA=startA+frac*TWOPI;
+
+  ctx.save();
+  ctx.beginPath();ctx.ellipse(cx+3,cy+7,R*0.98,R*0.34,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(0,0,0,0.13)';ctx.fill();
+  ctx.restore();
+
+  function wedge(rad){
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,rad,startA,endA);ctx.closePath();
+  }
+
+  var crust=ctx.createRadialGradient(cx,cy,R*0.78,cx,cy,R);
+  crust.addColorStop(0,'#e9ba6c');crust.addColorStop(0.6,'#dda354');crust.addColorStop(1,'#b97a2e');
+  wedge(R);ctx.fillStyle=crust;ctx.fill();
+
+  ctx.fillStyle='rgba(120,70,20,0.35)';
+  for(var s=0;s<14;s++){
+    var saf=(s/14)*TWOPI;
+    if(saf>frac*TWOPI-0.04)continue;
+    var sa=startA+saf,sr=R*0.9;
+    ctx.beginPath();ctx.arc(cx+Math.cos(sa)*sr,cy+Math.sin(sa)*sr,1.2,0,Math.PI*2);ctx.fill();
+  }
+
+  var innerR=R*0.84;
+  var cheese=ctx.createRadialGradient(cx-innerR*0.2,cy-innerR*0.25,innerR*0.1,cx,cy,innerR);
+  cheese.addColorStop(0,'#ffd873');cheese.addColorStop(0.7,'#ffc94d');cheese.addColorStop(1,'#f0a92e');
+  wedge(innerR);ctx.fillStyle=cheese;ctx.fill();
+
+  ctx.fillStyle='rgba(255,255,255,0.16)';
+  for(var m=0;m<8;m++){
+    var maf=m*0.785+0.3,maff=maf%TWOPI;
+    if(maff>frac*TWOPI-0.04)continue;
+    var ma=startA+maf,mr=innerR*(0.25+0.55*((m*53)%10)/10);
+    ctx.save();ctx.translate(cx+Math.cos(ma)*mr,cy+Math.sin(ma)*mr);ctx.rotate(ma);
+    ctx.beginPath();ctx.ellipse(0,0,4.5,2.6,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+
+  pepperoni.forEach(function(pp){
+    if(pp.a>frac*TWOPI-0.04)return;
+    var a=startA+pp.a;
+    var px=cx+Math.cos(a)*innerR*pp.r,py=cy+Math.sin(a)*innerR*pp.r;
+    var pg=ctx.createRadialGradient(px-1.2,py-1.2,0.4,px,py,4.6);
+    pg.addColorStop(0,'#d0502e');pg.addColorStop(1,'#8a2c14');
+    ctx.beginPath();ctx.arc(px,py,4.3,0,Math.PI*2);ctx.fillStyle=pg;ctx.fill();
+    ctx.strokeStyle='#6e2410';ctx.lineWidth=0.5;ctx.stroke();
+    ctx.fillStyle='rgba(0,0,0,0.18)';
+    ctx.beginPath();ctx.arc(px+1.2,py+0.9,0.6,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(px-0.8,py+1.3,0.5,0,Math.PI*2);ctx.fill();
+  });
+
+  basil.forEach(function(bp){
+    if(bp.a>frac*TWOPI-0.04)return;
+    var a=startA+bp.a;
+    var bx=cx+Math.cos(a)*innerR*bp.r,by=cy+Math.sin(a)*innerR*bp.r;
+    ctx.save();ctx.translate(bx,by);ctx.rotate(a*1.7);
+    ctx.fillStyle='#3f7d34';ctx.beginPath();ctx.ellipse(0,0,3.2,1.5,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#2c5a24';ctx.lineWidth=0.4;ctx.beginPath();ctx.moveTo(-2.6,0);ctx.lineTo(2.6,0);ctx.stroke();
+    ctx.restore();
+  });
+
+  ctx.strokeStyle='rgba(110,55,15,0.55)';ctx.lineWidth=1.3;
+  for(var i=0;i<=present;i++){
+    var a2=startA+i*(TWOPI/SLICES);
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a2)*R,cy+Math.sin(a2)*R);ctx.stroke();
+  }
+
+  ctx.beginPath();ctx.arc(cx,cy,R,startA,endA);
+  ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=1;ctx.stroke();
+}
+function drawFriend(cx,cy,r){
+  ctx.beginPath();ctx.arc(cx+1.5,cy+2,r,0,Math.PI*2);ctx.fillStyle='rgba(0,0,0,0.08)';ctx.fill();
+  var fg=ctx.createRadialGradient(cx-r*0.3,cy-r*0.3,r*0.1,cx,cy,r);
+  fg.addColorStop(0,'#ffedc4');fg.addColorStop(1,'#ffd68a');
+  ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle=fg;ctx.fill();
+  ctx.strokeStyle='#c89050';ctx.lineWidth=1.1;ctx.stroke();
+  ctx.fillStyle='#5a3c18';
+  ctx.beginPath();ctx.arc(cx-r*0.35,cy-r*0.08,r*0.11,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(cx+r*0.35,cy-r*0.08,r*0.11,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#5a3c18';ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.arc(cx,cy+r*0.1,r*0.42,0.15*Math.PI,0.85*Math.PI);ctx.stroke();
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  var g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#faf6ec');g.addColorStop(1,'#f0e8d8');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  var numPizze=Math.ceil(fette/SLICES);
+  var R=48,gap=20;
+  var totalW=numPizze*(2*R)+(numPizze-1)*gap;
+  var startX=(W-totalW)/2+R;
+  for(var i=0;i<numPizze;i++){
+    var present=Math.min(SLICES,fette-i*SLICES);
+    drawPizza(startX+i*(2*R+gap),80,R,present);
+  }
+
+  ctx.fillStyle='#6b5530';ctx.font='12px Georgia,serif';ctx.textAlign='center';
+  ctx.fillText('Amici',W/2,150);
+  ctx.textAlign='left';
+  var per=6,r=13,sp=44;
+  var rowW=Math.min(amici,per)*sp;
+  var startFX=(W-rowW)/2+r;
+  for(var k=0;k<amici;k++){
+    var col=k%per,row=Math.floor(k/per);
+    drawFriend(startFX+col*sp,170+row*34,r);
+  }
+}
+function update(){
+  document.getElementById('val-fette').textContent=fette;
+  document.getElementById('val-amici').textContent=amici;
+  document.getElementById('fb-pizza').textContent=composeLabel(fette)+' = '+fette+' fette,  '+fette+' ÷ '+amici+' = '+fmt(fette/amici)+' fette a testa';
+  draw();
+}
+function chFette(d){fette=Math.max(FMIN,Math.min(FMAX,fette+d));update();}
+function chAmici(d){amici=Math.max(AMIN,Math.min(AMAX,amici+d));update();}
+update();
+return{chFette:chFette,chAmici:chAmici};
+})();
+</script>

@@ -1,0 +1,78 @@
+{% comment %}
+Animazione: elettrizzazione per contatto tra due conduttori. Nessun
+parametro.
+{% endcomment %}
+<div class="cw-widget" id="cwWidget">
+<svg viewBox="0 0 400 170" style="max-width:380px;width:100%;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: elettrizzazione per contatto fra due sfere conduttrici">
+<defs>
+  <radialGradient id="cwMetalG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#94a3b8"/></radialGradient>
+</defs>
+<g class="cw-sphere cw-sphereA" transform="translate(110,85)">
+  <circle r="34" fill="url(#cwMetalG)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text class="cw-sym" x="-12" y="-8" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="cw-sym" x="10" y="-11" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="cw-sym" x="-14" y="12" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="cw-sym" x="10" y="14" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="cw-sym cw-transferable" x="0" y="-22" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="cw-sym cw-transferable" x="0" y="24" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
+</g>
+<g class="cw-sphere cw-sphereB" transform="translate(290,85)">
+  <circle r="34" fill="url(#cwMetalG)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text class="cw-sym cw-transferred" x="0" y="-22" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="cw-sym cw-transferred" x="0" y="24" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
+</g>
+</svg>
+<div class="cw-actions">
+  <button class="cw-btn cw-play">Avvicina i corpi ▶</button>
+  <button class="cw-btn cw-reset" style="display:none">↺ Ricomincia</button>
+</div>
+<p class="cw-caption"></p>
+</div>
+
+<style>
+.cw-widget { margin: 1.6rem auto; max-width: 380px; text-align: center; }
+.cw-sphere { transition: transform 1s ease; }
+.cw-touching .cw-sphereA { transform: translate(166px,85px); }
+.cw-touching .cw-sphereB { transform: translate(234px,85px); }
+.cw-sym { transition: opacity .5s ease; opacity: 1; }
+.cw-transferred { opacity: 0; }
+.cw-charge-moved .cw-transferable { opacity: 0; }
+.cw-charge-moved .cw-transferred { opacity: 1; }
+.cw-actions { margin-top: .6rem; }
+.cw-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .88rem; }
+.cw-btn:hover { background: #e2e8f0; }
+.cw-caption { min-height: 1.4em; font-size: .85rem; font-style: italic; color: #6b7280; margin-top: .5rem; }
+@media print { .cw-widget { display: none; } }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('cwWidget');
+  if(!root) return;
+  var playBtn = root.querySelector('.cw-play');
+  var resetBtn = root.querySelector('.cw-reset');
+  var caption = root.querySelector('.cw-caption');
+  playBtn.addEventListener('click', function(){
+    playBtn.disabled = true;
+    root.classList.add('cw-touching');
+    setTimeout(function(){
+      root.classList.add('cw-charge-moved');
+      caption.textContent = 'Le cariche si ridistribuiscono al contatto…';
+    }, 1000);
+    setTimeout(function(){
+      root.classList.remove('cw-touching');
+    }, 1700);
+    setTimeout(function(){
+      caption.textContent = 'Ora entrambi i corpi sono carichi negativamente.';
+      playBtn.style.display = 'none';
+      resetBtn.style.display = 'inline-block';
+    }, 2700);
+  });
+  resetBtn.addEventListener('click', function(){
+    root.classList.remove('cw-touching','cw-charge-moved');
+    caption.textContent = '';
+    playBtn.style.display = 'inline-block'; playBtn.disabled = false;
+    resetBtn.style.display = 'none';
+  });
+})();
+</script>

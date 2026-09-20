@@ -1,0 +1,125 @@
+{% comment %}
+Animazione: lo studente trascina una "massa esploratrice" (pallina grigia)
+in un punto qualsiasi attorno a una massa M fissa e la rilascia; la pallina
+cade verso M accelerando, seguendo esattamente una linea di campo. Si può
+ripetere in più punti per "disegnare" più linee di campo. Nessun parametro.
+{% endcomment %}
+<div class="vdrag-widget" id="fline1">
+<p class="vdrag-hint">Trascina la pallina grigia in un punto qualsiasi e lasciala andare: osserva la traiettoria che percorre cadendo verso $M$. Ripeti in più punti per "disegnare" più linee di campo.</p>
+<svg id="fline1-svg" viewBox="0 0 320 320" width="100%" style="max-width:300px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Simulazione: traiettoria di una massa esploratrice che cade verso M">
+<defs>
+  <radialGradient id="flsimM" cx="35%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
+  </radialGradient>
+  <radialGradient id="flsimMass" cx="35%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#94a3b8"/>
+  </radialGradient>
+</defs>
+<line x1="300" y1="160" x2="206" y2="160" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+<line x1="259" y1="259" x2="192.5" y2="192.5" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+<line x1="160" y1="300" x2="160" y2="206" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+<line x1="61" y1="259" x2="127.5" y2="192.5" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+<line x1="20" y1="160" x2="114" y2="160" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+<line x1="61" y1="61" x2="127.5" y2="127.5" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+<line x1="160" y1="20" x2="160" y2="114" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+<line x1="259" y1="61" x2="192.5" y2="127.5" stroke="#0891b2" stroke-width="1" opacity=".15"/>
+
+<g id="fline1-trails"></g>
+
+<circle cx="160" cy="160" r="38" fill="url(#flsimM)"/>
+<ellipse cx="146" cy="146" rx="11" ry="8" fill="#fff" opacity=".5"/>
+<text x="160" y="166" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">M</text>
+
+<circle id="fline1-mass" cx="270" cy="270" r="10" fill="url(#flsimMass)" stroke="#475569" stroke-width="1.5" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-reset" id="fline1-clear">&#8635; Cancella tracce</button>
+</div>
+</div>
+
+<script>
+(function(){
+  var ID='fline1';
+  var svg=document.getElementById(ID+'-svg');
+  var mass=document.getElementById(ID+'-mass');
+  var trails=document.getElementById(ID+'-trails');
+  var clearBtn=document.getElementById(ID+'-clear');
+  var CENTER={x:160,y:160}, M_R=38, GAP=10, MIN_DIST=M_R+GAP, BOUND=18;
+  var START={x:270,y:270};
+  var falling=false;
+
+  function toSvgPoint(clientX,clientY){
+    var pt=svg.createSVGPoint();
+    pt.x=clientX; pt.y=clientY;
+    var m=svg.getScreenCTM().inverse();
+    return pt.matrixTransform(m);
+  }
+
+  function clampPoint(x,y){
+    x=Math.max(BOUND,Math.min(320-BOUND,x));
+    y=Math.max(BOUND,Math.min(320-BOUND,y));
+    var dx=x-CENTER.x, dy=y-CENTER.y, dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<MIN_DIST){
+      if(dist<1e-6){ dx=1; dy=0; dist=1; }
+      var k=MIN_DIST/dist;
+      x=CENTER.x+dx*k; y=CENTER.y+dy*k;
+    }
+    return {x:x,y:y};
+  }
+
+  function setMass(x,y){ mass.setAttribute('cx',x); mass.setAttribute('cy',y); }
+
+  function onMove(e){
+    e.preventDefault();
+    var p=toSvgPoint(e.clientX,e.clientY);
+    var c=clampPoint(p.x,p.y);
+    setMass(c.x,c.y);
+  }
+  function onUp(e){
+    mass.removeEventListener('pointermove',onMove);
+    mass.removeEventListener('pointerup',onUp);
+    startFall(parseFloat(mass.getAttribute('cx')),parseFloat(mass.getAttribute('cy')));
+  }
+  mass.addEventListener('pointerdown',function(e){
+    if(falling) return;
+    e.preventDefault();
+    mass.setPointerCapture(e.pointerId);
+    mass.addEventListener('pointermove',onMove);
+    mass.addEventListener('pointerup',onUp);
+  });
+
+  function startFall(x0,y0){
+    var dx=x0-CENTER.x, dy=y0-CENTER.y, dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<1e-6){ dx=1; dy=0; dist=1; }
+    var ux=dx/dist, uy=dy/dist;
+    var tx=CENTER.x+ux*MIN_DIST, ty=CENTER.y+uy*MIN_DIST;
+
+    var line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',x0); line.setAttribute('y1',y0);
+    line.setAttribute('x2',tx); line.setAttribute('y2',ty);
+    line.setAttribute('stroke','#0891b2'); line.setAttribute('stroke-width','2');
+    line.setAttribute('opacity','.4');
+    trails.appendChild(line);
+
+    falling=true; mass.style.cursor='default';
+    var DUR=900, t0=performance.now();
+    function step(now){
+      var t=Math.min(1,(now-t0)/DUR);
+      var e=t*t;
+      setMass(x0+(tx-x0)*e, y0+(ty-y0)*e);
+      if(t<1){ requestAnimationFrame(step); }
+      else {
+        falling=false; mass.style.cursor='grab';
+        setTimeout(function(){ setMass(START.x,START.y); },250);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  clearBtn.addEventListener('click',function(){
+    trails.innerHTML='';
+    falling=false; mass.style.cursor='grab';
+    setMass(START.x,START.y);
+  });
+})();
+</script>

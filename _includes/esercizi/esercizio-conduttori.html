@@ -1,0 +1,120 @@
+{% comment %}
+Esercizio a carosello (Verifica Subito!) su conduttori e isolanti. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexCond">
+<p class="iex-lbl">Verifica Subito!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexCondprev" onclick="iexCondnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexConddots"></div>
+<button class="iex-navbtn" id="iexCondnext" onclick="iexCondnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexCondrow0">
+<p class="iex-qt">Perché i fili elettrici sono rivestiti di plastica?</p>
+<div class="iex-choices" id="iexCondchoices0">
+<button class="iex-choice-btn" data-v="a">Per renderli più leggeri</button>
+<button class="iex-choice-btn" data-v="b">Perché la plastica è un isolante e impedisce alla carica di disperdersi (o di darci la scossa)</button>
+<button class="iex-choice-btn" data-v="c">Per renderli conduttori migliori</button>
+<button class="iex-choice-btn" data-v="d">Solo per estetica</button>
+</div>
+<div class="iex-fb" id="iexCondfb0"></div>
+</div>
+
+<div class="iex-q" id="iexCondrow1" style="display:none">
+<p class="iex-qt">Se tocchi con le mani nude un oggetto metallico carico elettricamente, che cosa succede e perché?</p>
+<div class="iex-choices" id="iexCondchoices1">
+<button class="iex-choice-btn" data-v="a">Niente: il metallo è isolante e trattiene la carica</button>
+<button class="iex-choice-btn" data-v="b">La carica passa attraverso il tuo corpo, perché anche tu sei un conduttore</button>
+<button class="iex-choice-btn" data-v="c">La carica resta ferma nel metallo, perché sei un conduttore migliore del metallo</button>
+<button class="iex-choice-btn" data-v="d">Il metallo si scarica solo se lo tocchi con un panno di lana</button>
+</div>
+<div class="iex-fb" id="iexCondfb1"></div>
+</div>
+
+</div>
+
+<style>
+@media print { #iexCond { display:none; } }
+</style>
+
+<script>
+(function(){
+  var N=2, cur=0, ok=[false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexConddots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexCond .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexCondrow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexCondprev').disabled=(i===0);
+    document.getElementById('iexCondnext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexConddots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexCondnav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  function wireChoices(rowIdx, choicesId, fbId, correctV, msgOk, msgErr){
+    var btns = document.querySelectorAll('#'+choicesId+' .iex-choice-btn');
+    var fb = document.getElementById(fbId);
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === correctV;
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = 'iex-choice-btn correct';
+          ok[rowIdx] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! '+msgOk+(rowIdx<N-1?' <button class="iex-nextbtn" onclick="iexCondnav(1)">Passo successivo &rarr;</button>':'');
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = 'iex-choice-btn wrong';
+          var correctBtn = document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+correctV+'"]');
+          correctBtn.className = 'iex-choice-btn correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = msgErr;
+        }
+      });
+    });
+  }
+
+  wireChoices(0, 'iexCondchoices0', 'iexCondfb0', 'b',
+    'La plastica è un isolante: impedisce alle cariche di fluire fuori dal filo (e a noi di prendere la scossa toccandolo).',
+    'Non è corretto: il motivo è che la plastica è un isolante, e impedisce alla carica di disperdersi o di darci la scossa.');
+
+  wireChoices(1, 'iexCondchoices1', 'iexCondfb1', 'b',
+    'Anche il corpo umano è un conduttore: la carica può quindi fluire liberamente attraverso di te.',
+    'Non è corretto: sia il metallo sia il tuo corpo sono conduttori, quindi la carica passa liberamente attraverso di te.');
+})();
+</script>

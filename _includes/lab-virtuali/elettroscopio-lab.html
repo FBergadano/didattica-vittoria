@@ -1,0 +1,620 @@
+{% comment %}
+Animazione: un elettroscopio a foglie, verso cui si può trascinare uno
+strumento carico da un menu (isolante o conduttore, con vari segni/quantità
+di carica) per osservare come si aprono le foglioline sia per contatto sia
+per semplice avvicinamento (induzione), e come si richiudono allontanando lo
+strumento. Nessun parametro.
+{% endcomment %}
+<div id="eosx1" class="eosx-widget">
+
+  <div class="eosx-head">
+    <span class="eosx-badge">Abraham Bennet · 1786</span>
+    <h4 class="eosx-title">L'Elettroscopio a Foglie</h4>
+    <p class="eosx-sub">Trascina uno strumento dal menu fino alla sferetta dell'elettroscopio e osserva le foglioline.</p>
+  </div>
+
+  <div class="eosx-body">
+    <div class="eosx-menu">
+      <div class="eosx-tool" data-tool="ballplus" title="Sfera carica positivamente">
+        <span class="eosx-tool-icon eosx-icon-ballplus"></span>
+        <span class="eosx-tool-label">Sfera +</span>
+      </div>
+      <div class="eosx-tool" data-tool="ballminus" title="Sfera carica negativamente">
+        <span class="eosx-tool-icon eosx-icon-ballminus"></span>
+        <span class="eosx-tool-label">Sfera −</span>
+      </div>
+      <div class="eosx-tool" data-tool="rodglass" title="Bacchetta di vetro">
+        <span class="eosx-tool-icon eosx-icon-rodglass"></span>
+        <span class="eosx-tool-label">Vetro<span class="eosx-tool-badge" data-badge="rodglass"></span></span>
+      </div>
+      <div class="eosx-tool" data-tool="rodplastic" title="Bacchetta di plastica">
+        <span class="eosx-tool-icon eosx-icon-rodplastic"></span>
+        <span class="eosx-tool-label">Plastica<span class="eosx-tool-badge" data-badge="rodplastic"></span></span>
+      </div>
+      <div class="eosx-tool" data-tool="finger" title="Dito, per scaricare">
+        <span class="eosx-tool-icon eosx-icon-finger">☝</span>
+        <span class="eosx-tool-label">Dito</span>
+      </div>
+    </div>
+
+    <div class="eosx-canvas-wrap">
+      <canvas class="eosx-app" width="340" height="250"></canvas>
+    </div>
+  </div>
+
+  <p class="eosx-meter">Elettroscopio: <span class="eosx-state">neutro</span></p>
+  <p class="eosx-caption">Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare.</p>
+
+  <div class="eosx-actions-row">
+    <button class="eosx-btn-rev eosx-reset">↺ Ricomincia</button>
+  </div>
+
+  <div class="eosx-legend">
+    <div class="eosx-legend-item"><span class="eosx-legend-dot" style="background:#e8983a"></span> Protone (+)</div>
+    <div class="eosx-legend-item"><span class="eosx-legend-dot" style="background:#c7ccd4"></span> Elettrone (−)</div>
+    <div class="eosx-legend-item"><span class="eosx-legend-dot" style="background:#d8b26a"></span> Foglioline d'oro</div>
+  </div>
+
+</div>
+
+<style>
+.eosx-widget {
+  --ex-bg: #0a0c10;
+  --ex-surface: #10141c;
+  --ex-copper: #b87333;
+  --ex-copper-bright: #e8983a;
+  --ex-amber: #ff9a00;
+  --ex-text: #e8d5b0;
+  --ex-text2: #9a8060;
+  font-family: 'Crimson Text', Georgia, serif;
+  background: var(--ex-bg);
+  color: var(--ex-text);
+  border-radius: 10px;
+  padding: 1.2rem 1.1rem 1.1rem;
+  margin: 1.8rem 0;
+  max-width: 500px;
+  margin-left: auto; margin-right: auto;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.35);
+}
+.eosx-widget::before {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(184,115,51,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.eosx-widget * { box-sizing: border-box; }
+.eosx-head { text-align:center; margin-bottom:.7rem; position:relative; z-index:1; }
+.eosx-badge { font-size:.62rem; letter-spacing:.28em; color: var(--ex-copper); text-transform:uppercase; display:block; margin-bottom:.4rem; }
+.eosx-title { font-family: Georgia, serif; font-size:1.15rem; font-weight:700; color: var(--ex-text); margin: 0 0 .35rem; }
+.eosx-sub { font-size:.8rem; color: var(--ex-text2); font-style:italic; max-width:400px; margin:0 auto; line-height:1.45; }
+
+.eosx-body { display:flex; gap:.6rem; justify-content:center; align-items:flex-start; position:relative; z-index:1; }
+.eosx-menu { display:flex; flex-direction:column; gap:.35rem; flex:0 0 auto; width:96px; }
+.eosx-tool {
+  display:flex; align-items:center; gap:.4rem; padding:.35rem .4rem;
+  border:1px solid rgba(184,115,51,.35); border-radius:6px; cursor:grab;
+  background: rgba(184,115,51,.06); touch-action:none; user-select:none;
+}
+.eosx-tool:hover { border-color: var(--ex-copper); background: rgba(184,115,51,.14); }
+.eosx-tool:active { cursor:grabbing; }
+.eosx-tool-icon { width:16px; height:16px; flex:0 0 auto; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; }
+.eosx-icon-ballplus { background: radial-gradient(circle at 35% 30%, #ffd9c2, #e8983a 60%, #9a4a12); }
+.eosx-icon-ballminus { background: radial-gradient(circle at 35% 30%, #eef1f4, #c7ccd4 60%, #8b93a1); }
+.eosx-icon-rodglass { border-radius:3px; background: linear-gradient(#eaf7ff,#bae6fd 55%,#6fc4e8); }
+.eosx-icon-rodplastic { border-radius:3px; background: linear-gradient(#5b6472,#333b46 55%,#181d24); }
+.eosx-icon-finger { background:none; font-size:14px; }
+.eosx-tool-label { font-size:.7rem; color: var(--ex-text2); line-height:1.1; position:relative; }
+.eosx-tool-badge { display:inline-block; margin-left:.25rem; font-weight:700; font-size:.72rem; }
+.eosx-tool-badge.pos { color: var(--ex-copper-bright); }
+.eosx-tool-badge.neg { color: #c7ccd4; }
+
+.eosx-canvas-wrap {
+  border:1px solid rgba(184,115,51,0.22); border-radius:6px;
+  background: var(--ex-surface); overflow:hidden;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+  width: 340px; max-width: 66vw; flex: 0 0 auto;
+}
+.eosx-canvas-wrap canvas { display:block; width:100%; height:auto; touch-action:none; }
+
+.eosx-meter { text-align:center; font-size:.78rem; color: var(--ex-text2); margin: .7rem 0 0; position:relative; z-index:1; }
+.eosx-state { color: var(--ex-amber); font-weight:600; }
+.eosx-caption { min-height: 2.2em; font-size:.78rem; color: var(--ex-text2); font-style:italic; text-align:center; max-width:400px; margin:.5rem auto 0; position:relative; z-index:1; }
+
+.eosx-actions-row { display:flex; justify-content:center; margin-top: .7rem; position:relative; z-index:1; }
+.eosx-btn-rev {
+  padding:.4rem .9rem; border-radius:3px; cursor:pointer;
+  font-family: Georgia, serif; font-size:.8rem; letter-spacing:.03em;
+  background:transparent; border:1px solid rgba(184,115,51,.4); color: var(--ex-text2);
+  transition:all .2s;
+}
+.eosx-btn-rev:hover { border-color: var(--ex-copper); color: var(--ex-copper-bright); background: rgba(184,115,51,.12); }
+
+.eosx-legend { display:flex; gap:.9rem; flex-wrap:wrap; justify-content:center; margin-top:.9rem; font-size:.7rem; color: var(--ex-text2); position:relative; z-index:1; }
+.eosx-legend-item { display:flex; align-items:center; gap:.3rem; }
+.eosx-legend-dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+
+@media (max-width: 560px) {
+  .eosx-body { flex-direction:column; align-items:center; }
+  .eosx-menu { flex-direction:row; flex-wrap:wrap; width:100%; justify-content:center; }
+  .eosx-tool { width:auto; }
+}
+@media print { .eosx-widget { display:none !important; } }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('eosx1');
+  if (!root) return;
+  function $(s){ return root.querySelector(s); }
+
+  var cv = $('.eosx-app'), ctx = cv.getContext('2d');
+  var W = cv.width, H = cv.height;
+  var stateEl = $('.eosx-state'), caption = $('.eosx-caption');
+
+  // ─── geometria dell'elettroscopio ──────────────────────────────────────
+  var CX = 110;
+  var STOPPER_TOP = 34, STOPPER_BOT = 50, STOPPER_W = 30;
+  var KNOB_R = 11, KNOB_Y = STOPPER_TOP - KNOB_R + 3; // la sfera "esce" appena dal tappo
+  var JAR_TOP = 44, JAR_BOT = 192, JAR_L = 58, JAR_R = 162;
+  var ROD_W = 8;
+  var PIVOT_Y = 56, LEAF_LEN = 108;
+  var MAX_ANGLE_PARTIAL = 15*Math.PI/180, MAX_ANGLE_FULL = 31*Math.PI/180;
+
+  var WOOL_X = 270, WOOL_Y = 55, WOOL_R = 48;
+
+  function lerp(a,b,t){ return a+(b-a)*t; }
+  function clamp01(v){ return v<0?0:(v>1?1:v); }
+
+  // ─── stato dell'elettroscopio ───────────────────────────────────────────
+  // permanent=true appena un oggetto carico tocca la sferetta: resta tale
+  // (eBias non torna più a 0 da solo) finché il dito non lo scarica.
+  var eBias = 0, eBiasTarget = 0;
+  var permanent = false, permSign = null;
+
+  // ─── strumenti disponibili (sempre tutti presenti nel menu) ────────────
+  var ROD_HALF = 65, TIP_R = 4, BALL_R = 13, FINGER_R = 8;
+  var tools = {
+    ballplus:   { type:'ball', sign:'+', r:BALL_R },
+    ballminus:  { type:'ball', sign:'-', r:BALL_R },
+    rodglass:   { type:'rod', material:'glass', charged:false, sign:null,
+                  slots:[{n:1},{n:1},{n:1}] },
+    rodplastic: { type:'rod', material:'plastic', charged:false, sign:null,
+                  slots:[{n:1},{n:1},{n:1}] },
+    finger:     { type:'finger', r:FINGER_R }
+  };
+  // la lana ha 3 "siti attivi" (che partecipano allo scambio con la bacchetta)
+  // più alcuni atomi puramente decorativi, sempre neutri
+  var woolSlots = [{n:1},{n:1},{n:1},{n:1},{n:1},{n:1},{n:1}];
+
+  var drag = null; // { id, x, y } in coordinate canvas (x,y = posizione del puntatore)
+  // una volta che l'oggetto trascinato ha toccato la sferetta durante QUESTO
+  // trascinamento, il contatto resta valido anche se lo si allontana prima
+  // di rilasciare il mouse: l'elettrizzazione per contatto è irreversibile
+  // (a meno del dito) e non deve dipendere dal punto esatto del rilascio.
+  // Le foglioline restano quindi spalancate per tutto il resto del
+  // trascinamento, non solo dopo il rilascio.
+  var dragTouchedKnob = false;
+  var dragTouchedSign = null; // segno dell'oggetto carico che ha toccato in questo trascinamento
+
+  // ─── elettroni mobili del conduttore: vivono SEMPRE su un percorso che ──
+  // segue il metallo (sferetta → asta → perno → una delle due foglioline).
+  // Ogni "sito" ha un protone fisso (il reticolo) e un elettrone mobile:
+  // a riposo sono appaiati e distribuiti in modo uniforme; una carica
+  // vicina fa scivolare gli elettroni verso un estremo, lasciando scoperti
+  // i protoni, senza mai lasciare il metallo.
+  var ROD_LEN = PIVOT_Y - KNOB_Y;
+  var ROD_FRAC = ROD_LEN / (ROD_LEN + LEAF_LEN);
+  var SITES = [];
+  (function(){
+    var counts = { left:5, right:4 }; // 9 siti in tutto (circa metà dei 18 precedenti)
+    Object.keys(counts).forEach(function(arm){
+      var n = counts[arm];
+      for(var i=0;i<n;i++){
+        SITES.push({ arm:arm, s0:(i+0.5)/n, phase:Math.random()*10 });
+      }
+    });
+  })();
+  function armPoint(arm, s, leafAngle){
+    if(s <= ROD_FRAC){
+      var t = s/ROD_FRAC;
+      return { x:CX, y:lerp(KNOB_Y,PIVOT_Y,t), rot:0 };
+    }
+    var side = arm==='left' ? -1 : 1;
+    var t = (s-ROD_FRAC)/(1-ROD_FRAC);
+    var rot = side*leafAngle;
+    var lx = side*0.5*t, ly = LEAF_LEN*t;
+    return {
+      x: CX + lx*Math.cos(rot) - ly*Math.sin(rot),
+      y: PIVOT_Y + lx*Math.sin(rot) + ly*Math.cos(rot),
+      rot: rot
+    };
+  }
+  function biasedS(s0, bias){
+    var compress = 0.8;
+    if(bias>=0) return s0*(1-bias*compress);
+    return s0 + (1-s0)*compress*(-bias);
+  }
+
+  // ─── funzioni di disegno ────────────────────────────────────────────────
+  function sphere(x,y,r,c1,c2,c3){
+    var g = ctx.createRadialGradient(x-r*0.35,y-r*0.35,r*0.1,x,y,r);
+    g.addColorStop(0,c1); g.addColorStop(.55,c2); g.addColorStop(1,c3);
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+  }
+  function sign(x,y,ch,color,size){
+    ctx.fillStyle = color; ctx.font = '700 '+(size||11)+'px Georgia, serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(ch,x,y);
+  }
+  function roundRect(x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);
+    ctx.arcTo(x,y,x+w,y,r);
+    ctx.closePath();
+  }
+  // un piccolo "atomo": nucleo (+) con n elettroni orbitanti (sempre in movimento) — usato per lana/bacchette
+  function drawAtom(x,y,n,baseAngle,t){
+    sphere(x,y,5,'#ffd9c2','#e8983a','#9a4a12');
+    sign(x,y,'+','#5a2f08',7);
+    for(var k=0;k<n;k++){
+      var ang = baseAngle + t*1.1 + k*(Math.PI*1.15);
+      var orbR = 10 + k*4.5;
+      var ex = x+Math.cos(ang)*orbR, ey = y+Math.sin(ang)*orbR*0.6;
+      ctx.save(); ctx.globalAlpha=.35; ctx.beginPath(); ctx.ellipse(x,y,orbR,orbR*0.6,0,0,Math.PI*2);
+      ctx.strokeStyle='#6b7280'; ctx.lineWidth=.6; ctx.stroke(); ctx.restore();
+      sphere(ex,ey,4,'#eef1f4','#c7ccd4','#8b93a1');
+      sign(ex,ey,'–','#3b4250',6);
+    }
+  }
+  function drawWool(x,y,t){
+    var puffs = [
+      [0,0,30],[-26,8,22],[26,8,22],[-14,-22,20],[14,-22,20],
+      [0,20,20],[-30,-6,16],[30,-6,16],[0,-32,16]
+    ];
+    ctx.save();
+    puffs.forEach(function(p){
+      var g = ctx.createRadialGradient(x+p[0]-5,y+p[1]-5,2,x+p[0],y+p[1],p[2]);
+      g.addColorStop(0,'#fbf3e2'); g.addColorStop(.6,'#ecd9ae'); g.addColorStop(1,'#d8b26a');
+      ctx.beginPath(); ctx.arc(x+p[0],y+p[1],p[2],0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+    });
+    ctx.restore();
+    sign(x,y+58,'lana','#9a8060',10);
+    var slotPos = [[-22,-10],[22,-10],[0,4],[-16,22],[16,22],[0,-24],[0,26]];
+    woolSlots.forEach(function(s,i){ drawAtom(x+slotPos[i][0], y+slotPos[i][1], s.n, i*2.1, t); });
+  }
+  function drawRod(x,y,angleDeg,material,tool,t){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(angleDeg*Math.PI/180);
+    var rg = ctx.createLinearGradient(0,-7,0,7);
+    if(material==='glass'){ rg.addColorStop(0,'#eaf7ff'); rg.addColorStop(.5,'#bae6fd'); rg.addColorStop(1,'#6fc4e8'); }
+    else { rg.addColorStop(0,'#5b6472'); rg.addColorStop(.5,'#333b46'); rg.addColorStop(1,'#181d24'); }
+    roundRect(-ROD_HALF,-7,ROD_HALF*2,14,6); ctx.fillStyle=rg; ctx.fill();
+    var slotX = [-ROD_HALF+25,0,ROD_HALF-25];
+    tool.slots.forEach(function(s,i){ drawAtom(slotX[i], 0, s.n, i*2.6, t); });
+    // quando è carica, alcuni segni +/− tutt'attorno la rendono immediatamente riconoscibile
+    if(tool.charged){
+      var markX = [-ROD_HALF+8, -22, 22, ROD_HALF-8];
+      var markCol = tool.sign==='+' ? '#e8983a' : '#c7ccd4';
+      markX.forEach(function(mx,i){
+        sign(mx, (i%2===0)?-13:13, tool.sign, markCol, 12);
+      });
+    }
+    ctx.restore();
+  }
+  function drawFinger(x,y){
+    ctx.save();
+    ctx.font = '30px "Segoe UI Emoji","Apple Color Emoji",sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('☝️', x, y+6);
+    ctx.restore();
+  }
+
+  // ─── contatto: geometria di avvicinamento/tocco per ogni tipo di strumento ──
+  // Tutte le distanze di "tocco" usano la posizione GREZZA del puntatore
+  // (non un'estremità calcolata), cosicché il rilevamento non dipenda mai
+  // dall'orientamento con cui la bacchetta viene disegnata.
+  function computeContact(tool, px, py){
+    var dKnobC = Math.hypot(px-CX, py-KNOB_Y);
+    var dWoolC = Math.hypot(px-WOOL_X, py-WOOL_Y);
+    var res = { render:{x:px,y:py,angleDeg:0} };
+
+    if(tool.type === 'rod'){
+      var towardKnob = dKnobC <= dWoolC;
+      var tx = towardKnob ? CX : WOOL_X, ty = towardKnob ? KNOB_Y : WOOL_Y;
+      var ang = Math.atan2(ty-py, tx-px);
+      var minCenterDistKnob = ROD_HALF + KNOB_R + TIP_R;
+      var rx = px, ry = py;
+      if(towardKnob && dKnobC < minCenterDistKnob){
+        var ux = dKnobC<1e-3 ? 0 : (px-CX)/dKnobC, uy = dKnobC<1e-3 ? -1 : (py-KNOB_Y)/dKnobC;
+        rx = CX + ux*minCenterDistKnob; ry = KNOB_Y + uy*minCenterDistKnob;
+      }
+      res.render = { x:rx, y:ry, angleDeg: ang*180/Math.PI };
+      res.touchingKnob = dKnobC <= minCenterDistKnob + 2;
+      res.nearKnob = Math.max(0, dKnobC-ROD_HALF) <= 78;
+      res.touchingWool = dWoolC <= (WOOL_R + 20);
+    } else {
+      var r = tool.r || 10;
+      var minDist = KNOB_R + r;
+      var rx2 = px, ry2 = py;
+      if(dKnobC < minDist){
+        var ux2 = dKnobC<1e-3 ? 0 : (px-CX)/dKnobC, uy2 = dKnobC<1e-3 ? -1 : (py-KNOB_Y)/dKnobC;
+        rx2 = CX + ux2*minDist; ry2 = KNOB_Y + uy2*minDist;
+      }
+      res.render = { x:rx2, y:ry2, angleDeg:0 };
+      res.touchingKnob = dKnobC <= minDist + 2;
+      res.nearKnob = dKnobC <= 78;
+      res.touchingWool = false;
+    }
+    return res;
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    var t = performance.now()/1000;
+
+    // lana (fissa, sempre visibile, elettroni sempre orbitanti)
+    drawWool(WOOL_X, WOOL_Y, t);
+
+    // vetro dell'elettroscopio
+    ctx.save();
+    roundRect(JAR_L,JAR_TOP,JAR_R-JAR_L,JAR_BOT-JAR_TOP,12);
+    ctx.fillStyle = 'rgba(111,211,217,0.06)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(111,211,217,0.35)'; ctx.lineWidth=1.6; ctx.stroke();
+    ctx.restore();
+
+    // asta interna (dal tappo al perno delle foglioline, visibile dentro il vetro)
+    var rodGrad = ctx.createLinearGradient(CX-ROD_W/2,0,CX+ROD_W/2,0);
+    rodGrad.addColorStop(0,'#f0d9a0'); rodGrad.addColorStop(.5,'#c9973f'); rodGrad.addColorStop(1,'#8a6423');
+    ctx.fillStyle = rodGrad;
+    ctx.fillRect(CX-ROD_W/2, JAR_TOP-4, ROD_W, PIVOT_Y-(JAR_TOP-4));
+
+    // tappo, ben incastrato sopra il vetro (nessuno spazio vuoto)
+    ctx.fillStyle = '#2b2420';
+    roundRect(CX-STOPPER_W/2, STOPPER_TOP, STOPPER_W, STOPPER_BOT-STOPPER_TOP, 4);
+    ctx.fill();
+
+    // sferetta, che spunta appena dal tappo
+    sphere(CX,KNOB_Y,KNOB_R,'#fdf0c8','#c9973f','#7a5a20');
+
+    // strumento attualmente trascinato: calcola contatto/collisione
+    var contact = null, dragTool = null;
+    if(drag){
+      dragTool = tools[drag.id];
+      contact = computeContact(dragTool, drag.x, drag.y);
+      // strofinio "dal vivo": mentre la bacchetta è sulla lana, lo scambio
+      // di carica è visibile in tempo reale (si vede la lana "spogliarsi"
+      // o "arricchirsi" di elettroni proprio mentre la si strofina)
+      if(dragTool.type==='rod' && contact.touchingWool){
+        rubRod(dragTool);
+      }
+      if(contact.touchingKnob){
+        dragTouchedKnob = true;
+        if(dragTool.type==='ball') dragTouchedSign = dragTool.sign;
+        else if(dragTool.type==='rod' && dragTool.charged) dragTouchedSign = dragTool.sign;
+      }
+    }
+
+    // foglioline: apertura parziale per induzione, massima al contatto.
+    // Se in questo trascinamento c'è già stato un tocco con un oggetto
+    // carico, restano spalancate anche mentre lo si allontana (prima
+    // ancora del rilascio, che rende l'elettrizzazione permanente).
+    var maxA = (permanent || dragTouchedSign) ? MAX_ANGLE_FULL : MAX_ANGLE_PARTIAL;
+    if(contact && contact.touchingKnob) maxA = MAX_ANGLE_FULL;
+    var angle = maxA * Math.abs(eBias);
+    [-1,1].forEach(function(side){
+      ctx.save();
+      ctx.translate(CX,PIVOT_Y);
+      ctx.rotate(side*angle);
+      var leafGrad = ctx.createLinearGradient(0,0,side*8,0);
+      leafGrad.addColorStop(0,'#fff3c4'); leafGrad.addColorStop(.6,'#e8983a'); leafGrad.addColorStop(1,'#b87333');
+      ctx.beginPath();
+      ctx.moveTo(0,0);
+      ctx.lineTo(side*3,LEAF_LEN);
+      ctx.lineTo(side*-2,LEAF_LEN);
+      ctx.closePath();
+      ctx.fillStyle = leafGrad; ctx.fill();
+      ctx.restore();
+    });
+
+    // "+" della sferetta (sopra tutto il resto, sempre in vista)
+    sign(CX,KNOB_Y,'+', '#5a3d10', 10);
+
+    // reticolo di protoni (fissi) ed elettroni mobili: sempre sul metallo
+    // (sferetta → asta → perno → fogliolina), appaiati e uniformi a riposo;
+    // una carica vicina fa scivolare solo gli elettroni verso l'estremo
+    // opposto, lasciando scoperti i protoni.
+    SITES.forEach(function(site){
+      var pp = armPoint(site.arm, site.s0, angle);
+      var pxp = pp.x + 2.2*(-Math.cos(pp.rot)), pyp = pp.y + 2.2*(-Math.sin(pp.rot));
+      sphere(pxp,pyp,4.2,'#ffd9c2','#e8983a','#9a4a12');
+      sign(pxp,pyp,'+','#5a2f08',6.5);
+    });
+    SITES.forEach(function(site){
+      var sTarget = biasedS(site.s0, eBias);
+      var sJit = Math.sin(t*1.3+site.phase)*0.018;
+      var s = clamp01(sTarget+sJit);
+      var pe = armPoint(site.arm, s, angle);
+      var exx = pe.x - 2.2*(-Math.cos(pe.rot)), eyy = pe.y - 2.2*(-Math.sin(pe.rot));
+      sphere(exx,eyy,4.4,'#eef1f4','#c7ccd4','#8b93a1');
+      sign(exx,eyy,'–','#3b4250',7);
+    });
+
+    if(drag && contact){
+      if(dragTool.type==='ball'){
+        var isPos = dragTool.sign==='+';
+        if(isPos) sphere(contact.render.x,contact.render.y,13,'#ffd9c2','#e8983a','#9a4a12');
+        else sphere(contact.render.x,contact.render.y,13,'#eef1f4','#c7ccd4','#8b93a1');
+        sign(contact.render.x,contact.render.y, isPos?'+':'–', isPos?'#5a3d10':'#3b4250', 13);
+      } else if(dragTool.type==='rod'){
+        drawRod(contact.render.x, contact.render.y, contact.render.angleDeg, dragTool.material, dragTool, t);
+      } else if(dragTool.type==='finger'){
+        drawFinger(contact.render.x,contact.render.y);
+      }
+    }
+  }
+
+  function liveUpdate(){
+    if(!drag){
+      eBiasTarget = permanent ? (permSign==='+'?1:-1) : 0;
+      return;
+    }
+    // se in questo trascinamento c'è già stato un tocco con un oggetto carico,
+    // quella è la carica "di base" anche mentre lo si allontana (prima del
+    // rilascio, che la renderà permanente): le foglioline restano spalancate.
+    var base = permanent ? (permSign==='+'?1:-1) : (dragTouchedSign ? (dragTouchedSign==='+'?1:-1) : 0);
+    var tool = tools[drag.id];
+    var sgn = null;
+    if(tool.type==='ball') sgn = tool.sign;
+    else if(tool.type==='rod' && tool.charged) sgn = tool.sign;
+    if(!sgn){ eBiasTarget = base; return; }
+    var contact = computeContact(tool, drag.x, drag.y);
+    var dKnobC = Math.hypot(drag.x-CX, drag.y-KNOB_Y);
+    var d = tool.type==='rod' ? Math.max(0,dKnobC-ROD_HALF) : dKnobC;
+    var NEAR_R = 78;
+    if(contact.touchingKnob){
+      eBiasTarget = sgn==='+' ? 1 : -1;
+    } else if(d < NEAR_R){
+      // un oggetto avvicinato (non a contatto) PERTURBA per induzione la carica
+      // già presente: se ha segno opposto a quello permanente, la contrasta e
+      // le foglioline si chiudono parzialmente; se ha lo stesso segno, le apre
+      // ancora di più. Appena lo si allontana, si torna alla sola carica base.
+      var f = 1-(d)/(NEAR_R);
+      var influence = (sgn==='+'?1:-1) * f * 0.72;
+      eBiasTarget = Math.max(-1, Math.min(1, base + influence));
+    } else {
+      eBiasTarget = base;
+    }
+  }
+
+  function updateStateLabel(){
+    if(drag && dragTouchedSign){
+      stateEl.textContent = 'elettrizzato per contatto (' + (dragTouchedSign==='+'?'positivo':'negativo') + ')';
+      return;
+    }
+    if(!permanent){ stateEl.textContent = Math.abs(eBias) > 0.08 ? 'polarizzato per induzione' : 'neutro'; return; }
+    stateEl.textContent = 'elettrizzato per contatto (' + (permSign==='+'?'positivo':'negativo') + ')';
+  }
+
+  function tick(){
+    liveUpdate();
+    eBias += (eBiasTarget-eBias)*0.09;
+    draw();
+    updateStateLabel();
+    requestAnimationFrame(tick);
+  }
+
+  // ─── strofinio: la bacchetta, strisciata sulla lana, si scambia con essa ──
+  // TUTTI gli elettroni dei suoi siti attivi (non più uno soltanto): la
+  // bacchetta di vetro perde tutti gli elettroni dei suoi 3 siti (resta
+  // "+++"), quella di plastica li raddoppia tutti (diventa "−−−"), e la
+  // lana riceve/cede la stessa quantità nei suoi 3 siti corrispondenti.
+  function rubRod(tool){
+    woolSlots.forEach(function(s){ s.n = 1; });
+    tool.slots.forEach(function(s){ s.n = 1; });
+    if(tool.material === 'glass'){
+      tool.slots.forEach(function(s){ s.n = 0; });
+      woolSlots.slice(0,3).forEach(function(s){ s.n = 2; });
+      tool.sign = '+';
+      caption.textContent = 'Tutti gli elettroni "liberi" del vetro sono passati alla lana: la bacchetta si è caricata positivamente!';
+    } else {
+      woolSlots.slice(0,3).forEach(function(s){ s.n = 0; });
+      tool.slots.forEach(function(s){ s.n = 2; });
+      tool.sign = '-';
+      caption.textContent = 'Molti elettroni della lana sono passati alla plastica: la bacchetta si è caricata negativamente!';
+    }
+    tool.charged = true;
+    updateBadges();
+  }
+
+  function updateBadges(){
+    ['rodglass','rodplastic'].forEach(function(id){
+      var el = root.querySelector('[data-badge="'+id+'"]');
+      var tool = tools[id];
+      if(tool.charged){
+        el.textContent = '⚡' + tool.sign;
+        el.className = 'eosx-tool-badge ' + (tool.sign==='+' ? 'pos':'neg');
+      } else {
+        el.textContent = ''; el.className = 'eosx-tool-badge';
+      }
+    });
+  }
+
+  // ─── trascinamento ───────────────────────────────────────────────────────
+  function clientToCanvas(clientX, clientY){
+    var rect = cv.getBoundingClientRect();
+    return { x:(clientX-rect.left)*(W/rect.width), y:(clientY-rect.top)*(H/rect.height) };
+  }
+
+  root.querySelectorAll('.eosx-tool').forEach(function(el){
+    el.addEventListener('pointerdown', function(e){
+      e.preventDefault();
+      var p = clientToCanvas(e.clientX, e.clientY);
+      drag = { id: el.dataset.tool, x:p.x, y:p.y };
+      dragTouchedKnob = false;
+      dragTouchedSign = null;
+      caption.textContent = 'Trascina fino alla sferetta dell\'elettroscopio' + (drag.id.indexOf('rod')===0 ? ', oppure sulla lana per caricarla.' : '.');
+    });
+  });
+  window.addEventListener('pointermove', function(e){
+    if(!drag) return;
+    var p = clientToCanvas(e.clientX, e.clientY);
+    drag.x = p.x; drag.y = p.y;
+  });
+  window.addEventListener('pointerup', function(e){
+    if(!drag) return;
+    var tool = tools[drag.id];
+    var contact = computeContact(tool, drag.x, drag.y);
+
+    if(tool.type==='finger'){
+      if(contact.touchingKnob || dragTouchedKnob){
+        permanent = false; permSign = null;
+        caption.textContent = 'Toccando la sferetta con un dito, le cariche in eccesso fluiscono attraverso il tuo corpo e si ridistribuiscono uniformemente: l\'elettroscopio torna neutro.';
+      }
+    } else if(tool.type==='ball'){
+      if(contact.touchingKnob || dragTouchedKnob){
+        permanent = true; permSign = tool.sign;
+        caption.textContent = 'Toccando la sferetta, la carica si trasferisce per contatto: l\'elettroscopio resta carico per sempre (anche se allontani la sfera), finché non lo scarichi con il dito.';
+      } else if(contact.nearKnob){
+        caption.textContent = 'Per induzione le foglioline si aprono; si richiuderanno se allontani la sfera senza averla toccata.';
+      } else {
+        caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare.';
+      }
+    } else if(tool.type==='rod'){
+      if(contact.touchingWool){
+        rubRod(tool); // garanzia: cattura lo strofinio anche se il rilascio avviene nello stesso istante
+      } else if(tool.charged && (contact.touchingKnob || dragTouchedKnob)){
+        permanent = true; permSign = tool.sign;
+        caption.textContent = 'Toccando la sferetta, la carica si trasferisce per contatto: l\'elettroscopio resta carico per sempre (anche se allontani la bacchetta), finché non lo scarichi con il dito.';
+      } else if(tool.charged && contact.nearKnob){
+        caption.textContent = 'Per induzione le foglioline si aprono; si richiuderanno se allontani la bacchetta senza averla toccata.';
+      } else if(!tool.charged){
+        caption.textContent = 'Questa bacchetta non è ancora carica: trascinala prima sul panno di lana per strofinarla.';
+      } else {
+        caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare.';
+      }
+    }
+    // la lana, appena lo strumento viene rilasciato, torna sempre alle
+    // condizioni iniziali (il contatto con la bacchetta è transitorio: è
+    // la bacchetta, isolata, a mantenere la carica acquisita)
+    woolSlots.forEach(function(s){ s.n = 1; });
+    drag = null;
+  });
+
+  $('.eosx-reset').addEventListener('click', function(){
+    permanent = false; permSign = null; eBias = 0; eBiasTarget = 0;
+    tools.rodglass.charged = false; tools.rodglass.sign = null; tools.rodglass.slots.forEach(function(s){ s.n=1; });
+    tools.rodplastic.charged = false; tools.rodplastic.sign = null; tools.rodplastic.slots.forEach(function(s){ s.n=1; });
+    woolSlots.forEach(function(s){ s.n=1; });
+    updateBadges();
+    caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare.';
+  });
+
+  updateBadges();
+  requestAnimationFrame(tick);
+})();
+</script>

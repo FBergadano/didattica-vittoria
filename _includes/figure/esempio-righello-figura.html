@@ -1,0 +1,51 @@
+{% comment %}
+Figura statica: come stimare l'incertezza strumentale di un righello millimetrato (metà della divisione più piccola). Nessun parametro.
+{% endcomment %}
+<div style="margin:1rem 0 0.5rem;">
+<p style="font-size:13px;color:#374151;font-family:Georgia,serif;margin:0 0 0.4rem;"><strong>Esempio 1 — Righello millimetrato</strong></p>
+<svg viewBox="0 0 340 140" xmlns="http://www.w3.org/2000/svg" style="max-width:380px;width:100%;display:block;margin:0.3rem auto;">
+  <defs>
+    <linearGradient id="rl-g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7e980"/>
+      <stop offset="60%" stop-color="#e8d858"/>
+      <stop offset="100%" stop-color="#c8b830"/>
+    </linearGradient>
+  </defs>
+  <rect x="13" y="53" width="307" height="37" rx="3" fill="rgba(0,0,0,0.12)"/>
+  <rect x="195" y="50" width="20" height="38" fill="rgba(59,130,246,0.2)"/>
+  <rect x="195" y="50" width="10" height="38" fill="rgba(239,68,68,0.28)"/>
+  <rect x="10" y="50" width="310" height="38" rx="3" fill="url(#rl-g)" stroke="#a09030" stroke-width="1.5"/>
+  <line x1="15"  y1="50" x2="15"  y2="72" stroke="#3a2800" stroke-width="1.5"/>
+  <line x1="35"  y1="50" x2="35"  y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="55"  y1="50" x2="55"  y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="75"  y1="50" x2="75"  y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="95"  y1="50" x2="95"  y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="115" y1="50" x2="115" y2="64" stroke="#3a2800" stroke-width="1.2"/>
+  <line x1="135" y1="50" x2="135" y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="155" y1="50" x2="155" y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="175" y1="50" x2="175" y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="195" y1="50" x2="195" y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="215" y1="50" x2="215" y2="72" stroke="#3a2800" stroke-width="1.5"/>
+  <line x1="235" y1="50" x2="235" y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="255" y1="50" x2="255" y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="275" y1="50" x2="275" y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="295" y1="50" x2="295" y2="58" stroke="#3a2800" stroke-width="0.8"/>
+  <line x1="315" y1="50" x2="315" y2="72" stroke="#3a2800" stroke-width="1.5"/>
+  <text x="15"  y="82" font-size="10" fill="#2a1800" text-anchor="middle" font-family="monospace">0</text>
+  <text x="115" y="82" font-size="10" fill="#2a1800" text-anchor="middle" font-family="monospace">5</text>
+  <text x="215" y="82" font-size="10" fill="#2a1800" text-anchor="middle" font-family="monospace">10</text>
+  <text x="315" y="82" font-size="10" fill="#2a1800" text-anchor="middle" font-family="monospace">15</text>
+  <text x="327" y="82" font-size="9"  fill="#5a4800" font-family="Georgia,serif">mm</text>
+  <line x1="195" y1="44" x2="215" y2="44" stroke="#1d4ed8" stroke-width="1.5"/>
+  <line x1="195" y1="40" x2="195" y2="48" stroke="#1d4ed8" stroke-width="1.5"/>
+  <line x1="215" y1="40" x2="215" y2="48" stroke="#1d4ed8" stroke-width="1.5"/>
+  <text x="205" y="35" font-size="11" fill="#1d4ed8" text-anchor="middle" font-family="Georgia,serif" font-weight="bold">1 mm</text>
+  <text x="205" y="21" font-size="10" fill="#2563eb" text-anchor="middle" font-family="Georgia,serif">(sensibilità)</text>
+  <line x1="195" y1="96" x2="205" y2="96" stroke="#b91c1c" stroke-width="1.5"/>
+  <line x1="195" y1="92" x2="195" y2="100" stroke="#b91c1c" stroke-width="1.5"/>
+  <line x1="205" y1="92" x2="205" y2="100" stroke="#b91c1c" stroke-width="1.5"/>
+  <text x="200" y="114" font-size="11" fill="#b91c1c" text-anchor="middle" font-family="Georgia,serif" font-weight="bold">0,5 mm</text>
+  <text x="200" y="129" font-size="10" fill="#dc2626" text-anchor="middle" font-family="Georgia,serif">(incertezza strumentale)</text>
+</svg>
+<p style="font-size:12px;color:#6b7280;font-family:Georgia,serif;text-align:center;margin:0.2rem 0 0;">La distanza tra due tacche adiacenti (sensibilità) è <strong style="color:#1d4ed8;">1 mm</strong>. L'incertezza strumentale è la metà: <strong style="color:#b91c1c;">0,5 mm</strong>.</p>
+</div>

@@ -1,0 +1,71 @@
+{% comment %}
+Animazione a pulsante: un bastoncino carico si avvicina a un conduttore
+neutro, che si polarizza (le cariche di segno opposto si spostano verso il
+bastoncino, quelle di segno uguale si allontanano), pur restando neutro nel
+complesso. Nessun parametro.
+{% endcomment %}
+<div class="ind-widget" id="indWidget">
+<svg viewBox="0 0 420 190" style="max-width:400px;width:100%;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: elettrizzazione per induzione, un bastoncino carico polarizza un conduttore vicino">
+<defs>
+  <linearGradient id="indRodG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
+  <radialGradient id="indMetalG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#94a3b8"/></radialGradient>
+</defs>
+
+<g id="indRod" transform="translate(45,95)">
+  <rect x="0" y="-45" width="26" height="90" rx="8" fill="url(#indRodG)"/>
+  <text x="13" y="-55" text-anchor="middle" font-size="12" fill="#1e3a8a" font-weight="700">bastoncino (−)</text>
+  <text x="13" y="-18" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
+  <text x="13" y="8" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
+  <text x="13" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
+</g>
+
+<g transform="translate(300,95)">
+  <circle r="40" fill="url(#indMetalG)" stroke="#94a3b8" stroke-width="1.5"/>
+  <text class="ind-sym ind-p1" x="20" y="4" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
+  <text class="ind-sym ind-n1" x="10" y="21.3" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="ind-sym ind-p2" x="-10" y="21.3" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
+  <text class="ind-sym ind-n2" x="-20" y="4" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
+  <text class="ind-sym ind-p3" x="-10" y="-13.3" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
+  <text class="ind-sym ind-n3" x="10" y="-13.3" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
+</g>
+</svg>
+<button class="ind-btn" id="indBtn">Avvicina il bastoncino ▶</button>
+<p class="ind-caption">Il conduttore è neutro: cariche positive e negative sono distribuite uniformemente.</p>
+</div>
+
+<style>
+.ind-widget { margin: 1.6rem auto; max-width: 400px; text-align: center; }
+#indRod, .ind-sym { transition: transform .9s ease; }
+.ind-active #indRod { transform: translate(209px,95px); }
+.ind-active .ind-p1 { transform: translate(-46px,-14px); }
+.ind-active .ind-p2 { transform: translate(-16px,-3.3px); }
+.ind-active .ind-p3 { transform: translate(-22px,17.3px); }
+.ind-active .ind-n1 { transform: translate(16px,-31.3px); }
+.ind-active .ind-n2 { transform: translate(46px,14px); }
+.ind-active .ind-n3 { transform: translate(22px,17.3px); }
+.ind-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .88rem; margin-top: .4rem; }
+.ind-btn:hover { background: #e2e8f0; }
+.ind-caption { min-height: 2.4em; font-size: .85rem; font-style: italic; color: #6b7280; margin-top: .5rem; max-width: 380px; margin-left: auto; margin-right: auto; }
+@media print { .ind-widget { display: none; } }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('indWidget');
+  if(!root) return;
+  var btn = root.querySelector('.ind-btn');
+  var caption = root.querySelector('.ind-caption');
+  var active = false;
+  btn.addEventListener('click', function(){
+    active = !active;
+    root.classList.toggle('ind-active', active);
+    if(active){
+      btn.textContent = '◀ Allontana il bastoncino';
+      caption.textContent = 'Il bastoncino carico negativamente respinge le cariche negative e attira quelle positive: il conduttore si polarizza, ma resta neutro nel complesso.';
+    } else {
+      btn.textContent = 'Avvicina il bastoncino ▶';
+      caption.textContent = 'Il conduttore è neutro: cariche positive e negative sono distribuite uniformemente.';
+    }
+  });
+})();
+</script>

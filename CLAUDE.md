@@ -18,6 +18,7 @@ per tenerli ordinati nel finder — l'ordine vero (pagina del corso, link
 
 | Cartella in `_corsi/` | Argomento | Materia |
 |---|---|---|
+| `funzioni/` | Le Funzioni | matematica |
 | `introduzione-alla-fisica/` | Introduzione alla Fisica | fisica |
 | `meccanica/` | Meccanica | fisica |
 | `termodinamica/` | Termodinamica | fisica |
@@ -25,11 +26,21 @@ per tenerli ordinati nel finder — l'ordine vero (pagina del corso, link
 | `cittadinanza/` | Cittadinanza e Prospettive Globali | cittadinanza |
 
 Ogni argomento ha anche una pagina di presentazione `_corsi/<argomento>.md`
-(layout `corso`) con titolo, `slug` e `ordine` (posizione nella home).
+(layout `corso`) con titolo, `slug` e `ordine` (posizione all'interno della
+sua sezione nella home).
 
-Quest'anno il sito pubblica **solo fisica** (più Cittadinanza). Il materiale
-di matematica non è online: gli appunti LaTeX di matematica e fisica vivono
-solo in `_corsi/Appunti/`, vedi sotto.
+La home page (`index.md`) mostra tre sezioni **chiaramente distinte**, una per
+materia — Matematica, Fisica, Cittadinanza — ciascuna con la propria griglia di
+argomenti, filtrata per `materia` e ordinata per `ordine`. Aggiungendo un nuovo
+argomento non serve toccare `index.md`: basta impostare il campo `materia`
+giusto nel front matter della pagina di presentazione, e comparirà da solo
+nella sezione corretta.
+
+Per ora la sezione Matematica contiene solo l'argomento "Le Funzioni"
+(capitoli: Le funzioni algebriche, La funzione esponenziale, La funzione
+logaritmo, Le funzioni goniometriche) — il resto del materiale di matematica
+non è online: gli appunti LaTeX di matematica e fisica vivono solo in
+`_corsi/Appunti/`, vedi sotto.
 
 ### Cartella `_corsi/Appunti/`
 
@@ -90,7 +101,8 @@ Tutti i box si aprono con `{% include box-XXX.html testo="..." %}` e si chiudono
 | `box-ex.html` | viola | Esempi risolti |
 | `box-proof.html` | grigio | Dimostrazioni |
 | `box-note.html` | arancio | Note, approfondimenti |
-| `box-imp.html`  | ambra + barra cyan destra | Punti importanti da ricordare |
+| `box-imp.html`  | ambra + barra cyan destra | Punti importanti da ricordare (nuovi, appena spiegati) |
+| `box-ricorda.html` | indaco | Richiamo sintetico di un concetto/formula già visti in precedenza, prima di riusarli (es. prima di sostituire una variabile in una formula nota) |
 
 Esempio:
 ```
@@ -307,11 +319,31 @@ Si usa sempre dentro un box: `{% include box-ex.html testo="Verifica Subito!" %}
 ## Simulazioni interattive
 
 Le simulazioni vanno scritte in JavaScript puro (no React, no framework).
-Si inseriscono direttamente nel file `.md` del corso come blocco `<script>` + `<canvas>`.
 Quando Fulvio chiede una simulazione, specificare:
 - Cosa mostra visivamente (animazione, grafico, o entrambi)
 - Quali parametri controlla lo studente (slider)
 - Se serve un grafico affiancato (posizione vs tempo, ecc.)
+
+**Ogni simulazione/animazione va scritta in un file a sé in `_includes/lab-virtuali/`**
+(es. `_includes/lab-virtuali/spada-lab.html`), non incollata nel file `.md` del
+capitolo: il markup (`<style>`/`<div>`/`<svg>` o `<canvas>`/`<script>`) sta
+tutto lì, con un commento `{% comment %}...{% endcomment %}` in cima che
+spiega cosa fa. Nel `.md` del capitolo resta solo la riga
+
+```liquid
+{% include lab-virtuali/spada-lab.html %}
+```
+
+così il file che Fulvio legge e modifica resta pulito. Questa regola vale
+solo per le **animazioni/simulazioni autosufficienti** (che non dipendono da
+numeri o testo specifici scritti nel corpo del capitolo): un esercizio con
+valori (masse, prezzi, ecc.) citati nel testo circostante, o una domanda a
+risposta numerica/multipla, resta invece nel `.md`, perché va letto insieme
+al problema che pone. Attenzione anche a non spezzare un `<script>` che
+gestisce insieme più widget (es. un tool più un esercizio nello stesso
+blocco): se non è ovviamente separabile, meglio lasciarlo dov'è piuttosto che
+rischiare di romperlo spostando lo script prima che il markup a cui si
+riferisce sia stato scritto nella pagina.
 
 ## Pubblicazione
 

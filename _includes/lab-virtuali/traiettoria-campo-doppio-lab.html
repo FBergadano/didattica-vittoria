@@ -1,0 +1,142 @@
+{% comment %}
+Come traiettoria-campo-singolo-lab, ma con due masse (una grande e una
+piccola, stile Terra-Luna): la pallina esploratrice, rilasciata da ferma,
+segue un percorso curvo deciso dall'attrazione combinata delle due masse.
+Nessun parametro.
+{% endcomment %}
+<div class="vdrag-widget" id="fline2">
+<p class="vdrag-hint">Trascina la pallina rosa in un punto qualsiasi e lasciala andare: osserva il percorso curvo che segue, tirata da entrambe le masse.</p>
+<svg id="fline2-svg" viewBox="0 0 320 320" width="100%" style="max-width:300px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Simulazione: traiettoria di una massa esploratrice nel campo di due masse">
+<defs>
+  <radialGradient id="fl2Earth" cx="35%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#ecfeff"/><stop offset="55%" stop-color="#67e8f9"/><stop offset="100%" stop-color="#0891b2"/>
+  </radialGradient>
+  <radialGradient id="fl2Moon" cx="35%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#94a3b8"/>
+  </radialGradient>
+  <radialGradient id="fl2Mass" cx="35%" cy="30%" r="70%">
+    <stop offset="0%" stop-color="#fdf2f8"/><stop offset="55%" stop-color="#f9a8d4"/><stop offset="100%" stop-color="#ec4899"/>
+  </radialGradient>
+</defs>
+
+<g id="fline2-trails"></g>
+
+<circle cx="110" cy="170" r="34" fill="url(#fl2Earth)"/>
+<ellipse cx="98" cy="157" rx="10" ry="7" fill="#fff" opacity=".5"/>
+<text x="110" y="176" text-anchor="middle" font-size="13" font-weight="600" fill="#0e7490">T</text>
+
+<circle cx="225" cy="110" r="15" fill="url(#fl2Moon)"/>
+<ellipse cx="220" cy="105" rx="4.5" ry="3" fill="#fff" opacity=".6"/>
+<text x="225" y="114" text-anchor="middle" font-size="10" font-weight="600" fill="#475569">L</text>
+
+<circle id="fline2-mass" cx="270" cy="280" r="9" fill="url(#fl2Mass)" stroke="#be185d" stroke-width="1.5" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-reset" id="fline2-clear">&#8635; Cancella tracce</button>
+</div>
+</div>
+
+<script>
+(function(){
+  var ID='fline2';
+  var svg=document.getElementById(ID+'-svg');
+  var mass=document.getElementById(ID+'-mass');
+  var trails=document.getElementById(ID+'-trails');
+  var clearBtn=document.getElementById(ID+'-clear');
+  var EARTH={x:110,y:170,r:34}, MOON={x:225,y:110,r:15};
+  var K1=2200, K2=260, SOFTEN=12, GAP=6, BOUND=14, MAXSTEPS=500;
+  var KMOVE=6, MAXSTEP=7, MINSTEP=0.8;
+  var START={x:270,y:280};
+  var falling=false;
+
+  function toSvgPoint(clientX,clientY){
+    var pt=svg.createSVGPoint();
+    pt.x=clientX; pt.y=clientY;
+    var m=svg.getScreenCTM().inverse();
+    return pt.matrixTransform(m);
+  }
+
+  function clampDrag(x,y){
+    x=Math.max(BOUND,Math.min(320-BOUND,x));
+    y=Math.max(BOUND,Math.min(320-BOUND,y));
+    [EARTH,MOON].forEach(function(b){
+      var dx=x-b.x, dy=y-b.y, dist=Math.sqrt(dx*dx+dy*dy), minD=b.r+GAP+6;
+      if(dist<minD){
+        if(dist<1e-6){ dx=1; dy=0; dist=1; }
+        var k=minD/dist; x=b.x+dx*k; y=b.y+dy*k;
+      }
+    });
+    return {x:x,y:y};
+  }
+
+  function setMass(x,y){ mass.setAttribute('cx',x); mass.setAttribute('cy',y); }
+
+  function onMove(e){
+    e.preventDefault();
+    var p=toSvgPoint(e.clientX,e.clientY);
+    var c=clampDrag(p.x,p.y);
+    setMass(c.x,c.y);
+  }
+  function onUp(e){
+    mass.removeEventListener('pointermove',onMove);
+    mass.removeEventListener('pointerup',onUp);
+    simulateFall(parseFloat(mass.getAttribute('cx')),parseFloat(mass.getAttribute('cy')));
+  }
+  mass.addEventListener('pointerdown',function(e){
+    if(falling) return;
+    e.preventDefault();
+    mass.setPointerCapture(e.pointerId);
+    mass.addEventListener('pointermove',onMove);
+    mass.addEventListener('pointerup',onUp);
+  });
+
+  function accel(x,y,body,k){
+    var dx=body.x-x, dy=body.y-y, r=Math.max(Math.sqrt(dx*dx+dy*dy),SOFTEN);
+    var a=k/(r*r);
+    return {ax:a*dx/r, ay:a*dy/r};
+  }
+
+  function simulateFall(x0,y0){
+    falling=true; mass.style.cursor='default';
+    var x=x0,y=y0,step=0;
+    var pts=[x+','+y];
+    function frame(){
+      step++;
+      // Nessuna inerzia: lo spostamento ad ogni istante è preso nella
+      // direzione del campo *in quel punto* (non dipende dal moto precedente),
+      // così la pallina segue esattamente la linea di campo, non una traiettoria "reale".
+      var a1=accel(x,y,EARTH,K1), a2=accel(x,y,MOON,K2);
+      var fx=a1.ax+a2.ax, fy=a1.ay+a2.ay;
+      var dx=fx*KMOVE, dy=fy*KMOVE, dlen=Math.hypot(dx,dy);
+      if(dlen>MAXSTEP){ dx*=MAXSTEP/dlen; dy*=MAXSTEP/dlen; }
+      else if(dlen>0 && dlen<MINSTEP){ dx*=MINSTEP/dlen; dy*=MINSTEP/dlen; }
+      x+=dx; y+=dy;
+      pts.push(x.toFixed(1)+','+y.toFixed(1));
+      setMass(x,y);
+      var distE=Math.hypot(x-EARTH.x,y-EARTH.y), distM=Math.hypot(x-MOON.x,y-MOON.y);
+      var landed=(distE<EARTH.r+GAP)||(distM<MOON.r+GAP);
+      var escaped=(x<0||x>320||y<0||y>320);
+      if(!landed && !escaped && step<MAXSTEPS){
+        requestAnimationFrame(frame);
+      } else {
+        var poly=document.createElementNS('http://www.w3.org/2000/svg','polyline');
+        poly.setAttribute('points',pts.join(' '));
+        poly.setAttribute('fill','none');
+        poly.setAttribute('stroke','#ec4899');
+        poly.setAttribute('stroke-width','2');
+        poly.setAttribute('opacity','.45');
+        trails.appendChild(poly);
+        falling=false; mass.style.cursor='grab';
+        setTimeout(function(){ setMass(START.x,START.y); },250);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  clearBtn.addEventListener('click',function(){
+    trails.innerHTML='';
+    falling=false; mass.style.cursor='grab';
+    setMass(START.x,START.y);
+  });
+})();
+</script>

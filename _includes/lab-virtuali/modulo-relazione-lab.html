@@ -1,0 +1,139 @@
+{% comment %}
+Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo densità, autovalutazione, foto) con pulsante di stampa. Nessun parametro.
+{% endcomment %}
+<style>
+.rl-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:.9rem 1.1rem;margin:.7rem 0;break-inside:avoid;}
+.rl-card b{font-size:13px;color:#1e3a5f;font-family:Georgia,serif;display:block;margin-bottom:.5rem;}
+.rl-row{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;margin:.35rem 0;font-size:13px;font-family:Georgia,serif;color:#374151;}
+.rl-in{border:none;border-bottom:1.5px solid #9ca3af;padding:.15rem .3rem;font-family:monospace;font-size:13px;width:72px;background:transparent;outline:none;}
+.rl-in.wl{width:260px;}.rl-in.wm{width:140px;}
+.rl-sel{border:none;border-bottom:1.5px solid #9ca3af;font-family:monospace;font-size:12px;background:transparent;outline:none;color:#374151;padding:.1rem .1rem;}
+.rl-ta{width:100%;min-height:80px;border:1.5px solid #d1d5db;border-radius:4px;padding:.4rem;font-family:Georgia,serif;font-size:13px;resize:vertical;box-sizing:border-box;margin-top:.3rem;}
+.rl-phwrap{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem;}
+.rl-ph{width:110px;height:85px;object-fit:cover;border-radius:4px;border:1px solid #d1d5db;}
+.rl-badge{display:inline-block;background:#1e3a5f;color:white;border-radius:4px;padding:.1rem .5rem;font-size:11px;font-family:Georgia,serif;margin-right:.4rem;}
+.rl-res{background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:.8rem 1rem;margin:.5rem 0;break-inside:avoid;}
+.rl-stars span{font-size:22px;cursor:pointer;opacity:.3;color:#f59e0b;user-select:none;}
+.rl-stars span.on{opacity:1;}
+@media print{
+  body,body *{visibility:hidden!important;}
+  #rl-form,#rl-form *{visibility:visible!important;}
+  #rl-form{position:absolute;top:0;left:0;width:100%;padding:1rem 2rem;box-sizing:border-box;background:white;}
+  .rl-np{display:none!important;visibility:hidden!important;}
+  .rl-in{border-bottom:1px solid #aaa!important;}
+  .rl-sel{border-bottom:1px solid #aaa!important;}
+  .rl-ta{border:1px dashed #bbb!important;background:transparent!important;}
+}
+</style>
+<div id="rl-form">
+
+<div class="rl-card">
+<b>Dati</b>
+<div class="rl-row">Nome e Cognome: <input class="rl-in wl" id="rl-nome" type="text"></div>
+<div class="rl-row">Classe: <input class="rl-in" id="rl-classe" type="text" style="width:55px"> &emsp; Data: <input class="rl-in wm" id="rl-data" type="date"></div>
+</div>
+
+<div class="rl-card">
+<b><span class="rl-badge">Fase 0</span> Strumenti</b>
+<div class="rl-row">Strumenti utilizzati:</div>
+<textarea class="rl-ta" id="rl-strum" placeholder="Righello (sensibilità 1 mm), bilancia digitale (ultima cifra: ? g), bicchiere cilindrico, ..."></textarea>
+<div class="rl-row" style="margin-top:.4rem;">i.s. righello = <input class="rl-in" id="rl-isr" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">i.s. bilancia = <input class="rl-in" id="rl-isb" type="text"> <select class="rl-sel"><option>g</option><option>kg</option></select></div>
+<div class="rl-row rl-np" style="margin-top:.4rem;">Foto strumenti: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph0')"></div>
+<div class="rl-phwrap" id="rlph0"></div>
+</div>
+
+<div class="rl-card">
+<b><span class="rl-badge">Fase 1</span> Diametro del bicchiere</b>
+<div class="rl-row">$d_1$ = <input class="rl-in" id="d1" type="text"> &ensp; $d_2$ = <input class="rl-in" id="d2" type="text"> &ensp; $d_3$ = <input class="rl-in" id="d3" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$\bar{d}$ = <input class="rl-in" id="d_m" type="text"> &ensp; $s_d$ = <input class="rl-in" id="d_s" type="text"> &ensp; $\Delta d$ = <input class="rl-in" id="d_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$e_d$ = <input class="rl-in" id="d_r" type="text"> %</div>
+<div class="rl-row rl-np" style="margin-top:.3rem;">Foto: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph1')"></div>
+<div class="rl-phwrap" id="rlph1"></div>
+</div>
+
+<div class="rl-card">
+<b><span class="rl-badge">Fase 2</span> Area di base</b>
+<div class="rl-row">$S$ = <input class="rl-in" id="S_v" type="text"> <select class="rl-sel"><option>mm²</option><option>cm²</option></select></div>
+<div class="rl-row">$\Delta S$ = <input class="rl-in" id="DS_v" type="text"> <select class="rl-sel"><option>mm²</option><option>cm²</option></select> &ensp; $e_S$ = <input class="rl-in" id="eS_v" type="text"> %</div>
+</div>
+
+<div class="rl-card">
+<b><span class="rl-badge">Fase 3</span> Altezza iniziale dell'acqua</b>
+<div class="rl-row">$h_{i,1}$ = <input class="rl-in" id="hi1" type="text"> &ensp; $h_{i,2}$ = <input class="rl-in" id="hi2" type="text"> &ensp; $h_{i,3}$ = <input class="rl-in" id="hi3" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row rl-np" style="margin-top:.3rem;">Foto: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph3')"></div>
+<div class="rl-phwrap" id="rlph3"></div>
+<div class="rl-row">$\bar{h}_i$ = <input class="rl-in" id="hi_m" type="text"> &ensp; $s_{h_i}$ = <input class="rl-in" id="hi_s" type="text"> &ensp; $\Delta h_i$ = <input class="rl-in" id="hi_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$e_{h_i}$ = <input class="rl-in" id="hi_r" type="text"> %</div>
+</div>
+
+<div class="rl-card">
+<b><span class="rl-badge">Fase 4</span> Volume iniziale dell'acqua</b>
+<div class="rl-row">$V_i$ = <input class="rl-in" id="Vi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select></div>
+<div class="rl-row">$\Delta V_i$ = <input class="rl-in" id="DVi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select> &ensp; $e_{V_i}$ = <input class="rl-in" id="eVi_v" type="text"> %</div>
+</div>
+
+<div class="rl-card">
+<b><span class="rl-badge">Fase 5</span> Altezza finale con il sasso</b>
+<div class="rl-row">$h_{f,1}$ = <input class="rl-in" id="hf1" type="text"> &ensp; $h_{f,2}$ = <input class="rl-in" id="hf2" type="text"> &ensp; $h_{f,3}$ = <input class="rl-in" id="hf3" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row rl-np" style="margin-top:.3rem;">Foto: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph5')"></div>
+<div class="rl-phwrap" id="rlph5"></div>
+<div class="rl-row">$\bar{h}_f$ = <input class="rl-in" id="hf_m" type="text"> &ensp; $s_{h_f}$ = <input class="rl-in" id="hf_s" type="text"> &ensp; $\Delta h_f$ = <input class="rl-in" id="hf_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$e_{h_f}$ = <input class="rl-in" id="hf_r" type="text"> %</div>
+<div class="rl-row">$z$ = <input class="rl-in" id="z_v" type="text"> &ensp; $\Delta z$ = <input class="rl-in" id="Dz_v" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select> &ensp; $e_z$ = <input class="rl-in" id="ez_v" type="text"> %</div>
+<div class="rl-row">$V_s$ = <input class="rl-in" id="Vs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select></div>
+<div class="rl-row">$\Delta V_s$ = <input class="rl-in" id="DVs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select> &ensp; $e_{V_s}$ = <input class="rl-in" id="eVs_v" type="text"> %</div>
+</div>
+
+<div class="rl-card">
+<b><span class="rl-badge">Fase 6</span> Massa del sasso</b>
+<div class="rl-row">$m_1$ = <input class="rl-in" id="m1" type="text"> &ensp; $m_2$ = <input class="rl-in" id="m2" type="text"> &ensp; $m_3$ = <input class="rl-in" id="m3" type="text"> <select class="rl-sel"><option>g</option><option>kg</option></select></div>
+<div class="rl-row rl-np" style="margin-top:.3rem;">Foto bilancia: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph6')"></div>
+<div class="rl-phwrap" id="rlph6"></div>
+<div class="rl-row">$\bar{m}$ = <input class="rl-in" id="m_m" type="text"> &ensp; $s_m$ = <input class="rl-in" id="m_s" type="text"> &ensp; $\Delta m$ = <input class="rl-in" id="m_e" type="text"> <select class="rl-sel"><option>g</option><option>kg</option></select></div>
+<div class="rl-row">$e_m$ = <input class="rl-in" id="m_r" type="text"> %</div>
+</div>
+
+<div class="rl-res">
+<b style="font-size:13px;color:#1e3a5f;font-family:Georgia,serif;display:block;margin-bottom:.4rem;">Densità del sasso</b>
+<div class="rl-row">$d$ = <input class="rl-in" id="d_dens" type="text"> <select class="rl-sel"><option>g/cm³</option><option>kg/m³</option></select></div>
+<div class="rl-row">$\Delta d$ = <input class="rl-in" id="Dd_dens" type="text"> <select class="rl-sel"><option>g/cm³</option><option>kg/m³</option></select> &ensp; $e$ = <input class="rl-in" id="e_dens" type="text"> %</div>
+<div class="rl-row" style="font-weight:bold;font-size:13px;margin-top:.5rem;border-top:1px solid #bfdbfe;padding-top:.4rem;">Risultato: <em>d</em> = ( <input class="rl-in" id="d2_dens" type="text" style="width:55px"> ± <input class="rl-in" id="Dd2_dens" type="text" style="width:55px"> ) <select class="rl-sel"><option>g/cm³</option><option>kg/m³</option></select></div>
+</div>
+
+<div class="rl-card">
+<b>Commento finale <span style="font-weight:normal;font-size:11px;color:#6b7280;">(facoltativo)</span></b>
+<textarea class="rl-ta" id="rl-comm" style="min-height:110px;" placeholder="Difficoltà incontrate, osservazioni, curiosità, proposte di miglioramento..."></textarea>
+</div>
+
+<div class="rl-card rl-np">
+<b>Autovalutazione <span style="font-weight:normal;font-size:11px;color:#6b7280;">(facoltativa)</span></b>
+<div class="rl-row">Comprendo il metodo del volume per immersione:</div>
+<div class="rl-stars" id="st1" style="margin:.1rem 0 .4rem .3rem;" onclick="rlStar(event,'st1')"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+<div class="rl-row">So calcolare e propagare l'incertezza strumentale:</div>
+<div class="rl-stars" id="st2" style="margin:.1rem 0 .4rem .3rem;" onclick="rlStar(event,'st2')"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+<div class="rl-row">Capisco perché serve un bicchiere cilindrico:</div>
+<div class="rl-stars" id="st3" style="margin:.1rem 0 0 .3rem;" onclick="rlStar(event,'st3')"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+</div>
+
+<div style="text-align:center;margin:1.2rem 0;" class="rl-np">
+<button onclick="window.print()" style="padding:.5rem 2rem;background:#1a4d6a;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:Georgia,serif;">&#128424; Stampa modulo</button>
+</div>
+
+</div>
+<script>
+(function(){
+var di=document.getElementById('rl-data');if(di&&!di.value)di.value=new Date().toISOString().slice(0,10);
+window.rlPh=function(inp,wid){
+  var w=document.getElementById(wid);
+  Array.from(inp.files).forEach(function(f){var r=new FileReader();r.onload=function(e){var i=document.createElement('img');i.src=e.target.result;i.className='rl-ph';w.appendChild(i);};r.readAsDataURL(f);});
+  inp.value='';
+};
+window.rlStar=function(ev,cid){
+  if(ev.target.tagName!=='SPAN')return;
+  var stars=document.getElementById(cid).querySelectorAll('span');
+  var idx=Array.from(stars).indexOf(ev.target);
+  stars.forEach(function(s,i){s.classList.toggle('on',i<=idx);});
+};
+})();
+</script>

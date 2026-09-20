@@ -1,0 +1,181 @@
+{% comment %}
+Esercizio a carosello (Verifica Subito!) di confronto fra forza gravitazionale e forza elettrica. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexConfronto">
+<p class="iex-lbl">Verifica Subito!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexConfrontoprev" onclick="iexConfrontonav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexConfrontodots"></div>
+<button class="iex-navbtn" id="iexConfrontonext" onclick="iexConfrontonav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexConfrontorow0">
+<p class="iex-qt">Perché nella formula della forza elettrica compare il valore assoluto, $F = k\,\dfrac{\lvert q_1\cdot q_2\rvert}{r^2}$, mentre in quella della forza gravitazionale, $F = G\,\dfrac{m_1\cdot m_2}{r^2}$, no?</p>
+<div class="iex-choices" id="iexConfrontochoices0">
+<button class="iex-choice-btn" data-v="a">Perché la forza elettrica è sempre più intensa di quella gravitazionale</button>
+<button class="iex-choice-btn" data-v="b">Perché le masse sono sempre positive, mentre le cariche possono essere sia positive sia negative: senza il valore assoluto il prodotto $q_1\cdot q_2$ potrebbe risultare negativo, cosa impossibile per un modulo</button>
+<button class="iex-choice-btn" data-v="c">Perché $k$ è una costante più grande di $G$</button>
+<button class="iex-choice-btn" data-v="d">È solo una convenzione, senza un vero motivo fisico</button>
+</div>
+<div class="iex-fb" id="iexConfrontofb0"></div>
+</div>
+
+<div class="iex-q" id="iexConfrontorow1" style="display:none">
+<p class="iex-qt">Quale fra le due costanti, $k$ (costante di Coulomb) e $G$ (costante di gravitazione universale), ha il valore più grande?</p>
+<div class="iex-choices" id="iexConfrontochoices1">
+<button class="iex-choice-btn" data-v="a">$G$ è più grande di $k$</button>
+<button class="iex-choice-btn" data-v="b">Sono all'incirca uguali</button>
+<button class="iex-choice-btn" data-v="c">$k$ è enormemente più grande di $G$: è proprio per questo che, a parità di distanza, la forza elettrica è molto più intensa di quella gravitazionale</button>
+<button class="iex-choice-btn" data-v="d">Non si possono confrontare, perché una delle due è sempre negativa</button>
+</div>
+<div class="iex-fb" id="iexConfrontofb1"></div>
+</div>
+
+<div class="iex-q" id="iexConfrontorow2" style="display:none">
+<p class="iex-qt">Quale fra la forza elettrica e la forza gravitazionale è una forza <strong>centrale</strong> (cioè diretta lungo la retta che congiunge i due corpi)?</p>
+<div class="iex-choices" id="iexConfrontochoices2">
+<button class="iex-choice-btn" data-v="a">Solo la forza gravitazionale</button>
+<button class="iex-choice-btn" data-v="b">Solo la forza elettrica</button>
+<button class="iex-choice-btn" data-v="c">Entrambe</button>
+<button class="iex-choice-btn" data-v="d">Nessuna delle due</button>
+</div>
+<div class="iex-fb" id="iexConfrontofb2"></div>
+</div>
+
+<div class="iex-q" id="iexConfrontorow3" style="display:none">
+<p class="iex-qt">La forza elettrica può essere sia attrattiva sia repulsiva, a seconda del segno delle cariche coinvolte. La forza gravitazionale, invece, può essere:</p>
+<div class="iex-choices" id="iexConfrontochoices3">
+<button class="iex-choice-btn" data-v="a">Sia attrattiva sia repulsiva, esattamente come quella elettrica</button>
+<button class="iex-choice-btn" data-v="b">Solo repulsiva</button>
+<button class="iex-choice-btn" data-v="c">Solo attrattiva, perché non esiste alcuna "massa negativa"</button>
+<button class="iex-choice-btn" data-v="d">Né attrattiva né repulsiva: la gravità non è una forza vera e propria</button>
+</div>
+<div class="iex-fb" id="iexConfrontofb3"></div>
+</div>
+
+<div class="iex-q" id="iexConfrontorow4" style="display:none">
+<p class="iex-qt">Sia la forza elettrica sia quella gravitazionale sono inversamente proporzionali a:</p>
+<div class="iex-choices" id="iexConfrontochoices4">
+<button class="iex-choice-btn" data-v="a">La distanza $r$</button>
+<button class="iex-choice-btn" data-v="b">Il quadrato della distanza $r^2$</button>
+<button class="iex-choice-btn" data-v="c">Il cubo della distanza $r^3$</button>
+<button class="iex-choice-btn" data-v="d">Nessuna delle due dipende dalla distanza</button>
+</div>
+<div class="iex-fb" id="iexConfrontofb4"></div>
+</div>
+
+<div class="iex-q" id="iexConfrontorow5" style="display:none">
+<p class="iex-qt">Che cosa hanno in comune la forza elettrica e la forza gravitazionale, riguardo al <em>modo</em> in cui agiscono a livello microscopico fra due corpi?</p>
+<div class="iex-choices" id="iexConfrontochoices5">
+<button class="iex-choice-btn" data-v="a">Agiscono solo se i due corpi sono a diretto contatto</button>
+<button class="iex-choice-btn" data-v="b">Sono entrambe forze <strong>a distanza</strong>: agiscono anche se i corpi non si toccano, senza bisogno di alcun mezzo materiale che le trasmetta</button>
+<button class="iex-choice-btn" data-v="c">Agiscono solo se i due corpi sono in movimento relativo</button>
+<button class="iex-choice-btn" data-v="d">Serve sempre l'aria (o un altro gas) a trasmetterle, come per il suono</button>
+</div>
+<div class="iex-fb" id="iexConfrontofb5"></div>
+</div>
+
+</div>
+
+<style>
+@media print { #iexConfronto { display:none; } }
+</style>
+
+<script>
+(function(){
+  var N=6, cur=0, ok=[false,false,false,false,false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexConfrontodots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexConfronto .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexConfrontorow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexConfrontoprev').disabled=(i===0);
+    document.getElementById('iexConfrontonext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexConfrontodots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexConfrontonav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+
+  function wireChoices(rowIdx, choicesId, fbId, correctV, msgOk, msgErr){
+    var btns = document.querySelectorAll('#'+choicesId+' .iex-choice-btn');
+    var fb = document.getElementById(fbId);
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === correctV;
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = 'iex-choice-btn correct';
+          ok[rowIdx] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! '+msgOk+(rowIdx<N-1?' <button class="iex-nextbtn" onclick="iexConfrontonav(1)">Passo successivo &rarr;</button>':'');
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = 'iex-choice-btn wrong';
+          var correctBtn = document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+correctV+'"]');
+          correctBtn.className = 'iex-choice-btn correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = msgErr;
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  }
+
+  wireChoices(0, 'iexConfrontochoices0', 'iexConfrontofb0', 'b',
+    'Le cariche, a differenza delle masse, possono essere negative: senza il valore assoluto la formula darebbe a volte una forza "negativa", che non ha senso per un modulo (che è sempre $\\geq 0$).',
+    'Non è corretto: il motivo è che le cariche (a differenza delle masse) possono essere negative, quindi il prodotto $q_1\\cdot q_2$ potrebbe risultare negativo — impossibile per un modulo, che è sempre positivo.');
+
+  wireChoices(1, 'iexConfrontochoices1', 'iexConfrontofb1', 'c',
+    '$k = 8{,}99\\times10^9\\ \\text{N}\\cdot\\text{m}^2/\\text{C}^2$ contro $G=6{,}67\\times10^{-11}\\ \\text{N}\\cdot\\text{m}^2/\\text{kg}^2$: una differenza di ben 20 ordini di grandezza!',
+    'Non è corretto: $k$ è enormemente più grande di $G$ (circa $10^{20}$ volte). È proprio per questo che la forza elettrica è così più intensa di quella gravitazionale, a parità di distanza e di "quantità" (carica o massa).');
+
+  wireChoices(2, 'iexConfrontochoices2', 'iexConfrontofb2', 'c',
+    'Sono entrambe forze centrali: il vettore forza giace sempre sulla retta che congiunge i due corpi (o le due cariche).',
+    'Non è corretto: sono entrambe forze centrali — lo abbiamo visto sia per la forza gravitazionale sia, più di recente, per quella elettrica.');
+
+  wireChoices(3, 'iexConfrontochoices3', 'iexConfrontofb3', 'c',
+    'La massa è sempre positiva, quindi il prodotto $m_1\\cdot m_2$ è sempre positivo e la forza gravitazionale è sempre attrattiva: non esiste una "antigravità".',
+    'Non è corretto: la forza gravitazionale può essere solo attrattiva, perché la massa è sempre positiva (non esiste una "massa negativa").');
+
+  wireChoices(4, 'iexConfrontochoices4', 'iexConfrontofb4', 'b',
+    'Sia $F=k\\lvert q_1 q_2\\rvert/r^2$ sia $F=Gm_1m_2/r^2$ dipendono dall\'inverso del quadrato della distanza.',
+    'Non è corretto: entrambe le forze sono inversamente proporzionali al quadrato della distanza, $1/r^2$.');
+
+  wireChoices(5, 'iexConfrontochoices5', 'iexConfrontofb5', 'b',
+    'Sono entrambe forze "a distanza" (o "a campo"): agiscono anche fra corpi lontani e separati dal vuoto, senza che nulla li tocchi fisicamente.',
+    'Non è corretto: sono entrambe forze a distanza, che agiscono anche senza contatto diretto e senza bisogno di un mezzo materiale.');
+})();
+</script>

@@ -1,0 +1,193 @@
+{% comment %}
+Animazione: una griglia di particelle disposte come in un solido, unite tra
+loro da molle (linee a zigzag) che rappresentano i legami chimici. Uno
+slider verticale controlla la temperatura T da 0 a 300 K: a T=0 le
+particelle sono immobili; aumentando T iniziano a vibrare, sempre più
+velocemente e con ampiezza sempre maggiore, attorno alla propria posizione
+di equilibrio, comprimendo e allungando visibilmente le molle. Un pulsante
+permette di nascondere le molle, lasciando visibili solo le particelle.
+Nessun parametro.
+{% endcomment %}
+
+<style>
+#calAgitWidget .ag-layout { display:flex; align-items:center; justify-content:center; gap:1.4rem; flex-wrap:wrap; }
+#calAgitWidget .ag-controls { display:flex; flex-direction:column; align-items:center; gap:.4rem; }
+#calAgitWidget .ag-tval { font-size:1.15rem; font-weight:700; color:#1e293b; min-width:4.5rem; text-align:center; }
+#calAgitWidget .ag-endlabel { font-size:.75rem; color:#94a3b8; }
+#calAgitWidget .ag-slider-wrap { width:40px; height:170px; position:relative; }
+#calAgitWidget .ag-slider-wrap input[type="range"] {
+  position:absolute; top:50%; left:50%; width:170px; height:22px;
+  transform:translate(-50%,-50%) rotate(-90deg);
+  accent-color:#dc2626; cursor:pointer;
+}
+#calAgitWidget button { font-size:.82rem; padding:.32rem .75rem; border-radius:6px; border:1px solid #cbd5e1; background:#fff; cursor:pointer; margin-top:.3rem; white-space:nowrap; }
+#calAgitWidget button:hover { background:#f1f5f9; }
+#calAgitWidget .ag-caption { text-align:center; font-size:.88rem; font-weight:600; color:#0e7490; min-height:1.3em; margin-top:.7rem; }
+#calAgitWidget .ag-note { font-size:.85rem; color:#6b7280; font-style:italic; text-align:center; margin-top:.3rem; }
+@media print { #calAgitWidget { display:none !important; } }
+</style>
+
+<div class="vdrag-widget" id="calAgitWidget">
+<p class="vdrag-hint">Muovi lo slider per cambiare la temperatura e osserva come cambia l'agitazione delle particelle.</p>
+<div class="ag-layout">
+
+<svg id="ag-svg" viewBox="0 0 240 240" width="240" style="max-width:100%;height:auto;display:block;" role="img" aria-label="Griglia di particelle unite da molle: a temperatura più alta vibrano più velocemente e con ampiezza maggiore">
+<rect x="0" y="0" width="240" height="240" fill="#f8fafc" rx="10"/>
+<g id="ag-springs"></g>
+<g id="ag-particles"></g>
+</svg>
+
+<div class="ag-controls">
+<span class="ag-endlabel">300 K</span>
+<span class="ag-tval" id="ag-tval">0 K</span>
+<div class="ag-slider-wrap">
+<input type="range" id="ag-slider" min="0" max="300" step="1" value="0" aria-label="Temperatura in kelvin">
+</div>
+<span class="ag-endlabel">0 K</span>
+<button type="button" id="ag-springbtn">Togli le molle</button>
+</div>
+
+</div>
+<p class="ag-caption" id="ag-caption">Le particelle sono ferme.</p>
+<p class="ag-note">Le molle rappresentano, in modo semplificato, i <definizione>legami chimici</definizione> che tengono unite tra loro le particelle.</p>
+</div>
+
+<script>
+(function(){
+  var svg=document.getElementById('ag-svg');
+  var springsG=document.getElementById('ag-springs');
+  var particlesG=document.getElementById('ag-particles');
+  var slider=document.getElementById('ag-slider');
+  var tval=document.getElementById('ag-tval');
+  var caption=document.getElementById('ag-caption');
+  var springBtn=document.getElementById('ag-springbtn');
+  var root=document.getElementById('calAgitWidget');
+
+  var NX=4, NY=4, SPACING=58, X0=33, Y0=33;
+  var MAXAMP=15;
+  var particles=[], springs=[];
+
+  for(var j=0;j<NY;j++){
+    for(var i=0;i<NX;i++){
+      particles.push({
+        ex:X0+i*SPACING, ey:Y0+j*SPACING,
+        x:X0+i*SPACING, y:Y0+j*SPACING,
+        ph1x:Math.random()*Math.PI*2, ph2x:Math.random()*Math.PI*2,
+        ph1y:Math.random()*Math.PI*2, ph2y:Math.random()*Math.PI*2,
+        f1:0.8+Math.random()*0.4, f2:1.7+Math.random()*0.6
+      });
+    }
+  }
+  function idx(i,j){ return j*NX+i; }
+  for(var j=0;j<NY;j++){
+    for(var i=0;i<NX;i++){
+      if(i<NX-1) springs.push({a:idx(i,j), b:idx(i+1,j)});
+      if(j<NY-1) springs.push({a:idx(i,j), b:idx(i,j+1)});
+    }
+  }
+
+  var particleEls=[], springEls=[];
+  particles.forEach(function(p,k){
+    var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('r','9'); c.setAttribute('stroke','#1e293b'); c.setAttribute('stroke-width','1');
+    particlesG.appendChild(c); particleEls.push(c);
+  });
+  springs.forEach(function(s){
+    var p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('fill','none'); p.setAttribute('stroke','#94a3b8'); p.setAttribute('stroke-width','2');
+    p.setAttribute('stroke-linejoin','round');
+    springsG.appendChild(p); springEls.push(p);
+  });
+
+  function hexToRgb(h){ h=h.replace('#',''); var n=parseInt(h,16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+  function rgbToHex(r,g,b){ return '#'+[r,g,b].map(function(v){ v=Math.max(0,Math.min(255,Math.round(v))); var s=v.toString(16); return s.length<2?'0'+s:s; }).join(''); }
+  function mixHex(h1,h2,t){
+    var a=hexToRgb(h1), b=hexToRgb(h2);
+    return rgbToHex(a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t);
+  }
+
+  function springPath(x1,y1,x2,y2){
+    var dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy)||1;
+    var ux=dx/len, uy=dy/len, px=-uy, py=ux;
+    var pad=Math.min(10, len*0.28), zig=len-2*pad, segs=5, amp=4.2;
+    var pts=[[x1,y1],[x1+ux*pad, y1+uy*pad]];
+    for(var k=1;k<segs;k++){
+      var t=pad+zig*k/segs, side=(k%2===0)?1:-1;
+      pts.push([x1+ux*t+px*side*amp, y1+uy*t+py*side*amp]);
+    }
+    pts.push([x1+ux*(pad+zig), y1+uy*(pad+zig)]);
+    pts.push([x2,y2]);
+    return 'M '+pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' L ');
+  }
+
+  var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var visible=true;
+  if(window.IntersectionObserver){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ visible=e.isIntersecting; });
+    }).observe(root);
+  }
+
+  var springsOn=true, raf=null, t0=null;
+
+  function render(time){
+    var T=parseFloat(slider.value);
+    var tn=T/300;
+    var amp=MAXAMP*tn;
+    var freqScale=0.2+1.8*tn;
+    var tt=(reducedMotion||amp===0) ? 0 : time*freqScale;
+
+    particles.forEach(function(p){
+      if(amp===0){ p.x=p.ex; p.y=p.ey; }
+      else {
+        var dx=Math.sin(tt*p.f1+p.ph1x)*0.65 + Math.sin(tt*p.f2+p.ph2x)*0.35;
+        var dy=Math.sin(tt*p.f1+p.ph1y)*0.65 + Math.sin(tt*p.f2+p.ph2y)*0.35;
+        p.x=p.ex+dx*amp; p.y=p.ey+dy*amp;
+      }
+    });
+    var col=mixHex('#3b82f6','#dc2626',tn);
+    particles.forEach(function(p,k){
+      var el=particleEls[k];
+      el.setAttribute('cx',p.x.toFixed(1)); el.setAttribute('cy',p.y.toFixed(1));
+      el.setAttribute('fill',col);
+    });
+    if(springsOn){
+      springs.forEach(function(s,k){
+        var a=particles[s.a], b=particles[s.b];
+        springEls[k].setAttribute('d', springPath(a.x,a.y,b.x,b.y));
+      });
+    }
+
+    tval.textContent=Math.round(T)+' K';
+    if(T===0) caption.textContent='Le particelle sono ferme.';
+    else if(T<100) caption.textContent='Le particelle vibrano appena, attorno alla loro posizione.';
+    else if(T<220) caption.textContent="L'agitazione delle particelle cresce con la temperatura.";
+    else caption.textContent='Ad alta temperatura le particelle si agitano moltissimo!';
+  }
+
+  function loop(time){
+    if(t0===null) t0=time;
+    var T=parseFloat(slider.value);
+    if(visible && T>0 && !reducedMotion){
+      render((time-t0)/1000);
+      raf=requestAnimationFrame(loop);
+    } else {
+      render(0);
+      raf=null;
+    }
+  }
+  function ensureLoop(){
+    if(raf===null){ t0=null; raf=requestAnimationFrame(loop); }
+  }
+
+  slider.addEventListener('input', function(){ ensureLoop(); render(t0===null?0:(performance.now()-t0)/1000); });
+
+  springBtn.addEventListener('click', function(){
+    springsOn=!springsOn;
+    springsG.setAttribute('opacity', springsOn?'1':'0');
+    springBtn.textContent = springsOn ? 'Togli le molle' : 'Rimetti le molle';
+  });
+
+  render(0);
+})();
+</script>

@@ -1,0 +1,100 @@
+{% comment %}
+Esercizio a completamento (cloze) sulle trasformazioni di energia durante il moto di uno yo-yo. Nessun parametro.
+{% endcomment %}
+<div class="tplcz-widget" id="yoyoCloze">
+<ul class="tplcz-list">
+
+<li>Quando lo yo-yo si trova al punto più alto della sua corsa, a un'altezza $h$ rispetto al punto più basso, la sua velocità è nulla: tutta la sua energia meccanica è
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="mgh"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Scendendo, lo yo-yo converte progressivamente la sua energia potenziale in energia cinetica: $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Quando lo yo-yo raggiunge il punto più basso della sua corsa, la sua energia meccanica è tutta
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="K"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>.</li>
+
+<li>Risalendo di nuovo verso l'alto, lo yo-yo rallenta: la sua energia si trasforma gradualmente da
+<select class="fill-sel tplcz-blank" data-ans="energia cinetica">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>
+a
+<select class="fill-sel tplcz-blank" data-ans="energia potenziale gravitazionale">
+<option value="">—</option>
+<option>energia cinetica</option>
+<option>energia potenziale gravitazionale</option>
+<option>energia cinetica e potenziale gravitazionale</option>
+</select>, cioè $E=$ <select class="fill-sel tplcz-blank" data-ans="K+Ug"><option value="">—</option><option>mgh</option><option>K</option><option>Ug</option><option>K+Ug</option></select>, finché non si ferma di nuovo all'altezza $h$ e il ciclo ricomincia.</li>
+
+</ul>
+<div class="tplcz-actions"><button class="tplcz-vbtn" id="yoyoClozeCheck" type="button">Verifica tutto</button></div>
+<div class="tplcz-fb" id="yoyoClozeFb"></div>
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('yoyoCloze');
+  if(!root) return;
+  function canon(s){
+    s=(s||'').toString().toLowerCase().replace(/\$/g,'').replace(/\s+/g,'').replace(/_/g,'').replace(/[{}]/g,'').replace(/\*/g,'');
+    var terms=s.split('+').filter(Boolean).sort();
+    return terms.join('+');
+  }
+  function shootConf(el){
+    var r=el.getBoundingClientRect?el.getBoundingClientRect():el, cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+  function shootFW(){
+    for(var b=0;b<7;b++)(function(b){setTimeout(function(){
+      shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
+    },b*270);})(b);
+  }
+  var checkBtn=document.getElementById('yoyoClozeCheck');
+  var fb=document.getElementById('yoyoClozeFb');
+  checkBtn.addEventListener('click', function(){
+    var blanks=root.querySelectorAll('.tplcz-blank');
+    var total=blanks.length, correct=0;
+    blanks.forEach(function(b){
+      var ok=canon(b.value)===canon(b.dataset.ans);
+      b.classList.remove('ok','err');
+      b.classList.add(ok?'ok':'err');
+      if(ok)correct++;
+    });
+    fb.style.display='block';
+    if(correct===total){
+      fb.className='tplcz-fb ok';
+      fb.innerHTML='&#10003; Tutto corretto! Hai ricostruito perfettamente il ciclo di scambio energetico.';
+      shootConf(checkBtn);
+      setTimeout(shootFW,500);
+    } else {
+      fb.className='tplcz-fb err';
+      fb.innerHTML='Hai '+correct+' risposte corrette su '+total+'. Controlla i campi evidenziati in rosso e riprova.';
+    }
+  });
+})();
+</script>

@@ -1,0 +1,28 @@
+{% comment %}
+Figura statica: il vettore campo gravitazionale in un punto a distanza r da una massa M. Nessun parametro.
+{% endcomment %}
+<div class="fig-block">
+<svg viewBox="0 0 380 180" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Vettore campo gravitazionale in un punto a distanza r dalla massa M">
+  <defs>
+    <radialGradient id="gvecM" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/>
+    </radialGradient>
+    <marker id="gvecArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#0891b2"/></marker>
+  </defs>
+  <line x1="70" y1="90" x2="280" y2="90" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="175" y="80" text-anchor="middle" font-size="14" fill="#64748b">r</text>
+
+  <circle cx="70" cy="90" r="40" fill="url(#gvecM)"/>
+  <ellipse cx="58" cy="76" rx="12" ry="8" fill="#fff" opacity=".5"/>
+  <text x="70" y="96" text-anchor="middle" font-size="16" font-weight="600" fill="#92400e">M</text>
+
+  <circle cx="280" cy="90" r="5" fill="#475569"/>
+  <text x="280" y="112" text-anchor="middle" font-size="13" fill="#475569">P</text>
+
+  <line x1="280" y1="90" x2="216" y2="90" stroke="#0891b2" stroke-width="3.5" marker-end="url(#gvecArrow)"/>
+  <foreignObject x="222" y="52" width="50" height="26">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:15px;font-weight:600;color:#0891b2;">$\vec g$</div>
+  </foreignObject>
+</svg>
+<figcaption><span class="fig-num" data-fig-id="vettore-campo-g">Figura</span> — Il vettore campo gravitazionale $\vec g$ nel punto $P$, a distanza $r$ dalla massa $M$: punta sempre verso il centro di $M$.</figcaption>
+</div>

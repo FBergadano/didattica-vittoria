@@ -1,0 +1,60 @@
+{% comment %}
+Animazione: un disegno di una strada in salita che illustra la pendenza
+come rapporto Δh/Δs (dislivello su distanza percorsa). Nessun parametro.
+{% endcomment %}
+<div style="margin:0.5rem 0 1rem;background:#eaf4fb;border-radius:8px;padding:0.75rem 0.85rem 0.6rem;border:1px solid #bcd8ea;text-align:center;">
+<canvas id="cv-slope" width="440" height="220" style="display:block;max-width:100%;margin:0 auto;border-radius:5px;"></canvas>
+</div>
+<script>
+(function(){
+var cv=document.getElementById('cv-slope'),ctx=cv.getContext('2d');
+var W=440,H=220;
+var BX=55,BY=175,TX=340,TY=55;
+
+ctx.clearRect(0,0,W,H);
+var sky=ctx.createLinearGradient(0,0,0,H);
+sky.addColorStop(0,'#dff0fb');sky.addColorStop(1,'#f3fbf0');
+ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+
+ctx.fillStyle='#cdeccb';
+ctx.beginPath();ctx.moveTo(0,BY);ctx.lineTo(BX,BY);ctx.lineTo(TX,TY);ctx.lineTo(W,TY-20);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill();
+
+ctx.strokeStyle='rgba(90,110,90,0.55)';ctx.setLineDash([5,4]);ctx.lineWidth=1.5;
+ctx.beginPath();ctx.moveTo(BX,BY);ctx.lineTo(TX,BY);ctx.stroke();
+ctx.beginPath();ctx.moveTo(TX,BY);ctx.lineTo(TX,TY);ctx.stroke();
+ctx.setLineDash([]);
+
+var rg=ctx.createLinearGradient(BX,BY,TX,TY);
+rg.addColorStop(0,'#8a8f95');rg.addColorStop(1,'#5c6166');
+ctx.strokeStyle=rg;ctx.lineWidth=14;ctx.lineCap='round';
+ctx.beginPath();ctx.moveTo(BX,BY);ctx.lineTo(TX,TY);ctx.stroke();
+ctx.strokeStyle='#f4d35e';ctx.lineWidth=2;ctx.setLineDash([10,8]);
+ctx.beginPath();ctx.moveTo(BX,BY);ctx.lineTo(TX,TY);ctx.stroke();
+ctx.setLineDash([]);
+
+ctx.fillStyle='#3a4a3a';ctx.font='bold 13px Georgia,serif';ctx.textAlign='center';
+ctx.fillText('Δs',(BX+TX)/2,BY+20);
+ctx.save();ctx.translate(TX+22,(BY+TY)/2);ctx.rotate(-Math.PI/2);
+ctx.fillText('Δh',0,0);
+ctx.restore();
+
+function angleMark(){
+  ctx.strokeStyle='#5c6166';ctx.lineWidth=1.3;
+  ctx.beginPath();ctx.arc(BX,BY,26,-Math.atan2(BY-TY,TX-BX),0);ctx.stroke();
+}
+angleMark();
+
+ctx.fillStyle='#6b5530';ctx.textAlign='left';
+ctx.font='13px Georgia,serif';
+ctx.fillText('pendenza = ',60,25);
+var w1=ctx.measureText('pendenza = ').width;
+ctx.font='italic 13px Georgia,serif';
+ctx.fillText('var',60+w1,25);
+var w2=ctx.measureText('var').width;
+ctx.font='italic 9px Georgia,serif';
+ctx.fillText('h,s',60+w1+w2,29);
+var w3=ctx.measureText('h,s').width;
+ctx.font='13px Georgia,serif';
+ctx.fillText(' = Δh / Δs',60+w1+w2+w3,25);
+ })();
+</script>

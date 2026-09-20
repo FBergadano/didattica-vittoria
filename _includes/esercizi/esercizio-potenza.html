@@ -1,0 +1,27 @@
+{% comment %}
+Esercizio a carosello (Prova tu!) con due domande numeriche sulla potenza:
+una con P = L/Δt, una con P = F·v. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexPotenzaCalc">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexPotenzaCalcprev" onclick="iexPotenzaCalcnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexPotenzaCalcdots"></div>
+<button class="iex-navbtn" id="iexPotenzaCalcnext" onclick="iexPotenzaCalcnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexPotenzaCalcrow0">
+<p class="iex-qt">Un motore compie un lavoro di $3\,000\ \text J$ in $5\ \text s$. Qual è la sua potenza?</p>
+{% include num.html id="numPotCalc0" valore="600" unit="W" %}
+</div>
+
+<div class="iex-q" id="iexPotenzaCalcrow1" style="display:none">
+<p class="iex-qt">Una gru solleva un carico esercitando una forza costante di $2\,000\ \text N$, mentre il carico sale con velocità costante di $0{,}5\ \text{m/s}$. Qual è la potenza sviluppata dalla gru?</p>
+{% include num.html id="numPotCalc1" valore="1000" unit="W" %}
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('iexPotenzaCalc',2);
+</script>

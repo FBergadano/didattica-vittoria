@@ -1,0 +1,521 @@
+{% comment %}
+Tre esercizi a carosello sulla notazione scientifica (somma/sottrazione, moltiplicazione/divisione, calcoli misti), con script condivisi. Nessun parametro.
+{% endcomment %}
+<style>
+.op-block{background:#fff;border:1px solid #d1d5db;border-radius:8px;padding:1rem 1.5rem;margin:.8rem 0 1.4rem;}
+.op-instr{font-size:.84rem;color:#6b7280;margin-bottom:.7rem;font-style:italic;}
+.op-steps{display:flex;flex-direction:column;}
+.op-step{display:none;align-items:flex-start;gap:1.1rem;padding:.5rem 0;border-top:1px solid #f3f4f6;}
+.op-step.vis{display:flex;}
+.op-step:first-child{border-top:none;}
+.op-math{font-size:1.05rem;min-width:15rem;flex-shrink:0;}
+.op-desc{font-size:.85rem;color:#555;flex:1;padding-top:.18rem;}
+.op-ctrl{display:flex;gap:.45rem;margin-top:.85rem;}
+.op-btn{background:#0f766e;color:#fff;border:none;border-radius:6px;padding:.38rem .85rem;cursor:pointer;font-size:1rem;line-height:1;}
+.op-btn:disabled{opacity:.35;cursor:default;}
+.op-frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .12em;}
+.op-frac span:first-child{border-bottom:1.5px solid currentColor;padding:0 .2em;}
+.op-frac span:last-child{padding:.08em .2em 0;}
+</style>
+
+### Somma e sottrazione
+
+{% include box-imp.html testo="Regola per somma e sottrazione" %}
+Per **sommare o sottrarre** numeri in notazione scientifica, essi devono avere lo **stesso esponente**. Se gli esponenti sono diversi, si modifica il più piccolo per eguagliarlo al più grande, spostando opportunamente la virgola del coefficiente.
+
+$$a\times 10^n \pm b\times 10^n = (a\pm b)\times 10^n$$
+{% include box-end.html %}
+
+<div class="op-block">
+<p class="op-instr">Esempio — somma (clicca &rarr; per il passo successivo).</p>
+<div class="op-steps">
+<div class="op-step vis">
+  <div class="op-math">1,23 &times; 10<sup>3</sup> + 4,56 &times; 10<sup>2</sup></div>
+  <div class="op-desc">Equazione di partenza.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 1,23 &times; 10<sup>3</sup> + 0,456 &times; 10<sup>3</sup></div>
+  <div class="op-desc">Sposto la virgola a sinistra nel secondo addendo per portare l'esponente da 2 a 3.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= (1,23 + 0,456) &times; 10<sup>3</sup></div>
+  <div class="op-desc">Raccolgo il fattore comune 10<sup>3</sup>.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 1,686 &times; 10<sup>3</sup></div>
+  <div class="op-desc">Eseguo la somma dei coefficienti.</div>
+</div>
+</div>
+<div class="op-ctrl">
+  <button class="op-btn op-btn-p" disabled>&larr;</button>
+  <button class="op-btn op-btn-n">&rarr;</button>
+  <button class="op-btn op-btn-r">&#8635;</button>
+</div>
+</div>
+
+<div class="op-block">
+<p class="op-instr">Esempio — sottrazione (clicca &rarr; per il passo successivo).</p>
+<div class="op-steps">
+<div class="op-step vis">
+  <div class="op-math">7,5 &times; 10<sup>&minus;2</sup> &minus; 2,3 &times; 10<sup>&minus;3</sup></div>
+  <div class="op-desc">Equazione di partenza.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 7,5 &times; 10<sup>&minus;2</sup> &minus; 0,23 &times; 10<sup>&minus;2</sup></div>
+  <div class="op-desc">Porto l'esponente del secondo numero da &minus;3 a &minus;2 spostando la virgola a sinistra.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= (7,5 &minus; 0,23) &times; 10<sup>&minus;2</sup></div>
+  <div class="op-desc">Raccolgo il fattore comune 10<sup>&minus;2</sup>.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 7,27 &times; 10<sup>&minus;2</sup></div>
+  <div class="op-desc">Eseguo la sottrazione dei coefficienti.</div>
+</div>
+</div>
+<div class="op-ctrl">
+  <button class="op-btn op-btn-p" disabled>&larr;</button>
+  <button class="op-btn op-btn-n">&rarr;</button>
+  <button class="op-btn op-btn-r">&#8635;</button>
+</div>
+</div>
+
+<div class="iex-widget" id="iex3" style="margin-top:2rem;">
+<p class="iex-lbl">Esercizio 3 — Somma e sottrazione in notazione scientifica</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="ex3prev" onclick="ex3nav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="ex3dots"></div>
+<button class="iex-navbtn" id="ex3next" onclick="ex3nav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="ex3row0">
+<p class="iex-qt"><strong>i)</strong> La popolazione dell'India è $1{,}428 \times 10^9$ persone, quella della Cina è $1{,}409 \times 10^9$ persone. Qual è la loro popolazione complessiva?</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex3m0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex3check(0)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex3e0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex3check(0)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">persone</span>
+<button class="iex-vbtn" onclick="ex3check(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex3fb0"></div>
+<div class="iex-sol" id="ex3sol0">Soluzione: $(1{,}428 + 1{,}409)\times 10^9 =$ <strong>2,837 &times; 10<sup>9</sup></strong> persone</div>
+</div>
+
+<div class="iex-q" id="ex3row1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> La Via Lattea ha circa $3{,}0 \times 10^{11}$ stelle, la galassia di Andromeda ne ha circa $1{,}0 \times 10^{12}$. Quante stelle hanno in totale le due galassie?<span class="iex-note">Attenzione: gli esponenti sono diversi!</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex3m1" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex3check(1)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex3e1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex3check(1)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">stelle</span>
+<button class="iex-vbtn" onclick="ex3check(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex3fb1"></div>
+<div class="iex-sol" id="ex3sol1">Soluzione: $3{,}0\times 10^{11} + 10{,}0\times 10^{11} = 13{,}0\times 10^{11} =$ <strong>1,3 &times; 10<sup>12</sup></strong> stelle</div>
+</div>
+
+<div class="iex-q" id="ex3row2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Il raggio di una molecola d'acqua è $1{,}375 \times 10^{-10}$ m, quello di un atomo di idrogeno è $5{,}29 \times 10^{-11}$ m. <em>Di quanto</em> è più grande il raggio della molecola rispetto a quello dell'atomo?<span class="iex-note">Sottrazione! Gli esponenti sono diversi.</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex3m2" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex3check(2)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex3e2" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex3check(2)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex3check(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex3fb2"></div>
+<div class="iex-sol" id="ex3sol2">Soluzione: $1{,}375\times 10^{-10} - 0{,}529\times 10^{-10} = 0{,}846\times 10^{-10} =$ <strong>8,46 &times; 10<sup>&minus;11</sup></strong> m</div>
+</div>
+
+<div class="iex-q" id="ex3row3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> La massa di un protone è $1{,}673 \times 10^{-27}$ kg, quella di un elettrone è $9{,}11 \times 10^{-31}$ kg. Qual è la massa totale di un atomo di idrogeno (formato da un protone e un elettrone)?<span class="iex-note">Esponenti diversi: converti prima allo stesso esponente.</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex3m3" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex3check(3)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex3e3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex3check(3)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">kg</span>
+<button class="iex-vbtn" onclick="ex3check(3)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex3fb3"></div>
+<div class="iex-sol" id="ex3sol3">Soluzione: $1{,}673\times 10^{-27} + 0{,}000911\times 10^{-27} = 1{,}673911\times 10^{-27} \approx$ <strong>1,674 &times; 10<sup>&minus;27</sup></strong> kg</div>
+</div>
+
+<div class="iex-q" id="ex3row4" style="display:none">
+<p class="iex-qt"><strong>v)</strong> La lunghezza d'onda della luce infrarossa è $7{,}5 \times 10^{-7}$ m, quella della luce ultravioletta è $3{,}5 \times 10^{-8}$ m. <em>Di quanto</em> è più lunga la lunghezza d'onda dell'infrarosso rispetto all'ultravioletto?<span class="iex-note">Sottrazione! Esponenti diversi.</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex3m4" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex3check(4)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex3e4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex3check(4)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex3check(4)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex3fb4"></div>
+<div class="iex-sol" id="ex3sol4">Soluzione: $7{,}5\times 10^{-7} - 0{,}35\times 10^{-7} = 7{,}15\times 10^{-7} =$ <strong>7,15 &times; 10<sup>&minus;7</sup></strong> m</div>
+</div>
+
+</div>
+
+### Moltiplicazione
+
+{% include box-imp.html testo="Regola per la moltiplicazione" %}
+Per **moltiplicare** due numeri in notazione scientifica, si moltiplicano tra loro i coefficienti e si **sommano** gli esponenti.
+
+$$(a\times10^n)\cdot(b\times10^m) = (a\cdot b)\times 10^{n+m}$$
+{% include box-end.html %}
+
+<div class="op-block">
+<p class="op-instr">Esempio 1 (clicca &rarr; per il passo successivo).</p>
+<div class="op-steps">
+<div class="op-step vis">
+  <div class="op-math">(2 &times; 10<sup>3</sup>) &middot; (5 &times; 10<sup>&minus;2</sup>)</div>
+  <div class="op-desc">Equazione di partenza.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= (2 &middot; 5) &middot; (10<sup>3</sup> &middot; 10<sup>&minus;2</sup>)</div>
+  <div class="op-desc">Raggruppo i coefficienti e le potenze separatamente.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 10 &middot; 10<sup>1</sup></div>
+  <div class="op-desc">Moltiplico i coefficienti (2&middot;5=10) e sommo gli esponenti (3+(−2)=1).</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 1 &times; 10<sup>2</sup></div>
+  <div class="op-desc">Riscrivo in notazione scientifica: 10=1&times;10<sup>1</sup>, quindi 10&middot;10<sup>1</sup>=1&times;10<sup>2</sup>.</div>
+</div>
+</div>
+<div class="op-ctrl">
+  <button class="op-btn op-btn-p" disabled>&larr;</button>
+  <button class="op-btn op-btn-n">&rarr;</button>
+  <button class="op-btn op-btn-r">&#8635;</button>
+</div>
+</div>
+
+<div class="op-block">
+<p class="op-instr">Esempio 2 (clicca &rarr; per il passo successivo).</p>
+<div class="op-steps">
+<div class="op-step vis">
+  <div class="op-math">(4 &times; 10<sup>&minus;5</sup>) &middot; (3 &times; 10<sup>&minus;2</sup>)</div>
+  <div class="op-desc">Equazione di partenza.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= (4 &middot; 3) &middot; (10<sup>&minus;5</sup> &middot; 10<sup>&minus;2</sup>)</div>
+  <div class="op-desc">Raggruppo i coefficienti e le potenze separatamente.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 12 &times; 10<sup>&minus;7</sup></div>
+  <div class="op-desc">Moltiplico (4&middot;3=12) e sommo gli esponenti (−5+(−2)=−7).</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 1,2 &times; 10<sup>&minus;6</sup></div>
+  <div class="op-desc">Riscrivo in notazione scientifica: 12=1,2&times;10<sup>1</sup>, aumento l'esponente di 1.</div>
+</div>
+</div>
+<div class="op-ctrl">
+  <button class="op-btn op-btn-p" disabled>&larr;</button>
+  <button class="op-btn op-btn-n">&rarr;</button>
+  <button class="op-btn op-btn-r">&#8635;</button>
+</div>
+</div>
+
+<div class="iex-widget" id="iex4" style="margin-top:2rem;">
+<p class="iex-lbl">Esercizio 4 — Moltiplicazione in notazione scientifica</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="ex4prev" onclick="ex4nav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="ex4dots"></div>
+<button class="iex-navbtn" id="ex4next" onclick="ex4nav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="ex4row0">
+<p class="iex-qt"><strong>i)</strong> Nell'Universo ci sono circa $2\times 10^{12}$ galassie, ognuna con in media $4\times 10^{11}$ stelle. Quante stelle ci sono nell'intero Universo?</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex4m0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex4check(0)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex4e0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex4check(0)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">stelle</span>
+<button class="iex-vbtn" onclick="ex4check(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex4fb0"></div>
+<div class="iex-sol" id="ex4sol0">Soluzione: $2\times 4\times 10^{12+11} =$ <strong>8 &times; 10<sup>23</sup></strong> stelle</div>
+</div>
+
+<div class="iex-q" id="ex4row1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Un bicchiere d'acqua ha $8{,}36 \times 10^{24}$ molecole. Ogni molecola ha diametro $2{,}75 \times 10^{-10}$ m. Se le metti tutte in fila, quanto è lunga la fila?</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex4m1" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex4check(1)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex4e1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex4check(1)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex4check(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex4fb1"></div>
+<div class="iex-sol" id="ex4sol1">Soluzione: $8{,}36\times 2{,}75\times 10^{24-10} = 22{,}99\times 10^{14} \approx$ <strong>2,30 &times; 10<sup>15</sup></strong> m — 2 milioni di miliardi di metri!</div>
+</div>
+
+<div class="iex-q" id="ex4row2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> La massa di un singolo atomo di idrogeno è $1{,}673 \times 10^{-27}$ kg. Una <em>mole</em> di idrogeno corrisponde a $6{,}022 \times 10^{23}$ atomi di idrogeno. Qual è la massa di una mole di atomi di idrogeno?</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex4m2" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex4check(2)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex4e2" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex4check(2)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">kg</span>
+<button class="iex-vbtn" onclick="ex4check(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex4fb2"></div>
+<div class="iex-sol" id="ex4sol2">Soluzione: $1{,}673\times 6{,}022\times 10^{-27+23} = 10{,}07\times 10^{-4} =$ <strong>1,007 &times; 10<sup>&minus;3</sup></strong> kg = 1,007 g (la massa atomica dell'idrogeno!)</div>
+</div>
+
+<div class="iex-q" id="ex4row3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Un cuore batte $7{,}0 \times 10^1$ volte al minuto. In una vita di 80 anni ci sono circa $4{,}2 \times 10^7$ minuti. Quanti battiti compie il cuore in una vita?</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex4m3" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex4check(3)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex4e3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex4check(3)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">battiti</span>
+<button class="iex-vbtn" onclick="ex4check(3)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex4fb3"></div>
+<div class="iex-sol" id="ex4sol3">Soluzione: $7{,}0\times 4{,}2\times 10^{1+7} = 29{,}4\times 10^8 =$ <strong>2,94 &times; 10<sup>9</sup></strong> battiti in una vita!</div>
+</div>
+
+<div class="iex-q" id="ex4row4" style="display:none">
+<p class="iex-qt"><strong>v)</strong> In ogni secondo la luce percorre $3{,}0 \times 10^8$ m. Dal Big Bang ad oggi sono trascorsi circa $4{,}35 \times 10^{17}$ secondi. Quanti metri ha percorso la luce emessa nel Big Bang?</p>
+<div class="iex-ir">
+<input class="iex-m" id="ex4m4" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex4check(4)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex4e4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex4check(4)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m</span>
+<button class="iex-vbtn" onclick="ex4check(4)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex4fb4"></div>
+<div class="iex-sol" id="ex4sol4">Soluzione: $3{,}0\times 4{,}35\times 10^{8+17} = 13{,}05\times 10^{25} =$ <strong>1,305 &times; 10<sup>26</sup></strong> m — il raggio dell'Universo osservabile!</div>
+</div>
+
+</div>
+
+### Divisione
+
+{% include box-imp.html testo="Regola per la divisione" %}
+Per **dividere** due numeri in notazione scientifica, si dividono tra loro i coefficienti e si **sottraggono** gli esponenti (esponente del numeratore meno esponente del denominatore).
+
+$$\frac{a\times10^n}{b\times10^m} = \frac{a}{b}\times 10^{n-m}$$
+{% include box-end.html %}
+
+<div class="op-block">
+<p class="op-instr">Esempio 1 — entrambi gli esponenti negativi (clicca &rarr; per il passo successivo).</p>
+<div class="op-steps">
+<div class="op-step vis">
+  <div class="op-math"><div class="op-frac"><span>6 &times; 10<sup>&minus;3</sup></span><span>2 &times; 10<sup>&minus;5</sup></span></div></div>
+  <div class="op-desc">Equazione di partenza.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= <div class="op-frac"><span>6</span><span>2</span></div>&middot;<div class="op-frac"><span>10<sup>&minus;3</sup></span><span>10<sup>&minus;5</sup></span></div></div>
+  <div class="op-desc">Separo la divisione dei coefficienti da quella delle potenze di 10.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 3 &middot; 10<sup>&minus;3&minus;(&minus;5)</sup></div>
+  <div class="op-desc">Divido i coefficienti (6/2=3) e sottraggo gli esponenti.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 3 &times; 10<sup>2</sup></div>
+  <div class="op-desc">Risultato: &minus;3&minus;(&minus;5) = &minus;3+5 = 2. Sottrarre un numero negativo equivale a sommare!</div>
+</div>
+</div>
+<div class="op-ctrl">
+  <button class="op-btn op-btn-p" disabled>&larr;</button>
+  <button class="op-btn op-btn-n">&rarr;</button>
+  <button class="op-btn op-btn-r">&#8635;</button>
+</div>
+</div>
+
+<div class="op-block">
+<p class="op-instr">Esempio 2 — un esponente positivo e uno negativo (clicca &rarr; per il passo successivo).</p>
+<div class="op-steps">
+<div class="op-step vis">
+  <div class="op-math"><div class="op-frac"><span>4 &times; 10<sup>5</sup></span><span>2 &times; 10<sup>&minus;3</sup></span></div></div>
+  <div class="op-desc">Equazione di partenza.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= <div class="op-frac"><span>4</span><span>2</span></div>&middot;<div class="op-frac"><span>10<sup>5</sup></span><span>10<sup>&minus;3</sup></span></div></div>
+  <div class="op-desc">Separo la divisione dei coefficienti da quella delle potenze di 10.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 2 &middot; 10<sup>5&minus;(&minus;3)</sup></div>
+  <div class="op-desc">Divido (4/2=2) e sottraggo gli esponenti: 5&minus;(&minus;3) = 5+3 = 8.</div>
+</div>
+<div class="op-step">
+  <div class="op-math">= 2 &times; 10<sup>8</sup></div>
+  <div class="op-desc">Risultato. Sottrarre un esponente negativo fa <em>aumentare</em> l'esponente totale!</div>
+</div>
+</div>
+<div class="op-ctrl">
+  <button class="op-btn op-btn-p" disabled>&larr;</button>
+  <button class="op-btn op-btn-n">&rarr;</button>
+  <button class="op-btn op-btn-r">&#8635;</button>
+</div>
+</div>
+
+<div class="iex-widget" id="iex5" style="margin-top:2rem;">
+<p class="iex-lbl">Esercizio 5 — Divisione in notazione scientifica</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="ex5prev" onclick="ex5nav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="ex5dots"></div>
+<button class="iex-navbtn" id="ex5next" onclick="ex5nav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="ex5row0">
+<p class="iex-qt"><strong>i)</strong> La distanza Terra-Sole è $1{,}496 \times 10^{11}$ m. La luce viaggia a $3{,}0 \times 10^8$ m/s. In quanti secondi arriva la luce dal Sole alla Terra?<span class="iex-note">Usa $t = d/v$, con la distanza $d$ al numeratore e la velocità $v$ al denominatore.</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex5m0" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex5check(0)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex5e0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex5check(0)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">s</span>
+<button class="iex-vbtn" onclick="ex5check(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex5fb0"></div>
+<div class="iex-sol" id="ex5sol0">Soluzione: $1{,}496/3{,}0\times 10^{11-8} = 0{,}499\times 10^3 =$ <strong>4,99 &times; 10<sup>2</sup></strong> s &asymp; 8 minuti e 19 secondi!</div>
+</div>
+
+<div class="iex-q" id="ex5row1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> La massa del Sole è $1{,}989 \times 10^{30}$ kg, quella della Terra è $5{,}972 \times 10^{24}$ kg. Quante volte è più massiccio il Sole rispetto alla Terra?<span class="iex-note">Calcola il rapporto $M_\odot / M_\oplus$, con la massa del Sole $M_\odot$ al numeratore e quella della Terra $M_\oplus$ al denominatore.</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex5m1" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex5check(1)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex5e1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex5check(1)"></sup></span>
+<button class="iex-vbtn" onclick="ex5check(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex5fb1"></div>
+<div class="iex-sol" id="ex5sol1">Soluzione: $1{,}989/5{,}972\times 10^{30-24} = 0{,}333\times 10^6 =$ <strong>3,33 &times; 10<sup>5</sup></strong> — il Sole è 333 000 volte più massiccio della Terra!</div>
+</div>
+
+<div class="iex-q" id="ex5row2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> La luce gialla ha lunghezza d'onda $\lambda = 5{,}7 \times 10^{-7}$ m. In ogni secondo percorre $c = 3{,}0 \times 10^8$ m. Calcola la sua frequenza con $f = c/\lambda$.<span class="iex-note">Usa $f = c/\lambda$, con $c$ al numeratore e $\lambda$ al denominatore. Attenzione: $\lambda$ ha esponente negativo!</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex5m2" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex5check(2)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex5e2" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex5check(2)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">Hz</span>
+<button class="iex-vbtn" onclick="ex5check(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex5fb2"></div>
+<div class="iex-sol" id="ex5sol2">Soluzione: $3{,}0/5{,}7\times 10^{8-(-7)} = 0{,}526\times 10^{15} =$ <strong>5,26 &times; 10<sup>14</sup></strong> Hz</div>
+</div>
+
+<div class="iex-q" id="ex5row3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Un bicchiere d'acqua contiene $8{,}36 \times 10^{24}$ molecole. Una <em>mole</em> corrisponde a $N_A = 6{,}022 \times 10^{23}$ molecole. Quante moli d'acqua ci sono nel bicchiere?<span class="iex-note">Usa $n = N/N_A$, con il numero di molecole $N$ al numeratore e il numero di Avogadro $N_A$ al denominatore.</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex5m3" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex5check(3)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex5e3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex5check(3)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">mol</span>
+<button class="iex-vbtn" onclick="ex5check(3)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex5fb3"></div>
+<div class="iex-sol" id="ex5sol3">Soluzione: $8{,}36/6{,}022\times 10^{24-23} = 1{,}388\times 10^1 \approx$ <strong>13,9 mol</strong> d'acqua (circa 250 mL)</div>
+</div>
+
+<div class="iex-q" id="ex5row4" style="display:none">
+<p class="iex-qt"><strong>v)</strong> Il DNA umano contiene circa $3{,}0 \times 10^9$ paia di basi, distribuite su $4{,}6 \times 10^1$ cromosomi. Quante paia di basi ha in media ogni cromosoma?<span class="iex-note">Usa: basi per cromosoma $=$ basi totali / numero di cromosomi.</span></p>
+<div class="iex-ir">
+<input class="iex-m" id="ex5m4" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')ex5check(4)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="ex5e4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')ex5check(4)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">paia di basi</span>
+<button class="iex-vbtn" onclick="ex5check(4)">Verifica</button>
+</div>
+<div class="iex-fb" id="ex5fb4"></div>
+<div class="iex-sol" id="ex5sol4">Soluzione: $3{,}0/4{,}6\times 10^{9-1} = 0{,}652\times 10^8 =$ <strong>6,52 &times; 10<sup>7</sup></strong> paia di basi per cromosoma (65 milioni!)</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+/* ── op-block step-by-step examples ── */
+document.querySelectorAll('.op-block').forEach(function(block){
+  var steps=block.querySelectorAll('.op-step');
+  var btnN=block.querySelector('.op-btn-n');
+  var btnP=block.querySelector('.op-btn-p');
+  var btnR=block.querySelector('.op-btn-r');
+  var cur=0;
+  function upd(){
+    steps.forEach(function(s,k){s.classList.toggle('vis',k<=cur);});
+    btnP.disabled=(cur===0);
+    btnN.disabled=(cur===steps.length-1);
+  }
+  upd();
+  btnN.addEventListener('click',function(){if(cur<steps.length-1){cur++;upd();}});
+  btnP.addEventListener('click',function(){if(cur>0){cur--;upd();}});
+  btnR.addEventListener('click',function(){cur=0;upd();});
+});
+
+/* ── exercise data ── */
+var Q3=[
+  {v:2.837e9,   tol:0.001},
+  {v:1.3e12,    tol:0.001},
+  {v:8.46e-11,  tol:0.01},
+  {v:1.674e-27, tol:0.002},
+  {v:7.15e-7,   tol:0.005}
+];
+var Q4=[
+  {v:8e23,     tol:0.001},
+  {v:2.299e15, tol:0.05},
+  {v:1.007e-3, tol:0.005},
+  {v:2.94e9,   tol:0.05},
+  {v:1.305e26, tol:0.02}
+];
+var Q5=[
+  {v:4.987e2,  tol:0.02},
+  {v:3.33e5,   tol:0.005},
+  {v:5.26e14,  tol:0.01},
+  {v:13.88,    tol:0.01},
+  {v:6.52e7,   tol:0.02}
+];
+var ex3ok=[false,false,false,false,false];
+var ex4ok=[false,false,false,false,false];
+var ex5ok=[false,false,false,false,false];
+var ex3c=[0],ex4c=[0],ex5c=[0],N3=5,N4=5,N5=5;
+
+function parseMant(s){var c=s.trim();if(c.indexOf(',')!==-1)c=c.replace(',','.');return parseFloat(c);}
+function parseExp(s){return parseInt(s.trim().replace('−','-'),10);}
+function shootConf(el){
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+  for(var i=0;i<55;i++){
+    var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;
+    p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+    document.body.appendChild(p);
+    (function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+  }
+}
+function shootFW(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
+function updateDots(pfx,cur,ok,N){var dots=document.querySelectorAll('#'+pfx+'dots .iex-dot');for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');}
+function buildDots(pfx,N,showFn){var c=document.getElementById(pfx+'dots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+function opCheck(pfx,Q,ok,cur,N,i){
+  var mv=parseMant(document.getElementById(pfx+'m'+i).value);
+  var ev=parseExp(document.getElementById(pfx+'e'+i).value);
+  var fb=document.getElementById(pfx+'fb'+i);
+  var vb=document.querySelector('#'+pfx+'row'+i+' .iex-vbtn');
+  var q=Q[i];
+  var computed=mv*Math.pow(10,ev);
+  var isOk=!isNaN(computed)&&Math.abs(computed-q.v)/Math.abs(q.v)<=q.tol;
+  if(isOk){
+    ok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<N-1?' <button class="iex-nextbtn" onclick="'+pfx+'show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    if(vb)shootConf(vb);updateDots(pfx,cur[0],ok,N);
+    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSol(\''+pfx+'sol'+i+'\')">vedi la soluzione</button>.';
+  }
+}
+function makeShow(pfx,ok,cur,N){
+  return function(i){
+    document.querySelectorAll('#iex'+pfx.slice(-1)+' .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById(pfx+'row'+i).style.display='block';
+    cur[0]=i;
+    document.getElementById(pfx+'prev').disabled=(i===0);
+    document.getElementById(pfx+'next').disabled=(i===N-1);
+    updateDots(pfx,i,ok,N);
+    setTimeout(function(){var inp=document.querySelector('#'+pfx+'row'+i+' .iex-m');if(inp&&!ok[i])inp.focus();},60);
+  };
+}
+var ex3show=makeShow('ex3',ex3ok,ex3c,N3);
+var ex4show=makeShow('ex4',ex4ok,ex4c,N4);
+var ex5show=makeShow('ex5',ex5ok,ex5c,N5);
+buildDots('ex3',N3,ex3show);
+buildDots('ex4',N4,ex4show);
+buildDots('ex5',N5,ex5show);
+window.ex3show=ex3show; window.ex4show=ex4show; window.ex5show=ex5show;
+window.ex3nav=function(d){if(ex3c[0]+d>=0&&ex3c[0]+d<N3)ex3show(ex3c[0]+d);};
+window.ex4nav=function(d){if(ex4c[0]+d>=0&&ex4c[0]+d<N4)ex4show(ex4c[0]+d);};
+window.ex5nav=function(d){if(ex5c[0]+d>=0&&ex5c[0]+d<N5)ex5show(ex5c[0]+d);};
+window.ex3check=function(i){opCheck('ex3',Q3,ex3ok,ex3c,N3,i);};
+window.ex4check=function(i){opCheck('ex4',Q4,ex4ok,ex4c,N4,i);};
+window.ex5check=function(i){opCheck('ex5',Q5,ex5ok,ex5c,N5,i);};
+})();
+</script>

@@ -1,0 +1,186 @@
+{% comment %}
+Strumento interattivo: una bilancia a bracci disegnata su un canvas, con cui
+si stima la massa di un vaso di fiori usando sacchetti di farina da 1 kg
+(interi o parziali, tramite uno slider) come campione, poi si verifica la
+propria stima. Nessun parametro.
+{% endcomment %}
+<div style="margin:1.5rem 0;background:#f0e8dc;border-radius:8px;padding:1rem 1rem 0.8rem;border:1px solid #c8b898;">
+<p style="margin:0 0 0.6rem;font-size:14px;font-family:Georgia,serif;"><strong>Misura la massa del vaso di fiori</strong></p>
+<canvas id="cv-bil" width="520" height="340" style="display:block;max-width:100%;border-radius:5px;"></canvas>
+<div style="margin-top:0.7rem;display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;">
+  <button onclick="simBil.addBag()" style="padding:0.3rem 0.9rem;background:#8b5e30;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-family:Georgia,serif;">+ Sacchetto intero (1 kg)</button>
+  <button onclick="simBil.remBag()" style="padding:0.3rem 0.9rem;background:#5a5248;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-family:Georgia,serif;">&#8722; Rimuovi sacchetto</button>
+</div>
+<div style="margin-top:0.5rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
+  <label style="font-size:13px;font-family:Georgia,serif;color:#5a3c18;">Sacchetto parziale:</label>
+  <input type="range" id="sld-bil" min="0" max="100" value="0" oninput="simBil.setPartial(this.value)" style="width:140px;">
+  <span id="lbl-bil-p" style="font-size:13px;color:#6b4e30;font-family:Georgia,serif;">0.00 kg</span>
+</div>
+<div style="margin-top:0.7rem;display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
+  <label style="font-size:14px;font-family:Georgia,serif;">Massa del vaso (kg):</label>
+  <input id="inp-bil" type="number" min="0" max="10" step="0.1" style="width:70px;padding:0.2rem 0.4rem;border:1px solid #aaa;border-radius:4px;font-size:14px;">
+  <button onclick="simBil.verifica()" style="padding:0.3rem 0.9rem;background:#1a4d6a;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;font-family:Georgia,serif;">Verifica</button>
+</div>
+<p id="fb-bil" style="margin:0.5rem 0 0;font-size:14px;font-family:Georgia,serif;min-height:1.2em;"></p>
+</div>
+<script>
+var simBil=(function(){
+var cv=document.getElementById('cv-bil'),ctx=cv.getContext('2d');
+var W=520,H=340,POT=2.3,bags=0,partial=0;
+function leftM(){return bags+partial;}
+function angle(){return Math.max(-28,Math.min(28,(leftM()-POT)*14))*Math.PI/180;}
+var PX=260,PY=65,BL=152,CL=82;
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  var bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#faf4ec');bg.addColorStop(1,'#f0e8dc');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  var a=angle(),ca=Math.cos(a),sa=Math.sin(a);
+  var lbx=PX-BL*ca,lby=PY+BL*sa,rbx=PX+BL*ca,rby=PY-BL*sa;
+  var lpx=lbx,lpy=lby+CL,rpx=rbx,rpy=rby+CL;
+  drawStand();drawBeam(lbx,lby,rbx,rby);
+  drawChain(lbx,lby,lpx,lpy);drawChain(rbx,rby,rpx,rpy);
+  drawPan(lpx,lpy);drawPan(rpx,rpy);
+  for(var i=0;i<bags;i++)drawBag(lpx,lpy-14-i*36,1,false);
+  if(partial>0.005)drawBag(lpx,lpy-14-bags*36,partial,true);
+  drawPot(rpx,rpy-12);
+  var diff=Math.abs(leftM()-POT);
+  ctx.textAlign='center';ctx.font='bold 12px Georgia,serif';
+  if(diff<0.15){ctx.fillStyle='#15803d';ctx.fillText('In equilibrio! Qual è la massa del vaso?',PX,H-9);}
+  else{ctx.fillStyle='rgba(80,55,30,0.65)';ctx.fillText(leftM()<POT?'Piatto sinistro troppo leggero':'Piatto sinistro troppo pesante',PX,H-9);}
+  ctx.textAlign='left';
+}
+function drawStand(){
+  ctx.fillStyle='rgba(0,0,0,0.09)';ctx.beginPath();ctx.ellipse(PX+4,H-19,68,9,0,0,Math.PI*2);ctx.fill();
+  var cg=ctx.createLinearGradient(PX-5,0,PX+5,0);
+  cg.addColorStop(0,'#6b7280');cg.addColorStop(0.35,'#9ca3af');cg.addColorStop(1,'#6b7280');
+  ctx.fillStyle=cg;ctx.fillRect(PX-5,PY,10,H-PY-24);
+  var bg=ctx.createLinearGradient(0,H-26,0,H-10);
+  bg.addColorStop(0,'#4b5563');bg.addColorStop(1,'#374151');
+  ctx.fillStyle=bg;ctx.beginPath();ctx.roundRect(PX-62,H-26,124,16,3);ctx.fill();
+  ctx.strokeStyle='rgba(100,110,130,0.3)';ctx.lineWidth=1;
+  ctx.beginPath();ctx.roundRect(PX-62,H-26,124,16,3);ctx.stroke();
+  var pg=ctx.createRadialGradient(PX-3,PY-3,1,PX,PY,12);
+  pg.addColorStop(0,'#e2e8f0');pg.addColorStop(0.55,'#94a3b8');pg.addColorStop(1,'#475569');
+  ctx.fillStyle=pg;ctx.beginPath();ctx.arc(PX,PY,12,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#334155';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(PX,PY,12,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#1e293b';ctx.beginPath();ctx.arc(PX,PY,3.5,0,Math.PI*2);ctx.fill();
+}
+function drawBeam(lbx,lby,rbx,rby){
+  var g=ctx.createLinearGradient(0,Math.min(lby,rby)-4,0,Math.max(lby,rby)+4);
+  g.addColorStop(0,'#94a3b8');g.addColorStop(0.4,'#cbd5e1');g.addColorStop(1,'#64748b');
+  ctx.strokeStyle=g;ctx.lineWidth=7;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(lbx,lby);ctx.lineTo(rbx,rby);ctx.stroke();
+  ctx.strokeStyle='rgba(255,255,255,0.28)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(lbx+2,lby-1);ctx.lineTo(rbx-2,rby+1);ctx.stroke();
+}
+function drawChain(x1,y1,x2,y2){
+  var n=4;
+  for(var i=0;i<n;i++){
+    var ta=i/n,tb=(i+1)/n;
+    ctx.strokeStyle=i%2?'#6b7280':'#9ca3af';ctx.lineWidth=i%2?1:1.8;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(x1+(x2-x1)*ta,y1+(y2-y1)*ta);ctx.lineTo(x1+(x2-x1)*tb,y1+(y2-y1)*tb);ctx.stroke();
+  }
+}
+function drawPan(cx,cy){
+  ctx.fillStyle='rgba(0,0,0,0.07)';ctx.beginPath();ctx.ellipse(cx+4,cy+8,54,7,0,0,Math.PI*2);ctx.fill();
+  var g=ctx.createLinearGradient(0,cy-9,0,cy+9);
+  g.addColorStop(0,'#e2e8f0');g.addColorStop(0.45,'#cbd5e1');g.addColorStop(1,'#94a3b8');
+  ctx.fillStyle=g;ctx.strokeStyle='#64748b';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.ellipse(cx,cy,52,10,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.32)';ctx.beginPath();ctx.ellipse(cx-10,cy-3,30,4,0,0,Math.PI*2);ctx.fill();
+}
+function drawBag(cx,cy,fill,isPart){
+  ctx.save();ctx.translate(cx,cy);
+  var bw=42,bh=32,tw=28;
+  ctx.fillStyle='rgba(0,0,0,0.09)';ctx.beginPath();ctx.ellipse(0,bh/2+3,bw/2*0.75,4,0,0,Math.PI*2);ctx.fill();
+  var bg;
+  if(isPart&&fill<0.98){
+    bg=ctx.createLinearGradient(0,-bh/2,0,bh/2);
+    bg.addColorStop(0,'#f0ebe0');bg.addColorStop(Math.max(0,1-fill),'#e6e0ce');bg.addColorStop(1,'#d4ccb8');
+  } else {
+    bg=ctx.createLinearGradient(-bw/2,0,bw/2,0);
+    bg.addColorStop(0,'#d8d2be');bg.addColorStop(0.28,'#eee8d4');bg.addColorStop(0.72,'#eee8d4');bg.addColorStop(1,'#c4bcaa');
+  }
+  ctx.fillStyle=bg;
+  ctx.beginPath();ctx.moveTo(-tw/2,-bh/2);ctx.lineTo(tw/2,-bh/2);ctx.lineTo(bw/2,bh/2);ctx.lineTo(-bw/2,bh/2);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#a8a090';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(-tw/2,-bh/2);ctx.lineTo(tw/2,-bh/2);ctx.lineTo(bw/2,bh/2);ctx.lineTo(-bw/2,bh/2);ctx.closePath();ctx.stroke();
+  ctx.strokeStyle='rgba(155,145,125,0.28)';ctx.lineWidth=0.7;
+  ctx.beginPath();ctx.moveTo(-bw/2+5,bh/4);ctx.lineTo(-tw/2+2,-bh/4);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(bw/2-5,bh/4);ctx.lineTo(tw/2-2,-bh/4);ctx.stroke();
+  var lh=12,lw=28,ly=bh/2-lh-2;
+  ctx.fillStyle='rgba(218,208,186,0.92)';ctx.strokeStyle='#b8a880';ctx.lineWidth=0.8;
+  ctx.fillRect(-lw/2,ly,lw,lh);ctx.strokeRect(-lw/2,ly,lw,lh);
+  ctx.fillStyle='#503a14';ctx.font='bold 6.5px sans-serif';ctx.textAlign='center';
+  ctx.fillText('FARINA',0,ly+8.5);ctx.textAlign='left';
+  if(!isPart||fill>=0.98){
+    ctx.strokeStyle='#b0a080';ctx.lineWidth=0.7;
+    for(var i=-2;i<=2;i++){ctx.beginPath();ctx.moveTo(i*5.5,-bh/2);ctx.quadraticCurveTo(i*5+Math.sign(i||1),-bh/2-5,0,-bh/2-10);ctx.stroke();}
+    ctx.strokeStyle='#7a5c2e';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(0,-bh/2-8,5,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-7,-bh/2-6);ctx.lineTo(-4,-bh/2-4);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(7,-bh/2-6);ctx.lineTo(4,-bh/2-4);ctx.stroke();
+  } else {
+    ctx.strokeStyle='#b0a080';ctx.lineWidth=0.9;ctx.setLineDash([2,2]);
+    ctx.beginPath();ctx.moveTo(-tw/2,-bh/2);ctx.lineTo(tw/2,-bh/2);ctx.stroke();ctx.setLineDash([]);
+    for(var j=-2;j<=2;j++){ctx.strokeStyle='#a09070';ctx.lineWidth=0.7;ctx.beginPath();ctx.moveTo(j*5.5,-bh/2);ctx.lineTo(j*5.5-2,-bh/2-3);ctx.stroke();}
+  }
+  ctx.restore();
+}
+function drawPot(cx,cy){
+  ctx.save();ctx.translate(cx,cy);
+  ctx.fillStyle='rgba(0,0,0,0.1)';ctx.beginPath();ctx.ellipse(0,38,16,5,0,0,Math.PI*2);ctx.fill();
+  var pg=ctx.createLinearGradient(-18,0,18,0);
+  pg.addColorStop(0,'#8b3808');pg.addColorStop(0.3,'#b45309');pg.addColorStop(0.7,'#b45309');pg.addColorStop(1,'#7c3008');
+  ctx.fillStyle=pg;
+  ctx.beginPath();ctx.moveTo(-17,0);ctx.lineTo(17,0);ctx.lineTo(13,36);ctx.lineTo(-13,36);ctx.closePath();ctx.fill();
+  ctx.fillStyle='rgba(255,190,80,0.14)';
+  ctx.beginPath();ctx.moveTo(-15,2);ctx.lineTo(15,2);ctx.lineTo(14,16);ctx.lineTo(-14,16);ctx.closePath();ctx.fill();
+  var rg=ctx.createLinearGradient(0,-6,0,5);
+  rg.addColorStop(0,'#d97706');rg.addColorStop(0.55,'#b45309');rg.addColorStop(1,'#8b3808');
+  ctx.fillStyle=rg;ctx.beginPath();ctx.roundRect(-22,-6,44,9,2);ctx.fill();
+  ctx.strokeStyle='rgba(100,45,5,0.4)';ctx.lineWidth=0.8;ctx.beginPath();ctx.roundRect(-22,-6,44,9,2);ctx.stroke();
+  var sg=ctx.createRadialGradient(-2,-1,0,0,0,14);
+  sg.addColorStop(0,'#7c4a22');sg.addColorStop(1,'#4a2a0e');
+  ctx.fillStyle=sg;ctx.beginPath();ctx.ellipse(0,0,13,4,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#166534';ctx.lineWidth=2.5;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(0,-1);ctx.bezierCurveTo(3,-10,-4,-20,1,-34);ctx.stroke();
+  ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(1,-17);ctx.bezierCurveTo(5,-17,14,-14,16,-20);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(0,-24);ctx.bezierCurveTo(-5,-23,-13,-21,-14,-28);ctx.stroke();
+  function leaf(ox,oy,rx,ry,rot){
+    ctx.save();ctx.translate(ox,oy);ctx.rotate(rot);
+    var lg=ctx.createRadialGradient(0,-2,0,0,0,rx);
+    lg.addColorStop(0,'#22c55e');lg.addColorStop(1,'#15803d');
+    ctx.fillStyle=lg;ctx.beginPath();ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(10,85,30,0.35)';ctx.lineWidth=0.6;
+    ctx.beginPath();ctx.moveTo(-rx,0);ctx.lineTo(rx,0);ctx.stroke();
+    ctx.restore();
+  }
+  leaf(14,-21,13,5.5,-0.4);leaf(-12,-27,12,5,-0.55+Math.PI);leaf(3,-35,10,4.5,-0.15);leaf(-5,-30,9,4,0.7);
+  var fy=-37;
+  for(var p=0;p<5;p++){var pa=p/5*Math.PI*2;
+    ctx.fillStyle='#f472b6';ctx.save();ctx.translate(Math.cos(pa)*5,fy+Math.sin(pa)*4);ctx.rotate(pa);
+    ctx.beginPath();ctx.ellipse(0,0,5,3,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  }
+  var fcg=ctx.createRadialGradient(-0.5,fy-0.5,0,0,fy,4);
+  fcg.addColorStop(0,'#fde68a');fcg.addColorStop(1,'#f59e0b');
+  ctx.fillStyle=fcg;ctx.beginPath();ctx.arc(0,fy,3.5,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+}
+function addBag(){if(bags<5){bags++;draw();}}
+function remBag(){if(bags>0){bags--;draw();}}
+function setPartial(v){partial=v/100;document.getElementById('lbl-bil-p').textContent=partial.toFixed(2)+' kg';draw();}
+function verifica(){
+  var v=parseFloat(document.getElementById('inp-bil').value),fb=document.getElementById('fb-bil');
+  if(isNaN(v)){fb.style.color='#b91c1c';fb.textContent='Inserisci un numero.';return;}
+  var d=Math.abs(v-POT);
+  if(d<=0.25){fb.style.color='#15803d';fb.textContent='Ottimo! La massa del vaso è '+POT.toFixed(1)+' kg. Con i sacchetti interi è difficile fare di meglio — l\'incertezza è inevitabile!';}
+  else if(d<=0.5){fb.style.color='#ca8a04';fb.textContent='Quasi! Prova a regolare il sacchetto parziale per avvicinarti all\'equilibrio.';}
+  else{fb.style.color='#b91c1c';fb.textContent='Lontano. Osserva la bilancia e aggiungi o rimuovi farina.';}
+}
+draw();
+return{addBag:addBag,remBag:remBag,setPartial:setPartial,verifica:verifica};
+})();
+</script>

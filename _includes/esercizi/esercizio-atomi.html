@@ -1,0 +1,238 @@
+{% comment %}
+Esercizio a carosello (Verifica Subito!) su protoni, elettroni, neutroni e carica elementare. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexAtomi">
+<p class="iex-lbl">Verifica Subito!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexAtomiprev" onclick="iexAtominav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexAtomidots"></div>
+<button class="iex-navbtn" id="iexAtominext" onclick="iexAtominav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexAtomirow0">
+<p class="iex-qt">Uno di questi quattro atomi è <strong>ionizzato</strong>. Clicca su quello giusto (conta protoni ed elettroni).</p>
+<div class="iex-choices iex-choices-imgrow" id="iexAtomichoices0">
+<button class="iex-choice-btn atom-choice-btn" data-v="a" aria-label="Atomo A">
+<svg viewBox="0 0 100 100" width="100" height="100">
+<defs>
+  <radialGradient id="atomPosG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="55%" stop-color="#fecdd3"/><stop offset="100%" stop-color="#fda4af"/></radialGradient>
+  <radialGradient id="atomNegG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#eff6ff"/><stop offset="55%" stop-color="#bfdbfe"/><stop offset="100%" stop-color="#93c5fd"/></radialGradient>
+</defs>
+<circle cx="50" cy="18" r="9" fill="url(#atomNegG)"/><text x="50" y="21.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="77.7" cy="66" r="9" fill="url(#atomNegG)"/><text x="77.7" y="69.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="22.3" cy="66" r="9" fill="url(#atomNegG)"/><text x="22.3" y="69.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="50" cy="50" r="17" fill="url(#atomPosG)" stroke="#9f1239" stroke-width=".5"/><text x="50" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#9f1239">3+</text>
+</svg>
+</button>
+<button class="iex-choice-btn atom-choice-btn" data-v="b" aria-label="Atomo B">
+<svg viewBox="0 0 100 100" width="100" height="100">
+<circle cx="50" cy="18" r="9" fill="url(#atomNegG)"/><text x="50" y="21.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="77.7" cy="66" r="9" fill="url(#atomNegG)"/><text x="77.7" y="69.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="22.3" cy="66" r="9" fill="url(#atomNegG)"/><text x="22.3" y="69.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="50" cy="50" r="17" fill="url(#atomPosG)" stroke="#9f1239" stroke-width=".5"/><text x="50" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#9f1239">4+</text>
+</svg>
+</button>
+<button class="iex-choice-btn atom-choice-btn" data-v="c" aria-label="Atomo C">
+<svg viewBox="0 0 100 100" width="100" height="100">
+<circle cx="50" cy="18" r="9" fill="url(#atomNegG)"/><text x="50" y="21.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="82" cy="50" r="9" fill="url(#atomNegG)"/><text x="82" y="53.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="50" cy="82" r="9" fill="url(#atomNegG)"/><text x="50" y="85.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="18" cy="50" r="9" fill="url(#atomNegG)"/><text x="18" y="53.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="50" cy="50" r="17" fill="url(#atomPosG)" stroke="#9f1239" stroke-width=".5"/><text x="50" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#9f1239">4+</text>
+</svg>
+</button>
+<button class="iex-choice-btn atom-choice-btn" data-v="d" aria-label="Atomo D">
+<svg viewBox="0 0 100 100" width="100" height="100">
+<circle cx="50" cy="18" r="9" fill="url(#atomNegG)"/><text x="50" y="21.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="80.4" cy="40.1" r="9" fill="url(#atomNegG)"/><text x="80.4" y="43.6" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="68.8" cy="75.9" r="9" fill="url(#atomNegG)"/><text x="68.8" y="79.4" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="31.2" cy="75.9" r="9" fill="url(#atomNegG)"/><text x="31.2" y="79.4" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="19.6" cy="40.1" r="9" fill="url(#atomNegG)"/><text x="19.6" y="43.6" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="50" cy="50" r="17" fill="url(#atomPosG)" stroke="#9f1239" stroke-width=".5"/><text x="50" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#9f1239">5+</text>
+</svg>
+</button>
+</div>
+<div class="iex-fb" id="iexAtomifb0"></div>
+</div>
+
+<div class="iex-q" id="iexAtomirow1" style="display:none">
+<p class="iex-qt">Osserva questo atomo: è ionizzato. Con quale segno?</p>
+<svg viewBox="0 0 100 100" width="110" height="110" style="display:block;margin:0 auto;">
+<circle cx="50" cy="18" r="9" fill="url(#atomNegG)"/><text x="50" y="21.5" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="80.4" cy="40.1" r="9" fill="url(#atomNegG)"/><text x="80.4" y="43.6" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="68.8" cy="75.9" r="9" fill="url(#atomNegG)"/><text x="68.8" y="79.4" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="31.2" cy="75.9" r="9" fill="url(#atomNegG)"/><text x="31.2" y="79.4" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="19.6" cy="40.1" r="9" fill="url(#atomNegG)"/><text x="19.6" y="43.6" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">–</text>
+<circle cx="50" cy="50" r="17" fill="url(#atomPosG)" stroke="#9f1239" stroke-width=".5"/><text x="50" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#9f1239">3+</text>
+</svg>
+<div class="iex-choices" id="iexAtomichoices1" style="max-width:320px;margin:.6rem auto 0;">
+<button class="iex-choice-btn" data-v="pos">Ionizzato positivamente</button>
+<button class="iex-choice-btn" data-v="neg">Ionizzato negativamente</button>
+</div>
+<div class="iex-fb" id="iexAtomifb1"></div>
+</div>
+
+<div class="iex-q" id="iexAtomirow2" style="display:none">
+<p class="iex-qt">Guardando la tabella, calcola quante volte la massa dell'elettrone sta in quella del protone, cioè calcola il rapporto $m_p/m_e$, <strong>approssimando il risultato all'unità</strong>.</p>
+<div class="iex-ir">
+<input class="iex-m" id="iexAtomim2" type="text" placeholder="numero intero" onkeydown="if(event.key==='Enter')iexAtomicheck2()">
+<button class="iex-vbtn" onclick="iexAtomicheck2()">Verifica</button>
+</div>
+<div class="iex-fb" id="iexAtomifb2"></div>
+<div class="iex-sol" id="iexAtomisol2">Soluzione: $m_p/m_e = 1{,}673\times10^{-27} / 9{,}109\times10^{-31} \approx 1837$. Il protone è quasi duemila volte più massiccio dell'elettrone!</div>
+</div>
+
+<div class="iex-q" id="iexAtomirow3" style="display:none">
+<p class="iex-qt">Un atomo neutro possiede 11 protoni. Quanti elettroni possiede?</p>
+<div class="iex-choices" id="iexAtomichoices3">
+<button class="iex-choice-btn" data-v="a">6</button>
+<button class="iex-choice-btn" data-v="b">11</button>
+<button class="iex-choice-btn" data-v="c">22</button>
+<button class="iex-choice-btn" data-v="d">Dipende dall'elemento chimico</button>
+</div>
+<div class="iex-fb" id="iexAtomifb3"></div>
+</div>
+
+<div class="iex-q" id="iexAtomirow4" style="display:none">
+<p class="iex-qt">Un atomo con carica $-3\, e$ possiede 14 protoni. Quanti elettroni possiede?</p>
+<div class="iex-choices" id="iexAtomichoices3">
+<button class="iex-choice-btn" data-v="a">17</button>
+<button class="iex-choice-btn" data-v="b">11</button>
+<button class="iex-choice-btn" data-v="c">14</button>
+<button class="iex-choice-btn" data-v="d">Dipende dall'elemento chimico</button>
+</div>
+<div class="iex-fb" id="iexAtomifb4"></div>
+</div>
+
+<div class="iex-q" id="iexAtomirow5" style="display:none">
+<p class="iex-qt">Quale di queste affermazioni è corretta?</p>
+<div class="iex-choices" id="iexAtomichoices4">
+<button class="iex-choice-btn" data-v="a">Il neutrone ha carica negativa</button>
+<button class="iex-choice-btn" data-v="b">Protone ed elettrone hanno circa la stessa massa</button>
+<button class="iex-choice-btn" data-v="c">Il protone è migliaia di volte più massiccio dell'elettrone</button>
+<button class="iex-choice-btn" data-v="d">L'elettrone è più massiccio del protone</button>
+</div>
+<div class="iex-fb" id="iexAtomifb5"></div>
+</div>
+
+</div>
+
+<style>
+.iex-choices-imgrow { display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; gap:.6rem; }
+.atom-choice-btn { width:104px; height:104px; padding:.2rem; display:flex; align-items:center; justify-content:center; }
+@media (max-width: 480px) {
+  .atom-choice-btn { width:76px; height:76px; }
+  .atom-choice-btn svg { width:68px; height:68px; }
+}
+@media print { #iexAtomi { display:none; } }
+</style>
+
+<script>
+(function(){
+  var N=5, cur=0, ok=[false,false,false,false,false];
+  function updateDots(){
+    var dots=document.querySelectorAll('#iexAtomidots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#iexAtomi .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById('iexAtomirow'+i).style.display='block';
+    cur=i;
+    document.getElementById('iexAtomiprev').disabled=(i===0);
+    document.getElementById('iexAtominext').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById('iexAtomidots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window.iexAtominav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<55;i++){
+      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){
+        var op=1;
+        function step(){
+          vy+=.28; x+=vx; y+=vy; op-=.016;
+          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
+          if(op>0)requestAnimationFrame(step); else p.remove();
+        }
+        requestAnimationFrame(step);
+      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+    }
+  }
+  window.showSol = window.showSol || function(id){ document.getElementById(id).style.display='block'; };
+
+  function wireChoices(rowIdx, choicesId, fbId, correctV, msgOk, msgErr){
+    var btns = document.querySelectorAll('#'+choicesId+' .iex-choice-btn');
+    var fb = document.getElementById(fbId);
+    btns.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        if(btn.disabled) return;
+        btns.forEach(function(b){ b.disabled = true; });
+        var correct = btn.dataset.v === correctV;
+        fb.style.display = 'block';
+        if(correct){
+          btn.className = btn.className.replace(' wrong','') + ' correct';
+          ok[rowIdx] = true; fb.className = 'iex-fb ok';
+          fb.innerHTML = '&#10003; Esatto! '+msgOk+' <button class="iex-nextbtn" onclick="iexAtominav(1)">Passo successivo &rarr;</button>';
+          shootConf(btn); updateDots();
+        } else {
+          btn.className = btn.className.replace(' correct','') + ' wrong';
+          var correctBtn = document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+correctV+'"]');
+          correctBtn.className = correctBtn.className.replace(' wrong','') + ' correct';
+          fb.className = 'iex-fb err';
+          fb.innerHTML = msgErr;
+        }
+        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+      });
+    });
+  }
+
+  wireChoices(0, 'iexAtomichoices0', 'iexAtomifb0', 'b',
+    'L\'atomo B ha 4 protoni ma solo 3 elettroni: un protone in eccesso, quindi carica netta $+1e$.',
+    'Non è quello giusto: conta con calma protoni (nel nucleo) ed elettroni (attorno). Solo un atomo ha un numero diverso di protoni ed elettroni.');
+
+  wireChoices(1, 'iexAtomichoices1', 'iexAtomifb1', 'neg',
+    'Questo atomo ha 3 protoni ma 5 elettroni: due elettroni in eccesso, quindi carica netta $-2e$: è ionizzato negativamente.',
+    'Non è corretto: questo atomo ha 3 protoni ma 5 elettroni. Più elettroni che protoni significa carica netta negativa.');
+
+  wireChoices(3, 'iexAtomichoices3', 'iexAtomifb3', 'b',
+    'In un atomo neutro il numero di elettroni è sempre uguale al numero di protoni.',
+    'Non è corretto: in un atomo <em>neutro</em> il numero di elettroni è sempre uguale al numero di protoni, quindi 11.');
+
+  wireChoices(4, 'iexAtomichoices4', 'iexAtomifb4', 'c',
+    'Il protone è quasi 2000 volte più massiccio dell\'elettrone (li hai appena divisi nella domanda precedente!).',
+    'Non è corretto: il neutrone è neutro (non negativo), ed è il protone — non l\'elettrone — a essere migliaia di volte più massiccio.');
+
+  window.iexAtomicheck2 = function(){
+    var raw = document.getElementById('iexAtomim2').value.trim().replace(',', '.');
+    var v = parseFloat(raw);
+    var fb = document.getElementById('iexAtomifb2');
+    var vb = document.querySelector('#iexAtomirow2 .iex-vbtn');
+    if(isNaN(v)){ fb.className='iex-fb err'; fb.textContent='Inserisci un numero.'; return; }
+    var rounded = Math.round(v);
+    if(rounded === 1837 || rounded === 1836){
+      ok[2]=true; fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto! Il protone è circa 1837 volte più massiccio dell\'elettrone. <button class="iex-nextbtn" onclick="iexAtominav(1)">Passo successivo &rarr;</button>';
+      shootConf(vb); updateDots();
+    } else {
+      fb.className='iex-fb err';
+      fb.innerHTML='Non è esatto. Ricontrolla la divisione $m_p/m_e$ usando i valori della tabella. Oppure <button class="iex-lbtn" onclick="showSol(\'iexAtomisol2\')">vedi la soluzione</button>.';
+    }
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+  };
+})();
+</script>

@@ -1,0 +1,143 @@
+{% comment %}
+Esercizio a carosello sugli esponenti nelle conversioni di aree/volumi fra unità diverse. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iex-ae" style="margin-top:1.5rem;">
+<p class="iex-lbl">Esercizio — Aree e volumi</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="aeprev" onclick="aeNav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="aedots"></div>
+<button class="iex-navbtn" id="aenext" onclick="aeNav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="aerow0">
+<p class="iex-qt"><strong>i)</strong> Converti $1\ \text{µm}^3$ in megametri cubi (Mm³).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem0" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(0)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee0" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(0)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">Mm³</span>
+<button class="iex-vbtn" onclick="aeCheck(0)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb0"></div>
+<div class="iex-sol" id="aesol0">$1\ µ\text{m}=10^{-6}\ \text{m}=10^{-12}\ \text{Mm}$, quindi $1\ µ\text{m}^3=(10^{-12})^3\ \text{Mm}^3=10^{-36}\ \text{Mm}^3$.</div>
+</div>
+
+<div class="iex-q" id="aerow1" style="display:none">
+<p class="iex-qt"><strong>ii)</strong> Converti $67{,}12\ \text{nm}^2$ in metri quadri (m²).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem1" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(1)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee1" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(1)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m²</span>
+<button class="iex-vbtn" onclick="aeCheck(1)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb1"></div>
+<div class="iex-sol" id="aesol1">$1\ \text{nm}=10^{-9}\ \text{m}$, quindi $1\ \text{nm}^2=10^{-18}\ \text{m}^2$. Perciò $67{,}12\ \text{nm}^2=67{,}12\times10^{-18}\ \text{m}^2=6{,}712\times10^{-17}\ \text{m}^2$.</div>
+</div>
+
+<div class="iex-q" id="aerow2" style="display:none">
+<p class="iex-qt"><strong>iii)</strong> Converti $5\,123\,456\ \text{m}^2$ in nanometri quadri (nm²).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem2" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(2)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee2" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(2)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">nm²</span>
+<button class="iex-vbtn" onclick="aeCheck(2)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb2"></div>
+<div class="iex-sol" id="aesol2">$1\ \text{m}=10^{9}\ \text{nm}$, quindi $1\ \text{m}^2=10^{18}\ \text{nm}^2$. Perciò $5\,123\,456\ \text{m}^2=5{,}123456\times10^{6}\times10^{18}\ \text{nm}^2=5{,}123456\times10^{24}\ \text{nm}^2$.</div>
+</div>
+
+<div class="iex-q" id="aerow3" style="display:none">
+<p class="iex-qt"><strong>iv)</strong> Converti $3{,}45\ \text{mm}^3$ in centimetri cubi (cm³).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem3" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(3)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(3)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">cm³</span>
+<button class="iex-vbtn" onclick="aeCheck(3)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb3"></div>
+<div class="iex-sol" id="aesol3">$1\ \text{mm}=10^{-1}\ \text{cm}$, quindi $1\ \text{mm}^3=10^{-3}\ \text{cm}^3$. Perciò $3{,}45\ \text{mm}^3=3{,}45\times10^{-3}\ \text{cm}^3$.</div>
+</div>
+
+<div class="iex-q" id="aerow4" style="display:none">
+<p class="iex-qt"><strong>v)</strong> Converti $0{,}0025\ \text{km}^2$ in metri quadri (m²).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem4" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(4)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee4" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(4)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m²</span>
+<button class="iex-vbtn" onclick="aeCheck(4)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb4"></div>
+<div class="iex-sol" id="aesol4">$1\ \text{km}=10^{3}\ \text{m}$, quindi $1\ \text{km}^2=10^{6}\ \text{m}^2$. Perciò $0{,}0025\ \text{km}^2=0{,}0025\times10^{6}\ \text{m}^2=2{,}5\times10^{3}\ \text{m}^2$.</div>
+</div>
+
+<div class="iex-q" id="aerow5" style="display:none">
+<p class="iex-qt"><strong>vi)</strong> Converti $7{,}1\ \text{cm}^2$ in metri quadri (m²).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem5" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(5)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee5" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(5)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m²</span>
+<button class="iex-vbtn" onclick="aeCheck(5)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb5"></div>
+<div class="iex-sol" id="aesol5">$1\ \text{cm}=10^{-2}\ \text{m}$, quindi $1\ \text{cm}^2=10^{-4}\ \text{m}^2$. Perciò $7{,}1\ \text{cm}^2=7{,}1\times10^{-4}\ \text{m}^2$.</div>
+</div>
+
+<div class="iex-q" id="aerow6" style="display:none">
+<p class="iex-qt"><strong>vii)</strong> Converti $12{,}6\ \text{Gm}^3$ in metri cubi (m³).</p>
+<div class="iex-ir">
+<input class="iex-m" id="aem6" type="text" placeholder="coeff." onkeydown="if(event.key==='Enter')aeCheck(6)">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="aee6" type="text" placeholder="n" onkeydown="if(event.key==='Enter')aeCheck(6)"></sup></span>
+<span style="font-size:.9rem;color:#6b7280;">m³</span>
+<button class="iex-vbtn" onclick="aeCheck(6)">Verifica</button>
+</div>
+<div class="iex-fb" id="aefb6"></div>
+<div class="iex-sol" id="aesol6">$1\ \text{Gm}=10^{9}\ \text{m}$, quindi $1\ \text{Gm}^3=10^{27}\ \text{m}^3$. Perciò $12{,}6\ \text{Gm}^3=12{,}6\times10^{27}\ \text{m}^3=1{,}26\times10^{28}\ \text{m}^3$.</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+var QAE=[
+  {v:1e-36,   tol:0.001},
+  {v:6.712e-17,tol:0.001},
+  {v:5.123456e24,tol:0.001},
+  {v:3.45e-3,  tol:0.001},
+  {v:2.5e3,    tol:0.001},
+  {v:7.1e-4,   tol:0.001},
+  {v:1.26e28,  tol:0.001}
+];
+var aeok=[false,false,false,false,false,false,false];
+var aec=[0],NAE=7;
+function parseMantAE(s){var c=s.trim();if(c.indexOf(',')!==-1)c=c.replace(',','.');return parseFloat(c);}
+function parseExpAE(s){return parseInt(s.trim().replace('−','-'),10);}
+function shootCAE(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;var cl=['#0e7490','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#22d3ee'];for(var i=0;i<55;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=4+Math.random()*8;p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function step(){vy+=.28;x+=vx;y+=vy;op-=.016;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(step);else p.remove();}requestAnimationFrame(step);})(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);}}
+function shootFWAE(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootCAE({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
+window.showSolAE=function(id){var el=document.getElementById(id);if(el){el.style.display='block';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]);}};
+function buildDotsAE(N,showFn){var c=document.getElementById('aedots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+function updDotsAE(){var dots=document.querySelectorAll('#aedots .iex-dot');for(var i=0;i<NAE;i++)dots[i].className='iex-dot'+(i===aec[0]?' cur':'')+(aeok[i]?' ok':'');}
+window.aeShow=function(i){document.querySelectorAll('#iex-ae .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('aerow'+i).style.display='block';aec[0]=i;document.getElementById('aeprev').disabled=(i===0);document.getElementById('aenext').disabled=(i===NAE-1);updDotsAE();}
+window.aeNav=function(d){window.aeShow(Math.max(0,Math.min(NAE-1,aec[0]+d)));};
+window.aeCheck=function(i){
+  var m=document.getElementById('aem'+i);
+  var e=document.getElementById('aee'+i);
+  var fb=document.getElementById('aefb'+i);
+  var vb=m?m.parentElement.querySelector('button'):null;
+  if(!m||!e||!fb)return;
+  var mv=parseMantAE(m.value),ev=parseExpAE(e.value);
+  if(isNaN(mv)||isNaN(ev)){fb.className='iex-fb err';fb.innerHTML='Inserisci coefficiente ed esponente.';return;}
+  var computed=mv*Math.pow(10,ev);
+  var q=QAE[i];
+  var isOk=Math.abs(q.v)===0?Math.abs(computed)<1e-60:Math.abs((computed-q.v)/q.v)<=q.tol;
+  if(isOk){
+    aeok[i]=true;fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(i<NAE-1?' <button class="iex-nextbtn" onclick="aeShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    if(vb)shootCAE(vb);updDotsAE();
+    if(aeok.every(function(x){return x;}))setTimeout(shootFWAE,600);
+  } else {
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolAE(\'aesol'+i+'\')">vedi la soluzione</button>.';
+  }
+};
+buildDotsAE(NAE,window.aeShow);
+})();
+</script>

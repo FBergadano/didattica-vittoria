@@ -1,0 +1,36 @@
+{% comment %}
+Esercizio a carosello guidato per far scoprire che P = F·v, sostituendo
+L = F·Δs nella definizione di potenza e riconoscendo che Δs/Δt è la
+velocità. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="scopPotFv">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="scopPotFvprev" onclick="scopPotFvnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="scopPotFvdots"></div>
+<button class="iex-navbtn" id="scopPotFvnext" onclick="scopPotFvnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="scopPotFvrow0">
+<p class="iex-qt">Sostituisci $L$ con $F\cdot \Delta s$ nella formula $P=\dfrac{L}{\Delta t}$. Cosa ottieni?</p>
+{% include fill.html prima="Ottieni: P = " tipo="drop"
+   opts="F · Δs/Δt|F/(Δs · Δt)|Δs/(F · Δt)|F · Δt/Δs"
+   ok="F · Δs/Δt"
+   dopo=""
+   s="Hai semplicemente sostituito L con F·Δs, senza cambiare nient'altro." %}
+</div>
+
+<div class="iex-q" id="scopPotFvrow1" style="display:none">
+<p class="iex-qt">Ricorda che $\dfrac{\Delta s}{\Delta t}$ è, per definizione, il modulo di una grandezza che già conosci: la velocità $v$. Riscrivi allora $P$ in funzione di $F$ e $v$.</p>
+{% include fill.html prima="P = " tipo="drop"
+   opts="F · v|F / v|F + v|v / F"
+   ok="F · v"
+   dopo=""
+   s="Esatto: P = F · v." %}
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('scopPotFv',2);
+</script>

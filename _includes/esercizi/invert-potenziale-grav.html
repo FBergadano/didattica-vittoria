@@ -1,0 +1,35 @@
+{% comment %}
+Esercizio a carosello: isola le grandezze nella formula dell'energia potenziale gravitazionale, usando invert.html. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="invCarPotenziale">
+<p class="iex-lbl">Isola le altre grandezze</p>
+<p class="iex-hint">Cerca la sequenza più breve di mosse per isolare ciascuna grandezza.</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="invCarPotenzialeprev" onclick="invCarPotenzialenav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="invCarPotenzialedots"></div>
+<button class="iex-navbtn" id="invCarPotenzialenext" onclick="invCarPotenzialenav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="invCarPotenzialerow0">
+<div class="iex-nested">
+{% include invert.html id="inv-potenziale-m" variabili="Ug|m|g|h" etichette="U_g|m|g|h" sinistra="Ug" destra="m*g*h" obiettivo="m" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarPotenzialerow1" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-potenziale-g" variabili="Ug|m|g|h" etichette="U_g|m|g|h" sinistra="Ug" destra="m*g*h" obiettivo="g" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarPotenzialerow2" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-potenziale-h" variabili="Ug|m|g|h" etichette="U_g|m|g|h" sinistra="Ug" destra="m*g*h" obiettivo="h" %}
+</div>
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('invCarPotenziale',3);
+</script>

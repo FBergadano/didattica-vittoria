@@ -1,0 +1,72 @@
+{% comment %}
+Esercizio a carosello: isola le grandezze nella legge di Coulomb, una alla volta, usando invert.html. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="invCarCoulomb">
+<p class="iex-lbl">Isola le altre grandezze</p>
+<p class="iex-hint">Per ciascuna grandezza, cerca la sequenza più breve di mosse, poi appuntala sul quaderno in un punto facile da ritrovare: ti servirà spesso.</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="invCarCoulombprev" onclick="invCarCoulombnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="invCarCoulombdots"></div>
+<button class="iex-navbtn" id="invCarCoulombnext" onclick="invCarCoulombnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="invCarCoulombrow0">
+<div class="iex-nested">
+{% include invert.html id="inv-coulomb-k" variabili="F|k|Qa|Qb|r" etichette="F|k|q_1|q_2|r"
+   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="k" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarCoulombrow1" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-coulomb-Qa" variabili="F|k|Qa|Qb|r" etichette="F|k|q_1|q_2|r"
+   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qa" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarCoulombrow2" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-coulomb-Qb" variabili="F|k|Qa|Qb|r" etichette="F|k|q_1|q_2|r"
+   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qb" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarCoulombrow3" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-coulomb-r" variabili="F|k|Qa|Qb|r" etichette="F|k|q_1|q_2|r"
+   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="r" radice="1" %}
+</div>
+</div>
+
+</div>
+
+<script>
+window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
+  var cur=0;
+  function updateDots(){
+    var dots=document.querySelectorAll('#'+ID+'dots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'');
+  }
+  function show(i){
+    document.querySelectorAll('#'+ID+' .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById(ID+'row'+i).style.display='block';
+    cur=i;
+    document.getElementById(ID+'prev').disabled=(i===0);
+    document.getElementById(ID+'next').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById(ID+'dots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Passo '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+};
+setupInvCarousel('invCarCoulomb',4);
+</script>

@@ -1,0 +1,127 @@
+{% comment %}
+Come equivalenza-area-lab, ma per i volumi: mostra come un cubo di lato 1 m
+si compone di 10 strati da 100 dm² ciascuno, per un totale di 1000 dm³.
+Nessun parametro.
+{% endcomment %}
+<div style="text-align:center;margin:1.5rem 0;">
+<canvas id="vol-anim" width="320" height="310" style="max-width:100%;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;display:block;margin:0 auto .6rem;"></canvas>
+<button id="vol-anim-btn" class="iex-vbtn" style="font-size:.9rem;">&#9654; Riproduci animazione</button>
+</div>
+
+Partiamo dalla definizione di metro cubo:
+
+$$1\ \text{m}^3 = 1\ \text{m} \times 1\ \text{m} \times 1\ \text{m}.$$
+
+Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
+
+$$1\ \text{m}^3 = (10\ \text{dm}) \times (10\ \text{dm}) \times (10\ \text{dm}) = 10^3\ \text{dm}^3 = 1\,000\ \text{dm}^3.$$
+
+L'animazione qui sopra mostra come il cubo di lato 1 m si compone di 10 strati da 100 dm² ciascuno, per un totale di 1000 dm³.
+
+<script>
+(function(){
+var cv=document.getElementById('vol-anim');
+if(!cv)return;
+var ctx=cv.getContext('2d');
+var W=cv.width,H=cv.height;
+var S=155,N=10,cell=S/N;
+var ox=65,oy=48;
+var DX=5,DY=-3;
+function cl(t,a,b){return Math.max(0,Math.min(1,(t-a)/(b-a)));}
+function ease(t){return t<.5?2*t*t:-1+(4-2*t)*t;}
+function drawLayer(ly,alpha){
+  var offx=ly*DX,offy=ly*DY;
+  ctx.globalAlpha=alpha;
+  ctx.fillStyle=ly===0?'rgba(59,130,246,.06)':'rgba(147,197,253,.18)';
+  ctx.fillRect(ox+offx,oy+offy,S,S);
+  ctx.strokeStyle=ly===0?'#93c5fd':'#bfdbfe';ctx.lineWidth=0.6;
+  for(var i=1;i<N;i++){
+    ctx.beginPath();ctx.moveTo(ox+offx+i*cell,oy+offy);ctx.lineTo(ox+offx+i*cell,oy+offy+S);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(ox+offx,oy+offy+i*cell);ctx.lineTo(ox+offx+S,oy+offy+i*cell);ctx.stroke();
+  }
+  ctx.strokeStyle=ly===0?'#1d4ed8':'#60a5fa';ctx.lineWidth=ly===0?2.5:1.2;
+  ctx.strokeRect(ox+offx,oy+offy,S,S);
+  ctx.globalAlpha=1;
+}
+function frame(t){
+  ctx.clearRect(0,0,W,H);
+  var numLayers=t>5.0?Math.min(10,Math.ceil(cl(t,5.0,7.2)*10)):1;
+  for(var ly=numLayers-1;ly>0;ly--){
+    var la=ease(cl(t,5.0+(ly-1)*0.22,5.0+ly*0.22+0.5));
+    drawLayer(ly,la*0.8);
+  }
+  if(t>1.0){
+    ctx.globalAlpha=ease(cl(t,1.0,2.4))*0.75;
+    ctx.strokeStyle='#93c5fd';ctx.lineWidth=0.7;
+    for(var i=1;i<N;i++){
+      ctx.beginPath();ctx.moveTo(ox+i*cell,oy);ctx.lineTo(ox+i*cell,oy+S);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox,oy+i*cell);ctx.lineTo(ox+S,oy+i*cell);ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+  if(t>3.0){
+    var cp=cl(t,3.0,5.0);
+    var tot=Math.min(100,Math.ceil(cp*100));
+    ctx.fillStyle='rgba(251,191,36,.45)';
+    var left=tot;
+    for(var r=0;r<N&&left>0;r++)for(var c=0;c<N&&left>0;c++){ctx.fillRect(ox+c*cell+.5,oy+r*cell+.5,cell-1,cell-1);left--;}
+  }
+  if(t>2.4){
+    var hp=ease(cl(t,2.4,3.0));
+    ctx.globalAlpha=hp;
+    ctx.fillStyle='#fbbf24';ctx.fillRect(ox+.5,oy+.5,cell-1,cell-1);
+    ctx.strokeStyle='#f59e0b';ctx.lineWidth=1.5;ctx.strokeRect(ox+.5,oy+.5,cell-1,cell-1);
+    ctx.globalAlpha=1;
+    if(hp>0.6){ctx.fillStyle='#78350f';ctx.font='bold 7px sans-serif';ctx.textAlign='center';ctx.fillText('1 dm²',ox+cell/2,oy+cell/2+2.5);}
+  }
+  ctx.strokeStyle='#1d4ed8';ctx.lineWidth=2.5;ctx.strokeRect(ox,oy,S,S);
+  if(t>0.6){
+    var tp=cl(t,0.6,1.0);var show=Math.round(tp*N);
+    ctx.strokeStyle='#374151';ctx.lineWidth=1;
+    for(var j=1;j<=show&&j<N;j++){
+      var xj=ox+j*cell,yj=oy+j*cell;
+      ctx.beginPath();ctx.moveTo(xj,oy);ctx.lineTo(xj,oy-4);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(xj,oy+S);ctx.lineTo(xj,oy+S+4);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox,yj);ctx.lineTo(ox-4,yj);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(ox+S,yj);ctx.lineTo(ox+S+4,yj);ctx.stroke();
+    }
+    if(show>=1){ctx.fillStyle='#6b7280';ctx.font='8px sans-serif';ctx.textAlign='center';ctx.fillText('1 dm',ox+cell/2,oy-9);}
+  }
+  var lp=ease(cl(t,0,0.6));
+  if(lp>0){
+    ctx.globalAlpha=lp;
+    ctx.fillStyle='#1d4ed8';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText('1 m',ox+S/2,oy-17);
+    ctx.save();ctx.translate(ox-26,oy+S/2);ctx.rotate(-Math.PI/2);ctx.fillText('1 m',0,0);ctx.restore();
+    ctx.globalAlpha=1;
+  }
+  if(t>3.0){
+    var nL=t>5.0?Math.min(10,Math.ceil(cl(t,5.0,7.2)*10)):1;
+    var fC=t>3.0?Math.min(100,Math.ceil(cl(t,3.0,5.0)*100)):0;
+    var total=(nL-1)*100+fC;
+    var cy2=oy+S+28+Math.abs((nL-1)*DY);
+    ctx.fillStyle='#1d4ed8';ctx.font='bold 12px sans-serif';ctx.textAlign='center';
+    ctx.fillText(total+' dm³',ox+S/2+(nL-1)*DX/2,cy2);
+    if(total>=1000){
+      ctx.globalAlpha=ease(cl(t,7.2,8.2));
+      ctx.fillStyle='#166534';ctx.font='bold 12px sans-serif';
+      ctx.fillText('= 1 m³',ox+S/2+(nL-1)*DX/2,cy2+18);
+      ctx.globalAlpha=1;
+    }
+  }
+}
+frame(0);
+var _vaid=null,_vts0=null,_VTOT=9;
+document.getElementById('vol-anim-btn').addEventListener('click',function(){
+  if(_vaid){cancelAnimationFrame(_vaid);_vaid=null;}
+  _vts0=null;
+  function step(ts){
+    if(!_vts0)_vts0=ts;
+    var t=Math.min((ts-_vts0)/1000,_VTOT);
+    frame(t);
+    _vaid=t<_VTOT?requestAnimationFrame(step):null;
+  }
+  _vaid=requestAnimationFrame(step);
+});
+})();
+</script>

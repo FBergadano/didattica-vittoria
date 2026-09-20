@@ -1,0 +1,135 @@
+{% comment %}
+Esercizio di classificazione drag-and-drop: trascina ogni caratteristica nella colonna giusta (solo gravitazionale, solo elettrica, entrambe). Nessun parametro.
+{% endcomment %}
+<div class="sort-widget" id="sw-sortc1">
+<p class="sort-hint">Trascina ogni voce nella colonna appropriata.</p>
+<div class="sort-pool" id="sp-sortc1"></div>
+<div class="sort-table sortc-table3">
+<div class="sort-zone">
+<div class="sort-zone-hdr">Solo forza gravitazionale</div>
+<div class="sort-zone-body" id="szb-sortc1-0" data-cat="0"></div>
+</div>
+<div class="sort-zone">
+<div class="sort-zone-hdr">Entrambe</div>
+<div class="sort-zone-body" id="szb-sortc1-2" data-cat="2"></div>
+</div>
+<div class="sort-zone">
+<div class="sort-zone-hdr">Solo forza elettrica</div>
+<div class="sort-zone-body" id="szb-sortc1-1" data-cat="1"></div>
+</div>
+</div>
+<div class="sort-ctrl">
+<button class="sort-vbtn" id="sv-sortc1">✓ Verifica</button>
+<button class="sort-rbtn" id="sr-sortc1">↺ Ricomincia</button>
+</div>
+<div class="sort-fb" id="sf-sortc1"></div>
+</div>
+
+<style>
+.sortc-table3 { grid-template-columns: 1fr 1fr 1fr !important; }
+@media (max-width: 640px) { .sortc-table3 { grid-template-columns: 1fr !important; } }
+#sw-sortc1 .sort-item { display: inline-block; white-space: normal; text-align: center; }
+</style>
+
+<script>
+(function(){
+var D=[
+  {"t":"È sempre attrattiva","c":0},
+  {"t":"La sua costante ($G$) è piccolissima","c":0},
+  {"t":"Non esiste una \"massa negativa\"","c":0},
+  {"t":"Può essere anche repulsiva","c":1},
+  {"t":"La sua costante ($k$) è enorme","c":1},
+  {"t":"Nella formula compare un valore assoluto","c":1},
+  {"t":"È una forza centrale","c":2},
+  {"t":"È una forza a distanza","c":2},
+  {"t":"È inversamente proporzionale a $r^2$","c":2},
+  {"t":"È proporzionale al prodotto delle due grandezze coinvolte","c":2}
+];
+var ID='sortc1';
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=0|Math.random()*(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var pool=document.getElementById('sp-'+ID);
+var zones={0:document.getElementById('szb-'+ID+'-0'),1:document.getElementById('szb-'+ID+'-1'),2:document.getElementById('szb-'+ID+'-2')};
+var fb=document.getElementById('sf-'+ID);
+var dragging=null,ghost=null,overZone=null,ox=0,oy=0;
+
+function getZone(x,y){ghost.style.display='none';var el=document.elementFromPoint(x,y);ghost.style.display='';return el?el.closest('.sort-zone-body,.sort-pool'):null;}
+
+function onDown(e){
+  e.preventDefault();
+  var el=this;
+  dragging=el;
+  var r=el.getBoundingClientRect();
+  ox=e.clientX-r.left;oy=e.clientY-r.top;
+  ghost=el.cloneNode(true);
+  ghost.className='sort-item sort-ghost';
+  ghost.style.cssText+='width:'+r.width+'px;left:'+(e.clientX-ox)+'px;top:'+(e.clientY-oy)+'px;';
+  document.body.appendChild(ghost);
+  el.classList.add('sort-dragging');
+  fb.className='sort-fb';fb.textContent='';
+  el.querySelectorAll('.correct,.wrong').forEach(function(x){x.classList.remove('correct','wrong');});
+  el.classList.remove('correct','wrong');
+  document.addEventListener('pointermove',onMove,{passive:false});
+  document.addEventListener('pointerup',onUp);
+  document.addEventListener('pointercancel',onUp);
+}
+
+function onMove(e){
+  e.preventDefault();
+  if(!ghost)return;
+  ghost.style.left=(e.clientX-ox)+'px';ghost.style.top=(e.clientY-oy)+'px';
+  var z=getZone(e.clientX,e.clientY);
+  if(overZone!==z){if(overZone)overZone.classList.remove('over');overZone=z;if(overZone)overZone.classList.add('over');}
+}
+
+function onUp(){
+  document.removeEventListener('pointermove',onMove);
+  document.removeEventListener('pointerup',onUp);
+  document.removeEventListener('pointercancel',onUp);
+  if(ghost){ghost.remove();ghost=null;}
+  if(!dragging)return;
+  var el=dragging;dragging=null;
+  el.classList.remove('sort-dragging');
+  if(overZone){overZone.classList.remove('over');overZone.appendChild(el);overZone=null;}
+}
+
+function mkItem(d){
+  var el=document.createElement('span');
+  el.className='sort-item';el.innerHTML=d.t;
+  el.dataset.c=d.c;el.style.touchAction='none';
+  el.addEventListener('pointerdown',onDown);
+  return el;
+}
+
+function render(){
+  pool.innerHTML='';zones[0].innerHTML='';zones[1].innerHTML='';zones[2].innerHTML='';
+  fb.className='sort-fb';fb.textContent='';
+  shuf(D).forEach(function(d){pool.appendChild(mkItem(d));});
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([pool]);
+}
+
+window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+
+document.getElementById('sv-'+ID).addEventListener('click',function(){
+  if(pool.querySelector('.sort-item')){fb.className='sort-fb err';fb.textContent='Posiziona tutti gli elementi prima di verificare.';return;}
+  var allOk=true;
+  [0,1,2].forEach(function(ci){
+    zones[ci].querySelectorAll('.sort-item').forEach(function(el){
+      var ok=parseInt(el.dataset.c)===ci;
+      el.classList.toggle('correct',ok);el.classList.toggle('wrong',!ok);
+      if(!ok)allOk=false;
+    });
+  });
+  var btn=document.getElementById('sv-'+ID);
+  if(allOk){
+    fb.className='sort-fb ok';fb.textContent='✓ Perfetto! Tutte le caratteristiche sono nella colonna giusta.';
+    _shoot(btn);
+    for(var b=0;b<5;b++)(function(b){setTimeout(function(){_shoot({getBoundingClientRect:function(){return{left:window.innerWidth*(.1+Math.random()*.8),top:window.innerHeight*(.1+Math.random()*.5),width:0,height:0};}});},b*200);})(b);
+  } else {
+    fb.className='sort-fb err';fb.textContent='✗ Alcune caratteristiche non sono nella colonna giusta. Quelle corrette sono in verde, le altre in rosso.';
+  }
+});
+
+document.getElementById('sr-'+ID).addEventListener('click',render);
+render();
+})();
+</script>
