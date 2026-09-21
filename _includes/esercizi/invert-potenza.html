@@ -1,23 +1,35 @@
 {% comment %}
-Esercizio a carosello: isola le grandezze nella formula P = F·v, usando
-invert.html. Nessun parametro.
+Esercizio a carosello: isola le grandezze prima nella formula P = L/Δt, poi
+nella formula P = F·v, usando invert.html. Nessun parametro.
 {% endcomment %}
-<div class="iex-widget" id="invCarPotenzaFv">
+<div class="iex-widget" id="invCarPotenza">
 <p class="iex-lbl">Isola le altre grandezze</p>
 <p class="iex-hint">Cerca la sequenza più breve di mosse, poi appuntala sul quaderno.</p>
 <div class="iex-topnav">
-<button class="iex-navbtn" id="invCarPotenzaFvprev" onclick="invCarPotenzaFvnav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="invCarPotenzaFvdots"></div>
-<button class="iex-navbtn" id="invCarPotenzaFvnext" onclick="invCarPotenzaFvnav(1)">Succ. &rarr;</button>
+<button class="iex-navbtn" id="invCarPotenzaprev" onclick="invCarPotenzanav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="invCarPotenzadots"></div>
+<button class="iex-navbtn" id="invCarPotenzanext" onclick="invCarPotenzanav(1)">Succ. &rarr;</button>
 </div>
 
-<div class="iex-q" id="invCarPotenzaFvrow0">
+<div class="iex-q" id="invCarPotenzarow0">
+<div class="iex-nested">
+{% include invert.html id="inv-pot-Lt-L" variabili="P|L|Dt" etichette="P|L|\Delta t" sinistra="P" destra="L/Dt" obiettivo="L" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarPotenzarow1" style="display:none">
+<div class="iex-nested">
+{% include invert.html id="inv-pot-Lt-Dt" variabili="P|L|Dt" etichette="P|L|\Delta t" sinistra="P" destra="L/Dt" obiettivo="Dt" %}
+</div>
+</div>
+
+<div class="iex-q" id="invCarPotenzarow2" style="display:none">
 <div class="iex-nested">
 {% include invert.html id="inv-pot-fv-F" variabili="P|F|v" sinistra="P" destra="F*v" obiettivo="F" %}
 </div>
 </div>
 
-<div class="iex-q" id="invCarPotenzaFvrow1" style="display:none">
+<div class="iex-q" id="invCarPotenzarow3" style="display:none">
 <div class="iex-nested">
 {% include invert.html id="inv-pot-fv-v" variabili="P|F|v" sinistra="P" destra="F*v" obiettivo="v" %}
 </div>
@@ -26,5 +38,5 @@ invert.html. Nessun parametro.
 </div>
 
 <script>
-setupInvCarousel('invCarPotenzaFv',2);
+setupInvCarousel('invCarPotenza',4);
 </script>
