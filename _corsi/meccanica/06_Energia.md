@@ -129,7 +129,7 @@ La potenza è il rapporto tra il lavoro $L$ compiuto e l'intervallo di tempo $\D
      formula="P=\dfrac{L}{\Delta t}"
      frammenti="P|L|\Delta t"
      etichette="potenza|lavoro compiuto|intervallo di tempo impiegato"
-     posizioni="alto|basso|alto"
+     posizioni="alto|alto|basso"
   %}
 
 {% include box-end.html %}
@@ -145,10 +145,10 @@ Inoltre, notiamo che --- essendo la potenza definita come un lavoro diviso un te
      formula="[P]=\dfrac{[L]}{[\Delta t]} = \dfrac{\text{J}}{\text{s}}"
      frammenti="[P]|[L]|[\Delta t]|\text{J}|\text{s}"
      etichette="unità di misura di P|unità di misura di L|unità di misura del tempo|joule|secondo"
-     posizioni="alto|basso|alto|basso|alto"
+     posizioni="alto|alto|basso|alto|basso"
   %}
 
-Questa unità di misura, essendo un'unità importante, prende il nome di <definizione>watt</definizione> (simbolo W). Cioè,
+Questa unità di misura, essendo un'unità importante, prende un nome proprio e si chiama <definizione>watt</definizione> (simbolo W). Quindi, la relazione diventa
 
 $$ \text{W} = \dfrac{\text{J}}{\text{s}}.$$
 
@@ -166,7 +166,7 @@ Hai scoperto quindi che la potenza si può scrivere anche così:
      posizioni="alto|basso|alto"
   %}
 
-Prova tu ora a invertire questa formula, isolando le altre due grandezze.
+Prova tu ora a invertire sia questa formula sia quella vista in precedenza, $P=\dfrac{L}{\Delta t}$, isolando ogni volta le altre grandezze.
 
 {% include esercizi/invert-potenza.html %}
 
@@ -180,6 +180,7 @@ Prova infine con qualche esercizio e un quiz vero/falso sulla potenza.
 {"t":"Una macchina più potente compie sempre un lavoro maggiore.","ok":false,"s":"No: due macchine possono compiere lo stesso lavoro; quella più potente ci mette semplicemente meno tempo."},
 {"t":"Se il tempo impiegato raddoppia, a parità di lavoro compiuto, la potenza raddoppia.","ok":false,"s":"No: la potenza è inversamente proporzionale al tempo, quindi raddoppiando il tempo la potenza dimezza."},
 {"t":"Il watt corrisponde a un joule al secondo.","ok":true,"s":"Sì, per definizione: $\\text W=\\text J/\\text s$."},
+{"t":"Ricorda che $\\text J=\\text{kg}\\cdot\\text m^2/\\text s^2$. Esprimi allora il watt nelle sole unità fondamentali del Sistema Internazionale (kg, m, s).","tipo":"fill","opts":["kg·m²/s³","kg·m/s²","kg·m²/s²","kg/(m·s³)"],"ok":"kg·m²/s³","s":"Il watt è un joule al secondo: $\\text W=\\text J/\\text s=(\\text{kg}\\cdot\\text m^2/\\text s^2)/\\text s=\\text{kg}\\cdot\\text m^2/\\text s^3$."},
 {"t":"Se una forza $F$ sposta un corpo con velocità costante $v$, la potenza sviluppata vale $Fv$.","ok":true,"s":"Sì, è proprio la forma alternativa della potenza che hai appena scoperto."}
 ]{% endcapture %}
 {% include quiz.html domande=_qpotenza id="q-potenza" senza_esempi="true" %}
@@ -626,7 +627,9 @@ Vero o falso?
 {"t":"L'attrito può, in certi casi, far aumentare l'energia meccanica di un sistema.","ok":false,"s":"No: l'attrito compie sempre un lavoro negativo, quindi diminuisce sempre l'energia meccanica."},
 {"t":"In un sistema isolato, l'energia meccanica totale resta costante nel tempo.","ok":true,"s":"Sì, è proprio il teorema di conservazione dell'energia meccanica: $K_i+U_i=K_f+U_f$."},
 {"t":"Un corpo fermo non può avere energia meccanica.","ok":false,"s":"No: un corpo fermo può comunque possedere energia potenziale (ad esempio se è sollevato da terra), quindi un'energia meccanica non nulla."},
-{"t":"Il calore è una forma di energia, e si misura anch'esso in joule.","ok":true,"s":"Sì: il calore è l'energia meccanica dissipata, quindi condivide la stessa unità di misura di tutte le energie, il joule."}
+{"t":"Il calore è una forma di energia, e si misura anch'esso in joule.","ok":true,"s":"Sì: il calore è l'energia meccanica dissipata, quindi condivide la stessa unità di misura di tutte le energie, il joule."},
+{"t":"Due macchine che compiono lo stesso lavoro nello stesso tempo hanno necessariamente la stessa potenza.","ok":true,"s":"Sì: la potenza dipende solo dal lavoro compiuto e dal tempo impiegato, $P=L/\\Delta t$."},
+{"t":"Raddoppiando la forza $F$ e la velocità $v$ con cui si muove un corpo, la potenza $P=Fv$ raddoppia.","ok":false,"s":"No: raddoppiando entrambi i fattori, $P=Fv$ quadruplica, non raddoppia."}
 ]{% endcapture %}
 {% include quiz.html domande=_qRipEnergia id="q-ripasso-energia" senza_esempi="true" %}
 {% include ex-end.html %}
@@ -639,7 +642,8 @@ Abbina ogni grandezza alla formula corrispondente.
   {"l":"Energia cinetica","r":"$K=\\frac12mv^2$"},
   {"l":"Energia potenziale gravitazionale","r":"$U_g=mgh$"},
   {"l":"Energia meccanica","r":"$E=K+U$"},
-  {"l":"Velocità di impatto al suolo (caduta libera)","r":"$v_f=\\sqrt{2gh_i}$"}
+  {"l":"Velocità di impatto al suolo (caduta libera)","r":"$v_f=\\sqrt{2gh_i}$"},
+  {"l":"Potenza","r":"$P=\\dfrac{L}{\\Delta t}$"}
 ]{% endcapture %}
 {% include match.html id="match-formule-energia" dati=_matchEnergia col1="Grandezza" col3="Formula" %}
 {% include ex-end.html %}
@@ -665,6 +669,8 @@ Completa le frasi.
 {% include fill.html prima="Un sistema che non scambia energia con il resto dell'Universo si dice" ok="isolato,isolata" dopo="." s="Un sistema isolato conserva la propria energia meccanica nel tempo." %}
 
 {% include fill.html prima="L'energia meccanica dissipata da un sistema non isolato (ad esempio a causa dell'attrito) si trasforma in" ok="calore" dopo="." s="Il calore è proprio la forma in cui finisce l'energia meccanica non conservata." %}
+
+{% include fill.html prima="Il rapporto tra il lavoro compiuto e il tempo impiegato per compierlo si chiama" ok="potenza" dopo="." s="$P=L/\Delta t$: è proprio la definizione di potenza." %}
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}
@@ -1204,10 +1210,18 @@ Un facchino trascina un baule per $5\ \text{km}$ lungo un lunghissimo corridoio,
 
 {% include num.html id="numFE4" valore="6" unit="N" %}
 
+Se il facchino ha impiegato $10$ minuti a percorrere l'intero corridoio, quale potenza media ha sviluppato?
+
+{% include num.html id="numFE4pot" valore="50" unit="W" %}
+
 {% include ex-sol.html %}
 Convertendo $5\ \text{km}=5\,000\ \text m$,
 
 $$F = \frac{L}{\Delta s} = \frac{30\,000\ \text J}{5\,000\ \text m} = 6\ \text N.$$
+
+Convertendo $10$ minuti $=600\ \text s$,
+
+$$P = \frac{L}{\Delta t} = \frac{30\,000\ \text J}{600\ \text s} = 50\ \text W.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -1215,8 +1229,93 @@ Una forza costante di $2\,000\ \text N$, parallela allo spostamento, compie un l
 
 {% include sci.html prima="$\Delta s=$" coeff="2.5" exp="3" s="$2{,}5\times10^3\ \text m$" %}
 
+Se l'automobile ha percorso quello spazio, a velocità costante, in $50\ \text s$, quale potenza ha sviluppato la forza? Esprimi il risultato in watt, in notazione scientifica.
+
+{% include sci.html prima="$P=$" coeff="1" exp="5" s="$1\times10^5\ \text W$" %}
+
 {% include ex-sol.html %}
 $$\Delta s = \frac{L}{F} = \frac{5\times10^6\ \text J}{2\,000\ \text N} = 2{,}5\times10^3\ \text m.$$
+
+La velocità (costante) dell'automobile è
+
+$$v = \frac{\Delta s}{\Delta t} = \frac{2{,}5\times10^3\ \text m}{50\ \text s} = 50\ \text{m/s},$$
+
+quindi la potenza sviluppata è
+
+$$P = F\cdot v = 2\,000\ \text N \times 50\ \text{m/s} = 1\times10^5\ \text W.$$
+{% include ex-sol-end.html %}
+
+### Esercizi sulla potenza
+
+{% include ex.html diff=1 %}
+Vero o falso?
+
+{% include tf.html q="Un montacarichi che solleva un peso in pochi secondi sviluppa, a parità di lavoro compiuto, una potenza maggiore di un operaio che solleva lo stesso peso in alcuni minuti." ok=true s="Sì: a parità di lavoro, minore è il tempo impiegato, maggiore è la potenza." %}
+{% include tf.html q="A parità di potenza sviluppata, una macchina che lavora per più tempo compie meno lavoro." ok=false s="No: a parità di potenza, $L=P\cdot\Delta t$ è direttamente proporzionale al tempo, quindi lavorando più a lungo si compie più lavoro, non meno." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Un frullatore ha una potenza di $300\ \text W$ e viene utilizzato per $2$ minuti. Quale lavoro ha compiuto in questo intervallo di tempo?
+
+{% include num.html id="numPotRiep1" valore="36000" unit="J" %}
+
+{% include ex-sol.html %}
+Convertendo $2$ minuti $=120\ \text s$,
+
+$$L = P\cdot \Delta t = 300\ \text W \times 120\ \text s = 36\,000\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un rimorchiatore traina una nave esercitando una forza costante di $5\times10^4\ \text N$, parallela al moto, mentre la nave avanza a velocità costante di $2\ \text{m/s}$. Quale potenza sta sviluppando il rimorchiatore?
+
+{% include num.html id="numPotRiep2" valore="100000" unit="W" %}
+
+{% include ex-sol.html %}
+$$P = F\cdot v = 5\times10^4\ \text N \times 2\ \text{m/s} = 1\times10^5\ \text W = 100\,000\ \text W.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Il kilowattora (kWh) è un'unità di misura che compare spesso sulle bollette e sugli elettrodomestici, nonostante il suo nome contenga l'unità di potenza. A cosa corrisponde, nel Sistema Internazionale?
+
+<div class="iex-choices" id="mcqKwhChoices">
+<button class="iex-choice-btn" data-v="a">$3{,}6\times10^3\ \text J$</button>
+<button class="iex-choice-btn" data-v="b">$3{,}6\times10^6\ \text J$</button>
+<button class="iex-choice-btn" data-v="c">$1\,000\ \text J$</button>
+<button class="iex-choice-btn" data-v="d">$3{,}6\times10^9\ \text J$</button>
+</div>
+<div class="iex-fb" id="mcqKwhChoicesfb"></div>
+<script>
+(function(){
+  var btns=document.querySelectorAll('#mcqKwhChoices .iex-choice-btn');
+  var fb=document.getElementById('mcqKwhChoicesfb');
+  var correctV='b';
+  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+  btns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(btn.disabled)return;
+      btns.forEach(function(b){b.disabled=true;});
+      var correct=btn.dataset.v===correctV;
+      fb.style.display='block';
+      if(correct){
+        btn.className=btn.className.replace(' wrong','')+' correct';
+        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
+        _shoot(btn);
+      } else {
+        btn.className=btn.className.replace(' correct','')+' wrong';
+        var cb=document.querySelector('#mcqKwhChoices .iex-choice-btn[data-v="'+correctV+'"]');
+        cb.className=cb.className.replace(' wrong','')+' correct';
+        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
+      }
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+    });
+  });
+})();
+</script>
+
+{% include ex-sol.html %}
+Un kilowattora è il lavoro (cioè l'energia) compiuto da una potenza di $1\ \text{kW}=1\,000\ \text W$ mantenuta per un'ora, cioè per $3\,600\ \text s$:
+
+$$1\ \text{kWh} = P\cdot \Delta t = 1\,000\ \text W \times 3\,600\ \text s = 3{,}6\times10^6\ \text J.$$
 {% include ex-sol-end.html %}
 
 ### Esercizi sul teorema dell'energia cinetica
