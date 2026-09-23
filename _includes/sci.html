@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded',function(){
   ic.value=s.c;ie.value=s.e;
   ic.classList.toggle('ok',s.ok);ic.classList.toggle('err',!s.ok);
   ie.classList.toggle('ok',s.ok);ie.classList.toggle('err',!s.ok);
-  if(s.ok){fb.textContent='✓';fb.className='sci-fb ok';}
+  if(s.ok){fb.textContent='✓';fb.className='sci-fb ok';w.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));}
   else{var sol=w.dataset.sol;fb.textContent=sol?('→ '+sol):'';fb.className='sci-fb err';}
 });
 })();

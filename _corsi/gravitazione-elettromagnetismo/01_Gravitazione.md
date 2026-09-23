@@ -91,7 +91,7 @@ Verifica con l'animazione che:
 - nello scenario "Dipendenza da r", i pulsanti spostano davvero il bilancere alla nuova distanza (indicata dalla linea tratteggiata $r$): raddoppiando $r$ l'intensità della forza non si dimezza, ma diventa un quarto; triplicando $r$ diventa un nono; quadruplicando $r$ diventa un sedicesimo — <u markdown="span">proprio quello che significa dire che $F$ è inversamente proporzionale al **quadrato** della distanza</u>, verificabile confrontando il valore di $F$ prima e dopo ogni cambio.
 
 {% include margin-note.html testo="Dall'esperimento alla formula di Newton" %}
-Cavendish dedusse così che il modulo della forza gravitazionale fra due corpi è <u markdown="span">**direttamente proporzionale al prodotto delle loro masse** e **inversamente proporzionale al quadrato della distanza**</u>. Cioè, la forza gravitazionale tra due masse $m_1$ ed $m_2$ è descritta dalla seguente equazione
+Cavendish dedusse così che il modulo della forza gravitazionale fra due corpi è <u markdown="span">**direttamente proporzionale al prodotto delle loro masse** e **inversamente proporzionale al quadrato della distanza**</u>. Cioè, la forza gravitazionale tra due masse $m_1$ ed $m_2$ è descritta dalla seguente equazione, detta <definizione>legge di gravitazione universale</definizione>:
 
 {% include eq-annotated.html
    id="fga1"
@@ -265,7 +265,7 @@ $$
 %}
 
 Osserviamo quindi che
-- il campo nel punto $\vec r$ dipende <u markdown="span">solo</u> dalla massa $M$ che lo genera e dal punto $\vec r$ ($G$ è una costante, quindi non può cambiare)
+- il campo nel punto $\vec r$ dipende <u markdown="span">solo</u> dalla massa $M$ che lo genera e dal punto $\vec r$ $(G$ è una costante, quindi non può cambiare);
 - il campo è <u markdown="span">direttamente proporzionale alla massa $M$</u> e <u markdown="span">inversamente proporzionale al **quadrato** della distanza da essa</u>.
 
 Chiaramente, da un punto di vista matematico, “togliere la $m$” come abbiamo fatto prima significa in realtà dividere per $m$. Quindi la formula per il campo gravitazionale può essere scritta in modo del tutto equivalente come
@@ -289,14 +289,18 @@ Osserviamo quindi anche che <u markdown="span">l'unità di misura del campo grav
 Inoltre, nonostante nella formula compaia la massa $m$, ricordiamo che il campo $g$ **non** dipende da essa (come visto prima, si semplifica con la $m$ contenuta in $F$). Spesso però ci capiterà di introdurre, all'interno di un certo campo generato da una massa $M$ una seconda massa $m$, di modo da misurare la forza di attrazione, da cui poi si ottiene il campo secondo la formula appena data. Pertanto, questa massa è chiamata <definizione>massa esploratrice</definizione> (nel senso che “esplora” il campo).
 {% include margin-note-end.html %}
 
-{% include box-imp.html testo="Il campo generato da una massa M" %}
-Il campo gravitazionale generato da una massa $M$, a distanza $r$ da essa, ha modulo
+{% include box-imp.html testo="Il modulo del campo gravitazionale generato da una massa M" %}
+Il campo gravitazionale generato da una massa $M$, a distanza $r$ da essa, ha **modulo**
 
 $$g = G\,\dfrac{M}{r^2} = \dfrac{F}{m}.$$
 
 L'unità di misura del campo, pertanto, corrisponde a N/kg.  
 Inoltre, il campo **non dipende** dalla massa esploratrice $m$: dipende solo da $M$ (che lo genera) e da $r$ (il punto in cui lo si misura).  
 {% include box-end.html %}
+
+{% include margin-note.html testo="g è (quasi) costante sulla superficie di un pianeta" %}
+Sulla superficie di un pianeta (o di una stella), $\vec g$ è un vettore che <u markdown="span">punta sempre verso il centro</u> del pianeta — cioè, localmente, "verso il basso". Inoltre, poiché tutti i punti della superficie si trovano, con ottima approssimazione, alla <u markdown="span">stessa distanza dal centro</u> (il raggio del pianeta), <u markdown="span">anche il modulo di $\vec g$ è praticamente costante</u> su tutta la superficie. Per la Terra, questo valore vale circa $g \approx 9{,}81\ \text{N/kg}$.
+{% include margin-note-end.html %}
 
 
 
@@ -329,12 +333,20 @@ Inoltre, poiché campo e forza hanno la stessa direzione e lo stesso verso, allo
    posizioni="alto|alto|basso"
 %}
 
-Questa espressione è insomma molto più completa della precedente $g = F/m$, perché oltre a darci una relazione tra i moduli dei vettori $\vec g$ e $\vec F$ ci dà anche una relazione tra le direzioni e i versi.
+Questa espressione è insomma molto più completa della precedente $g = F/m$, perché oltre a darci una relazione tra i moduli $g$ e $F$ dei vettori $\vec g$ e $\vec F$, ci dà <u markdown="span">anche una relazione tra le **direzioni** e i **versi** di questi vettori</u>.
 {% include margin-note-end.html %}
 
-{% include margin-note.html testo="g è (quasi) costante sulla superficie di un pianeta" %}
-Sulla superficie di un pianeta (o di una stella), $\vec g$ è un vettore che <u markdown="span">punta sempre verso il centro</u> del pianeta — cioè, localmente, "verso il basso". Inoltre, poiché tutti i punti della superficie si trovano, con ottima approssimazione, alla <u markdown="span">stessa distanza dal centro</u> (il raggio del pianeta), <u markdown="span">anche il modulo di $\vec g$ è praticamente costante</u> su tutta la superficie. Per la Terra, questo valore vale circa $g \approx 9{,}81\ \text{m/s}^2$.
-{% include margin-note-end.html %}
+{% include box-imp.html testo="Il vettore campo gravitazione generato da una massa M" %}
+Il **vettore** campo gravitazionale $\vec g$ è legato al **vettore** forza gravitazionale $\vec F$ dalla relazione
+
+$$\vec g = \frac {\vec F} m,$$
+
+ove $m$ è la massa esploratrice. <u markdown="span">Il vettore campo gravitazionale $\vec g$ ha pertanto **stessa direzione** e **stesso verso** del vettore forza $\vec F$</u>.
+
+
+{% include box-end.html %}
+
+
 
 ### Sovrapposizione degli effetti per il campo gravitazionale
 
@@ -354,7 +366,9 @@ $$\vec g_{tot} = \vec g_1 + \vec g_2 + \cdots.$$
 
 ## Le linee di campo
 
+
 Abbiamo detto che il campo gravitazionale associa a ogni punto dello spazio un vettore. Ma chiaramente per disegnare il campo gravitazionale non potremmo certamente disegnare un vettore per ogni punto: sarebbero un'infinità di vettori tutti sovrapposti l'uno all'altro. Possiamo però trovare una soluzione molto intuitiva.  
+{% include margin-note.html testo="Dalla corrente marina al concetto di linee di campo vettoriale" %}
 Considera il seguente esempio di campo vettoriale, che associa ad ogni punto del mare italiano la direzione e il verso della corrente in quel punto:
 
 {% include figura.html id="campo-correnti"
@@ -363,6 +377,7 @@ Considera il seguente esempio di campo vettoriale, che associa ad ogni punto del
    larghezza="300px" %}
 
 Come puoi vedere, i vettori si dispongono secondo delle linee. È quindi possibile, invece di disegnare ogni vettore, sostituirli con delle linee che si chiamano <definizione>linee di campo</definizione>. 
+{% include margin-note-end.html %}
 
 {% include box-imp.html testo="Le linee di campo" %}
 
@@ -370,10 +385,13 @@ Le linee di campo sono linee <u>in ogni punto tangenti alla direzione del vettor
 
 {% include box-end.html %}
 
+{% include margin-note.html testo="Costruire le linee di campo" %}
 Osserva come si costruisce una linea di campo a partire dai vettori: si dispongono prima i vettori del campo $\vec g$ uno via l'altro, poi si traccia la linea che li unisce, e infine vedi comparire, punto per punto, la retta tangente alla curva in quel punto: nota che ogni vettore giace esattamente su di essa.
+{% include margin-note-end.html %}
 
 {% include lab-virtuali/linea-tangente-lab.html %}
 
+{% include margin-note.html testo="Il caso di una singola massa sferica" %}
 Nel caso di una singola massa sferica che genera il campo, poiché il vettore $\vec g$ indica sempre verso la massa, le linee si disegnano così:
 
 {% include figure/figura-linee-di-campo.html %}
@@ -384,45 +402,55 @@ Da questa immagine notiamo alcune proprietà importanti delle linee di campo <u>
 1. Le linee sono radiali alla massa (cioè sono come i raggi del Sole 🌞).
 2. Le linee sono più concentrate vicino alla massa e sono più rarefatte lontano da essa. Infatti <u markdown="span">la concentrazione di linee di campo misura l'intensità del campo in quel punto</u>.
 3. Le linee di campo hanno sempre verso **entrante** nella massa che genera il campo.
+{% include margin-note-end.html %}
 
 
-
+{% include margin-note.html testo="Un'altra interpretazione delle linee di campo" %}
 Le linee di campo hanno anche un altro significato molto intuitivo: sono le traiettorie che seguirebbe una <definizione>massa esploratrice</definizione> lasciata cadere, da ferma, in un punto qualsiasi del campo. Provalo tu stesso: trascina la massa esploratrice (pallina grigia) in un punto qualsiasi attorno alla massa $M$ e lasciala andare — osserva come "cade" muovendosi sempre più velocemente (proprio come ci si aspetta, avvicinandosi a $M$), seguendo esattamente una linea di campo.
+{% include margin-note-end.html %}
 
 {% include lab-virtuali/traiettoria-campo-singolo-lab.html %}
 
 
 ### Linee di campo in presenza di più masse
 
+{% include margin-note.html testo="Dal principio di sovrapposizione degli effetti alle linee di campo in presenza di più masse" %}
 Cosa succede se il campo è generato da **più masse insieme**, come ad esempio nel sistema Terra-Luna? Come abbiamo appena visto, il campo totale in ogni punto è la somma vettoriale dei campi generati da ciascuna massa. Le linee di campo, però, non sono più delle semplici rette radiali: si incurvano, perché in ogni punto risentono dell'attrazione di **entrambe** le masse, apparendo quindi come nella seguente immagine.
 
 Prova tu stesso a verificare che questa è la forma delle linee di campo secondo la definizione data prima: clicca in un punto qualsiasi dell'immagine (fuori dai due corpi) per vedere comparire i due vettori $\vec g_T$ e $\vec g_L$ generati da Terra e Luna in quel punto, la loro somma $\vec g_{tot}$ secondo la regola del parallelogramma, e la retta tangente alla linea di campo risultante in quel punto.
+{% include margin-note-end.html %}
 
 {% include lab-virtuali/campo-terra-luna-lab.html %}
 
+{% include margin-note.html testo="Le linee di campo come traiettorie" %}
 Anche in questo caso possiamo pensare alle linee di campo come alle traiettorie di una massa esploratrice lasciata cadere, da ferma, in un punto qualsiasi. Prova tu stesso, questa volta con due masse (una grande, come la Terra, e una piccola, come la Luna): la pallina non cadrà più lungo una semplice retta, ma seguirà un percorso curvo, deciso dall'attrazione combinata delle due masse.
+{% include margin-note-end.html %}
 
 {% include lab-virtuali/traiettoria-campo-doppio-lab.html %}
 
 # Energia Gravitazionale
 
+{% include margin-note.html testo="Il problema della descrizione vettoriale" %}
 Finora abbiamo descritto la gravità nel linguaggio delle forze e dei campi. In teoria, questo linguaggio può descrivere anche un sistema di molte masse, ma per farlo ha bisogno di sommare vettorialmente tutti i campi e tutte le forze. E questo non è facile: sommare vettorialmente tante forze può essere un problema difficile.
+{% include margin-note-end.html %}
 
-Possiamo però sostituire il linguaggio delle forze e dei campi con un altro del tutto analogo, dove le grandezze non sono vettoriali ma scalari: quello dell'<definizione>energia</definizione>. È una descrizione molto ricca ed elegante, che ci permetterà di collegare in modo naturale grandezze apparentemente lontane fra loro, come la velocità di un corpo immerso in un campo gravitazionale e la distanza dalla massa che genera il campo (vedi la <a href="#moto-di-una-massa-in-un-campo-gravitazionale">sezione sul moto di una massa in un campo gravitazionale</a>,).
+{% include margin-note.html testo="Una descrizione alternativa: l'energia" %}
+Possiamo però sostituire il linguaggio delle forze e dei campi con un altro del tutto analogo, dove le grandezze non sono vettoriali ma scalari: quello dell'<definizione>energia</definizione>. È una descrizione molto ricca ed elegante, che ci permetterà di collegare in modo naturale grandezze apparentemente lontane fra loro, come la velocità di un corpo immerso in un campo gravitazionale e la distanza dalla massa che genera il campo (vedi la <a href="#moto-di-una-massa-in-un-campo-gravitazionale">sezione sul moto di una massa in un campo gravitazionale</a>).
+{% include margin-note-end.html %}
 
 ## Energia potenziale gravitazionale
 {% include margin-note.html testo="Perché possiamo parlare di energia potenziale?"%}
-La proprietà accennata sopra che caratterizza **tutte** le forze centrali (cioè che hanno come direzione la retta che congiunge i centri dei corpi), quale quella gravitazionale, è quella di <u markdown="span">poter definire un'energia potenziale</u> (cosa che non vale per tutte le forze in generale).
+Abbiamo detto che la forza gravitazionale è una forza **centrale**. La proprietà fondamentale delle forze centrali è quella di <u markdown="span">poter definire un'energia potenziale</u> (cosa che non vale per tutte le forze in generale). Quindi ha senso parlare di <definizione>energia potenziale gravitazionale</definizione>.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Comprendere cos'è l'energia potenziale" %}
-Quando due masse si trovano a una certa distanza, c'è dell'energia "immagazzinata" tra loro, come se fossero connesse da una molla in tensione: se lasciamo che si avvicinino spontaneamente, attratte dalla gravità, questa energia si sprigiona sotto forma di <definizione>energia cinetica</definizione>. L'energia immagazzinata da due masse per effetti della forza di gravità si chiama <definizione>energia potenziale gravitazionale</definizione>.
+Quando due masse si trovano a una certa distanza, c'è dell'energia "immagazzinata" tra loro, come se fossero connesse da una molla in tensione: se lasciamo che si avvicinino spontaneamente, attratte dalla gravità, questa energia si sprigiona sotto forma di **energia cinetica**. L'energia immagazzinata da due masse per effetti della forza di gravità corrisponde all'**energia potenziale gravitazionale**.
 {% include margin-note-end.html %}
 
 {% include lab-virtuali/molla-oscillazione-lab.html %}
 
 {% include margin-note.html testo="Calcolare l'energia potenziale" %}
-Per calcolare quanta energia è immagazzinata tra due masse $M$ ed $m$ a distanza $r$, immaginiamo di partire da due masse inizialmente unite (a contatto) e di allontanarle fino alla distanza che ci interessa. Il lavoro che dobbiamo compiere per allontanarle, vincendo la loro attrazione reciproca, <u markdown="span">si trasforma interamente in **energia potenziale gravitazionale**</u>. Quindi per calcolare l'energia potenziale dobbiamo calcolare il lavoro compiuto.
+Per calcolare quanta energia è immagazzinata tra due masse $M$ ed $m$ a distanza $r,$ immaginiamo di partire da due masse inizialmente a contatto e di allontanarle fino alla distanza che ci interessa. Il lavoro che dobbiamo compiere per allontanarle, vincendo la loro attrazione reciproca, <u markdown="span">si trasforma interamente in **energia potenziale gravitazionale**</u>. Quindi per calcolare l'energia potenziale dobbiamo calcolare il lavoro compiuto.
 
 
 Osserva l'animazione seguente: allontanando le due masse di un tratto $r$, la forza gravitazionale (attrattiva) si oppone sempre allo spostamento, come una molla in tensione.
@@ -433,10 +461,9 @@ Il lavoro fatto dalla forza gravitazionale mentre le due masse si allontanano di
 
 $$L = -F \times \text{spostamento} = -G\frac{Mm}{r^2} \times r = -G\frac{Mm}{r^{\cancel{2}}} \times \cancel{r} = -G\frac{Mm}{r}.$$
 
-- Nel primo passaggio scriviamo semplicemente lavoro = forza per spostamento, con il segno meno perché la forza si oppone al moto.
-- Nel secondo passaggio sostituiamo il modulo della forza gravitazionale, $F = G\dfrac{Mm}{r^2}$.
+- Nel primo passaggio scriviamo semplicemente lavoro = forza per spostamento, <u>con il segno meno perché la forza si oppone al moto</u>.
+- Nel secondo passaggio sostituiamo il modulo della forza gravitazionale, $F = G\dfrac{Mm}{r^2}$ e identifichiamo la distanza percorsa con $r$.
 - Nel terzo passaggio notiamo che una delle due $r$ si semplifica con una delle due potenze di $r$ al denominatore.
-- Il risultato finale non dipende più separatamente da $F$ e dallo spostamento, ma solo dalla distanza $r$ raggiunta.
 
 Questo lavoro <u>si trasforma interamente in energia potenziale gravitazionale</u>, che indichiamo con $U$:
 
@@ -448,17 +475,19 @@ $$U = -G\frac{Mm}{r}.$$
 Il segno meno ha un significato fisico preciso: indica che le due masse sono "legate" dalla reciproca attrazione. Più sono vicine, più $U$ è negativa (più energia servirebbe per separarle); allontanandosi, $U$ cresce, avvicinandosi a zero — che raggiunge solo a distanza infinita.
 {% include margin-note-end.html %}
 
+{% include margin-note.html testo="Un'espressione equivalente per U" %}
 Possiamo riscrivere questa stessa formula usando direttamente il campo gravitazionale $g$, al posto della sua espressione $G\,M/r^2$:
 
 $$U = -mgr = -G\frac{Mm}{r}.$$
 
 Le due scritture sono **la stessa identica formula**: nella prima usiamo direttamente $g$ (il campo generato da $M$ alla distanza $r$), nella seconda sostituiamo $g = G\,M/r^2$.
+{% include margin-note-end.html %}
 
 
 {% include box-imp.html testo="Energia potenziale gravitazionale" %}
 - **Che cos'è:** è uno <u markdown="span">scalare</u> che esprime l'energia immagazzinata da una massa $m$ a causa della sua posizione nel campo gravitazionale generato da una massa $M$.
 - **Formula:** $U = -mgr = -G\dfrac{Mm}{r}$.
-- **Unità di misura:** essendo un'energia, si misura in joule (J).
+- **Unità di misura:** essendo un'energia, si misura in joule (simbolo J).
 {% include box-end.html %}
 
 Esplora tu stesso come cambia $U$ al variare di $M$, di $m$ o di $r$.
@@ -472,18 +501,49 @@ Esplora tu stesso come cambia $U$ al variare di $M$, di $m$ o di $r$.
 
 {% include esercizi/invert-energia-potenziale.html %}
 
+### Sovrapposizione degli effetti per l'energia potenziale
+
+In presenza di più masse, il principio di sovrapposizione degli effetti, per l'energia potenziale, ci dice la seguente cosa.
+
+{% include box-imp.html testo="Il principio di sovrapposizione degli effetti per l'energia potenziale" %}
+In presenza di più masse, ogni massa contribuisce all'energia potenziale di $m$ <u markdown="span">esattamente come se tutte le altre non ci fossero</u>. L'energia potenziale totale è data dalla somma di tutti i contributi:
+
+$$U_{tot} = U_1+U_2 + \cdots$$
+
+{% include box-end.html %}
+
+Mentre la forza e il campo sono vettori e perciò richiedevano una somma vettoriale, l'energia potenziale è **scalare**, pertanto <u markdown="span">la somma delle energie potenziali è una normale somma algebrica</u>.  
+{% include margin-note.html testo="Un esempio numerico" %}
+Ad esempio,
+
+{% include figure/figura-sovrapposizione-energia-potenziale.html %}
+
+{% include margin-note-end.html %}
+
 ## Potenziale gravitazionale
 
-Ricordi come siamo passati dalla forza gravitazionale $\vec F$ al campo gravitazionale $\vec g$? Abbiamo semplicemente tolto la massa esploratrice $m$, dividendo per essa: $\vec g = \vec F / m$. Possiamo fare esattamente la stessa cosa con l'energia potenziale: togliendo la massa esploratrice $m$ dall'energia potenziale gravitazionale $U$ otteniamo una nuova grandezza, chiamata <definizione>potenziale gravitazionale</definizione> e indicata con $V$:
+{% include margin-note.html testo="Cosa stiamo cercando" %}
+Esattamente come abbiamo discusso nella sezione sul campo gravitazionale, è importante ricercare quantità che descrivano non l'interazione tra due masse ma <u markdown="span">una proprietà di **una singola** massa</u>. Ricerchiamo cioè l'analogo del campo gravitazionale (che è una proprietà di **una singola** massa) per l'energia. Questa grandezza è ciò che chiamiamo <definizione>potenziale gravitazionale</definizione> (simbolo $V$).
+{% include margin-note-end.html %}
+
+| | Forza $\vec F$ | Campo $\vec g$ | Energia potenziale $U$ | Potenziale $V$ |
+|---|:---:|:---:|:---:|:---:|
+| **Dipende da** | due masse| una singola massa | due masse | una singola massa |
+
+
+{% include margin-note.html testo="Come ottenere l'equazione per V" %}
+Ricordi come siamo passati dalla forza gravitazionale $\vec F$ al campo gravitazionale $\vec g$? Abbiamo semplicemente tolto la massa esploratrice $m$, dividendo per essa: $\vec g = \vec F / m$. Possiamo fare esattamente la stessa cosa con l'energia potenziale: <u>togliendo la massa esploratrice $m$ dall'energia potenziale gravitazionale $U$, otteniamo **il potenziale** $V$</u>:
 
 $$V = \frac{U}{m} = -gr = -G\frac{M}{r}.$$
 
-Anche qui, le due scritture sono la stessa identica formula (sostituendo $g=G\,M/r^2$): $V=-gr$ è **sempre valida**, per qualunque distanza $r$.
+Anche qui, le due scritture sono la stessa identica formula (sostituendo $g=G\,M/r^2$).
+{% include margin-note-end.html %}
 
 {% include margin-note.html testo="Energia potenziale vs. potenziale" %}
 Non confondere le due grandezze: l'<u markdown="span">energia potenziale $U$ **dipende** dalla massa esploratrice $m$</u> (quanta più massa esploratrice metti, tanta più energia immagazzini), mentre <u markdown="span">il potenziale $V$ **non dipende** da $m$</u> — proprio come il campo $\vec g$ non dipende da $m$, ma dipende solo dalla massa che genera il campo e dalla distanza da essa.
 {% include margin-note-end.html %}
 
+{% include margin-note.html testo="L'unità di misura di V" %}
 Analizziamo l'unità di misura di $V$: essendo il rapporto fra un'energia (J) e una massa (kg), il potenziale gravitazionale si misura in J/kg.
 
 <div class="iex-nested">
@@ -493,6 +553,7 @@ Analizziamo l'unità di misura di $V$: essendo il rapporto fra un'energia (J) e 
    denominatore_simboli="m" denominatore_corrette="kg"
    opzioni="J|kg|N|m" %}
 </div>
+{% include margin-note-end.html %}
 
 {% include box-imp.html testo="Potenziale gravitazionale" %}
 - **Che cos'è:** l'energia potenziale gravitazionale "per unità di massa esploratrice" — non dipende da $m$, proprio come il campo $\vec g$ non dipende da $m$.
@@ -511,6 +572,25 @@ Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
 
 {% include esercizi/invert-potenziale.html %}
 
+### Sovrapposizione degli effetti per il potenziale 
+Esattamente come per l'energia potenziale, in presenza di più masse si può calcolare un potenziale totale in modo molto semplice. 
+<!-- Ogni massa genera un potenziale <u markdown="span">esattamente come se le altre non ci fossero</u> e il potenziale totale è dato <u markdown="span">dalla somma di ciascun potenziale</u>. -->
+
+{% include box-imp.html testo="Il principio di sovrapposizione degli effetti per il potenziale" %}
+
+In presenza di più masse, ciascuna di esse genera un potenziale <u markdown="span">esattamente come se le altre non ci fossero</u>. Il potenziale totale è dato dalla somma algebrica di tutti i contributi. In formule,
+
+$$V_{tot} = V_1+V_2 + \cdots$$
+
+{% include box-end.html %}
+
+Come per l'energia potenziale, anche qui la somma è puramente algebrica, senza bisogno di alcuna regola del parallelogramma.  
+{% include margin-note.html testo="Un esempio per chiarire" %}
+Riprendendo lo stesso esempio di prima:
+
+{% include figure/figura-sovrapposizione-potenziale.html %}
+{% include margin-note-end.html %}
+
 ### Confronto tra le formule
 
 Richiamiamo le quattro formule trovate finora in questo capitolo:
@@ -521,25 +601,28 @@ Richiamiamo le quattro formule trovate finora in questo capitolo:
 </div>
 
 {% include margin-note.html testo="Vettori o scalari?" %}
-La forza $\vec F$ e il campo $\vec g$ sono grandezze <u markdown="span">**vettoriali**</u>: per descriverle servono modulo, direzione e verso. L'energia potenziale $U$ e il potenziale $V$, invece, sono grandezze <u markdown="span">**scalari**</u>: bastano un numero (con il proprio segno) e un'unità di misura, senza alcuna direzione. È uno dei motivi per cui il linguaggio dell'energia è così comodo da usare: sommare scalari è molto più semplice che sommare vettori.
+<u markdown="span">La forza $\vec F$ e il campo $\vec g$ sono grandezze **vettoriali**</u>: per descriverle servono modulo, direzione e verso. <u markdown="span">L'energia potenziale $U$ e il potenziale $V$, invece, sono grandezze **scalari**</u>: bastano un numero e un'unità di misura, senza alcuna direzione. È uno dei motivi per cui il linguaggio dell'energia è così comodo da usare: sommare scalari è molto più semplice che sommare vettori.
 {% include margin-note-end.html %}
 
-C'è poi un'altra differenza importante, che riguarda **come** queste grandezze dipendono dalla distanza $r$: forza e campo (in rosso) sono inversamente proporzionali al **quadrato** della distanza, mentre energia potenziale e potenziale (in indaco) sono inversamente proporzionali alla distanza stessa.
+{% include margin-note.html testo="Chi aumenta e chi diminuisce?" %}
+C'è poi un'altra differenza importante, che riguarda **come** queste grandezze dipendono dalla distanza $r$: forza e campo (in rosso) sono inversamente proporzionali al **quadrato** della distanza, mentre energia potenziale e potenziale (in indaco) sono inversamente proporzionali alla distanza stessa. Inoltre, l'energia potenziale e il potenziale hanno un **segno meno** nella formula, che significa che <u markdown="span">quando $r$ aumenta esse **aumentano** (si avvicinano a zero e perciò diventano meno negative)</u>. Al contrario, campo e forza non hanno un segno meno, quindi <u markdown="span">quando $r$ aumenta esse **diminuiscono** (si avvicinano a zero)</u>.
+{% include margin-note-end.html %}
 
-{% include margin-note.html testo="Chi diminuisce più lentamente?" %}
-Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u markdown="span">energia potenziale e potenziale diminuiscono molto più lentamente, all'aumentare della distanza, rispetto a forza e campo</u> — come si vede confrontando i due grafici:
+{% include margin-note.html testo="Chi cambia più velocemente?" %}
+Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u markdown="span">energia potenziale e potenziale, **in modulo**, cambiano molto più lentamente con la distanza, rispetto a forza e campo</u> — come si vede confrontando i due grafici:
 {% include margin-note-end.html %}
 
 {% include figure/figura-confronto-decadimento.html %}
 
-{% include box-imp.html testo="Confronto tra le quattro grandezze" %}
+
 
 | | Forza $\vec F$ | Campo $\vec g$ | Energia potenziale $U$ | Potenziale $V$ |
 |---|:---:|:---:|:---:|:---:|
 | **Natura** | vettore | vettore | scalare | scalare |
-| **Dipendenza da $r$** | $1/r^2$ | $1/r^2$ | $1/r$ | $1/r$ |
+|**Segno**|positivo|positivo|negativo|negativo|
+| **Dipendenza da $r$ (in modulo)** | $1/r^2$ (decresce velocemente) | $1/r^2$ (decresce velocemente) | $-1/r$ (cresce lentamente) | $-1/r$ (cresce lentamente)  |
 
-{% include box-end.html %}
+
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qenergia %}[
@@ -548,9 +631,11 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 {"t":"Il potenziale gravitazionale si misura in joule (J).","ok":false,"s":"No: si misura in J/kg, perché è un'energia potenziale divisa per una massa."},
 {"t":"Il lavoro necessario per sollevare un oggetto di massa $m$ per un tratto $r$, vicino alla superficie terrestre, vale $mgr$.","ok":true,"s":"Sì, a patto che $r$ sia piccolo rispetto al raggio terrestre, così che $g$ sia costante."},
 {"t":"Il potenziale gravitazionale $V$ dipende dalla massa esploratrice $m$.","ok":false,"s":"No: proprio come il campo $\\vec g$, il potenziale $V = U/m$ non dipende da $m$, ma solo dalla massa che genera il campo e dalla distanza."},
-{"t":"Il potenziale gravitazionale è sempre negativo, qualunque sia la distanza $r$ (finita).","ok":true,"s":"Sì: $V=-GM/r$ è negativo per ogni $r$ finito, e tende a zero solo per $r\\to\\infty$."},
+{"t":"Il potenziale gravitazionale è sempre negativo, qualunque sia la distanza $r$ (finita).","ok":true,"s":"Sì: $V=-GM/r$ è negativo per qualunque distanza $r$, per quanto grande: si avvicina a zero solo quando $r$ diventa enorme, senza mai raggiungerlo esattamente a nessuna distanza finita."},
 {"t":"A parità di distanza, l'energia potenziale gravitazionale fra due masse più pesanti è, in valore assoluto, maggiore di quella fra due masse più leggere.","ok":true,"s":"Sì: $|U|=GMm/r$ è direttamente proporzionale al prodotto delle masse."},
-{"t":"Il potenziale gravitazionale $V$ e il campo gravitazionale $\\vec g$ dipendono nello stesso modo dalla distanza $r$.","ok":false,"s":"No: $\\vec g$ dipende da $1/r^2$, mentre $V$ dipende da $1/r$ — proprio come forza ed energia potenziale."}
+{"t":"Il potenziale gravitazionale $V$ e il campo gravitazionale $\\vec g$ dipendono nello stesso modo dalla distanza $r$.","ok":false,"s":"No: $\\vec g$ dipende da $1/r^2$, mentre $V$ dipende da $1/r$ — proprio come forza ed energia potenziale."},
+{"t":"Se più masse generano energia potenziale (o potenziale) nello stesso punto, bisogna sommare i singoli contributi vettorialmente, con la regola del parallelogramma, come per la forza e il campo.","ok":false,"s":"No: l'energia potenziale e il potenziale sono scalari, quindi si sommano con una semplice somma algebrica — niente parallelogramma."},
+{"t":"Ogni massa contribuisce all'energia potenziale (o al potenziale) di un punto esattamente come se le altre masse non ci fossero.","ok":true,"s":"Sì: è il principio di sovrapposizione degli effetti, valido per l'energia potenziale e per il potenziale esattamente come per forza e campo."}
 ]{% endcapture %}
 {% include quiz.html domande=_qenergia
    label_si="Una grandezza che, come U, dipende dalla massa esploratrice"
@@ -562,26 +647,36 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 
 ## Superfici equipotenziali
 
-Poiché il potenziale gravitazionale $V$ generato da una massa $M$ dipende solo dalla distanza $r$ da essa ($V = -G\dfrac{M}{r}$), tutti i punti a distanza $r$ da $M$ hanno lo stesso potenziale. L'insieme di questi punti forma una superficie, chiamata <definizione>superficie equipotenziale</definizione>: per una singola massa sferica, le superfici equipotenziali sono semplicemente sfere concentriche a $M$.
+{% include margin-note.html testo="Cosa cerchiamo: un modo grafico per rappresentare il potenziale" %}
+Abbiamo compreso che il potenziale gravitazionale è sostanzialmente l'analogo energetico del campo. Ci chiediamo allora se, così come è possibile rappresentare il campo con delle linee, sia possibile in qualche modo rappresentare graficamente il potenziale. Rappresenteremo quindi il campo tramite delle superfici che prendono il nome di <definizione>superfici equipotenziali</definizione>.
+{% include margin-note-end.html %}
+
+{% include box-imp.html testo="Superfici equipotenziali"%}
+Le superfici equipotenziali sono il luogo dei punti in cui il potenziale assume <u markdown="span">lo **stesso** valore costante</u>. Inoltre, esse sono, in ogni punto, <u markdown="span">**perpendicolari** alle linee di campo.
+{% include box-end.html %}
+
+### Le superfici equipotenziali di una singola massa sferica
+Poiché il potenziale gravitazionale $V$ generato da una singola massa sferica $M$ dipende solo dalla distanza $r$ da essa ($V = -G\frac{M}{r}$), tutti i punti a distanza $r$ da $M$ hanno lo stesso potenziale. L'insieme di questi punti forma quindi una sfera. Pertanto, le superfici equipotenziali per una singola massa sferica sono semplicemente sfere concentriche a $M$.
+
+{% include lab-virtuali/equipotenziali-sfera-3d-lab.html %}
+
+Dovendole rappresentare su un foglio, esse diventano delle circonferenze, come nella seguente figura.
 
 {% include figure/figura-equipotenziali-sfera.html %}
 
-{% include margin-note.html testo="Superfici equipotenziali e linee di campo" %}
-Le superfici equipotenziali sono sempre **perpendicolari** alle linee di campo, in ogni punto. Infatti, muovendosi lungo una superficie equipotenziale il potenziale non cambia: non si compie quindi lavoro spostandosi in quella direzione. Il campo, invece, compie lavoro proprio quando ci si sposta lungo la sua direzione — le due direzioni devono perciò essere sempre perpendicolari.
-{% include margin-note-end.html %}
 
+
+
+### Le superfici equipotenziali in presenza di più masse
 Quando il campo è generato da più masse, come nel sistema Terra-Luna, le superfici equipotenziali non sono più sfere: si deformano, avvicinandosi maggiormente dove il campo è più intenso — esattamente come succede per le linee di campo.
 
-{% include figura.html id="earth-moon-equipotential"
-   src="/corsi/immagini/earth-moon-field-equipotential-surfaces.webp"
-   didascalia="Sezione delle superfici equipotenziali del sistema Terra-Luna (in due dimensioni appaiono come linee): sono sempre perpendicolari alle linee di campo."
-   larghezza="420px" %}
+{% include lab-virtuali/equipotenziali-terra-luna-lab.html %}
 
-{% include box-imp.html testo="Superfici equipotenziali" %}
+<!-- {% include box-imp.html testo="Superfici equipotenziali" %}
 - **Che cosa sono:** l'insieme dei punti dello spazio che hanno lo stesso potenziale gravitazionale.
 - **Per una singola massa:** sono sfere concentriche alla massa che genera il campo.
 - **Proprietà fondamentale:** sono sempre perpendicolari alle linee di campo.
-{% include box-end.html %}
+{% include box-end.html %} -->
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qcampo %}[
@@ -676,6 +771,13 @@ Questo ci dice come cambia la velocità della massa $m$ durante il moto:
 - Allontanandosi: $U$ aumenta, $K$ diminuisce → la massa rallenta.
 {% include box-end.html %}
 
+Puoi verificarlo con la seguente animazione, in cui puoi costruire il tuo proprio sistema solare!
+
+  {% include phet-sim.html id="gravity-energy-lab"
+     src="https://phet.colorado.edu/sims/html/my-solar-system/latest/my-solar-system_all.html"
+     didascalia="Osserva come, all'avvicinarsi delle due masse, la loro velocità (e quindi l'energia cinetica) aumenti; all'allontanarsi delle masse la loro velocità (energia cinetica) diminuisce, in linea con la conservazione dell'energia meccanica."
+     altezza="550px" %}
+
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qmoto %}[
 {"t":"Durante il moto in un campo gravitazionale, l'energia cinetica $K$ si conserva, in assenza di attriti.","ok":false,"s":"No: a conservarsi è l'energia meccanica totale $E=K+U$, non $K$ da sola, che infatti cambia continuamente."},
@@ -685,11 +787,8 @@ Questo ci dice come cambia la velocità della massa $m$ durante il moto:
 {"t":"Una massa che si allontana dalla massa che genera il campo rallenta.","ok":true,"s":"Sì: l'energia potenziale aumenta, quindi quella cinetica deve diminuire."},
 {"t":"La conservazione dell'energia meccanica vale per la forza gravitazionale perché è una forza centrale.","ok":true,"s":"Sì: è proprio la proprietà, comune a tutte le forze centrali, che permette di definire un'energia potenziale."}
 ]{% endcapture %}
-{% include quiz.html domande=_qmoto
-   label_si="Un'affermazione vera sul moto in un campo gravitazionale"
-   label_no="Un'affermazione falsa sul moto in un campo gravitazionale"
-   id="q-moto" %}
 {% include box-end.html %}
+
 
 # Esercizi di riepilogo
 
@@ -994,15 +1093,15 @@ Sai già che $G$ si misura in $\text N\cdot\text m^2/\text{kg}^2$. Usando il **s
 {% include ex-end.html %}
 
 {% include ex.html diff=2 %}
-Il grafico seguente mostra come due grandezze diminuiscono, all'aumentare della distanza $r$: la curva <strong style="color:#dc2626">rossa</strong> e la curva <strong style="color:#0891b2">blu</strong>. Una delle due rappresenta l'andamento di forza e campo gravitazionale; l'altra, quello di energia potenziale e potenziale gravitazionale.
+Il grafico seguente mostra come cambia, all'aumentare della distanza $r$, il modulo di due grandezze: la curva <strong style="color:#dc2626">rossa</strong> (positiva) e la curva <strong style="color:#0891b2">blu</strong> (negativa). Una delle due rappresenta l'andamento di forza e campo gravitazionale; l'altra, quello di energia potenziale e potenziale gravitazionale.
 
 {% include figure/figura-grafico-decadimento-vuoto.html %}
 
 Completa le frasi.
 
-{% include fill.html prima="La curva <strong style='color:#dc2626'>rossa</strong>, che decresce più rapidamente, rappresenta l'andamento di" tipo="drop" opts="forza e campo|energia potenziale e potenziale" ok="forza e campo" dopo="." s="Forza e campo sono inversamente proporzionali al QUADRATO della distanza: decrescono più rapidamente." %}
+{% include fill.html prima="La curva <strong style='color:#dc2626'>rossa</strong>, il cui modulo diminuisce più rapidamente, rappresenta l'andamento di" tipo="drop" opts="forza e campo|energia potenziale e potenziale" ok="forza e campo" dopo="." s="Forza e campo sono inversamente proporzionali al QUADRATO della distanza: il loro modulo diminuisce più rapidamente." %}
 
-{% include fill.html prima="La curva <strong style='color:#0891b2'>blu</strong>, che decresce più lentamente, rappresenta l'andamento di" tipo="drop" opts="forza e campo|energia potenziale e potenziale" ok="energia potenziale e potenziale" dopo="." s="Energia potenziale e potenziale sono inversamente proporzionali alla distanza stessa (non al suo quadrato): decrescono più lentamente." %}
+{% include fill.html prima="La curva <strong style='color:#0891b2'>blu</strong>, il cui modulo diminuisce più lentamente (pur essendo negativa, e quindi crescendo verso lo zero), rappresenta l'andamento di" tipo="drop" opts="forza e campo|energia potenziale e potenziale" ok="energia potenziale e potenziale" dopo="." s="Energia potenziale e potenziale sono negativi e inversamente proporzionali alla distanza stessa (non al suo quadrato): il loro modulo diminuisce più lentamente, avvicinandosi a zero da valori negativi." %}
 {% include ex-end.html %}
 
 {% include ex.html diff=2 %}
@@ -1047,15 +1146,21 @@ $$F_{tot} = \sqrt{F_1^2 + F_2^2} = \sqrt{(3\times10^{-8})^2+(4\times10^{-8})^2} 
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Su una massa $m$ agiscono contemporaneamente due forze gravitazionali, $\vec F_1$ (dovuta a $M_1$) e $\vec F_2$ (dovuta a $M_2$), come in figura.
-
+Su una massa $m$ agiscono contemporaneamente due forze gravitazionali, $\vec F_1$ (dovuta a $M_1)$ e $\vec F_2$ (dovuta a $M_2)$, come in figura.
 {% include lab-virtuali/vdrag-somma-forze-lab.html %}
 {% include ex-end.html %}
 
 {% include ex.html diff=2 %}
-La cima del Monte Everest si trova a circa $8\,850\ \text m$ sul livello del mare. Spiega perché il valore di $g$ lassù è, con ottima approssimazione, lo stesso che al livello del mare, anche se le due altezze sono diverse.
+La cima del Monte Everest si trova a circa $8\,850\ \text m$ sul livello del mare. Spiega perché il valore di $g$ lassù è, con ottima approssimazione, lo stesso che al livello del mare, anche se le due altezze sono diverse. (Suggerimento: confronta questi $8\,850\ \text m$ con il raggio terrestre, $R_\oplus\approx6\,371\ \text{km}$.)
+
+Se volessimo invece essere precisi: il valore di $g$ misurato sulla cima dell'Everest sarebbe
+
+{% include fill.html prima="" tipo="drop" opts="più grande|più piccolo|esattamente uguale" ok="più piccolo" dopo=" di quello misurato al livello del mare." s="Sulla cima, la distanza $r$ dal centro della Terra è leggermente maggiore: poiché $g=GM_\oplus/r^2$ è inversamente proporzionale al quadrato di $r$, un $r$ (di pochissimo) più grande dà un $g$ (di pochissimo) più piccolo." %}
+
 {% include ex-sol.html %}
 Il campo gravitazionale dipende dalla distanza $r$ **dal centro della Terra**, non dall'altitudine sul livello del mare in sé. Il raggio terrestre è $R_\oplus\approx6\,371\ \text{km} = 6\,371\,000\ \text m$: gli $8\,850\ \text m$ dell'Everest sono meno dello $0{,}15\%$ di questo valore. La distanza dal centro della Terra cambia quindi in modo del tutto trascurabile fra la vetta e il livello del mare, e con essa $g=GM_\oplus/r^2$ resta, con ottima approssimazione, costante.
+
+Se però si vuole essere precisi, la vetta è **più lontana** dal centro della Terra ($r = R_\oplus + 8\,850\ \text m$, anziché $R_\oplus$): poiché $g$ è inversamente proporzionale al **quadrato** di $r$, un $r$ leggermente maggiore dà un $g$ leggermente **più piccolo** (anche se la differenza, circa lo $0{,}3\%$, è del tutto trascurabile in pratica).
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -1088,7 +1193,7 @@ $$U = -G\frac{M_\oplus\, m}{r} = -6{,}67\times10^{-11}\times\frac{5{,}97\times10
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Calcola il potenziale gravitazionale generato dalla Terra sulla propria superficie ($R_\oplus \approx 6\,371\ \text{km}$, $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$). Esprimi il risultato in notazione scientifica.
+Calcola il potenziale gravitazionale generato dalla Terra sulla propria superficie $(R_\oplus \approx 6\,371\ \text{km}$, $M_\oplus = 5{,}97\times10^{24}\ \text{kg})$. Esprimi il risultato in notazione scientifica.
 
 {% include sci.html prima="$V=$" coeff="-6.25" exp="7" s="$-6{,}25\times10^7\ \text J/\text{kg}$" %}
 
@@ -1128,8 +1233,8 @@ L'energia richiesta è la variazione di energia potenziale, $\Delta U = U_{\text
 **Da $r$ a $2r$:**
 $$\Delta U_1 = U(2r) - U(r) = -G\frac{Mm}{2r} - \left(-G\frac{Mm}{r}\right) = G\frac{Mm}{r} - G\frac{Mm}{2r} = G\frac{Mm}{2r}.$$
 
-**Da $r$ all'infinito** (dove $U(\infty)=0$):
-$$\Delta U_2 = U(\infty) - U(r) = 0 - \left(-G\frac{Mm}{r}\right) = G\frac{Mm}{r}.$$
+**Da $r$ all'infinito** (cioè separandole completamente: quando la distanza è così grande da rendere l'attrazione ormai nulla, anche l'energia potenziale è ormai $0$):
+$$\Delta U_2 = 0 - \left(-G\frac{Mm}{r}\right) = G\frac{Mm}{r}.$$
 
 Confrontando, $\Delta U_2 = 2\,\Delta U_1$: separare completamente le due masse richiede **il doppio** dell'energia necessaria per portarle semplicemente a distanza doppia. Detto altrimenti: **metà** dell'energia totale necessaria per separarle del tutto è già sufficiente per raddoppiare la loro distanza iniziale.
 {% include ex-sol-end.html %}
@@ -1154,8 +1259,8 @@ cioè quasi $20\,000\ \text{km/h}$: gli impatti dei meteoriti sono violentissimi
 {% include ex.html diff=3 %}
 Una sonda spaziale viene lanciata dalla Terra con una certa energia cinetica iniziale, allontanandosi radialmente. Usando $E = K + U = \text{costante}$, e ricordando che l'energia cinetica $K$ non può mai essere negativa, spiega perché: se l'energia meccanica totale $E$ della sonda è negativa, essa non riuscirà mai ad allontanarsi a distanza infinita (prima o poi rallenterà, si fermerà e ricadrà indietro); mentre se $E \geq 0$, la sonda potrà allontanarsi indefinitamente.
 {% include ex-sol.html %}
-Allontanandosi, $r\to\infty$ e quindi $U=-GMm/r \to 0$. Poiché $E=K+U$ resta costante durante tutto il moto, quando $r\to\infty$ si ha $K \to E$.
+Man mano che la sonda si allontana, la distanza $r$ diventa sempre più grande, e quindi $U=-GMm/r$ (che è sempre negativa) si avvicina sempre di più a $0$. Poiché $E=K+U$ resta costante durante tutto il moto, quando $r$ è ormai enorme e $U$ è ormai vicinissima a $0$, l'energia cinetica $K=E-U$ è diventata a sua volta vicinissima a $E$.
 
 - Se $E<0$: mano a mano che $r$ aumenta, $U$ (negativa) si avvicina a $0$ dal basso, quindi $K=E-U$ deve **diminuire** per mantenere $E$ costante — e prima che $U$ raggiunga $0$, $K$ si annullerebbe (diventando negativa, il che è impossibile). La sonda deve quindi fermarsi a una distanza finita, dove $K=0$, per poi ricadere.
-- Se $E\geq0$: anche quando $r\to\infty$ e $U\to0$, resta $K=E-U\geq0$: la sonda può continuare ad allontanarsi indefinitamente, arrivando all'infinito con energia cinetica $K=E\geq0$ (cioè, se $E=0$, arrivandoci "appena", con velocità che tende a zero).
+- Se $E\geq0$: anche quando $r$ è diventato enorme e $U$ è ormai vicinissima a $0$, resta $K=E-U\geq0$: la sonda può quindi continuare ad allontanarsi senza mai fermarsi, con un'energia cinetica che rimane sempre almeno pari a $E$ (cioè, se $E=0$, con una velocità che si fa sempre più piccola, ma senza mai annullarsi del tutto).
 {% include ex-sol-end.html %}

@@ -223,7 +223,7 @@ Notiamo che
 - se $L$ è negativo allora $\Delta K<0$, cioè l'energia cinetica diminuisce;
 - se $L$ è nullo allora $\Delta K=0$, cioè l'energia cinetica rimane invariata.
 
-Cioè, il lavoro esercitato da qualcosa che frena è negativo, e quindi fa diminuire l'energia cinetica; mentre quello esercitato da qualcosa che spinge è positivo, quindi la fa aumentare.
+Vale a dire, il lavoro esercitato da una forza contraria allo spostamento è negativo, e quindi frena il corpo, facendone diminuire l'energia cinetica. Al contrario, quello esercitato da una forza che spinge nel verso dello spostamento è positivo, e quindi accelera il corpo, facendo aumentare l'energia cinetica.
 
 ### La formula dell'Energia Cinetica
 

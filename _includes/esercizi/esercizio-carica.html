@@ -97,6 +97,14 @@ Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del nu
 <script>
 (function(){
   var N=5, cur=0, ok=[false,false,false,false,false];
+  var restoring=false;
+  var inputIds={0:'iexCaricam0',1:'iexCaricam1',2:'iexCaricam2',4:'iexCaricam4'};
+  var mcqChosen=null;
+  function saveState(){
+    var vals={};
+    for(var k in inputIds)vals[k]=document.getElementById(inputIds[k]).value;
+    _lvSave('carousel','iexCarica',{ok:ok.slice(),vals:vals,mcq3:mcqChosen});
+  }
   function updateDots(){
     var dots=document.querySelectorAll('#iexCaricadots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -123,6 +131,7 @@ Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del nu
   window.iexCaricanav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
 
   function shootConf(el){
+    if(restoring)return;
     var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
     var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
     for(var i=0;i<55;i++){
@@ -155,7 +164,7 @@ Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del nu
     if(Math.round(v) === target){
       ok[rowIdx]=true; fb.className='iex-fb ok';
       fb.innerHTML='&#10003; Esatto! '+msgOk+' <button class="iex-nextbtn" onclick="iexCaricanav(1)">Passo successivo &rarr;</button>';
-      shootConf(vb); updateDots();
+      shootConf(vb); updateDots(); saveState();
     } else {
       fb.className='iex-fb err';
       var extra = solId ? ' Oppure <button class="iex-lbtn" onclick="showSol(\''+solId+'\')">vedi la soluzione</button>.' : '';
@@ -199,8 +208,27 @@ Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del nu
           fb.innerHTML = 'Non è corretto: la carica di un corpo è sempre un multiplo <strong>intero</strong> della carica elementare $e$ (quantizzazione della carica). $75{,}5$ non è un numero intero, quindi quella misura non può essere corretta.';
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        mcqChosen = btn.dataset.v; saveState();
       });
     });
+  })();
+
+  (function restoreState(){
+    var saved=_lvLoad('carousel','iexCarica');
+    if(!saved)return;
+    restoring=true;
+    for(var k in inputIds){
+      if(saved.ok && saved.ok[k]){
+        if(saved.vals && saved.vals[k]!==undefined)document.getElementById(inputIds[k]).value=saved.vals[k];
+        window['iexCaricacheck'+k]();
+      }
+    }
+    if(saved.mcq3){
+      var btn=document.querySelector('#iexCaricachoices3 .iex-choice-btn[data-v="'+saved.mcq3+'"]');
+      if(btn)btn.click();
+    }
+    restoring=false;
+    updateDots();
   })();
 })();
 </script>

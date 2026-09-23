@@ -264,13 +264,13 @@ Ci capiterà spesso di sommare, moltiplicare o dividere numeri scritti in notazi
 
 Se doveste misurare la lunghezza di una formica, probabilmente non vi verrebbe da utilizzare la notazione scientifica, bensì esprimereste semplicemente la lunghezza in millimetri anziché metri. Non state realmente cambiando unità di misura, state semplicemente utilizzando un **sottomultiplo** del metro. Allo stesso modo, se doveste misurare la distanza tra Torino e Milano, difficilmente direste che corrisponde a circa $200\, 000 \ \text m$: più facilmente direste che sono circa $200\, \text{km}$. In questo caso state utilizzando un **multiplo** del metro.
 
-Questi multipli e sottomultipli sono gli stessi per tutte le unità di misura e si indicano semplicemente con una lettera davanti al simbolo dell'unità di misura. Essi si basano sulle potenze di $10$. Ad esempio, un kilometro si indica con $1\ \text{km}$ e corrisponde a 
+Questi multipli e sottomultipli sono gli stessi per tutte le unità di misura e si indicano semplicemente con una lettera davanti al simbolo dell'unità di misura. Essi si basano sulle potenze di $10$. Ad esempio, un chilometro si indica con $1\ \text{km}$ e corrisponde a 
 
-$$1\ \text{km} = 1\,000 \text m = 10^3 \ \text m.$$
+$$1\ \text{km} = 1\,000 \ \text m = 10^3 \ \text m.$$
 
 Allo stesso modo, il millimetro si indica con $1 \ \text{mm}$ e corrisponde a
 
-$$ 1 \ \text{mm} = 0{,}00\, 1 m = 10^{-3} \ \text m.$$
+$$ 1 \ \text{mm} = 0{,}00\, 1 \ \text m = 10^{-3} \ \text m.$$
 
 
 Notiamo, in generale, che quando passiamo da un multiplo di un'unità di misura a un altro dobbiamo moltiplicare per un certo fattore che corrisponde a una potenza di $10$. Tale fattore è chiamato <definizione>fattore di conversione</definizione>. Ad esempio, per passare da kilometri a metri, il fattore di conversione vale $10^3$; per passare da millimetri a metri il fattore vale $10^{-3}$.
@@ -305,7 +305,7 @@ Questi prefissi si possono ordinare su una retta dal più piccolo al più grande
 
 {% include figure/figura-retta-prefissi.html %}
 
-{% include box-imp.html testo="Come convertire tra prefissi" %}
+<!-- {% include box-imp.html testo="Come convertire tra prefissi" %}
 Per convertire un numero da un prefisso a un altro:
 
 1. Guarda i fattori di conversione del prefisso di **partenza** ($10^n$) e di quello di **arrivo** $\text (10^m\text )$. (La base ha fattore di conversione $10^0$).
@@ -314,7 +314,18 @@ Per convertire un numero da un prefisso a un altro:
 
 
 Se $n > m$ (vai verso un prefisso più piccolo, cioè verso sinistra), il numero cresce, cioè l'esponente è positivo. Se $n < m$ (vai verso un prefisso più grande, cioè verso destra), il numero diminuisce, cioè l'esponente è negativo.
+{% include box-end.html %} -->
+
+
+{% include box-imp.html testo="Convertire tra i prefissi" %}
+Per convertire da un prefisso a un altro, si devono contare i salti per arrivare dal prefisso di partenza a quello di arrivo sulla retta dei prefissi. Il numero di salti totale è pari all'esponente del fattore di conversione. Se i salti sono verso destra, l'esponente sarà negativo; se i salti sono verso sinistra, l'esponente sarà positivo.  
 {% include box-end.html %}
+
+Si deve porre attenzione al fatto che alcuni salti valgono $3$ (per esempio, da micrometri $10^{-6}$ a millimetri $10^{-3}$) mentre altri valgono solo $1$ (per esempio, da millimetri $10^{-3}$ a centimetri $10^{-2}$).
+
+Usa la simulazione qui sotto per visualizzare come si converte da un prefisso a un altro. Scegli il prefisso di partenza e quello di arrivo, poi clicca **Mostra**.
+
+{% include esercizi/prefissi-e-conversione.html %}
 
 {% include box-blue.html testo="Esempi" %}
 **Esempio 1 — km in m:** k ha esponente 3, la base ha esponente 0. Differenza: $3-0=3$. Quindi $5\ \text{km} = 5\times 10^3\ \text{m} = 5000\ \text{m}$.
@@ -330,11 +341,8 @@ Se $n > m$ (vai verso un prefisso più piccolo, cioè verso sinistra), il numero
 
 {% include esercizi/esercizio-conversione-unita.html %}
 
-Per convertire da un prefisso a un altro è utile anche avere sempre presente la linea dei prefissi. Si possono quindi contare i salti per arrivare dal prefisso di partenza a quello di arrivo. Si deve porre attenzione al fatto che alcuni salti valgono $3$ (per esempio, da micrometri $10^{-6}$ a millimetri $10^{-3}$) mentre altri valgono solo $1$ (per esempio, da millimetri $10^{-3}$ a centimetri $10^{-2}$). Il numero di salti totale 
-è pari all'esponente del fattore di conversione. Se i salti sono verso destra, l'esponente sarà negativo; se i salti sono verso sinistra, l'esponente sarà positivo.  
-Usa la simulazione qui sotto per visualizzare come si converte da un prefisso a un altro. Scegli il prefisso di partenza e quello di arrivo, poi clicca **Mostra**.
 
-{% include esercizi/prefissi-e-conversione.html %}
+
 
 ### L'unità di misura del tempo
 
@@ -363,7 +371,7 @@ Ci sarà in generale molto utile convertire tutti i multipli dei secondi (minuti
 
 # Le grandezze derivate
 
-Come abbiamo detto precedentemente, le grandezze derivate sono tutte quelle che non appartengono alle sette grandezze fondamentali del Sistema Internazionale (Tab. 1, [vedi qui](#tab-si)).
+Come abbiamo detto precedentemente, le grandezze derivate sono tutte quelle che non appartengono alle sette grandezze fondamentali del Sistema Internazionale ([Tab.1](#tab-si)).
 
 ### Area
 
@@ -377,7 +385,20 @@ L'area di una superficie è una grandezza derivata: è data dal prodotto di due 
 
 Esempio: un quadrato di lato $\ell = 4\ \text{m}$ ha area $A = \ell^2 = (4\ \text{m})^2 = 16\ \text{m}^2$.
 
-#### Equivalenze tra misure di area
+#### Convertire tra multipli e sottomultipli del metro quadro
+
+La conversione tra multipli e sottomultipli del metro quadro, è molto simile a quella dei multipli e sottomultipli del metro, ma c'è un dettaglio importante che cambia.  
+Proviamo a esplorarlo con un esempio: convertiamo **dal metro quadro (m²) al decimetro quadro (dm²)**.
+
+Partiamo dalla definizione di metro quadro:
+
+$$1\ \text{m}^2 = 1\ \text{m} \times 1\ \text{m}.$$
+
+Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
+
+$$1\ \text{m}^2 = (10\ \text{dm}) \times (10\ \text{dm}) = 10^2\ \text{dm}^2 = 100\ \text{dm}^2.$$
+
+L'animazione qui sotto mostra esattamente questo: un quadrato di lato 1 m viene suddiviso con una griglia di lato 1 dm, rivelando che ci sono esattamente 100 quadratini di 1 dm².
 
 {% include lab-virtuali/equivalenza-area-lab.html %}
 

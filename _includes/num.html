@@ -50,5 +50,9 @@ document.addEventListener('DOMContentLoaded',function(){
   fb.style.display='block';
   fb.className='iex-fb '+(s.ok?'ok':'err');
   fb.innerHTML=s.ok?'&#10003; Esatto!':'Non è corretto. Riprova.';
+  if(s.ok){
+    var wrapEl2=inp.closest('.iex-ir');
+    if(wrapEl2)wrapEl2.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
+  }
 });
 </script>

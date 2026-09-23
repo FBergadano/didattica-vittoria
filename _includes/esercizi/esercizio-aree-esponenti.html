@@ -133,11 +133,32 @@ window.aeCheck=function(i){
     fb.innerHTML='&#10003; Esatto!'+(i<NAE-1?' <button class="iex-nextbtn" onclick="aeShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootCAE(vb);updDotsAE();
     if(aeok.every(function(x){return x;}))setTimeout(shootFWAE,600);
+    aeSaveState();
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolAE(\'aesol'+i+'\')">vedi la soluzione</button>.';
   }
 };
+function aeSaveState(){
+  var vals=[];
+  for(var i=0;i<NAE;i++)vals.push({m:document.getElementById('aem'+i).value,e:document.getElementById('aee'+i).value});
+  _lvSave('carousel','ae',{ok:aeok.slice(),vals:vals});
+}
+function aeRestore(){
+  var saved=_lvLoad('carousel','ae');
+  if(!saved)return;
+  for(var i=0;i<NAE;i++){
+    if(saved.ok&&saved.ok[i]){
+      aeok[i]=true;
+      if(saved.vals&&saved.vals[i]){document.getElementById('aem'+i).value=saved.vals[i].m;document.getElementById('aee'+i).value=saved.vals[i].e;}
+      var fb=document.getElementById('aefb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<NAE-1?' <button class="iex-nextbtn" onclick="aeShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    }
+  }
+  updDotsAE();
+}
 buildDotsAE(NAE,window.aeShow);
+aeRestore();
 })();
 </script>

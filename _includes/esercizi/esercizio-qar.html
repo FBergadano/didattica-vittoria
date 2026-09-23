@@ -59,11 +59,32 @@ window.qarCheck=function(i){
     fb.innerHTML='&#10003; Esatto!'+(i<NQAR-1?' <button class="iex-nextbtn" onclick="qarShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootCA(vb);updDotsA();
     if(qarok.every(function(x){return x;}))setTimeout(shootFWA,600);
+    qarSaveState();
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolA(\'qarsol'+i+'\')">vedi la soluzione</button>.';
   }
 };
+function qarSaveState(){
+  var vals=[];
+  for(var i=0;i<NQAR;i++)vals.push(document.getElementById('qarinp'+i).value);
+  _lvSave('carousel','qar',{ok:qarok.slice(),vals:vals});
+}
+function qarRestore(){
+  var saved=_lvLoad('carousel','qar');
+  if(!saved)return;
+  for(var i=0;i<NQAR;i++){
+    if(saved.ok&&saved.ok[i]){
+      qarok[i]=true;
+      if(saved.vals&&saved.vals[i]!==undefined)document.getElementById('qarinp'+i).value=saved.vals[i];
+      var fb=document.getElementById('qarfb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<NQAR-1?' <button class="iex-nextbtn" onclick="qarShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    }
+  }
+  updDotsA();
+}
 buildDotsA(NQAR,window.qarShow);
+qarRestore();
 })();
 </script>

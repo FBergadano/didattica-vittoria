@@ -108,6 +108,25 @@ function makeShow(pfx,ok,cur,N){
 }
 var ex6show=makeShow('ex6',ex6ok,ex6c,N6);
 buildDots('ex6',N6,ex6show);
+function ex6Snapshot(){
+  var vals=[];
+  for(var i=0;i<N6;i++)vals.push({m:document.getElementById('ex6m'+i).value,e:document.getElementById('ex6e'+i).value});
+  return {ok:ex6ok.slice(),vals:vals};
+}
+(function ex6Restore(){
+  var saved=_lvLoad('scinot','ex6');
+  if(!saved)return;
+  for(var i=0;i<N6;i++){
+    if(saved.ok&&saved.ok[i]){
+      ex6ok[i]=true;
+      if(saved.vals&&saved.vals[i]){document.getElementById('ex6m'+i).value=saved.vals[i].m;document.getElementById('ex6e'+i).value=saved.vals[i].e;}
+      var fb=document.getElementById('ex6fb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<N6-1?' <button class="iex-nextbtn" onclick="ex6show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    }
+  }
+  updateDots('ex6',ex6c[0],ex6ok,N6);
+})();
 window.ex6show=ex6show;
 window.ex6nav=function(d){if(ex6c[0]+d>=0&&ex6c[0]+d<N6)ex6show(ex6c[0]+d);};
 window.ex6check=function(i){
@@ -123,6 +142,7 @@ window.ex6check=function(i){
     fb.innerHTML='&#10003; Esatto!'+(i<N6-1?' <button class="iex-nextbtn" onclick="ex6show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootConf(vb);updateDots('ex6',ex6c[0],ex6ok,N6);
     if(ex6ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    _lvSave('scinot','ex6',ex6Snapshot());
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSol(\'ex6sol'+i+'\')">vedi la soluzione</button>.';

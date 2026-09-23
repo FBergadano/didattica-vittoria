@@ -101,6 +101,7 @@ Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun p
 <script>
 (function(){
   var N=7, cur=0, ok=[false,false,false,false,false,false,false];
+  var restoring=false;
   function updateDots(){
     var dots=document.querySelectorAll('#iexGdots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -130,6 +131,7 @@ Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun p
   function parseExp(s){ return parseInt(s.trim().replace('−','-'),10); }
 
   function shootConf(el){
+    if(restoring)return;
     var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
     var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
     for(var i=0;i<55;i++){
@@ -167,6 +169,7 @@ Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun p
       ok[0]=true; fb.className='iex-fb ok';
       fb.innerHTML='&#10003; Esatto! <button class="iex-nextbtn" onclick="iexGnav(1)">Passo successivo &rarr;</button>';
       shootConf(vb); updateDots();
+      if(!restoring)_lvSave('carousel','iexGrow0',{m:document.getElementById('iexGm0').value,e:document.getElementById('iexGe0').value,u:uv});
     } else {
       fb.className='iex-fb err';
       var parts=[];
@@ -198,6 +201,7 @@ Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun p
           fb.innerHTML = 'Non è esatto: poiché $F$ è inversamente proporzionale al quadrato di $r$, se $r$ diventa $5r$ la forza diventa $F/5^2 = F/25$, cioè un venticinquesimo del valore iniziale.';
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        if(!restoring)_lvSave('mcqchoice','iexGchoices1',{chosen:btn.dataset.v});
       });
     });
   })();
@@ -224,6 +228,7 @@ Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun p
           fb.innerHTML = 'Non è esatto: sostituendo $2m_1$, $2m_2$ e $2r$ nella formula, il fattore $4$ che compare al numeratore (dal prodotto delle masse) si semplifica con il fattore $4$ al denominatore (da $(2r)^2$): la forza resta invariata.';
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        if(!restoring)_lvSave('mcqchoice','iexGchoices5',{chosen:btn.dataset.v});
       });
     });
   })();
@@ -250,8 +255,27 @@ Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun p
           fb.innerHTML = 'Non è corretto: per il terzo principio della dinamica, le due forze hanno sempre lo stesso modulo e verso opposto, qualunque sia la differenza fra le due masse.';
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        if(!restoring)_lvSave('mcqchoice','iexGchoices6',{chosen:btn.dataset.v});
       });
     });
   })();
+
+  restoring=true;
+  ['iexGchoices1','iexGchoices5','iexGchoices6'].forEach(function(choicesId){
+    var saved=_lvLoad('mcqchoice',choicesId);
+    if(saved&&saved.chosen){
+      var btn=document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+saved.chosen+'"]');
+      if(btn)btn.click();
+    }
+  });
+  var savedRow0=_lvLoad('carousel','iexGrow0');
+  if(savedRow0){
+    document.getElementById('iexGm0').value=savedRow0.m;
+    document.getElementById('iexGe0').value=savedRow0.e;
+    document.getElementById('iexGu0').value=savedRow0.u;
+    window.iexGcheck0();
+  }
+  restoring=false;
+  updateDots();
 })();
 </script>

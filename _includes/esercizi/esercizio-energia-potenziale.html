@@ -68,11 +68,40 @@ Esercizio a carosello (Verifica Subito!) su energia potenziale gravitazionale e 
 <div class="iex-fb" id="iexUVfb2"></div>
 </div>
 
+<div class="iex-q" id="iexUVrow3" style="display:none">
+<p class="iex-qt">Due masse generano, in un certo punto dove è posta una massa esploratrice $m$, le energie potenziali $U_1 = -4{,}0\times10^{-9}\ \text J$ e $U_2 = -7{,}0\times10^{-9}\ \text J$. Applicando il principio di sovrapposizione degli effetti, quanto vale l'energia potenziale totale $U_{tot}$ in quel punto? Esprimi il risultato in notazione scientifica.</p>
+<div class="iex-ir">
+<input class="iex-m" id="iexUVm3" type="text" placeholder="coefficiente" onkeydown="if(event.key==='Enter')iexUVcheck3()">
+<span>&times;&thinsp;10<sup><input class="iex-e" id="iexUVe3" type="text" placeholder="n" onkeydown="if(event.key==='Enter')iexUVcheck3()"></sup></span>
+<select class="iex-unit" id="iexUVu3">
+<option value="">unità</option>
+<option value="J">J</option>
+<option value="N">N</option>
+<option value="kg">kg</option>
+<option value="J/kg">J/kg</option>
+</select>
+<button class="iex-vbtn" onclick="iexUVcheck3()">Verifica</button>
+</div>
+<div class="iex-fb" id="iexUVfb3"></div>
+<div class="iex-sol" id="iexUVsol3">Soluzione: <strong>-1,1 &times; 10<sup>-8</sup> J</strong> — infatti $U_{tot} = U_1+U_2 = -4{,}0\times10^{-9} + (-7{,}0\times10^{-9})$: una semplice somma algebrica, essendo $U$ uno scalare.</div>
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=3, cur=0, ok=[false,false,false];
+  var N=4, cur=0, ok=[false,false,false,false];
+  var restoring=false;
+  var stageIds={0:['iexUVm0','iexUVe0','iexUVu0'],1:['iexUVm1','iexUVe1','iexUVu1'],3:['iexUVm3','iexUVe3','iexUVu3']};
+  var mcqChosen=null;
+  function saveState(){
+    var vals={};
+    for(var k in stageIds){
+      var ids=stageIds[k];
+      vals[k]={m:document.getElementById(ids[0]).value,e:document.getElementById(ids[1]).value,u:document.getElementById(ids[2]).value};
+    }
+    _lvSave('carousel','iexUV',{ok:ok.slice(),vals:vals,mcq2:mcqChosen});
+  }
   function updateDots(){
     var dots=document.querySelectorAll('#iexUVdots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -102,6 +131,7 @@ Esercizio a carosello (Verifica Subito!) su energia potenziale gravitazionale e 
   function parseExp(s){ return parseInt(s.trim().replace('−','-'),10); }
 
   function shootConf(el){
+    if(restoring)return;
     var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
     var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
     for(var i=0;i<55;i++){
@@ -134,7 +164,7 @@ Esercizio a carosello (Verifica Subito!) su energia potenziale gravitazionale e 
     if(valOk && uOk){
       ok[idx]=true; fb.className='iex-fb ok';
       fb.innerHTML='&#10003; Esatto!'+(idx<N-1?' <button class="iex-nextbtn" onclick="iexUVnav(1)">Passo successivo &rarr;</button>':'');
-      shootConf(vb); updateDots();
+      shootConf(vb); updateDots(); saveState();
     } else {
       fb.className='iex-fb err';
       var parts=[];
@@ -146,6 +176,7 @@ Esercizio a carosello (Verifica Subito!) su energia potenziale gravitazionale e 
 
   window.iexUVcheck0=function(){ checkStage(0, -1.6008e-7, 'J', 'iexUVsol0'); };
   window.iexUVcheck1=function(){ checkStage(1, -1.334e-9, 'J/kg', 'iexUVsol1'); };
+  window.iexUVcheck3=function(){ checkStage(3, -1.1e-8, 'J', 'iexUVsol3'); };
 
   (function initChoices2(){
     var btns = document.querySelectorAll('#iexUVchoices2 .iex-choice-btn');
@@ -169,8 +200,39 @@ Esercizio a carosello (Verifica Subito!) su energia potenziale gravitazionale e 
           fb.innerHTML = 'Non è corretto: $U=-GMm/r$ dipende da $1/r$ (non da $1/r^2$, come invece la forza): raddoppiando $r$, $|U|$ dimezza.';
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        mcqChosen = btn.dataset.v; saveState();
       });
     });
+  })();
+
+  (function restoreState(){
+    var saved=_lvLoad('carousel','iexUV');
+    if(!saved)return;
+    restoring=true;
+    if(saved.ok&&saved.ok[0]&&saved.vals&&saved.vals[0]){
+      document.getElementById('iexUVm0').value=saved.vals[0].m;
+      document.getElementById('iexUVe0').value=saved.vals[0].e;
+      document.getElementById('iexUVu0').value=saved.vals[0].u;
+      window.iexUVcheck0();
+    }
+    if(saved.ok&&saved.ok[1]&&saved.vals&&saved.vals[1]){
+      document.getElementById('iexUVm1').value=saved.vals[1].m;
+      document.getElementById('iexUVe1').value=saved.vals[1].e;
+      document.getElementById('iexUVu1').value=saved.vals[1].u;
+      window.iexUVcheck1();
+    }
+    if(saved.mcq2){
+      var btn=document.querySelector('#iexUVchoices2 .iex-choice-btn[data-v="'+saved.mcq2+'"]');
+      if(btn)btn.click();
+    }
+    if(saved.ok&&saved.ok[3]&&saved.vals&&saved.vals[3]){
+      document.getElementById('iexUVm3').value=saved.vals[3].m;
+      document.getElementById('iexUVe3').value=saved.vals[3].e;
+      document.getElementById('iexUVu3').value=saved.vals[3].u;
+      window.iexUVcheck3();
+    }
+    restoring=false;
+    updateDots();
   })();
 })();
 </script>

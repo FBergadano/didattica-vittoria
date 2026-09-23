@@ -1,0 +1,203 @@
+{% comment %}
+Animazione: vista tridimensionale delle superfici equipotenziali (sfere
+concentriche) attorno a una singola massa sferica M, analoga alla figura
+statica 2D subito sopra (figura-equipotenziali-sfera.html), ma qui lo
+studente può trascinare la scena (mouse o touch) per ruotarla. Ogni sfera ha
+un colore diverso (più scuro verso l'interno) per mostrare che il potenziale
+è costante su tutta quella superficie: cambia solo passando da una sfera
+all'altra, non muovendosi sulla stessa. M è disegnata correttamente annidata
+dentro i gusci (non sempre in primo piano): le linee del guscio più vicine
+all'osservatore vengono ridisegnate sopra M, quelle più lontane restano
+sotto, in base al segno della loro coordinata z dopo la rotazione — lo stesso
+trucco "pittore" usato per l'opacità delle linee stesse.
+Disegnata con un wireframe (meridiani + paralleli) più un riempimento
+sferico trasparente (la sagoma di una sfera è sempre un cerchio, qualunque
+sia la rotazione, quindi non serve alcun motore 3D per disegnarla) su un
+<canvas>, in puro JavaScript (nessuna libreria esterna). Nessun parametro.
+{% endcomment %}
+<div class="vdrag-widget" id="eqp3d">
+<p class="vdrag-hint">Trascina con il mouse (o il dito, su touch-screen) per ruotare la scena.</p>
+<canvas id="eqp3d-canvas" style="display:block;margin:0 auto;max-width:320px;width:100%;aspect-ratio:1/1;cursor:grab;touch-action:none;background:#f8fafc;border-radius:10px;"></canvas>
+<div class="vdrag-actions">
+<button class="vdrag-reset" id="eqp3d-reset">&#8635; Reimposta vista</button>
+</div>
+</div>
+
+<script>
+(function(){
+  var wrap=document.getElementById('eqp3d');
+  var canvas=document.getElementById('eqp3d-canvas');
+  if(!canvas) return;
+  var resetBtn=document.getElementById('eqp3d-reset');
+  var ctx=canvas.getContext('2d');
+
+  var CSS_SIZE=320;
+  var dpr=window.devicePixelRatio||1;
+  function sizeCanvas(){
+    var rect=canvas.getBoundingClientRect();
+    var size=rect.width||CSS_SIZE;
+    canvas.width=size*dpr; canvas.height=size*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    W=size; H=size;
+  }
+  var W=CSS_SIZE, H=CSS_SIZE;
+
+  // Tre sfere concentriche (superfici equipotenziali V1<V2<V3<0) attorno a M:
+  // un colore diverso per ciascuna (più scuro/intenso verso l'interno, dove
+  // il potenziale è più negativo), per mostrare a colpo d'occhio che il
+  // potenziale è lo stesso in ogni punto di una stessa sfera.
+  var SHELLS=[
+    {R:46, line:'rgba(15,118,110,', fill:'rgba(15,118,110,0.10)'},
+    {R:68, line:'rgba(8,145,178,',  fill:'rgba(8,145,178,0.08)'},
+    {R:90, line:'rgba(56,189,248,', fill:'rgba(56,189,248,0.06)'}
+  ];
+  var SCALE=1.35; // px per unità di raggio, applicato dopo la proiezione
+
+  function genSphereLines(R, latRings, lonMeridians, seg){
+    var lines=[];
+    for(var li=1; li<latRings; li++){
+      var phi=-Math.PI/2 + Math.PI*li/latRings;
+      var y=R*Math.sin(phi), r=R*Math.cos(phi);
+      var ring=[];
+      for(var k=0;k<=seg;k++){
+        var th=2*Math.PI*k/seg;
+        ring.push({x:r*Math.cos(th), y:y, z:r*Math.sin(th)});
+      }
+      lines.push(ring);
+    }
+    for(var mi=0; mi<lonMeridians; mi++){
+      var th2=Math.PI*mi/lonMeridians;
+      var merid=[];
+      for(var k2=0;k2<=seg;k2++){
+        var phi2=2*Math.PI*k2/seg;
+        merid.push({x:R*Math.cos(phi2)*Math.cos(th2), y:R*Math.sin(phi2), z:R*Math.cos(phi2)*Math.sin(th2)});
+      }
+      lines.push(merid);
+    }
+    return lines;
+  }
+
+  SHELLS.forEach(function(shell){ shell.lines=genSphereLines(shell.R,5,8,40); });
+
+  var yaw=0.5, pitch=0.32; // vista iniziale a tre quarti
+  function rotate(p){
+    var cy=Math.cos(yaw), sy=Math.sin(yaw);
+    var x1=p.x*cy + p.z*sy, z1=-p.x*sy + p.z*cy, y1=p.y;
+    var cx2=Math.cos(pitch), sx2=Math.sin(pitch);
+    var y2=y1*cx2 - z1*sx2, z2=y1*sx2 + z1*cx2;
+    return {x:x1, y:y2, z:z2};
+  }
+
+  // Disegna i segmenti di TUTTI i gusci il cui z medio (dopo la rotazione)
+  // soddisfa "front" (true = solo quelli più vicini all'osservatore, da
+  // disegnare sopra M; false = quelli più lontani, da disegnare sotto M).
+  function drawWireframe(cx,cy,front){
+    SHELLS.forEach(function(shell){
+      shell.lines.forEach(function(line){
+        for(var i=0;i<line.length-1;i++){
+          var p1=rotate(line[i]), p2=rotate(line[i+1]);
+          var avgZ=(p1.z+p2.z)/2;
+          var isFront=avgZ>=0;
+          if(isFront!==front) continue;
+          var t=Math.max(0,Math.min(1,(avgZ/shell.R+1)/2));
+          var alpha=0.15+0.6*t;
+          ctx.strokeStyle=shell.line+alpha.toFixed(2)+')';
+          ctx.lineWidth=0.7+0.9*t;
+          ctx.beginPath();
+          ctx.moveTo(cx+p1.x*SCALE, cy-p1.y*SCALE);
+          ctx.lineTo(cx+p2.x*SCALE, cy-p2.y*SCALE);
+          ctx.stroke();
+        }
+      });
+    });
+  }
+
+  function drawMass(cx,cy){
+    var g=ctx.createRadialGradient(cx-5,cy-6,2,cx,cy,15);
+    g.addColorStop(0,'#fffbeb'); g.addColorStop(0.55,'#fde68a'); g.addColorStop(1,'#fbbf24');
+    ctx.beginPath(); ctx.arc(cx,cy,14,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+    ctx.font='bold 12px sans-serif'; ctx.fillStyle='#92400e'; ctx.textAlign='center';
+    ctx.fillText('M',cx,cy+4);
+  }
+
+  function drawLegend(){
+    var x0=8, y0=H-30, sw=10;
+    var labels=['V₁','V₂','V₃'];
+    ctx.font='11px sans-serif'; ctx.textBaseline='middle';
+    var x=x0;
+    for(var i=0;i<SHELLS.length;i++){
+      ctx.fillStyle=SHELLS[i].line+'0.9)';
+      ctx.fillRect(x,y0-4,sw,sw);
+      ctx.fillStyle='#475569'; ctx.textAlign='left';
+      ctx.fillText(labels[i], x+sw+3, y0+1);
+      x+=sw+3+18+(i<2?10:0);
+    }
+    ctx.fillText('(più scuro = più negativo)', x0, y0+16);
+  }
+
+  // Etichette r1,r2,r3: ancorate a un punto fisso sull'equatore di ciascun
+  // guscio (nel sistema di riferimento dell'OGGETTO), così ruotano insieme
+  // alla scena invece di restare fisse sullo schermo.
+  var R_LABELS=['r₁','r₂','r₃'];
+  function drawRadiusLabels(cx,cy){
+    ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    SHELLS.forEach(function(shell,i){
+      var p=rotate({x:shell.R, y:0, z:0});
+      var sx=cx+p.x*SCALE, sy=cy-p.y*SCALE;
+      var alpha=0.75+0.25*Math.max(0,Math.min(1,(p.z/shell.R+1)/2));
+      ctx.lineWidth=2.5; ctx.strokeStyle='rgba(255,255,255,'+alpha.toFixed(2)+')';
+      ctx.strokeText(R_LABELS[i], sx, sy);
+      ctx.fillStyle=shell.line+alpha.toFixed(2)+')';
+      ctx.fillText(R_LABELS[i], sx, sy);
+    });
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    var cx=W/2, cy=H/2;
+    // Sagoma piena e semitrasparente di ciascuna sfera: la proiezione di una
+    // sfera è sempre un cerchio, qualunque sia la rotazione, quindi basta
+    // disegnare le tre più grandi per prime e le più piccole sopra.
+    for(var s=SHELLS.length-1; s>=0; s--){
+      ctx.beginPath();
+      ctx.arc(cx,cy,SHELLS[s].R*SCALE,0,Math.PI*2);
+      ctx.fillStyle=SHELLS[s].fill;
+      ctx.fill();
+    }
+    drawWireframe(cx,cy,false); // linee sulla faccia lontana: sotto M
+    drawMass(cx,cy);
+    drawWireframe(cx,cy,true);  // linee sulla faccia vicina: sopra M
+    drawRadiusLabels(cx,cy);
+    drawLegend();
+  }
+
+  var dragging=false, lastX=0, lastY=0;
+  function onDown(e){
+    dragging=true; canvas.style.cursor='grabbing';
+    lastX=e.clientX; lastY=e.clientY;
+    canvas.setPointerCapture(e.pointerId);
+  }
+  function onMove(e){
+    if(!dragging) return;
+    e.preventDefault();
+    var dx=e.clientX-lastX, dy=e.clientY-lastY;
+    lastX=e.clientX; lastY=e.clientY;
+    yaw += dx*0.012;
+    pitch = Math.max(-1.4, Math.min(1.4, pitch + dy*0.012));
+    draw();
+  }
+  function onUp(){ dragging=false; canvas.style.cursor='grab'; }
+
+  canvas.addEventListener('pointerdown', onDown);
+  canvas.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+
+  resetBtn.addEventListener('click', function(){
+    yaw=0.5; pitch=0.32; draw();
+  });
+
+  window.addEventListener('resize', function(){ sizeCanvas(); draw(); });
+  sizeCanvas();
+  draw();
+})();
+</script>
