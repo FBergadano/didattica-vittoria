@@ -34,6 +34,7 @@ Tre widget con script fra loro intrecciati (uno strumento per convertire fra pre
 <option value="12">Tera (T)</option>
 </select></label>
 <button id="pfx-go" style="background:#0f766e;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.92rem;">Mostra</button>
+<label style="font-size:.92rem;display:flex;align-items:center;gap:.4rem;">Velocità:&ensp;<input type="range" id="pfx-speed" min="0.25" max="2" step="0.25" value="0.5"><span id="pfx-speed-lbl" style="font-size:.82rem;color:#6b7280;min-width:2.6em;">0,5×</span></label>
 </div>
 <canvas id="pfx-canvas" style="max-width:100%;display:block;"></canvas>
 <div id="pfx-expl" style="margin-top:.75rem;font-size:.92rem;min-height:2.5rem;color:#374151;">
@@ -231,17 +232,24 @@ Scegli i prefissi e clicca <strong>Mostra</strong>.
 var PFX_DATA=[{sym:"p",name:"pico",exp:-12,col:"#7c3aed",big:true},{sym:"n",name:"nano",exp:-9,col:"#4f46e5",big:true},{sym:"μ",name:"micro",exp:-6,col:"#2563eb",big:true},{sym:"m",name:"milli",exp:-3,col:"#0891b2",big:true},{sym:"c",name:"centi",exp:-2,col:"#0d9488",big:false},{sym:"d",name:"deci",exp:-1,col:"#16a34a",big:false},{sym:"—",name:"base",exp:0,col:"#6b7280",big:false},{sym:"da",name:"deca",exp:1,col:"#ca8a04",big:false},{sym:"h",name:"etto",exp:2,col:"#d97706",big:false},{sym:"k",name:"kilo",exp:3,col:"#ea580c",big:true},{sym:"M",name:"Mega",exp:6,col:"#dc2626",big:true},{sym:"G",name:"Giga",exp:9,col:"#be185d",big:true},{sym:"T",name:"Tera",exp:12,col:"#7e22ce",big:true}];
 var STEP_EXP=[3,3,3,1,1,1,1,1,1,3,3,3];
 var XS=[25,90,155,220,255,290,325,360,395,430,495,560,625];
-var W=660,H=135,LY=62;
+var W=660,H=230,LY=140;
 var canvas=document.getElementById('pfx-canvas');
 var ctx=canvas.getContext('2d');
 var fromSel=document.getElementById('pfx-from');
 var toSel=document.getElementById('pfx-to');
 var goBtn=document.getElementById('pfx-go');
 var explDiv=document.getElementById('pfx-expl');
+var speedSlider=document.getElementById('pfx-speed');
+var speedLbl=document.getElementById('pfx-speed-lbl');
 var dpr=window.devicePixelRatio||1;
 canvas.width=W*dpr; canvas.height=H*dpr;
 canvas.style.width=W+'px'; canvas.style.height=H+'px';
 ctx.scale(dpr,dpr);
+
+function speedMult(){ return parseFloat(speedSlider.value)||0.5; }
+speedSlider.addEventListener('input',function(){
+  speedLbl.textContent=speedMult().toFixed(2).replace(/0$/,'').replace(/\.$/,'').replace('.',',')+'×';
+});
 
 function supStr(n){
   var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴',
@@ -249,7 +257,37 @@ function supStr(n){
   return n.toString().split('').map(function(c){return m[c]||c;}).join('');
 }
 
-function drawScene(hlF,hlT,dotX,dotCol,labels){
+// Punto sulla curva quadratica (P0=(x0,LY), controllo=(midX,peakY), P1=(x1,LY)) al parametro t
+function arcPoint(x0,x1,peakY,t){
+  var midX=(x0+x1)/2;
+  var mt=1-t;
+  var x=mt*mt*x0 + 2*mt*t*midX + t*t*x1;
+  var y=mt*mt*LY + 2*mt*t*peakY + t*t*LY;
+  return {x:x,y:y};
+}
+// Disegna una freccia curva (arco) da x0 a x1, che si inarca verso l'alto fino a peakY
+function drawArrowArc(x0,x1,peakY,color,lw,dashed){
+  var midX=(x0+x1)/2;
+  ctx.save();
+  ctx.strokeStyle=color; ctx.lineWidth=lw; ctx.lineCap='round';
+  ctx.setLineDash(dashed?[7,5]:[]);
+  ctx.beginPath();
+  ctx.moveTo(x0,LY);
+  ctx.quadraticCurveTo(midX,peakY,x1,LY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  var ang=Math.atan2(LY-peakY, x1-midX);
+  var hs=9;
+  ctx.beginPath();
+  ctx.moveTo(x1,LY);
+  ctx.lineTo(x1-hs*Math.cos(ang-0.45), LY-hs*Math.sin(ang-0.45));
+  ctx.lineTo(x1-hs*Math.cos(ang+0.45), LY-hs*Math.sin(ang+0.45));
+  ctx.closePath();
+  ctx.fillStyle=color; ctx.fill();
+  ctx.restore();
+}
+
+function drawScene(hlF,hlT,dot,labels,arcs){
   ctx.clearRect(0,0,W,H);
   var g=ctx.createLinearGradient(20,0,625,0);
   g.addColorStop(0,'rgba(124,58,237,.1)');
@@ -311,13 +349,14 @@ function drawScene(hlF,hlT,dotX,dotCol,labels){
       }
     }
   }
-  if(dotX!==null){
-    ctx.beginPath(); ctx.arc(dotX,LY,9,0,Math.PI*2);
-    ctx.fillStyle=dotCol||'#f59e0b'; ctx.fill();
+  if(arcs) arcs.forEach(function(a){ drawArrowArc(a.x0,a.x1,a.peakY,a.color,a.lw||3,a.dashed); });
+  if(dot){
+    ctx.beginPath(); ctx.arc(dot.x,dot.y,9,0,Math.PI*2);
+    ctx.fillStyle=dot.col||'#f59e0b'; ctx.fill();
     ctx.strokeStyle='#fff'; ctx.lineWidth=2.5; ctx.stroke();
   }
   if(labels) labels.forEach(function(l){
-    ctx.fillStyle=l.col||'#111'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+    ctx.fillStyle=l.col||'#111'; ctx.font=(l.font||'bold 18px sans-serif'); ctx.textAlign='center';
     ctx.fillText(l.text,l.x,l.y);
   });
 }
@@ -331,7 +370,7 @@ goBtn.addEventListener('click',function(){
   var ti=parseInt(toSel.value);
   if(fi===ti){
     explDiv.innerHTML='I due prefissi coincidono: nessuna conversione necessaria.';
-    drawScene(fi,ti,XS[fi],PFX_DATA[fi].col,null);
+    drawScene(fi,ti,{x:XS[fi],y:LY,col:PFX_DATA[fi].col},null,null);
     return;
   }
   running=true; goBtn.disabled=true;
@@ -339,23 +378,19 @@ goBtn.addEventListener('click',function(){
   var nSteps=Math.abs(ti-fi);
   var stepIdx=0;
   var cumExp=0;
+  var STEP_PEAK=55, SUMMARY_PEAK=85;
+  var doneArcs=[], doneLabels=[];
 
   function doStep(){
     if(stepIdx>=nSteps){
-      drawScene(fi,ti,XS[ti],PFX_DATA[ti].col,null);
-      ctx.save();
-      ctx.strokeStyle='#f59e0b'; ctx.lineWidth=2.5; ctx.setLineDash([5,3]);
-      var ay=LY-36;
-      ctx.beginPath(); ctx.moveTo(XS[fi],ay); ctx.lineTo(XS[ti],ay); ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.fillStyle='#f59e0b'; ctx.beginPath();
-      if(ti>fi){ctx.moveTo(XS[ti]+2,ay);ctx.lineTo(XS[ti]-9,ay-5);ctx.lineTo(XS[ti]-9,ay+5);}
-      else{ctx.moveTo(XS[ti]-2,ay);ctx.lineTo(XS[ti]+9,ay-5);ctx.lineTo(XS[ti]+9,ay+5);}
-      ctx.fill(); ctx.restore();
+      var visualY=LY-SUMMARY_PEAK, ctrlY=LY-2*SUMMARY_PEAK;
+      var summaryArc={x0:XS[fi],x1:XS[ti],peakY:ctrlY,color:'#f59e0b',lw:3,dashed:true};
+      drawScene(fi,ti,{x:XS[ti],y:LY,col:PFX_DATA[ti].col},
+        doneLabels, doneArcs.concat([summaryArc]));
       if(cumExp!==0){
         var ctotF=cumExp>=0?'×10'+supStr(cumExp):'÷10'+supStr(-cumExp);
-        ctx.save();ctx.fillStyle='#0f766e';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
-        ctx.fillText('Fattore totale: '+ctotF,(XS[fi]+XS[ti])/2,LY-48);
+        ctx.save();ctx.fillStyle='#0f766e';ctx.font='bold 20px sans-serif';ctx.textAlign='center';
+        ctx.fillText('Fattore totale: '+ctotF,(XS[fi]+XS[ti])/2,visualY-14);
         ctx.restore();
       }
       var expDiff=PFX_DATA[fi].exp-PFX_DATA[ti].exp;
@@ -381,27 +416,36 @@ goBtn.addEventListener('click',function(){
     var lblCol=dir>0?'#dc2626':'#0f766e';
     var x0=XS[curI],x1=XS[nxtI];
     var midX=(x0+x1)/2;
+    var visualY=LY-STEP_PEAK, ctrlY=LY-2*STEP_PEAK;
     var nextCumExp=cumExp+(dir>0?-sExp:sExp);
     var t0=null;
+    var stepMs=400/speedMult();
     function frame(ts){
       if(!t0)t0=ts;
-      var prog=Math.min((ts-t0)/400,1);
-      var cx=x0+(x1-x0)*prog;
-      drawScene(fi,-1,cx,'#f59e0b',[{x:midX,y:LY-52,text:lbl,col:lblCol}]);
+      var prog=Math.min((ts-t0)/stepMs,1);
+      var pt=arcPoint(x0,x1,ctrlY,prog);
+      var curArc={x0:x0,x1:x1,peakY:ctrlY,color:lblCol,lw:2.5};
+      var curLabel={x:midX,y:visualY-16,text:lbl,col:lblCol,font:'bold 18px sans-serif'};
+      drawScene(fi,-1,{x:pt.x,y:pt.y,col:'#f59e0b'},
+        doneLabels.concat([curLabel]), doneArcs.concat([curArc]));
       if(cumExp!==0){
         var cpfx=cumExp>=0?'×10'+supStr(cumExp):'÷10'+supStr(-cumExp);
-        ctx.save();ctx.fillStyle='rgba(15,118,110,.8)';ctx.font='bold 11px sans-serif';ctx.textAlign='right';
+        ctx.save();ctx.fillStyle='rgba(15,118,110,.8)';ctx.font='bold 13px sans-serif';ctx.textAlign='right';
         ctx.fillText('Finora: '+cpfx,W-8,H-8);ctx.restore();
       }
       if(prog<1){requestAnimationFrame(frame);}
-      else{cumExp=nextCumExp;stepIdx++;setTimeout(doStep,250);}
+      else{
+        doneArcs.push({x0:x0,x1:x1,peakY:ctrlY,color:lblCol,lw:2.5});
+        doneLabels.push({x:midX,y:visualY-16,text:lbl,col:lblCol,font:'bold 18px sans-serif'});
+        cumExp=nextCumExp;stepIdx++;setTimeout(doStep,250/speedMult());
+      }
     }
     requestAnimationFrame(frame);
   }
 
   explDiv.innerHTML='Animazione in corso…';
-  drawScene(fi,-1,XS[fi],'#f59e0b',null);
-  setTimeout(doStep,400);
+  drawScene(fi,-1,{x:XS[fi],y:LY,col:'#f59e0b'},null,null);
+  setTimeout(doStep,400/speedMult());
 });
 
 /* ── iex7 quiz ── */
@@ -465,6 +509,27 @@ function ex7show(i){
 })();
 window.ex7show=ex7show;
 window.ex7nav=function(d){if(ex7c[0]+d>=0&&ex7c[0]+d<N7)ex7show(ex7c[0]+d);};
+function ex7Snapshot(){
+  var vals=[];
+  for(var i=0;i<N7;i++)vals.push({m:document.getElementById('ex7m'+i).value,e:document.getElementById('ex7e'+i).value});
+  return {ok:ex7ok.slice(),vals:vals};
+}
+function ex7Restore(){
+  var saved=_lvLoad('scinot','ex7');
+  if(!saved)return;
+  for(var i=0;i<N7;i++){
+    if(saved.ok&&saved.ok[i]){
+      ex7ok[i]=true;
+      if(saved.vals&&saved.vals[i]){document.getElementById('ex7m'+i).value=saved.vals[i].m;document.getElementById('ex7e'+i).value=saved.vals[i].e;}
+      var fb=document.getElementById('ex7fb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<N7-1?' <button class="iex-nextbtn" onclick="ex7show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    }
+  }
+  var dots=document.querySelectorAll('#ex7dots .iex-dot');
+  for(var k=0;k<N7;k++)dots[k].className='iex-dot'+(k===ex7c[0]?' cur':'')+(ex7ok[k]?' ok':'');
+}
+ex7Restore();
 window.ex7check=function(i){
   var mv=parseMant(document.getElementById('ex7m'+i).value);
   var ev=parseExp2(document.getElementById('ex7e'+i).value);
@@ -483,6 +548,7 @@ window.ex7check=function(i){
     var dots=document.querySelectorAll('#ex7dots .iex-dot');
     for(var k=0;k<N7;k++)dots[k].className='iex-dot'+(k===ex7c[0]?' cur':'')+(ex7ok[k]?' ok':'');
     if(ex7ok.every(function(x){return x;}))setTimeout(shootFW2,600);
+    _lvSave('scinot','ex7',ex7Snapshot());
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non è esatto. Riprova, oppure '
@@ -517,6 +583,27 @@ function pfxshow(i){
 })();
 window.pfxshow=pfxshow;
 window.pfxnav=function(d){if(pfxc[0]+d>=0&&pfxc[0]+d<Npfx)pfxshow(pfxc[0]+d);};
+function pfxSnapshot(){
+  var vals=[];
+  for(var i=0;i<Npfx;i++)vals.push(document.getElementById('pfxsel'+i).value);
+  return {ok:pfxok.slice(),vals:vals};
+}
+function pfxRestore(){
+  var saved=_lvLoad('scinot','pfxquiz');
+  if(!saved)return;
+  for(var i=0;i<Npfx;i++){
+    if(saved.ok&&saved.ok[i]){
+      pfxok[i]=true;
+      if(saved.vals&&saved.vals[i]!==undefined)document.getElementById('pfxsel'+i).value=saved.vals[i];
+      var fb=document.getElementById('pfxfb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<Npfx-1?' <button class="iex-nextbtn" onclick="pfxshow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato il quiz!');
+    }
+  }
+  var dots=document.querySelectorAll('#pfxdots .iex-dot');
+  for(var k=0;k<Npfx;k++)dots[k].className='iex-dot'+(k===pfxc[0]?' cur':'')+(pfxok[k]?' ok':'');
+}
+pfxRestore();
 window.pfxcheck=function(i){
   var sel=document.getElementById('pfxsel'+i);
   var val=sel?sel.value:'';
@@ -535,6 +622,7 @@ window.pfxcheck=function(i){
     var dots=document.querySelectorAll('#pfxdots .iex-dot');
     for(var k=0;k<Npfx;k++)dots[k].className='iex-dot'+(k===pfxc[0]?' cur':'')+(pfxok[k]?' ok':'');
     if(pfxok.every(function(x){return x;}))setTimeout(shootFW2,600);
+    _lvSave('scinot','pfxquiz',pfxSnapshot());
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non è esatto. Riprova, oppure '

@@ -24,6 +24,7 @@ Tre esercizi a carosello sulla notazione scientifica (somma/sottrazione, moltipl
 Per **sommare o sottrarre** numeri in notazione scientifica, essi devono avere lo **stesso esponente**. Se gli esponenti sono diversi, si modifica il più piccolo per eguagliarlo al più grande, spostando opportunamente la virgola del coefficiente.
 
 $$a\times 10^n \pm b\times 10^n = (a\pm b)\times 10^n$$
+
 {% include box-end.html %}
 
 <div class="op-block">
@@ -156,6 +157,7 @@ $$a\times 10^n \pm b\times 10^n = (a\pm b)\times 10^n$$
 Per **moltiplicare** due numeri in notazione scientifica, si moltiplicano tra loro i coefficienti e si **sommano** gli esponenti.
 
 $$(a\times10^n)\cdot(b\times10^m) = (a\cdot b)\times 10^{n+m}$$
+
 {% include box-end.html %}
 
 <div class="op-block">
@@ -288,6 +290,7 @@ $$(a\times10^n)\cdot(b\times10^m) = (a\cdot b)\times 10^{n+m}$$
 Per **dividere** due numeri in notazione scientifica, si dividono tra loro i coefficienti e si **sottraggono** gli esponenti (esponente del numeratore meno esponente del denominatore).
 
 $$\frac{a\times10^n}{b\times10^m} = \frac{a}{b}\times 10^{n-m}$$
+
 {% include box-end.html %}
 
 <div class="op-block">
@@ -475,6 +478,30 @@ function shootConf(el){
 function shootFW(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
 function updateDots(pfx,cur,ok,N){var dots=document.querySelectorAll('#'+pfx+'dots .iex-dot');for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');}
 function buildDots(pfx,N,showFn){var c=document.getElementById(pfx+'dots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
+function snapshot(pfx,ok,N){
+  var vals=[];
+  for(var i=0;i<N;i++){
+    vals.push({m:document.getElementById(pfx+'m'+i).value,e:document.getElementById(pfx+'e'+i).value});
+  }
+  return {ok:ok.slice(),vals:vals};
+}
+function restore(pfx,ok,cur,N){
+  var saved=_lvLoad('scinot',pfx);
+  if(!saved)return;
+  for(var i=0;i<N;i++){
+    if(saved.ok&&saved.ok[i]){
+      ok[i]=true;
+      if(saved.vals&&saved.vals[i]){
+        document.getElementById(pfx+'m'+i).value=saved.vals[i].m;
+        document.getElementById(pfx+'e'+i).value=saved.vals[i].e;
+      }
+      var fb=document.getElementById(pfx+'fb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<N-1?' <button class="iex-nextbtn" onclick="'+pfx+'show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    }
+  }
+  updateDots(pfx,cur[0],ok,N);
+}
 function opCheck(pfx,Q,ok,cur,N,i){
   var mv=parseMant(document.getElementById(pfx+'m'+i).value);
   var ev=parseExp(document.getElementById(pfx+'e'+i).value);
@@ -488,6 +515,7 @@ function opCheck(pfx,Q,ok,cur,N,i){
     fb.innerHTML='&#10003; Esatto!'+(i<N-1?' <button class="iex-nextbtn" onclick="'+pfx+'show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootConf(vb);updateDots(pfx,cur[0],ok,N);
     if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    _lvSave('scinot',pfx,snapshot(pfx,ok,N));
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSol(\''+pfx+'sol'+i+'\')">vedi la soluzione</button>.';
@@ -510,6 +538,9 @@ var ex5show=makeShow('ex5',ex5ok,ex5c,N5);
 buildDots('ex3',N3,ex3show);
 buildDots('ex4',N4,ex4show);
 buildDots('ex5',N5,ex5show);
+restore('ex3',ex3ok,ex3c,N3);
+restore('ex4',ex4ok,ex4c,N4);
+restore('ex5',ex5ok,ex5c,N5);
 window.ex3show=ex3show; window.ex4show=ex4show; window.ex5show=ex5show;
 window.ex3nav=function(d){if(ex3c[0]+d>=0&&ex3c[0]+d<N3)ex3show(ex3c[0]+d);};
 window.ex4nav=function(d){if(ex4c[0]+d>=0&&ex4c[0]+d<N4)ex4show(ex4c[0]+d);};

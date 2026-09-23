@@ -109,7 +109,9 @@ Esercizio a carosello (Verifica Subito!) di confronto fra forza gravitazionale e
   buildDots();
   window.iexConfrontonav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
 
+  var restoring=false;
   function shootConf(el){
+    if(restoring)return;
     var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
     var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
     for(var i=0;i<55;i++){
@@ -128,7 +130,9 @@ Esercizio a carosello (Verifica Subito!) di confronto fra forza gravitazionale e
     }
   }
 
+  var choiceRegistry=[];
   function wireChoices(rowIdx, choicesId, fbId, correctV, msgOk, msgErr){
+    choiceRegistry.push(choicesId);
     var btns = document.querySelectorAll('#'+choicesId+' .iex-choice-btn');
     var fb = document.getElementById(fbId);
     btns.forEach(function(btn){
@@ -150,6 +154,7 @@ Esercizio a carosello (Verifica Subito!) di confronto fra forza gravitazionale e
           fb.innerHTML = msgErr;
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        if(!restoring)_lvSave('mcqchoice',choicesId,{chosen:btn.dataset.v});
       });
     });
   }
@@ -177,5 +182,15 @@ Esercizio a carosello (Verifica Subito!) di confronto fra forza gravitazionale e
   wireChoices(5, 'iexConfrontochoices5', 'iexConfrontofb5', 'b',
     'Sono entrambe forze "a distanza" (o "a campo"): agiscono anche fra corpi lontani e separati dal vuoto, senza che nulla li tocchi fisicamente.',
     'Non è corretto: sono entrambe forze a distanza, che agiscono anche senza contatto diretto e senza bisogno di un mezzo materiale.');
+
+  restoring=true;
+  choiceRegistry.forEach(function(choicesId){
+    var saved=_lvLoad('mcqchoice',choicesId);
+    if(saved&&saved.chosen){
+      var btn=document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+saved.chosen+'"]');
+      if(btn)btn.click();
+    }
+  });
+  restoring=false;
 })();
 </script>

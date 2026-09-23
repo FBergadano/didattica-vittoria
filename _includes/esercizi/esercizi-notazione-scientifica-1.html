@@ -190,12 +190,44 @@ function shootConf(el){
 }
 function shootFW(){for(var b=0;b<7;b++)(function(b){setTimeout(function(){shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});},b*270);})(b);}
 function showSol(id){document.getElementById(id).style.display='block';}
+function snapshotME(pfx,ok,N){var vals=[];for(var i=0;i<N;i++){vals.push({m:document.getElementById(pfx+'m'+i).value,e:document.getElementById(pfx+'e'+i).value});}return {ok:ok.slice(),vals:vals};}
+function restoreME(pfx,ok,cur,N){
+  var saved=_lvLoad('scinot',pfx);
+  if(!saved)return;
+  for(var i=0;i<N;i++){
+    if(saved.ok&&saved.ok[i]){
+      ok[i]=true;
+      if(saved.vals&&saved.vals[i]){document.getElementById(pfx+'m'+i).value=saved.vals[i].m;document.getElementById(pfx+'e'+i).value=saved.vals[i].e;}
+      var fb=document.getElementById(pfx+'fb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<N-1?' <button class="iex-nextbtn" onclick="'+pfx+'show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    }
+  }
+  updateDots(pfx,cur,ok,N);
+}
+function snapshotFull(pfx,ok,N){var vals=[];for(var i=0;i<N;i++){vals.push(document.getElementById(pfx+'inp'+i).value);}return {ok:ok.slice(),vals:vals};}
+function restoreFull(pfx,ok,cur,N){
+  var saved=_lvLoad('scinot',pfx);
+  if(!saved)return;
+  for(var i=0;i<N;i++){
+    if(saved.ok&&saved.ok[i]){
+      ok[i]=true;
+      if(saved.vals&&saved.vals[i]!==undefined){document.getElementById(pfx+'inp'+i).value=saved.vals[i];}
+      var fb=document.getElementById(pfx+'fb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<N-1?' <button class="iex-nextbtn" onclick="'+pfx+'show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    }
+  }
+  updateDots(pfx,cur,ok,N);
+}
 function updateDots(pfx,cur,ok,N){var dots=document.querySelectorAll('#'+pfx+'dots .iex-dot');for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');}
 function ex1show(i){document.querySelectorAll('#iex1 .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('ex1row'+i).style.display='block';ex1cur=i;document.getElementById('ex1prev').disabled=(i===0);document.getElementById('ex1next').disabled=(i===N1-1);updateDots('ex1',i,ex1ok,N1);setTimeout(function(){var inp=document.querySelector('#ex1row'+i+' .iex-m');if(inp&&!ex1ok[i])inp.focus();},60);}
 function ex2show(i){document.querySelectorAll('#iex2 .iex-q').forEach(function(q){q.style.display='none';});document.getElementById('ex2row'+i).style.display='block';ex2cur=i;document.getElementById('ex2prev').disabled=(i===0);document.getElementById('ex2next').disabled=(i===N2-1);updateDots('ex2',i,ex2ok,N2);setTimeout(function(){var inp=document.querySelector('#ex2row'+i+' .iex-full');if(inp&&!ex2ok[i])inp.focus();},60);}
 function buildDots(pfx,N,showFn){var c=document.getElementById(pfx+'dots');for(var j=0;j<N;j++){var d=document.createElement('span');d.className='iex-dot'+(j===0?' cur':'');d.title='Domanda '+(j+1);(function(j){d.onclick=function(){showFn(j);};})(j);c.appendChild(d);}}
 buildDots('ex1',N1,ex1show);
 buildDots('ex2',N2,ex2show);
+restoreME('ex1',ex1ok,ex1cur,N1);
+restoreFull('ex2',ex2ok,ex2cur,N2);
 window.showSol=showSol;
 window.ex1show=ex1show;
 window.ex2show=ex2show;
@@ -214,6 +246,7 @@ window.ex1check=function(i){
     fb.innerHTML='&#10003; Esatto!'+(i<N1-1?' <button class="iex-nextbtn" onclick="ex1show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     shootConf(vb);updateDots('ex1',ex1cur,ex1ok,N1);
     if(ex1ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    _lvSave('scinot','ex1',snapshotME('ex1',ex1ok,N1));
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSol(\'ex1sol'+i+'\')">vedi la soluzione</button>.';
@@ -229,6 +262,7 @@ window.ex2check=function(i){
     fb.innerHTML='&#10003; Esatto!'+(i<N2-1?' <button class="iex-nextbtn" onclick="ex2show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     shootConf(vb);updateDots('ex2',ex2cur,ex2ok,N2);
     if(ex2ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    _lvSave('scinot','ex2',snapshotFull('ex2',ex2ok,N2));
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSol(\'ex2sol'+i+'\')">vedi la soluzione</button>.';

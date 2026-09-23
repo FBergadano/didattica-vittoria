@@ -1,23 +1,30 @@
 {% comment %}
-Figura statica: confronto fra il decadimento di forza/campo (1/r²) ed energia potenziale/potenziale (1/r) con la distanza. Nessun parametro.
+Figura statica: confronto fra l'andamento di forza/campo (positivi, &prop; 1/r²)
+ed energia potenziale/potenziale (negativi, &prop; -1/r) al variare della
+distanza, sullo stesso grafico (asse r comune a valore 0). Mostra sia che
+F,g diminuiscono mentre U,V aumentano (avvicinandosi a zero) sia che |F,g|
+cala molto più rapidamente di |U,V|. Nessun parametro.
 {% endcomment %}
 <div class="fig-block">
-<svg viewBox="0 0 320 220" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Confronto fra come diminuiscono, all'aumentare della distanza, forza e campo (inversamente proporzionali al quadrato della distanza) ed energia potenziale e potenziale (inversamente proporzionali alla distanza)">
+<svg viewBox="0 0 380 400" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Confronto fra forza e campo (positivi, decrescenti come 1/r al quadrato) ed energia potenziale e potenziale (negativi, crescenti verso zero come -1/r) al variare della distanza r">
   <defs>
     <marker id="cmpArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#475569"/></marker>
   </defs>
-  <line x1="40" y1="195" x2="40" y2="18" stroke="#475569" stroke-width="1.5" marker-end="url(#cmpArrow)"/>
-  <line x1="35" y1="190" x2="308" y2="190" stroke="#475569" stroke-width="1.5" marker-end="url(#cmpArrow)"/>
-  <text x="312" y="194" font-size="13" fill="#475569">r</text>
+  <line x1="40" y1="365" x2="40" y2="15" stroke="#475569" stroke-width="1.5" marker-end="url(#cmpArrow)"/>
+  <line x1="35" y1="190" x2="345" y2="190" stroke="#475569" stroke-width="1.5" marker-end="url(#cmpArrow)"/>
+  <text x="349" y="194" font-size="13" fill="#475569">r</text>
   <text x="18" y="22" font-size="12" fill="#475569">valore</text>
+  <text x="27" y="194" font-size="11" fill="#475569">0</text>
 
   <polyline points="40.0,20.0 42.7,71.9 45.5,103.3 48.2,123.6 50.9,137.5 53.7,147.5 59.2,160.5 64.6,168.3 70.1,173.4 75.6,176.9 81.1,179.4 94.7,183.2 108.4,185.3 122.1,186.5 135.8,187.3 149.5,187.9 163.2,188.3 176.8,188.6 190.5,188.8 204.2,189.0 217.9,189.1 231.6,189.2 245.3,189.3 258.9,189.4 272.6,189.5 286.3,189.5 300.0,189.6" fill="none" stroke="#dc2626" stroke-width="2.2"/>
-  <polyline points="40.0,20.0 42.7,48.3 45.5,68.6 48.2,83.8 50.9,95.6 53.7,105.0 59.2,119.2 64.6,129.3 70.1,136.9 75.6,142.8 81.1,147.5 94.7,156.0 108.4,161.7 122.1,165.7 135.8,168.8 149.5,171.1 163.2,173.0 176.8,174.5 190.5,175.8 204.2,176.9 217.9,177.9 231.6,178.7 245.3,179.4 258.9,180.0 272.6,180.6 286.3,181.1 300.0,181.5" fill="none" stroke="#6366f1" stroke-width="2.2"/>
+  <polyline points="40.0,360.0 42.7,331.7 45.5,311.4 48.2,296.2 50.9,284.4 53.7,275.0 59.2,260.8 64.6,250.7 70.1,243.1 75.6,237.2 81.1,232.5 94.7,224.0 108.4,218.3 122.1,214.3 135.8,211.2 149.5,208.9 163.2,207.0 176.8,205.5 190.5,204.2 204.2,203.1 217.9,202.1 231.6,201.3 245.3,200.6 258.9,200.0 272.6,199.4 286.3,198.9 300.0,198.5" fill="none" stroke="#6366f1" stroke-width="2.2"/>
 
-  <line x1="150" y1="205" x2="170" y2="205" stroke="#dc2626" stroke-width="2.5"/>
-  <text x="175" y="209" font-size="12" fill="#dc2626">F, g &prop; 1/r&sup2;</text>
-  <line x1="230" y1="205" x2="250" y2="205" stroke="#6366f1" stroke-width="2.5"/>
-  <text x="255" y="209" font-size="12" fill="#6366f1">U, V &prop; 1/r</text>
+  <foreignObject x="95" y="72" width="130" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px;font-weight:600;color:#dc2626;line-height:1.25;">F e g hanno<br/>questo andamento<br/><span style="font-weight:400;font-style:italic;">(&prop; 1/r&sup2;)</span></div>
+  </foreignObject>
+  <foreignObject x="95" y="272" width="130" height="60">
+    <div xmlns="http://www.w3.org/1999/xhtml" style="font-size:12px;font-weight:600;color:#6366f1;line-height:1.25;">U e V hanno<br/>questo andamento<br/><span style="font-weight:400;font-style:italic;">(&prop; -1/r)</span></div>
+  </foreignObject>
 </svg>
-<figcaption><span class="fig-num" data-fig-id="confronto-decadimento">Figura</span> — A parità di distanza iniziale, la curva di energia potenziale e potenziale (inversamente proporzionali alla distanza) resta molto più "alta" di quella di forza e campo (inversamente proporzionali al quadrato della distanza), man mano che $r$ cresce.</figcaption>
+<figcaption><span class="fig-num" data-fig-id="confronto-decadimento">Figura</span> — Sullo stesso asse $r$: forza e campo (positivi) diminuiscono verso zero come $1/r^2$, mentre energia potenziale e potenziale (negativi) aumentano verso zero come $-1/r$. La curva di $F$ e $g$ si appiattisce molto più rapidamente: il loro modulo cala molto più in fretta di quello di $U$ e $V$, man mano che $r$ cresce.</figcaption>
 </div>

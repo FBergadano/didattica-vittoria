@@ -1100,6 +1100,8 @@ cit em, cit i { font-style: normal; }
 .calc-label { color: #636366; font-size: .65rem; text-align: center; margin-bottom: 4px; letter-spacing: .09em; text-transform: uppercase; }
 .calc-expr { color: #8e8e93; font-size: .78rem; text-align: right; min-height: 1.1em; padding: 0 4px; }
 .calc-disp { color: #fff; font-size: 2rem; font-weight: 300; text-align: right; padding: 0 4px 10px; line-height: 1.1; word-break: break-all; }
+.calc-hint { color: #636366; font-size: .62rem; text-align: center; margin-top: 8px; }
+.calc-outer:focus { outline: 2px solid #0ea5e9; outline-offset: 3px; }
 .calc-grid {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
   button {
@@ -1111,6 +1113,7 @@ cit em, cit i { font-style: normal; }
     &.calc-fn  { background: #636366; }
     &.calc-op  { background: #ff9f0a; font-size: 1.25rem; }
     &.calc-zero { grid-column: span 2; border-radius: 21px; text-align: left; padding-left: .8rem; }
+    &.calc-wide { grid-column: span 2; border-radius: 21px; font-size: .95rem; }
   }
 }
 // Involucro per "calcolatrice + testo/esercizio che le scorre a fianco":

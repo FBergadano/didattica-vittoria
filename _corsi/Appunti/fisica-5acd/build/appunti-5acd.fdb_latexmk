@@ -1,13 +1,12 @@
 # Fdb version 4
-["xdvipdfmx"] 1789454965.38744 "01_esercizi-matematica-3b.xdv" "01_esercizi-matematica-3b.pdf" "01_esercizi-matematica-3b" 1789454966.13076 0
-  "01_esercizi-matematica-3b.xdv" 1789454965.00487 78160 fb9b956b45d5bf8d1b1549471f061ec0 "xelatex"
+["xdvipdfmx"] 1790177642.43277 "build/appunti-5acd.xdv" "build/appunti-5acd.pdf" "build/appunti-5acd" 1790177645.60078 0
+  "build/appunti-5acd.xdv" 1790177639.50837 106088 e87e5f91a2f7a4a16d6e3d43b2158e86 "xelatex"
   (generated)
-  "01_esercizi-matematica-3b.pdf"
+  "build/appunti-5acd.pdf"
   (rewritten before read)
-["xelatex"] 1789454956.49826 "/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/01_esercizi-matematica-3b.tex" "01_esercizi-matematica-3b.xdv" "01_esercizi-matematica-3b" 1789454966.11784 0
-  "../../../../latex/preamble.tex" 1784534361.21135 32548 211d754f564a8551c25f77e9ef69f2ec ""
+["xelatex"] 1790177591.85176 "appunti-5acd.tex" "build/appunti-5acd.xdv" "appunti-5acd" 1790177645.50175 0
+  "../../../latex/preamble.tex" 1784534361.21135 32548 211d754f564a8551c25f77e9ef69f2ec ""
   "/etc/texmf/web2c/texmf.cnf" 1784293461.96888 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b/esercizi-matematica-3b/01_esercizi-matematica-3b.tex" 1789454934.46691 4055 a7133b83486abf30cde3fb8e40c5cf44 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -16,7 +15,6 @@
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm" 1246382020 928 2dc8d444221b7a635bb58038579b861a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1246382020 908 2921f8a10601f252058503cc6570e581 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
-  "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1136768653 1512 f21f83efb36853c0b70002322c1ab3ad ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi7.tfm" 1136768653 1528 e2423ae06dc7dee599cceb79d1c9dc32 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/latex-fonts/lasy6.tfm" 1136768653 520 4889cce2180234b97cad636b6039c722 ""
@@ -357,12 +355,12 @@
   "/usr/share/texmf/tex/latex/tipa/tipa.sty" 1764712660 21394 82fa9965637ca62399434739ae5998f6 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1784293637 5946946 69ae8bc8924b15d5d8b35b1e757af58e ""
-  "01_esercizi-matematica-3b.aux" 1789454965.00087 3645 586a26c3a6ba71b60438d29eed1b7655 "xelatex"
-  "01_esercizi-matematica-3b.out" 1789454965.00387 1534 fb92ee1ff6ec8e9243aa913ef56692bf "xelatex"
-  "01_esercizi-matematica-3b.tex" 1789454934.46691 4055 a7133b83486abf30cde3fb8e40c5cf44 ""
+  "appunti-5acd.tex" 1788969599.95921 10419 cdcc5ca0f97115f9351bfb802d254093 ""
+  "build/appunti-5acd.aux" 1790177639.49537 1656 3244af10ab94069563fce77af1ac72ac "xelatex"
+  "build/appunti-5acd.out" 1790177639.50537 718 c94856e054b3158827568bff1cfaaccf "xelatex"
   (generated)
-  "01_esercizi-matematica-3b.aux"
-  "01_esercizi-matematica-3b.log"
-  "01_esercizi-matematica-3b.out"
-  "01_esercizi-matematica-3b.xdv"
+  "build/appunti-5acd.aux"
+  "build/appunti-5acd.log"
+  "build/appunti-5acd.out"
+  "build/appunti-5acd.xdv"
   (rewritten before read)

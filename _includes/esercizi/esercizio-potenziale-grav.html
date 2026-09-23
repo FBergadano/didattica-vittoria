@@ -85,7 +85,9 @@ Esercizio a carosello (Verifica Subito!) sull'energia potenziale gravitazionale.
   buildDots();
   window.iexPotenzialenav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
 
+  var restoring=false;
   function shootConf(el){
+    if(restoring)return;
     var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
     var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
     for(var i=0;i<55;i++){
@@ -104,7 +106,9 @@ Esercizio a carosello (Verifica Subito!) sull'energia potenziale gravitazionale.
     }
   }
 
+  var choiceRegistry=[];
   function wireChoices(rowIdx, choicesId, fbId, correctV, msgOk, msgErr){
+    choiceRegistry.push(choicesId);
     var btns = document.querySelectorAll('#'+choicesId+' .iex-choice-btn');
     var fb = document.getElementById(fbId);
     btns.forEach(function(btn){
@@ -126,6 +130,7 @@ Esercizio a carosello (Verifica Subito!) sull'energia potenziale gravitazionale.
           fb.innerHTML = msgErr;
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        if(!restoring)_lvSave('mcqchoice',choicesId,{chosen:btn.dataset.v});
       });
     });
   }
@@ -156,5 +161,15 @@ Esercizio a carosello (Verifica Subito!) sull'energia potenziale gravitazionale.
   wireChoices(3, 'iexPotenzialechoices3', 'iexPotenzialefb3', 'd',
     '$\\text{kg}\\cdot\\text m/\\text s$ non sono le unità di un\'energia: manca una potenza di $\\text s$ al denominatore (quelle sono, in realtà, le unità della quantità di moto).',
     'Non è corretto: le altre tre relazioni sono tutte forme equivalenti dell\'unità di energia. Controlla con che potenza compare il secondo.');
+
+  restoring=true;
+  choiceRegistry.forEach(function(choicesId){
+    var saved=_lvLoad('mcqchoice',choicesId);
+    if(saved&&saved.chosen){
+      var btn=document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+saved.chosen+'"]');
+      if(btn)btn.click();
+    }
+  });
+  restoring=false;
 })();
 </script>

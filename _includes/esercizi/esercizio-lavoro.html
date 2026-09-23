@@ -96,7 +96,9 @@ Esercizio a carosello (Verifica Subito!) sul lavoro. Nessun parametro.
   buildDots();
   window.iexLavoronav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
 
+  var restoring=false;
   function shootConf(el){
+    if(restoring)return;
     var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
     var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
     for(var i=0;i<55;i++){
@@ -115,7 +117,9 @@ Esercizio a carosello (Verifica Subito!) sul lavoro. Nessun parametro.
     }
   }
 
+  var choiceRegistry=[];
   function wireChoices(rowIdx, choicesId, fbId, correctV, msgOk, msgErr){
+    choiceRegistry.push(choicesId);
     var btns = document.querySelectorAll('#'+choicesId+' .iex-choice-btn');
     var fb = document.getElementById(fbId);
     btns.forEach(function(btn){
@@ -137,6 +141,7 @@ Esercizio a carosello (Verifica Subito!) sul lavoro. Nessun parametro.
           fb.innerHTML = msgErr;
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        if(!restoring)_lvSave('mcqchoice',choicesId,{chosen:btn.dataset.v});
       });
     });
   }
@@ -173,5 +178,15 @@ Esercizio a carosello (Verifica Subito!) sul lavoro. Nessun parametro.
   wireChoices(4, 'iexLavorochoices4', 'iexLavorofb4', 'b',
     'La forza peso è verticale, mentre lo spostamento del bradipo è orizzontale: sono perpendicolari, quindi il lavoro è nullo, qualunque sia la distanza percorsa lungo il ramo.',
     'Non è corretto: pensa alla direzione della forza peso (sempre verticale) rispetto allo spostamento (qui orizzontale). Quando i due sono perpendicolari il lavoro è sempre nullo, indipendentemente dai metri percorsi.');
+
+  restoring=true;
+  choiceRegistry.forEach(function(choicesId){
+    var saved=_lvLoad('mcqchoice',choicesId);
+    if(saved&&saved.chosen){
+      var btn=document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+saved.chosen+'"]');
+      if(btn)btn.click();
+    }
+  });
+  restoring=false;
 })();
 </script>

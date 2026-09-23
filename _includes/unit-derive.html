@@ -99,6 +99,10 @@ Esempio:
       numSels.forEach(function (s) { s.disabled = true; });
       denSels.forEach(function (s) { s.disabled = true; });
       confetti();
+      _lvSave('uderive', '{{ _uid }}', {
+        num: Array.prototype.map.call(numSels, function(s){return s.value;}),
+        den: Array.prototype.map.call(denSels, function(s){return s.value;})
+      });
     } else {
       fb.className = 'uderive-fb err';
       fb.textContent = '✗ Non ancora corretto: riprova.';
@@ -127,6 +131,16 @@ Esempio:
       });
       if (alive) requestAnimationFrame(frame); else canvas.style.display = 'none';
     })();
+  }
+
+  var saved = _lvLoad('uderive', '{{ _uid }}');
+  if (saved) {
+    numSels.forEach(function (s, i) { if (saved.num && saved.num[i] !== undefined) s.value = saved.num[i]; s.disabled = true; });
+    denSels.forEach(function (s, i) { if (saved.den && saved.den[i] !== undefined) s.value = saved.den[i]; s.disabled = true; });
+    checkBtn.disabled = true;
+    fb.style.display = 'block';
+    fb.className = 'uderive-fb ok';
+    fb.textContent = '✓ Esatto!';
   }
 
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([root]);

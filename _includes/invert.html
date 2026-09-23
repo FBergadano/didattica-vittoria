@@ -314,7 +314,7 @@ function updateHistory(){
 function setMovesEnabled(v){
   root.querySelectorAll('.invx-btn').forEach(function(b){b.disabled=!v;});
 }
-function finish(){
+function finish(silent){
   done=true;
   setMovesEnabled(false);
   updateHistory();
@@ -326,7 +326,7 @@ function finish(){
   if(count===MINCOUNT){
     res.className='invx-result ok';
     res.innerHTML='🎉 Complimenti! Hai isolato <em>$'+LABELS[TARGET]+'$</em> in '+count+' mosse: è il numero minimo possibile!';
-    confetti();
+    if(!silent)confetti();
   } else {
     res.className='invx-result warn';
     res.innerHTML='Hai isolato <em>$'+LABELS[TARGET]+'$</em> in '+count+' mosse. Esisteva una strategia più breve, in '+MINCOUNT+' moss'+(MINCOUNT===1?'a':'e')+'. '+
@@ -335,6 +335,7 @@ function finish(){
       '</ol></div></details>';
   }
   typeset(res);
+  if(!silent)_lvSave('invert','{{ _iid }}',{left:left,right:right,count:count});
 }
 function reset(){
   left=clone(LEFT0);right=clone(RIGHT0);count=0;done=false;
@@ -453,6 +454,14 @@ function confetti(){
   })();
 }
 
-renderEq();
+var savedInv=_lvLoad('invert','{{ _iid }}');
+if(savedInv){
+  left=savedInv.left; right=savedInv.right; count=savedInv.count;
+  $$('.invx-count').textContent=count;
+  renderEq();
+  finish(true);
+} else {
+  renderEq();
+}
 })();
 </script>

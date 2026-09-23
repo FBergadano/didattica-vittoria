@@ -85,7 +85,9 @@ Esercizio a carosello (Verifica Subito!) sull'energia cinetica. Nessun parametro
   buildDots();
   window.iexCineticanav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
 
+  var restoring=false;
   function shootConf(el){
+    if(restoring)return;
     var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
     var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
     for(var i=0;i<55;i++){
@@ -104,7 +106,9 @@ Esercizio a carosello (Verifica Subito!) sull'energia cinetica. Nessun parametro
     }
   }
 
+  var choiceRegistry=[];
   function wireChoices(rowIdx, choicesId, fbId, correctV, msgOk, msgErr){
+    choiceRegistry.push(choicesId);
     var btns = document.querySelectorAll('#'+choicesId+' .iex-choice-btn');
     var fb = document.getElementById(fbId);
     btns.forEach(function(btn){
@@ -126,6 +130,7 @@ Esercizio a carosello (Verifica Subito!) sull'energia cinetica. Nessun parametro
           fb.innerHTML = msgErr;
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+        if(!restoring)_lvSave('mcqchoice',choicesId,{chosen:btn.dataset.v});
       });
     });
   }
@@ -156,5 +161,15 @@ Esercizio a carosello (Verifica Subito!) sull'energia cinetica. Nessun parametro
   wireChoices(3, 'iexCineticachoices3', 'iexCineticafb3', 'b',
     'L\'energia cinetica è direttamente proporzionale alla massa (potenza 1): a parità di velocità, raddoppiando la massa raddoppia anche $K$.',
     'Non è corretto: a parità di velocità, l\'energia cinetica è direttamente proporzionale alla massa (non al suo quadrato, a differenza della velocità).');
+
+  restoring=true;
+  choiceRegistry.forEach(function(choicesId){
+    var saved=_lvLoad('mcqchoice',choicesId);
+    if(saved&&saved.chosen){
+      var btn=document.querySelector('#'+choicesId+' .iex-choice-btn[data-v="'+saved.chosen+'"]');
+      if(btn)btn.click();
+    }
+  });
+  restoring=false;
 })();
 </script>

@@ -59,11 +59,32 @@ window.qvolCheck=function(i){
     fb.innerHTML='&#10003; Esatto!'+(i<NQVOL-1?' <button class="iex-nextbtn" onclick="qvolShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootCV(vb);updDotsV();
     if(qvolok.every(function(x){return x;}))setTimeout(shootFWV,600);
+    qvolSaveState();
   } else {
     fb.className='iex-fb err';
     fb.innerHTML='Non &egrave; esatto. Riprova, oppure <button class="iex-lbtn" onclick="showSolV(\'qvolsol'+i+'\')">vedi la soluzione</button>.';
   }
 };
+function qvolSaveState(){
+  var vals=[];
+  for(var i=0;i<NQVOL;i++)vals.push(document.getElementById('qvolinp'+i).value);
+  _lvSave('carousel','qvol',{ok:qvolok.slice(),vals:vals});
+}
+function qvolRestore(){
+  var saved=_lvLoad('carousel','qvol');
+  if(!saved)return;
+  for(var i=0;i<NQVOL;i++){
+    if(saved.ok&&saved.ok[i]){
+      qvolok[i]=true;
+      if(saved.vals&&saved.vals[i]!==undefined)document.getElementById('qvolinp'+i).value=saved.vals[i];
+      var fb=document.getElementById('qvolfb'+i);
+      fb.className='iex-fb ok';
+      fb.innerHTML='&#10003; Esatto!'+(i<NQVOL-1?' <button class="iex-nextbtn" onclick="qvolShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
+    }
+  }
+  updDotsV();
+}
 buildDotsV(NQVOL,window.qvolShow);
+qvolRestore();
 })();
 </script>
