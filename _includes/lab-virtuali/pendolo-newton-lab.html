@@ -1,0 +1,256 @@
+{% comment %}
+Pendolo di Newton interattivo, con numero di palline scelto dallo studente
+(da 3 a 9, tramite lo slider). Lo studente trascina con il mouse (o il
+dito) una qualsiasi pallina: se la trascina verso il bordo più vicino a
+lei si sollevano solo le palline fra quel bordo e quella scelta; se la
+trascina verso il lato opposto (attraversando idealmente tutta la fila)
+si sollevano invece tutte le palline dall'altra parte. In ogni caso il
+numero massimo di palline sollevabili insieme è n-1 (con n = numero
+totale di palline scelto), perché ne deve sempre restare almeno una ferma
+da urtare. L'angolo di distacco (e quindi l'altezza raggiunta) dipende
+invece da quanto si trascina lontano, non da quale pallina o direzione si
+sceglie. Rilasciando, il gruppo sollevato oscilla verso il basso, urta le
+palline ferme e lo stesso numero di palline si alza dall'altra estremità,
+alla stessa altezza — il ciclo si ripete all'infinito (nessun attrito)
+finché non si preme "Ferma".
+Nessun parametro.
+{% endcomment %}
+<div class="ncradle-widget" id="ncradleLab">
+<p class="ncradle-hint">Trascina una pallina: verso il bordo più vicino sollevi solo quelle fino a lì, verso il lato opposto sollevi tutte le altre. L'altezza dipende da quanto trascini.</p>
+<div class="ncradle-nsel">
+  <label for="ncradleN">Numero di palline: <strong id="ncradleNval">6</strong></label>
+  <input type="range" id="ncradleN" min="3" max="9" value="6" step="1">
+</div>
+<div class="ncradle-stage">
+<canvas class="ncradle-canvas" id="ncradleCanvas" width="500" height="280" role="img" aria-label="Pendolo di Newton: trascina una pallina per sollevare un gruppo di palline e osservare cosa succede quando urtano le altre"></canvas>
+</div>
+<div class="ncradle-ctrl">
+  <span class="ncradle-count" id="ncradleCount">Trascina per iniziare</span>
+  <button class="ncradle-stopbtn" id="ncradleStop" type="button">&#9632; Ferma</button>
+</div>
+</div>
+
+<style>
+#ncradleLab{max-width:480px;margin:1.3rem auto;padding:.9rem 1rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+#ncradleLab .ncradle-hint{font-size:.82rem;color:#6b7280;font-style:italic;margin:0 0 .6rem;text-align:center;}
+#ncradleLab .ncradle-nsel{display:flex;align-items:center;gap:.6rem;justify-content:center;margin-bottom:.6rem;font-size:.85rem;color:#334155;}
+#ncradleLab .ncradle-nsel input[type=range]{flex:0 0 auto;width:140px;}
+#ncradleLab .ncradle-stage{display:flex;justify-content:center;}
+#ncradleLab .ncradle-canvas{width:100%;max-width:420px;height:auto;display:block;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;touch-action:none;cursor:grab;}
+#ncradleLab .ncradle-ctrl{display:flex;align-items:center;justify-content:space-between;gap:.7rem;margin-top:.6rem;}
+#ncradleLab .ncradle-count{font-size:.85rem;color:#334155;font-weight:600;}
+#ncradleLab .ncradle-stopbtn{background:#b91c1c;color:#fff;border:none;border-radius:6px;padding:.35rem .8rem;cursor:pointer;font-size:.85rem;}
+#ncradleLab .ncradle-stopbtn:hover{background:#991b1b;}
+@media print{#ncradleLab{display:none!important;}}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('ncradleLab');
+  if(!root) return;
+  var canvas=document.getElementById('ncradleCanvas');
+  var ctx=canvas.getContext('2d');
+  var countLbl=document.getElementById('ncradleCount');
+  var stopBtn=document.getElementById('ncradleStop');
+  var nSlider=document.getElementById('ncradleN');
+  var nVal=document.getElementById('ncradleNval');
+  var W=500,H=280;
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  var r=17, pivotY=40, L=150, restY=pivotY+L;
+  var cx=250, spacing=2*r;
+  var thetaMax=32*Math.PI/180, maxDragPx=130;
+  var periodMs=2400, omega=2*Math.PI/periodMs, quarterMs=periodMs/4;
+
+  // Dati "fisici" usati dall'esercizio numerico collegato (vedi
+  // esercizio-pendolo-newton-numerico.html): l'altezza raggiunta è
+  // proporzionale a quanto si trascina (frazione dell'angolo massimo),
+  // fino a un massimo H_MAX quando si trascina fino in fondo.
+  var M_BALL=0.05, H_MAX=0.5;
+  function heightFromTheta(theta){ return Math.round((theta/thetaMax)*H_MAX*100)/100; }
+
+  var N, pivotXs;
+  function rebuild(n){
+    N=n;
+    pivotXs=[]; for(var i=0;i<N;i++) pivotXs.push(cx+(i-(N-1)/2)*spacing);
+  }
+
+  var state='idle'; // idle | dragging | animating
+  var dragIdx=0, dragStartX=0, dragSide=null, dragTheta=0, dragCount=0;
+  var animSide=null, animCount=1, animAngle0=0, animPhase=null, animT0=null;
+  var raf=null;
+
+  function sphere(x,y,c1,c2){
+    ctx.save();
+    var g=ctx.createRadialGradient(x-r*0.35,y-r*0.4,r*0.15,x,y,r);
+    g.addColorStop(0,c1); g.addColorStop(1,c2);
+    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.25)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.restore();
+  }
+
+  // Disegna la scena: `lifted` = {side, count, theta} oppure null (tutte ferme).
+  function draw(lifted){
+    ctx.clearRect(0,0,W,H);
+    // Barra di sostegno
+    ctx.strokeStyle='#94a3b8'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(pivotXs[0]-14,pivotY); ctx.lineTo(pivotXs[N-1]+14,pivotY); ctx.stroke();
+
+    var liftedSet={};
+    if(lifted && lifted.count>0){
+      for(var k=0;k<lifted.count;k++){
+        var idx=(lifted.side==='left')?k:(N-1-k);
+        liftedSet[idx]=true;
+      }
+    }
+    var positions=[];
+    for(var i=0;i<N;i++){
+      if(liftedSet[i]){
+        var sign=(lifted.side==='left')?-1:1;
+        var bx=pivotXs[i]+sign*L*Math.sin(lifted.theta);
+        var by=pivotY+L*Math.cos(lifted.theta);
+        positions.push([bx,by]);
+      } else {
+        positions.push([pivotXs[i],restY]);
+      }
+    }
+    for(var j=0;j<N;j++){
+      ctx.strokeStyle='#94a3b8'; ctx.lineWidth=2;
+      ctx.beginPath(); ctx.moveTo(pivotXs[j],pivotY); ctx.lineTo(positions[j][0],positions[j][1]); ctx.stroke();
+      ctx.fillStyle='#334155'; ctx.beginPath(); ctx.arc(pivotXs[j],pivotY,3,0,7); ctx.fill();
+    }
+    for(var m=0;m<N;m++) sphere(positions[m][0],positions[m][1],'#fde68a','#d97706');
+  }
+
+  function setCountLabel(txt){ countLbl.textContent=txt; }
+
+  function stopAll(){
+    if(raf){ cancelAnimationFrame(raf); raf=null; }
+    state='idle'; animSide=null; animPhase=null; animT0=null;
+    draw(null);
+    setCountLabel('Trascina per iniziare');
+  }
+
+  function animFrame(now){
+    if(animT0===null) animT0=now;
+    var t=now-animT0;
+    if(t>quarterMs) t=quarterMs;
+    var theta;
+    if(animPhase==='in'){
+      theta=animAngle0*Math.cos(omega*t);
+    } else {
+      theta=animAngle0*Math.sin(omega*t);
+    }
+    draw({side:animSide,count:animCount,theta:theta});
+    if(t>=quarterMs){
+      if(animPhase==='in'){
+        // impatto: passa il gruppo all'altra estremità
+        animSide=(animSide==='left')?'right':'left';
+        animPhase='out';
+      } else {
+        animPhase='in';
+      }
+      animT0=now;
+    }
+    if(!reduce) raf=requestAnimationFrame(animFrame);
+  }
+
+  function startAnim(side,count,angle0){
+    state='animating';
+    animSide=side; animCount=count; animAngle0=angle0; animPhase='in'; animT0=null;
+    var h=heightFromTheta(angle0);
+    setCountLabel(count+(count===1?' pallina in movimento — altezza ':' palline in movimento — altezza ')+h+' m');
+    root.dispatchEvent(new CustomEvent('ncradle:release',{detail:{n:count,h:h,m:M_BALL}}));
+    if(reduce){ draw({side:side,count:count,theta:0}); return; }
+    raf=requestAnimationFrame(animFrame);
+  }
+
+  function pointerXY(ev){
+    var r0=canvas.getBoundingClientRect();
+    return (ev.clientX-r0.left)*(W/r0.width);
+  }
+
+  function nearestIdx(x){
+    var idx=Math.round((x-pivotXs[0])/spacing);
+    return Math.max(0,Math.min(N-1,idx));
+  }
+
+  function onDown(ev){
+    if(state==='animating') return;
+    var x=pointerXY(ev);
+    dragIdx=nearestIdx(x);
+    dragStartX=pivotXs[dragIdx];
+    dragSide=null; dragTheta=0; dragCount=0;
+    state='dragging';
+    draw(null);
+    setCountLabel('Trascina per scegliere quante sollevarne');
+    ev.preventDefault();
+  }
+  function onMove(ev){
+    if(state!=='dragging') return;
+    var x=pointerXY(ev);
+    var raw=x-dragStartX;
+    if(Math.abs(raw)<3){
+      dragSide=null; dragTheta=0; dragCount=0;
+      draw(null);
+      setCountLabel('Trascina per scegliere quante sollevarne');
+      ev.preventDefault();
+      return;
+    }
+    // Trascinando verso destra si sollevano le palline da qui in poi verso
+    // destra; verso sinistra, quelle da qui in poi verso sinistra. In ogni
+    // caso ne resta sempre almeno una ferma (massimo N-1 sollevabili).
+    if(raw>0){ dragSide='right'; dragCount=Math.min(N-1,N-dragIdx); }
+    else { dragSide='left'; dragCount=Math.min(N-1,dragIdx+1); }
+    var dx=Math.abs(raw);
+    dragTheta=Math.min(1,dx/maxDragPx)*thetaMax;
+    draw({side:dragSide,count:dragCount,theta:dragTheta});
+    setCountLabel(dragCount+(dragCount===1?' pallina selezionata — altezza ':' palline selezionate — altezza ')+heightFromTheta(dragTheta)+' m');
+    ev.preventDefault();
+  }
+  function onUp(ev){
+    if(state!=='dragging') return;
+    if(dragSide && dragTheta>2*Math.PI/180){
+      startAnim(dragSide,dragCount,dragTheta);
+    } else {
+      state='idle';
+      draw(null);
+      setCountLabel('Trascina per iniziare');
+    }
+  }
+
+  canvas.addEventListener('pointerdown',onDown);
+  window.addEventListener('pointermove',onMove);
+  window.addEventListener('pointerup',onUp);
+  stopBtn.addEventListener('click',stopAll);
+
+  nSlider.addEventListener('input',function(){
+    if(raf){ cancelAnimationFrame(raf); raf=null; }
+    state='idle'; animSide=null; animPhase=null; animT0=null;
+    var n=parseInt(nSlider.value,10);
+    nVal.textContent=n;
+    rebuild(n);
+    draw(null);
+    setCountLabel('Trascina per iniziare');
+    root.dispatchEvent(new CustomEvent('ncradle:idle',{}));
+  });
+
+  // Se lo studente avvia l'oscillazione e poi scorre via senza premere
+  // "Ferma", mettiamo in pausa il ciclo (che altrimenti proseguirebbe
+  // all'infinito) finché il widget non torna visibile.
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting){
+          if(state==='animating' && !raf){ animT0=null; raf=requestAnimationFrame(animFrame); }
+        } else {
+          if(raf){ cancelAnimationFrame(raf); raf=null; }
+        }
+      });
+    },{threshold:0.05}).observe(canvas);
+  }
+
+  rebuild(parseInt(nSlider.value,10));
+  draw(null);
+})();
+</script>

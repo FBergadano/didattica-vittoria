@@ -65,6 +65,13 @@ var TARGET='{{ include.obiettivo }}';
 var RANGE=4;
 var ALLOW_SQRT={% if include.radice %}true{% else %}false{% endif %};
 var ALLOW_SQUARE={% if include.radice_iniziale %}true{% else %}false{% endif %};
+// Se "negativo" è impostato, l'equazione ha un segno "meno" complessivo fra i
+// due membri (es. U=-GMm/r): il "-" resta sempre attaccato a QUALUNQUE
+// espressione sia al momento sul membro destro (invariante rispetto a
+// scambi e mosse di moltiplicazione/divisione, che non alterano il segno).
+var NEGATIVE={% if include.negativo %}true{% else %}false{% endif %};
+function negPrefix(){ return NEGATIVE?'-':''; }
+function eqStr(l,r){ return toLatex(l)+' = '+negPrefix()+toLatex(r); }
 
 function parseExpr(s){
   var d={};
@@ -252,7 +259,7 @@ function typeset(el){if(window.MathJax&&MathJax.typesetPromise&&el)MathJax.types
 function renderEq(){
   var box=$$('.invx-eq');
   box.style.transition='none';box.style.transform='none';box.style.opacity=1;
-  box.innerHTML='$$'+toLatex(left)+' = '+toLatex(right)+'$$';
+  box.innerHTML='$$'+eqStr(left,right)+'$$';
   typeset(box);
 }
 // Mostra una fase dell'equazione (membro unico, già fusa) con una dissolvenza in dissolvenza,
@@ -281,11 +288,11 @@ function renderAppear(mvType,lbl,cb){
   var leftHtml,rightHtml;
   if(mvType==='mul'){
     leftHtml='<span class="invx-add">$'+lbl+'\\cdot$</span><span class="invx-static">$'+toLatex(left)+'$</span>';
-    rightHtml='<span class="invx-static">$'+toLatex(right)+'$</span><span class="invx-add">$\\cdot '+lbl+'$</span>';
+    rightHtml='<span class="invx-static">$'+negPrefix()+toLatex(right)+'$</span><span class="invx-add">$\\cdot '+lbl+'$</span>';
   } else {
     leftHtml='<span class="invx-fracside"><span class="invx-static">$'+toLatex(left)+'$</span>'+
       '<span class="invx-fracline"></span><span class="invx-fracden">$'+lbl+'$</span></span>';
-    rightHtml='<span class="invx-fracside"><span class="invx-static">$'+toLatex(right)+'$</span>'+
+    rightHtml='<span class="invx-fracside"><span class="invx-static">$'+negPrefix()+toLatex(right)+'$</span>'+
       '<span class="invx-fracline"></span><span class="invx-fracden">$'+lbl+'$</span></span>';
   }
   box.innerHTML=leftHtml+' <span class="invx-eq-rel">$=$</span> '+rightHtml;
@@ -304,9 +311,9 @@ function setCaption(text){
 function updateHistory(){
   var hist=$$('.invx-history');
   if(count===0||done){hist.innerHTML='';return;}
-  var html='<div class="invx-hist-row">Equazione iniziale: $'+toLatex(LEFT0)+' = '+toLatex(RIGHT0)+'$</div>';
+  var html='<div class="invx-hist-row">Equazione iniziale: $'+eqStr(LEFT0,RIGHT0)+'$</div>';
   if(count>=2&&prevLeft){
-    html+='<div class="invx-hist-row">Ultimo passaggio: $'+toLatex(prevLeft)+' = '+toLatex(prevRight)+'$ — '+lastMoveDesc+'</div>';
+    html+='<div class="invx-hist-row">Ultimo passaggio: $'+eqStr(prevLeft,prevRight)+'$ — '+lastMoveDesc+'</div>';
   }
   hist.innerHTML=html;
   typeset(hist);
@@ -367,20 +374,20 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
 
     if(mv.type==='swap'){
       // Scambiare i membri non conta come mossa.
-      renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns,true);});
+      renderStage(eqStr(ns.left,ns.right),{hold:1700},function(){afterMove(ns,true);});
       return;
     }
     if(mv.type==='sqrt'){
-      var preLatex='\\sqrt{'+toLatexInner(left)+'} = \\sqrt{'+toLatexInner(right)+'}';
+      var preLatex='\\sqrt{'+toLatexInner(left)+'} = '+negPrefix()+'\\sqrt{'+toLatexInner(right)+'}';
       renderStage(preLatex,{hold:1700},function(){
-        renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
+        renderStage(eqStr(ns.left,ns.right),{hold:1700},function(){afterMove(ns);});
       });
       return;
     }
     if(mv.type==='square'){
-      var preLatexSq='\\left('+toLatex(left)+'\\right)^2 = \\left('+toLatex(right)+'\\right)^2';
+      var preLatexSq='\\left('+toLatex(left)+'\\right)^2 = \\left('+negPrefix()+'\\left('+toLatex(right)+'\\right)\\right)^2';
       renderStage(preLatexSq,{hold:1700},function(){
-        renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
+        renderStage(eqStr(ns.left,ns.right),{hold:1700},function(){afterMove(ns);});
       });
       return;
     }
@@ -391,7 +398,7 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
     var li=buildStages(left,mv.v,delta);
     var ri=buildStages(right,mv.v,delta);
     var hasCancel=li.hasCancel||ri.hasCancel;
-    var cancelLatex=hasCancel?(joinFrac(li.cancel.num,li.cancel.den)+' = '+joinFrac(ri.cancel.num,ri.cancel.den)):null;
+    var cancelLatex=hasCancel?(joinFrac(li.cancel.num,li.cancel.den)+' = '+negPrefix()+joinFrac(ri.cancel.num,ri.cancel.den)):null;
     var lbl=LABELS[mv.v];
     var magLbl=mag===2?(wrapLbl(lbl)+'^2'):lbl;
     var combineCaption=null;
@@ -405,7 +412,7 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
     var cancelCaption=hasCancel?('Le $'+magLbl+'$ si semplificano.'):null;
 
     function finalStage(){
-      renderStage(toLatex(ns.left)+' = '+toLatex(ns.right),{hold:1700},function(){afterMove(ns);});
+      renderStage(eqStr(ns.left,ns.right),{hold:1700},function(){afterMove(ns);});
     }
     renderAppear(mv.type,magLbl,function(){
       if(hasCancel){

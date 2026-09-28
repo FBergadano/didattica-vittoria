@@ -1,0 +1,26 @@
+% ============================================================
+%  PREAMBOLO VERIFICA — Fila C (font Atkinson Hyperlegible Next)
+% ============================================================
+\usepackage{fontspec}
+\setmainfont{AtkinsonHyperlegibleNext}[
+    Path = {../../fonts/},
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-RegularItalic,
+    BoldItalicFont = *-BoldItalic
+]
+\makeatletter
+\renewcommand\normalsize{%
+  \@setfontsize\normalsize{12}{15}%
+  \abovedisplayskip 4pt%
+  \belowdisplayskip 4pt%
+}
+\makeatother
+\normalsize
+\usepackage{microtype}
+
+\input{../../preambolo-verifica-core.tex}
+
+% Nessun \setmathfont: Atkinson non ha un font matematico compagno,
+% la matematica resta nei font di default di amsmath/unicode-math.

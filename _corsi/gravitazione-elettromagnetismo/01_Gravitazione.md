@@ -216,7 +216,7 @@ Quello che succede a livello gravitazionale è estremamente simile. La Terra mod
    larghezza="420px" %}
 
 {% include margin-note.html testo="Definizione di campo gravitazionale" %}
-Questa modificazione dello spazio attuata da una massa è ciò che chiameremo <definizione>campo gravitazionale</definizione>.
+Questa modificazione dello spazio attuata da una massa è ciò che chiameremo <definizione>campo gravitazionale</definizione>. <u markdown="span">Essa è una quantità **vettoriale**</u>. 
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="Il campo gravitazionale" %}
@@ -244,17 +244,24 @@ Puoi esplorare il campo vettoriale del vento in tempo reale su una mappa interat
 {% include spoiler-end.html %}
 
 ## Il vettore campo gravitazionale
+{% include margin-note.html testo="L'ordine che seguiremo" %}
+Vogliamo adesso trovare una formula per calcolare il campo gravitazionale generato da una certa massa $M$ in un punto $\vec r$. Indicheremo questa quantità con $\vec g$ (come al solito, $\vec g$ indica il vettore campo gravitazionale mentre $g$ indicherà il modulo del vettore).  
+Sappiamo che un vettore ha tre caratteristiche: modulo, direzione e verso. Cominciamo quindi ricercando una formula per il **modulo**, successivamente determineremo la direzione e il verso.
+{% include margin-note-end.html %}
 
-Vogliamo adesso trovare una formula per calcolare il campo gravitazionale generato da una certa massa $M$ in un punto $\vec r$. Indicheremo questa quantità con $\vec g$ (come al solito, $\vec g$ indica il vettore campo gravitazionale mentre $g$ indicherà il modulo del vettore). Per trovare tale formula, sfruttiamo l'analogia con il telo.  
+### Il modulo del vettore campo gravitazionale
+{% include margin-note.html testo="Cosa cerchiamo: una formula per il modulo" %}
+Ricerchiamo dunque una formula per il modulo del campo. Per trovare tale formula, sfruttiamo l'analogia con il telo per intuirne la costruzione. 
+{% include margin-note-end.html %} 
 
-{% include margin-note.html testo="Costruzione della formula" %}
+{% include margin-note.html testo="Costruzione della formula: dall'analogia del telo alla formula" %}
 Abbiamo detto che il campo corrisponde alla curvatura di un telo su cui mettiamo una massa grande $M$. Per vedere bene questa curvatura dobbiamo quindi fare in modo che non ci siano altre masse che curvano il telo. Prendiamo quindi la formula 
 
 $$
-F = G \frac{M\cdot m}{r^2}
+F = G \frac{M\cdot m}{r^2},
 $$
 
-(che rappresenta la situazione in cui ci sono sul telo sia la massa $M$ sia la massa $m$) e <u markdown="span">togliamo la massa $m$</u>, ottenendo:
+che rappresenta la situazione in cui ci sono sul telo sia la massa $M$ sia la massa $m$, e <u markdown="span">togliamo la massa $m$</u>, ottenendo:
 
 {% include eq-annotated.html
    id="fga1"
@@ -283,6 +290,14 @@ Chiaramente, da un punto di vista matematico, “togliere la $m$” come abbiamo
 
 {% include margin-note.html testo="L'unità di misura del campo gravitazionale è il N/kg" %}
 Osserviamo quindi anche che <u markdown="span">l'unità di misura del campo gravitazionale corrisponde all'unità di misura di $F$ (il newton N) diviso l'unità della massa (kg), cioè corrisponde a N/kg.</u> 
+
+<div class="iex-nested">
+{% include unit-derive.html id="ud-g" testo="Trova l'unità di misura di g"
+   variabile="g"
+   numeratore_simboli="F" numeratore_corrette="N"
+   denominatore_simboli="m" denominatore_corrette="kg"
+   opzioni="N|kg|J|m" %}
+</div>
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Massa esploratrice"%}
@@ -299,7 +314,7 @@ Inoltre, il campo **non dipende** dalla massa esploratrice $m$: dipende solo da 
 {% include box-end.html %}
 
 {% include margin-note.html testo="g è (quasi) costante sulla superficie di un pianeta" %}
-Sulla superficie di un pianeta (o di una stella), $\vec g$ è un vettore che <u markdown="span">punta sempre verso il centro</u> del pianeta — cioè, localmente, "verso il basso". Inoltre, poiché tutti i punti della superficie si trovano, con ottima approssimazione, alla <u markdown="span">stessa distanza dal centro</u> (il raggio del pianeta), <u markdown="span">anche il modulo di $\vec g$ è praticamente costante</u> su tutta la superficie. Per la Terra, questo valore vale circa $g \approx 9{,}81\ \text{N/kg}$.
+Sulla superficie di un pianeta, di una stella, o di una qualsiasi massa **sferica**, poiché tutti i punti della superficie si trovano alla <u markdown="span">stessa distanza dal centro</u> (il raggio del pianeta), <u markdown="span">anche il modulo del campo è praticamente costante</u> su tutta la superficie. Per la Terra, questo valore vale circa $g \approx 9{,}81\ \text{N/kg}$.
 {% include margin-note-end.html %}
 
 
@@ -323,17 +338,19 @@ Si sceglie di dare, per convenzione, al vettore campo gravitazionale $\vec g$ lo
 
 Cioè, così come nel caso del vettore forza gravitazionale, <u markdown="span">il vettore punta sempre verso il centro della massa che genera il campo</u>.  
 {% include margin-note.html testo="La formula più completa che lega campo e forza" %}
-Inoltre, poiché campo e forza hanno la stessa direzione e lo stesso verso, allora la precedente relazione $g= F /m$ tra **i moduli** di campo gravitazionale e forza può essere estesa all'intero vettore, cioè può essere riscritta come
+Ricordando la precedente relazione $g=F/m$ tra i **moduli** del campo e della forza, possiamo quindi scrivere che
 
 {% include eq-annotated.html
    id="fga1"
-   formula="\vec g = \dfrac{\vec F}{m}"
+   formula="\vec g = \dfrac{\vec F}{m}."
    frammenti="\vec g|\vec F|m"
    etichette="vettore campo gravitazionale| vettore forza gravitazionale tra $M$ ed $m$|massa esploratrice"
    posizioni="alto|alto|basso"
 %}
 
-Questa espressione è insomma molto più completa della precedente $g = F/m$, perché oltre a darci una relazione tra i moduli $g$ e $F$ dei vettori $\vec g$ e $\vec F$, ci dà <u markdown="span">anche una relazione tra le **direzioni** e i **versi** di questi vettori</u>.
+Questa equazione è insomma molto più completa della precedente $g = F/m$, perché ci dice che:
+1. il modulo di $g$ è legato al modulo del vettore forza tramite la legge $g=F/m$;
+2. la direzione e il verso del vettore $\vec g$ coincidono con la direzione e il verso di $\vec F$ (poiché la massa $m$ è sempre positiva).
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="Il vettore campo gravitazione generato da una massa M" %}
@@ -350,18 +367,15 @@ ove $m$ è la massa esploratrice. <u markdown="span">Il vettore campo gravitazio
 
 ### Sovrapposizione degli effetti per il campo gravitazionale
 
-Anche per il campo gravitazionale vale lo stesso <definizione>principio di sovrapposizione degli effetti</definizione> già visto per le forze: se in un certo punto dello spazio sono presenti più masse $M_1, M_2, \dots$, ciascuna genera lì il proprio campo <u markdown="span">esattamente come se le altre non ci fossero</u>. Il campo totale in quel punto è la somma **vettoriale** di tutti questi campi:
-
-$$\vec g_{tot} = \vec g_1 + \vec g_2 + \dots$$
-
-{% include figure/figura-somma-campi.html %}
-
+Anche per il campo gravitazionale vale lo stesso <definizione>principio di sovrapposizione degli effetti</definizione> già visto per le forze.
 {% include box-imp.html testo="Sovrapposizione degli effetti (campo)" %}
-Se più masse generano un campo nello stesso punto, il campo totale in quel punto è la somma vettoriale (con la regola del parallelogramma) dei singoli campi generati da ciascuna massa — esattamente come accade per le forze:
+In presenza di più masse, ciascuna massa genera il proprio campo <u>esattamente come se le altre non ci fossero</u>. Il campo totale in un punto dello spazio è la somma vettoriale (con la regola del parallelogramma) dei singoli campi generati da ciascuna massa:
 
 $$\vec g_{tot} = \vec g_1 + \vec g_2 + \cdots.$$
 
 {% include box-end.html %}
+
+{% include figure/figura-somma-campi.html %}
 
 
 ## Le linee di campo
@@ -381,7 +395,7 @@ Come puoi vedere, i vettori si dispongono secondo delle linee. È quindi possibi
 
 {% include box-imp.html testo="Le linee di campo" %}
 
-Le linee di campo sono linee <u>in ogni punto tangenti alla direzione del vettore campo gravitazionale in quel punto</u>.
+Le linee di campo sono linee <u>in ogni punto tangenti alla direzione del vettore campo gravitazionale in quel punto</u>. La **densità** delle linee di campo <u markdown="span">misura l'**intensità** delle linee di campo presenti in quel punto</u>. 
 
 {% include box-end.html %}
 
@@ -532,7 +546,7 @@ Esattamente come abbiamo discusso nella sezione sul campo gravitazionale, è imp
 
 
 {% include margin-note.html testo="Come ottenere l'equazione per V" %}
-Ricordi come siamo passati dalla forza gravitazionale $\vec F$ al campo gravitazionale $\vec g$? Abbiamo semplicemente tolto la massa esploratrice $m$, dividendo per essa: $\vec g = \vec F / m$. Possiamo fare esattamente la stessa cosa con l'energia potenziale: <u>togliendo la massa esploratrice $m$ dall'energia potenziale gravitazionale $U$, otteniamo **il potenziale** $V$</u>:
+Ricordi come siamo passati dalla forza gravitazionale $\vec F$ al campo gravitazionale $\vec g$? Abbiamo semplicemente tolto la massa esploratrice $m$, dividendo per essa: $\vec g = \vec F / m$. Possiamo fare esattamente la stessa cosa con l'energia potenziale: <u markdown="span">togliendo la massa esploratrice $m$ dall'energia potenziale gravitazionale $U$, otteniamo **il potenziale** $V$</u>:
 
 $$V = \frac{U}{m} = -gr = -G\frac{M}{r}.$$
 
@@ -540,7 +554,7 @@ Anche qui, le due scritture sono la stessa identica formula (sostituendo $g=G\,M
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Energia potenziale vs. potenziale" %}
-Non confondere le due grandezze: l'<u markdown="span">energia potenziale $U$ **dipende** dalla massa esploratrice $m$</u> (quanta più massa esploratrice metti, tanta più energia immagazzini), mentre <u markdown="span">il potenziale $V$ **non dipende** da $m$</u> — proprio come il campo $\vec g$ non dipende da $m$, ma dipende solo dalla massa che genera il campo e dalla distanza da essa.
+Non confondere le due grandezze: l'<u markdown="span">energia potenziale $U$ **dipende** dalla massa esploratrice $m$</u> (quanta più massa esploratrice metti, tanta più energia immagazzini), mentre <u markdown="span">il potenziale $V$ **non dipende** da $m$</u> (proprio come il campo $\vec g$), ma dipende solo dalla massa che genera il campo e dalla distanza da essa.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="L'unità di misura di V" %}
@@ -557,7 +571,7 @@ Analizziamo l'unità di misura di $V$: essendo il rapporto fra un'energia (J) e 
 
 {% include box-imp.html testo="Potenziale gravitazionale" %}
 - **Che cos'è:** l'energia potenziale gravitazionale "per unità di massa esploratrice" — non dipende da $m$, proprio come il campo $\vec g$ non dipende da $m$.
-- **Formula:** $V = \dfrac{U}{m} = -gr = -G\dfrac{M}{r}$ — sempre valida, per qualunque distanza $r$.
+- **Formula:** $V = \dfrac{U}{m} = -gr = -G\dfrac{M}{r}$, indipendente dalla massa $m$.
 - **Unità di misura:** J/kg.
 {% include box-end.html %}
 
@@ -620,7 +634,7 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 |---|:---:|:---:|:---:|:---:|
 | **Natura** | vettore | vettore | scalare | scalare |
 |**Segno**|positivo|positivo|negativo|negativo|
-| **Dipendenza da $r$ (in modulo)** | $1/r^2$ (decresce velocemente) | $1/r^2$ (decresce velocemente) | $-1/r$ (cresce lentamente) | $-1/r$ (cresce lentamente)  |
+| **Dipendenza da $r$** | $1/r^2$ (decresce velocemente) | $1/r^2$ (decresce velocemente) | $-1/r$ (cresce lentamente) | $-1/r$ (cresce lentamente)  |
 
 
 
@@ -787,6 +801,10 @@ Puoi verificarlo con la seguente animazione, in cui puoi costruire il tuo propri
 {"t":"Una massa che si allontana dalla massa che genera il campo rallenta.","ok":true,"s":"Sì: l'energia potenziale aumenta, quindi quella cinetica deve diminuire."},
 {"t":"La conservazione dell'energia meccanica vale per la forza gravitazionale perché è una forza centrale.","ok":true,"s":"Sì: è proprio la proprietà, comune a tutte le forze centrali, che permette di definire un'energia potenziale."}
 ]{% endcapture %}
+{% include quiz.html domande=_qmoto
+   label_si="Un'affermazione vera sul moto e l'energia meccanica nel campo gravitazionale"
+   label_no="Un'affermazione falsa sul moto e l'energia meccanica nel campo gravitazionale"
+   id="q-moto" %}
 {% include box-end.html %}
 
 

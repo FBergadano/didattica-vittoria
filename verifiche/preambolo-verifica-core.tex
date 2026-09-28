@@ -1,0 +1,156 @@
+% ============================================================
+%  PREAMBOLO CONDIVISO PER LE VERIFICHE
+%  (tutto tranne il font, caricato a monte da chi include questo
+%  file: preambolo-verifica.tex oppure preambolo-verifica-dsa.tex)
+%
+%  Versione ridotta di ../latex/preamble.tex: qui mancano di
+%  proposito tutte le cose pensate per gli appunti (mdanimation,
+%  riassunto, provatu, QR nel margine, modalitaesercizi/rigaesercizi,
+%  gli ambienti exercise/expsolution con link "vai alla soluzione")
+%  perché in una verifica non servono mai.
+% ============================================================
+
+% ============================================================
+%  LINGUE
+% ============================================================
+\usepackage{polyglossia}
+\setmainlanguage{italian}
+
+% ============================================================
+%  MATEMATICA
+% ============================================================
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{cancel}
+
+% Spaziatura display math
+\setlength{\abovedisplayskip}{4pt}
+\setlength{\belowdisplayskip}{4pt}
+\setlength{\abovedisplayshortskip}{2pt}
+\setlength{\belowdisplayshortskip}{2pt}
+
+% Comandi matematici
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\tonde}[1]{\left(#1\right)}
+\newcommand{\quadre}[1]{\left[#1\right]}
+\newcommand{\graffe}[1]{\left\lbrace #1 \right\rbrace}
+
+% ============================================================
+%  UNITÀ DI MISURA
+% ============================================================
+\usepackage{siunitx}
+\sisetup{
+  detect-all,
+  output-decimal-marker = {,}
+}
+
+% ============================================================
+%  LAYOUT E GEOMETRIA
+% ============================================================
+\usepackage[centering, includeheadfoot]{geometry}
+\geometry{
+  paperwidth  = 170mm,
+  paperheight = 240mm,
+  top         = 1.5cm,
+  bottom      = 1.5cm,
+  inner       = 1.5cm,
+  outer       = 1.5cm,
+  twoside,
+}
+
+% Spaziatura testo
+\usepackage{setspace}
+\setstretch{1.18}
+\usepackage{parskip}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.25\baselineskip plus 1pt minus 1pt}
+
+\raggedbottom
+
+% ============================================================
+%  INTESTAZIONI E PIÈ DI PAGINA
+% ============================================================
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% ============================================================
+%  TITOLI
+% ============================================================
+\usepackage{titlesec}
+
+\titleformat{\chapter}[block]
+  {\normalfont\LARGE\bfseries\color{cyan}}
+  {\rule{\textwidth}{.5pt}\\[0.1em]\centering}
+  {1em}
+  {\huge\scshape\centering}
+  [\vspace{-0.2em}\rule{\textwidth}{0.5pt}]
+
+\titleformat{\section}[block]
+  {\normalfont\Large\bfseries\color{cyan}}{\thesection}{1em}{}
+
+\titlespacing*{\chapter} {0pt}{-30pt}{8pt}
+\titlespacing*{\section} {0pt}{0.8\baselineskip}{0.3\baselineskip}
+
+% ============================================================
+%  LISTE
+% ============================================================
+\usepackage[inline]{enumitem}
+\setlist{itemsep=0pt, parsep=0pt, topsep=3pt, partopsep=0pt}
+% Itemsep più generoso per gli esercizi delle verifiche (aumentato
+% rispetto al default: qui lo spazio serve per far svolgere i calcoli).
+\setlist[enumerate]{itemsep=14pt}
+\newlist{sceltamultipla}{enumerate}{1}
+\setlist[sceltamultipla,1]{%
+  label=\textcolor{gray}{\fbox{\textbf{\footnotesize\makebox[1.2em]{\Alph*}}}},
+  leftmargin=*,
+  itemsep=1pt,
+  topsep=2pt
+}
+
+% ============================================================
+%  COLORI
+% ============================================================
+\usepackage{xcolor}
+\definecolor{ciano}{RGB}{0, 180, 200}
+\definecolor{gold}  {RGB}{255, 215, 0}
+
+% ============================================================
+%  BOX: MDFRAMED
+% ============================================================
+\usepackage{mdframed}
+
+\newenvironment{mdexam}[1][]
+  {\begin{mdframed}[topline=false,bottomline=false,rightline=false,
+    linecolor=magenta,linewidth=2,frametitlefont=\itshape]
+   \textbf{Allenamento per la verifica. }#1\ignorespaces}
+  {\end{mdframed}}
+
+% Regola d'oro della verifica: da richiamare in cima a ogni verifica.
+\newcommand{\regoladoro}{%
+  \begin{mdframed}[linewidth=2]
+    \textbf{Regola d'oro della verifica.} \textit{Una verifica in
+    bianco vale 4, una verifica perfetta ma copiata vale 2.}
+  \end{mdframed}%
+}
+
+% ============================================================
+%  TESTO E TIPOGRAFIA
+% ============================================================
+\usepackage[normalem]{ulem}
+\usepackage{soul}
+\setulcolor{gray}
+\usepackage{paracol}
+
+% ============================================================
+%  PACCHETTI GRAFICI E VARI
+% ============================================================
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{booktabs}

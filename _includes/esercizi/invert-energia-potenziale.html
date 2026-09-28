@@ -3,7 +3,7 @@ Esercizio a carosello: isola le grandezze nella formula dell'energia potenziale 
 {% endcomment %}
 <div class="iex-widget" id="invCarEnergia">
 <p class="iex-lbl">Isola le altre grandezze</p>
-<p class="iex-hint">Come sopra: cerca la sequenza più breve, poi appuntala sul quaderno. Qui sotto lavoriamo con il <strong>modulo</strong> delle formule (senza il segno meno): il segno resta invariato durante tutti i passaggi, quindi puoi pensare tranquillamente alla versione con il meno davanti.</p>
+<p class="iex-hint">Come sopra: cerca la sequenza più breve, poi appuntala sul quaderno.</p>
 <div class="iex-topnav">
 <button class="iex-navbtn" id="invCarEnergiaprev" onclick="invCarEnergianav(-1)" disabled>&larr; Prec.</button>
 <div class="iex-dots" id="invCarEnergiadots"></div>
@@ -12,43 +12,43 @@ Esercizio a carosello: isola le grandezze nella formula dell'energia potenziale 
 
 <div class="iex-q" id="invCarEnergiarow0">
 <div class="iex-nested">
-{% include invert.html id="inv-en1-m" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="m" %}
+{% include invert.html id="inv-en1-m" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="m" negativo="1" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarEnergiarow1" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-en1-g" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="g" %}
+{% include invert.html id="inv-en1-g" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="g" negativo="1" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarEnergiarow2" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-en1-r" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="r" %}
+{% include invert.html id="inv-en1-r" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="r" negativo="1" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarEnergiarow3" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-en2-G" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="G" %}
+{% include invert.html id="inv-en2-G" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="G" negativo="1" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarEnergiarow4" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-en2-M" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="M" %}
+{% include invert.html id="inv-en2-M" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="M" negativo="1" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarEnergiarow5" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-en2-m" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="m" %}
+{% include invert.html id="inv-en2-m" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="m" negativo="1" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarEnergiarow6" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-en2-r" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="r" %}
+{% include invert.html id="inv-en2-r" variabili="U|G|M|m|r" sinistra="U" destra="G*M*m/r" obiettivo="r" negativo="1" %}
 </div>
 </div>
 

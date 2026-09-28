@@ -91,12 +91,15 @@ function toggleFont() {
 // ── Reading progress bar ───────────────────────────────────────
 (function() {
   var bar = document.getElementById('read-progress');
+  var pct = document.getElementById('read-progress-pct');
   if (!bar) return;
   function update() {
     var doc = document.documentElement;
     var scrolled = doc.scrollTop || document.body.scrollTop;
     var total = doc.scrollHeight - doc.clientHeight;
-    bar.style.width = (total > 0 ? (scrolled / total * 100) : 0) + '%';
+    var p = total > 0 ? (scrolled / total * 100) : 0;
+    bar.style.width = p + '%';
+    if (pct) pct.textContent = Math.round(p) + '%';
   }
   window.addEventListener('scroll', update, { passive: true });
   update();
