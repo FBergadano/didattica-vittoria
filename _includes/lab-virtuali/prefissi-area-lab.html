@@ -2,7 +2,8 @@
 Strumento: si scelgono un prefisso di partenza e uno di arrivo (per misure di
 area) da due menu a tendina e si preme "Mostra" per visualizzare sulla retta
 dei prefissi il fattore di conversione, con l'esponente raddoppiato rispetto
-al caso lineare. Nessun parametro.
+al caso lineare. Stesso motore grafico (frecce curve animate, controllo di
+velocità) di prefissi-e-conversione.html. Nessun parametro.
 {% endcomment %}
 <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:1.1rem 1.4rem;margin:1.2rem 0 1.5rem;">
 <p style="font-size:.92rem;font-weight:bold;margin:0 0 .6rem;color:#374151;">Retta dei prefissi per le <em>aree</em> — ogni passo vale il doppio</p>
@@ -20,6 +21,7 @@ al caso lineare. Nessun parametro.
 <option value="9">kilo (k)</option><option value="10">Mega (M)</option><option value="11">Giga (G)</option><option value="12">Tera (T)</option>
 </select></label>
 <button id="pfxa-go" style="background:#0f766e;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.92rem;">Mostra</button>
+<label style="font-size:.92rem;display:flex;align-items:center;gap:.4rem;">Velocità:&ensp;<input type="range" id="pfxa-speed" min="0.25" max="2" step="0.25" value="0.5"><span id="pfxa-speed-lbl" style="font-size:.82rem;color:#6b7280;min-width:2.6em;">0,5×</span></label>
 </div>
 <canvas id="pfxa-canvas" style="max-width:100%;display:block;"></canvas>
 <div id="pfxa-expl" style="margin-top:.75rem;font-size:.92rem;min-height:2.5rem;color:#374151;">Scegli i prefissi e clicca <strong>Mostra</strong>.</div>
@@ -31,19 +33,57 @@ var MULT=2;
 var PFX_A=[{sym:"p",name:"pico",exp:-12,col:"#7c3aed",big:true},{sym:"n",name:"nano",exp:-9,col:"#4f46e5",big:true},{sym:"μ",name:"micro",exp:-6,col:"#2563eb",big:true},{sym:"m",name:"milli",exp:-3,col:"#0891b2",big:true},{sym:"c",name:"centi",exp:-2,col:"#0d9488",big:false},{sym:"d",name:"deci",exp:-1,col:"#16a34a",big:false},{sym:"—",name:"base",exp:0,col:"#6b7280",big:false},{sym:"da",name:"deca",exp:1,col:"#ca8a04",big:false},{sym:"h",name:"etto",exp:2,col:"#d97706",big:false},{sym:"k",name:"kilo",exp:3,col:"#ea580c",big:true},{sym:"M",name:"Mega",exp:6,col:"#dc2626",big:true},{sym:"G",name:"Giga",exp:9,col:"#be185d",big:true},{sym:"T",name:"Tera",exp:12,col:"#7e22ce",big:true}];
 var STEP_A=[3,3,3,1,1,1,1,1,1,3,3,3];
 var XSA=[25,90,155,220,255,290,325,360,395,430,495,560,625];
-var WA=660,HA=135,LYA=62;
+var WA=660,HA=230,LYA=140;
 var cva=document.getElementById('pfxa-canvas');
 var ctxa=cva.getContext('2d');
 var fromA=document.getElementById('pfxa-from');
 var toA=document.getElementById('pfxa-to');
 var goA=document.getElementById('pfxa-go');
 var explA=document.getElementById('pfxa-expl');
+var speedA=document.getElementById('pfxa-speed');
+var speedLblA=document.getElementById('pfxa-speed-lbl');
 var dprA=window.devicePixelRatio||1;
 cva.width=WA*dprA; cva.height=HA*dprA;
 cva.style.width=WA+'px'; cva.style.height=HA+'px';
 ctxa.scale(dprA,dprA);
+
+function speedMultA(){ return parseFloat(speedA.value)||0.5; }
+speedA.addEventListener('input',function(){
+  speedLblA.textContent=speedMultA().toFixed(2).replace(/0$/,'').replace(/\.$/,'').replace('.',',')+'×';
+});
+
 function supA(n){var m={'0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹','-':'⁻'};return n.toString().split('').map(function(c){return m[c]||c;}).join('');}
-function drawA(hlF,hlT,dotX,dotCol,labels){
+
+// Punto sulla curva quadratica (P0=(x0,LYA), controllo=(midX,peakY), P1=(x1,LYA)) al parametro t
+function arcPointA(x0,x1,peakY,t){
+  var midX=(x0+x1)/2, mt=1-t;
+  var x=mt*mt*x0 + 2*mt*t*midX + t*t*x1;
+  var y=mt*mt*LYA + 2*mt*t*peakY + t*t*LYA;
+  return {x:x,y:y};
+}
+// Disegna una freccia curva (arco) da x0 a x1, che si inarca verso l'alto fino a peakY
+function drawArrowArcA(x0,x1,peakY,color,lw,dashed){
+  var midX=(x0+x1)/2;
+  ctxa.save();
+  ctxa.strokeStyle=color; ctxa.lineWidth=lw; ctxa.lineCap='round';
+  ctxa.setLineDash(dashed?[7,5]:[]);
+  ctxa.beginPath();
+  ctxa.moveTo(x0,LYA);
+  ctxa.quadraticCurveTo(midX,peakY,x1,LYA);
+  ctxa.stroke();
+  ctxa.setLineDash([]);
+  var ang=Math.atan2(LYA-peakY, x1-midX);
+  var hs=9;
+  ctxa.beginPath();
+  ctxa.moveTo(x1,LYA);
+  ctxa.lineTo(x1-hs*Math.cos(ang-0.45), LYA-hs*Math.sin(ang-0.45));
+  ctxa.lineTo(x1-hs*Math.cos(ang+0.45), LYA-hs*Math.sin(ang+0.45));
+  ctxa.closePath();
+  ctxa.fillStyle=color; ctxa.fill();
+  ctxa.restore();
+}
+
+function drawA(hlF,hlT,dot,labels,arcs){
   ctxa.clearRect(0,0,WA,HA);
   var g=ctxa.createLinearGradient(20,0,625,0);
   g.addColorStop(0,'rgba(124,58,237,.1)');g.addColorStop(.5,'rgba(107,114,128,.03)');g.addColorStop(1,'rgba(126,34,206,.1)');
@@ -77,31 +117,31 @@ function drawA(hlF,hlT,dotX,dotCol,labels){
       }
     }
   }
-  if(dotX!==null){ctxa.beginPath();ctxa.arc(dotX,LYA,9,0,Math.PI*2);ctxa.fillStyle=dotCol||'#f59e0b';ctxa.fill();ctxa.strokeStyle='#fff';ctxa.lineWidth=2.5;ctxa.stroke();}
-  if(labels)labels.forEach(function(l){ctxa.fillStyle=l.col||'#111';ctxa.font='bold 12px sans-serif';ctxa.textAlign='center';ctxa.fillText(l.text,l.x,l.y);});
+  if(arcs) arcs.forEach(function(a){ drawArrowArcA(a.x0,a.x1,a.peakY,a.color,a.lw||3,a.dashed); });
+  if(dot){
+    ctxa.beginPath();ctxa.arc(dot.x,dot.y,9,0,Math.PI*2);ctxa.fillStyle=dot.col||'#f59e0b';ctxa.fill();ctxa.strokeStyle='#fff';ctxa.lineWidth=2.5;ctxa.stroke();
+  }
+  if(labels)labels.forEach(function(l){ctxa.fillStyle=l.col||'#111';ctxa.font=(l.font||'bold 12px sans-serif');ctxa.textAlign='center';ctxa.fillText(l.text,l.x,l.y);});
 }
 var runA=false;
 drawA(-1,-1,null,null,null);
 goA.addEventListener('click',function(){
   if(runA)return;
   var fi=parseInt(fromA.value),ti=parseInt(toA.value);
-  if(fi===ti){explA.innerHTML='I due prefissi coincidono: nessuna conversione necessaria.';drawA(fi,ti,XSA[fi],PFX_A[fi].col,null);return;}
+  if(fi===ti){explA.innerHTML='I due prefissi coincidono: nessuna conversione necessaria.';drawA(fi,ti,{x:XSA[fi],y:LYA,col:PFX_A[fi].col},null,null);return;}
   runA=true;goA.disabled=true;
   var dir=(ti>fi)?1:-1,nSteps=Math.abs(ti-fi),stepIdx=0,cumExp=0;
+  var STEP_PEAK=55, SUMMARY_PEAK=85;
+  var doneArcs=[], doneLabels=[];
   function doStep(){
     if(stepIdx>=nSteps){
-      drawA(fi,ti,XSA[ti],PFX_A[ti].col,null);
-      ctxa.save();ctxa.strokeStyle='#f59e0b';ctxa.lineWidth=2.5;ctxa.setLineDash([5,3]);
-      var ay=LYA-36;
-      ctxa.beginPath();ctxa.moveTo(XSA[fi],ay);ctxa.lineTo(XSA[ti],ay);ctxa.stroke();ctxa.setLineDash([]);
-      ctxa.fillStyle='#f59e0b';ctxa.beginPath();
-      if(ti>fi){ctxa.moveTo(XSA[ti]+2,ay);ctxa.lineTo(XSA[ti]-9,ay-5);ctxa.lineTo(XSA[ti]-9,ay+5);}
-      else{ctxa.moveTo(XSA[ti]-2,ay);ctxa.lineTo(XSA[ti]+9,ay-5);ctxa.lineTo(XSA[ti]+9,ay+5);}
-      ctxa.fill();ctxa.restore();
+      var visualY=LYA-SUMMARY_PEAK, ctrlY=LYA-2*SUMMARY_PEAK;
+      var summaryArc={x0:XSA[fi],x1:XSA[ti],peakY:ctrlY,color:'#f59e0b',lw:3,dashed:true};
+      drawA(fi,ti,{x:XSA[ti],y:LYA,col:PFX_A[ti].col},doneLabels,doneArcs.concat([summaryArc]));
       if(cumExp!==0){
         var ctotA=cumExp>=0?'×10'+supA(cumExp):'÷10'+supA(-cumExp);
-        ctxa.save();ctxa.fillStyle='#0f766e';ctxa.font='bold 13px sans-serif';ctxa.textAlign='center';
-        ctxa.fillText('Fattore totale per le aree: '+ctotA,(XSA[fi]+XSA[ti])/2,ay-8);ctxa.restore();
+        ctxa.save();ctxa.fillStyle='#0f766e';ctxa.font='bold 20px sans-serif';ctxa.textAlign='center';
+        ctxa.fillText('Fattore totale: '+ctotA,(XSA[fi]+XSA[ti])/2,visualY-14);ctxa.restore();
       }
       var expDiff=(PFX_A[fi].exp-PFX_A[ti].exp)*MULT;
       var fname=PFX_A[fi].name==='base'?'(unità base)':PFX_A[fi].name;
@@ -121,26 +161,34 @@ goA.addEventListener('click',function(){
     var op=dir>0?'÷':'×';
     var lbl=op+'10'+supA(sExp),lblCol=dir>0?'#dc2626':'#0f766e';
     var x0=XSA[curI],x1=XSA[nxtI],midX=(x0+x1)/2;
+    var visualY=LYA-STEP_PEAK, ctrlY=LYA-2*STEP_PEAK;
     var nextCumExp=cumExp+(dir>0?-sExp:sExp);
     var t0=null;
+    var stepMs=400/speedMultA();
     function frame(ts){
       if(!t0)t0=ts;
-      var prog=Math.min((ts-t0)/400,1);
-      var cx=x0+(x1-x0)*prog;
-      drawA(fi,-1,cx,'#f59e0b',[{x:midX,y:LYA-52,text:lbl,col:lblCol}]);
+      var prog=Math.min((ts-t0)/stepMs,1);
+      var pt=arcPointA(x0,x1,ctrlY,prog);
+      var curArc={x0:x0,x1:x1,peakY:ctrlY,color:lblCol,lw:2.5};
+      var curLabel={x:midX,y:visualY-16,text:lbl,col:lblCol,font:'bold 18px sans-serif'};
+      drawA(fi,-1,{x:pt.x,y:pt.y,col:'#f59e0b'},doneLabels.concat([curLabel]),doneArcs.concat([curArc]));
       if(cumExp!==0){
         var cpfxA=cumExp>=0?'×10'+supA(cumExp):'÷10'+supA(-cumExp);
-        ctxa.save();ctxa.fillStyle='rgba(15,118,110,.8)';ctxa.font='bold 11px sans-serif';ctxa.textAlign='right';
+        ctxa.save();ctxa.fillStyle='rgba(15,118,110,.8)';ctxa.font='bold 13px sans-serif';ctxa.textAlign='right';
         ctxa.fillText('Finora: '+cpfxA,WA-8,HA-8);ctxa.restore();
       }
       if(prog<1){requestAnimationFrame(frame);}
-      else{cumExp=nextCumExp;stepIdx++;setTimeout(doStep,250);}
+      else{
+        doneArcs.push({x0:x0,x1:x1,peakY:ctrlY,color:lblCol,lw:2.5});
+        doneLabels.push({x:midX,y:visualY-16,text:lbl,col:lblCol,font:'bold 18px sans-serif'});
+        cumExp=nextCumExp;stepIdx++;setTimeout(doStep,250/speedMultA());
+      }
     }
     requestAnimationFrame(frame);
   }
   explA.innerHTML='Animazione in corso…';
-  drawA(fi,-1,XSA[fi],'#f59e0b',null);
-  setTimeout(doStep,400);
+  drawA(fi,-1,{x:XSA[fi],y:LYA,col:'#f59e0b'},null,null);
+  setTimeout(doStep,400/speedMultA());
 });
 })();
 </script>

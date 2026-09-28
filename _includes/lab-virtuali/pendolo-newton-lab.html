@@ -13,6 +13,12 @@ sceglie. Rilasciando, il gruppo sollevato oscilla verso il basso, urta le
 palline ferme e lo stesso numero di palline si alza dall'altra estremità,
 alla stessa altezza — il ciclo si ripete all'infinito (nessun attrito)
 finché non si preme "Ferma".
+A ogni rilascio valido viene emesso sull'elemento #ncradleLab un evento
+CustomEvent "ncradle:release" con detail={n, h, m} (numero di palline,
+altezza raggiunta in metri, massa di una pallina in kg), usato da
+esercizio-pendolo-newton-numerico.html per generare i dati dell'esercizio
+numerico collegato; quando cambia il numero totale di palline (slider)
+viene invece emesso "ncradle:idle", per azzerarlo.
 Nessun parametro.
 {% endcomment %}
 <div class="ncradle-widget" id="ncradleLab">
