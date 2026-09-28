@@ -7,7 +7,11 @@ materia: fisica
 numero: 2
 ---
 
-<cit autore="Empedocle, Sulla Natura">
+<cit autore="Chuang-Tzu, capitolo XXII">
+La vita è la miscela armoniosa dello <em>yin</em> e dello <em>yang</em>.
+</cit> 
+
+<!-- <cit autore="Empedocle, Sulla Natura">
 Sole fulgido, Terra, Cielo, Mare
 sono una cosa sola con le loro parti che, disgiuntesi da essi,
 si sono generati negli esseri mortali. Così, 
@@ -17,7 +21,7 @@ Ma sono nemiche le cose che più si differenziano
 per origine e mescolanza e immagini impresse,
 del tutto inadatte a unirsi, e assai addolorate
 per i decreti di Contesa, che diede loro origine.
-</cit>
+</cit> -->
 
 {% include margin-note.html testo="Comprendere l'esistenza di una nuova forza"%}
 Abbiamo imparato a descrivere l'attrazione gravitazionale e a ricondurre ad essa moltissimi fenomeni. Ma ce ne sono alcuni che non possono essere spiegati attraverso l'attrazione gravitazionale e per cui si scopre una nuova origine: la <definizione>forza elettrica</definizione>.
@@ -36,8 +40,8 @@ Ecco un esperimento molto semplice, che sicuramente vi sarà capitato di provare
    didascalia="Simulazione PhET: strofina il palloncino di gomma sul maglione di lana, poi lascialo libero e osserva ciò che succede tra il palloncino e il maglione e tra il palloncino e il muro."
    altezza="550px" %}
 
-{% include fill-def.html prompt="Prova a descrivere tu ciò che vedi. Quali sono le caratteristiche più rilevanti del fenomeno? Puoi scriverlo qui, oppure, se preferisci, su un quaderno.  
-<em>(Nota: la risposta non verrà salvata).</em>" id="fill-elettrostatica" %}
+{% include fill-def.html prompt="Prova a descrivere tu ciò che vedi. Quali sono le caratteristiche più rilevanti del fenomeno?"
+   id="fill-elettrostatica" %}
 Confronta quello che hai notato tu con la seguente descrizione del fenomeno.
 {% include spoiler.html testo="Descrizione del fenomeno del palloncino e del maglione" %}
 La prima cosa da osservare è che <u markdown="span">**tutti** i corpi sono composti da particelle di <definizione>carica positiva</definizione> e da particelle di <definizione>carica negativa</definizione></u>. Le particelle di carica positiva si chiamano <definizione>protoni</definizione>; le particelle di carica negativa si chiamano <definizione>elettroni</definizione>.  

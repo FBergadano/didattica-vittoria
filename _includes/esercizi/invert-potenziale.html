@@ -3,7 +3,7 @@ Esercizio a carosello: isola le grandezze nella formula del potenziale gravitazi
 {% endcomment %}
 <div class="iex-widget" id="invCarPot">
 <p class="iex-lbl">Isola le altre grandezze</p>
-<p class="iex-hint">Come sempre: minor numero di mosse possibile, poi sul quaderno. Anche qui lavoriamo con il <strong>modulo</strong> (senza il segno meno), che resta invariato durante i passaggi.</p>
+<p class="iex-hint">Come sempre: minor numero di mosse possibile, poi sul quaderno.</p>
 <div class="iex-topnav">
 <button class="iex-navbtn" id="invCarPotprev" onclick="invCarPotnav(-1)" disabled>&larr; Prec.</button>
 <div class="iex-dots" id="invCarPotdots"></div>
@@ -24,19 +24,19 @@ Esercizio a carosello: isola le grandezze nella formula del potenziale gravitazi
 
 <div class="iex-q" id="invCarPotrow2" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-pot2-G" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="G" %}
+{% include invert.html id="inv-pot2-G" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="G" negativo="1" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarPotrow3" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-pot2-M" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="M" %}
+{% include invert.html id="inv-pot2-M" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="M" negativo="1" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarPotrow4" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-pot2-r" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="r" %}
+{% include invert.html id="inv-pot2-r" variabili="V|G|M|r" sinistra="V" destra="G*M/r" obiettivo="r" negativo="1" %}
 </div>
 </div>
 

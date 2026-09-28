@@ -286,7 +286,7 @@ Il fatto che sia direttamente proporzionale al quadrato della velocità signific
 L'energia cinetica, essendo un'energia, <u>ha la stessa unità di misura del lavoro: il joule</u>. Questo si può vedere dalla formula $K=\frac 12 m v^2$:
 {% include eq-annotated.html
      id="formula-joule-2"
-     formula="[K]=[m]\cdot[v^2]=\text{kg}\cdot \left(\frac{\text m}{\text{s}}\right)^2 = \text J"
+     formula="[K]=[m]\cdot[v^2]=\text{kg}\cdot \Biggl(\frac{\text m}{\text{s}}\Biggr)^2 = \text J"
      frammenti="[K]|[m]|[v^2]|\text{kg}|\text m|\text{s}|\text J"
      etichette="unità di K|unità di m|unità di v²|chilo|metro|secondo|joule"
      posizioni="alto|basso|alto|basso|alto|basso|alto"
@@ -357,7 +357,7 @@ Anche l'energia potenziale, essendo un'energia, <u>ha la stessa unità di misura
      id="formula-joule-3"
      formula="[U_g]=[m]\cdot[g]\cdot[h]=\text{kg}\cdot\frac{\text{m}}{\text{s}^2}\cdot \text{m} = \text{J}"
      frammenti="[U_g]|[m]|[g]|[h]|\text{J}"
-     etichette="unità di U_g|unità di m|unità di g|unità di h|joule"
+     etichette="unità di $U_g$|unità di m|unità di g|unità di h|joule"
      posizioni="alto|basso|alto|basso|alto"
   %}
 
@@ -911,7 +911,7 @@ La risposta corretta è **A**.
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
-Un uomo tenta di spingere la sua auto. Spingendo al massimo, esercita una forza di $10^3\ \text N$, ma non riesce a spostarla. Qual è il lavoro compiuto?
+Un uomo tenta di spingere la sua auto. Spingendo al massimo, esercita una forza di $10^3\ \text N,$ ma non riesce a spostarla. Qual è il lavoro compiuto?
 
 <div class="iex-choices" id="mcqEx4choices">
 <button class="iex-choice-btn" data-v="a">A. $10^3\ \text J$</button>
@@ -1699,6 +1699,25 @@ Un pendolo di un orologio a muro, di massa $0{,}5\ \text{kg}$, ha un'energia mec
 Nel punto più basso tutta l'energia meccanica è cinetica ($U=0$, prendendolo come riferimento):
 
 $$E = K = \frac12 mv^2 \quad\Rightarrow\quad v = \sqrt{\frac{2E}{m}} = \sqrt{\frac{2\times 4\ \text J}{0{,}5\ \text{kg}}} = \sqrt{16} = 4\ \text{m/s}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Osserva l'animazione seguente: rappresenta un **pendolo di Newton**, il classico giocattolo con una fila di palline identiche sospese a fili tutti della stessa lunghezza. Puoi scegliere tu stesso quante palline usare, poi trascinane una con il mouse: trascinandola verso il bordo più vicino sollevi solo le palline comprese fra quel bordo e quella che hai scelto (a formare un unico gruppo rigido); trascinandola verso il lato opposto sollevi invece tutte le altre. Quanto più in là trascini, tanto più in alto arriva il gruppo. Rilasciala per osservare cosa succede; puoi fermare l'animazione in qualsiasi momento con il pulsante "Ferma".
+
+{% include lab-virtuali/pendolo-newton-lab.html %}
+
+Scegli tu stesso da quante palline e da quale altezza cominciare, poi rispondi alle domande seguenti usando come dati proprio quelli che hai scelto:
+
+{% include esercizi/esercizio-pendolo-newton-numerico.html %}
+
+Prova ora a rispondere anche a questa domanda, con parole tue.
+
+{% include fill-def.html id="fd-pendolo-newton" prompt="Secondo te, perché si alza sempre lo stesso numero di palline che avevi lasciato cadere, e non ad esempio un numero diverso a un'altezza diversa?" %}
+
+{% include ex-sol.html %}
+Il completamento segue lo schema ormai familiare: energia tutta potenziale in alto, tutta cinetica appena prima dell'urto, ed energia meccanica totale $E=K+U_g$ che resta sempre la stessa lungo tutto il percorso.
+
+Per quanto riguarda il numero di palline: se dall'altra parte se ne alzasse uno diverso (o a un'altezza diversa), l'energia meccanica del gruppo dopo l'urto sarebbe diversa da quella di prima, e questo violerebbe la sua conservazione. Poiché tutte le palline hanno la stessa massa, l'unico modo per non violarla è che ne escano esattamente tante quante ne sono entrate, con la stessa velocità: ecco perché risalgono sempre alla stessa altezza $h$. (Per spiegare fino in fondo perché è proprio così — e non, ad esempio, il doppio delle palline a un quarto della velocità, che avrebbe la stessa energia cinetica — serve anche un'altra legge di conservazione, quella della *quantità di moto*, che incontrerai più avanti nei tuoi studi.)
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=3 %}

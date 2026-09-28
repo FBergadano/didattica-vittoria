@@ -996,6 +996,10 @@ Quante volte la superficie di Torino (pari a $1{,}30 \times 10^8$ m²) è compre
 {% include sci.html prima="Rapporto =" coeff="6.3,6.34" exp="2" tol=3 s="≈ 6.3 × 10² (circa 634 volte)" %}
 {% include ex-end.html %}
 
+{% include ex.html diff=2 %}
+{% include esercizi/esercizio-archimede-arenario.html %}
+{% include ex-end.html %}
+
 
 
 

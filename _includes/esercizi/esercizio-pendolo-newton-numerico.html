@@ -1,0 +1,133 @@
+{% comment %}
+Esercizio numerico collegato all'animazione pendolo-newton-lab.html: ascolta
+l'evento "ncradle:release" (pallina rilasciata, con numero di palline n e
+altezza h raggiunta) per generare i dati dell'esercizio, e "ncradle:idle"
+(cambiato il numero totale di palline) per azzerarlo. Va incluso subito
+dopo {% raw %}{% include lab-virtuali/pendolo-newton-lab.html %}{% endraw %}
+nella stessa pagina. Nessun parametro.
+{% endcomment %}
+<div class="ncn-widget" id="ncnQuiz">
+<p class="iex-lbl">Ora calcoliamolo</p>
+<p class="ncn-wait" id="ncnWait">Trascina una pallina nell'animazione qui sopra e rilasciala: qui compariranno i dati da usare per i calcoli.</p>
+<div id="ncnBody" style="display:none">
+<p class="ncn-given" id="ncnGiven"></p>
+
+<ol class="ncn-list">
+<li>Qual è l'energia potenziale gravitazionale del gruppo di palline sollevato, rispetto alla posizione di riposo?
+<div class="iex-ir"><input class="iex-m" id="ncnQ0" type="text" placeholder="valore" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')ncnCheck(0)"><span class="iex-unit">J</span><button class="iex-vbtn" onclick="ncnCheck(0)">Verifica</button></div>
+<div class="iex-fb" id="ncnFb0"></div>
+</li>
+
+<li>Con quale energia cinetica il gruppo impatta le palline ferme, un istante prima dell'urto?
+<div class="iex-ir"><input class="iex-m" id="ncnQ1" type="text" placeholder="valore" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')ncnCheck(1)"><span class="iex-unit">J</span><button class="iex-vbtn" onclick="ncnCheck(1)">Verifica</button></div>
+<div class="iex-fb" id="ncnFb1"></div>
+</li>
+
+<li>Con quale velocità impattano le palline, in quello stesso istante?
+<div class="iex-ir"><input class="iex-m" id="ncnQ2" type="text" placeholder="valore" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')ncnCheck(2)"><span class="iex-unit">m/s</span><button class="iex-vbtn" onclick="ncnCheck(2)">Verifica</button></div>
+<div class="iex-fb" id="ncnFb2"></div>
+</li>
+
+<li>Con quale velocità risalgono le palline dall'altra parte, un istante dopo l'urto?
+<div class="iex-ir"><input class="iex-m" id="ncnQ3" type="text" placeholder="valore" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')ncnCheck(3)"><span class="iex-unit">m/s</span><button class="iex-vbtn" onclick="ncnCheck(3)">Verifica</button></div>
+<div class="iex-fb" id="ncnFb3"></div>
+</li>
+
+<li>A quale altezza arriveranno?
+<div class="iex-ir"><input class="iex-m" id="ncnQ4" type="text" placeholder="valore" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')ncnCheck(4)"><span class="iex-unit">m</span><button class="iex-vbtn" onclick="ncnCheck(4)">Verifica</button></div>
+<div class="iex-fb" id="ncnFb4"></div>
+</li>
+
+<li>Quante palline arriveranno dall'altra parte?
+<div class="iex-ir"><input class="iex-m" id="ncnQ5" type="text" placeholder="valore" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')ncnCheck(5)"><span class="iex-unit">palline</span><button class="iex-vbtn" onclick="ncnCheck(5)">Verifica</button></div>
+<div class="iex-fb" id="ncnFb5"></div>
+</li>
+</ol>
+</div>
+</div>
+
+<style>
+.ncn-widget{max-width:480px;margin:1rem auto;padding:.9rem 1rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+.ncn-widget .ncn-wait{font-size:.9rem;color:#6b7280;font-style:italic;}
+.ncn-widget .ncn-given{font-size:.92rem;color:#334155;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:.6rem .8rem;}
+.ncn-widget .ncn-list{padding-left:1.2rem;}
+.ncn-widget .ncn-list li{margin-bottom:1rem;}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('ncnQuiz');
+  if(!root) return;
+  var lab=document.getElementById('ncradleLab');
+  var waitEl=document.getElementById('ncnWait');
+  var bodyEl=document.getElementById('ncnBody');
+  var givenEl=document.getElementById('ncnGiven');
+  var G=10;
+  var targets=null;
+
+  function fmt(v){
+    var r=Math.round(v*1000)/1000;
+    return (r+'').replace('.','{,}');
+  }
+
+  function reset(n,h,m){
+    var U=n*m*G*h;
+    var v=Math.sqrt(2*G*h);
+    targets=[
+      {v:U, tol:0.06},
+      {v:U, tol:0.06},
+      {v:v, tol:0.06},
+      {v:v, tol:0.06},
+      {v:h, tol:0.06},
+      {v:n, tol:0.001}
+    ];
+    givenEl.innerHTML='Hai sollevato <strong>'+n+(n===1?' pallina':' palline')+'</strong> (ciascuna di massa $m='+fmt(m*1000)+'\\ \\text{g}$) fino a un&rsquo;altezza iniziale $h_i='+fmt(h)+'\\ \\text{m}$ rispetto alla posizione di riposo. Usa $g\\approx10\\ \\text{m/s}^2$.';
+    for(var i=0;i<6;i++){
+      var inp=document.getElementById('ncnQ'+i), fb=document.getElementById('ncnFb'+i);
+      inp.value=''; fb.style.display='none'; fb.className='iex-fb'; fb.innerHTML='';
+    }
+    waitEl.style.display='none';
+    bodyEl.style.display='block';
+    if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([givenEl]);
+  }
+
+  function idle(){
+    targets=null;
+    waitEl.style.display='block';
+    bodyEl.style.display='none';
+  }
+
+  function shootConf(el){
+    var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
+    for(var i=0;i<45;i++){
+      var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;
+      p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+      document.body.appendChild(p);
+      (function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);
+    }
+  }
+
+  window.ncnCheck=function(i){
+    if(!targets) return;
+    var inp=document.getElementById('ncnQ'+i), fb=document.getElementById('ncnFb'+i);
+    var val=parseFloat(inp.value.trim().replace(',','.'));
+    var t=targets[i];
+    var ok=!isNaN(val) && Math.abs(val-t.v)<=Math.max(Math.abs(t.v)*t.tol,0.005);
+    fb.style.display='block';
+    if(ok){
+      fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
+      shootConf(inp);
+    } else {
+      fb.className='iex-fb err'; fb.innerHTML='Non &egrave; corretto. Riprova.';
+    }
+  };
+
+  if(lab){
+    lab.addEventListener('ncradle:release',function(e){
+      reset(e.detail.n, e.detail.h, e.detail.m);
+    });
+    lab.addEventListener('ncradle:idle',idle);
+  }
+})();
+</script>
