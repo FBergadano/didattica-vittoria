@@ -102,7 +102,7 @@ function render(){
   cLM={};cMR={};cLR={};pend=null;svg.innerHTML='';
   fb.className='match-fb';fb.textContent='';
   rsz();
-  if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise([document.getElementById('mc-'+ID)]).catch(function(){});}
+  if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise([document.getElementById('mc-'+ID)]).then(rsz).catch(function(){});}
 }
 
 function dpos(dot){var d=dot.getBoundingClientRect(),b=body.getBoundingClientRect();return{x:d.left+d.width/2-b.left,y:d.top+d.height/2-b.top};}
@@ -190,6 +190,8 @@ document.getElementById('mv-'+ID).addEventListener('click',function(){
 });
 document.getElementById('mr-'+ID).addEventListener('click',function(){_lvClear('match',ID);render();});
 window.addEventListener('resize',function(){setTimeout(rsz,100);});
+// le voci possono andare a capo: se l'altezza del riquadro cambia, si ridisegnano le linee
+if(window.ResizeObserver)new ResizeObserver(function(){rsz();}).observe(body);
 render();
 restore();
 })();
