@@ -756,7 +756,7 @@ h1.chapter-title {
     }
     th {
       font-weight: 700;
-      border-bottom: 2px solid var(--accent-border, $border);
+      border-bottom: 2px solid #1a202c;   // linea sotto l'intestazione: nera
     }
   }
 }

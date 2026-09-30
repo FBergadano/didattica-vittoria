@@ -1,0 +1,36 @@
+{% comment %}
+Animazione (in loop, senza didascalia): le due equazioni F = m a (secondo
+principio) e F = m g (forza peso) compaiono affiancate; le due F si
+illuminano (sono la stessa forza), le equazioni si fondono in m a = m g,
+le m si cancellano e resta a = g, incorniciata. Lo studente può mettere in
+pausa, ricominciare e scegliere la velocità (motore: formula-anim-engine.html).
+Nessun parametro.
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap"><canvas id="cv-aug"></canvas></div>
+<script>
+FormulaAnim.create({id:'cv-aug',W:420,H:92,cycle:10.5,still:8,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,Y=62,V={it:true,vec:true},I={it:true};
+  var h=p(t,1.0,1.5)*(1-p(t,2.6,3.2));        // evidenzia le due F
+  var fadeEq=1-p(t,2.5,3.1);                   // spariscono "F ="
+  var pB=p(t,2.7,3.7);                         // fusione in m a = m g
+  var pX=p(t,4.1,4.7);                         // cancellazione delle m
+  var mAl=1-p(t,4.9,5.4);
+  var pD=p(t,5.3,6.1);                         // a = g al centro
+  var box=p(t,6.1,6.7);
+  var colF=mix(A.DARK,A.OR,h),colR=mix(A.DARK,A.TEAL,box);
+  // arco che collega le due F (sono la stessa forza)
+  A.arc(62,32,171,-6,282,32,h);
+  A.tok('F',60,Y,fadeEq,colF,V);
+  A.tok('=',88,Y,fadeEq,A.DARK);
+  A.tok('F',282,Y,fadeEq,colF,V);
+  A.tok('=',310,Y,fadeEq,A.DARK);
+  var m1=L(114,158,pB),m2=L(336,240,pB);
+  A.tok('m',m1,Y,mAl,A.DARK,I);A.slash(m1,Y,pX,mAl);
+  A.tok('m',m2,Y,mAl,A.DARK,I);A.slash(m2,Y,pX,mAl);
+  A.tok('a',L(L(136,180,pB),188,pD),Y,1,colR,V);
+  A.tok('=',210,Y,p(t,3.0,3.6),colR);
+  A.tok('g',L(L(358,262,pB),232,pD),Y,1,colR,V);
+  A.box(166,Y-34,88,46,box);
+}});
+</script>

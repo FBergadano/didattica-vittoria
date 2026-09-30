@@ -96,11 +96,44 @@ Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun p
 <div class="iex-fb" id="iexGfb6"></div>
 </div>
 
+<div class="iex-q" id="iexGrow7" style="display:none">
+<p class="iex-qt">Immagina che la Terra venga compressa fino a metà del suo raggio, senza perdere massa. Con che forza attirerebbe la Luna (che resta alla stessa distanza dal centro della Terra)?</p>
+{% capture _oG7 %}[
+{"v":"a","t":"Con una forza 4 volte più intensa"},
+{"v":"b","t":"Con una forza 2 volte più intensa"},
+{"v":"c","t":"Con la stessa forza di prima"},
+{"v":"d","t":"Con una forza 4 volte meno intensa"}
+]{% endcapture %}
+{% include mcq.html id="mqG7" opts=_oG7 ok="c" s="Nella legge di gravitazione $r$ è la distanza fra i <strong>centri</strong>: la massa della Terra non cambia e la distanza fra i centri nemmeno, quindi la forza resta identica. Il raggio della Terra non compare nella formula!" %}
+</div>
+
+<div class="iex-q" id="iexGrow8" style="display:none">
+<p class="iex-qt">La Luna è attratta sia dalla Terra sia dal Sole. Il Sole ha una massa circa $333\,000$ volte quella della Terra, ma è circa $390$ volte più lontano dalla Luna di quanto lo sia la Terra. Chi attira la Luna con più forza?</p>
+{% capture _oG8 %}[
+{"v":"a","t":"La Terra, con una forza molto più intensa (circa 1000 volte)"},
+{"v":"b","t":"La Terra, con una forza di poco più intensa"},
+{"v":"c","t":"Il Sole, con una forza circa doppia rispetto a quella della Terra"},
+{"v":"d","t":"Le due forze sono esattamente uguali, altrimenti la Luna non orbiterebbe attorno alla Terra"}
+]{% endcapture %}
+{% include mcq.html id="mqG8" opts=_oG8 ok="c" s="$\dfrac{F_{\text{Sole}}}{F_{\text{Terra}}} = \dfrac{M_\odot}{M_\oplus}\cdot\left(\dfrac{r_{\text{Terra-Luna}}}{r_{\text{Sole-Luna}}}\right)^2 = \dfrac{333\,000}{390^2}\approx 2{,}2$. Sorprendente: il Sole attira la Luna più del doppio della Terra! La Luna resta comunque legata alla Terra perché anche la Terra è attirata dal Sole in modo quasi identico, e le due orbitano attorno al Sole insieme." %}
+</div>
+
+<div class="iex-q" id="iexGrow9" style="display:none">
+<p class="iex-qt">Due sfere di piombo sono appoggiate l'una all'altra (a contatto). Le si sostituisce con due sfere di piombo di raggio <strong>doppio</strong>, anch'esse a contatto. Come cambia la forza con cui si attraggono? (Suggerimento: se il raggio raddoppia, il volume, e quindi la massa, diventa $2^3=8$ volte più grande.)</p>
+{% capture _oG9 %}[
+{"v":"a","t":"Resta uguale"},
+{"v":"b","t":"Diventa 4 volte più intensa"},
+{"v":"c","t":"Diventa 16 volte più intensa"},
+{"v":"d","t":"Diventa 64 volte più intensa"}
+]{% endcapture %}
+{% include mcq.html id="mqG9" opts=_oG9 ok="c" s="Ciascuna massa diventa $8$ volte più grande, quindi il prodotto $m_1m_2$ diventa $64$ volte più grande. Ma anche la distanza fra i centri (che per due sfere a contatto è la somma dei raggi) raddoppia, e al denominatore compare al quadrato: $\dfrac{64}{2^2}=16$." %}
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=7, cur=0, ok=[false,false,false,false,false,false,false];
+  var N=10, cur=0, ok=[false,false,false,false,false,false,false,false,false,false];
   var restoring=false;
   function updateDots(){
     var dots=document.querySelectorAll('#iexGdots .iex-dot');
@@ -277,5 +310,12 @@ Esercizio a carosello (Verifica Subito!) sull'esperimento di Cavendish. Nessun p
   }
   restoring=false;
   updateDots();
+
+  // Domande a scelta multipla aggiunte (mcq.html): pallino verde quando si risponde giusto
+  for(var q=7;q<N;q++)(function(q){
+    var el=document.getElementById('iexGrow'+q);if(!el)return;
+    el.addEventListener('iex:correct',function(){ok[q]=true;updateDots();});
+    if(el.querySelector('.iex-choices[data-ok="1"]')){ok[q]=true;updateDots();}
+  })(q);
 })();
 </script>

@@ -8,6 +8,21 @@
 %  riassunto, provatu, QR nel margine, modalitaesercizi/rigaesercizi,
 %  gli ambienti exercise/expsolution con link "vai alla soluzione")
 %  perché in una verifica non servono mai.
+%
+%  IMPORTANTE per chi crea una nuova cartella sotto verifiche/: questo
+%  file (e preambolo-verifica.tex/-dsa.tex, e i font di Atkinson per
+%  la Fila C) vengono trovati SOLO grazie a TEXINPUTS/OPENTYPEFONTS
+%  impostate nel .latexmkrc di quella cartella (i riferimenti sono a
+%  nome nudo apposta, senza "../.." fissi, per non dipendere dalla
+%  profondità della cartella). Ogni cartella con file .tex sotto
+%  verifiche/ deve avere un .latexmkrc con:
+%    $out_dir = 'build';
+%    $ENV{'TEXINPUTS'} = 'N×../' . ($ENV{'TEXINPUTS'} ? ':'.$ENV{'TEXINPUTS'} : ':');
+%    $ENV{'OPENTYPEFONTS'} = 'N×../fonts//' . ($ENV{'OPENTYPEFONTS'} ? ':'.$ENV{'OPENTYPEFONTS'} : ':');
+%  dove "N×../" è il percorso relativo dalla cartella corrente fino a
+%  verifiche/ (es. "../../" se il file è in verifiche/Materia/Classe/,
+%  "../../../" se c'è una sottocartella in più). OPENTYPEFONTS serve
+%  solo se in quella cartella si usa preambolo-verifica-dsa.tex (Fila C).
 % ============================================================
 
 % ============================================================

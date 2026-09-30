@@ -1,0 +1,72 @@
+{% comment %}
+Animazione (in loop, senza didascalia): "togliamo la massa esploratrice m",
+cioè dividiamo entrambi i membri per m. Parte da  X = [−] G·Mm/r^k,
+la m al numeratore si illumina, entrambi i membri vengono divisi per m
+(a sinistra compare X/m, a destra una m al denominatore), le due m a destra
+si semplificano, poi X/m si trasforma nella nuova grandezza Y e il risultato
+Y = [−] G·M/r^k viene incorniciato. Lo studente può mettere in pausa,
+ricominciare e scegliere la velocità (motore: formula-anim-engine.html).
+
+Parametri:
+  id   — ID univoco (obbligatorio se ce n'è più d'una nella pagina)
+  da   — simbolo di partenza (es. "F" oppure "U")
+  a    — simbolo di arrivo (es. "g" oppure "V")
+  meno — "true" se la formula ha il segno meno (energia potenziale/potenziale)
+  esp  — esponente di r al denominatore (es. "2"); vuoto = nessun esponente
+
+Esempi:
+  {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-campo" da="F" a="g" esp="2" %}
+  {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-pot" da="U" a="V" meno="true" %}
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+{% assign _tmid = include.id | default: "tm" %}
+<div class="fa-wrap"><canvas id="cv-{{ _tmid }}"></canvas></div>
+<script>
+(function(){
+var DA='{{ include.da | default: "F" }}',AA='{{ include.a | default: "g" }}';
+var MENO={% if include.meno == "true" %}true{% else %}false{% endif %},ESP='{{ include.esp }}';
+FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:11.5,still:9,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,Y=64,I={it:true};
+  var yb=Y-8,yn=yb-7,yd=yb+21;                  // riga di frazione, numeratore, denominatore
+  var OX=MENO?40:50;                            // centra la formula nel riquadro
+  var hm=p(t,0.9,1.4);                          // la m al numeratore si illumina
+  var pDv=p(t,1.8,2.8);                         // dividiamo entrambi i membri per m
+  var pX=p(t,3.2,3.8);                          // le due m a destra si semplificano
+  var mAl=1-p(t,4.0,4.5);
+  var pC=p(t,4.3,5.0);                          // M e r si ricentrano
+  var hL=p(t,5.3,5.8);                          // X/m si illumina…
+  var pY=p(t,6.0,6.8);                          // …e diventa la nuova grandezza
+  var box=p(t,7.0,7.6);
+  var ink=mix(A.DARK,A.TEAL,box);
+  function bar(x0,x1,al,col){
+    if(al<=0.01)return;ctx.globalAlpha=al*A.G;ctx.strokeStyle=col;ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(x0,yb);ctx.lineTo(x1,yb);ctx.stroke();ctx.globalAlpha=1;
+  }
+  function rk(x,al,col){                         // r (con eventuale esponente) al denominatore
+    A.tok('r',x,yd,al,col,{it:true,size:22});
+    if(ESP)A.tok(ESP,x+9,yd-10,al,col,{size:13});
+  }
+  // membro di sinistra: X  →  X/m  →  Y
+  var colX=mix(A.DARK,A.OR,hL);
+  var xl=70+OX;
+  A.tok(DA,xl,L(Y,yn,pDv),1-pY,colX,{it:true,size:L(26,22,pDv)});
+  bar(xl-13,xl+13,pDv*(1-pY),colX);
+  A.tok('m',xl,yd,pDv*(1-pY),mix(A.OR,colX,p(t,3.0,3.5)),{it:true,size:22});
+  A.tok(AA,xl,Y,pY,box>0?ink:mix(A.OR,A.DARK,p(t,6.8,7.2)),I);
+  // uguale, meno, G
+  var x=104+OX;
+  A.tok('=',x,Y,1,ink);
+  if(MENO){x+=24;A.tok('−',x,Y,1,ink);}
+  x+=24;A.tok('G',x,Y,1,ink,I);
+  // frazione di destra
+  var xf=x+50,colm=mix(A.DARK,A.OR,hm);
+  A.tok('M',L(xf-11,xf,pC),yn,1,ink,{it:true,size:22});
+  A.tok('m',xf+12,yn,mAl,colm,{it:true,size:22});A.slash(xf+12,yn+2,pX,mAl);
+  bar(xf-22,xf+22,1,ink);
+  var xr=L(xf,xf-10,pDv);xr=L(xr,xf,pC);
+  rk(ESP?xr-4:xr,1,ink);
+  A.tok('m',xf+13,yd,pDv*mAl,A.OR,{it:true,size:22});A.slash(xf+13,yd+2,pX,mAl);
+  A.box(xl-26,Y-44,xf+32-(xl-26),64,box);
+}});
+})();
+</script>

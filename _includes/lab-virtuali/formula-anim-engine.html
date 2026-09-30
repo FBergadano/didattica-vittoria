@@ -1,0 +1,129 @@
+{% comment %}
+Motore condiviso per le animazioni "di formule" (passaggi algebrici animati
+su canvas, in loop, senza didascalia): es. a-uguale-g-lab.html,
+g-deltav-deltat-lab.html, lavoro-energia-potenziale-lab.html.
+Non si include direttamente nel capitolo: lo includono i singoli file di
+animazione (in cima). Si può includere più volte nella stessa pagina: il
+codice viene definito una volta sola.
+
+Sotto ogni animazione aggiunge i controlli per lo studente:
+pausa/riprendi, ricomincia, velocità (0,5× · 1× · 1,5× · 2×).
+L'animazione parte quando entra nello schermo e si ferma quando esce.
+In stampa si vede il fotogramma "still" (il risultato finale), senza pulsanti.
+
+Uso (dentro un file di animazione):
+  <div class="fa-wrap"><canvas id="cv-xxx"></canvas></div>
+  <script>
+  FormulaAnim.create({id:'cv-xxx', W:420, H:92, cycle:10.5, still:8,
+    draw:function(A,t){ A.tok('F',60,62,1,A.DARK,{it:true,vec:true}); ... }});
+  </script>
+Aiuti disponibili in A: p(t,a,b) (0→1 con easing fra i tempi a e b), L (interp.
+lineare), mix(col1,col2,s), tok(testo,x,y,alfa,colore,{it,vec,size,sub}),
+slash(x,y,s,alfa) (barra rossa di semplificazione), box(x,y,w,h,alfa,colore),
+arc(x0,y0,cx,cy,x1,y1,alfa,colore) (arco tratteggiato), colori DARK/OR/RED/TEAL.
+{% endcomment %}
+<style>
+.fa-wrap{margin:.6rem auto 1rem;max-width:420px;}
+.fa-wrap canvas{display:block;width:100%;height:auto;}
+.fa-ctrl{display:flex;justify-content:center;align-items:center;gap:.3rem;margin-top:.25rem;font-size:.75rem;color:#6b7280;flex-wrap:wrap;}
+.fa-btn{background:#fff;border:1px solid #cbd5e1;border-radius:4px;padding:0 .45rem;cursor:pointer;font-size:.75rem;color:#334155;line-height:1.6;}
+.fa-btn:hover{border-color:#0e7490;}
+.fa-btn.on{background:#0e7490;border-color:#0e7490;color:#fff;}
+.fa-sep{margin:0 .15rem 0 .5rem;}
+@media print{.fa-ctrl{display:none!important;}}
+</style>
+<script>
+if(!window.FormulaAnim){window.FormulaAnim=(function(){
+  function cl(x){return x<0?0:x>1?1:x;}
+  function ez(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;}
+  function p(t,a,b){return ez(cl((t-a)/(b-a)));}
+  function L(a,b,s){return a+(b-a)*s;}
+  function hx(c){return[parseInt(c.substr(1,2),16),parseInt(c.substr(3,2),16),parseInt(c.substr(5,2),16)];}
+  function mix(c1,c2,s){var a=hx(c1),b=hx(c2);return'rgb('+Math.round(L(a[0],b[0],s))+','+Math.round(L(a[1],b[1],s))+','+Math.round(L(a[2],b[2],s))+')';}
+
+  // velocità di base: a «1×» i tempi scritti nelle animazioni scorrono a metà
+  // velocità (ogni animazione dura il doppio di quanto indicato nei suoi tempi)
+  var BASE=0.5;
+  function create(o){
+    var cv=document.getElementById(o.id);if(!cv)return;
+    var ctx=cv.getContext('2d'),W=o.W,H=o.H,dpr=window.devicePixelRatio||1;
+    cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+    var A={ctx:ctx,W:W,H:H,G:1,p:p,L:L,mix:mix,DARK:'#1a202c',OR:'#c2410c',RED:'#dc2626',TEAL:'#0f766e'};
+    A.vec=function(x,y,w,col){
+      var x0=x-w/2,x1=x+w/2+2;
+      ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=1.4;
+      ctx.beginPath();ctx.moveTo(x0,y);ctx.lineTo(x1,y);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x1+1,y);ctx.lineTo(x1-4,y-3);ctx.lineTo(x1-4,y+3);ctx.closePath();ctx.fill();
+    };
+    A.tok=function(txt,x,y,al,col,op){
+      op=op||{};if(al<=0.001)return;var fs=op.size||26;
+      ctx.globalAlpha=al*A.G;ctx.fillStyle=col;
+      ctx.font=(op.it?'italic ':'')+fs+'px Georgia,serif';ctx.textAlign='center';
+      ctx.fillText(txt,x,y);
+      var w=ctx.measureText(txt).width;
+      if(op.vec)A.vec(x,y-fs*0.8,w,col);
+      if(op.sub){ctx.font=(op.it?'italic ':'')+Math.round(fs*0.55)+'px Georgia,serif';ctx.textAlign='left';ctx.fillText(op.sub,x+w/2,y+fs*0.22);}
+      ctx.globalAlpha=1;
+    };
+    A.slash=function(x,y,s,al){
+      if(s<=0||al<=0.001)return;
+      ctx.globalAlpha=al*A.G;ctx.strokeStyle=A.RED;ctx.lineWidth=2.2;
+      ctx.beginPath();ctx.moveTo(x-10,y+5);ctx.lineTo(L(x-10,x+10,s),L(y+5,y-21,s));ctx.stroke();
+      ctx.globalAlpha=1;
+    };
+    A.box=function(x,y,w,h,al,col){
+      if(al<=0.01)return;
+      ctx.globalAlpha=al*A.G;ctx.strokeStyle=col||A.TEAL;ctx.lineWidth=2;
+      ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,7);else ctx.rect(x,y,w,h);
+      ctx.stroke();ctx.globalAlpha=1;
+    };
+    A.arc=function(x0,y0,cx,cy,x1,y1,al,col){
+      if(al<=0.01)return;
+      ctx.globalAlpha=al*A.G;ctx.strokeStyle=col||A.OR;ctx.lineWidth=1.6;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(x0,y0);ctx.quadraticCurveTo(cx,cy,x1,y1);ctx.stroke();ctx.setLineDash([]);
+      ctx.globalAlpha=1;
+    };
+
+    var CYC=o.cycle,t=0,last=null,speed=1,paused=false,visible=false,raf=null;
+    function render(){
+      ctx.clearRect(0,0,W,H);
+      A.G=p(t,0,0.8)*(1-p(t,CYC-1.1,CYC-0.4));
+      o.draw(A,t);
+    }
+    function frame(ts){
+      if(last!==null&&!paused)t=(t+(ts-last)/1000*speed*BASE)%CYC;
+      last=ts;render();
+      if(visible&&!paused)raf=requestAnimationFrame(frame);else{raf=null;last=null;}
+    }
+    function kick(){if(!raf&&visible&&!paused)raf=requestAnimationFrame(frame);}
+
+    // controlli per lo studente
+    var c=document.createElement('div');c.className='fa-ctrl';
+    c.innerHTML='<button type="button" class="fa-btn fa-pp" title="Pausa">❚❚</button>'+
+      '<button type="button" class="fa-btn fa-rs" title="Ricomincia">↺</button>'+
+      '<span class="fa-sep">velocità</span>'+
+      [['0.5','0,5×'],['1','1×'],['1.5','1,5×'],['2','2×']].map(function(v){
+        return '<button type="button" class="fa-btn'+(v[0]==='1'?' on':'')+'" data-s="'+v[0]+'">'+v[1]+'</button>';}).join('');
+    cv.parentNode.appendChild(c);
+    var pp=c.querySelector('.fa-pp');
+    function setPaused(v){paused=v;pp.textContent=v?'▶':'❚❚';pp.title=v?'Riprendi':'Pausa';if(!v)kick();else render();}
+    pp.onclick=function(){setPaused(!paused);};
+    c.querySelector('.fa-rs').onclick=function(){t=0;render();if(paused)setPaused(false);};
+    c.querySelectorAll('[data-s]').forEach(function(b){
+      b.onclick=function(){speed=parseFloat(b.dataset.s);
+        c.querySelectorAll('[data-s]').forEach(function(x){x.classList.toggle('on',x===b);});};
+    });
+
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches){t=o.still||CYC/2;setPaused(true);}
+    // in stampa si vede il fotogramma finale (il risultato)
+    window.addEventListener('beforeprint',function(){t=o.still||CYC/2;render();});
+    render();
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){es.forEach(function(e){
+        visible=e.isIntersecting;if(visible)kick();
+      });},{threshold:0.3}).observe(cv);
+    }else{visible=true;kick();}
+  }
+  return {create:create};
+})();}
+</script>

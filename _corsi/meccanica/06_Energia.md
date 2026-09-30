@@ -93,13 +93,13 @@ In particolare, poiché l'attrito ha sempre verso opposto rispetto al moto, <u m
 ### L'unità di misura dell'energia: il joule
 Ora che abbiamo una formula per l'energia possiamo anche trovarne l'unità di misura. L'unità di misura del lavoro può essere ricavata dalla formula $L=F\cdot \Delta s$ sostituendo a ogni grandezza la rispettiva unità di misura:
 
-{% include eq-annotated.html
-     id="formula-joule-1"
-     formula="[L]=[F]\cdot[\Delta s]=\text{N}\cdot \text{m}"
-     frammenti="[L]|[F]|[\Delta s]|\text{N}|\text{m}"
-     etichette="unità di L|unità di F|unità di s|newton|metro"
-     posizioni="alto|basso|alto|basso|alto"
-  %}
+{% capture _ua_lavoro %}{"lhs":{"s":"L"},
+ "rhs":[{"s":"F","u":"N"},{"o":"·"},{"s":"Δs","u":"m"}]}{% endcapture %}
+{% include lab-virtuali/unita-anim.html id="ua-lavoro" dati=_ua_lavoro %}
+
+Quindi:
+
+$$[L]=[F]\cdot[\Delta s]=\text N\cdot\text m.$$
 
 Questa unità di misura si chiama <definizione>joule</definizione> (simbolo $\text{J}$). Ricordando che il newton è definito come $\text{N} = \text{kg}\cdot\text{m}/\text{s}^2$, si ottiene
 
@@ -140,13 +140,13 @@ Notiamo quindi che la potenza è
 
 Inoltre, notiamo che --- essendo la potenza definita come un lavoro diviso un tempo --- l'unità di misura della potenza corrisponde a
 
-{% include eq-annotated.html
-     id="formula-potenza-unita"
-     formula="[P]=\dfrac{[L]}{[\Delta t]} = \dfrac{\text{J}}{\text{s}}"
-     frammenti="[P]|[L]|[\Delta t]|\text{J}|\text{s}"
-     etichette="unità di misura di P|unità di misura di L|unità di misura del tempo|joule|secondo"
-     posizioni="alto|alto|basso|alto|basso"
-  %}
+{% capture _ua_potenza %}{"lhs":{"s":"P"},
+ "rhs":[{"f":[[{"s":"L","u":"J"}],[{"s":"Δt","u":"s"}]]}]}{% endcapture %}
+{% include lab-virtuali/unita-anim.html id="ua-potenza" dati=_ua_potenza %}
+
+Quindi:
+
+$$[P]=\frac{[L]}{[\Delta t]}=\frac{\text J}{\text s}.$$
 
 Questa unità di misura, essendo un'unità importante, prende un nome proprio e si chiama <definizione>watt</definizione> (simbolo W). Quindi, la relazione diventa
 
@@ -284,13 +284,14 @@ Il fatto che sia direttamente proporzionale al quadrato della velocità signific
 ### L'unità di misura dell'Energia Cinetica
 
 L'energia cinetica, essendo un'energia, <u>ha la stessa unità di misura del lavoro: il joule</u>. Questo si può vedere dalla formula $K=\frac 12 m v^2$:
-{% include eq-annotated.html
-     id="formula-joule-2"
-     formula="[K]=[m]\cdot[v^2]=\text{kg}\cdot \Biggl(\frac{\text m}{\text{s}}\Biggr)^2 = \text J"
-     frammenti="[K]|[m]|[v^2]|\text{kg}|\text m|\text{s}|\text J"
-     etichette="unità di K|unità di m|unità di v²|chilo|metro|secondo|joule"
-     posizioni="alto|basso|alto|basso|alto|basso|alto"
-  %}
+{% capture _ua_cinetica %}{"lhs":{"s":"K"},
+ "rhs":[{"o":"½","drop":true},{"s":"m","u":"kg"},{"o":"·"},{"s":"v","sup":"2","u":"m/s"}],
+ "passi":[["kg",{"o":"·"},{"f":[["m²"],["s²"]]}],["J"]]}{% endcapture %}
+{% include lab-virtuali/unita-anim.html id="ua-cinetica" dati=_ua_cinetica %}
+
+Quindi:
+
+$$[K]=[m]\cdot[v]^2=\text{kg}\cdot\left(\frac{\text m}{\text s}\right)^2=\text{kg}\cdot\frac{\text m^2}{\text s^2}=\text J.$$
 
 {% include esercizi/esercizio-cinetica.html %}
 
@@ -326,22 +327,29 @@ Da questi due esempi comprendiamo che, a differenza dell'energia cinetica, <u>es
 ### L'energia potenziale gravitazionale
 
 {% include margin-note.html testo="Dall'esempio del sollevamento alla formula dell'energia potenziale gravitazionale" %}
-Dall'esempio del sollevamento di un peso, possiamo anche trovare la formula per l'energia potenziale gravitazionale. Infatti, immagina di sollevare una massa $m$ da un'altezza $h_i$ a un'altezza $h_f$. Prendiamo la nostra solita formula del lavoro $L = F\cdot \Delta s$ e applichiamola a questo caso. Nella formula,
-- $F$ è il modulo della forza peso $F_{\text{peso}}=mg$, dove $g$ è l'accelerazione gravitazionale del pianeta;
-- $\Delta s$ è la distanza percorsa, che in questo caso corrisponde alla differenza di altezza $\Delta h$;
-- notiamo che la forza peso (diretta verso il basso) è opposta allo spostamento (diretto verso l'alto), quindi nella nostra formula dobbiamo aggiungere un meno. Pertanto, il lavoro svolto dalla forza peso è
+Dall'esempio del sollevamento di un peso possiamo anche trovare la formula per l'energia potenziale gravitazionale. Immagina di sollevare una massa $m$ da terra (cioè da altezza zero) fino a un'altezza $h$. Prendiamo la nostra solita formula del lavoro e applichiamola alla forza peso:
+- la forza è la forza peso, il cui modulo vale $mg$, dove $g$ è l'accelerazione gravitazionale del pianeta;
+- lo spostamento è l'altezza $h$ a cui abbiamo sollevato il corpo;
+- la forza peso è diretta verso il basso, mentre lo spostamento è verso l'alto: sono opposti, quindi dobbiamo aggiungere un segno meno.
+
+{% include lab-virtuali/lavoro-peso-lab.html %}
+
+Il lavoro svolto dalla forza peso è quindi
 
 $$
-L = -mg \cdot \Delta h.
+L = -mgh.
 $$
 
-Poiché, come abbiamo detto prima, sappiamo che tutto il lavoro si converte in una variazione dell'energia potenziale gravitazionale, allora possiamo scrivere che
+Come abbiamo detto prima, questo lavoro non è sparito: si è trasformato nell'energia potenziale gravitazionale $U_g$ immagazzinata nel corpo sollevato.   
+Il segno meno ci dice che, mentre la forza peso compie un lavoro negativo, l'energia potenziale acquisita è **positiva**:
 
 $$
-L = - \Delta U_g.
+L = -U_g.
 $$
 
-Uguagliando le due formule per $L$, possiamo comprendere che la formula dell'energia potenziale è
+Mettendo insieme le due espressioni del lavoro otteniamo la formula dell'energia potenziale gravitazionale:
+
+{% include lab-virtuali/lavoro-energia-potenziale-lab.html %}
 
 $$
 U_g = mgh.
@@ -353,25 +361,23 @@ $$
 
 Anche l'energia potenziale, essendo un'energia, <u>ha la stessa unità di misura del lavoro: il joule</u>. Questo si può vedere dalla formula $U_g=mgh$:
 
-{% include eq-annotated.html
-     id="formula-joule-3"
-     formula="[U_g]=[m]\cdot[g]\cdot[h]=\text{kg}\cdot\frac{\text{m}}{\text{s}^2}\cdot \text{m} = \text{J}"
-     frammenti="[U_g]|[m]|[g]|[h]|\text{J}"
-     etichette="unità di $U_g$|unità di m|unità di g|unità di h|joule"
-     posizioni="alto|basso|alto|basso|alto"
-  %}
+{% capture _ua_potgrav %}{"lhs":{"s":"U","sub":"g"},
+ "rhs":[{"s":"m","u":"kg"},{"o":"·"},{"s":"g","u":"m/s²"},{"o":"·"},{"s":"h","u":"m"}],
+ "passi":[["kg",{"o":"·"},{"f":[[{"t":"m","hl":true},{"o":"·"},{"t":"m","hl":true}],["s²"]]}],
+          ["kg",{"o":"·"},{"f":[[{"t":"m²","hl":true}],["s²"]]}],["J"]]}{% endcapture %}
+{% include lab-virtuali/unita-anim.html id="ua-potgrav" dati=_ua_potgrav %}
+
+Quindi:
+
+$$[U_g]=[m]\cdot[g]\cdot[h]=\text{kg}\cdot\frac{\text m}{\text s^2}\cdot\text m=\text{kg}\cdot\frac{\text m\cdot\text m}{\text s^2}=\text{kg}\cdot\frac{\text m^2}{\text s^2}=\text J.$$
 
 
 {% include box-imp.html testo="Energia Potenziale Gravitazionale" %}
-Il lavoro svolto dalla forza peso per variare l'altezza di un corpo è pari a
-
-$$L_{\text{peso}}= - \Delta U_g,$$
-
-dove $U_g$ è l'energia potenziale gravitazionale, la cui formula corrisponde a 
+Un corpo di massa $m$ che si trova a un'altezza $h$ possiede un'energia potenziale gravitazionale
 
 $$U_g = mgh,$$
 
-ove $m$ è la massa del corpo, $g$ è l'accelerazione gravitazionale e $h$ è l'altezza. 
+ove $g$ è l'accelerazione gravitazionale. È l'energia che si è immagazzinata nel corpo mentre veniva sollevato da terra: il lavoro svolto in quel sollevamento dalla forza peso vale infatti $L=-mgh=-U_g$. 
 
 L'unità di misura dell'energia potenziale gravitazionale è il joule (J).
 

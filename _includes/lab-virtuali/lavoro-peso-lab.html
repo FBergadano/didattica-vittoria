@@ -1,0 +1,56 @@
+{% comment %}
+Animazione (in loop, senza didascalia): dal lavoro L = F · Δs al lavoro della
+forza peso L = −mgh. La F si illumina e diventa mg (modulo della forza peso),
+Δs si illumina e diventa h (lo spostamento è l'altezza), poi due frecce
+opposte (forza verso il basso, spostamento verso l'alto) fanno comparire il
+segno meno. Il risultato L = −mgh viene incorniciato. Lo studente può mettere
+in pausa, ricominciare e scegliere la velocità (motore:
+formula-anim-engine.html). Nessun parametro.
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap"><canvas id="cv-lpeso"></canvas></div>
+<script>
+FormulaAnim.create({id:'cv-lpeso',W:420,H:96,cycle:11,still:8.5,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,Y=62,I={it:true};
+  var hF=p(t,0.9,1.4);                          // F si illumina
+  var pF=p(t,1.7,2.5);                          // F → m g
+  var hS=p(t,2.9,3.4);                          // Δs si illumina
+  var pS=p(t,3.7,4.5);                          // Δs → h (sparisce il puntino)
+  var pAr=p(t,4.9,5.4)*(1-p(t,7.4,8.0));        // frecce opposte
+  var pM=p(t,5.4,6.2);                          // compare il meno
+  var box=p(t,6.6,7.2);
+  var ink=mix(A.DARK,A.TEAL,box);               // colore "a riposo"
+  // colore di un pezzo appena comparso: arancio, poi torna normale
+  function fresh(t0){return mix(A.OR,ink,p(t,t0,t0+0.6));}
+  var sh=-12*pM;                                // col meno, tutto scivola a sinistra
+  A.tok('L',150-24*pM,Y,1,ink,I);
+  A.tok('=',178-24*pM,Y,1,ink);
+  // F → m g
+  A.tok('F',210,Y,1-pF,mix(A.DARK,A.OR,hF),I);
+  A.tok('m',L(210,218,pM)+sh,Y,pF,fresh(2.8),I);
+  A.tok('g',L(232,240,pM)+sh,Y,pF,fresh(2.8),I);
+  // · Δs → h
+  A.tok('·',L(236,246,pF),Y,1-pS,A.DARK);
+  var cS=mix(A.DARK,A.OR,hS);
+  A.tok('Δ',L(254,262,pF),Y,1-pS,cS);
+  A.tok('s',L(270,278,pF),Y,1-pS,cS,I);
+  A.tok('h',L(254,262,pM)+sh,Y,pS,fresh(4.9),I);
+  // il meno cade dall'alto
+  A.tok('−',192+sh,L(Y-40,Y,pM),pM,mix(A.RED,ink,p(t,6.3,6.8)));
+  // frecce opposte: forza peso (giù) e spostamento (su)
+  if(pAr>0.01){
+    ctx.globalAlpha=pAr*A.G;ctx.lineWidth=2.2;
+    var ar=function(x,y0,y1,col,lab){
+      ctx.strokeStyle=col;ctx.fillStyle=col;
+      ctx.beginPath();ctx.moveTo(x,y0);ctx.lineTo(x,y1);ctx.stroke();
+      var d=y1>y0?1:-1;
+      ctx.beginPath();ctx.moveTo(x,y1+2*d);ctx.lineTo(x-5,y1-6*d);ctx.lineTo(x+5,y1-6*d);ctx.closePath();ctx.fill();
+      ctx.font='italic 15px Georgia,serif';ctx.textAlign='left';ctx.fillText(lab,x+7,(y0+y1)/2+5);
+    };
+    ar(335,24,78,A.OR,'mg');
+    ar(380,78,24,A.TEAL,'h');
+    ctx.globalAlpha=1;
+  }
+  A.box(110,Y-34,158,46,box);
+}});
+</script>
