@@ -13,10 +13,11 @@ Parametri:
   a    — simbolo di arrivo (es. "g" oppure "V")
   meno — "true" se la formula ha il segno meno (energia potenziale/potenziale)
   esp  — esponente di r al denominatore (es. "2"); vuoto = nessun esponente
+  fine — "gr" per continuare (solo per il potenziale): V = −G·M/r = −G·M/r² · r = −g r
 
 Esempi:
   {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-campo" da="F" a="g" esp="2" %}
-  {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-pot" da="U" a="V" meno="true" %}
+  {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-pot" da="U" a="V" meno="true" fine="gr" %}
 {% endcomment %}
 {% include lab-virtuali/formula-anim-engine.html %}
 {% assign _tmid = include.id | default: "tm" %}
@@ -24,11 +25,11 @@ Esempi:
 <script>
 (function(){
 var DA='{{ include.da | default: "F" }}',AA='{{ include.a | default: "g" }}';
-var MENO={% if include.meno == "true" %}true{% else %}false{% endif %},ESP='{{ include.esp }}';
-FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:11.5,still:9,draw:function(A,t){
+var MENO={% if include.meno == "true" %}true{% else %}false{% endif %},ESP='{{ include.esp }}',FINE='{{ include.fine }}'==='gr';
+FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:FINE?15.5:11.5,still:FINE?13:9,draw:function(A,t){
   var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,Y=64,I={it:true};
   var yb=Y-8,yn=yb-7,yd=yb+21;                  // riga di frazione, numeratore, denominatore
-  var OX=MENO?40:50;                            // centra la formula nel riquadro
+  var OX=FINE?0:(MENO?40:50);                   // centra la formula nel riquadro
   var hm=p(t,0.9,1.4);                          // la m al numeratore si illumina
   var pDv=p(t,1.8,2.8);                         // dividiamo entrambi i membri per m
   var pX=p(t,3.2,3.8);                          // le due m a destra si semplificano
@@ -36,7 +37,7 @@ FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:11.5,still:9,draw:func
   var pC=p(t,4.3,5.0);                          // M e r si ricentrano
   var hL=p(t,5.3,5.8);                          // X/m si illumina…
   var pY=p(t,6.0,6.8);                          // …e diventa la nuova grandezza
-  var box=p(t,7.0,7.6);
+  var box=FINE?p(t,11.0,11.6):p(t,7.0,7.6);
   var ink=mix(A.DARK,A.TEAL,box);
   function bar(x0,x1,al,col){
     if(al<=0.01)return;ctx.globalAlpha=al*A.G;ctx.strokeStyle=col;ctx.lineWidth=1.6;
@@ -66,7 +67,25 @@ FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:11.5,still:9,draw:func
   var xr=L(xf,xf-10,pDv);xr=L(xr,xf,pC);
   rk(ESP?xr-4:xr,1,ink);
   A.tok('m',xf+13,yd,pDv*mAl,A.OR,{it:true,size:22});A.slash(xf+13,yd+2,pX,mAl);
-  A.box(xl-26,Y-44,xf+32-(xl-26),64,box);
+  var xEnd=xf+32;
+  if(FINE){
+    // continua: = −G·M/r  →  = −G·M/r² · r  →  = −g r
+    var pA=p(t,7.2,7.8),p2=p(t,8.2,8.8),hGr=p(t,9.2,9.7)*(1-p(t,10.6,11.0)),pg=p(t,9.9,10.6);
+    var xa=xf+44,cA=mix(ink,A.OR,hGr);
+    A.tok('=',xa,Y,pA,ink);
+    A.tok('−',xa+22,Y,pA,ink);
+    A.tok('G',xa+44,Y,pA*(1-pg),cA,I);
+    var xq=xa+78;
+    A.tok('M',xq,yn,pA*(1-pg),cA,{it:true,size:22});
+    bar(xq-16,xq+16,pA*(1-pg),cA);
+    A.tok('r',xq,yd,pA*(1-pg),cA,{it:true,size:22});
+    A.tok('2',xq+10,yd-10,p2*(1-pg),mix(A.OR,cA,p(t,8.9,9.3)),{size:13});
+    A.tok('·',xq+28,Y,p2*(1-pg),mix(A.OR,ink,p(t,8.9,9.3)));
+    A.tok('r',L(xq+44,xa+64,pg),Y,p2,mix(A.OR,ink,p(t,8.9,9.3)),I);
+    A.tok('g',xa+44,Y,pg,mix(A.OR,ink,p(t,10.7,11.1)),I);
+    xEnd=L(xq+60,xa+80,pg);
+  }
+  A.box(xl-26,Y-44,xEnd-(xl-26),64,box);
 }});
 })();
 </script>

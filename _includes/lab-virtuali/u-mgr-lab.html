@@ -1,0 +1,50 @@
+{% comment %}
+Animazione (in loop, senza didascalia): le due espressioni dell'energia
+potenziale gravitazionale sono la stessa formula. Parte da U = −mgr; ne
+compare una copia a destra ("= −mgr"), la g si illumina e diventa G·M/r²,
+una r si semplifica con una delle due del denominatore, la m sale al
+numeratore accanto a M e resta U = −mgr = −G·Mm/r, tutto incorniciato.
+Lo studente può mettere in pausa, ricominciare e scegliere la velocità
+(motore: formula-anim-engine.html). Nessun parametro.
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap"><canvas id="cv-umgr"></canvas></div>
+<script>
+FormulaAnim.create({id:'cv-umgr',W:420,H:104,cycle:13,still:10.5,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,I={it:true},Y=64,yb=Y-8,yn=yb-7,yd=yb+21;
+  var pCp=p(t,1.0,1.8);                         // compare la copia a destra
+  var hg=p(t,2.2,2.7);                          // la g si illumina…
+  var pG=p(t,2.9,3.7);                          // …e diventa G·M/r²
+  var hr=p(t,4.1,4.6);                          // le r da semplificare si illuminano
+  var pX=p(t,4.7,5.3);                          // semplificazione
+  var xAl=1-p(t,5.5,6.0);
+  var pM=p(t,6.0,7.0);                          // la m sale al numeratore
+  var box=p(t,7.4,8.0);
+  var ink=mix(A.DARK,A.TEAL,box);
+  function fresh(t0){return mix(A.OR,ink,p(t,t0,t0+0.7));}
+  function bar(x0,x1,al,col){if(al<=0.01)return;ctx.globalAlpha=al*A.G;ctx.strokeStyle=col;ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(x0,yb);ctx.lineTo(x1,yb);ctx.stroke();ctx.globalAlpha=1;}
+  // sinistra: U = − m g r
+  A.tok('U',50,Y,1,ink,I);A.tok('=',76,Y,1,ink);A.tok('−',98,Y,1,ink);
+  A.tok('m',118,Y,1,ink,I);A.tok('g',140,Y,1,ink,I);A.tok('r',160,Y,1,ink,I);
+  // destra: = − m g r  →  = − m · G·M/r² · r  →  = − G·Mm/r
+  var s0=0;                                     // la copia compare sul posto (dissolvenza)
+  A.tok('=',188,Y,pCp,ink);
+  A.tok('−',210+s0+8*pM,Y,pCp,ink);
+  // m: prima davanti, poi sale al numeratore
+  var xm=L(230,286,pM),ym=L(Y,yn,pM)-26*Math.sin(Math.PI*pM),fsm=L(26,22,pM);   // sale con un piccolo arco
+  A.tok('m',xm+s0,ym,pCp,ink,{it:true,size:fsm});
+  // g → G · M/r²
+  A.tok('g',252+s0,Y,pCp*(1-pG),mix(A.DARK,A.OR,hg),I);
+  var pMM=p(t,5.9,6.4);                        // M e la riga di frazione fanno spazio alla m
+  var xG=L(254,238,pM),xF=L(284,276,pM);
+  A.tok('G',xG,Y,pG,fresh(3.8),I);
+  A.tok('M',xF-10*pMM,yn,pG,fresh(3.8),{it:true,size:22});
+  bar(xF-16-4*pMM,xF+16+4*pMM,pG,fresh(3.8));
+  A.tok('r',xF,yd,pG,fresh(3.8),{it:true,size:22});
+  A.tok('2',xF+10,yd-10,pG*xAl,mix(fresh(3.8),A.OR,hr*xAl),{size:13});A.slash(xF+11,yd-8,pX,xAl);
+  // · r finale
+  A.tok('r',L(274,322,pG)+s0,Y,pCp*xAl,mix(A.DARK,A.OR,hr),I);A.slash(L(274,322,pG),Y,pX,xAl);
+  A.box(34,Y-44,L(308,272,pM),66,box);
+}});
+</script>

@@ -1,120 +1,79 @@
 {% comment %}
-Animazione: due masse vengono allontanate di un tratto r, mentre i vettori
-della forza gravitazionale (attrattiva) le tirano continuamente l'una verso
-l'altra, come una molla in tensione — usata per introdurre il lavoro fatto
-contro la forza gravitazionale e l'energia potenziale. Nessun parametro.
+Animazione (in loop, senza didascalia): due masse m ed M vengono allontanate
+fino a distanza r, mentre i vettori della forza gravitazionale (attrattiva)
+le tirano l'una verso l'altra. Poi, sotto, il lavoro della forza
+gravitazionale si calcola passo passo:
+  L = − F × spostamento  →  F diventa G·Mm/r² (la forza si illumina anche
+  nel disegno), lo spostamento diventa r (si illumina la quota r nel
+  disegno), una r si semplifica con una delle due del denominatore  →
+  L = − G·Mm/r, incorniciato.
+Lo studente può mettere in pausa, ricominciare e scegliere la velocità
+(motore: formula-anim-engine.html). Nessun parametro.
 {% endcomment %}
-<div class="vdrag-widget" id="springSep">
-<div class="lift-flow">
-<svg id="springSep-svg" viewBox="0 0 380 200" width="100%" style="max-width:340px;height:auto;display:block;" role="img" aria-label="Animazione: due masse vengono allontanate mentre i vettori della forza gravitazionale le tirano l'una verso l'altra">
-<defs>
-  <radialGradient id="sepM" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
-  <radialGradient id="sepm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0f9ff"/><stop offset="55%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#38bdf8"/></radialGradient>
-  <marker id="sepArrow" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
-</defs>
-
-<line id="springSep-rline" x1="160" y1="50" x2="220" y2="50" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3"/>
-<line id="springSep-rtickL" x1="160" y1="44" x2="160" y2="56" stroke="#94a3b8" stroke-width="1.5"/>
-<line id="springSep-rtickR" x1="220" y1="44" x2="220" y2="56" stroke="#94a3b8" stroke-width="1.5"/>
-<text id="springSep-rlabel" x="190" y="38" text-anchor="middle" font-size="14" fill="#64748b">r</text>
-
-<line id="springSep-arrowA" x1="0" y1="100" x2="0" y2="100" stroke="#dc2626" stroke-width="2.5" marker-end="url(#sepArrow)"/>
-<line id="springSep-arrowB" x1="0" y1="100" x2="0" y2="100" stroke="#dc2626" stroke-width="2.5" marker-end="url(#sepArrow)"/>
-
-<circle id="springSep-m" cx="160" cy="100" r="20" fill="url(#sepm)"/>
-<text id="springSep-mlabel" x="160" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#0369a1">m</text>
-<circle id="springSep-M" cx="220" cy="100" r="28" fill="url(#sepM)"/>
-<text id="springSep-Mlabel" x="220" y="106" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e">M</text>
-</svg>
-
-<p class="lift-eq">
-<span class="lift-fixed" id="springSep-fixed">$L=$</span> <span class="lift-var" id="springSep-var"></span>
-</p>
-</div>
-
-<div class="vdrag-actions">
-<button class="vdrag-check" id="springSep-go">Separa le masse!</button>
-<button class="vdrag-reset" id="springSep-reset" style="display:none;">&#8635; Ricomincia</button>
-</div>
-</div>
-
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap"><canvas id="cv-separa"></canvas></div>
 <script>
-(function(){
-  var ID='springSep';
-  var m=document.getElementById(ID+'-m'), M=document.getElementById(ID+'-M');
-  var mlabel=document.getElementById(ID+'-mlabel'), Mlabel=document.getElementById(ID+'-Mlabel');
-  var arrowA=document.getElementById(ID+'-arrowA'), arrowB=document.getElementById(ID+'-arrowB');
-  var rline=document.getElementById(ID+'-rline'), rtickL=document.getElementById(ID+'-rtickL'), rtickR=document.getElementById(ID+'-rtickR'), rlabel=document.getElementById(ID+'-rlabel');
-  var goBtn=document.getElementById(ID+'-go'), resetBtn=document.getElementById(ID+'-reset');
-  var fixedEl=document.getElementById(ID+'-fixed'), varEl=document.getElementById(ID+'-var');
-  var STAGES=['-F \\times \\text{spostamento}','-G\\dfrac{Mm}{r^2} \\times r','-G\\dfrac{Mm}{r^{\\cancel{2}}} \\times \\cancel{r}','-G\\dfrac{Mm}{r}'];
-  var FADE=300;
-
-  function setStage(i){
-    var tex='$'+STAGES[i]+'$';
-    function apply(){
-      varEl.innerHTML=tex;
-      if(window.MathJax && MathJax.typesetPromise){
-        MathJax.typesetPromise([varEl]).then(function(){ varEl.style.opacity=1; });
-      } else {
-        varEl.style.opacity=1;
-      }
-    }
-    if(varEl.innerHTML===''){ apply(); }
-    else { varEl.style.opacity=0; setTimeout(apply,FADE); }
+FormulaAnim.create({id:'cv-separa',W:420,H:215,cycle:14.5,still:12,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,I={it:true};
+  // ── tempi
+  var pSep=p(t,1.0,3.2);                        // le masse si allontanano
+  var pEq=p(t,3.4,4.0);                         // compare la formula
+  var hF=p(t,4.4,4.9)*(1-p(t,5.9,6.4));         // la forza si illumina
+  var pF=p(t,5.0,5.8);                          // F → G·Mm/r²
+  var hS=p(t,6.2,6.7)*(1-p(t,7.7,8.2));         // lo spostamento (r) si illumina
+  var pS=p(t,6.8,7.6);                          // spostamento → r
+  var pX=p(t,8.1,8.7);                          // si semplifica una r
+  var xAl=1-p(t,8.9,9.4);
+  var pC=p(t,9.3,9.9);                          // si ricompatta
+  var box=p(t,10.1,10.7);
+  // ── disegno: le due masse
+  var Yb=78,xm=L(160,70,pSep),xM=L(220,330,pSep),r0=60,r=xM-xm;
+  function ball(x,rad,c0,c1,c2,lab,lc){
+    var g=ctx.createRadialGradient(x-rad*0.3,Yb-rad*0.4,rad*0.1,x,Yb,rad);
+    g.addColorStop(0,c0);g.addColorStop(0.55,c1);g.addColorStop(1,c2);
+    ctx.globalAlpha=A.G;ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,Yb,rad,0,7);ctx.fill();
+    ctx.fillStyle=lc;ctx.font='600 15px Georgia,serif';ctx.textAlign='center';ctx.fillText(lab,x,Yb+5);ctx.globalAlpha=1;
   }
-
-  var X_START_m=160, X_START_M=220, X_END_m=60, X_END_M=320, R_m=20, R_M=28, Y=100;
-  var R_START=X_START_M-X_START_m;
-  var ARROW_MAX=30, ARROW_MIN=6;
-
-  function render(t){
-    var xm = X_START_m + (X_END_m-X_START_m)*t;
-    var xM = X_START_M + (X_END_M-X_START_M)*t;
-    m.setAttribute('cx',xm); mlabel.setAttribute('x',xm);
-    M.setAttribute('cx',xM); Mlabel.setAttribute('x',xM);
-
-    var r=xM-xm;
-    var alen=Math.max(ARROW_MIN, Math.min(ARROW_MAX, ARROW_MAX*(R_START/r)*(R_START/r)));
-    arrowA.setAttribute('x1',xm+R_m+4); arrowA.setAttribute('y1',Y); arrowA.setAttribute('x2',xm+R_m+4+alen); arrowA.setAttribute('y2',Y);
-    arrowB.setAttribute('x1',xM-R_M-4); arrowB.setAttribute('y1',Y); arrowB.setAttribute('x2',xM-R_M-4-alen); arrowB.setAttribute('y2',Y);
-
-    rline.setAttribute('x1',xm); rline.setAttribute('x2',xM);
-    rtickL.setAttribute('x1',xm); rtickL.setAttribute('x2',xm);
-    rtickR.setAttribute('x1',xM); rtickR.setAttribute('x2',xM);
-    rlabel.setAttribute('x',(xm+xM)/2);
+  // frecce della forza (si accorciano come 1/r²)
+  var alen=Math.max(7,30*(r0/r)*(r0/r)),colFa=mix(A.RED,A.OR,hF);
+  function arrow(x0,x1){
+    ctx.globalAlpha=A.G;ctx.strokeStyle=colFa;ctx.fillStyle=colFa;ctx.lineWidth=2.5+hF;
+    ctx.beginPath();ctx.moveTo(x0,Yb);ctx.lineTo(x1,Yb);ctx.stroke();
+    var d=x1>x0?1:-1;ctx.beginPath();ctx.moveTo(x1+3*d,Yb);ctx.lineTo(x1-5*d,Yb-5);ctx.lineTo(x1-5*d,Yb+5);ctx.closePath();ctx.fill();
+    ctx.globalAlpha=1;
   }
-  render(0);
-
-  function resetAll(){
-    render(0);
-    fixedEl.style.opacity=0;
-    varEl.style.opacity=0; varEl.innerHTML='';
-    goBtn.style.display='inline-block'; goBtn.disabled=false;
-    resetBtn.style.display='none';
-  }
-
-  goBtn.addEventListener('click',function(){
-    goBtn.disabled=true;
-    var t0=performance.now(), DUR=1400;
-    function step(now){
-      var t=Math.min(1,(now-t0)/DUR);
-      var e=t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
-      render(e);
-      if(t<1){ requestAnimationFrame(step); }
-      else {
-        goBtn.style.display='none';
-        resetBtn.style.display='inline-block';
-        fixedEl.style.opacity=1;
-        setTimeout(function(){ setStage(0); },250);
-        setTimeout(function(){ setStage(1); },2100);
-        setTimeout(function(){ setStage(2); },3950);
-        setTimeout(function(){ setStage(3); },5800);
-      }
-    }
-    requestAnimationFrame(step);
-  });
-
-  resetBtn.addEventListener('click',resetAll);
-})();
+  arrow(xm+24,xm+24+alen);arrow(xM-32,xM-32-alen);
+  ball(xm,20,'#f0f9ff','#7dd3fc','#38bdf8','m','#0369a1');
+  ball(xM,28,'#fffbeb','#fde68a','#fbbf24','M','#92400e');
+  // quota r (fra i centri)
+  var colR=mix('#94a3b8',A.OR,hS);
+  ctx.globalAlpha=A.G;ctx.strokeStyle=colR;ctx.lineWidth=1.5+hS;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(xm,24);ctx.lineTo(xM,24);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.moveTo(xm,18);ctx.lineTo(xm,30);ctx.moveTo(xM,18);ctx.lineTo(xM,30);ctx.stroke();ctx.globalAlpha=1;
+  A.tok('r',(xm+xM)/2,19,1,colR,{it:true,size:15});
+  // ── formula
+  var Y=180,ink=mix(A.DARK,A.TEAL,box),yb=Y-8,yn=yb-7,yd=yb+21;
+  function bar(x0,x1,al,col){if(al<=0.01)return;ctx.globalAlpha=al*A.G;ctx.strokeStyle=col;ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(x0,yb);ctx.lineTo(x1,yb);ctx.stroke();ctx.globalAlpha=1;}
+  function fresh(t0){return mix(A.OR,ink,p(t,t0,t0+0.7));}
+  A.tok('L',90,Y,pEq,ink,I);
+  A.tok('=',116,Y,pEq,ink);
+  A.tok('−',138,Y,pEq,ink);
+  // F → G · Mm/r²
+  A.tok('F',160,Y,pEq*(1-pF),mix(A.DARK,A.OR,hF),I);
+  var xf=L(196,190,pC);
+  A.tok('G',160,Y,pF,fresh(6.0),I);
+  A.tok('Mm',xf,yn,pF,fresh(6.0),{it:true,size:22});
+  bar(xf-18,xf+18,pF,fresh(6.0));
+  A.tok('r',xf-4*(1-pC),yd,pF,fresh(6.0),{it:true,size:22});
+  A.tok('2',xf+6,yd-10,pF*xAl,fresh(6.0),{size:13});A.slash(xf+7,yd-8,pX,xAl);
+  // × spostamento → × r
+  var xX=L(184,226,pF);
+  A.tok('×',xX,Y,pEq*xAl,A.DARK);
+  var xSp=L(262,300,pF);
+  ctx.globalAlpha=pEq*(1-pS)*A.G;ctx.fillStyle=mix(A.DARK,A.OR,hS);ctx.font='20px Georgia,serif';ctx.textAlign='center';
+  ctx.fillText('spostamento',xSp,Y-1);ctx.globalAlpha=1;
+  A.tok('r',248,Y,pS*xAl,mix(A.OR,A.DARK,p(t,7.8,8.3)),I);A.slash(248,Y,pX,xAl);
+  A.box(74,Y-44,146,68,box);
+}});
 </script>
