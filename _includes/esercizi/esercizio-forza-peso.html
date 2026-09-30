@@ -1,5 +1,9 @@
 {% comment %}
-Esercizio a carosello (Prova tu!) sulla forza peso. Nessun parametro.
+Esercizio a carosello (Prova tu!) sulla forza peso: due domande semplici
+(F = mg) seguite da quattro più impegnative (Terra schiacciata ai poli,
+pianeti con massa/raggio diversi, quota a cui il peso si riduce a 1/4) e
+due domande di teoria sul terzo principio (anche noi attiriamo la Terra).
+Nessun parametro.
 {% endcomment %}
 <div class="iex-widget" id="iexPeso">
 <p class="iex-lbl">Prova tu!</p>
@@ -19,11 +23,52 @@ Esercizio a carosello (Prova tu!) sulla forza peso. Nessun parametro.
 {% include num.html id="numPeso2" valore="15" unit="kg" %}
 </div>
 
+<div class="iex-q" id="iexPesorow2" style="display:none">
+<p class="iex-qt">La Terra è un po' schiacciata ai poli: al Polo Nord $g\approx 9{,}83\ \text{m/s}^2$, mentre all'equatore $g\approx 9{,}78\ \text{m/s}^2$. Un esploratore di $80\ \text{kg}$ viaggia dal Polo Nord all'equatore. Di quanti newton <em>diminuisce</em> il suo peso?</p>
+{% include num.html id="numPeso3" valore="4" unit="N" tol="5" %}
+</div>
+
+<div class="iex-q" id="iexPesorow3" style="display:none">
+<p class="iex-qt">Un pianeta ha la stessa massa della Terra, ma raggio doppio. Una persona che sulla Terra pesa $600\ \text N$, quanto pesa su quel pianeta?</p>
+{% include num.html id="numPeso4" valore="150" unit="N" %}
+</div>
+
+<div class="iex-q" id="iexPesorow4" style="display:none">
+<p class="iex-qt">Un pianeta ha massa $4$ volte quella della Terra e raggio $3$ volte quello terrestre. Un robot che sulla Terra pesa $900\ \text N$, quanto pesa su quel pianeta?</p>
+{% include num.html id="numPeso5" valore="400" unit="N" %}
+</div>
+
+<div class="iex-q" id="iexPesorow5" style="display:none">
+<p class="iex-qt">A quale altezza $h$ sopra la superficie terrestre bisogna salire perché il proprio peso si riduca a un quarto di quello che si ha a terra? (Raggio terrestre: $R_\oplus\approx 6\,370\ \text{km}$.)</p>
+{% include num.html id="numPeso6" valore="6370" unit="km" tol="2" %}
+</div>
+
+<div class="iex-q" id="iexPesorow6" style="display:none">
+<p class="iex-qt">La Terra genera un campo gravitazionale, e per questo noi siamo soggetti alla forza peso. Ma anche noi abbiamo una massa, e quindi generiamo un campo gravitazionale (piccolissimo): la Terra, immersa nel nostro campo, è attirata verso di noi. Rispetto alla nostra forza peso, la forza con cui noi attiriamo la Terra è…</p>
+{% capture _oP6 %}[
+{"v":"a","t":"molto maggiore, perché la Terra ha una massa enorme"},
+{"v":"b","t":"molto minore, perché il nostro campo è piccolissimo"},
+{"v":"c","t":"uguale in modulo (e opposta in verso)"}
+]{% endcapture %}
+{% include mcq.html id="mqP6" opts=_oP6 ok="c" s="Per il terzo principio della dinamica le due forze hanno lo stesso modulo e la stessa direzione, ma verso opposto: una persona di $70\ \text{kg}$ attira la Terra con circa $690\ \text N$, esattamente come la Terra attira lei. Il nostro campo è piccolissimo, ma agisce su una massa enorme: le due cose si compensano esattamente." %}
+</div>
+
+<div class="iex-q" id="iexPesorow7" style="display:none">
+<p class="iex-qt">Se le due forze sono uguali, perché siamo noi a cadere verso la Terra, e non la Terra verso di noi?</p>
+{% capture _oP7 %}[
+{"v":"a","t":"Perché in realtà la forza sulla Terra è più piccola"},
+{"v":"b","t":"Perché, a parità di forza, la Terra ha una massa enorme e quindi un'accelerazione piccolissima"},
+{"v":"c","t":"Perché la Terra è tenuta ferma dal Sole"},
+{"v":"d","t":"Perché il campo gravitazionale agisce solo sui corpi piccoli"}
+]{% endcapture %}
+{% include mcq.html id="mqP7" opts=_oP7 ok="b" s="Per il secondo principio $a=F/m$. Con $F\approx690\ \text N$: una persona di $70\ \text{kg}$ accelera di circa $9{,}8\ \text{m/s}^2$, la Terra ($5{,}97\times10^{24}\ \text{kg}$) di circa $1{,}2\times10^{-22}\ \text{m/s}^2$. Anche la Terra «cade» verso di noi, ma in modo del tutto impercettibile." %}
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=2, cur=0, ok=[false,false];
+  var N=8, cur=0, ok=[false,false,false,false,false,false,false,false];
   function updateDots(){
     var dots=document.querySelectorAll('#iexPesodots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -54,6 +99,7 @@ Esercizio a carosello (Prova tu!) sulla forza peso. Nessun parametro.
     if(el)el.addEventListener('iex:correct', function(){
       if(!ok[i]){ ok[i]=true; updateDots(); }
     });
+    if(el&&el.querySelector('.iex-choices[data-ok="1"]')){ ok[i]=true; updateDots(); }
   })(i);
 })();
 </script>

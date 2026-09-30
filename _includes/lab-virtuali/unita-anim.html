@@ -1,0 +1,197 @@
+{% comment %}
+AMBIENTE PER LE ANIMAZIONI "UNITÀ DI MISURA" (in loop, senza didascalia).
+Per ricavare l'unità di misura di una grandezza a partire dalla sua formula:
+ 1. compare la formula (es. L = F · Δs);
+ 2. accanto (la formula resta) compare la stessa formula con ogni grandezza
+    racchiusa fra parentesi quadre: [L] = [F] · [Δs]; i numeri e i segni
+    (½, −, …) spariscono, perché non hanno unità di misura;
+ 3. compaiono, una alla volta, le frecce con le etichette "unità di …";
+ 4. a una a una, le parentesi quadre vengono sostituite dalle unità;
+ 5. (facoltativo) compaiono altri passaggi "= …", con le eventuali
+    semplificazioni barrate in rosso; l'ultimo risultato è evidenziato.
+Lo studente può mettere in pausa, ricominciare e scegliere la velocità
+(motore: formula-anim-engine.html).
+
+Parametri:
+  id   — ID univoco (obbligatorio)
+  dati — JSON (via capture) con:
+    "lhs":   la grandezza di cui si cerca l'unità, es. {"s":"L"}
+    "rhs":   la formula, come elenco di pezzi:
+               {"s":"F","u":"N"}           grandezza (simbolo, unità)
+                  facoltativi: "sub":"g" (pedice), "sup":"2" (esponente),
+                               "lab":"etichetta" (default "unità di F")
+               {"o":"·"}                    operatore / simbolo senza unità
+               {"o":"½","drop":true}        sparisce passando alle parentesi
+               {"f":[[numeratore],[denominatore]]}   frazione
+    "passi": (facoltativo) elenco di passaggi successivi, ciascuno un elenco
+             di pezzi di sole unità: "kg" oppure {"t":"kg","x":true} (x =
+             si semplifica, viene barrato), {"t":"m","hl":true} (hl =
+             evidenziato in arancio, es. le due m di m · m che nel passaggio
+             dopo diventano m²), frazioni {"f":[[…],[…]]}, operatori {"o":"·"}.
+
+Esempio:
+  {% capture _u %}{"lhs":{"s":"L"},
+    "rhs":[{"s":"F","u":"N"},{"o":"·"},{"s":"Δs","u":"m"}],
+    "passi":[["J"]]}{% endcapture %}
+  {% include lab-virtuali/unita-anim.html id="ua-lavoro" dati=_u %}
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap" style="max-width:560px"><canvas id="cv-ua-{{ include.id }}"></canvas></div>
+<script>
+(function(){
+var S={{ include.dati }};
+var W=560;
+function norm(n,pos){
+  if(typeof n==='string')return {k:'ut',t:n};
+  if(n.s!=null)return {k:'sym',s:n.s,sub:n.sub||'',sup:n.sup||'',u:n.u||'',lab:n.lab||null,pos:pos};
+  if(n.o!=null)return {k:'op',t:n.o,drop:!!n.drop};
+  if(n.f)return {k:'frac',num:n.f[0].map(function(x){return norm(x,'num');}),den:n.f[1].map(function(x){return norm(x,'den');})};
+  return {k:'ut',t:n.t,x:!!n.x,hl:!!n.hl};
+}
+var LHS=norm(S.lhs,'line');
+var RHS=(S.rhs||[]).map(function(x){return norm(x,'line');});
+var PASSI=(S.passi||[]).map(function(p){return p.map(function(x){return norm(x,'line');});});
+var ORIG=[LHS,{k:'op',t:'='}].concat(RHS),EQ={k:'op',t:'='},EQB={k:'op',t:'=',pad:0.9};
+// grandezze della formula, nell'ordine (per etichette e sostituzioni)
+var SYMS=[];
+(function walk(l){l.forEach(function(n){if(n.k==='sym')SYMS.push(n);else if(n.k==='frac'){walk(n.num);walk(n.den);}});})(RHS);
+var ALL=[LHS].concat(SYMS);
+// tempi
+var tLab=2.4,dLab=0.3,tSub=tLab+dLab*ALL.length+0.9,dSub=0.8;
+SYMS.forEach(function(n,i){n.t0=tSub+dSub*i;});
+var tLabOff=tSub+dSub*SYMS.length+0.2;
+var tP=[],tt=tLabOff+0.5;
+PASSI.forEach(function(p){tP.push(tt);var js=JSON.stringify(p),hasX=js.indexOf('"x":true')>=0,hasH=js.indexOf('"hl":true')>=0;tt+=hasX||hasH?1.8:1.2;});
+var tEnd=PASSI.length?tt:tLabOff+0.5;
+var CYC=tEnd+3.4;
+
+// ── misura e disegno (ctx, A e t vengono aggiornati a ogni fotogramma)
+var ctx=document.createElement('canvas').getContext('2d'),A=null,t=0;
+function cl(x){return x<0?0:x>1?1:x;}
+function ez(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;}
+function p(a,b){return ez(cl((t-a)/(b-a)));}
+function L(a,b,s){return a+(b-a)*s;}
+function font(fs,it){ctx.font=(it?'italic ':'')+fs+'px Georgia,serif';}
+function wT(s,fs,it){font(fs,it);return ctx.measureText(s).width;}
+function dT(s,x,y,fs,it,col,al){if(al<=0.005)return;ctx.globalAlpha=al*A.G;font(fs,it);ctx.fillStyle=col;ctx.textAlign='left';ctx.fillText(s,x,y);ctx.globalAlpha=1;}
+function coreW(n,fs){var s=n.s,w=0;if(s.charAt(0)==='Δ'){w+=wT('Δ',fs,false);s=s.slice(1);}w+=wT(s,fs,true);if(n.sub)w+=wT(n.sub,fs*0.6,true);return w;}
+function coreD(n,x,y,fs,col,al){var s=n.s;if(s.charAt(0)==='Δ'){dT('Δ',x,y,fs,false,col,al);x+=wT('Δ',fs,false);s=s.slice(1);}
+  dT(s,x,y,fs,true,col,al);x+=wT(s,fs,true);if(n.sub)dT(n.sub,x,y+fs*0.22,fs*0.6,true,col,al);}
+function supW(n,fs){return n.sup?wT(n.sup,fs*0.6,false)+1:0;}
+function uStr(n){return n.sup&&/[\/·]/.test(n.u)?'('+n.u+')':n.u;}
+function sOf(n){return n===LHS?0:p(n.t0,n.t0+0.6);}
+function hlOf(n){return n===LHS?0:p(n.t0-0.35,n.t0)*(1-p(n.t0+0.6,n.t0+1.1));}
+function sym(n,x,y,fs,bb,ss,al,rec,hl){
+  var core=coreW(n,fs),br=wT('[',fs,false),sw=supW(n,fs);
+  var wA=core+2*br*bb+sw,us=uStr(n),wU=wT(us,fs,false)+sw,w=L(wA,wU,ss)+fs*0.12,cx=x+w/2;
+  if(!rec)return w;
+  var mix=A.mix,colS=mix(A.DARK,A.OR,hl),colU=n===LHS?A.DARK:mix(A.OR,A.DARK,p(n.t0+0.6,n.t0+1.2));
+  if(ss<0.995){var xa=cx-wA/2,a1=al*(1-ss);
+    if(bb>0.01)dT('[',xa,y,fs,false,colS,a1*bb);
+    coreD(n,xa+br*bb,y,fs,colS,a1);
+    if(bb>0.01)dT(']',xa+br*bb+core,y,fs,false,colS,a1*bb);
+    if(n.sup)dT(n.sup,xa+2*br*bb+core+1,y-fs*0.45,fs*0.6,false,colS,a1);}
+  if(ss>0.005){var xu=cx-wU/2;dT(us,xu,y,fs,false,colU,al*ss);
+    if(n.sup)dT(n.sup,xu+wT(us,fs,false)+1,y-fs*0.45,fs*0.6,false,colU,al*ss);}
+  rec.push({n:n,cx:cx,top:y-fs*0.8,bot:y+fs*0.3});
+  return w;
+}
+// disegna (o solo misura, se rec è null) un elenco di pezzi;
+// o = {b: parentesi 0→1, plain: formula di partenza, full: tutte sostituite, al, col, xp: barrature}
+function lay(list,x,y,fs,o,rec){
+  var x0=x;
+  list.forEach(function(n){
+    if(n.k==='sym'){
+      var ss=o.plain||n===LHS?0:(o.full?1:sOf(n)),hl=o.plain||o.full?0:hlOf(n);
+      x+=sym(n,x,y,fs,o.b,ss,o.al,rec,hl);
+    }else if(n.k==='op'){
+      var f=n.drop?1-o.b:1,w=(wT(n.t,fs,false)+fs*(n.pad||0.5))*f;
+      if(rec)dT(n.t,x+w/2-wT(n.t,fs,false)/2,y,fs,false,o.col||A.DARK,o.al*f);
+      x+=w;
+    }else if(n.k==='ut'){
+      var w2=wT(n.t,fs,false)+fs*0.12;
+      if(rec){dT(n.t,x+fs*0.06,y,fs,false,n.hl&&o.hl?A.mix(o.col||A.DARK,A.OR,o.hl):(o.col||A.DARK),o.al);
+        if(n.x&&o.xp>0.01){ctx.globalAlpha=o.al*A.G;ctx.strokeStyle=A.RED;ctx.lineWidth=2;ctx.beginPath();
+          ctx.moveTo(x,y+4);ctx.lineTo(L(x,x+w2,o.xp),L(y+4,y-fs*0.75,o.xp));ctx.stroke();ctx.globalAlpha=1;}}
+      x+=w2;
+    }else if(n.k==='frac'){
+      var f2=fs*0.85,wn=lay(n.num,0,0,f2,o,null),wd=lay(n.den,0,0,f2,o,null),wf=Math.max(wn,wd)+fs*0.4,ax=y-fs*0.3;
+      if(rec){
+        lay(n.num,x+(wf-wn)/2,ax-f2*0.32,f2,o,rec);
+        lay(n.den,x+(wf-wd)/2,ax+f2*0.98,f2,o,rec);
+        ctx.globalAlpha=o.al*A.G;ctx.strokeStyle=o.col||A.DARK;ctx.lineWidth=1.5;
+        ctx.beginPath();ctx.moveTo(x+fs*0.12,ax);ctx.lineTo(x+wf-fs*0.12,ax);ctx.stroke();ctx.globalAlpha=1;
+      }
+      x+=wf;
+    }
+  });
+  return x-x0;
+}
+// ── impaginazione: una riga sola, oppure (se è troppo lunga) passaggi a capo
+var f0=24;
+var wo0=lay(ORIG,0,0,f0,{b:0,plain:true,al:1},null),wa0=wT('⇒',f0,false)+f0*1.2;
+var wb0=Math.max(lay(ORIG,0,0,f0,{b:1,al:1,plain:true},null),lay(ORIG,0,0,f0,{b:1,full:true,al:1},null));
+var wp0=0;PASSI.forEach(function(pp){wp0+=lay([EQB].concat(pp),0,0,f0,{b:1,al:1},null);});
+var TWO=PASSI.length>0&&wo0+wa0+wb0+wp0>W-44;
+var K=TWO?Math.min(1,(W-16)/(wo0+wa0+wb0),(W-24)/wp0):Math.min(1,(W-44)/(wo0+wa0+wb0+wp0));
+var H=TWO?225:170,Y1=TWO?88:H/2+10,Y2=162;
+
+FormulaAnim.create({id:'cv-ua-{{ include.id }}',W:W,H:H,cycle:CYC,still:tEnd+1,draw:function(AA,tt2){
+  A=AA;t=tt2;ctx=A.ctx;var mix=A.mix;
+  var b=p(1.3,2.1),brAl=p(1.0,1.6);
+  var fin=PASSI.length?p(tEnd-0.4,tEnd+0.2):0;
+  var fs=f0*K;
+  var wo=lay(ORIG,0,0,fs,{b:0,plain:true,al:1},null),wa=wT('⇒',fs,false)+fs*1.2;
+  var wb=lay(ORIG,0,0,fs,{b:b,al:1},null);
+  var pAl=PASSI.map(function(pp,j){return p(tP[j],tP[j]+0.6);});
+  var wps=PASSI.map(function(pp,j){return lay([j===PASSI.length-1?EQB:EQ].concat(pp),0,0,fs,{b:1,al:1},null);});
+  var tot=wo+wa*brAl+wb*brAl;if(!TWO)wps.forEach(function(w,j){tot+=w*pAl[j];});
+  var x=(W-tot)/2;
+  // 1. formula di partenza
+  lay(ORIG,x,Y1,fs,{b:0,plain:true,al:1},[]);x+=wo;
+  // 2. freccia e formula fra parentesi quadre
+  dT('⇒',x+fs*0.6,Y1,fs,false,'#64748b',brAl);x+=wa*brAl;
+  var xEq=x+lay([LHS],0,0,fs,{b:b,al:1},null);          // dove comincia il primo "="
+  var rec=[];lay(ORIG,x,Y1,fs,{b:b,al:brAl},rec);x+=wb*brAl;
+  // 5. passaggi successivi (sulla stessa riga, oppure a capo sotto il primo "=")
+  var wpt=0;wps.forEach(function(w){wpt+=w;});
+  var y=Y1;if(TWO){x=Math.max(8,Math.min(xEq,W-12-wpt));y=Y2;}
+  var eqW=wT('=',fs,false)+fs*0.9,xLast=0;
+  // un'evidenziazione resta accesa finché anche il passaggio successivo è comparso
+  function hlEnd(j){return (j+1<PASSI.length?tP[j+1]:tP[j])+1.6;}
+  PASSI.forEach(function(pp,j){
+    var last=j===PASSI.length-1,col=last?mix(A.DARK,A.TEAL,fin):A.DARK;
+    if(last)xLast=x;
+    lay([last?EQB:EQ].concat(pp),x,y,fs,{b:1,al:pAl[j],col:col,xp:p(tP[j]+0.8,tP[j]+1.3),hl:p(tP[j],tP[j]+0.4)*(1-p(hlEnd(j),hlEnd(j)+0.5))},[]);
+    x+=TWO?wps[j]:wps[j]*pAl[j];
+  });
+  if(fin>0.01){var wl=wps[wps.length-1];A.box(xLast+eqW-fs*0.25,y-fs*1.3,wl-eqW+fs*0.5,fs*1.75,fin);}
+  // 3. etichette "unità di …" con le frecce
+  var lines=0;
+  var labs=rec.map(function(r){
+    var n=r.n,sd=n.pos==='num'?'up':n.pos==='den'?'dn':(lines++%2===0?'up':'dn');
+    var txt='unità di ',fl=Math.max(11,13*K),w=wT(txt,fl,false)+coreW(n,fl),i=ALL.indexOf(n);
+    var al=p(tLab+dLab*i,tLab+dLab*i+0.45)*(1-p(tLabOff,tLabOff+0.5));
+    return {r:r,sd:sd,w:w,fl:fl,txt:txt,al:al,x:Math.max(w/2+3,Math.min(W-w/2-3,r.cx)),lv:0};
+  });
+  ['up','dn'].forEach(function(sd){
+    var l2=labs.filter(function(l){return l.sd===sd;}).sort(function(a,c){return a.x-c.x;});
+    for(var i=1;i<l2.length;i++){var a=l2[i-1],c=l2[i];if(c.x-c.w/2<a.x+a.w/2+6&&a.lv===0)c.lv=1;}
+  });
+  var yUp=Math.max(29,Y1-fs*1.9-16),yDn=Math.min(H-22,Y1+fs*1.5+16);   // livello 0 (vicino) e 1 (più lontano)
+  labs.forEach(function(l){
+    if(l.al<=0.01||brAl<0.5)return;
+    var ly=l.sd==='up'?yUp-l.lv*15:yDn+l.lv*15;
+    var x0=l.x-l.w/2;
+    dT(l.txt,x0,ly,l.fl,false,'#475569',l.al);
+    coreD(l.r.n,x0+wT(l.txt,l.fl,false),ly,l.fl,'#475569',l.al);
+    var y0=l.sd==='up'?ly+4:ly-l.fl,y1=l.sd==='up'?l.r.top:l.r.bot;
+    ctx.globalAlpha=l.al*A.G;ctx.strokeStyle='#94a3b8';ctx.fillStyle='#94a3b8';ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.moveTo(l.x,y0);ctx.lineTo(l.r.cx,y1);ctx.stroke();
+    var ang=Math.atan2(y1-y0,l.r.cx-l.x);
+    ctx.beginPath();ctx.moveTo(l.r.cx,y1);ctx.lineTo(l.r.cx-6*Math.cos(ang-0.4),y1-6*Math.sin(ang-0.4));
+    ctx.lineTo(l.r.cx-6*Math.cos(ang+0.4),y1-6*Math.sin(ang+0.4));ctx.closePath();ctx.fill();ctx.globalAlpha=1;
+  });
+}});
+})();
+</script>

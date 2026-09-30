@@ -1,0 +1,47 @@
+{% comment %}
+Animazione (in loop, senza didascalia): a sinistra la definizione di
+accelerazione a = Δv/Δt, a destra a = g. Le due "a" si illuminano (sono la
+stessa accelerazione), poi la g "salta" al posto della a nella definizione
+(sostituzione) e resta g = Δv/Δt, che scivola al centro e viene
+incorniciata. Lo studente può mettere in pausa, ricominciare e scegliere la
+velocità (motore: formula-anim-engine.html). Nessun parametro.
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap"><canvas id="cv-gdv"></canvas></div>
+<script>
+FormulaAnim.create({id:'cv-gdv',W:420,H:100,cycle:10.5,still:8,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,Y=64,FS2=21,V={it:true,vec:true};
+  // frazione Δv/Δt centrata in x (v vettore)
+  function frac(x,col){
+    ctx.globalAlpha=A.G;ctx.fillStyle=col;ctx.textAlign='left';
+    ctx.font=FS2+'px Georgia,serif';var wD=ctx.measureText('Δ').width;
+    ctx.font='italic '+FS2+'px Georgia,serif';var wv=ctx.measureText('v').width,wt=ctx.measureText('t').width;
+    var wn=wD+wv,wd=wD+wt,wb=Math.max(wn,wd)+10,yn=Y-15,yd=Y+14,yb=Y-8;
+    ctx.font=FS2+'px Georgia,serif';ctx.fillText('Δ',x-wn/2,yn);ctx.fillText('Δ',x-wd/2,yd);
+    ctx.font='italic '+FS2+'px Georgia,serif';ctx.fillText('v',x-wn/2+wD,yn);ctx.fillText('t',x-wd/2+wD,yd);
+    A.vec(x-wn/2+wD+wv/2,yn-FS2*0.8,wv,col);
+    ctx.strokeStyle=col;ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(x-wb/2,yb);ctx.lineTo(x+wb/2,yb);ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+  var h=p(t,1.0,1.5);                          // evidenzia le due a
+  var outR=1-p(t,2.5,3.0);                     // spariscono "a =" a destra
+  var outA=1-p(t,2.9,3.4);                     // sparisce la a a sinistra
+  var pj=p(t,3.0,4.2);                         // la g salta al posto della a
+  var sh=p(t,4.6,5.5)*116;                     // g = Δv/Δt scivola al centro
+  var box=p(t,5.7,6.3);
+  var colA=mix(A.DARK,A.OR,h),colE=mix(A.DARK,A.TEAL,box);
+  // sinistra
+  A.tok('a',60,Y,outA,colA,V);
+  A.tok('=',86+sh,Y,1,colE);
+  frac(124+sh,colE);
+  // destra
+  A.tok('a',290,Y,outR,colA,V);
+  A.tok('=',316,Y,outR,A.DARK);
+  // g: da (342,Y) a (60,Y) lungo un arco, poi scivola con il resto
+  var gx=L(342,60,pj),gy=Y-4*30*pj*(1-pj);
+  var colG=pj>0&&pj<1?mix(A.DARK,A.OR,Math.sin(Math.PI*pj)):colE;
+  A.tok('g',gx+sh,gy,1,colG,V);
+  A.box(158,Y-44,106,68,box);
+}});
+</script>

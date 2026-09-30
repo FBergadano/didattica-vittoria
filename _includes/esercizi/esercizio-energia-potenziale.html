@@ -86,11 +86,44 @@ Esercizio a carosello (Verifica Subito!) su energia potenziale gravitazionale e 
 <div class="iex-sol" id="iexUVsol3">Soluzione: <strong>-1,1 &times; 10<sup>-8</sup> J</strong> — infatti $U_{tot} = U_1+U_2 = -4{,}0\times10^{-9} + (-7{,}0\times10^{-9})$: una semplice somma algebrica, essendo $U$ uno scalare.</div>
 </div>
 
+<div class="iex-q" id="iexUVrow4" style="display:none">
+<p class="iex-qt">Due asteroidi vengono allontanati fino al doppio della loro distanza iniziale. Che cosa succede all'energia potenziale gravitazionale del sistema?</p>
+{% capture _oUV4 %}[
+{"v":"a","t":"Diminuisce: allontanandoli, l'attrazione si indebolisce"},
+{"v":"b","t":"Aumenta: diventa meno negativa, e l'energia necessaria va fornita dall'esterno"},
+{"v":"c","t":"Aumenta: l'energia la fornisce spontaneamente la gravità"},
+{"v":"d","t":"Resta uguale, perché l'energia si conserva sempre"}
+]{% endcapture %}
+{% include mcq.html id="mqUV4" opts=_oUV4 ok="b" s="$U=-G\dfrac{m_1m_2}{r}$: raddoppiando $r$, $U$ si dimezza in valore assoluto, cioè diventa <strong>meno negativa</strong>: aumenta. Per allontanare due masse che si attraggono bisogna vincere la loro attrazione, quindi qualcuno dall'esterno deve compiere un lavoro, che si trasforma proprio nell'aumento di $U$." %}
+</div>
+
+<div class="iex-q" id="iexUVrow5" style="display:none">
+<p class="iex-qt">In un punto $P$ il potenziale generato da una massa $M_1$ vale $-3\ \text{MJ/kg}$, quello generato da una massa $M_2$ vale $-5\ \text{MJ/kg}$. Se in $P$ si mette un oggetto di massa $2\ \text{kg}$, quanto vale la sua energia potenziale gravitazionale totale?</p>
+{% capture _oUV5 %}[
+{"v":"a","t":"$-16\\ \\text{MJ}$"},
+{"v":"b","t":"$-8\\ \\text{MJ}$"},
+{"v":"c","t":"$-4\\ \\text{MJ}$"},
+{"v":"d","t":"$-16\\ \\text{MJ/kg}$"}
+]{% endcapture %}
+{% include mcq.html id="mqUV5" opts=_oUV5 ok="a" s="Per sovrapposizione, $V_{tot}=V_1+V_2=-8\ \text{MJ/kg}$ (somma algebrica: sono scalari). Poi, da $V=U/m$, $U=mV_{tot}=2\ \text{kg}\times(-8\ \text{MJ/kg})=-16\ \text{MJ}$: un'energia, quindi in joule, non in J/kg." %}
+</div>
+
+<div class="iex-q" id="iexUVrow6" style="display:none">
+<p class="iex-qt">Nel campo di una singola massa $M$, una massa esploratrice passa da un punto in cui $V=-8\ \text{MJ/kg}$ a un punto in cui $V=-2\ \text{MJ/kg}$. Che cosa puoi concludere?</p>
+{% capture _oUV6 %}[
+{"v":"a","t":"Si è avvicinata a $M$, e la distanza dal centro si è ridotta a un quarto"},
+{"v":"b","t":"Si è allontanata da $M$, e la distanza dal centro è diventata 4 volte più grande"},
+{"v":"c","t":"Si è allontanata da $M$, e la distanza dal centro è diventata 16 volte più grande"},
+{"v":"d","t":"Non si può dire nulla senza conoscere la massa esploratrice"}
+]{% endcapture %}
+{% include mcq.html id="mqUV6" opts=_oUV6 ok="b" s="Il potenziale è aumentato (è diventato meno negativo), quindi la massa si è allontanata. Poiché $V=-GM/r$ è inversamente proporzionale a $r$ (non a $r^2$), se $|V|$ diventa un quarto, $r$ diventa 4 volte più grande. La massa esploratrice non serve: il potenziale non dipende da essa." %}
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=4, cur=0, ok=[false,false,false,false];
+  var N=7, cur=0, ok=[false,false,false,false,false,false,false];
   var restoring=false;
   var stageIds={0:['iexUVm0','iexUVe0','iexUVu0'],1:['iexUVm1','iexUVe1','iexUVu1'],3:['iexUVm3','iexUVe3','iexUVu3']};
   var mcqChosen=null;
@@ -234,5 +267,12 @@ Esercizio a carosello (Verifica Subito!) su energia potenziale gravitazionale e 
     restoring=false;
     updateDots();
   })();
+
+  // Domande a scelta multipla aggiunte (mcq.html): pallino verde quando si risponde giusto
+  for(var q=4;q<N;q++)(function(q){
+    var el=document.getElementById('iexUVrow'+q);if(!el)return;
+    el.addEventListener('iex:correct',function(){ok[q]=true;updateDots();});
+    if(el.querySelector('.iex-choices[data-ok="1"]')){ok[q]=true;updateDots();}
+  })(q);
 })();
 </script>

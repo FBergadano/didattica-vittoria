@@ -58,13 +58,13 @@ Esempio:
       if(b.disabled) return;
       var chosen=b.dataset.v;
       var isOk=render(chosen);
-      if(isOk) _shoot(b);
+      if(isOk){ _shoot(b); root.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true})); }
       _lvSave('mcq',ID,{chosen:chosen});
     });
   });
 
   typeset(root);
   var saved=_lvLoad('mcq',ID);
-  if(saved && saved.chosen){ render(saved.chosen); }
+  if(saved && saved.chosen){ if(render(saved.chosen)) root.dataset.ok='1'; }
 })();
 </script>

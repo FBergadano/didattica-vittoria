@@ -1,50 +1,163 @@
 {% comment %}
-Esercizio a carosello (Verifica Subito!) guidato sull'unità di misura del campo gravitazionale. Nessun parametro.
+Esercizio guidato (Verifica Subito!) sull'unità di misura del campo
+gravitazionale, in tre tappe che si sbloccano una dopo l'altra:
+ 1. [g] = [F]/[m] = ?/?   — lo studente scrive N e kg da tastiera;
+ 2. compare a fianco [F] = [m][a] ⇒ N = ? · ?   — due menu a tendina (kg, m/s²);
+ 3. ricompare [g] = N/kg, con un'animazione N si trasforma in kg·m/s²;
+    lo studente sceglie (tendina) che cosa resta semplificando: m/s².
+    I due kg vengono barrati e compare il risultato.
+I progressi vengono salvati nel browser. Nessun parametro.
 {% endcomment %}
-<div class="iex-widget" id="iexNkg">
+<style>
+#unk .unk-row{display:flex;flex-wrap:wrap;align-items:center;gap:.8rem 2.2rem;}
+#unk .unk-step{display:inline-flex;align-items:center;flex-wrap:wrap;gap:.35rem;font-size:1.05rem;}
+#unk .unk-hidden{display:none!important;}
+#unk .unk-in-anim{animation:unkIn .6s ease both;}
+@keyframes unkIn{from{opacity:0;transform:translateX(-12px);}to{opacity:1;transform:none;}}
+#unk .unk-frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15rem;}
+#unk .unk-frac>span{padding:.1rem .35rem;display:inline-flex;align-items:center;gap:.2rem;}
+#unk .unk-frac>span:first-child{border-bottom:1.6px solid #1a202c;}
+#unk .unk-u{font-family:Georgia,serif;font-size:1.05rem;position:relative;display:inline-block;transition:color .4s,opacity .4s,transform .4s;}
+#unk input.unk-in{width:3.4rem;text-align:center;border:1.5px solid #67e8f9;border-radius:5px;padding:.12rem .25rem;font-family:Georgia,serif;font-size:1rem;background:#fff;}
+#unk input.unk-in:focus{outline:none;border-color:#0e7490;box-shadow:0 0 0 2px #cffafe;}
+#unk select.unk-sel{border:1.5px solid #67e8f9;border-radius:5px;padding:.12rem .2rem;font-family:Georgia,serif;font-size:.98rem;background:#fff;}
+#unk .unk-ok{border-color:#15803d!important;background:#f0fdf4!important;color:#166534;}
+#unk .unk-err{border-color:#dc2626!important;background:#fef2f2!important;}
+#unk .unk-fb{font-size:.88rem;margin:.45rem 0 0;min-height:1.1em;}
+#unk .unk-fb.ok{color:#0f766e;font-weight:600;}
+#unk .unk-fb.err{color:#dc2626;}
+#unk .unk-s3{margin-top:1.1rem;}
+#unk .unk-morph-out{opacity:0;transform:scale(.4);}
+#unk .unk-hl{color:#c2410c;}
+#unk .unk-strike::after{content:"";position:absolute;left:-2px;right:-2px;top:52%;height:2px;background:#dc2626;transform:rotate(-18deg);transform-origin:left center;animation:unkStrike .5s ease both;}
+@keyframes unkStrike{from{right:100%;}to{right:-2px;}}
+#unk .unk-res{display:inline-flex;align-items:center;gap:.35rem;}
+#unk .unk-final{border:2px solid #0f766e;border-radius:7px;padding:.1rem .5rem;color:#0f766e;font-family:Georgia,serif;font-weight:600;}
+</style>
+<div class="iex-widget" id="unk">
 <p class="iex-lbl">Verifica Subito!</p>
-<p class="iex-hint">Segui i passaggi per scoprire che l'unità di misura del campo, il N/kg, corrisponde proprio a quella dell'accelerazione.</p>
-<div class="iex-topnav">
-<button class="iex-navbtn" id="iexNkgprev" onclick="iexNkgnav(-1)" disabled>&larr; Prec.</button>
-<div class="iex-dots" id="iexNkgdots"></div>
-<button class="iex-navbtn" id="iexNkgnext" onclick="iexNkgnav(1)">Succ. &rarr;</button>
-</div>
+<p class="iex-hint">Scopri passo dopo passo che l'unità di misura del campo corrisponde proprio a quella di un'accelerazione.</p>
 
-<div class="iex-q" id="iexNkgrow0">
-<p class="iex-qt">Parti dalla formula $g = \dfrac{F}{m}$ e sostituisci ogni grandezza con la propria unità di misura.</p>
-<div class="iex-nested">
-{% include unit-derive.html id="ud-g-Nkg" testo="Trova l'unità di misura di g"
-   variabile="g"
-   numeratore_simboli="F" numeratore_corrette="N"
-   denominatore_simboli="m" denominatore_corrette="kg"
-   opzioni="N|kg|J|m|s" %}
+<div class="unk-row">
+  <div class="unk-step" id="unk-s1">
+    <span>$g=\dfrac{F}{m}\;\implies\;[g]=\dfrac{[F]}{[m]}=$</span>
+    <span class="unk-frac">
+      <span><input class="unk-in" id="unk-i1" type="text" autocomplete="off" spellcheck="false" aria-label="unità di misura di F"></span>
+      <span><input class="unk-in" id="unk-i2" type="text" autocomplete="off" spellcheck="false" aria-label="unità di misura di m"></span>
+    </span>
+  </div>
+  <div class="unk-step unk-hidden" id="unk-s2">
+    <span>$F=ma\;\implies\;[F]=[m]\,[a]\;\implies\;\text N=$</span>
+    <select class="unk-sel" id="unk-d1" aria-label="unità di misura della massa"><option value="">—</option><option>m</option><option>kg</option><option>s</option><option>N</option></select>
+    <span>·</span>
+    <select class="unk-sel" id="unk-d2" aria-label="unità di misura dell'accelerazione"><option value="">—</option><option>m/s</option><option>m·s²</option><option>m/s²</option><option>s/m</option></select>
+  </div>
 </div>
-</div>
+<div class="unk-fb" id="unk-fb12"></div>
 
-<div class="iex-q" id="iexNkgrow1" style="display:none">
-<p class="iex-qt">Il newton è a sua volta un'unità derivata. Parti dal secondo principio della dinamica $F = ma$ e scopri di che cosa è fatto un newton, sostituendo massa e accelerazione con le loro unità.</p>
-<div class="iex-nested">
-{% include unit-derive.html id="ud-N-Nkg" testo="Trova l'unità di misura di N"
-   variabile="N"
-   numeratore_simboli="m|a" numeratore_corrette="kg|m/s²"
-   opzioni="kg|m/s²|N|s|m" %}
+<div class="unk-step unk-s3 unk-hidden" id="unk-s3">
+  <span>$[g]=$</span>
+  <span class="unk-frac">
+    <span id="unk-num"><span class="unk-u" id="unk-N">N</span><span class="unk-hidden" id="unk-kgms"><span class="unk-u" id="unk-kg1">kg</span><span class="unk-u">·m/s²</span></span></span>
+    <span><span class="unk-u" id="unk-kg2">kg</span></span>
+  </span>
+  <span class="unk-res unk-hidden" id="unk-q3">
+    <span>$=$</span>
+    <select class="unk-sel" id="unk-d3" aria-label="che cosa resta semplificando"><option value="">semplifica…</option><option>kg·m/s²</option><option>kg/s²</option><option>m/s</option><option>m/s²</option><option>s²/m</option></select>
+  </span>
 </div>
-</div>
-
-<div class="iex-q" id="iexNkgrow2" style="display:none">
-<p class="iex-qt">Ottimo: ora sai che $\text N = \text{kg}\cdot\text m/\text s^2$. Sostituiscilo al posto di N in N/kg e semplifica: a che cosa corrisponde?</p>
-{% capture _optsNkg %}[
-  {"v":"a","t":"$\\text m/\\text s^2$"},
-  {"v":"b","t":"$\\text{kg}\\cdot\\text m/\\text s^2$"},
-  {"v":"c","t":"$\\text{kg}/\\text s^2$"},
-  {"v":"d","t":"$\\text s^2/\\text m$"}
-]{% endcapture %}
-{% include mcq.html id="iexNkgchoices2" opts=_optsNkg ok="a"
-   s="Sostituendo $\text N = \text{kg}\cdot\text m/\text s^2$ in $\text N/\text{kg}$: $\dfrac{\text N}{\text{kg}} = \dfrac{\text{kg}\cdot\text m/\text s^2}{\text{kg}} = \text m/\text s^2$ — il kg si semplifica, e resta proprio l'unità di un'accelerazione." %}
-</div>
-
+<div class="unk-fb" id="unk-fb3"></div>
 </div>
 
 <script>
-setupInvCarousel('iexNkg',3);
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var i1=$('unk-i1'),i2=$('unk-i2'),d1=$('unk-d1'),d2=$('unk-d2'),d3=$('unk-d3');
+  var fb12=$('unk-fb12'),fb3=$('unk-fb3');
+  var st=(window._lvLoad&&_lvLoad('unk','nkg'))||{};
+  function save(){st.i1=i1.value;st.i2=i2.value;st.d1=d1.value;st.d2=d2.value;st.d3=d3.value;if(window._lvSave)_lvSave('unk','nkg',st);}
+  function norm(s){return s.replace(/\s+/g,'').toLowerCase();}
+  function isN(v){return v.trim()==='N'||['newton','newtons'].indexOf(norm(v))>=0;}
+  function isKg(v){return ['kg','chilogrammo','chilogrammi','kilogrammo','kilogrammi'].indexOf(norm(v))>=0;}
+  function mark(el,ok,bad){el.classList.toggle('unk-ok',ok);el.classList.toggle('unk-err',!ok&&bad);}
+  function show(el,anim){el.classList.remove('unk-hidden');if(anim){el.classList.remove('unk-in-anim');void el.offsetWidth;el.classList.add('unk-in-anim');}}
+  function boom(el){if(window._shoot)_shoot(el);}
+  var done1=false,done2=false,done3=false;
+
+  // ── tappa 1: [g] = N/kg (da tastiera)
+  function check1(strict,anim){
+    if(done1)return;
+    var a=isN(i1.value),b=isKg(i2.value);
+    mark(i1,a,strict&&i1.value.trim()!=='');mark(i2,b,strict&&i2.value.trim()!=='');
+    if(a&&b){
+      done1=true;i1.readOnly=i2.readOnly=true;
+      fb12.className='unk-fb ok';fb12.textContent='✓ Esatto! Ma il newton è a sua volta un\'unità derivata: di che cosa è fatto?';
+      show($('unk-s2'),anim);if(anim){boom(i2);d1.focus();}
+    }else if(strict&&i1.value.trim()&&i2.value.trim()){
+      fb12.className='unk-fb err';
+      fb12.textContent=!a&&i1.value.trim().toLowerCase()==='n'?'✗ Attenzione alle maiuscole: il simbolo del newton è N.':'✗ Non ancora: qual è l\'unità di misura di una forza? E di una massa?';
+    }
+  }
+  [i1,i2].forEach(function(el){
+    el.addEventListener('input',function(){el.classList.remove('unk-err');if(!done1)fb12.textContent='';check1(false,true);save();});
+    el.addEventListener('blur',function(){check1(true,true);});
+    el.addEventListener('keydown',function(e){if(e.key==='Enter'){check1(true,true);if(el===i1&&!done1)i2.focus();}});
+  });
+
+  // ── tappa 2: N = kg · m/s² (tendine)
+  function check2(anim){
+    if(done2||!done1)return;
+    var a=d1.value==='kg',b=d2.value==='m/s²';
+    mark(d1,a,d1.value!=='');mark(d2,b,d2.value!=='');
+    if(a&&b){
+      done2=true;d1.disabled=d2.disabled=true;
+      fb12.className='unk-fb ok';fb12.textContent='✓ Esatto: N = kg·m/s². Ora sostituiamolo al posto di N in [g]…';
+      show($('unk-s3'),anim);
+      if(anim){boom(d2);morph(true);}else morph(false);
+    }else if(d1.value&&d2.value){
+      fb12.className='unk-fb err';
+      fb12.textContent=d2.value==='m/s'?'✗ Attenzione: m/s è l\'unità di misura della velocità, non dell\'accelerazione!':
+        (!a?'✗ Qual è l\'unità di misura della massa?':'✗ Qual è l\'unità di misura dell\'accelerazione?');
+    }else{fb12.textContent='';}
+  }
+  [d1,d2].forEach(function(el){el.addEventListener('change',function(){check2(true);save();});});
+
+  // ── animazione: N → kg·m/s²
+  function morph(anim){
+    var N=$('unk-N'),K=$('unk-kgms');
+    function swap(){N.classList.add('unk-hidden');show(K,anim);K.querySelectorAll('.unk-u').forEach(function(u){u.classList.add('unk-hl');});
+      setTimeout(function(){K.querySelectorAll('.unk-u').forEach(function(u){u.classList.remove('unk-hl');});show($('unk-q3'),anim);},anim?1100:0);}
+    if(!anim){swap();return;}
+    setTimeout(function(){N.classList.add('unk-hl');},500);
+    setTimeout(function(){N.classList.add('unk-morph-out');},1100);
+    setTimeout(swap,1500);
+  }
+
+  // ── tappa 3: semplificazione
+  function check3(anim){
+    if(done3||!done2)return;
+    var v=d3.value;if(!v){fb3.textContent='';d3.classList.remove('unk-err');return;}
+    var ok=v==='m/s²';mark(d3,ok,true);
+    if(ok){
+      done3=true;
+      $('unk-kg1').classList.add('unk-strike');$('unk-kg2').classList.add('unk-strike');
+      var fin=function(){
+        var sp=document.createElement('span');sp.className='unk-final';sp.textContent='m/s²';
+        d3.replaceWith(sp);if(anim){sp.classList.add('unk-in-anim');boom(sp);}
+        fb3.className='unk-fb ok';fb3.textContent='✓ Il chilogrammo si semplifica e resta proprio il m/s², l\'unità di misura di un\'accelerazione: N/kg = m/s².';
+      };
+      if(anim)setTimeout(fin,650);else fin();
+    }else{
+      fb3.className='unk-fb err';
+      fb3.textContent=v==='kg·m/s²'?'✗ Hai semplificato qualcosa? Il kg compare sia sopra sia sotto la linea di frazione…':'✗ Non ancora: che cosa si semplifica fra numeratore e denominatore?';
+    }
+  }
+  d3.addEventListener('change',function(){check3(true);save();});
+
+  // ── ripristino dei progressi salvati
+  if(st.i1)i1.value=st.i1;if(st.i2)i2.value=st.i2;
+  check1(false,false);
+  if(done1){if(st.d1)d1.value=st.d1;if(st.d2)d2.value=st.d2;check2(false);}
+  if(done2&&st.d3){d3.value=st.d3;check3(false);}
+})();
 </script>
