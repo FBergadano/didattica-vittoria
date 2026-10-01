@@ -327,7 +327,9 @@ Da questi due esempi comprendiamo che, a differenza dell'energia cinetica, <u>es
 ### L'energia potenziale gravitazionale
 
 {% include margin-note.html testo="Dall'esempio del sollevamento alla formula dell'energia potenziale gravitazionale" %}
-Dall'esempio del sollevamento di un peso possiamo anche trovare la formula per l'energia potenziale gravitazionale. Immagina di sollevare una massa $m$ da terra (cioè da altezza zero) fino a un'altezza $h$. Prendiamo la nostra solita formula del lavoro e applichiamola alla forza peso:
+Dall'esempio del sollevamento di un peso possiamo anche trovare la formula per l'energia potenziale gravitazionale. Possiamo infatti calcolare il lavoro compiuto (per il quale già conosciamo la formula) e porlo uguale all'energia che si è immagazzinata nella massa che è stata sollevata.
+
+Immagina di sollevare una massa $m$ da terra (cioè da altezza zero) fino a un'altezza $h$. Prendiamo la nostra solita formula del lavoro e applichiamola alla forza peso:
 - la forza è la forza peso, il cui modulo vale $mg$, dove $g$ è l'accelerazione gravitazionale del pianeta;
 - lo spostamento è l'altezza $h$ a cui abbiamo sollevato il corpo;
 - la forza peso è diretta verso il basso, mentre lo spostamento è verso l'alto: sono opposti, quindi dobbiamo aggiungere un segno meno.
