@@ -645,6 +645,58 @@ Riprendendo lo stesso esempio di prima:
 {% include figure/figura-sovrapposizione-potenziale.html %}
 {% include margin-note-end.html %}
 
+
+
+## Superfici equipotenziali
+
+{% include margin-note.html testo="Cosa cerchiamo: un modo grafico per rappresentare il potenziale" %}
+Abbiamo compreso che il potenziale gravitazionale è sostanzialmente l'analogo energetico del campo. Ci chiediamo allora se, così come è possibile rappresentare il campo con delle linee, sia possibile in qualche modo rappresentare graficamente il potenziale.  
+In effetti, è possibile rappresentare graficamente il potenziale disegnando delle superfici che prendono il nome di <definizione>superfici equipotenziali</definizione>.  
+(Naturalmente, quando si disegna su un foglio, tali superfici verranno rappresentate da delle linee.)
+{% include margin-note-end.html %}
+
+{% include box-imp.html testo="Superfici equipotenziali"%}
+Le superfici equipotenziali sono il luogo dei punti in cui il potenziale assume <u markdown="span">lo **stesso** valore costante</u>. Inoltre, esse sono, in ogni punto, <u markdown="span">**perpendicolari** alle linee di campo.
+{% include box-end.html %}
+
+### Le superfici equipotenziali di una singola massa sferica
+Poiché il potenziale gravitazionale $V$ generato da una singola massa sferica $M$ dipende solo dalla distanza $r$ da essa ($V = -G\frac{M}{r}$), tutti i punti a distanza $r$ da $M$ hanno lo stesso potenziale. L'insieme di questi punti forma quindi una sfera. Pertanto, le superfici equipotenziali per una singola massa sferica sono semplicemente sfere concentriche a $M$.
+
+{% include lab-virtuali/equipotenziali-sfera-3d-lab.html %}
+
+Dovendole rappresentare su un foglio, esse diventano delle circonferenze, come nella seguente figura.
+
+{% include figure/figura-equipotenziali-sfera.html %}
+
+
+
+
+### Le superfici equipotenziali in presenza di più masse
+Quando il campo è generato da più masse, come nel sistema Terra-Luna, le superfici equipotenziali non sono più sfere: si deformano, avvicinandosi maggiormente dove il campo è più intenso — esattamente come succede per le linee di campo.
+
+{% include lab-virtuali/equipotenziali-terra-luna-lab.html %}
+
+<!-- {% include box-imp.html testo="Superfici equipotenziali" %}
+- **Che cosa sono:** l'insieme dei punti dello spazio che hanno lo stesso potenziale gravitazionale.
+- **Per una singola massa:** sono sfere concentriche alla massa che genera il campo.
+- **Proprietà fondamentale:** sono sempre perpendicolari alle linee di campo.
+{% include box-end.html %} -->
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qcampo %}[
+{"t":"Le linee di campo gravitazionale sono sempre uscenti dalla massa che le genera.","ok":false,"s":"No: sono sempre entranti, perché la forza gravitazionale è attrattiva."},
+{"t":"Più le linee di campo sono fitte in un punto, più il campo è intenso in quel punto.","ok":true,"s":"Sì: la concentrazione delle linee di campo misura proprio l'intensità del campo."},
+{"t":"Le superfici equipotenziali sono sempre perpendicolari alle linee di campo.","ok":true,"s":"Sì, in ogni punto: spostandosi lungo una superficie equipotenziale non si compie lavoro."},
+{"t":"Se il campo è generato da due masse (come nel sistema Terra-Luna), la traiettoria di caduta di una massa esploratrice è sempre una retta.","ok":false,"s":"No: si incurva, perché in ogni punto risente dell'attrazione di entrambe le masse."},
+{"t":"Per una singola massa sferica, le superfici equipotenziali sono piani paralleli fra loro.","ok":false,"s":"No: sono sfere concentriche alla massa, non piani."},
+{"t":"Il campo gravitazionale generato da più masse in uno stesso punto si ottiene sommando vettorialmente i singoli campi.","ok":true,"s":"Sì, per il principio di sovrapposizione degli effetti, con la regola del parallelogramma."}
+]{% endcapture %}
+{% include quiz.html domande=_qcampo
+   id="q-campo" senza_esempi="true" %}
+{% include box-end.html %}
+
+
+
 ### Confronto tra le formule
 
 Richiamiamo le quattro formule trovate finora in questo capitolo:
@@ -696,52 +748,6 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 {% include box-end.html %}
 
 {% include esercizi/esercizio-energia-potenziale.html %}
-
-## Superfici equipotenziali
-
-{% include margin-note.html testo="Cosa cerchiamo: un modo grafico per rappresentare il potenziale" %}
-Abbiamo compreso che il potenziale gravitazionale è sostanzialmente l'analogo energetico del campo. Ci chiediamo allora se, così come è possibile rappresentare il campo con delle linee, sia possibile in qualche modo rappresentare graficamente il potenziale. Rappresenteremo quindi il campo tramite delle superfici che prendono il nome di <definizione>superfici equipotenziali</definizione>.
-{% include margin-note-end.html %}
-
-{% include box-imp.html testo="Superfici equipotenziali"%}
-Le superfici equipotenziali sono il luogo dei punti in cui il potenziale assume <u markdown="span">lo **stesso** valore costante</u>. Inoltre, esse sono, in ogni punto, <u markdown="span">**perpendicolari** alle linee di campo.
-{% include box-end.html %}
-
-### Le superfici equipotenziali di una singola massa sferica
-Poiché il potenziale gravitazionale $V$ generato da una singola massa sferica $M$ dipende solo dalla distanza $r$ da essa ($V = -G\frac{M}{r}$), tutti i punti a distanza $r$ da $M$ hanno lo stesso potenziale. L'insieme di questi punti forma quindi una sfera. Pertanto, le superfici equipotenziali per una singola massa sferica sono semplicemente sfere concentriche a $M$.
-
-{% include lab-virtuali/equipotenziali-sfera-3d-lab.html %}
-
-Dovendole rappresentare su un foglio, esse diventano delle circonferenze, come nella seguente figura.
-
-{% include figure/figura-equipotenziali-sfera.html %}
-
-
-
-
-### Le superfici equipotenziali in presenza di più masse
-Quando il campo è generato da più masse, come nel sistema Terra-Luna, le superfici equipotenziali non sono più sfere: si deformano, avvicinandosi maggiormente dove il campo è più intenso — esattamente come succede per le linee di campo.
-
-{% include lab-virtuali/equipotenziali-terra-luna-lab.html %}
-
-<!-- {% include box-imp.html testo="Superfici equipotenziali" %}
-- **Che cosa sono:** l'insieme dei punti dello spazio che hanno lo stesso potenziale gravitazionale.
-- **Per una singola massa:** sono sfere concentriche alla massa che genera il campo.
-- **Proprietà fondamentale:** sono sempre perpendicolari alle linee di campo.
-{% include box-end.html %} -->
-
-{% include box-ex.html testo="Verifica Subito!" %}
-{% capture _qcampo %}[
-{"t":"Le linee di campo gravitazionale sono sempre uscenti dalla massa che le genera.","ok":false,"s":"No: sono sempre entranti, perché la forza gravitazionale è attrattiva."},
-{"t":"Più le linee di campo sono fitte in un punto, più il campo è intenso in quel punto.","ok":true,"s":"Sì: la concentrazione delle linee di campo misura proprio l'intensità del campo."},
-{"t":"Le superfici equipotenziali sono sempre perpendicolari alle linee di campo.","ok":true,"s":"Sì, in ogni punto: spostandosi lungo una superficie equipotenziale non si compie lavoro."},
-{"t":"Se il campo è generato da due masse (come nel sistema Terra-Luna), la traiettoria di caduta di una massa esploratrice è sempre una retta.","ok":false,"s":"No: si incurva, perché in ogni punto risente dell'attrazione di entrambe le masse."},
-{"t":"Per una singola massa sferica, le superfici equipotenziali sono piani paralleli fra loro.","ok":false,"s":"No: sono sfere concentriche alla massa, non piani."},
-{"t":"Il campo gravitazionale generato da più masse in uno stesso punto si ottiene sommando vettorialmente i singoli campi.","ok":true,"s":"Sì, per il principio di sovrapposizione degli effetti, con la regola del parallelogramma."}
-]{% endcapture %}
-{% include quiz.html domande=_qcampo
-   id="q-campo" senza_esempi="true" %}
-{% include box-end.html %}
 
 ## Moto di una massa in un campo gravitazionale
 
