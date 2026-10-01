@@ -1,0 +1,198 @@
+{% comment %}
+Esercizio guidato ("Dimostralo tu") sulle scale Celsius e Kelvin, con un
+termometro a doppia scala ben leggibile (°C a sinistra, K a destra).
+ 1. compare una temperatura iniziale (nella scala scelta): lo studente la
+    converte nell'altra scala;
+ 2. il mercurio sale o scende fino alla temperatura finale: lo studente
+    converte anche questa;
+ 3. lo studente calcola ΔT in °C e in K; quando entrambi sono giusti, sul
+    termometro compaiono due frecce ΔT, una per scala, lunghe uguali: la
+    variazione di temperatura è la stessa nelle due scale.
+Si può scegliere la scala di partenza e generare nuovi valori. Si accettano
+sia 273 sia 273,15. Nessun parametro.
+{% endcomment %}
+<style>
+#ckx .ck-top{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:.8rem;font-size:.9rem;}
+#ckx .ck-seg{display:inline-flex;border:1px solid #67e8f9;border-radius:6px;overflow:hidden;}
+#ckx .ck-seg button{border:none;background:#fff;color:#0e7490;padding:.3rem .7rem;cursor:pointer;font-size:.85rem;}
+#ckx .ck-seg button.on{background:#0e7490;color:#fff;}
+#ckx .ck-new{border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:.3rem .7rem;cursor:pointer;font-size:.85rem;color:#334155;}
+#ckx .ck-new:hover{border-color:#0e7490;}
+#ckx .ck-main{display:flex;gap:1.2rem;align-items:flex-start;flex-wrap:wrap;justify-content:center;}
+#ckx .ck-therm{flex:0 0 auto;width:360px;max-width:100%;}
+#ckx .ck-therm svg{display:block;width:100%;height:auto;}
+#ckx .ck-steps{flex:1 1 240px;min-width:230px;}
+#ckx .ck-step{margin-bottom:1rem;}
+#ckx .ck-big{font-size:1.1rem;font-weight:700;margin:0 0 .35rem;}
+#ckx .ck-big .ck-v{font-size:1.25rem;}
+#ckx .ck-hidden{display:none;}
+#ckx .ck-row{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin:.35rem 0;}
+#ckx .ck-final{font-weight:700;color:#0f766e;}
+#ckx .ck-note{font-size:.8rem;color:#6b7280;font-style:italic;margin:.6rem 0 0;text-align:center;}
+@media print{#ckx{display:none!important;}}
+</style>
+<div class="iex-widget" id="ckx">
+<p class="iex-lbl">Dimostralo tu</p>
+<div class="ck-top">
+  <span>Scala di partenza:</span>
+  <span class="ck-seg"><button type="button" data-s="C" class="on">Celsius (°C)</button><button type="button" data-s="K">Kelvin (K)</button></span>
+  <button type="button" class="ck-new" id="ckx-new">↻ Nuovi valori</button>
+</div>
+<div class="ck-main">
+  <div class="ck-therm"><svg id="ckx-svg" viewBox="0 0 360 400" role="img" aria-label="Termometro a doppia scala: gradi Celsius a sinistra, kelvin a destra"></svg></div>
+  <div class="ck-steps">
+    <div class="ck-step" id="ckx-s0">
+      <p class="ck-big">Temperatura iniziale: <span class="ck-v" id="ckx-t0"></span></p>
+      <p>Quanto vale nell'altra scala?</p>
+      <div class="ck-row"><input class="iex-m" id="ckx-in0" type="text" placeholder="valore" autocomplete="off" spellcheck="false"><span class="iex-unit" id="ckx-u0"></span><button type="button" class="iex-vbtn" id="ckx-b0">Verifica</button></div>
+      <div class="iex-fb" id="ckx-fb0"></div>
+    </div>
+    <div class="ck-step ck-hidden" id="ckx-s1">
+      <p class="ck-big">Temperatura finale: <span class="ck-v" id="ckx-t1"></span></p>
+      <p>Quanto vale nell'altra scala?</p>
+      <div class="ck-row"><input class="iex-m" id="ckx-in1" type="text" placeholder="valore" autocomplete="off" spellcheck="false"><span class="iex-unit" id="ckx-u1"></span><button type="button" class="iex-vbtn" id="ckx-b1">Verifica</button></div>
+      <div class="iex-fb" id="ckx-fb1"></div>
+    </div>
+    <div class="ck-step ck-hidden" id="ckx-s2">
+      <p>Ora calcola la variazione di temperatura in entrambe le scale.</p>
+      <div class="ck-row">$\Delta T = T_f - T_i =$ <input class="iex-m" id="ckx-dC" type="text" placeholder="valore" autocomplete="off" spellcheck="false"><span class="iex-unit">°C</span><button type="button" class="iex-vbtn" id="ckx-bC">Verifica</button></div>
+      <div class="iex-fb" id="ckx-fbC"></div>
+      <div class="ck-row">$\Delta T = T_f - T_i =$ <input class="iex-m" id="ckx-dK" type="text" placeholder="valore" autocomplete="off" spellcheck="false"><span class="iex-unit">K</span><button type="button" class="iex-vbtn" id="ckx-bK">Verifica</button></div>
+      <div class="iex-fb" id="ckx-fbK"></div>
+      <p class="ck-final ck-hidden" id="ckx-final"></p>
+    </div>
+  </div>
+</div>
+<p class="ck-note">Sul termometro, per leggibilità, 273,15 è arrotondato a 273. Nelle risposte puoi usare sia 273 sia 273,15.</p>
+</div>
+
+<script>
+(function(){
+  var root=document.getElementById('ckx');if(!root)return;
+  function $(id){return document.getElementById(id);}
+  var svg=$('ckx-svg'),NS='http://www.w3.org/2000/svg';
+  var CX=180,Y0=318,PX=2.5;                     // centro del tubo, quota di 0 °C, pixel per grado
+  var COLC='#b91c1c',COLK='#1d4ed8',GRAY='#64748b';
+  function yT(c){return Y0-c*PX;}
+  function el(tag,at,txt){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e;}
+
+  // ── disegno fisso del termometro
+  el('rect',{x:0,y:0,width:360,height:400,fill:'#fff'});
+  el('text',{x:CX-40,y:30,'text-anchor':'middle','font-size':24,'font-weight':700,fill:COLC},'°C');
+  el('text',{x:CX+40,y:30,'text-anchor':'middle','font-size':24,'font-weight':700,fill:COLK},'K');
+  el('rect',{x:CX-13,y:44,width:26,height:Y0+26-44,rx:13,fill:'#f8fafc',stroke:'#94a3b8','stroke-width':2});
+  el('circle',{cx:CX,cy:Y0+40,r:24,fill:'#f8fafc',stroke:'#94a3b8','stroke-width':2});
+  el('circle',{cx:CX,cy:Y0+40,r:18,fill:'#dc2626'});
+  var merc=el('rect',{x:CX-6,y:yT(20),width:12,height:Y0+40-yT(20),fill:'#dc2626'});
+  for(var c=0;c<=100;c+=5){
+    var y=yT(c),maj=c%10===0,len=maj?14:8;
+    el('line',{x1:CX-13-len,y1:y,x2:CX-13,y2:y,stroke:'#475569','stroke-width':maj?1.8:1});
+    el('line',{x1:CX+13,y1:y,x2:CX+13+len,y2:y,stroke:'#475569','stroke-width':maj?1.8:1});
+    if(maj){
+      el('text',{x:CX-31,y:y+6,'text-anchor':'end','font-size':19,'font-weight':c%50===0?700:500,fill:COLC},String(c));
+      el('text',{x:CX+31,y:y+6,'text-anchor':'start','font-size':19,'font-weight':c%50===0?700:500,fill:COLK},String(c+273));
+    }
+  }
+  // livelli iniziale e finale, frecce ΔT (aggiornati dal codice)
+  function level(col){
+    var g=document.createElementNS(NS,'g');svg.appendChild(g);
+    var l=document.createElementNS(NS,'line');l.setAttribute('x1',70);l.setAttribute('x2',290);l.setAttribute('stroke',col);l.setAttribute('stroke-width',1.6);l.setAttribute('stroke-dasharray','5 4');g.appendChild(l);
+    var t=document.createElementNS(NS,'text');t.setAttribute('x',356);t.setAttribute('text-anchor','end');t.setAttribute('font-size',14);t.setAttribute('fill',col);t.setAttribute('font-style','italic');g.appendChild(t);
+    return {g:g,l:l,t:t,set:function(c,lab){var y=yT(c);l.setAttribute('y1',y);l.setAttribute('y2',y);t.setAttribute('y',y+4);t.textContent=lab;}};
+  }
+  var lvI=level('#64748b'),lvF=level('#0f766e');
+  function dArrow(x,col,side){
+    var g=document.createElementNS(NS,'g');svg.appendChild(g);
+    var l=document.createElementNS(NS,'line');l.setAttribute('x1',x);l.setAttribute('x2',x);l.setAttribute('stroke',col);l.setAttribute('stroke-width',2.4);g.appendChild(l);
+    var h1=document.createElementNS(NS,'path');h1.setAttribute('fill',col);g.appendChild(h1);
+    var t=document.createElementNS(NS,'text');t.setAttribute('x',side<0?x-7:x+7);t.setAttribute('text-anchor',side<0?'end':'start');t.setAttribute('font-size',16);t.setAttribute('font-weight',700);t.setAttribute('fill',col);g.appendChild(t);
+    return {g:g,set:function(ci,cf,lab){var y1=yT(ci),y2=yT(cf),d=y2<y1?-1:1;
+      l.setAttribute('y1',y1);l.setAttribute('y2',y2-4*d);
+      h1.setAttribute('d','M'+x+','+y2+' L'+(x-5)+','+(y2-9*d)+' L'+(x+5)+','+(y2-9*d)+' Z');
+      t.setAttribute('y',(y1+y2)/2+5);t.textContent=lab;}};
+  }
+  var arC=dArrow(110,COLC,-1),arK=dArrow(262,COLK,1);
+
+  // ── stato
+  var sc='C',Ti=20,Tf=20,okC=false,okK=false,raf=null;
+  function fmt(c,s){return s==='C'?c+' °C':(c+273)+' K';}
+  function num(v){v=parseFloat(String(v).trim().replace(',','.'));return v;}
+  function setMerc(c){var y=yT(c);merc.setAttribute('y',y);merc.setAttribute('height',Y0+40-y);}
+  function show(e,on){e.classList.toggle('ck-hidden',!on);}
+  function fb(e,ok,txt){e.style.display='block';e.className='iex-fb '+(ok?'ok':'err');e.textContent=txt;}
+  function boom(e){if(window._shoot)_shoot(e);}
+  // conversione: accetta sia 273 sia 273,15
+  function convOk(v,c){return sc==='C'?(v>=c+273-0.01&&v<=c+273.15+0.01):(v>=c-0.15-0.01&&v<=c+0.01);}
+  function convHint(v,c){
+    if(sc==='C'&&Math.abs(v-(c-273))<0.2)return '✗ Attenzione: per passare da °C a K bisogna sommare 273, non sottrarlo.';
+    if(sc==='K'&&Math.abs(v-(c+273+273))<0.2)return '✗ Attenzione: per passare da K a °C bisogna sottrarre 273, non sommarlo.';
+    return '✗ Non è corretto. Ricorda: T(K) = T(°C) + 273,15.';
+  }
+
+  function generate(){
+    if(raf)cancelAnimationFrame(raf);
+    Ti=10+Math.floor(Math.random()*71);
+    var d=(12+Math.floor(Math.random()*21))*(Math.random()<0.5?1:-1);
+    if(Ti+d<2||Ti+d>98)d=-d;
+    Tf=Math.max(2,Math.min(98,Ti+d));
+    okC=okK=false;
+    setMerc(Ti);lvI.set(Ti,'iniziale');lvF.g.style.display='none';
+    arC.g.style.display='none';arK.g.style.display='none';
+    $('ckx-t0').textContent=fmt(Ti,sc);
+    $('ckx-u0').textContent=$('ckx-u1').textContent=sc==='C'?'K':'°C';
+    ['ckx-in0','ckx-in1','ckx-dC','ckx-dK'].forEach(function(id){var i=$(id);i.value='';i.disabled=false;});
+    ['ckx-b0','ckx-b1','ckx-bC','ckx-bK'].forEach(function(id){$(id).disabled=false;});
+    ['ckx-fb0','ckx-fb1','ckx-fbC','ckx-fbK'].forEach(function(id){$(id).style.display='none';});
+    show($('ckx-s1'),false);show($('ckx-s2'),false);show($('ckx-final'),false);
+  }
+
+  function animateTo(c0,c1,done){
+    var t0=null;
+    function st(ts){if(t0===null)t0=ts;var p=Math.min(1,(ts-t0)/1800),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      setMerc(c0+(c1-c0)*e);if(p<1)raf=requestAnimationFrame(st);else{raf=null;done();}}
+    raf=requestAnimationFrame(st);
+  }
+
+  function check0(){
+    var v=num($('ckx-in0').value);if(isNaN(v))return;
+    if(convOk(v,Ti)){
+      fb($('ckx-fb0'),true,'✓ Esatto! Ora la temperatura cambia…');$('ckx-in0').disabled=$('ckx-b0').disabled=true;boom($('ckx-b0'));
+      animateTo(Ti,Tf,function(){
+        lvF.set(Tf,'finale');lvF.g.style.display='';
+        $('ckx-t1').textContent=fmt(Tf,sc);show($('ckx-s1'),true);$('ckx-in1').focus();
+      });
+    }else fb($('ckx-fb0'),false,convHint(v,Ti));
+  }
+  function check1(){
+    var v=num($('ckx-in1').value);if(isNaN(v))return;
+    if(convOk(v,Tf)){
+      fb($('ckx-fb1'),true,'✓ Esatto!');$('ckx-in1').disabled=$('ckx-b1').disabled=true;boom($('ckx-b1'));
+      show($('ckx-s2'),true);$('ckx-dC').focus();
+    }else fb($('ckx-fb1'),false,convHint(v,Tf));
+  }
+  function checkD(which){
+    var inp=$(which==='C'?'ckx-dC':'ckx-dK'),f=$(which==='C'?'ckx-fbC':'ckx-fbK'),b=$(which==='C'?'ckx-bC':'ckx-bK');
+    var v=num(inp.value),d=Tf-Ti;if(isNaN(v))return;
+    if(Math.abs(v-d)<=0.16){
+      fb(f,true,'✓ Esatto!');inp.disabled=b.disabled=true;boom(b);
+      var lab=(d>0?'+':'−')+Math.abs(d)+(which==='C'?' °C':' K');
+      var ar=which==='C'?arC:arK;ar.set(Ti,Tf,'ΔT = '+lab);ar.g.style.display='';
+      if(which==='C')okC=true;else okK=true;
+      if(okC&&okK){show($('ckx-final'),true);
+        $('ckx-final').textContent='Le due frecce sono lunghe uguali: la variazione di temperatura è la stessa nelle due scale ('+Math.abs(d)+' °C = '+Math.abs(d)+' K).';boom($('ckx-final'));}
+    }else if(Math.abs(Math.abs(v)-Math.abs(d))<=0.16)fb(f,false,'✗ Attenzione al segno: la temperatura è '+(d<0?'scesa, quindi ΔT è negativo.':'salita, quindi ΔT è positivo.'));
+    else fb(f,false,'✗ Non è corretto: calcola temperatura finale meno temperatura iniziale, nella stessa scala.');
+  }
+
+  $('ckx-b0').onclick=check0;$('ckx-b1').onclick=check1;
+  $('ckx-bC').onclick=function(){checkD('C');};$('ckx-bK').onclick=function(){checkD('K');};
+  [['ckx-in0',check0],['ckx-in1',check1],['ckx-dC',function(){checkD('C');}],['ckx-dK',function(){checkD('K');}]].forEach(function(a){
+    $(a[0]).addEventListener('keydown',function(e){if(e.key==='Enter')a[1]();});
+  });
+  $('ckx-new').onclick=generate;
+  root.querySelectorAll('.ck-seg button').forEach(function(b){
+    b.onclick=function(){sc=b.dataset.s;root.querySelectorAll('.ck-seg button').forEach(function(x){x.classList.toggle('on',x===b);});generate();};
+  });
+  generate();
+})();
+</script>

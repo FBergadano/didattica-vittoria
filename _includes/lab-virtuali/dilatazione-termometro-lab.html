@@ -1,0 +1,104 @@
+{% comment %}
+Animazione: la dilatazione termica vista dentro un termometro al mercurio.
+Il mercurio (rosso) è disegnato come un insieme di particelle disposte in un
+reticolo quadrato, che riempie il bulbo e sale nel tubo. Uno slider
+(normale) regola la temperatura: più è alta, più le particelle vibrano
+velocemente e con ampiezza maggiore attorno alla loro posizione, e più il
+passo del reticolo cresce (fino al 25%). Poiché nel tubo le
+file di particelle sono sempre le stesse, allargandosi il reticolo la colonna
+sale; il livello (menisco) è fisso per una data temperatura. Nessuna scritta
+oltre allo slider. Nessun parametro.
+{% endcomment %}
+<style>
+#dilTerm .dt-wrap{max-width:250px;margin:0 auto;}
+#dilTerm canvas{display:block;width:100%;height:auto;}
+#dilTerm .dt-slider{display:flex;align-items:center;gap:.6rem;max-width:340px;margin:.6rem auto 0;font-size:.85rem;color:#475569;}
+#dilTerm .dt-slider input{flex:1;accent-color:#dc2626;cursor:pointer;}
+@media print{#dilTerm{display:none!important;}}
+</style>
+<div class="vdrag-widget" id="dilTerm">
+<div class="dt-wrap"><canvas id="dt-cv"></canvas></div>
+<div class="dt-slider"><span>bassa</span><input type="range" id="dt-T" min="0" max="100" value="20" aria-label="Temperatura"><span>alta</span></div>
+<p style="text-align:center;font-size:.85rem;color:#475569;margin:.2rem 0 0;">Temperatura</p>
+</div>
+<script>
+(function(){
+  var cv=document.getElementById('dt-cv');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=250,H=460,dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+  var slider=document.getElementById('dt-T'),root=document.getElementById('dilTerm');
+
+  // ── geometria del termometro
+  var CX=125,CY=392,RB=44,TW=24,TTOP=30;         // bulbo (centro, raggio), semi-larghezza interna del tubo, cima del tubo
+  var A0=13,ALPHA=0.25,RP=5.4;                    // passo a T=0, dilatazione massima (25%), raggio delle particelle
+  var JTOP=-18;                                   // la fila più alta del reticolo (fissa): la colonna sale col passo
+  var NECK=CY-Math.sqrt(RB*RB-TW*TW);             // dove il tubo si innesta nel bulbo
+  var JN=Math.floor((NECK-CY)/A0);                // ultima fila che sta già nel tubo
+
+  // siti del reticolo (indici interi i, j): posizione = centro del bulbo + (i, j)·passo
+  var sites=[];
+  for(var j=JTOP;j<=5;j++)for(var i=-5;i<=5;i++){
+    sites.push({i:i,j:j,a:Math.random()*6.3,b:Math.random()*6.3,c:Math.random()*6.3,d:Math.random()*6.3,f1:0.8+Math.random()*0.4,f2:1.6+Math.random()*0.5});
+  }
+  function inside(x,y){                           // quanto il punto è dentro il vetro (>0 dentro)
+    var db=RB-4-Math.hypot(x-CX,y-CY);
+    var dt=(y<NECK+4&&y>TTOP)?TW-2-Math.abs(x-CX):-99;
+    return Math.max(db,dt);
+  }
+
+  var phase=0,last=null,raf=null,visible=true;
+  var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function glassPath(){
+    ctx.beginPath();
+    var s=Math.asin(TW/RB);
+    ctx.moveTo(CX-TW,TTOP+TW);ctx.arc(CX,TTOP+TW,TW,Math.PI,0);
+    ctx.lineTo(CX+TW,NECK);
+    ctx.arc(CX,CY,RB,-Math.PI/2+s,3*Math.PI/2-s);
+    ctx.closePath();
+  }
+  function draw(){
+    var T=+slider.value,tn=T/100,a=A0*(1+ALPHA*tn);
+    var amp=a*(0.04+0.08*tn),fs=2.2+4.3*tn;
+    ctx.clearRect(0,0,W,H);
+    // vetro
+    glassPath();ctx.fillStyle='rgba(241,245,249,.9)';ctx.fill();
+    // tacche della scala (fisse)
+    ctx.strokeStyle='#334155';ctx.lineWidth=1.3;
+    for(var k=0;k<14;k++){var yk=NECK-20-k*22;if(yk<TTOP+30)break;ctx.beginPath();ctx.moveTo(CX+TW-12,yk);ctx.quadraticCurveTo(CX+TW-4,yk,CX+TW+1,yk-2);ctx.stroke();}
+    // mercurio: particelle del reticolo
+    ctx.save();glassPath();ctx.clip();
+    var yTop=CY+(JN+1)*A0-(JN+1-JTOP)*a;
+    sites.forEach(function(s){
+      // nel bulbo il reticolo resta com'è (bulbo sempre pieno); nel tubo le file si allargano col passo a
+      var x,y;
+      if(s.j>JN){x=CX+s.i*A0;y=CY+s.j*A0;}
+      else{x=CX+s.i*a;y=CY+(JN+1)*A0-(JN+1-s.j)*a;}
+      var q=inside(x,y);
+      if(q<RP*0.3)return;                          // fuori dal vetro
+      var al=Math.min(1,(q-RP*0.3)/4);             // i siti vicini al bordo del bulbo sfumano (niente scatti)
+      var dx=Math.sin(phase*fs*s.f1+s.a)*0.7+Math.sin(phase*fs*s.f2+s.b)*0.3;
+      var dy=Math.sin(phase*fs*s.f1+s.c)*0.7+Math.sin(phase*fs*s.f2+s.d)*0.3;
+      var px=x+dx*amp,py=y+dy*amp;
+      var g=ctx.createRadialGradient(px-RP*0.35,py-RP*0.4,0.5,px,py,RP);
+      g.addColorStop(0,'#fed7aa');g.addColorStop(0.45,'#f97316');g.addColorStop(1,'#dc2626');
+      ctx.globalAlpha=al;ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,RP,0,7);ctx.fill();
+    });
+    ctx.globalAlpha=1;ctx.restore();
+    // menisco (livello: fermo, per una data temperatura)
+    var yl=yTop-a*0.5;
+    ctx.strokeStyle='rgba(100,116,139,.8)';ctx.lineWidth=1.4;ctx.beginPath();ctx.ellipse(CX,yl,TW-2,4,0,0,7);ctx.stroke();
+    // contorno del vetro e riflesso leggero
+    glassPath();ctx.strokeStyle='#94a3b8';ctx.lineWidth=2.2;ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=3;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(CX-TW+7,TTOP+TW);ctx.lineTo(CX-TW+7,NECK-10);ctx.stroke();ctx.lineCap='butt';
+  }
+  function loop(ts){
+    if(last!==null)phase+=(ts-last)/1000;last=ts;draw();
+    if(visible&&!reduced)raf=requestAnimationFrame(loop);else{raf=null;last=null;}
+  }
+  function kick(){if(!raf&&visible&&!reduced)raf=requestAnimationFrame(loop);else draw();}
+  slider.addEventListener('input',kick);
+  if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(e){visible=e.isIntersecting;if(visible)kick();});}).observe(root);
+  draw();kick();
+})();
+</script>
