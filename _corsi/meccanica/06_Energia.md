@@ -532,7 +532,7 @@ Un sistema si dice <definizione>non isolato</definizione> se scambia energia con
 In questo caso, il sistema può **perdere** energia oppure **acquistare** energia, a seconda dei casi. Ad esempio, un corpo in movimento soggetto ad attrito **perde** energia meccanica, mentre un corpo su cui viene applicata una forza fino a produrne uno spostamento **acquista** energia meccanica.   
 In ogni caso, <u markdown="span">l'energia **non** può scomparire nel nulla né comparire dal nulla</u>, quindi viene fornita dall'Universo oppure finisce nel resto dell'Universo.
 
-In generale, vale il seguente teorema.
+Finora abbiamo incontrato solo un modo per trasmettere energia da un corpo all'altro: il lavoro. Noi considereremo quindi sistemi che scambiano **solo** lavoro con il resto dell'Universo <u>solamente lavoro</u>. In questa situazione, vale il seguente teorema.
 
 {% include box-thm.html testo="Teorema di Conservazione dell'Energia Meccanica Totale" %}
 
@@ -1501,7 +1501,6 @@ $$L = \Delta K = K_f - K_i = \frac12 m v_f^2 - 0 = \frac12\times0{,}2\ \text{kg}
 
 ### Esercizi sull'energia potenziale
 
-
 {% include ex.html diff=1 %}
 Un libro di massa $2\ \text{kg}$ viene posto su uno scaffale a $5\ \text m$ di altezza. Quanta energia potenziale gravitazionale possiede rispetto al pavimento? (Usa $g\approx 9{,}8\ \text{m/s}^2$.)
 
@@ -1523,23 +1522,25 @@ $$U_g = mgh = 0{,}5\ \text{kg}\times 10\ \text{m/s}^2\times 4\ \text m = 20\ \te
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
-Durante un trasloco, uno scatolone di libri di massa $10\ \text{kg}$ viene sistemato su uno scaffale a $1{,}5\ \text m$ di altezza. Quanta energia potenziale gravitazionale possiede? (Usa $g\approx 9{,}8\ \text{m/s}^2$.)
+Un vaso di fiori di massa $3\ \text{kg}$, appoggiato su un davanzale, possiede un'energia potenziale gravitazionale di $294\ \text J$ rispetto al marciapiede. A che altezza si trova il davanzale? (Usa $g\approx 9{,}8\ \text{m/s}^2$.)
 
-{% include num.html id="numB3" valore="147" unit="J" %}
+{% include num.html id="numUh" valore="10" unit="m" %}
 
 {% include ex-sol.html %}
-$$U_g = mgh = 10\ \text{kg}\times 9{,}8\ \text{m/s}^2\times 1{,}5\ \text m = 147\ \text J.$$
+Isoliamo $h$ dalla formula $U_g=mgh$, dividendo entrambi i membri per $mg$:
+
+$$h=\frac{U_g}{mg}=\frac{294\ \text J}{3\ \text{kg}\times 9{,}8\ \text{m/s}^2}=10\ \text m.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
-Un telefono di massa $200\ \text g$ cade da un tavolo alto $50\ \text{cm}$. Quanta energia potenziale gravitazionale possiede, rispetto al pavimento, appena prima di cadere? (Usa $g\approx 10\ \text{m/s}^2$.)
+Un sasso appoggiato in cima a un muro alto $12\ \text m$ ha un'energia potenziale gravitazionale di $60\ \text J$ rispetto al suolo. Qual è la sua massa? (Usa $g\approx 10\ \text{m/s}^2$.)
 
-{% include num.html id="numB4" valore="1" unit="J" %}
+{% include num.html id="numUm" valore="0.5" unit="kg" %}
 
 {% include ex-sol.html %}
-Convertendo, $200\ \text g=0{,}2\ \text{kg}$ e $50\ \text{cm}=0{,}5\ \text m$.
+Isoliamo $m$ dalla formula $U_g=mgh$, dividendo entrambi i membri per $gh$:
 
-$$U_g = mgh = 0{,}2\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}5\ \text m = 1\ \text J.$$
+$$m=\frac{U_g}{gh}=\frac{60\ \text J}{10\ \text{m/s}^2\times 12\ \text m}=0{,}5\ \text{kg}.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -1559,6 +1560,145 @@ $$L_{\text{gravità}} = -mgh = -250\ \text{kg}\times 9{,}8\ \text{m/s}^2\times 4
 L'albero parte da fermo e arriva fermo (velocità nulla sia all'inizio che alla fine): per il teorema dell'energia cinetica, $\Delta K=0$, quindi il lavoro **totale** deve essere nullo. Il lavoro dei compagni deve perciò compensare esattamente quello della gravità:
 
 $$L_{\text{compagni}} = -L_{\text{gravità}} = 9{,}8\times10^3\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Sulla Luna, un'astronauta solleva un campione di roccia di massa $2\ \text{kg}$ di $1{,}5\ \text m$: l'energia potenziale gravitazionale del campione aumenta di $4{,}86\ \text J$.
+
+1. Quanto vale l'accelerazione di gravità sulla Luna?
+{% include num.html id="numgLunaU" valore="1.62" unit="m/s²" tol="2" %}
+2. Quante volte è più piccola di quella terrestre ($9{,}8\ \text{m/s}^2$)?
+{% include num.html id="numRapLunaU" valore="6.05" tol="3" %}
+
+{% include ex-sol.html %}
+Isoliamo $g$ dalla formula $U_g=mgh$, dividendo entrambi i membri per $mh$:
+
+$$g=\frac{U_g}{mh}=\frac{4{,}86\ \text J}{2\ \text{kg}\times 1{,}5\ \text m}=1{,}62\ \text{m/s}^2,\qquad \frac{9{,}8\ \text{m/s}^2}{1{,}62\ \text{m/s}^2}\approx 6{,}05.$$
+
+Circa sei volte più piccola: per questo sulla Luna si salta così in alto!
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un drone di massa $2\ \text{kg}$ sta riprendendo un video a $3\ \text m$ di altezza. Il pilota lo fa salire ulteriormente, compiendo su di esso un lavoro di $40\ \text J$ (che si traduce in un aumento della sua energia potenziale gravitazionale). A quale altezza si trova adesso? (Usa $g\approx 10\ \text{m/s}^2$.)
+
+{% include num.html id="numHf" valore="5" unit="m" %}
+
+{% include ex-sol.html %}
+L'aumento di energia potenziale è $\Delta U_g = mg(h_f-h_i)$. Isoliamo $h_f$:
+
+$$h_f = h_i + \frac{\Delta U_g}{mg} = 3\ \text m + \frac{40\ \text J}{2\ \text{kg}\times 10\ \text{m/s}^2} = 3\ \text m + 2\ \text m = 5\ \text m.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+A Natale, Babbo Natale cala lungo un camino un sacco di regali di massa $5\ \text{kg}$, legato a una corda. Su di esso viene compiuto un lavoro di $-150\ \text J$, che diminuisce la sua energia potenziale gravitazionale: alla fine si trova a un'altezza di $2\ \text m$ dal camino. Qual era la sua altezza iniziale? (Usa $g\approx 10\ \text{m/s}^2$.)
+
+{% include num.html id="numHi" valore="5" unit="m" %}
+
+{% include ex-sol.html %}
+L'aumento di energia potenziale è $\Delta U_g = mg(h_f-h_i)$. Isoliamo $h_i$:
+
+$$h_i = h_f - \frac{\Delta U_g}{mg} = 2\ \text m - \frac{-150\ \text J}{5\ \text{kg}\times 10\ \text{m/s}^2} = 2\ \text m + 3\ \text m = 5\ \text m.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un pescatore issa sulla banchina una cassa di pesce, sollevandola di $4\ \text m$: la sua energia potenziale gravitazionale aumenta di $800\ \text J$. Qual è il peso della cassa?
+
+{% include num.html id="numForza" valore="200" unit="N" %}
+
+{% include ex-sol.html %}
+Il lavoro compiuto contro la gravità (che si trasforma in energia potenziale) è $L=F\cdot\Delta s$, dove qui $F$ è proprio il peso della cassa e $\Delta s$ è l'altezza $h$. Isoliamo $F$:
+
+$$F = \frac{\Delta U_g}{h} = \frac{800\ \text J}{4\ \text m} = 200\ \text N.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un oggetto $A$ di massa $m$ si trova all'altezza $h$. Un oggetto $B$ ha massa tripla, $3m$, ma la **stessa** energia potenziale gravitazionale di $A$. A che altezza si trova $B$?
+
+{% capture _o_prop %}[
+{"v":"a","t":"A un'altezza $3h$"},
+{"v":"b","t":"Alla stessa altezza $h$"},
+{"v":"c","t":"A un'altezza $h/3$"},
+{"v":"d","t":"A un'altezza $h/9$"}
+]{% endcapture %}
+{% include mcq.html id="mcqUprop" opts=_o_prop ok="c" s="Da $h=\dfrac{U_g}{mg}$: a parità di $U_g$ (e di $g$), l'altezza è inversamente proporzionale alla massa. Se la massa triplica, l'altezza deve diventare un terzo." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=3 %}
+Un vaso di massa $2\ \text{kg}$ è appoggiato sul parapetto di un balcone, $1{,}5\ \text m$ sopra il pavimento del balcone; il pavimento del balcone si trova $6\ \text m$ sopra il marciapiede. (Usa $g\approx 10\ \text{m/s}^2$.)
+
+1. Quanto vale l'energia potenziale gravitazionale del vaso rispetto al pavimento del balcone?
+{% include num.html id="numUref1" valore="30" unit="J" %}
+2. E rispetto al marciapiede?
+{% include num.html id="numUref2" valore="150" unit="J" %}
+3. Il vaso cade e arriva sul marciapiede. Di quanto diminuisce la sua energia potenziale? La risposta dipende dal livello di riferimento che hai scelto?
+{% include num.html id="numUref3" valore="150" unit="J" %}
+
+{% include ex-sol.html %}
+L'altezza $h$ nella formula $U_g=mgh$ si misura sempre **rispetto a un livello di riferimento**, che scegliamo noi:
+
+$$U_{\text{balcone}}=2\ \text{kg}\times10\ \text{m/s}^2\times1{,}5\ \text m=30\ \text J,\qquad U_{\text{marciapiede}}=2\ \text{kg}\times10\ \text{m/s}^2\times7{,}5\ \text m=150\ \text J.$$
+
+Quando il vaso arriva sul marciapiede, rispetto al marciapiede la sua energia potenziale vale $0$: è diminuita di $150\ \text J$. Rispetto al balcone, invece, il marciapiede si trova $6\ \text m$ **sotto** il riferimento, cioè ad altezza $-6\ \text m$: lì $U_g=2\times10\times(-6)=-120\ \text J$, e la diminuzione è di nuovo $30\ \text J-(-120\ \text J)=150\ \text J$. **Le variazioni di energia potenziale non dipendono dal riferimento**: cambiano solo i singoli valori di $U_g$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Una barretta di cioccolato fornisce circa $1{,}0\times10^6\ \text J$ di energia. Una ragazza di massa $60\ \text{kg}$ vuole "consumarla" salendo le scale: quanti piani dovrebbe salire, se ogni piano è alto $3\ \text m$? Considera solo l'aumento della sua energia potenziale gravitazionale. (Usa $g\approx 10\ \text{m/s}^2$.)
+
+{% include num.html id="numPiani" valore="556" unit="piani" tol="1" %}
+
+{% include ex-sol.html %}
+Isoliamo l'altezza dalla formula $U_g=mgh$:
+
+$$h=\frac{U_g}{mg}=\frac{1{,}0\times10^6\ \text J}{60\ \text{kg}\times10\ \text{m/s}^2}\approx 1\,667\ \text m,\qquad \text{piani}=\frac{1\,667\ \text m}{3\ \text m}\approx 556.$$
+
+Più di cinquecento piani: oltre il doppio dell'altezza del grattacielo più alto del mondo! (In realtà il nostro corpo usa l'energia in modo poco efficiente, e ne spende molta anche solo per restare in vita: con una barretta si salgono molti meno piani.)
+{% include ex-sol-end.html %}
+
+### Esercizi sull'energia meccanica e sul calore
+
+Prima di iniziare, fissiamo le idee su cosa sia un sistema isolato.
+
+{% include frayer.html id="frayer-sistema-isolato" termine="Sistema isolato" %}
+
+#### La conservazione dell'energia meccanica
+
+{% include ex.html diff=1 %}
+Prova a scrivere con parole tue, senza guardare indietro nel capitolo, cosa significa che l'energia meccanica di un sistema "si conserva".
+
+{% include def-compare.html id="dc-conservazione" testo="L'energia meccanica di un sistema si conserva quando…" label="Confronta con la definizione nel testo" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Marco gioca con uno yo-yo di massa $60\ \text g$. Lo yo-yo scende, srotolandosi, da fermo per un tratto di $0{,}9\ \text m$: trascurando l'attrito, quanta energia cinetica ha acquistato? (Usa $g\approx 10\ \text{m/s}^2$.)
+
+{% include num.html id="numYoyo" valore="0.54" unit="J" %}
+
+{% include ex-sol.html %}
+Convertendo la massa, $60\ \text g = 0{,}06\ \text{kg}$. In assenza di attrito, l'energia meccanica si conserva: tutta l'energia potenziale persa si ritrova come energia cinetica guadagnata,
+
+$$K = U_i - U_f = mgh = 0{,}06\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \text m = 0{,}54\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Una bambina su un'altalena viene tirata indietro finché non si trova a $0{,}45\ \text m$ di altezza rispetto al punto più basso, poi lasciata andare da ferma. Trascurando l'attrito, con che velocità passa per il punto più basso? (Usa $g\approx 10\ \text{m/s}^2$.)
+
+{% include num.html id="numAltalena1" valore="3" unit="m/s" %}
+
+{% include ex-sol.html %}
+È la stessa situazione di un corpo lasciato cadere da un'altezza $h$: tutta l'energia potenziale iniziale si trasforma in energia cinetica, quindi $mgh=\frac12 mv^2$, da cui $v=\sqrt{2gh}$:
+
+$$v = \sqrt{2gh} = \sqrt{2\times 10\ \text{m/s}^2\times 0{,}45\ \text m} = \sqrt 9 = 3\ \text{m/s}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Il pendolo di un vecchio orologio a muro, di massa $0{,}5\ \text{kg}$, viene spostato lateralmente fino a un'altezza di $0{,}8\ \text m$ rispetto al punto più basso della sua oscillazione, e lì lasciato fermo (usa $g\approx 10\ \text{m/s}^2$). Prendendo come riferimento il punto più basso, qual è la sua energia meccanica in quell'istante?
+
+{% include num.html id="numPendoloE" valore="4" unit="J" %}
+
+{% include ex-sol.html %}
+Il pendolo è fermo, quindi tutta la sua energia meccanica è potenziale ($K=0$):
+
+$$E = K+U = 0 + mgh = 0{,}5\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}8\ \text m = 4\ \text J.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -1597,67 +1737,6 @@ $$g = \frac{v^2}{2h} = \frac{(6\ \text{m/s})^2}{2\times 5\ \text m} = \frac{36}{
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Un drone di massa $2\ \text{kg}$ sta riprendendo un video a $3\ \text m$ di altezza. Il pilota lo fa salire ulteriormente, compiendo su di esso un lavoro di $40\ \text J$ (che si traduce in un aumento della sua energia potenziale gravitazionale). A quale altezza si trova adesso? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numHf" valore="5" unit="m" %}
-
-{% include ex-sol.html %}
-L'aumento di energia potenziale è $\Delta U_g = mg(h_f-h_i)$. Isoliamo $h_f$:
-
-$$h_f = h_i + \frac{\Delta U_g}{mg} = 3\ \text m + \frac{40\ \text J}{2\ \text{kg}\times 10\ \text{m/s}^2} = 3\ \text m + 2\ \text m = 5\ \text m.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-A Natale, Babbo Natale cala lungo un camino un sacco di regali di massa $5\ \text{kg}$, legato a una corda. Su di esso viene compiuto un lavoro di $-150\ \text J$, che diminuisce la sua energia potenziale gravitazionale: alla fine si trova a un'altezza di $2\ \text m$ dal camino. Qual era la sua altezza iniziale? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numHi" valore="5" unit="m" %}
-
-{% include ex-sol.html %}
-L'aumento di energia potenziale è $\Delta U_g = mg(h_f-h_i)$. Isoliamo $h_i$:
-
-$$h_i = h_f - \frac{\Delta U_g}{mg} = 2\ \text m - \frac{-150\ \text J}{5\ \text{kg}\times 10\ \text{m/s}^2} = 2\ \text m + 3\ \text m = 5\ \text m.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Un pescatore issa sulla banchina una cassa di pesce, sollevandola di $4\ \text m$: la sua energia potenziale gravitazionale aumenta di $800\ \text J$. Qual è il peso della cassa?
-
-{% include num.html id="numForza" valore="200" unit="N" %}
-
-{% include ex-sol.html %}
-Il lavoro compiuto contro la gravità (che si trasforma in energia potenziale) è $L=F\cdot\Delta s$, dove qui $F$ è proprio il peso della cassa e $\Delta s$ è l'altezza $h$. Isoliamo $F$:
-
-$$F = \frac{\Delta U_g}{h} = \frac{800\ \text J}{4\ \text m} = 200\ \text N.$$
-{% include ex-sol-end.html %}
-
-### Esercizi sull'energia meccanica e sul calore
-
-Prima di iniziare, fissiamo le idee su cosa sia un sistema isolato.
-
-{% include frayer.html id="frayer-sistema-isolato" termine="Sistema isolato" %}
-
-{% include ex.html diff=1 %}
-Marco gioca con uno yo-yo di massa $60\ \text g$. Lo yo-yo scende, srotolandosi, da fermo per un tratto di $0{,}9\ \text m$: trascurando l'attrito, quanta energia cinetica ha acquistato? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numYoyo" valore="0.54" unit="J" %}
-
-{% include ex-sol.html %}
-Convertendo la massa, $60\ \text g = 0{,}06\ \text{kg}$. In assenza di attrito, l'energia meccanica si conserva: tutta l'energia potenziale persa si ritrova come energia cinetica guadagnata,
-
-$$K = U_i - U_f = mgh = 0{,}06\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \text m = 0{,}54\ \text J.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
-Una bambina su un'altalena viene tirata indietro finché non si trova a $0{,}45\ \text m$ di altezza rispetto al punto più basso, poi lasciata andare da ferma. Trascurando l'attrito, con che velocità passa per il punto più basso? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numAltalena1" valore="3" unit="m/s" %}
-
-{% include ex-sol.html %}
-È la stessa situazione di un corpo lasciato cadere da un'altezza $h$: tutta l'energia potenziale iniziale si trasforma in energia cinetica, quindi $mgh=\frac12 mv^2$, da cui $v=\sqrt{2gh}$:
-
-$$v = \sqrt{2gh} = \sqrt{2\times 10\ \text{m/s}^2\times 0{,}45\ \text m} = \sqrt 9 = 3\ \text{m/s}.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
 Un'altra bambina, su un'altra altalena (trascura sempre l'attrito, usa $g\approx 10\ \text{m/s}^2$), passa per il punto più basso con una velocità di $5\ \text{m/s}$. Con che velocità passa per un punto che si trova $1{,}05\ \text m$ più in alto rispetto al punto più basso?
 
 {% include num.html id="numAltalena2" valore="2" unit="m/s" %}
@@ -1670,17 +1749,6 @@ $$\frac12 m v_{\text{basso}}^2 = \frac12 m v^2 + mgh.$$
 La massa si semplifica; isoliamo $v$:
 
 $$v = \sqrt{v_{\text{basso}}^2 - 2gh} = \sqrt{(5\ \text{m/s})^2 - 2\times 10\ \text{m/s}^2\times 1{,}05\ \text m} = \sqrt{25-21} = \sqrt 4 = 2\ \text{m/s}.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
-Il pendolo di un vecchio orologio a muro, di massa $0{,}5\ \text{kg}$, viene spostato lateralmente fino a un'altezza di $0{,}8\ \text m$ rispetto al punto più basso della sua oscillazione, e lì lasciato fermo (usa $g\approx 10\ \text{m/s}^2$). Prendendo come riferimento il punto più basso, qual è la sua energia meccanica in quell'istante?
-
-{% include num.html id="numPendoloE" valore="4" unit="J" %}
-
-{% include ex-sol.html %}
-Il pendolo è fermo, quindi tutta la sua energia meccanica è potenziale ($K=0$):
-
-$$E = K+U = 0 + mgh = 0{,}5\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}8\ \text m = 4\ \text J.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -1728,29 +1796,7 @@ Il completamento segue lo schema ormai familiare: energia tutta potenziale in al
 Per quanto riguarda il numero di palline: se dall'altra parte se ne alzasse uno diverso (o a un'altezza diversa), l'energia meccanica del gruppo dopo l'urto sarebbe diversa da quella di prima, e questo violerebbe la sua conservazione. Poiché tutte le palline hanno la stessa massa, l'unico modo per non violarla è che ne escano esattamente tante quante ne sono entrate, con la stessa velocità: ecco perché risalgono sempre alla stessa altezza $h$. (Per spiegare fino in fondo perché è proprio così — e non, ad esempio, il doppio delle palline a un quarto della velocità, che avrebbe la stessa energia cinetica — serve anche un'altra legge di conservazione, quella della *quantità di moto*, che incontrerai più avanti nei tuoi studi.)
 {% include ex-sol-end.html %}
 
-{% include ex.html diff=3 %}
-In un bowling, una palla di massa $6\ \text{kg}$ cade da uno scaffale alto $1{,}2\ \text m$ e rimbalza sul pavimento fino a raggiungere di nuovo un'altezza massima di soli $0{,}3\ \text m$. Quanta energia si è convertita in calore durante l'urto con il pavimento? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numBowlingCalore" valore="54" unit="J" %}
-
-{% include ex-sol.html %}
-Sia appena prima di cadere sia nel punto più alto del rimbalzo la palla è ferma, quindi in entrambi i casi la sua energia meccanica è tutta potenziale. Se l'energia meccanica si fosse conservata, la palla sarebbe rimbalzata fino alla stessa altezza di partenza: il fatto che risalga solo fino a $0{,}3\ \text m$ significa che l'energia mancante,
-
-$$\Delta E = U_i - U_f = mg(h_i-h_f) = 6\ \text{kg}\times 10\ \text{m/s}^2\times(1{,}2\ \text m - 0{,}3\ \text m) = 6\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \text m = 54\ \text J,$$
-
-si è convertita in calore nell'urto con il pavimento.
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=3 %}
-Uno slittino di massa $4\ \text{kg}$ scivola lungo una discesa innevata, partendo da fermo da un'altezza di $5\ \text m$. A causa dell'attrito con la neve, in fondo alla discesa la sua velocità è di soli $8\ \text{m/s}$ (minore di quella che avrebbe senza attrito). Quanta energia si è convertita in calore lungo la discesa? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numSlittinoCalore" valore="72" unit="J" %}
-
-{% include ex-sol.html %}
-Se non ci fosse stato attrito, l'energia meccanica si sarebbe conservata e tutta l'energia potenziale iniziale si sarebbe trasformata in energia cinetica finale. L'energia effettivamente dissipata sotto forma di calore è allora la differenza fra l'energia potenziale iniziale e l'energia cinetica finale realmente osservata:
-
-$$\Delta E = U_i - K_f = mgh - \frac12 mv^2 = 4\ \text{kg}\times 10\ \text{m/s}^2\times 5\ \text m - \frac12\times 4\ \text{kg}\times(8\ \text{m/s})^2 = 200\ \text J - 128\ \text J = 72\ \text J.$$
-{% include ex-sol-end.html %}
+#### L'energia dissipata: il calore
 
 {% include ex.html diff=2 %}
 Torniamo all'esperimento (immaginario!) del "pollo cotto a schiaffi". Supponi che ogni schiaffo comprima il pollo di $2{,}5\ \text{cm}$ esercitando una forza di $40\ \text N$, e che tutto il lavoro compiuto si dissipi istantaneamente in calore. Sapendo che per cuocere completamente il pollo servono circa $2\times10^5\ \text J$ di calore, quanti schiaffi sarebbero necessari?
@@ -1787,8 +1833,26 @@ Le zone più calde sono il motore e il mozzo delle ruote (la parte centrale, vic
 Il telaio, il serbatoio e il cerchione delle ruote, invece, si muovono in blocco, senza superfici interne che strisciano l'una sull'altra: l'attrito lì è trascurabile, e infatti restano molto più freddi.
 {% include ex-sol-end.html %}
 
-{% include ex.html diff=1 %}
-Prova a scrivere con parole tue, senza guardare indietro nel capitolo, cosa significa che l'energia meccanica di un sistema "si conserva".
+{% include ex.html diff=3 %}
+In un bowling, una palla di massa $6\ \text{kg}$ cade da uno scaffale alto $1{,}2\ \text m$ e rimbalza sul pavimento fino a raggiungere di nuovo un'altezza massima di soli $0{,}3\ \text m$. Quanta energia si è convertita in calore durante l'urto con il pavimento? (Usa $g\approx 10\ \text{m/s}^2$.)
 
-{% include def-compare.html id="dc-conservazione" testo="L'energia meccanica di un sistema si conserva quando…" label="Confronta con la definizione nel testo" %}
-{% include ex-end.html %}
+{% include num.html id="numBowlingCalore" valore="54" unit="J" %}
+
+{% include ex-sol.html %}
+Sia appena prima di cadere sia nel punto più alto del rimbalzo la palla è ferma, quindi in entrambi i casi la sua energia meccanica è tutta potenziale. Se l'energia meccanica si fosse conservata, la palla sarebbe rimbalzata fino alla stessa altezza di partenza: il fatto che risalga solo fino a $0{,}3\ \text m$ significa che l'energia mancante,
+
+$$\Delta E = U_i - U_f = mg(h_i-h_f) = 6\ \text{kg}\times 10\ \text{m/s}^2\times(1{,}2\ \text m - 0{,}3\ \text m) = 6\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \text m = 54\ \text J,$$
+
+si è convertita in calore nell'urto con il pavimento.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Uno slittino di massa $4\ \text{kg}$ scivola lungo una discesa innevata, partendo da fermo da un'altezza di $5\ \text m$. A causa dell'attrito con la neve, in fondo alla discesa la sua velocità è di soli $8\ \text{m/s}$ (minore di quella che avrebbe senza attrito). Quanta energia si è convertita in calore lungo la discesa? (Usa $g\approx 10\ \text{m/s}^2$.)
+
+{% include num.html id="numSlittinoCalore" valore="72" unit="J" %}
+
+{% include ex-sol.html %}
+Se non ci fosse stato attrito, l'energia meccanica si sarebbe conservata e tutta l'energia potenziale iniziale si sarebbe trasformata in energia cinetica finale. L'energia effettivamente dissipata sotto forma di calore è allora la differenza fra l'energia potenziale iniziale e l'energia cinetica finale realmente osservata:
+
+$$\Delta E = U_i - K_f = mgh - \frac12 mv^2 = 4\ \text{kg}\times 10\ \text{m/s}^2\times 5\ \text m - \frac12\times 4\ \text{kg}\times(8\ \text{m/s})^2 = 200\ \text J - 128\ \text J = 72\ \text J.$$
+{% include ex-sol-end.html %}
