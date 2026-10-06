@@ -1,110 +1,162 @@
 {% comment %}
-Attività (non in un box esercizio): una nuvola di punti, ciascuno con il
-valore del potenziale gravitazionale (1, 2 o 3 J/kg). I punti con lo stesso
-valore stanno su tre linee molto ondulate che attraversano il riquadro senza
-mai incrociarsi: in una stessa zona i valori si mescolano, quindi a colpo
-d'occhio le superfici non si vedono. Lo studente deve
-cliccare tutti i punti di una stessa superficie equipotenziale (prima
-V = 2 J/kg, poi 1 J/kg, poi 3 J/kg): un punto sbagliato lampeggia in rosso;
-quando li ha trovati tutti, compare la linea che li unisce (la
-superficie equipotenziale vista in sezione). Pulsante per ricominciare.
-Le posizioni sono fisse (stesse per tutti). Nessun parametro.
+Attività (non in un box esercizio): una massa generatrice M a forma di
+patatoide (pensata come somma di alcune masse puntiformi, quindi le superfici
+equipotenziali NON sono sfere) e, intorno, una quarantina di punti (ben
+distanziati), ciascuno con il valore del potenziale gravitazionale di M in
+quel punto, in MJ/kg: V = −Σ Cᵢ/rᵢ, arrotondato all'intero (valori negativi,
+tutti calcolati davvero). Lo studente
+deve tracciare una superficie equipotenziale (prima V = −22 MJ/kg, poi
+V = −16 MJ/kg): parte da un punto con quel potenziale e TRASCINA un segmento
+fino al punto successivo, e così via, fino a richiudere la linea. Un segmento
+viene accettato solo se arriva a un punto con lo stesso potenziale E se è il
+punto successivo lungo la linea (non si possono saltare punti). Vicino alla
+linea ci sono apposta punti con valori simili (es. −21, −24). Alla fine la
+linea si richiude e compare la superficie equipotenziale (in sezione).
+Pulsanti: annulla l'ultimo segmento, ricomincia. Le posizioni sono fisse
+(stesse per tutti). Nessun parametro.
 {% endcomment %}
 <style>
-#trEq .te-top{text-align:center;font-size:.95rem;margin:0 0 .5rem;}
+#trEq .te-top{text-align:center;font-size:.95rem;margin:0 0 .4rem;}
 #trEq .te-top b{font-size:1.05rem;}
-#trEq .te-count{text-align:center;font-size:.85rem;color:#475569;margin:.2rem 0 .4rem;}
-#trEq svg{display:block;width:100%;max-width:470px;height:auto;margin:0 auto;}
+#trEq .te-count{text-align:center;font-size:.85rem;color:#475569;margin:.1rem 0 .4rem;}
+#trEq svg{display:block;width:100%;max-width:520px;height:auto;margin:0 auto;touch-action:none;user-select:none;}
 #trEq .te-pt{cursor:pointer;}
-#trEq .te-pt circle{transition:fill .15s,stroke .15s;}
-#trEq .te-pt:hover circle{stroke:#0e7490;stroke-width:2.5;}
 #trEq .te-msg{text-align:center;font-size:.9rem;font-weight:600;min-height:1.3em;margin:.5rem 0 .2rem;}
-#trEq .te-msg.ok{color:#0f766e;}#trEq .te-msg.err{color:#dc2626;}
-#trEq .te-ctrl{text-align:center;margin-top:.3rem;}
+#trEq .te-msg.ok{color:#0f766e;}#trEq .te-msg.err{color:#dc2626;}#trEq .te-msg.info{color:#475569;font-weight:400;}
+#trEq .te-ctrl{text-align:center;margin-top:.3rem;display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;}
 #trEq .te-ctrl button{font-size:.82rem;padding:.3rem .8rem;border-radius:6px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;}
 #trEq .te-ctrl button:hover{background:#f1f5f9;}
 @keyframes teShake{0%,100%{transform:translateX(0);}25%{transform:translateX(-3px);}75%{transform:translateX(3px);}}
 #trEq .te-bad{animation:teShake .3s ease 2;}
+@keyframes tePulse{0%{r:16;opacity:.9;}100%{r:26;opacity:0;}}
+#trEq .te-ring{animation:tePulse 1.1s ease-out infinite;}
 @media print{#trEq{display:none!important;}}
 </style>
 <div class="vdrag-widget" id="trEq">
 <p class="te-top" id="te-top"></p>
 <p class="te-count" id="te-count"></p>
-<svg id="te-svg" viewBox="0 0 470 340" role="img" aria-label="Punti con il valore del potenziale: seleziona quelli di una stessa superficie equipotenziale"></svg>
+<svg id="te-svg" viewBox="0 0 520 380" role="img" aria-label="Una massa M e, intorno, dei punti con il valore del potenziale gravitazionale: collega con dei segmenti i punti di una stessa superficie equipotenziale"></svg>
 <p class="te-msg" id="te-msg"></p>
-<div class="te-ctrl"><button type="button" id="te-reset">↺ Ricomincia</button></div>
+<div class="te-ctrl"><button type="button" id="te-undo">↶ Annulla l'ultimo segmento</button><button type="button" id="te-reset">↺ Ricomincia</button></div>
 </div>
 <script>
 (function(){
   var svg=document.getElementById('te-svg');if(!svg)return;
-  var NS='http://www.w3.org/2000/svg';
+  var NS='http://www.w3.org/2000/svg',W=520,H=380;
   var top=document.getElementById('te-top'),count=document.getElementById('te-count'),msg=document.getElementById('te-msg');
-  // le tre linee (sezioni delle superfici equipotenziali): molto ondulate, ma
-  // sempre separate, così in una stessa zona i valori si mescolano
-  var LEV=[{v:1,b:88,n:9,col:'#2563eb'},{v:2,b:166,n:10,col:'#0f766e'},{v:3,b:244,n:10,col:'#7c3aed'}];
-  function yOf(L,k,x){return L.b+58*Math.sin(2*Math.PI*x/260+0.5)+16*Math.sin(2*Math.PI*x/105+0.7*k);}
+  // massa generatrice a forma di patatoide: la pensiamo come la somma di alcune masse puntiformi
+  // (posizione rispetto al centro, frazione della massa); il potenziale è la somma dei potenziali
+  // V = −Σ Cᵢ/rᵢ (in MJ/kg, distanze in pixel del disegno). Le superfici equipotenziali NON sono sfere.
+  var MX=255,MY=192,C=2400;
+  var MS=[[-62,-14,0.30],[-22,6,0.25],[18,-6,0.20],[56,10,0.15],[30,26,0.10]];
+  function Vex(x,y){var v=0;MS.forEach(function(m){v-=m[2]*C/Math.max(6,Math.hypot(x-MX-m[0],y-MY-m[1]));});return v;}
+  function rPot(th){var a=86,b=44,c=Math.cos(th-0.12),s=Math.sin(th-0.12);return a*b/Math.sqrt(b*b*c*c+a*a*s*s)*(1+0.09*Math.sin(3*th+1)+0.05*Math.sin(5*th+0.4));}   // contorno del patatoide
+  function rLev(th,v){var lo=20,hi=420;for(var k=0;k<50;k++){var mid=(lo+hi)/2;if(Vex(MX+mid*Math.cos(th),MY+mid*Math.sin(th))<v)lo=mid;else hi=mid;}return (lo+hi)/2;}   // dove V vale v, lungo la direzione th
+  function nearBody(x,y,d){var th=Math.atan2(y-MY,x-MX);return Math.hypot(x-MX,y-MY)<rPot(th)+d;}
+  // le due superfici da tracciare (in ordine), con i loro punti
+  var LEV=[{v:-22,n:10,col:'#2563eb'},{v:-16,n:12,col:'#7c3aed'}];
   // generatore pseudo-casuale con seme fisso: i punti sono uguali per tutti
-  var seed=11;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
-  var pts=[];
-  LEV.forEach(function(L,k){
-    var tries=0,made=0;
-    while(made<L.n&&tries<4000){tries++;
-      var x=28+rnd()*414,y=yOf(L,k,x);
-      if(y<16||y>324)continue;
-      if(pts.some(function(p){return Math.hypot(p.x-x,p.y-y)<34;}))continue;
-      pts.push({v:L.v,x:x,y:y,lev:k});made++;}
-    L.n=made;
-  });
-  pts.sort(function(a,b){return a.x-b.x;});
-  function el(tag,at,par){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);(par||svg).appendChild(e);return e;}
-  el('rect',{x:0,y:0,width:470,height:340,rx:10,fill:'#f8fafc'});
-  var curvesG=el('g',{}),ptsG=el('g',{});
-  var ORDER=[1,0,2],step=0,found={};
-  pts.forEach(function(p,i){
-    var g=el('g',{'class':'te-pt',tabindex:0,role:'button','aria-label':'punto con potenziale '+p.v+' joule al chilogrammo'},ptsG);
-    p.c=el('circle',{cx:p.x,cy:p.y,r:12,fill:'#fff',stroke:'#64748b','stroke-width':1.5},g);
-    p.t=el('text',{x:p.x,y:p.y+5,'text-anchor':'middle','font-size':14,'font-weight':700,fill:'#1e293b','font-family':'Georgia,serif'},g);p.t.textContent=p.v;
-    p.g=g;
-    function hit(){click(i);}
-    g.addEventListener('click',hit);g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();hit();}});
-  });
-  function curve(L){
-    var kk=LEV.indexOf(L),d='';for(var k=0;k<=120;k++){var x=8+k*454/120;d+=(k?'L':'M')+x.toFixed(1)+','+yOf(L,kk,x).toFixed(1);}
-    var path=el('path',{d:d,fill:'none',stroke:L.col,'stroke-width':3,'stroke-linejoin':'round',opacity:0},curvesG);
-    var len=path.getTotalLength();path.style.strokeDasharray=len;path.style.strokeDashoffset=len;path.setAttribute('opacity',0.9);
-    path.style.transition='stroke-dashoffset 1.4s ease';requestAnimationFrame(function(){requestAnimationFrame(function(){path.style.strokeDashoffset=0;});});
-  }
-  function lev(){return LEV[ORDER[step]];}
-  function nTarget(){return LEV[ORDER[step]].n;}
-  function nFound(){var c=0;pts.forEach(function(p,i){if(found[i]&&p.lev===ORDER[step])c++;});return c;}
-  function texts(){
-    if(step>=ORDER.length){top.innerHTML='Hai tracciato tutte e tre le superfici equipotenziali!';count.textContent='';return;}
-    var L=lev();
-    top.innerHTML='Ogni numero è il valore del potenziale in quel punto, in J/kg. Clicca su <b>tutti</b> i punti della superficie equipotenziale <b style="color:'+L.col+'">V = '+L.v+' J/kg</b>.';
-    count.textContent='Trovati '+nFound()+' su '+nTarget();
-  }
-  function click(i){
-    if(step>=ORDER.length||found[i])return;
-    var p=pts[i],L=lev();
-    if(p.lev===ORDER[step]){
-      found[i]=true;p.c.setAttribute('fill',L.col);p.c.setAttribute('stroke',L.col);p.t.setAttribute('fill','#fff');
-      msg.className='te-msg';msg.textContent='';
-      if(nFound()===nTarget()){
-        curve(L);
-        msg.className='te-msg ok';msg.textContent='✓ Ecco la superficie equipotenziale V = '+L.v+' J/kg: sul foglio ne vediamo una sezione, cioè una linea.';
-        if(window._shoot)_shoot(p.g);
-        step++;
-        if(step>=ORDER.length)msg.textContent='✓ Fatto! Nota che le tre superfici equipotenziali non si intersecano mai.';
-      }
-      texts();
-    }else{
-      msg.className='te-msg err';msg.textContent='✗ Questo punto ha potenziale '+p.v+' J/kg, non '+L.v+' J/kg.';
-      p.c.setAttribute('stroke','#dc2626');p.g.classList.remove('te-bad');void p.g.getBBox();p.g.classList.add('te-bad');
-      setTimeout(function(){if(!found[i])p.c.setAttribute('stroke','#64748b');},700);
+  var seed=7;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+  var pts=[],GAP=36;
+  function free(x,y){return x>20&&x<W-20&&y>20&&y<H-20&&!pts.some(function(p){return Math.hypot(p.x-x,p.y-y)<GAP;});}
+  LEV.forEach(function(L,k){                         // punti esattamente sulla superficie equipotenziale
+    var a0=rnd()*6.283;L.ids=[];
+    for(var j=0;j<L.n;j++){
+      for(var t=0;t<40;t++){var a=a0+2*Math.PI*j/L.n+(rnd()-0.5)*0.3,r=rLev(a,L.v),x=MX+r*Math.cos(a),y=MY+r*Math.sin(a);
+        if(free(x,y)){pts.push({x:x,y:y,v:L.v,lev:k,a:a});L.ids.push(pts.length-1);break;}}
     }
+  });
+  // punti "trappola": vicino alle due linee, con valori simili ma diversi
+  LEV.forEach(function(L){for(var t=0,m=0;t<400&&m<9;t++){var a=rnd()*6.283,dr=(rnd()<0.5?-1:1)*(10+rnd()*14),r=rLev(a,L.v)+dr,x=MX+r*Math.cos(a),y=MY+r*Math.sin(a);
+    var v=Math.round(Vex(x,y));if(v!==L.v&&Math.abs(Vex(x,y)-L.v)>0.6&&!nearBody(x,y,18)&&free(x,y)){pts.push({x:x,y:y,v:v,lev:-1});m++;}}});
+  // tutti gli altri punti, sparsi (mai con il valore di una superficie da tracciare)
+  for(var t=0;t<8000&&pts.length<58;t++){var x=24+rnd()*(W-48),y=24+rnd()*(H-48);if(nearBody(x,y,20))continue;
+    var ve=Vex(x,y),v=Math.round(ve);if(LEV.some(function(L){return Math.abs(ve-L.v)<0.6;}))continue;
+    if(free(x,y))pts.push({x:x,y:y,v:v,lev:-1});}
+  LEV.forEach(function(L){L.ids.sort(function(i,j){return pts[i].a-pts[j].a;});});   // ordine lungo la linea (per angolo)
+
+  function el(tag,at,par){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);(par||svg).appendChild(e);return e;}
+  el('rect',{x:0,y:0,width:W,height:H,rx:10,fill:'#f8fafc'});
+  var defs=el('defs',{}),rg=el('radialGradient',{id:'teMass',cx:'38%',cy:'32%',r:'75%'},defs);
+  el('stop',{offset:'0',  'stop-color':'#fde68a'},rg);el('stop',{offset:'.55','stop-color':'#b45309'},rg);el('stop',{offset:'1','stop-color':'#78350f'},rg);
+  var curvesG=el('g',{}),segG=el('g',{}),rubber=el('line',{stroke:'#64748b','stroke-width':2.5,'stroke-dasharray':'6 5','stroke-linecap':'round',opacity:0}),ptsG=el('g',{});
+  var dp='';for(var k=0;k<=90;k++){var th=2*Math.PI*k/90,r=rPot(th);dp+=(k?'L':'M')+(MX+r*Math.cos(th)).toFixed(1)+','+(MY+r*Math.sin(th)).toFixed(1);}
+  el('path',{d:dp+'Z',fill:'url(#teMass)',stroke:'#78350f','stroke-width':1.5,'stroke-linejoin':'round'});
+  var mt=el('text',{x:MX-8,y:MY+7,'text-anchor':'middle','font-size':18,'font-style':'italic','font-weight':700,fill:'#fff','font-family':'Georgia,serif'});mt.textContent='M';
+  var ring=el('circle',{r:16,fill:'none','stroke-width':2.5,'class':'te-ring'},ptsG);ring.style.display='none';
+  pts.forEach(function(p,i){
+    var g=el('g',{'class':'te-pt'},ptsG);
+    p.c=el('circle',{cx:p.x,cy:p.y,r:15,fill:'#fff',stroke:'#64748b','stroke-width':1.5},g);
+    p.t=el('text',{x:p.x,y:p.y+4.5,'text-anchor':'middle','font-size':13,'font-weight':700,fill:'#1e293b','font-family':'Georgia,serif'},g);
+    p.t.textContent=String(p.v).replace('-','−');p.g=g;
+  });
+
+  // ── stato: superficie da tracciare (step), catena di punti collegati, verso di percorrenza
+  var step=0,chain=[],dir=0,drag=false;
+  function L(){return LEV[step];}
+  function posOf(i){return L().ids.indexOf(i);}
+  function texts(){
+    if(step>=LEV.length){top.innerHTML='Hai tracciato entrambe le superfici equipotenziali!';count.textContent='';return;}
+    top.innerHTML='Traccia la superficie equipotenziale <b style="color:'+L().col+'">V = '+String(L().v).replace('-','−')+' MJ/kg</b>: parti da un punto con questo potenziale e <b>trascina un segmento</b> fino al punto successivo, poi al successivo, fino a richiudere la linea.';
+    count.textContent='Valori del potenziale in MJ/kg. Punti collegati: '+chain.length+' su '+L().n;
   }
+  function say(t,c){msg.className='te-msg '+(c||'');msg.textContent=t;}
+  function mark(i,on){var p=pts[i];p.c.setAttribute('fill',on?L().col:'#fff');p.c.setAttribute('stroke',on?L().col:'#64748b');p.t.setAttribute('fill',on?'#fff':'#1e293b');}
+  function showRing(){if(!chain.length){ring.style.display='none';return;}var p=pts[chain[chain.length-1]];ring.setAttribute('cx',p.x);ring.setAttribute('cy',p.y);ring.setAttribute('stroke',L().col);ring.style.display='';}
+  function bad(i,t){var p=pts[i];say(t,'err');p.c.setAttribute('stroke','#dc2626');p.g.classList.remove('te-bad');void p.g.getBBox();p.g.classList.add('te-bad');
+    setTimeout(function(){if(chain.indexOf(i)<0)p.c.setAttribute('stroke','#64748b');},800);}
+  function addSeg(a,b){var p=pts[a],q=pts[b];el('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:L().col,'stroke-width':3.5,'stroke-linecap':'round'},segG);}
+  function vstr(v){return String(v).replace('-','−')+' MJ/kg';}
+  function pick(x,y){for(var i=0;i<pts.length;i++)if(Math.hypot(pts[i].x-x,pts[i].y-y)<19)return i;return -1;}
+  function pt(ev){var r=svg.getBoundingClientRect();return {x:(ev.clientX-r.left)*W/r.width,y:(ev.clientY-r.top)*H/r.height};}
+
+  function done(){                                    // linea richiusa: compare la superficie (in sezione)
+    var Lv=L(),d='';for(var k=0;k<=120;k++){var th=2*Math.PI*k/120,r=rLev(th,Lv.v);d+=(k?'L':'M')+(MX+r*Math.cos(th)).toFixed(1)+','+(MY+r*Math.sin(th)).toFixed(1);}
+    var c=el('path',{d:d+'Z',fill:'none',stroke:Lv.col,'stroke-width':2,'stroke-dasharray':'2000',opacity:.5},curvesG);
+    c.style.strokeDashoffset=2000;c.style.transition='stroke-dashoffset 1.6s ease';requestAnimationFrame(function(){requestAnimationFrame(function(){c.style.strokeDashoffset=0;});});
+    if(window._shoot)_shoot(pts[chain[0]].g);
+    step++;chain=[];dir=0;ring.style.display='none';
+    if(step<LEV.length)say('✓ Linea richiusa: è la superficie equipotenziale V = '+vstr(Lv.v)+' (sul foglio ne vediamo una sezione). Ora la prossima.','ok');
+    else say('✓ Fatto! Nota che le due superfici equipotenziali non si intersecano mai.','ok');
+    texts();
+  }
+  function tryLink(a,b){                              // segmento dal punto a (fine della catena) al punto b
+    var p=pts[b];
+    if(p.lev!==step){bad(b,'✗ Questo punto ha potenziale '+vstr(p.v)+', non '+vstr(L().v)+'.');return;}
+    var n=L().n,ca=posOf(a),cb=posOf(b),fw=(ca+1)%n,bw=(ca-1+n)%n;
+    if(b===chain[0]){
+      if(chain.length===n&&cb===(dir>0?fw:bw)){addSeg(a,b);done();}
+      else say('Prima collega tutti i punti con questo potenziale, poi richiudi la linea.','info');
+      return;
+    }
+    if(chain.indexOf(b)>=0){say('Questo punto è già collegato.','info');return;}
+    var ok=dir===0?(cb===fw||cb===bw):(cb===(dir>0?fw:bw));
+    if(!ok){bad(b,'Questo punto ha il potenziale giusto, ma non è il successivo lungo la linea: collega i punti in ordine, senza saltarne.');return;}
+    if(dir===0)dir=cb===fw?1:-1;
+    addSeg(a,b);chain.push(b);mark(b,true);say('','');showRing();texts();
+    if(chain.length===n)say('Hai collegato tutti i punti: ora richiudi la linea, tornando al punto di partenza.','info');
+  }
+  svg.addEventListener('pointerdown',function(ev){
+    if(step>=LEV.length)return;var q=pt(ev),i=pick(q.x,q.y);if(i<0)return;
+    if(!chain.length){
+      if(pts[i].lev!==step){bad(i,'✗ Questo punto ha potenziale '+vstr(pts[i].v)+', non '+vstr(L().v)+'.');return;}
+      chain=[i];mark(i,true);showRing();texts();say('Ora trascina un segmento da questo punto al successivo.','info');
+    }else if(i!==chain[chain.length-1]){say('Parti dall\'ultimo punto della linea (quello che pulsa) e trascina il segmento fino al successivo.','info');return;}
+    drag=true;svg.setPointerCapture(ev.pointerId);ev.preventDefault();
+    var p=pts[i];rubber.setAttribute('x1',p.x);rubber.setAttribute('y1',p.y);rubber.setAttribute('x2',p.x);rubber.setAttribute('y2',p.y);rubber.setAttribute('opacity',1);
+  });
+  svg.addEventListener('pointermove',function(ev){if(!drag)return;var q=pt(ev);rubber.setAttribute('x2',q.x);rubber.setAttribute('y2',q.y);});
+  function endDrag(ev){if(!drag)return;drag=false;rubber.setAttribute('opacity',0);
+    var q=pt(ev),i=pick(q.x,q.y),a=chain[chain.length-1];if(i<0||i===a)return;tryLink(a,i);}
+  svg.addEventListener('pointerup',endDrag);svg.addEventListener('pointercancel',function(){drag=false;rubber.setAttribute('opacity',0);});
+
+  document.getElementById('te-undo').onclick=function(){
+    if(step>=LEV.length||!chain.length)return;
+    var i=chain.pop();mark(i,false);if(segG.lastChild&&chain.length)segG.removeChild(segG.lastChild);
+    if(chain.length<2)dir=0;showRing();texts();say('','');
+  };
   document.getElementById('te-reset').onclick=function(){
-    step=0;found={};curvesG.innerHTML='';msg.textContent='';
+    step=0;chain=[];dir=0;curvesG.innerHTML='';segG.innerHTML='';say('','');ring.style.display='none';
     pts.forEach(function(p){p.c.setAttribute('fill','#fff');p.c.setAttribute('stroke','#64748b');p.t.setAttribute('fill','#1e293b');});
     texts();
   };
