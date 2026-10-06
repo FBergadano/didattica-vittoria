@@ -1,0 +1,15 @@
+</div><div class="scorri-nav"><button type="button" class="scorri-prev" aria-label="Esempio precedente">‹</button><span class="scorri-dots"></span><button type="button" class="scorri-next" aria-label="Esempio successivo">›</button></div>
+<script>
+(function(){
+  var root=document.currentScript.parentNode,track=root.querySelector('.scorri-track'),slides=track.querySelectorAll('.scorri-slide'),dots=root.querySelector('.scorri-dots'),cur=0;
+  slides.forEach(function(s,k){var d=document.createElement('button');d.type='button';d.className='scorri-dot';d.setAttribute('aria-label','Esempio '+(k+1));
+    d.addEventListener('click',function(){go(k);});dots.appendChild(d);});
+  function go(k){k=(k+slides.length)%slides.length;cur=k;track.scrollTo({left:track.scrollLeft+slides[k].getBoundingClientRect().left-track.getBoundingClientRect().left,behavior:'smooth'});}
+  function mark(){var best=1e9;slides.forEach(function(sl,k){var d=Math.abs(sl.getBoundingClientRect().left-track.getBoundingClientRect().left);if(d<best){best=d;cur=k;}});dots.querySelectorAll('.scorri-dot').forEach(function(d,k){d.classList.toggle('on',k===cur);});}
+  root.querySelector('.scorri-prev').addEventListener('click',function(){go(cur-1);});
+  root.querySelector('.scorri-next').addEventListener('click',function(){go(cur+1);});
+  track.addEventListener('scroll',function(){window.requestAnimationFrame(mark);});
+  mark();
+})();
+</script>
+</div>

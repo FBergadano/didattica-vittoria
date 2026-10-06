@@ -1,0 +1,379 @@
+{% comment %}
+Simulazione: la convezione in una pentola d'acqua scaldata da un fornelletto
+ad alcol (sotto la pentola, su un treppiede). Il fornelletto si accende
+avvicinando allo stoppino il fiammifero (si prende dalla scatoletta sul
+tavolo e, preso in mano, si accende); si spegne con un pulsante (che compare
+solo quando è acceso). La fiamma si allarga sotto il fondo e lo scalda
+tutto, di più al centro e un po' meno ai bordi. Due termometri identici
+(stessa lunghezza, stessa scala): uno pesca l'acqua vicino alla superficie,
+l'altro, tutto immerso, misura l'acqua sul fondo.
+Due scenari, con lo stesso fornelletto:
+
+- Vista macroscopica (niente particelle): poche frecce lunghe che seguono le
+  correnti dell'acqua (linee di flusso dei moti convettivi) e scorrono nel
+  verso del moto; ogni freccia è colorata lungo il suo percorso: rossa dove
+  l'acqua è più calda della media, blu dove è più fredda. Sul fondo caldo si
+  formano bolle che salgono trascinate dall'acqua. Prima che l'acqua si
+  muova non ci sono frecce. Sotto c'è un fluido 2D con la spinta di
+  Archimede (approssimazione di Boussinesq: equazione della vorticità +
+  funzione di corrente): dove l'acqua è più calda è meno densa e viene
+  spinta verso l'alto. Il livello dell'acqua sale un po' scaldandosi
+  (dilatazione, esagerata).
+- Vista microscopica (modello, non in scala): l'acqua come insieme di
+  particelle, colorate dal blu (lenta) al rosso (veloce); più una particella
+  è calda più vibra e più spazio occupa (le particelle calde si allontanano
+  fra loro: dilatazione). Le particelle si scambiano energia quando si
+  toccano, si scaldano sul fondo e si raffreddano in superficie. La spinta
+  verso l'alto delle zone meno dense (più calde) è calcolata dallo stesso
+  modello di fluido della vista macro, a partire dalle temperature delle
+  particelle: la corrente che ne nasce trasporta le particelle, e quelle
+  fredde scendono a occupare gli spazi lasciati. Il peso spiana la
+  superficie libera.
+Nessun parametro.
+{% endcomment %}
+<style>
+#convPot .cv-top{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:center;margin-bottom:.5rem;}
+#convPot .cv-seg{display:inline-flex;border:1px solid #67e8f9;border-radius:6px;overflow:hidden;}
+#convPot .cv-seg button{border:none;background:#fff;color:#0e7490;padding:.3rem .7rem;cursor:pointer;font-size:.85rem;}
+#convPot .cv-seg button.on{background:#0e7490;color:#fff;}
+#convPot .cv-btn{border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:.3rem .75rem;cursor:pointer;font-size:.85rem;color:#334155;}
+#convPot .cv-btn:hover{border-color:#0e7490;}
+#convPot .cv-btn.on{background:#0e7490;border-color:#0e7490;color:#fff;}
+#convPot .cv-btn.lit{background:#fff7ed;border-color:#f97316;color:#c2410c;}
+#convPot canvas{display:block;width:100%;max-width:540px;height:auto;margin:0 auto;touch-action:none;border-radius:10px;}
+@media print{#convPot{display:none!important;}}
+</style>
+<div class="vdrag-widget" id="convPot">
+<p class="vdrag-hint">Accendi il fornelletto avvicinando allo stoppino il fiammifero (lo prendi dalla scatoletta sul tavolo) e osserva come si muove l'acqua, nella vista macroscopica e in quella microscopica. Confronta i due termometri, in superficie e sul fondo.</p>
+<div class="cv-top">
+  <span class="cv-seg"><button type="button" data-v="macro" class="on">Vista macroscopica</button><button type="button" data-v="micro">Vista microscopica</button></span>
+  <button type="button" class="cv-btn lit" id="cv-fire" style="display:none">Spegni il fornelletto</button>
+  <button type="button" class="cv-btn" id="cv-reset">↺ Ricomincia</button>
+</div>
+<canvas id="cv-cv" aria-label="Pentola d'acqua scaldata dal basso da un fornelletto ad alcol"></canvas>
+</div>
+<script>
+(function(){
+  var cv=document.getElementById('cv-cv');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=540,H=394,dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+  var root=document.getElementById('convPot'),fireBtn=document.getElementById('cv-fire');
+  var view='macro',lit=false,TAMB=20;
+  var TABLE=352,CX=270,WICK=TABLE-52;              // tavolo; fornelletto al centro, sotto la pentola
+  var X0=125,X1=415,YB=262,WL=112,RIM=80;          // interno della pentola: pareti, fondo, livello dell'acqua, bordo
+
+  // ── fluido 2D con la spinta di Archimede (Boussinesq): vorticità w, funzione di corrente psi
+  // griglia di nodi (NX+1)×(NY+1) sull'acqua; unità: celle e secondi
+  var NX=48,NY=26,CWX=(X1-X0)/NX,CWY=(YB-WL)/NY;
+  var KAP=0.3,NU=1,BG=0.06,HEAT=2.6,COOL=1.8;
+  function id(i,j){return j*(NX+1)+i;}
+  function makeFlow(){
+    var G=(NX+1)*(NY+1),f={T:new Float64Array(G),w:new Float64Array(G),psi:new Float64Array(G),u:new Float64Array(G),v:new Float64Array(G)};
+    f.reset=function(){f.T.fill(TAMB);f.w.fill(0);f.psi.fill(0);f.u.fill(0);f.v.fill(0);};
+    f.bg=BG;f.reset();return f;
+  }
+  function samp(a,x,y){x=Math.max(0,Math.min(NX-1e-6,x));y=Math.max(0,Math.min(NY-1e-6,y));var i=Math.floor(x),j=Math.floor(y),s=x-i,t=y-j;
+    return a[id(i,j)]*(1-s)*(1-t)+a[id(i+1,j)]*s*(1-t)+a[id(i,j+1)]*(1-s)*t+a[id(i+1,j+1)]*s*t;}
+  // j = 0 sul fondo, j = NY in superficie (y verso l'alto)
+  function flowStep(f,dt,advectT){
+    var i,j,k,T=f.T,w=f.w,psi=f.psi,u=f.u,v=f.v;
+    for(j=1;j<NY;j++)for(i=1;i<NX;i++){k=id(i,j);u[k]=(psi[k+NX+1]-psi[k-NX-1])/2;v[k]=-(psi[k+1]-psi[k-1])/2;}
+    for(i=0;i<=NX;i++){u[id(i,0)]=u[id(i,1)];v[id(i,0)]=0;u[id(i,NY)]=u[id(i,NY-1)];v[id(i,NY)]=0;}   // pareti scivolose: si scorre lungo i bordi
+    for(j=0;j<=NY;j++){v[id(0,j)]=v[id(1,j)];u[id(0,j)]=0;v[id(NX,j)]=v[id(NX-1,j)];u[id(NX,j)]=0;}
+    var Tn=advectT?new Float64Array(T.length):T,wn=new Float64Array(w.length);
+    for(j=0;j<=NY;j++)for(i=0;i<=NX;i++){k=id(i,j);var x=i-dt*u[k],y=j-dt*v[k];   // trasporto (semi-lagrangiano)
+      if(advectT)Tn[k]=samp(T,x,y);wn[k]=samp(w,x,y);}
+    for(j=1;j<NY;j++)for(i=1;i<NX;i++){k=id(i,j);
+      var lw=wn[k-1]+wn[k+1]+wn[k-NX-1]+wn[k+NX+1]-4*wn[k];
+      // spinta di Archimede: dove la temperatura cambia in orizzontale nasce una rotazione
+      w[k]=wn[k]+dt*NU*lw+dt*f.bg*(Tn[k+1]-Tn[k-1])/2;
+      if(advectT){var lT=Tn[k-1]+Tn[k+1]+Tn[k-NX-1]+Tn[k+NX+1]-4*Tn[k];T[k]=Tn[k]+dt*KAP*lT;}
+    }
+    for(i=0;i<=NX;i++){w[id(i,0)]=0;w[id(i,NY)]=0;}for(j=0;j<=NY;j++){w[id(0,j)]=0;w[id(NX,j)]=0;}
+    for(var it=0;it<25;it++)for(j=1;j<NY;j++)for(i=1;i<NX;i++){k=id(i,j);psi[k]+=1.7*((psi[k-1]+psi[k+1]+psi[k-NX-1]+psi[k+NX+1]+w[k])/4-psi[k]);}
+  }
+  function flameProf(i){return 0.25+0.75*Math.exp(-Math.pow((i-NX/2)/9,2));}   // la fiamma scalda tutto il fondo, di più al centro
+
+  // ── vista macroscopica: il fluido trasporta anche la temperatura
+  var M=makeFlow();
+  function stepMacro(dt){
+    flowStep(M,dt,true);var T=M.T,i,j,k;
+    for(i=0;i<=NX;i++){T[id(i,0)]=T[id(i,1)];T[id(i,NY)]=T[id(i,NY-1)];}       // pareti isolanti
+    for(j=0;j<=NY;j++){T[id(0,j)]=T[id(1,j)];T[id(NX,j)]=T[id(NX-1,j)];}
+    for(i=0;i<=NX;i++){
+      if(lit){var pr=flameProf(i);for(j=0;j<=4;j++){k=id(i,j);T[k]+=dt*HEAT*pr*(1-j/5)*(98-T[k]);}}   // il fondo caldo scalda uno strato d'acqua
+      for(j=NY-4;j<=NY;j++){k=id(i,j);T[k]-=dt*COOL*(1-(NY-j)/5)*(T[k]-TAMB);}          // in superficie l'acqua cede calore all'aria
+    }
+  }
+  function TmeanMacro(){var s=0;for(var k=0;k<M.T.length;k++)s+=M.T[k];return s/M.T.length;}
+
+  // ── vista microscopica: particelle trasportate dalla corrente, che si allontanano quando si scaldano
+  var F=makeFlow();F.bg=1.8*BG;                    // nella vista micro le zone calde sono più piccole: spinta un po' più forte
+  var PT=[],S0=6.5,EXP=0.5,PR=4.3,FRC=0.12,PH=1.1,PC=0.6,SETTLE=10,LEV=5;
+  function resetMicro(){F.reset();PT=[];
+    var dx=2*S0,dy=2*S0*0.866;
+    for(var r=0;;r++){var y=YB-S0-r*dy;if(y<WL+S0-1)break;
+      for(var c=0;;c++){var x=X0+S0+c*dx+(r%2?S0:0);if(x>X1-S0)break;
+        PT.push({x:x,y:y,e:0,ph:Math.random()*6.3,ph2:Math.random()*6.3});}}
+  }
+  function rad(p){return S0*(1+EXP*p.e);}            // più calda → vibra di più → occupa più spazio
+  var CS=26,cells={};
+  function buildCells(){cells={};for(var i=0;i<PT.length;i++){var p=PT[i],key=Math.floor(p.x/CS)*1000+Math.floor(p.y/CS);(cells[key]=cells[key]||[]).push(i);}}
+  function eachPair(fn){
+    for(var i=0;i<PT.length;i++){var p=PT[i],gx=Math.floor(p.x/CS),gy=Math.floor(p.y/CS);
+      for(var ax=-1;ax<=1;ax++)for(var ay=-1;ay<=1;ay++){var L=cells[(gx+ax)*1000+gy+ay];if(!L)continue;
+        for(var t=0;t<L.length;t++){var j=L[t];if(j>i)fn(p,PT[j]);}}}
+  }
+  function stepMicro(dt){
+    var i,p,n=PT.length;
+    // 1) temperatura delle particelle → griglia del fluido (per la spinta di Archimede)
+    var S=new Float64Array(F.T.length),Wt=new Float64Array(F.T.length);
+    for(i=0;i<n;i++){p=PT[i];var gx=Math.max(0,Math.min(NX-1e-6,(p.x-X0)/CWX)),gy=Math.max(0,Math.min(NY-1e-6,(YB-p.y)/CWY));
+      for(var ax=-2;ax<=2;ax++)for(var ay=-2;ay<=2;ay++){var ii=Math.round(gx)+ax,jj=Math.round(gy)+ay;if(ii<0||jj<0||ii>NX||jj>NY)continue;
+        var ww=Math.exp(-((ii-gx)*(ii-gx)+(jj-gy)*(jj-gy))/2.5),k=id(ii,jj);S[k]+=ww*p.e;Wt[k]+=ww;}}
+    for(var k=0;k<S.length;k++){var tt=Wt[k]>0.05?TAMB+80*S[k]/Wt[k]:TAMB;F.T[k]=tt;}
+    flowStep(F,dt,false);
+    // 2) moto: la corrente trasporta le particelle (+ un po' di peso che le tiene giù)
+    for(i=0;i<n;i++){p=PT[i];var fx=(p.x-X0)/CWX,fy=(YB-p.y)/CWY;
+      p.x+=samp(F.u,fx,fy)*CWX*dt;p.y-=samp(F.v,fx,fy)*CWY*dt;p.y+=SETTLE*dt;
+      var ph=6+18*p.e;p.ph+=ph*dt;p.ph2+=ph*1.13*dt;}
+    // 3) le particelle non si compenetrano (ognuna occupa uno spazio che cresce con la temperatura), una lieve coesione le tiene unite;
+    //    scambio di energia fra particelle che si toccano (conduzione)
+    PT.sort(function(a,b){return b.y-a.y;});         // dal basso verso l'alto: chi sta sotto sostiene chi sta sopra
+    buildCells();
+    function walls(){for(var q=0;q<n;q++){var p=PT[q],r=rad(p);p.x=Math.max(X0+r,Math.min(X1-r,p.x));p.y=Math.min(YB-r,Math.max(RIM+r,p.y));}}
+    for(var it=0;it<4;it++){eachPair(function(a,b){var dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1e-6,D=rad(a)+rad(b),nx=dx/d,ny=dy/d,m;
+      if(d<D)m=0.5*(D-d);else if(d<1.3*D)m=-0.03*(d-D);else return;
+      a.x-=m*nx/2;a.y-=m*ny/2;b.x+=m*nx/2;b.y+=m*ny/2;
+      if(it===0&&d<1.15*D){var de=FRC*(b.e-a.e)*dt;a.e+=de;b.e-=de;}});walls();}
+    var top={};for(i=0;i<n;i++){p=PT[i];var b=Math.floor((p.x-X0)/16);if(top[b]===undefined||p.y<top[b])top[b]=p.y;}
+    // il peso spiana la superficie libera: le particelle in cima scivolano verso dove il livello è più basso
+    for(i=0;i<n;i++){p=PT[i];var b=Math.floor((p.x-X0)/16);if(p.y>top[b]+1.5*S0)continue;
+      var tl=top[b-1]!==undefined?top[b-1]:top[b],tr=top[b+1]!==undefined?top[b+1]:top[b];
+      p.x+=Math.max(-2,Math.min(2,LEV*dt*(tr-tl)));}
+    // 4) la fiamma scalda le particelle sul fondo; in superficie cedono calore all'aria
+    for(i=0;i<n;i++){p=PT[i];
+      if(lit&&p.y>YB-2.4*S0){var pr=0.35+0.65*Math.exp(-Math.pow((p.x-CX)/60,2));p.e+=PH*pr*dt*(1-p.e);}
+      if(p.y<top[Math.floor((p.x-X0)/16)]+S0)p.e-=PC*dt*p.e;
+      p.e=Math.max(0,Math.min(1,p.e));}
+  }
+  function eMicroNear(x,y,r){var s=0,c=0;PT.forEach(function(p){if(Math.hypot(p.x-x,p.y-y)<r){s+=p.e;c++;}});return c?s/c:0;}
+  function levelMicro(){var ys=PT.map(function(p){return p.y;}).sort(function(a,b){return a-b;});return ys[Math.min(ys.length-1,8)]-S0;}
+
+  // ── colori
+  function mixCol(a,b,s){return a.map(function(v,k){return v+(b[k]-v)*s;});}
+  function rgb(c){return 'rgb('+c.map(Math.round).join(',')+')';}
+  function tempArr(s){s=Math.max(0,Math.min(1,s));return s<0.5?mixCol([37,99,235],[147,51,234],s/0.5):mixCol([147,51,234],[220,38,38],(s-0.5)/0.5);}
+
+  // ── disegno della scena
+  var flick=0;
+  function drawTable(){ctx.fillStyle='#e7e5e4';ctx.fillRect(0,TABLE,W,H-TABLE);}
+  function drawFlame(x,yb,top,small){
+    var tp=top+3*Math.sin(flick*7),wv=1.5*Math.sin(flick*11);
+    var gr=ctx.createLinearGradient(0,yb,0,tp);
+    gr.addColorStop(0,'rgba(59,130,246,.85)');gr.addColorStop(0.45,'rgba(125,211,252,.6)');gr.addColorStop(0.8,'rgba(253,224,71,.7)');gr.addColorStop(1,'rgba(249,115,22,0)');
+    ctx.fillStyle=gr;ctx.beginPath();ctx.moveTo(x,tp);
+    ctx.bezierCurveTo(x+9+wv,tp+(yb-tp)*0.35,x+7,yb-6,x,yb);ctx.bezierCurveTo(x-7,yb-6,x-9+wv,tp+(yb-tp)*0.35,x,tp);ctx.fill();
+    if(tp<YB+10){                                  // la fiamma si allarga sotto il fondo della pentola
+      var hw=(X1-X0)/2-6,hg=ctx.createRadialGradient(x,YB+9,4,x,YB+9,hw);
+      hg.addColorStop(0,'rgba(253,186,116,.75)');hg.addColorStop(0.55,'rgba(253,186,116,.45)');hg.addColorStop(1,'rgba(253,186,116,0)');
+      ctx.fillStyle=hg;ctx.beginPath();ctx.ellipse(x,YB+9,hw+2*Math.sin(flick*8),5,0,0,7);ctx.fill();
+    }
+  }
+  function drawBurner(){
+    var x=CX,y=TABLE;
+    if(lit)drawFlame(x,WICK,YB+4);
+    ctx.fillStyle='rgba(224,242,254,.9)';ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x-20,y);ctx.lineTo(x-20,y-24);ctx.quadraticCurveTo(x-20,y-34,x-9,y-38);ctx.lineTo(x+9,y-38);ctx.quadraticCurveTo(x+20,y-34,x+20,y-24);ctx.lineTo(x+20,y);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(147,197,253,.55)';ctx.fillRect(x-19,y-16,38,15);
+    ctx.fillStyle='#78716c';ctx.fillRect(x-7,y-46,14,9);
+    ctx.strokeStyle='#44403c';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x,y-46);ctx.lineTo(x,WICK);ctx.stroke();
+  }
+  function drawTripod(){                           // treppiede: anello sotto la pentola e due gambe
+    ctx.strokeStyle='#475569';ctx.lineWidth=4;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(X0+18,YB+12);ctx.lineTo(X0-4,TABLE);ctx.moveTo(X1-18,YB+12);ctx.lineTo(X1+4,TABLE);ctx.stroke();
+    ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(X0+6,YB+11);ctx.lineTo(X1-6,YB+11);ctx.stroke();ctx.lineCap='butt';
+  }
+  function drawPot(level,water){
+    // acqua
+    ctx.fillStyle=water;ctx.fillRect(X0,level,X1-X0,YB-level);
+    ctx.strokeStyle='rgba(14,116,144,.55)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(X0,level);ctx.lineTo(X1,level);ctx.stroke();
+    // pentola: pareti e fondo (metallo), manici
+    var mg=ctx.createLinearGradient(X0-7,0,X0,0);mg.addColorStop(0,'#64748b');mg.addColorStop(1,'#cbd5e1');
+    ctx.fillStyle=mg;ctx.fillRect(X0-7,RIM,7,YB-RIM+7);
+    mg=ctx.createLinearGradient(X1,0,X1+7,0);mg.addColorStop(0,'#cbd5e1');mg.addColorStop(1,'#475569');
+    ctx.fillStyle=mg;ctx.fillRect(X1,RIM,7,YB-RIM+7);
+    ctx.fillStyle='#64748b';ctx.fillRect(X0-7,YB,X1-X0+14,7);
+    ctx.fillStyle='#94a3b8';ctx.fillRect(X0-10,RIM-3,13,5);ctx.fillRect(X1-3,RIM-3,13,5);
+    ctx.strokeStyle='#334155';ctx.lineWidth=5;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(X0-8,RIM+14);ctx.lineTo(X0-30,RIM+10);ctx.moveTo(X1+8,RIM+14);ctx.lineTo(X1+30,RIM+10);ctx.stroke();ctx.lineCap='butt';
+  }
+  // fiammifero: a riposo nella scatoletta sul tavolo; preso in mano si accende (la testa segue il puntatore)
+  var MBX=200,matchHeld=false,mHX=0,mHY=0;
+  function drawMatch(){
+    ctx.fillStyle='#b45309';ctx.fillRect(MBX-24,TABLE-14,48,14);
+    ctx.fillStyle='#fde68a';ctx.fillRect(MBX-24,TABLE-14,48,4);
+    ctx.fillStyle='#7c2d12';ctx.fillRect(MBX-24,TABLE-5,48,5);
+    var hx,hy,ang;
+    if(matchHeld){hx=mHX;hy=mHY;ang=Math.PI*0.28;}else{hx=MBX-20;hy=TABLE-19;ang=-0.06;}
+    var tx=hx+44*Math.cos(ang),ty=hy+44*Math.sin(ang);
+    ctx.strokeStyle='#e7c99a';ctx.lineWidth=3.5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(hx,hy);ctx.lineTo(tx,ty);ctx.stroke();ctx.lineCap='butt';
+    ctx.fillStyle=matchHeld?'#57534e':'#dc2626';ctx.beginPath();ctx.ellipse(hx,hy,4,3.2,ang,0,7);ctx.fill();
+    if(matchHeld){
+      var fh=13+1.5*Math.sin(flick*12),g=ctx.createRadialGradient(hx,hy-4,0.5,hx,hy-5,fh);
+      g.addColorStop(0,'#fffbeb');g.addColorStop(0.4,'#fde047');g.addColorStop(0.8,'#f97316');g.addColorStop(1,'rgba(249,115,22,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(hx,hy-fh-2);ctx.quadraticCurveTo(hx+6,hy-4,hx,hy+2);ctx.quadraticCurveTo(hx-6,hy-4,hx,hy-fh-2);ctx.fill();
+    }
+  }
+  // due termometri identici (stessa lunghezza, stessa scala): uno pesca l'acqua vicino alla superficie (a destra),
+  // l'altro arriva sul fondo (a sinistra, tutto immerso); a parità di temperatura la colonna arriva alla stessa altezza
+  var THX=X1-38,THB=X0+34,TB_Y=YB-16,TLEN=104,TK=(TLEN-14)/75;     // scala: da 20 °C a 95 °C
+  function drawThermo(x,bulbY,t,cap,right){
+    var bot=bulbY-4,top=bot-TLEN;
+    ctx.fillStyle='rgba(255,255,255,.92)';ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.4;
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-5,top,10,bot-top,5);else ctx.rect(x-5,top,10,bot-top);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.arc(x,bot+4,7,0,7);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#dc2626';ctx.beginPath();ctx.arc(x,bot+4,5,0,7);ctx.fill();
+    var ym=bot-6-(Math.max(20,Math.min(95,t))-20)*TK;ctx.fillRect(x-2.5,ym,5,bot+2-ym);
+    ctx.strokeStyle='#64748b';ctx.lineWidth=1;for(var tt=20;tt<=90;tt+=10){var yt=bot-6-(tt-20)*TK;ctx.beginPath();ctx.moveTo(x-5,yt);ctx.lineTo(x-1,yt);ctx.stroke();}   // tacche ogni 10 °C
+    var tx=right?x+10:x-10;ctx.textAlign=right?'left':'right';
+    ctx.font='11px Georgia,serif';var wl=Math.max(ctx.measureText(cap).width,40)+8;     // etichetta su fondo bianco (si legge anche dentro l'acqua)
+    ctx.fillStyle='rgba(255,255,255,.88)';ctx.beginPath();var rx=right?tx-4:tx-wl+4;if(ctx.roundRect)ctx.roundRect(rx,top-2,wl,33,5);else ctx.rect(rx,top-2,wl,33);ctx.fill();
+    ctx.font='bold 13px Georgia,serif';ctx.fillStyle='#1e293b';ctx.fillText(Math.round(t)+' °C',tx,top+12);
+    ctx.font='11px Georgia,serif';ctx.fillStyle='#475569';ctx.fillText(cap,tx,top+26);
+  }
+  function legend(a,b){
+    var lgx=W-150,lgy=TABLE+8;
+    for(var k=0;k<=100;k++){ctx.fillStyle=rgb(tempArr(k/100));ctx.fillRect(lgx+k*1.2,lgy,1.3,7);}
+    ctx.font='11px Georgia,serif';ctx.fillStyle='#57534e';ctx.textAlign='left';ctx.fillText(a,lgx,lgy+20);ctx.textAlign='right';ctx.fillText(b,lgx+120,lgy+20);
+  }
+  // linee di flusso: si parte vicino al centro di ciascun vortice e si segue la corrente fino a richiudere il giro
+  function traceLoop(x0,y0){
+    var pts=[[x0,y0]],x=x0,y=y0,len=0,h=0.4;
+    for(var k=0;k<1500;k++){
+      var u=samp(M.u,x,y),v=samp(M.v,x,y),sp=Math.hypot(u,v);if(sp<1e-5)return null;
+      var xm=x+0.5*h*u/sp,ym=y+0.5*h*v/sp,u2=samp(M.u,xm,ym),v2=samp(M.v,xm,ym),s2=Math.hypot(u2,v2)||1e-9;
+      x+=h*u2/s2;y+=h*v2/s2;len+=h;pts.push([x,y]);
+      if(len>8&&Math.hypot(x-x0,y-y0)<0.6)return {pts:pts,len:len,closed:true};
+    }
+    return {pts:pts,len:len};
+  }
+  // quattro anelli (interno ed esterno, a sinistra e a destra): ciascuno conserva la sua fase, così le frecce
+  // scorrono con continuità anche quando la forma dell'anello viene ricalcolata
+  var loops=[null,null,null,null],loopPh=[0,0,0.5,0.5],cen=[null,null],loopAge=99,vMax=0;
+  function updateLoops(){
+    vMax=0;var k;for(k=0;k<M.u.length;k++)vMax=Math.max(vMax,Math.hypot(M.u[k],M.v[k]));
+    if(vMax<0.15){loops=[null,null,null,null];cen=[null,null];return;}
+    [[1,NX/2],[NX/2,NX-1]].forEach(function(r,h){var best=0,bi=0,bj=0;   // centro del vortice in ciascuna metà (smussato nel tempo)
+      for(var j=1;j<NY;j++)for(var i=r[0];i<r[1];i++){var a=Math.abs(M.psi[id(i,j)]);if(a>best){best=a;bi=i;bj=j;}}
+      if(best<1e-3)return;
+      cen[h]=cen[h]?[cen[h][0]+0.25*(bi-cen[h][0]),cen[h][1]+0.25*(bj-cen[h][1])]:[bi,bj];
+      [[0.42,2],[0.82,3]].forEach(function(q,m){var c=cen[h],L=traceLoop(c[0]+q[0]*(NX/2-c[0]),c[1]);
+        if(!L||!L.closed||L.len<6)return;
+        var core=L.pts.slice(0,-1),top=0;core.forEach(function(p,k){if(p[1]>core[top][1])top=k;});   // l'anello parte dal suo punto più alto
+        L.pts=core.slice(top).concat(core.slice(0,top+1));
+        var sv=0;L.pts.forEach(function(p){sv+=Math.hypot(samp(M.u,p[0],p[1]),samp(M.v,p[0],p[1]));});L.sp=sv/L.pts.length;L.K=q[1];loops[2*h+m]=L;});});
+  }
+  function advanceLoops(dt){loops.forEach(function(L,k){if(L)loopPh[k]=(loopPh[k]+dt*0.9*L.sp/L.len)%1;});}
+  function pAt(L,s){s=((s%L.len)+L.len)%L.len;var k=Math.min(L.pts.length-2,Math.floor(s/0.4)),f=s/0.4-k,a=L.pts[k],b=L.pts[k+1];return [a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f];}
+  function px(p){return [X0+p[0]*CWX,YB-p[1]*CWY];}
+  var Tref=20,Tw=2;
+  function hotCol(t){var s=1/(1+Math.exp(-(t-Tref)/Tw));return rgb(s<0.5?mixCol([37,99,235],[147,51,234],s/0.5):mixCol([147,51,234],[220,38,38],(s-0.5)/0.5));}
+  function drawLoopArrows(){
+    if(!loops.some(function(L){return L;}))return;
+    var al=Math.max(0,Math.min(1,(vMax-0.15)/1.2));if(al<0.02)return;
+    var tmin=1e9,tmax=-1e9;for(var k=0;k<M.T.length;k++){tmin=Math.min(tmin,M.T[k]);tmax=Math.max(tmax,M.T[k]);}
+    Tref=TmeanMacro();Tw=Math.max(0.6,0.08*(tmax-tmin));      // rosso: più calda della media; blu: più fredda
+    ctx.globalAlpha=al;ctx.lineCap='round';
+    loops.forEach(function(L,li){if(!L)return;
+      var K=L.K,La=0.27*L.len;
+      for(var a=0;a<K;a++){var s0=(loopPh[li]+a/K)*L.len,n=Math.max(4,Math.round(La/0.6)),prev=px(pAt(L,s0));
+        ctx.lineWidth=4.5;
+        for(var q=1;q<=n-2;q++){var sp=s0+La*q/n,gp=pAt(L,sp),cur=px(gp);
+          ctx.strokeStyle=hotCol(samp(M.T,gp[0],gp[1]));ctx.beginPath();ctx.moveTo(prev[0],prev[1]);ctx.lineTo(cur[0],cur[1]);ctx.stroke();prev=cur;}
+        var tipG=pAt(L,s0+La),tip=px(tipG),dx=tip[0]-prev[0],dy=tip[1]-prev[1],dl=Math.hypot(dx,dy)||1,ux=dx/dl,uy=dy/dl,hl=12;
+        ctx.fillStyle=hotCol(samp(M.T,tipG[0],tipG[1]));ctx.beginPath();ctx.moveTo(tip[0]+ux*3,tip[1]+uy*3);
+        ctx.lineTo(tip[0]-ux*hl-uy*7,tip[1]-uy*hl+ux*7);ctx.lineTo(tip[0]-ux*hl+uy*7,tip[1]-uy*hl-ux*7);ctx.closePath();ctx.fill();
+      }
+    });
+    ctx.globalAlpha=1;ctx.lineCap='butt';
+  }
+  // bolle: nascono sul fondo dove l'acqua è calda, salgono trascinate dalla corrente, si riassorbono nell'acqua fredda o scoppiano in superficie
+  var bubbles=[];
+  function stepBubbles(dt,level){
+    if(lit)for(var t=0;t<3;t++){var x=Math.random()*NX,Tb=samp(M.T,x,0.5),pr=Math.max(0,Math.min(1,(Tb-38)/45));
+      if(Math.random()<dt*5*pr*pr&&bubbles.length<70)bubbles.push({x:X0+x*CWX,y:YB-3,r:1+Math.random()*1.2,w:Math.random()*6.3});}
+    bubbles.forEach(function(b){var gx=(b.x-X0)/CWX,gy=(YB-b.y)/CWY,Tl=samp(M.T,gx,gy);
+      b.y+=(-(18+9*b.r)-samp(M.v,gx,gy)*CWY)*dt;b.x+=(samp(M.u,gx,gy)*CWX+6*Math.sin(b.w+b.y/9))*dt;
+      b.r=Math.min(3.2,b.r+dt*(Tl>60?0.5:(Tl<42?-0.8:0)));b.x=Math.max(X0+3,Math.min(X1-3,b.x));});
+    bubbles=bubbles.filter(function(b){return b.r>0.5&&b.y>level+2;});
+  }
+  function drawBubbles(){
+    bubbles.forEach(function(b){ctx.fillStyle='rgba(255,255,255,.55)';ctx.strokeStyle='rgba(14,116,144,.55)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.arc(b.x,b.y,b.r+0.8,0,7);ctx.fill();ctx.stroke();
+      ctx.fillStyle='rgba(255,255,255,.9)';ctx.beginPath();ctx.arc(b.x-b.r*0.35,b.y-b.r*0.35,Math.max(0.5,b.r*0.35),0,7);ctx.fill();});
+  }
+  function drawMacro(){
+    ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,W,H);drawTable();
+    var level=WL-0.2*(TmeanMacro()-TAMB);              // il livello sale scaldandosi (dilatazione, esagerata)
+    drawTripod();drawBurner();drawPot(level,'#e0f2fe');
+    ctx.fillStyle='rgba(224,242,254,1)';ctx.fillRect(X0,level,X1-X0,WL-level+1);
+    drawLoopArrows();drawBubbles();
+    drawThermo(THX,level+30,samp(M.T,(THX-X0)/CWX,NY-2),'in superficie',true);
+    drawThermo(THB,TB_Y,samp(M.T,(THB-X0)/CWX,(YB-TB_Y)/CWY),'sul fondo',false);
+    drawMatch();legend('più fredda','più calda');
+  }
+  function drawMicro(){
+    ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,W,H);drawTable();
+    var level=levelMicro();
+    drawTripod();drawBurner();drawPot(Math.min(level,WL),'#f0f9ff');
+    PT.forEach(function(p){var A=0.6+2.6*p.e,x=p.x+A*Math.sin(p.ph),y=p.y+A*Math.sin(p.ph2);
+      ctx.drawImage(sprite(Math.round(Math.min(1,p.e/0.75)*(NSPR-1))),x-PR-1,y-PR-1,2*PR+2,2*PR+2);});
+    drawThermo(THX,Math.min(level,WL)+30,TAMB+80*eMicroNear(THX,Math.min(level,WL)+26,20),'in superficie',true);
+    drawThermo(THB,TB_Y,TAMB+80*eMicroNear(THB,TB_Y-4,20),'sul fondo',false);
+    ctx.font='italic 12px Georgia,serif';ctx.textAlign='left';ctx.fillStyle='#78716c';ctx.fillText('l’acqua vista al microscopio (modello, non in scala)',12,TABLE+28);
+    drawMatch();legend('lenta','veloce');
+  }
+  // particelle già disegnate (con il riflesso), una per ciascuna sfumatura di colore: molto più veloce
+  var NSPR=48,sprites=[];
+  function sprite(k){
+    if(sprites[k])return sprites[k];
+    var c=document.createElement('canvas'),sz=Math.ceil((2*PR+2)*dpr);c.width=c.height=sz;var g2=c.getContext('2d');g2.scale(dpr,dpr);
+    var col=rgb(tempArr(k/(NSPR-1))),cx=PR+1,g=g2.createRadialGradient(cx-PR*0.35,cx-PR*0.4,0.5,cx,cx,PR);
+    g.addColorStop(0,'#fff');g.addColorStop(0.45,col);g.addColorStop(1,col);g2.fillStyle=g;g2.beginPath();g2.arc(cx,cx,PR,0,7);g2.fill();
+    return (sprites[k]=c);
+  }
+  function draw(){if(view==='macro')drawMacro();else drawMicro();}
+
+  // ── ciclo: entrambe le simulazioni avanzano sempre, si disegna la vista scelta
+  var raf=null,last=null,visible=true;
+  function loop(ts){
+    var dt=last===null?0:Math.min(1/30,(ts-last)/1000);last=ts;flick+=dt;
+    if(dt>0){stepMacro(dt);stepBubbles(dt,WL-0.2*(TmeanMacro()-TAMB));if(++loopAge>=3){updateLoops();loopAge=0;}advanceLoops(dt);
+      stepMicro(dt);}
+    draw();
+    if(visible)raf=requestAnimationFrame(loop);else{raf=null;last=null;}
+  }
+  function kick(){if(!raf&&visible)raf=requestAnimationFrame(loop);}
+
+  // ── fiammifero: si prende dalla scatoletta e si avvicina allo stoppino
+  function pt(ev){var r=cv.getBoundingClientRect();return {x:(ev.clientX-r.left)*W/r.width,y:(ev.clientY-r.top)*H/r.height};}
+  function onMatch(q){return !matchHeld&&q.x>MBX-30&&q.x<MBX+30&&q.y>TABLE-30&&q.y<TABLE+2;}
+  cv.addEventListener('pointerdown',function(ev){var q=pt(ev);if(!onMatch(q))return;
+    matchHeld=true;mHX=q.x;mHY=q.y;cv.setPointerCapture(ev.pointerId);ev.preventDefault();});
+  cv.addEventListener('pointermove',function(ev){var q=pt(ev);
+    cv.style.cursor=matchHeld?'grabbing':(onMatch(q)?'grab':'default');
+    if(matchHeld){mHX=q.x;mHY=q.y;if(!lit&&Math.hypot(q.x-CX,q.y-WICK)<18)setFire(true);}});
+  cv.addEventListener('pointerup',function(){matchHeld=false;});
+  cv.addEventListener('pointercancel',function(){matchHeld=false;});
+
+  // ── pulsanti
+  function setFire(v){lit=v;fireBtn.style.display=lit?'':'none';}
+  fireBtn.addEventListener('click',function(){setFire(false);});
+  document.getElementById('cv-reset').addEventListener('click',function(){setFire(false);M.reset();resetMicro();bubbles=[];loops=[null,null,null,null];cen=[null,null];draw();});
+  root.querySelectorAll('.cv-seg button').forEach(function(b){b.addEventListener('click',function(){view=b.dataset.v;
+    root.querySelectorAll('.cv-seg button').forEach(function(x){x.classList.toggle('on',x===b);});draw();});});
+  if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(en){visible=en.isIntersecting;if(visible)kick();});}).observe(root);
+  resetMicro();draw();kick();
+})();
+</script>

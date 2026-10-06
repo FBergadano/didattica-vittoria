@@ -105,7 +105,7 @@ La sidebar si aggiorna automaticamente.
 
 ## Come chiedere una simulazione a Claude
 
-Nel Project "Bergadano Didattica", scrivi:
+Nel Project "Didattica Vittoria", scrivi:
 > "Aggiungi una simulazione di [fenomeno] al capitolo [N] di [corso]"
 
 Specifica:

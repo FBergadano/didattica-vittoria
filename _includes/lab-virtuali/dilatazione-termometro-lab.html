@@ -1,13 +1,17 @@
 {% comment %}
 Animazione: la dilatazione termica vista dentro un termometro al mercurio.
-Il mercurio (rosso) è disegnato come un insieme di particelle disposte in un
-reticolo quadrato, che riempie il bulbo e sale nel tubo. Uno slider
-(normale) regola la temperatura: più è alta, più le particelle vibrano
-velocemente e con ampiezza maggiore attorno alla loro posizione, e più il
-passo del reticolo cresce (fino al 25%). Poiché nel tubo le
-file di particelle sono sempre le stesse, allargandosi il reticolo la colonna
-sale; il livello (menisco) è fisso per una data temperatura. Nessuna scritta
-oltre allo slider. Nessun parametro.
+Il mercurio (rosso) è un insieme di particelle disposte in un reticolo
+quadrato, che riempie il bulbo e sale nel tubo. Uno slider (normale) regola
+la temperatura, cioè quanto velocemente e quanto ampiamente le particelle
+vibrano attorno alla loro posizione (a temperatura alta la frequenza è circa
+8 volte quella a temperatura bassa).
+La dilatazione NON è imposta: nel tubo, quando due particelle vicine si
+scontrano vibrando, compare un lampo (più grande se l'urto è più violento) e
+l'urto spinge le file ad allontanarsi; la coesione del liquido le richiama.
+Il passo del reticolo si assesta dove spinta degli urti e coesione si
+bilanciano: più gli urti sono frequenti e intensi, più le file si
+distanziano e la colonna sale (gradualmente, dopo che si è mosso lo slider).
+Nessuna scritta oltre allo slider. Nessun parametro.
 {% endcomment %}
 <style>
 #dilTerm .dt-wrap{max-width:250px;margin:0 auto;}
@@ -30,7 +34,8 @@ oltre allo slider. Nessun parametro.
 
   // ── geometria del termometro
   var CX=125,CY=392,RB=44,TW=24,TTOP=30;         // bulbo (centro, raggio), semi-larghezza interna del tubo, cima del tubo
-  var A0=13,ALPHA=0.25,RP=5.4;                    // passo a T=0, dilatazione massima (25%), raggio delle particelle
+  var A0=11.7,RP=5.4;                             // passo "a riposo" (particelle quasi a contatto), raggio delle particelle
+  var KP=12,KC=1.2;                               // spinta degli urti e richiamo della coesione (fissano il passo di equilibrio)
   var JTOP=-18;                                   // la fila più alta del reticolo (fissa): la colonna sale col passo
   var NECK=CY-Math.sqrt(RB*RB-TW*TW);             // dove il tubo si innesta nel bulbo
   var JN=Math.floor((NECK-CY)/A0);                // ultima fila che sta già nel tubo
@@ -46,7 +51,7 @@ oltre allo slider. Nessun parametro.
     return Math.max(db,dt);
   }
 
-  var phase=0,last=null,raf=null,visible=true;
+  var phase=0,last=null,raf=null,visible=true,a=A0,Pf=0,flashes=[],touch={};
   var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   function glassPath(){
     ctx.beginPath();
@@ -56,36 +61,59 @@ oltre allo slider. Nessun parametro.
     ctx.arc(CX,CY,RB,-Math.PI/2+s,3*Math.PI/2-s);
     ctx.closePath();
   }
-  function draw(){
-    var T=+slider.value,tn=T/100,a=A0*(1+ALPHA*tn);
-    var amp=a*(0.04+0.08*tn),fs=2.2+4.3*tn;
+  function vib(){var tn=+slider.value/100;return {amp:0.6+3.4*tn,w:2+14*tn};}   // ampiezza (px) e pulsazione (rad/s)
+  // posizioni delle particelle (con le vibrazioni) e urti nel tubo
+  function positions(){
+    var v=vib(),P=0,np=0,out=[];
+    sites.forEach(function(s){
+      var x,y,tube=s.j<=JN;
+      if(!tube){x=CX+s.i*A0;y=CY+s.j*A0;}
+      else{x=CX+s.i*a;y=CY+(JN+1)*A0-(JN+1-s.j)*a;}
+      var q=inside(x,y);if(q<RP*0.3)return;
+      var dy=v.amp*Math.sin(v.w*phase+s.c),dx=v.amp*0.35*Math.sin(v.w*1.3*phase+s.a);
+      var vy=v.amp*v.w*Math.cos(v.w*phase+s.c);
+      out.push({s:s,x:x+dx,y:y+dy,vy:vy,al:Math.min(1,(q-RP*0.3)/4),tube:tube});
+    });
+    // urti fra particelle vicine della stessa fila verticale del tubo
+    var col={};out.forEach(function(p){if(p.tube){(col[p.s.i]=col[p.s.i]||{})[p.s.j]=p;}});
+    Object.keys(col).forEach(function(ci){var c=col[ci];
+      Object.keys(c).forEach(function(jj){var lo=c[jj],up=c[+jj-1];if(!up)return;   // lo = più in basso, up = quella sopra
+        np++;var o=2*RP-(lo.y-up.y),key=ci+':'+jj;
+        if(o>0){P+=o;lo.y+=o/2;up.y-=o/2;
+          if(!touch[key]){var rel=Math.abs(up.vy-lo.vy),vmax=2*4*16;
+            if(flashes.length<60)flashes.push({x:(lo.x+up.x)/2,y:(lo.y+up.y)/2,k:Math.min(1,rel/vmax*2.2),t:0});}
+          touch[key]=true;}
+        else touch[key]=false;});});
+    return {pts:out,P:np?P/np:0};
+  }
+  function step(dt){                              // il passo cambia solo per effetto degli urti
+    phase+=dt;var r=positions();
+    Pf+=(r.P-Pf)*Math.min(1,dt/0.3);
+    a+=dt*(KP*Pf-KC*(a-A0));if(a<A0-0.5)a=A0-0.5;
+    flashes.forEach(function(f){f.t+=dt;});flashes=flashes.filter(function(f){return f.t<0.22;});
+    return r;
+  }
+  function draw(r){
     ctx.clearRect(0,0,W,H);
     // vetro
     glassPath();ctx.fillStyle='rgba(241,245,249,.9)';ctx.fill();
     // tacche della scala (fisse)
     ctx.strokeStyle='#334155';ctx.lineWidth=1.3;
     for(var k=0;k<14;k++){var yk=NECK-20-k*22;if(yk<TTOP+30)break;ctx.beginPath();ctx.moveTo(CX+TW-12,yk);ctx.quadraticCurveTo(CX+TW-4,yk,CX+TW+1,yk-2);ctx.stroke();}
-    // mercurio: particelle del reticolo
+    // mercurio: particelle
     ctx.save();glassPath();ctx.clip();
-    var yTop=CY+(JN+1)*A0-(JN+1-JTOP)*a;
-    sites.forEach(function(s){
-      // nel bulbo il reticolo resta com'è (bulbo sempre pieno); nel tubo le file si allargano col passo a
-      var x,y;
-      if(s.j>JN){x=CX+s.i*A0;y=CY+s.j*A0;}
-      else{x=CX+s.i*a;y=CY+(JN+1)*A0-(JN+1-s.j)*a;}
-      var q=inside(x,y);
-      if(q<RP*0.3)return;                          // fuori dal vetro
-      var al=Math.min(1,(q-RP*0.3)/4);             // i siti vicini al bordo del bulbo sfumano (niente scatti)
-      var dx=Math.sin(phase*fs*s.f1+s.a)*0.7+Math.sin(phase*fs*s.f2+s.b)*0.3;
-      var dy=Math.sin(phase*fs*s.f1+s.c)*0.7+Math.sin(phase*fs*s.f2+s.d)*0.3;
-      var px=x+dx*amp,py=y+dy*amp;
-      var g=ctx.createRadialGradient(px-RP*0.35,py-RP*0.4,0.5,px,py,RP);
+    r.pts.forEach(function(p){
+      var g=ctx.createRadialGradient(p.x-RP*0.35,p.y-RP*0.4,0.5,p.x,p.y,RP);
       g.addColorStop(0,'#fed7aa');g.addColorStop(0.45,'#f97316');g.addColorStop(1,'#dc2626');
-      ctx.globalAlpha=al;ctx.fillStyle=g;ctx.beginPath();ctx.arc(px,py,RP,0,7);ctx.fill();
+      ctx.globalAlpha=p.al;ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,RP,0,7);ctx.fill();
     });
+    ctx.globalAlpha=1;
+    // lampi degli urti (più grandi se l'urto è più violento)
+    flashes.forEach(function(f){var al=1-f.t/0.22,rr=2.5+7*f.k;ctx.globalAlpha=al;ctx.fillStyle='#fde047';ctx.beginPath();
+      for(var k=0;k<10;k++){var an=k*Math.PI/5,rd=k%2?rr*0.4:rr;ctx.lineTo(f.x+rd*Math.cos(an),f.y+rd*Math.sin(an));}ctx.closePath();ctx.fill();});
     ctx.globalAlpha=1;ctx.restore();
-    // menisco (livello: fermo, per una data temperatura)
-    var yl=yTop-a*0.5;
+    // menisco (segue il passo medio, non le singole vibrazioni)
+    var yTop=CY+(JN+1)*A0-(JN+1-JTOP)*a,yl=yTop-a*0.5;
     ctx.strokeStyle='rgba(100,116,139,.8)';ctx.lineWidth=1.4;ctx.beginPath();ctx.ellipse(CX,yl,TW-2,4,0,0,7);ctx.stroke();
     // contorno del vetro e riflesso leggero
     glassPath();ctx.strokeStyle='#94a3b8';ctx.lineWidth=2.2;ctx.stroke();
@@ -93,12 +121,15 @@ oltre allo slider. Nessun parametro.
     ctx.beginPath();ctx.moveTo(CX-TW+7,TTOP+TW);ctx.lineTo(CX-TW+7,NECK-10);ctx.stroke();ctx.lineCap='butt';
   }
   function loop(ts){
-    if(last!==null)phase+=(ts-last)/1000;last=ts;draw();
+    var dt=last===null?0:Math.min(1/30,(ts-last)/1000);last=ts;
+    var r;for(var k=0;k<4;k++)r=step(dt/4);draw(r);
     if(visible&&!reduced)raf=requestAnimationFrame(loop);else{raf=null;last=null;}
   }
-  function kick(){if(!raf&&visible&&!reduced)raf=requestAnimationFrame(loop);else draw();}
-  slider.addEventListener('input',kick);
+  function kick(){if(!raf&&visible&&!reduced)raf=requestAnimationFrame(loop);else draw(positions());}
+  slider.addEventListener('input',function(){kick();});
   if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(e){visible=e.isIntersecting;if(visible)kick();});}).observe(root);
-  draw();kick();
+  // assestamento iniziale: la colonna parte già all'equilibrio della temperatura iniziale
+  for(var k=0;k<240*8;k++)step(1/240);flashes=[];
+  draw(positions());kick();
 })();
 </script>

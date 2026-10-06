@@ -17,7 +17,7 @@ Esempio:
 <div class="sci-wrap" data-coeff="{{ include.coeff | escape }}" data-exp="{{ include.exp | escape }}" data-sol="{{ include.s | escape }}" data-tol="{{ include.tol | default: 0 }}" data-fkey="{{ include.prima | append: '|' | append: include.coeff | append: '|' | append: include.exp | escape }}">{% if include.prima %}<span class="sci-prima">{{ include.prima }}</span>{% endif %}<span class="sci-nota"><input class="sci-c" type="text" autocomplete="off" spellcheck="false"><span class="sci-x">&times;&thinsp;10<span class="sci-pow"><input class="sci-e" type="text" autocomplete="off" spellcheck="false"></span></span></span><button class="sci-btn">✓</button><span class="sci-fb"></span></div>
 <script>
 (function(){
-window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+
 var sc=document.currentScript,w=sc.previousElementSibling;
 while(w&&!w.classList.contains('sci-wrap')){w=w.previousElementSibling;}
 var ic=w.querySelector('.sci-c'),ie=w.querySelector('.sci-e');

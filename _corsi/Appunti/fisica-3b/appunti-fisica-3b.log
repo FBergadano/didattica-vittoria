@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.7.17)  28 SEP 2026 08:21
+This is XeTeX, Version 3.141592653-2.6-0.999997 (TeX Live 2025/Debian) (preloaded format=xelatex 2026.7.17)  5 OCT 2026 10:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/fisica-3b/appunti-fisica-3b
-(/home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/fisica-3b/appunti-fisica-3b.tex
+**/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/fisica-3b/appunti-fisica-3b
+(/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/fisica-3b/appunti-fisica-3b.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -1958,8 +1958,7 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'polyglossia' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'italian'.
-
-No file appunti-fisica-3b.aux.
+ (./appunti-fisica-3b.aux)
 \openout1 = `appunti-fisica-3b.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
@@ -1998,6 +1997,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
 (Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 5.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 5.
+
 
 Package unicode-math Warning: Using \overbracket and \underbracket from
 (unicode-math)                `mathtools' package.
@@ -2084,12 +2084,10 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count587
 Package hyperref Info: Link coloring ON on input line 5.
+ (./appunti-fisica-3b.out) (./appunti-fisica-3b.out)
 \@outlinefile=\write4
 \openout4 = `appunti-fisica-3b.out'.
 
-
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
 
 
 Package siunitx Warning: Detected the "physics" package:
@@ -2143,22 +2141,16 @@ L3 programming layer <2026-01-19>
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-Package rerunfilecheck Warning: File `appunti-fisica-3b.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `appunti-fisica-3b.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  81327F53167996201A31E1509CB853B7;359.
+Package rerunfilecheck Info: File `appunti-fisica-3b.out' has not changed.
+(rerunfilecheck)             Checksum: 81327F53167996201A31E1509CB853B7;359.
  ) 
 Here is how much of TeX's memory you used:
- 82805 strings out of 468173
- 2030875 string characters out of 5435520
+ 82815 strings out of 468173
+ 2031106 string characters out of 5435520
  3124512 words of memory out of 5000000
- 110441 multiletter control sequences out of 15000+600000
+ 110445 multiletter control sequences out of 15000+600000
  633907 words of font info for 96 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 107i,11n,136p,1268b,1005s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 107i,11n,136p,1274b,1005s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 Output written on appunti-fisica-3b.pdf (3 pages).

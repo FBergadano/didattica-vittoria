@@ -18,7 +18,7 @@ Una delle cose più meravigliose dell'Universo è la sua immensità. L'infinita 
 Lo studente ti scrive cosa lo fa sentire infinitamente piccolo, o cosa trova meravigliosamente enorme. Il tuo compito è guidarlo a scoprire il vero ordine di grandezza di quella cosa attraverso una conversazione socratica:
 
 1. Accogli la sua risposta con calore.
-2. Fai UNA domanda concreta sulla dimensione o quantità — invitalo a fare una stima numerica specifica. Non "quant'è grande?" ma per esempio "quanti chilometri pensi che misuri?" oppure "quanti granelli pensi che ci siano in un cucchiaio di sabbia?". Un elemento di quella cosa grande che sia il più possibile facile da stimare. Introduci la domanda con una cosa tipo "Proviamo a stimare quanto è grande per davvero questa cosa". Il concetto è un po' quello di allenare lo studente ai ragionamenti tipo di Fermi "quanti accordatori di pianoforte ci sono a Chicago?". Oppure quello di Archimede chegli ha permesso di stimare il numero di granelli di sabbia necessari a riempire l'Universo.
+2. Fai UNA domanda concreta sulla dimensione o quantità — invitalo a fare una stima numerica specifica. Non "quant'è grande?" ma per esempio "quanti chilometri pensi che misuri?" oppure "quanti granelli pensi che ci siano in un cucchiaio di sabbia?". Un elemento di quella cosa grande che sia il più possibile facile da stimare. Introduci la domanda con una cosa tipo "Proviamo a stimare quanto è grande per davvero questa cosa". Il concetto è un po' quello di allenare lo studente ai ragionamenti tipo di Fermi "quanti accordatori di pianoforte ci sono a Chicago?". Oppure quello di Archimede che gli ha permesso di stimare il numero di granelli di sabbia necessari a riempire l'Universo.
 3. Quando lo studente risponde, correggi o conferma la sua stima con il vero valore numerico, poi poni UN'altra domanda che avvicina alla scoperta del numero finale.
 4. Continua per 2–4 scambi, guidando lo studente verso l'ordine di grandezza reale.
 5. Concludi con una frase di meraviglia che collega quel numero a qualcosa di concreto e sorprendente.
@@ -468,6 +468,31 @@ Se per la lunghezza il fattore di conversione è $10^n$, per il **volume** è $1
 
 {% include esercizi/esercizio-aree-esponenti.html %}
 
+Spesso, per misurare il volume dei liquidi e dei gas, è più comune utilizzare il <definizione>litro</definizione> (simbolo ℓ), invece del m³.
+
+{% include box-imp.html testo="Il litro" %}
+Il litro corrisponde al decimetro cubo:
+
+$$1 \ \text ℓ= 1 \ \text{dm}^3.$$
+
+{% include box-end.html %}
+
+<div class="iex-widget">
+<p class="iex-lbl">Esercizio — Il litro</p>
+<p class="iex-hint">Ricorda le equivalenze fra m³, dm³ e cm³. Scrivi i risultati in notazione scientifica.</p>
+{% include sci.html prima="Quanti cm³ ci sono in 1 ℓ?" coeff="1" exp="3" tol=1 s="1 ℓ = 1 dm³ = 10³ cm³" %}
+{% include sci.html prima="Quanti litri ci sono in 1 m³?" coeff="1" exp="3" tol=1 s="1 m³ = 10³ dm³ = 10³ ℓ" %}
+{% include sci.html prima="Una bottiglia contiene 1,5 ℓ d'acqua. Quanti cm³ sono?" coeff="1.5" exp="3" tol=1 s="1,5 ℓ = 1,5 dm³ = 1,5 × 10³ cm³" %}
+</div>
+
+<div class="iex-widget">
+<p class="iex-lbl">Esercizio — Il millilitro</p>
+<p class="iex-hint">Il prefisso milli vale 10⁻³, come per il metro e il grammo. Scrivi i risultati in notazione scientifica.</p>
+{% include sci.html prima="Quanti millilitri (mℓ) ci sono in 1 ℓ?" coeff="1" exp="3" tol=1 s="1 ℓ = 10³ mℓ" %}
+{% include sci.html prima="A quanti cm³ corrisponde 1 mℓ?" coeff="1" exp="0" tol=1 s="1 mℓ = 10⁻³ ℓ = 10⁻³ dm³ = 1 cm³ = 1 × 10⁰ cm³" %}
+{% include sci.html prima="Un cucchiaio contiene circa 15 mℓ di sciroppo. Quanti cucchiai servono per svuotare un flacone da 0,3 ℓ?" coeff="2" exp="1" tol=1 s="0,3 ℓ = 300 mℓ; 300 : 15 = 20 = 2 × 10¹ cucchiai" %}
+</div>
+
 {% include lab-virtuali/rinumera-esercizi-util.html %}
 
 # Esercizi di riepilogo
@@ -576,9 +601,9 @@ Riscrivi i seguenti valori per esteso (senza spazi).
 {% include fill.html prima="$2.9 \times 10^{11}$ =" ok="290000000000" s="290 000 000 000" %}
 {% include fill.html prima="$6.1 \times 10^{9}$ =" ok="6100000000" s="6 100 000 000" %}
 {% include fill.html prima="$1.7 \times 10^{13}$ =" ok="17000000000000" s="17 000 000 000 000" %}
-{% include fill.html prima="$4.5 \times 10^{-9}$ =" ok="0.0000000045,0,0000000045" s="0,000 000 004 5" %}
-{% include fill.html prima="$8.3 \times 10^{-7}$ =" ok="0.00000083,0,00000083" s="0,000 000 83" %}
-{% include fill.html prima="$3.0 \times 10^{-11}$ =" ok="0.00000000003,0,00000000003" s="0,000 000 000 030" %}
+{% include fill.html prima="$4.5 \times 10^{-9}$ =" ok="0.0000000045" s="0,000 000 004 5" %}
+{% include fill.html prima="$8.3 \times 10^{-7}$ =" ok="0.00000083" s="0,000 000 83" %}
+{% include fill.html prima="$3.0 \times 10^{-11}$ =" ok="0.00000000003" s="0,000 000 000 030" %}
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}
@@ -835,20 +860,53 @@ $V_{\text{cil}} = \pi r^2 h$, con $\pi \approx 3{,}14$.
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}
-Un litro corrisponde a $1\,\text{dm}^3$. Convertilo in m³ e in cm³, esprimendo il risultato in notazione scientifica.
+Converti $1\ \text ℓ$ in m³ e in cm³, esprimendo il risultato in notazione scientifica.
 
-{% include sci.html prima="$1\,\text{dm}^3$ in m³ =" coeff="1" exp="-3" s="1 × 10⁻³ m³" %}
-{% include sci.html prima="$1\,\text{dm}^3$ in cm³ =" coeff="1" exp="3" s="1 × 10³ cm³" %}
+{% include sci.html prima="$1\ \text ℓ$ in m³ =" coeff="1" exp="-3" s="1 × 10⁻³ m³" %}
+{% include sci.html prima="$1\ \text ℓ$ in cm³ =" coeff="1" exp="3" s="1 × 10³ cm³" %}
 {% include ex-end.html %}
 
 {% include ex.html diff=2 %}
-Un adulto medio ispira circa 500 L di aria all'ora. Converti in m³.
+Un adulto medio ispira circa 500 ℓ di aria all'ora. Converti in m³.
 
-{% include sci.html prima="500 L =" coeff="5" exp="-1" s="5 × 10⁻¹ m³ (cioè 0,5 m³)" %}
+{% include sci.html prima="500 ℓ =" coeff="5" exp="-1" s="5 × 10⁻¹ m³ (cioè 0,5 m³)" %}
 
 In una vita di 80 anni, quanti m³ di aria ispira una persona?
 
 {% include sci.html coeff="3.5,3.504,3.51" exp="5" tol=3 s="≈ 3.5 × 10⁵ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Converti in litri, scrivendo i risultati in notazione scientifica.
+
+{% include sci.html prima="3 m³ =" coeff="3" exp="3" tol=1 s="1 m³ = 10³ dm³ = 10³ ℓ, quindi 3 m³ = 3 × 10³ ℓ" %}
+{% include sci.html prima="250 cm³ =" coeff="2.5" exp="-1" tol=1 s="1 ℓ = 1 dm³ = 10³ cm³, quindi 250 cm³ = 0,25 ℓ = 2,5 × 10⁻¹ ℓ" %}
+{% include sci.html prima="0,75 dm³ =" coeff="7.5" exp="-1" tol=1 s="1 dm³ = 1 ℓ, quindi 0,75 dm³ = 7,5 × 10⁻¹ ℓ" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Una lattina contiene 33 cℓ di bibita. Quanti cm³ sono? E quanti m³? Scrivi i risultati in notazione scientifica.
+
+{% include sci.html prima="33 cℓ =" coeff="3.3" exp="2" tol=1 s="33 cℓ = 0,33 ℓ = 0,33 dm³ = 330 cm³ = 3,3 × 10² cm³" %}
+{% include sci.html prima="33 cℓ =" coeff="3.3" exp="-4" s="3,3 × 10⁻⁴ m³" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+L'interno di un frigorifero misura $50\ \text{cm} \times 55\ \text{cm} \times 140\ \text{cm}$. Qual è la sua capacità in litri? Scrivi il risultato in notazione scientifica.
+
+{% include sci.html prima="Capacità =" coeff="3.85" exp="2" tol=1 s="V = 50 × 55 × 140 cm³ = 385 000 cm³ = 385 dm³ = 3,85 × 10² ℓ" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Una piscina olimpionica è lunga 50 m, larga 25 m e profonda 2 m. Quanti litri d'acqua contiene? Scrivi il risultato in notazione scientifica.
+
+{% include sci.html coeff="2.5" exp="6" s="V = 50 × 25 × 2 m³ = 2500 m³ = 2,5 × 10⁶ ℓ" %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+Un rubinetto che gocciola perde una goccia al secondo, e ogni goccia ha un volume di circa 0,05 mℓ. Quanti litri d'acqua si sprecano in un anno? Scrivi il risultato in notazione scientifica.
+
+{% include sci.html coeff="1.6,1.58,1.5" exp="3" tol=3 s="1 anno ≈ 3,16 × 10⁷ s, quindi 3,16 × 10⁷ × 0,05 mℓ ≈ 1,6 × 10⁶ mℓ ≈ 1,6 × 10³ ℓ" %}
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}

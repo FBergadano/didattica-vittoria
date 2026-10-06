@@ -1,0 +1,56 @@
+{% comment %}
+Esercizio guidato ("Verifica Subito!") sull'unità di misura del coefficiente
+di dilatazione termica α, in tre passi che si sbloccano uno dopo l'altro:
+ 1. isolare α nella formula ΔL = α · L_i · ΔT  (invert.html);
+ 2. sostituire ogni grandezza con la sua unità di misura:
+    [α] = [ΔL] / ([L_i]·[ΔT])  (unit-derive.html);
+ 3. semplificare: m/(m·K) = 1/K  (mcq.html).
+I progressi restano salvati nel browser. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="uaAlfa">
+<p class="iex-lbl">Verifica Subito!</p>
+
+<div id="uaAlfa-s1">
+<p class="iex-qt"><strong>1.</strong> Isola $\alpha$ nella formula $\Delta L = \alpha\, L_i\, \Delta T$.</p>
+<div class="iex-nested">
+{% include invert.html id="inv-alfa" variabili="DL|a|Li|DT" etichette="\Delta L|\alpha|L_i|\Delta T"
+   sinistra="DL" destra="a*Li*DT" obiettivo="a" titolo="Isola α" %}
+</div>
+</div>
+
+<div id="uaAlfa-s2" style="display:none">
+<p class="iex-qt"><strong>2.</strong> Hai trovato $\alpha = \dfrac{\Delta L}{L_i\,\Delta T}$. Ora sostituisci ogni grandezza con la sua unità di misura: $[\Delta L]$ è l'unità di misura di $\Delta L$, e così via.</p>
+<div class="iex-nested">
+{% include unit-derive.html id="ud-alfa" testo="Trova [α]"
+   variabile="[\alpha]"
+   numeratore_simboli="[\Delta L]" numeratore_corrette="m"
+   denominatore_simboli="[L_i]|[\Delta T]" denominatore_corrette="m|K"
+   opzioni="m|K|s|kg|J" %}
+</div>
+</div>
+
+<div id="uaAlfa-s3" style="display:none">
+<p class="iex-qt"><strong>3.</strong> Hai ottenuto $[\alpha] = \dfrac{\text m}{\text m\cdot\text K}$. Semplifica: che cosa resta?</p>
+{% capture _o_alfa %}[
+{"v":"a","t":"$\\dfrac{1}{\\text K}$"},
+{"v":"b","t":"$\\dfrac{\\text m}{\\text K}$"},
+{"v":"c","t":"$\\text K$"},
+{"v":"d","t":"$\\text m^2\\cdot\\text K$"}
+]{% endcapture %}
+{% include mcq.html id="mcq-alfa" opts=_o_alfa ok="a" s="Il metro compare sia al numeratore sia al denominatore e si semplifica: $[\alpha]=\dfrac{\cancel{\text m}}{\cancel{\text m}\cdot\text K}=\dfrac{1}{\text K}$. Il coefficiente di dilatazione dice di quale frazione della sua lunghezza si allunga un corpo per ogni kelvin di aumento di temperatura." %}
+</div>
+</div>
+
+<script>
+(function(){
+  var s1=document.getElementById('uaAlfa-s1'),s2=document.getElementById('uaAlfa-s2'),s3=document.getElementById('uaAlfa-s3');
+  function show(el){if(el.style.display==='none'){el.style.display='';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]);}}
+  s1.addEventListener('iex:correct',function(){show(s2);});
+  s2.addEventListener('iex:correct',function(){show(s3);});
+  // ripristino: se i passi erano già stati risolti in una visita precedente
+  var res=s1.querySelector('.invx-result');
+  if(res&&res.style.display==='block')show(s2);
+  var ud=document.getElementById('ud-alfa');
+  if(ud&&ud.dataset.ok==='1')show(s3);
+})();
+</script>

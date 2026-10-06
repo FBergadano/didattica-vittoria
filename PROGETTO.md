@@ -1,4 +1,4 @@
-# PROGETTO.md — Bergadano Didattica Liceo Vittoria
+# PROGETTO.md — Didattica Vittoria Liceo Vittoria
 ## Documento di contesto per Claude (Project knowledge)
 *Carica questo file nel Project knowledge. Claude lo leggerà ad ogni sessione.*
 
@@ -16,7 +16,7 @@
 
 ## Il sito
 
-- **Nome:** Bergadano Didattica — Liceo Vittoria
+- **Nome:** Didattica Vittoria — Liceo Vittoria
 - **Tecnologia:** Jekyll 4.3 + GitHub Pages
 - **Repository GitHub:** `https://github.com/[username]/bergadano-didattica` (da completare)
 - **URL pubblico:** `https://[username].github.io/bergadano-didattica` (da completare)

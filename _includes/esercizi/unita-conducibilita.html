@@ -1,0 +1,58 @@
+{% comment %}
+Esercizio guidato ("Verifica Subito!") sull'unità di misura della
+conducibilità termica k, in tre passi che si sbloccano uno dopo l'altro
+(come unita-alfa.html e unita-calore-specifico.html):
+ 1. isolare k nella formula P = k · A · ΔT / Δx (in modulo: il segno meno non
+    ha unità di misura)  (invert.html);
+ 2. sostituire ogni grandezza con la sua unità di misura:
+    [k] = [P]·[Δx] / ([A]·[ΔT])  (unit-derive.html);
+ 3. semplificare: W·m/(m²·K) = W/(m·K)  (mcq.html).
+I progressi restano salvati nel browser. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="uaCond">
+<p class="iex-lbl">Verifica Subito!</p>
+
+<div id="uaCond-s1">
+<p class="iex-qt"><strong>1.</strong> Isola $k$ nella formula $P = k\, A\, \dfrac{\Delta T}{\Delta x}$. (Il segno meno non ci interessa: non ha unità di misura.)</p>
+<div class="iex-nested">
+{% include invert.html id="inv-cond" variabili="P|k|A|DT|Dx" etichette="P|k|A|\Delta T|\Delta x"
+   sinistra="P" destra="k*A*DT/Dx" obiettivo="k" %}
+</div>
+</div>
+
+<div id="uaCond-s2" style="display:none">
+<p class="iex-qt"><strong>2.</strong> Hai trovato $k = \dfrac{P\,\Delta x}{A\,\Delta T}$. Ora sostituisci ogni grandezza con la sua unità di misura: $[P]$ è l'unità di misura di $P$, e così via.</p>
+<div class="iex-nested">
+{% include unit-derive.html id="ud-cond" testo="Trova [k]"
+   variabile="[k]"
+   numeratore_simboli="[P]|[\Delta x]" numeratore_corrette="W|m"
+   denominatore_simboli="[A]|[\Delta T]" denominatore_corrette="m²|K"
+   opzioni="W|J|m|m²|K|s" %}
+</div>
+</div>
+
+<div id="uaCond-s3" style="display:none">
+<p class="iex-qt"><strong>3.</strong> Hai ottenuto $[k] = \dfrac{\text W\cdot\text m}{\text m^2\cdot\text K}$. Semplifica: che cosa resta?</p>
+{% capture _o_cond %}[
+{"v":"a","t":"$\\dfrac{\\text W}{\\text m\\cdot\\text K}$"},
+{"v":"b","t":"$\\dfrac{\\text W\\cdot\\text m}{\\text K}$"},
+{"v":"c","t":"$\\dfrac{\\text W}{\\text m^2\\cdot\\text K}$"},
+{"v":"d","t":"$\\dfrac{\\text W}{\\text K}$"}
+]{% endcapture %}
+{% include mcq.html id="mcq-cond" opts=_o_cond ok="a" s="Al numeratore c'è un metro, al denominatore un metro quadro: un metro si semplifica e al denominatore ne resta uno. $[k]=\dfrac{\text W\cdot\cancel{\text m}}{\text m^{\cancel{2}}\cdot\text K}=\dfrac{\text W}{\text m\cdot\text K}$. Ad esempio, per il rame $k\approx390\ \dfrac{\text W}{\text m\cdot\text K}$, per il legno appena $0{,}13\ \dfrac{\text W}{\text m\cdot\text K}$." %}
+</div>
+</div>
+
+<script>
+(function(){
+  var s1=document.getElementById('uaCond-s1'),s2=document.getElementById('uaCond-s2'),s3=document.getElementById('uaCond-s3');
+  function show(el){if(el.style.display==='none'){el.style.display='';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]);}}
+  s1.addEventListener('iex:correct',function(){show(s2);});
+  s2.addEventListener('iex:correct',function(){show(s3);});
+  // ripristino: se i passi erano già stati risolti in una visita precedente
+  var res=s1.querySelector('.invx-result');
+  if(res&&res.style.display==='block')show(s2);
+  var ud=document.getElementById('ud-cond');
+  if(ud&&ud.dataset.ok==='1')show(s3);
+})();
+</script>

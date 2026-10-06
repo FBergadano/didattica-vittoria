@@ -139,7 +139,7 @@ goA.addEventListener('click',function(){
       var summaryArc={x0:XSA[fi],x1:XSA[ti],peakY:ctrlY,color:'#f59e0b',lw:3,dashed:true};
       drawA(fi,ti,{x:XSA[ti],y:LYA,col:PFX_A[ti].col},doneLabels,doneArcs.concat([summaryArc]));
       if(cumExp!==0){
-        var ctotA=cumExp>=0?'×10'+supA(cumExp):'÷10'+supA(-cumExp);
+        var ctotA='×10'+supA(cumExp);
         ctxa.save();ctxa.fillStyle='#0f766e';ctxa.font='bold 20px sans-serif';ctxa.textAlign='center';
         ctxa.fillText('Fattore totale: '+ctotA,(XSA[fi]+XSA[ti])/2,visualY-14);ctxa.restore();
       }
@@ -150,7 +150,7 @@ goA.addEventListener('click',function(){
       var tsym=PFX_A[ti].sym==='—'?'':PFX_A[ti].sym;
       var rule;
       if(expDiff>0)rule='<strong>moltiplica per 10<sup>'+expDiff+'</sup></strong>';
-      else if(expDiff<0)rule='<strong>dividi per 10<sup>'+(-expDiff)+'</sup></strong>';
+      else if(expDiff<0)rule='<strong>moltiplica per 10<sup>'+expDiff+'</sup></strong>';
       else rule='nessun fattore';
       explA.innerHTML='Per le <strong>aree</strong>: da <strong>'+fname+'</strong> a <strong>'+tname+'</strong>: '+rule+'.'
         +' Equivalenza: <strong>1&thinsp;'+fsym+'X² = 10<sup>'+expDiff+'</sup>&thinsp;'+tsym+'X²</strong>.';
@@ -158,8 +158,8 @@ goA.addEventListener('click',function(){
     }
     var curI=fi+stepIdx*dir,nxtI=curI+dir,seIdx=(dir>0)?curI:nxtI;
     var sExp=STEP_A[seIdx]*MULT;
-    var op=dir>0?'÷':'×';
-    var lbl=op+'10'+supA(sExp),lblCol=dir>0?'#dc2626':'#0f766e';
+    var op='×';
+    var lbl=op+'10'+supA(dir>0?-sExp:sExp),lblCol=dir>0?'#dc2626':'#0f766e';
     var x0=XSA[curI],x1=XSA[nxtI],midX=(x0+x1)/2;
     var visualY=LYA-STEP_PEAK, ctrlY=LYA-2*STEP_PEAK;
     var nextCumExp=cumExp+(dir>0?-sExp:sExp);
@@ -173,7 +173,7 @@ goA.addEventListener('click',function(){
       var curLabel={x:midX,y:visualY-16,text:lbl,col:lblCol,font:'bold 18px sans-serif'};
       drawA(fi,-1,{x:pt.x,y:pt.y,col:'#f59e0b'},doneLabels.concat([curLabel]),doneArcs.concat([curArc]));
       if(cumExp!==0){
-        var cpfxA=cumExp>=0?'×10'+supA(cumExp):'÷10'+supA(-cumExp);
+        var cpfxA='×10'+supA(cumExp);
         ctxa.save();ctxa.fillStyle='rgba(15,118,110,.8)';ctxa.font='bold 13px sans-serif';ctxa.textAlign='right';
         ctxa.fillText('Finora: '+cpfxA,WA-8,HA-8);ctxa.restore();
       }

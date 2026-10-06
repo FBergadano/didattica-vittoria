@@ -42,7 +42,7 @@ L'**incertezza di misura** quantifica l'imprecisione della misurazione di una gr
 
 Ogni misurazione è affetta da più sorgenti di incertezza. Le principali sono:
 
-1. **Risoluzione dello strumento** — nessuno strumento è infinitamente preciso: un righello normalmente ha le tacche spaziate di un millimetro, e quindi non è in grado di rilevare differenze dell'ordine, ad esempio, del micrometro. Allo stesso modo, una bilancia digiatale da cucina normalmente ha le cifre fino al grammo, quindi non è in grado di rilevare una differenza di un decimo di grammo.
+1. **Risoluzione dello strumento** — nessuno strumento è infinitamente preciso: un righello normalmente ha le tacche spaziate di un millimetro, e quindi non è in grado di rilevare differenze dell'ordine, ad esempio, del micrometro. Allo stesso modo, una bilancia digitale da cucina normalmente ha le cifre fino al grammo, quindi non è in grado di rilevare una differenza di un decimo di grammo.
 2. **Variabilità del misurando** — se la grandezza fluttua (ad esempio l'acqua oscilla leggermente), misurazioni ripetute danno valori diversi.
 3. **Condizioni ambientali** — temperatura, vibrazioni, correnti d'aria possono influenzare il risultato.
 

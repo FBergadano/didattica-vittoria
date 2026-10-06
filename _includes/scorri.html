@@ -1,0 +1,13 @@
+{% comment %}
+Esempi scorrevoli (carosello): una fila di esempi, ciascuno con un'immagine e
+un testo in Markdown, che si scorrono con le frecce, con i pallini o col dito.
+In stampa gli esempi compaiono tutti, uno sotto l'altro. Uso:
+  {% include scorri.html %}
+  {% include scorri-slide.html img="/corsi/immagini/foto.png" alt="Descrizione" titolo="Titolo" %}
+  Testo dell'esempio, con $formule$.
+  {% include scorri-slide-end.html %}
+  ... (altri esempi) ...
+  {% include scorri-end.html %}
+Si usa di solito dentro un box (es. box-note).
+{% endcomment %}
+<div class="scorri"><div class="scorri-track">

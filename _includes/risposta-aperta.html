@@ -1,0 +1,51 @@
+{% comment %}
+Domanda a risposta aperta: lo studente PRODUCE una risposta (non la riconosce
+fra opzioni date), poi la confronta con una risposta possibile. Il pulsante
+"Confronta" si attiva solo dopo che lo studente ha scritto qualcosa.
+La risposta scritta resta salvata nel browser (come fill-def).
+
+Parametri:
+  id       — ID univoco (obbligatorio)
+  tipo     — "prevedi"  (prima di un'animazione/esperimento: cosa succederà?)
+             "spiega"   (spiegalo con parole tue)
+             "errore"   (trova l'errore in una soluzione sbagliata)
+             (default: "spiega")
+  domanda  — testo della domanda (HTML e $formule$ ammessi)
+  risposta — risposta possibile, da mostrare dopo (via capture; Markdown no,
+             HTML e $formule$ sì)
+  min      — numero minimo di caratteri prima di poter confrontare (default 15)
+
+Esempio:
+  {% capture _r %}La forza diventa un quarto, perché…{% endcapture %}
+  {% include risposta-aperta.html id="ra-cav" tipo="prevedi"
+     domanda="Se raddoppi la distanza fra le sfere, cosa succede alla forza?"
+     risposta=_r %}
+{% endcomment %}
+{% assign _rt = include.tipo | default: "spiega" %}
+{% assign _rid = include.id %}
+<div class="ra-box ra-{{ _rt }}" id="ra-{{ _rid }}">
+<p class="ra-label">{% if _rt == "prevedi" %}🔮 Prevedi, prima di guardare{% elsif _rt == "errore" %}🔍 Trova l'errore{% else %}✏️ Spiegalo con parole tue{% endif %}</p>
+<p class="ra-q">{{ include.domanda }}</p>
+<textarea class="ra-area" rows="3" placeholder="{% if _rt == "prevedi" %}Scrivi qui la tua previsione, e perché la pensi così…{% elsif _rt == "errore" %}Dov'è l'errore? Come si corregge?{% else %}Scrivi qui la tua spiegazione…{% endif %}" aria-label="La tua risposta"></textarea>
+<div class="ra-ctrl"><button type="button" class="ra-btn" disabled>Confronta con una risposta possibile</button><span class="ra-hint">Scrivi prima la tua risposta.</span></div>
+<div class="ra-ans" hidden>{{ include.risposta }}</div>
+</div>
+<script>
+(function(){
+  var root=document.getElementById('ra-{{ _rid }}');if(!root)return;
+  var ta=root.querySelector('.ra-area'),btn=root.querySelector('.ra-btn'),hint=root.querySelector('.ra-hint'),ans=root.querySelector('.ra-ans');
+  var MIN={{ include.min | default: 15 }},ID='{{ _rid }}';
+  function upd(){var ok=ta.value.trim().length>=MIN;btn.disabled=!ok;hint.style.display=ok?'none':'';}
+  var s=window._lvLoad&&_lvLoad('raperta',ID);
+  if(s){ta.value=s.v||'';if(s.open){ans.hidden=false;btn.textContent='Nascondi la risposta possibile';}}
+  upd();
+  var t;
+  ta.addEventListener('input',function(){upd();clearTimeout(t);t=setTimeout(function(){if(window._lvSave)_lvSave('raperta',ID,{v:ta.value,open:!ans.hidden});},400);});
+  btn.addEventListener('click',function(){
+    ans.hidden=!ans.hidden;
+    btn.textContent=ans.hidden?'Confronta con una risposta possibile':'Nascondi la risposta possibile';
+    if(!ans.hidden&&window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([ans]);
+    if(window._lvSave)_lvSave('raperta',ID,{v:ta.value,open:!ans.hidden});
+  });
+})();
+</script>
