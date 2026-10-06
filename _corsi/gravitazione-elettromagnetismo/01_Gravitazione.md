@@ -684,7 +684,7 @@ In effetti, è possibile rappresentare graficamente il potenziale disegnando del
 Le superfici equipotenziali sono il luogo dei punti in cui il potenziale assume <u markdown="span">lo **stesso** valore costante</u>. Inoltre, esse sono, in ogni punto, <u markdown="span">**perpendicolari** alle linee di campo.
 {% include box-end.html %}
 
-Prova tu a riconoscere le superfici equipotenziali in un insieme di punti.
+Prova tu a tracciare le superfici equipotenziali di una massa $M$: intorno a essa ci sono dei punti, ciascuno con il valore del potenziale gravitazionale in quel punto.
 
 {% include esercizi/traccia-equipotenziale.html %}
 
@@ -788,15 +788,17 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 
 ### La Forza Peso
 
-Quando una massa $m$ si trova in un campo gravitazionale, essa è soggetta a una forza gravitazionale che si chiama <definizione>forza peso</definizione>. Dalla definizione di campo, $\vec g =\frac{\vec F}m$, otteniamo un'espressione per la forza peso:
+Quando una massa $m$ si trova in un campo gravitazionale, essa è soggetta a una forza gravitazionale che si chiama <definizione>forza peso</definizione>. Dalla definizione di campo, $\vec g =\frac{\vec F}m,$ otteniamo un'espressione per la forza peso:
 
 $$\vec g =\frac{\vec F}m \quad\Rightarrow\quad \vec F = m\vec g.$$
 
 
 
 {% include box-imp.html testo="La forza peso" %}
-La forza peso $\vec F = m\vec g$ è la forza con cui un pianeta attrae un corpo di massa $m$ vicino alla sua superficie. Si misura in newton, come ogni altra forza.
+La forza peso $\vec F = m\vec g$ è la forza che sperimenta una massa $m$ in un campo gravitazionale $\vec g$. Si misura in newton, come ogni altra forza.
 {% include box-end.html %}
+
+Spesso si parla di forza peso in relazione ai pianeti (anche se la forza peso è un concetto più generale). In particolare, per un pianeta di forma sferica, il modulo di $\vec g$ sulla superficie del pianeta è sostanzialmente costante su tutta la superficie (in quanto ogni punto si trova alla stessa distanza dal centro). Ad esempio, per la Terra, il valore è circa $g_{\text{Terra}}\approx 9,8 \ \text{m/s}^2$; per la Luna è circa $g_{\text{Luna}}\approx 1,5 \ \text{m/s}^2$.
 
 {% include box-warn.html testo="Massa e peso non sono la stessa cosa" %}
 
@@ -806,7 +808,7 @@ La forza peso $\vec F = m\vec g$ è la forza con cui un pianeta attrae un corpo 
 | **Unità di misura** | kg | N |
 | **Da cosa dipende** | è una proprietà del corpo stesso: non cambia mai | dipende dal campo gravitazionale $\vec g$ del luogo in cui si trova il corpo: $\vec F = m\vec g$ |
 
-Ad esempio, uno stesso astronauta ha la stessa massa sulla Terra e sulla Luna, ma un peso diverso, perché $g$ è diverso nei due luoghi (circa $9{,}8\ \text{m/s}^2$ sulla Terra, contro circa $1{,}6\ \text{m/s}^2$ sulla Luna). Un astronauta di $80\ \text{kg}$ pesa quindi circa $F = 80\times9{,}8\approx 780\ \text N$ sulla Terra, ma solo $F = 80\times1{,}6\approx 130\ \text N$ sulla Luna.
+Ad esempio, uno stesso astronauta ha la stessa massa sulla Terra e sulla Luna, ma un peso diverso, perché $g$ è diverso nei due luoghi (circa $9{,}8\ \text{m/s}^2$ sulla Terra, contro circa $1{,}6\ \text{m/s}^2$ sulla Luna). Un astronauta di $80\ \text{kg}$ pesa quindi circa $F = 80\times9{,}8\approx 780\ \text N$ sulla Terra, ma solo $F = 80\times1{,}6\approx 130\ \text N$ sulla Luna. Ma la sua massa è in ogni caso 80 kg.
 
 {% include box-end.html %}
 
