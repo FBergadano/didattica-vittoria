@@ -1,0 +1,113 @@
+{% comment %}
+Attività (non in un box esercizio): una nuvola di punti, ciascuno con il
+valore del potenziale gravitazionale (1, 2 o 3 J/kg). I punti con lo stesso
+valore stanno su tre linee molto ondulate che attraversano il riquadro senza
+mai incrociarsi: in una stessa zona i valori si mescolano, quindi a colpo
+d'occhio le superfici non si vedono. Lo studente deve
+cliccare tutti i punti di una stessa superficie equipotenziale (prima
+V = 2 J/kg, poi 1 J/kg, poi 3 J/kg): un punto sbagliato lampeggia in rosso;
+quando li ha trovati tutti, compare la linea che li unisce (la
+superficie equipotenziale vista in sezione). Pulsante per ricominciare.
+Le posizioni sono fisse (stesse per tutti). Nessun parametro.
+{% endcomment %}
+<style>
+#trEq .te-top{text-align:center;font-size:.95rem;margin:0 0 .5rem;}
+#trEq .te-top b{font-size:1.05rem;}
+#trEq .te-count{text-align:center;font-size:.85rem;color:#475569;margin:.2rem 0 .4rem;}
+#trEq svg{display:block;width:100%;max-width:470px;height:auto;margin:0 auto;}
+#trEq .te-pt{cursor:pointer;}
+#trEq .te-pt circle{transition:fill .15s,stroke .15s;}
+#trEq .te-pt:hover circle{stroke:#0e7490;stroke-width:2.5;}
+#trEq .te-msg{text-align:center;font-size:.9rem;font-weight:600;min-height:1.3em;margin:.5rem 0 .2rem;}
+#trEq .te-msg.ok{color:#0f766e;}#trEq .te-msg.err{color:#dc2626;}
+#trEq .te-ctrl{text-align:center;margin-top:.3rem;}
+#trEq .te-ctrl button{font-size:.82rem;padding:.3rem .8rem;border-radius:6px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;}
+#trEq .te-ctrl button:hover{background:#f1f5f9;}
+@keyframes teShake{0%,100%{transform:translateX(0);}25%{transform:translateX(-3px);}75%{transform:translateX(3px);}}
+#trEq .te-bad{animation:teShake .3s ease 2;}
+@media print{#trEq{display:none!important;}}
+</style>
+<div class="vdrag-widget" id="trEq">
+<p class="te-top" id="te-top"></p>
+<p class="te-count" id="te-count"></p>
+<svg id="te-svg" viewBox="0 0 470 340" role="img" aria-label="Punti con il valore del potenziale: seleziona quelli di una stessa superficie equipotenziale"></svg>
+<p class="te-msg" id="te-msg"></p>
+<div class="te-ctrl"><button type="button" id="te-reset">↺ Ricomincia</button></div>
+</div>
+<script>
+(function(){
+  var svg=document.getElementById('te-svg');if(!svg)return;
+  var NS='http://www.w3.org/2000/svg';
+  var top=document.getElementById('te-top'),count=document.getElementById('te-count'),msg=document.getElementById('te-msg');
+  // le tre linee (sezioni delle superfici equipotenziali): molto ondulate, ma
+  // sempre separate, così in una stessa zona i valori si mescolano
+  var LEV=[{v:1,b:88,n:9,col:'#2563eb'},{v:2,b:166,n:10,col:'#0f766e'},{v:3,b:244,n:10,col:'#7c3aed'}];
+  function yOf(L,k,x){return L.b+58*Math.sin(2*Math.PI*x/260+0.5)+16*Math.sin(2*Math.PI*x/105+0.7*k);}
+  // generatore pseudo-casuale con seme fisso: i punti sono uguali per tutti
+  var seed=11;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646;}
+  var pts=[];
+  LEV.forEach(function(L,k){
+    var tries=0,made=0;
+    while(made<L.n&&tries<4000){tries++;
+      var x=28+rnd()*414,y=yOf(L,k,x);
+      if(y<16||y>324)continue;
+      if(pts.some(function(p){return Math.hypot(p.x-x,p.y-y)<34;}))continue;
+      pts.push({v:L.v,x:x,y:y,lev:k});made++;}
+    L.n=made;
+  });
+  pts.sort(function(a,b){return a.x-b.x;});
+  function el(tag,at,par){var e=document.createElementNS(NS,tag);for(var k in at)e.setAttribute(k,at[k]);(par||svg).appendChild(e);return e;}
+  el('rect',{x:0,y:0,width:470,height:340,rx:10,fill:'#f8fafc'});
+  var curvesG=el('g',{}),ptsG=el('g',{});
+  var ORDER=[1,0,2],step=0,found={};
+  pts.forEach(function(p,i){
+    var g=el('g',{'class':'te-pt',tabindex:0,role:'button','aria-label':'punto con potenziale '+p.v+' joule al chilogrammo'},ptsG);
+    p.c=el('circle',{cx:p.x,cy:p.y,r:12,fill:'#fff',stroke:'#64748b','stroke-width':1.5},g);
+    p.t=el('text',{x:p.x,y:p.y+5,'text-anchor':'middle','font-size':14,'font-weight':700,fill:'#1e293b','font-family':'Georgia,serif'},g);p.t.textContent=p.v;
+    p.g=g;
+    function hit(){click(i);}
+    g.addEventListener('click',hit);g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();hit();}});
+  });
+  function curve(L){
+    var kk=LEV.indexOf(L),d='';for(var k=0;k<=120;k++){var x=8+k*454/120;d+=(k?'L':'M')+x.toFixed(1)+','+yOf(L,kk,x).toFixed(1);}
+    var path=el('path',{d:d,fill:'none',stroke:L.col,'stroke-width':3,'stroke-linejoin':'round',opacity:0},curvesG);
+    var len=path.getTotalLength();path.style.strokeDasharray=len;path.style.strokeDashoffset=len;path.setAttribute('opacity',0.9);
+    path.style.transition='stroke-dashoffset 1.4s ease';requestAnimationFrame(function(){requestAnimationFrame(function(){path.style.strokeDashoffset=0;});});
+  }
+  function lev(){return LEV[ORDER[step]];}
+  function nTarget(){return LEV[ORDER[step]].n;}
+  function nFound(){var c=0;pts.forEach(function(p,i){if(found[i]&&p.lev===ORDER[step])c++;});return c;}
+  function texts(){
+    if(step>=ORDER.length){top.innerHTML='Hai tracciato tutte e tre le superfici equipotenziali!';count.textContent='';return;}
+    var L=lev();
+    top.innerHTML='Ogni numero è il valore del potenziale in quel punto, in J/kg. Clicca su <b>tutti</b> i punti della superficie equipotenziale <b style="color:'+L.col+'">V = '+L.v+' J/kg</b>.';
+    count.textContent='Trovati '+nFound()+' su '+nTarget();
+  }
+  function click(i){
+    if(step>=ORDER.length||found[i])return;
+    var p=pts[i],L=lev();
+    if(p.lev===ORDER[step]){
+      found[i]=true;p.c.setAttribute('fill',L.col);p.c.setAttribute('stroke',L.col);p.t.setAttribute('fill','#fff');
+      msg.className='te-msg';msg.textContent='';
+      if(nFound()===nTarget()){
+        curve(L);
+        msg.className='te-msg ok';msg.textContent='✓ Ecco la superficie equipotenziale V = '+L.v+' J/kg: sul foglio ne vediamo una sezione, cioè una linea.';
+        if(window._shoot)_shoot(p.g);
+        step++;
+        if(step>=ORDER.length)msg.textContent='✓ Fatto! Nota che le tre superfici equipotenziali non si intersecano mai.';
+      }
+      texts();
+    }else{
+      msg.className='te-msg err';msg.textContent='✗ Questo punto ha potenziale '+p.v+' J/kg, non '+L.v+' J/kg.';
+      p.c.setAttribute('stroke','#dc2626');p.g.classList.remove('te-bad');void p.g.getBBox();p.g.classList.add('te-bad');
+      setTimeout(function(){if(!found[i])p.c.setAttribute('stroke','#64748b');},700);
+    }
+  }
+  document.getElementById('te-reset').onclick=function(){
+    step=0;found={};curvesG.innerHTML='';msg.textContent='';
+    pts.forEach(function(p){p.c.setAttribute('fill','#fff');p.c.setAttribute('stroke','#64748b');p.t.setAttribute('fill','#1e293b');});
+    texts();
+  };
+  texts();
+})();
+</script>

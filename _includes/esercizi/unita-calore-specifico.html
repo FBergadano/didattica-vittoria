@@ -1,0 +1,56 @@
+{% comment %}
+Esercizio guidato ("Verifica Subito!") sull'unità di misura del calore
+specifico c, in tre passi che si sbloccano uno dopo l'altro (come unita-alfa.html):
+ 1. isolare c nella formula Q = c · m · ΔT  (invert.html);
+ 2. sostituire ogni grandezza con la sua unità di misura:
+    [c] = [Q] / ([m]·[ΔT]) = J/(kg·K)  (unit-derive.html);
+ 3. capire che cosa significa: c dell'acqua = 4186 J/(kg·K)  (mcq.html).
+I progressi restano salvati nel browser. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="uaCalSp">
+<p class="iex-lbl">Verifica Subito!</p>
+
+<div id="uaCalSp-s1">
+<p class="iex-qt"><strong>1.</strong> Isola $c$ nella formula $Q = c\, m\, \Delta T$.</p>
+<div class="iex-nested">
+{% include invert.html id="inv-calsp" variabili="Q|c|m|DT" etichette="Q|c|m|\Delta T"
+   sinistra="Q" destra="c*m*DT" obiettivo="c" %}
+</div>
+</div>
+
+<div id="uaCalSp-s2" style="display:none">
+<p class="iex-qt"><strong>2.</strong> Hai trovato $c = \dfrac{Q}{m\,\Delta T}$. Ora sostituisci ogni grandezza con la sua unità di misura: $[Q]$ è l'unità di misura di $Q$, e così via.</p>
+<div class="iex-nested">
+{% include unit-derive.html id="ud-calsp" testo="Trova [c]"
+   variabile="[c]"
+   numeratore_simboli="[Q]" numeratore_corrette="J"
+   denominatore_simboli="[m]|[\Delta T]" denominatore_corrette="kg|K"
+   opzioni="J|kg|K|m|N" %}
+</div>
+</div>
+
+<div id="uaCalSp-s3" style="display:none">
+<p class="iex-qt"><strong>3.</strong> Hai ottenuto $[c] = \dfrac{\text J}{\text{kg}\cdot\text K}$. Il calore specifico dell'acqua vale circa $4\,186\ \dfrac{\text J}{\text{kg}\cdot\text K}$. Che cosa significa?</p>
+{% capture _o_calsp %}[
+{"v":"a","t":"Servono circa $4\\,186\\ \\text J$ di calore per scaldare $1\\ \\text{kg}$ d'acqua di $1\\ \\text K$"},
+{"v":"b","t":"Un kilogrammo d'acqua alla temperatura di $1\\ \\text K$ contiene $4\\,186\\ \\text J$ di calore"},
+{"v":"c","t":"Bastano $4\\,186\\ \\text J$ per scaldare di $1\\ \\text K$ qualsiasi quantità d'acqua"},
+{"v":"d","t":"Servono $4\\,186\\ \\text{kg}$ d'acqua per assorbire $1\\ \\text J$ di calore"}
+]{% endcapture %}
+{% include mcq.html id="mcq-calsp" opts=_o_calsp ok="a" s="Leggendo l'unità di misura: joule <em>per</em> kilogrammo <em>per</em> kelvin. Il calore specifico è il calore necessario per scaldare di $1\ \text K$ un kilogrammo di sostanza: per l'acqua servono circa $4\,186\ \text J$. Per scaldare $2\ \text{kg}$, oppure di $2\ \text K$, ne serve il doppio." %}
+</div>
+</div>
+
+<script>
+(function(){
+  var s1=document.getElementById('uaCalSp-s1'),s2=document.getElementById('uaCalSp-s2'),s3=document.getElementById('uaCalSp-s3');
+  function show(el){if(el.style.display==='none'){el.style.display='';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]);}}
+  s1.addEventListener('iex:correct',function(){show(s2);});
+  s2.addEventListener('iex:correct',function(){show(s3);});
+  // ripristino: se i passi erano già stati risolti in una visita precedente
+  var res=s1.querySelector('.invx-result');
+  if(res&&res.style.display==='block')show(s2);
+  var ud=document.getElementById('ud-calsp');
+  if(ud&&ud.dataset.ok==='1')show(s3);
+})();
+</script>

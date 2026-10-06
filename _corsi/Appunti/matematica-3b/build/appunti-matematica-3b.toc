@@ -11,4 +11,8 @@
 \contentsline {paragraph}{Compiti sulle equazioni pure e monomie}{5}{paragraph*.3}%
 \contentsline {section}{\numberline {1.5}Caso $c=0$ (equazioni spurie)}{5}{section.1.5}%
 \contentsline {paragraph}{Compiti sulle equazioni incomplete}{5}{paragraph*.4}%
-\contentsline {section}{\numberline {1.6}Note sul capitolo}{5}{section.1.6}%
+\contentsline {section}{\numberline {1.6}Equazioni di secondo grado complete}{5}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}La ricetta per la risoluzione di un'equazione di secondo grado}{5}{subsection.1.6.1}%
+\contentsline {subsection}{\numberline {1.6.2}Fattorizzazione}{5}{subsection.1.6.2}%
+\contentsline {subsubsection}{Esercizi sulla fattorizzazione}{6}{subsubsection*.5}%
+\contentsline {section}{\numberline {1.7}Note sul capitolo}{7}{section.1.7}%

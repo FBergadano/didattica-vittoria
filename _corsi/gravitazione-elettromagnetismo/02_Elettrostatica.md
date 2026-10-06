@@ -396,7 +396,7 @@ Il valore assoluto serve ad **assicurare che il modulo sia sempre positivo**. In
 ### La costante di Coulomb
 
 {% include margin-note.html testo="La costante di Coulomb dipende dal materiale" %}
-La costante di Coulomb dipende dal materiale in cui sono immerse le cariche elettriche. Infatti, poiché ogni materiale risponde alla presenza delle cariche (ad esempio, polarizzandosi), può capitare che alcuni materiali “assorbano” parte della forza elettrica, diminuendone il modulo. È quindi intutivo che il valore della costante di Coulomb $k$ sia massimo per il vuoto, e sia sempre minore per ogni altro materiale. 
+La costante di Coulomb dipende dal materiale in cui sono immerse le cariche elettriche. Infatti, poiché ogni materiale risponde alla presenza delle cariche (ad esempio, polarizzandosi), può capitare che alcuni materiali “assorbano” parte della forza elettrica, diminuendone il modulo. È quindi intuitivo che il valore della costante di Coulomb $k$ sia massimo per il vuoto, e sia sempre minore per ogni altro materiale. 
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Determinazione sperimentale del valore di k" %}
@@ -406,7 +406,6 @@ $$
 k = 8{,}99 \times 10^{9} \ \frac{\text N \cdot \text m^2}{\text{C}^2}.
 $$
 
-### S 
 A differenza di $G$, il valore di $k$ è enorme: è proprio per questo che la forza elettrica è **molto più intensa** della forza gravitazionale a parità di distanza — così intensa che due cariche di appena $1\ \text{C}$ poste a $1\ \text{m}$ di distanza si respingerebbero con una forza di quasi $9$ miliardi di Newton, pari al peso di centinaia di migliaia di automobili.
 {% include margin-note-end.html %}
 
@@ -452,7 +451,7 @@ Poiché le forze sono vettori, per sommarle non basta sommarne i moduli: vanno s
 Nell'animazione sopra, i moduli di $\vec F_1$ e $\vec F_2$ si ottengono con la legge di Coulomb:
 
 $$
-F_1 = k \frac{|Q_1\cdot q|}{r^2}, \qquad\qquad F_2 = k \frac{|Q_1\cdot q|}{r^2} 
+F_1 = k \frac{|Q_1\cdot q|}{r_1^2}, \qquad\qquad F_2 = k \frac{|Q_2\cdot q|}{r_2^2} 
 $$
 
 

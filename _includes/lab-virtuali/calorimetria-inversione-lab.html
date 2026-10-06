@@ -1,0 +1,46 @@
+{% comment %}
+Animazione (in loop, senza didascalia): dalla formula ΔT = Q/(c·m) alla legge
+fondamentale della calorimetria Q = c·m·ΔT. Il denominatore c·m si illumina;
+entrambi i membri vengono moltiplicati per c·m (a sinistra compare c·m davanti
+a ΔT, a destra c·m al numeratore); a destra c·m si semplifica fra numeratore e
+denominatore; resta c·m·ΔT = Q, i due membri si scambiano (uno passa sopra,
+l'altro sotto) e Q = c·m·ΔT viene incorniciata. Lo studente può mettere in
+pausa, ricominciare e scegliere la velocità (motore: formula-anim-engine.html).
+Nessun parametro.
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap"><canvas id="cv-calinv"></canvas></div>
+<script>
+FormulaAnim.create({id:'cv-calinv',W:420,H:110,cycle:13,still:10.5,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,Y=66,yb=Y-8,yn=yb-7,yd=yb+21,I={it:true};
+  var hD=p(t,0.9,1.4)*(1-p(t,3.6,4.1));          // il denominatore c·m si illumina
+  var pM=p(t,1.8,2.6);                           // si moltiplicano entrambi i membri per c·m
+  var pX=p(t,3.2,3.8);                           // a destra c·m si semplifica
+  var xAl=1-p(t,4.0,4.5);
+  var pQ=p(t,4.4,5.1);                           // Q scende al centro (sparisce la frazione)
+  var pS=p(t,5.6,6.8);                           // i due membri si scambiano
+  var box=p(t,7.2,7.8);
+  var ink=mix(A.DARK,A.TEAL,box),col=mix(ink,A.OR,hD);
+  function fresh(t0){return mix(A.OR,ink,p(t,t0,t0+0.7));}
+  function bar(x0,x1,al,c){if(al<=0.01)return;ctx.globalAlpha=al*A.G;ctx.strokeStyle=c;ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(x0,yb);ctx.lineTo(x1,yb);ctx.stroke();ctx.globalAlpha=1;}
+  function dT(x,y,al,c,fs){A.tok('Δ',x-7,y,al,c,{size:fs||26});A.tok('T',x+8,y,al,c,{it:true,size:fs||26});}
+  var arc=Math.sin(Math.PI*pS),up=-24*arc,dn=22*arc;   // durante lo scambio: un gruppo sopra, l'altro sotto
+  // membro sinistro: (c m) ΔT  → si sposta a destra
+  var dxL=L(0,120,pS);
+  A.tok('c',76+dxL,Y+dn,pM,fresh(2.4),I);
+  A.tok('m',94+dxL,Y+dn,pM,fresh(2.4),I);
+  dT(L(120,132,pM)+dxL,Y+dn,1,ink);
+  A.tok('=',L(164,164,pS),Y,1,ink);
+  // membro destro: frazione Q / (c m) → Q → si sposta a sinistra
+  var xf=210;
+  bar(L(190,180,pM),L(230,240,pM),1-p(t,3.9,4.3),ink);   // la riga di frazione sparisce prima che Q scenda
+  A.tok('c',192,yn,pM*xAl,A.OR,{it:true,size:22});A.slash(192,yn+2,pX,xAl);
+  A.tok('m',208,yn,pM*xAl,A.OR,{it:true,size:22});A.slash(208,yn+2,pX,xAl);
+  A.tok('c',202,yd,xAl,col,{it:true,size:22});A.slash(202,yd+2,pX,xAl);
+  A.tok('m',218,yd,xAl,col,{it:true,size:22});A.slash(218,yd+2,pX,xAl);
+  var qx=L(L(210,226,pM),210,pQ),qy=L(yn,Y,pQ),qs=L(22,26,pQ);
+  A.tok('Q',L(qx,134,pS),qy+up,1,ink,{it:true,size:qs});
+  A.box(110,Y-34,172,46,box);
+}});
+</script>

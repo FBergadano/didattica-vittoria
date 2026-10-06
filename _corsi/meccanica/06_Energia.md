@@ -532,7 +532,7 @@ Un sistema si dice <definizione>non isolato</definizione> se scambia energia con
 In questo caso, il sistema può **perdere** energia oppure **acquistare** energia, a seconda dei casi. Ad esempio, un corpo in movimento soggetto ad attrito **perde** energia meccanica, mentre un corpo su cui viene applicata una forza fino a produrne uno spostamento **acquista** energia meccanica.   
 In ogni caso, <u markdown="span">l'energia **non** può scomparire nel nulla né comparire dal nulla</u>, quindi viene fornita dall'Universo oppure finisce nel resto dell'Universo.
 
-Finora abbiamo incontrato solo un modo per trasmettere energia da un corpo all'altro: il lavoro. Noi considereremo quindi sistemi che scambiano **solo** lavoro con il resto dell'Universo <u>solamente lavoro</u>. In questa situazione, vale il seguente teorema.
+Finora abbiamo incontrato solo un modo per trasmettere energia da un corpo all'altro: il lavoro. Noi considereremo quindi sistemi che scambiano **solo lavoro** lavoro con il resto dell'Universo. In questa situazione, vale il seguente teorema.
 
 {% include box-thm.html testo="Teorema di Conservazione dell'Energia Meccanica Totale" %}
 
@@ -572,15 +572,15 @@ Consideriamo l'esempio di una palla da bowling che cade.
 
 {% include lab-virtuali/bowling-lab.html %}
 
-Inizialmente, come già sappiamo l'energia meccanica è solo potenziale gravitazionale. Man mano che cade, essa si trasforma in energia cinetica.   
+Inizialmente, come già sappiamo, l'energia meccanica è solo potenziale gravitazionale. Man mano che cade, essa si trasforma in energia cinetica.   
 Quando però la palla tocca il pavimento, la sua energia potenziale è nulla e dopo pochi istanti vediamo che la palla è ferma, quindi perde anche tutta la sua energia cinetica. Questo significa che la sua energia è stata dissipata.
 
-In effetti, nel momento dell'urto, la palla comprime il pavimento, compiendo quindi un lavoro e cedendo quindi energia al pavimento. Il pavimento riprende presto la sua forma originaria, dissipando l'energia sotto forma di vibrazioni (quindi anch'esso compie un lavoro). Le vibrazioni del pavimento fanno inoltre vibrare l'aria (compiendo un ulteriore lavoro) che giunge fino al nostro timpano e lo fa vibrare (compiendo lavoro). La vibrazione del timpano viene infine convertita in suono.  
+In effetti, nel momento dell'urto, la palla comprime il pavimento, compiendo quindi un lavoro e cedendo quindi energia al pavimento. Il pavimento riprende presto la sua forma originaria, dissipando l'energia sotto forma di vibrazioni (quindi anch'esso compie un lavoro). Le vibrazioni del pavimento fanno inoltre vibrare l'aria (compiendo un ulteriore lavoro) che giunge fino al nostro timpano e lo fa vibrare (compiendo lavoro). La vibrazione del timpano viene infine tradotto dal nostro cervello nella sensazione di “suono”.  
 (Se attivi l'animazione, infatti, sentirai il rumore della palla che colpisce il suolo).
 
 ## La Dissipazione dell'Energia: il Calore
 
-Sappiamo che <u>l'attrito dissipa dell'energia</u>, compiendo un lavoro **negativo** sul corpo. Ad esempio, un corpo che striscia su una superificie orizzontale soggetta ad attrito rallenta fino a fermarsi, perdendo perciò tutta l'energia cinetica che aveva. Dove va a finire questa energia?  
+Sappiamo che <u>l'attrito dissipa dell'energia</u>, compiendo un lavoro **negativo** sul corpo. Ad esempio, un corpo che striscia su una superficie orizzontale soggetta ad attrito rallenta fino a fermarsi, perdendo perciò tutta l'energia cinetica che aveva. Dove va a finire questa energia?  
 L'energia non è scomparsa — non potrebbe, per il principio di conservazione dell'energia visto all'inizio del capitolo: si è convertita in <definizione>calore</definizione>.
 
 Un esperimento semplice per visualizzare questo concetto è sfregare le proprie mani l'una contro l'altra: l'attrito dissipa l'energia cinetica delle mani e sentiamo che esse si riscaldano. La stessa cosa succede con la punta di un trapano che si riscalda, o con un fiammifero che si accende: in tutti questi casi il lavoro si converte prima in energia cinetica, che a sua volta viene dissipata sotto forma di calore dall'attrito.
@@ -694,131 +694,7 @@ Vero o falso?
 {% include ex.html diff=1 %}
 Trascina ciascuna situazione nella colonna corrispondente.
 
-<div class="sort-widget" id="sw-sortLavSeg">
-<p class="sort-hint">Trascina ogni voce nella colonna appropriata.</p>
-<div class="sort-pool" id="sp-sortLavSeg"></div>
-<div class="sort-table sortls-table3">
-<div class="sort-zone">
-<div class="sort-zone-hdr">$L>0$</div>
-<div class="sort-zone-body" id="szb-sortLavSeg-0" data-cat="0"></div>
-</div>
-<div class="sort-zone">
-<div class="sort-zone-hdr">$L<0$</div>
-<div class="sort-zone-body" id="szb-sortLavSeg-1" data-cat="1"></div>
-</div>
-<div class="sort-zone">
-<div class="sort-zone-hdr">$L=0$</div>
-<div class="sort-zone-body" id="szb-sortLavSeg-2" data-cat="2"></div>
-</div>
-</div>
-<div class="sort-ctrl">
-<button class="sort-vbtn" id="sv-sortLavSeg">✓ Verifica</button>
-<button class="sort-rbtn" id="sr-sortLavSeg">↺ Ricomincia</button>
-</div>
-<div class="sort-fb" id="sf-sortLavSeg"></div>
-</div>
-
-<style>
-.sortls-table3 { grid-template-columns: 1fr 1fr 1fr !important; }
-@media (max-width: 640px) { .sortls-table3 { grid-template-columns: 1fr !important; } }
-#sw-sortLavSeg .sort-item { display: inline-block; white-space: normal; text-align: center; }
-</style>
-
-<script>
-(function(){
-var D=[
-  {"t":"Forza e spostamento hanno lo stesso verso","c":0},
-  {"t":"Forza e spostamento hanno verso opposto","c":1},
-  {"t":"Forza e spostamento sono perpendicolari","c":2}
-];
-var ID='sortLavSeg';
-function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=0|Math.random()*(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
-var pool=document.getElementById('sp-'+ID);
-var zones={0:document.getElementById('szb-'+ID+'-0'),1:document.getElementById('szb-'+ID+'-1'),2:document.getElementById('szb-'+ID+'-2')};
-var fb=document.getElementById('sf-'+ID);
-var dragging=null,ghost=null,overZone=null,ox=0,oy=0;
-
-function getZone(x,y){ghost.style.display='none';var el=document.elementFromPoint(x,y);ghost.style.display='';return el?el.closest('.sort-zone-body,.sort-pool'):null;}
-
-function onDown(e){
-  e.preventDefault();
-  var el=this;
-  dragging=el;
-  var r=el.getBoundingClientRect();
-  ox=e.clientX-r.left;oy=e.clientY-r.top;
-  ghost=el.cloneNode(true);
-  ghost.className='sort-item sort-ghost';
-  ghost.style.cssText+='width:'+r.width+'px;left:'+(e.clientX-ox)+'px;top:'+(e.clientY-oy)+'px;';
-  document.body.appendChild(ghost);
-  el.classList.add('sort-dragging');
-  fb.className='sort-fb';fb.textContent='';
-  el.querySelectorAll('.correct,.wrong').forEach(function(x){x.classList.remove('correct','wrong');});
-  el.classList.remove('correct','wrong');
-  document.addEventListener('pointermove',onMove,{passive:false});
-  document.addEventListener('pointerup',onUp);
-  document.addEventListener('pointercancel',onUp);
-}
-
-function onMove(e){
-  e.preventDefault();
-  if(!ghost)return;
-  ghost.style.left=(e.clientX-ox)+'px';ghost.style.top=(e.clientY-oy)+'px';
-  var z=getZone(e.clientX,e.clientY);
-  if(overZone!==z){if(overZone)overZone.classList.remove('over');overZone=z;if(overZone)overZone.classList.add('over');}
-}
-
-function onUp(){
-  document.removeEventListener('pointermove',onMove);
-  document.removeEventListener('pointerup',onUp);
-  document.removeEventListener('pointercancel',onUp);
-  if(ghost){ghost.remove();ghost=null;}
-  if(!dragging)return;
-  var el=dragging;dragging=null;
-  el.classList.remove('sort-dragging');
-  if(overZone){overZone.classList.remove('over');overZone.appendChild(el);overZone=null;}
-}
-
-function mkItem(d){
-  var el=document.createElement('span');
-  el.className='sort-item';el.textContent=d.t;
-  el.dataset.c=d.c;el.style.touchAction='none';
-  el.addEventListener('pointerdown',onDown);
-  return el;
-}
-
-function render(){
-  pool.innerHTML='';zones[0].innerHTML='';zones[1].innerHTML='';zones[2].innerHTML='';
-  fb.className='sort-fb';fb.textContent='';
-  shuf(D).forEach(function(d){pool.appendChild(mkItem(d));});
-}
-
-window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-
-document.getElementById('sv-'+ID).addEventListener('click',function(){
-  if(pool.querySelector('.sort-item')){fb.className='sort-fb err';fb.textContent='Posiziona tutti gli elementi prima di verificare.';return;}
-  var allOk=true;
-  [0,1,2].forEach(function(ci){
-    zones[ci].querySelectorAll('.sort-item').forEach(function(el){
-      var ok=parseInt(el.dataset.c)===ci;
-      el.classList.toggle('correct',ok);el.classList.toggle('wrong',!ok);
-      if(!ok)allOk=false;
-    });
-  });
-  var btn=document.getElementById('sv-'+ID);
-  if(allOk){
-    fb.className='sort-fb ok';fb.textContent='✓ Perfetto! Tutte le situazioni sono nella colonna giusta.';
-    _shoot(btn);
-    for(var b=0;b<5;b++)(function(b){setTimeout(function(){_shoot({getBoundingClientRect:function(){return{left:window.innerWidth*(.1+Math.random()*.8),top:window.innerHeight*(.1+Math.random()*.5),width:0,height:0};}});},b*200);})(b);
-  } else {
-    fb.className='sort-fb err';fb.textContent='✗ Alcune situazioni non sono nella colonna giusta. Quelle corrette sono in verde, le altre in rosso.';
-  }
-});
-
-document.getElementById('sr-'+ID).addEventListener('click',render);
-render();
-if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([document.getElementById('sw-sortLavSeg')]);
-})();
-</script>
+{% include esercizi/sort-segno-lavoro.html %}
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}
@@ -826,40 +702,8 @@ Un'automobile traina un carrello che pesa $2\,500\ \text N$ con una forza pari a
 
 *(Fonte: Giochi di Anacleto, 2022)*
 
-<div class="iex-choices" id="mcqEx2choices">
-<button class="iex-choice-btn" data-v="a">A. $160\ \text J$</button>
-<button class="iex-choice-btn" data-v="b">B. $20\,000\ \text J$</button>
-<button class="iex-choice-btn" data-v="c">C. $160\,000\ \text J$</button>
-<button class="iex-choice-btn" data-v="d">D. $20\,000\,000\ \text J$</button>
-</div>
-<div class="iex-fb" id="mcqEx2fb"></div>
-<script>
-(function(){
-  var btns=document.querySelectorAll('#mcqEx2choices .iex-choice-btn');
-  var fb=document.getElementById('mcqEx2fb');
-  var correctV='c';
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(btn.disabled)return;
-      btns.forEach(function(b){b.disabled=true;});
-      var correct=btn.dataset.v===correctV;
-      fb.style.display='block';
-      if(correct){
-        btn.className=btn.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-        _shoot(btn);
-      } else {
-        btn.className=btn.className.replace(' correct','')+' wrong';
-        var cb=document.querySelector('#mcqEx2choices .iex-choice-btn[data-v="'+correctV+'"]');
-        cb.className=cb.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% capture _o_mcqEx2choices %}[{"v": "a", "t": "A. $160\\ \\text J$"}, {"v": "b", "t": "B. $20\\,000\\ \\text J$"}, {"v": "c", "t": "C. $160\\,000\\ \\text J$"}, {"v": "d", "t": "D. $20\\,000\\,000\\ \\text J$"}]{% endcapture %}
+{% include mcq.html id="mcqEx2choices" opts=_o_mcqEx2choices ok="c" %}
 
 {% include ex-sol.html %}
 Il peso del carrello ($2\,500\ \text N$) non serve a calcolare il lavoro: conta solo la forza effettivamente applicata lungo lo spostamento, cioè $F=20\ \text N$. Convertendo $8\ \text{km}=8\,000\ \text m$,
@@ -874,41 +718,8 @@ Qual è l'altezza da cui cade un corpo dal peso di $2\ \text N$ sapendo che il l
 
 *(Fonte: Test di ammissione a Professioni Sanitarie, 2019)*
 
-<div class="iex-choices" id="mcqEx3choices">
-<button class="iex-choice-btn" data-v="a">A. $1\ \text m$</button>
-<button class="iex-choice-btn" data-v="b">B. $2\ \text m$</button>
-<button class="iex-choice-btn" data-v="c">C. $10\ \text m$</button>
-<button class="iex-choice-btn" data-v="d">D. $20\ \text m$</button>
-<button class="iex-choice-btn" data-v="e">E. $0{,}5\ \text m$</button>
-</div>
-<div class="iex-fb" id="mcqEx3fb"></div>
-<script>
-(function(){
-  var btns=document.querySelectorAll('#mcqEx3choices .iex-choice-btn');
-  var fb=document.getElementById('mcqEx3fb');
-  var correctV='a';
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(btn.disabled)return;
-      btns.forEach(function(b){b.disabled=true;});
-      var correct=btn.dataset.v===correctV;
-      fb.style.display='block';
-      if(correct){
-        btn.className=btn.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-        _shoot(btn);
-      } else {
-        btn.className=btn.className.replace(' correct','')+' wrong';
-        var cb=document.querySelector('#mcqEx3choices .iex-choice-btn[data-v="'+correctV+'"]');
-        cb.className=cb.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% capture _o_mcqEx3choices %}[{"v": "a", "t": "A. $1\\ \\text m$"}, {"v": "b", "t": "B. $2\\ \\text m$"}, {"v": "c", "t": "C. $10\\ \\text m$"}, {"v": "d", "t": "D. $20\\ \\text m$"}, {"v": "e", "t": "E. $0{,}5\\ \\text m$"}]{% endcapture %}
+{% include mcq.html id="mcqEx3choices" opts=_o_mcqEx3choices ok="a" %}
 
 {% include ex-sol.html %}
 Il peso è già la forza di gravità: $F_{peso}=2\ \text N$. Durante la caduta, forza e spostamento hanno lo stesso verso (entrambi verso il basso), quindi
@@ -921,40 +732,8 @@ La risposta corretta è **A**.
 {% include ex.html diff=1 %}
 Un uomo tenta di spingere la sua auto. Spingendo al massimo, esercita una forza di $10^3\ \text N,$ ma non riesce a spostarla. Qual è il lavoro compiuto?
 
-<div class="iex-choices" id="mcqEx4choices">
-<button class="iex-choice-btn" data-v="a">A. $10^3\ \text J$</button>
-<button class="iex-choice-btn" data-v="b">B. $0$</button>
-<button class="iex-choice-btn" data-v="c">C. $10^4\ \text J$</button>
-<button class="iex-choice-btn" data-v="d">D. Non è possibile rispondere perché mancano alcuni dati.</button>
-</div>
-<div class="iex-fb" id="mcqEx4fb"></div>
-<script>
-(function(){
-  var btns=document.querySelectorAll('#mcqEx4choices .iex-choice-btn');
-  var fb=document.getElementById('mcqEx4fb');
-  var correctV='b';
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(btn.disabled)return;
-      btns.forEach(function(b){b.disabled=true;});
-      var correct=btn.dataset.v===correctV;
-      fb.style.display='block';
-      if(correct){
-        btn.className=btn.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-        _shoot(btn);
-      } else {
-        btn.className=btn.className.replace(' correct','')+' wrong';
-        var cb=document.querySelector('#mcqEx4choices .iex-choice-btn[data-v="'+correctV+'"]');
-        cb.className=cb.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% capture _o_mcqEx4choices %}[{"v": "a", "t": "A. $10^3\\ \\text J$"}, {"v": "b", "t": "B. $0$"}, {"v": "c", "t": "C. $10^4\\ \\text J$"}, {"v": "d", "t": "D. Non è possibile rispondere perché mancano alcuni dati."}]{% endcapture %}
+{% include mcq.html id="mcqEx4choices" opts=_o_mcqEx4choices ok="b" %}
 
 {% include ex-sol.html %}
 Anche se l'uomo applica una forza, l'automobile non si sposta: lo spostamento è nullo, $\Delta s=0$. Quindi
@@ -967,40 +746,8 @@ La risposta corretta è **B**. (È lo stesso motivo per cui, spingendo un muro, 
 {% include ex.html diff=1 %}
 L'attrito esercita una forza costante di $100\ \text N$ su un corpo che scivola per $10\ \text m$. Qual è il lavoro compiuto dall'attrito?
 
-<div class="iex-choices" id="mcqEx5choices">
-<button class="iex-choice-btn" data-v="a">A. $1\,000\ \text J$</button>
-<button class="iex-choice-btn" data-v="b">B. $100\ \text J$</button>
-<button class="iex-choice-btn" data-v="c">C. $10\ \text J$</button>
-<button class="iex-choice-btn" data-v="d">D. $-1\,000\ \text J$</button>
-</div>
-<div class="iex-fb" id="mcqEx5fb"></div>
-<script>
-(function(){
-  var btns=document.querySelectorAll('#mcqEx5choices .iex-choice-btn');
-  var fb=document.getElementById('mcqEx5fb');
-  var correctV='d';
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(btn.disabled)return;
-      btns.forEach(function(b){b.disabled=true;});
-      var correct=btn.dataset.v===correctV;
-      fb.style.display='block';
-      if(correct){
-        btn.className=btn.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-        _shoot(btn);
-      } else {
-        btn.className=btn.className.replace(' correct','')+' wrong';
-        var cb=document.querySelector('#mcqEx5choices .iex-choice-btn[data-v="'+correctV+'"]');
-        cb.className=cb.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% capture _o_mcqEx5choices %}[{"v": "a", "t": "A. $1\\,000\\ \\text J$"}, {"v": "b", "t": "B. $100\\ \\text J$"}, {"v": "c", "t": "C. $10\\ \\text J$"}, {"v": "d", "t": "D. $-1\\,000\\ \\text J$"}]{% endcapture %}
+{% include mcq.html id="mcqEx5choices" opts=_o_mcqEx5choices ok="d" %}
 
 {% include ex-sol.html %}
 L'attrito si oppone sempre al moto: forza e spostamento hanno verso opposto, quindi il lavoro è negativo.
@@ -1024,39 +771,8 @@ $$L = F\cdot \Delta s = 4\times10^2\ \text N \times 3\,000\ \text m = 1{,}2\time
 {% include ex.html diff=1 %}
 Chi compie più lavoro tra Alice, che spinge con una forza di $300\ \text N$ per $50\ \text m$, e Bob, che spinge con una forza di $150\ \text N$ per $99{,}9\ \text m$?
 
-<div class="iex-choices" id="mcqEx7choices">
-<button class="iex-choice-btn" data-v="alice">Alice</button>
-<button class="iex-choice-btn" data-v="bob">Bob</button>
-<button class="iex-choice-btn" data-v="uguali">Uguali</button>
-</div>
-<div class="iex-fb" id="mcqEx7fb"></div>
-<script>
-(function(){
-  var btns=document.querySelectorAll('#mcqEx7choices .iex-choice-btn');
-  var fb=document.getElementById('mcqEx7fb');
-  var correctV='alice';
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(btn.disabled)return;
-      btns.forEach(function(b){b.disabled=true;});
-      var correct=btn.dataset.v===correctV;
-      fb.style.display='block';
-      if(correct){
-        btn.className=btn.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-        _shoot(btn);
-      } else {
-        btn.className=btn.className.replace(' correct','')+' wrong';
-        var cb=document.querySelector('#mcqEx7choices .iex-choice-btn[data-v="'+correctV+'"]');
-        cb.className=cb.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% capture _o_mcqEx7choices %}[{"v": "alice", "t": "Alice"}, {"v": "bob", "t": "Bob"}, {"v": "uguali", "t": "Uguali"}]{% endcapture %}
+{% include mcq.html id="mcqEx7choices" opts=_o_mcqEx7choices ok="alice" %}
 
 {% include ex-sol.html %}
 Calcoliamo entrambi i lavori:
@@ -1285,40 +1001,8 @@ $$P = F\cdot v = 5\times10^4\ \text N \times 2\ \text{m/s} = 1\times10^5\ \text 
 {% include ex.html diff=2 %}
 Il kilowattora (kWh) è un'unità di misura che compare spesso sulle bollette e sugli elettrodomestici, nonostante il suo nome contenga l'unità di potenza. A cosa corrisponde, nel Sistema Internazionale?
 
-<div class="iex-choices" id="mcqKwhChoices">
-<button class="iex-choice-btn" data-v="a">$3{,}6\times10^3\ \text J$</button>
-<button class="iex-choice-btn" data-v="b">$3{,}6\times10^6\ \text J$</button>
-<button class="iex-choice-btn" data-v="c">$1\,000\ \text J$</button>
-<button class="iex-choice-btn" data-v="d">$3{,}6\times10^9\ \text J$</button>
-</div>
-<div class="iex-fb" id="mcqKwhChoicesfb"></div>
-<script>
-(function(){
-  var btns=document.querySelectorAll('#mcqKwhChoices .iex-choice-btn');
-  var fb=document.getElementById('mcqKwhChoicesfb');
-  var correctV='b';
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(btn.disabled)return;
-      btns.forEach(function(b){b.disabled=true;});
-      var correct=btn.dataset.v===correctV;
-      fb.style.display='block';
-      if(correct){
-        btn.className=btn.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-        _shoot(btn);
-      } else {
-        btn.className=btn.className.replace(' correct','')+' wrong';
-        var cb=document.querySelector('#mcqKwhChoices .iex-choice-btn[data-v="'+correctV+'"]');
-        cb.className=cb.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% capture _o_mcqKwhChoices %}[{"v": "a", "t": "$3{,}6\\times10^3\\ \\text J$"}, {"v": "b", "t": "$3{,}6\\times10^6\\ \\text J$"}, {"v": "c", "t": "$1\\,000\\ \\text J$"}, {"v": "d", "t": "$3{,}6\\times10^9\\ \\text J$"}]{% endcapture %}
+{% include mcq.html id="mcqKwhChoices" opts=_o_mcqKwhChoices ok="b" %}
 
 {% include ex-sol.html %}
 Un kilowattora è il lavoro (cioè l'energia) compiuto da una potenza di $1\ \text{kW}=1\,000\ \text W$ mantenuta per un'ora, cioè per $3\,600\ \text s$:
@@ -1332,40 +1016,8 @@ $$1\ \text{kWh} = P\cdot \Delta t = 1\,000\ \text W \times 3\,600\ \text s = 3{,
 {% include ex.html diff=1 %}
 In quale di queste situazioni l'energia cinetica di un ciclista **aumenta**?
 
-<div class="iex-choices" id="mcqKE1choices">
-<button class="iex-choice-btn" data-v="a">Il ciclista frena</button>
-<button class="iex-choice-btn" data-v="b">Il ciclista pedala accelerando</button>
-<button class="iex-choice-btn" data-v="c">Il ciclista procede a velocità costante su un rettilineo</button>
-<button class="iex-choice-btn" data-v="d">Il ciclista sale in salita mantenendo la velocità costante</button>
-</div>
-<div class="iex-fb" id="mcqKE1fb"></div>
-<script>
-(function(){
-  var btns=document.querySelectorAll('#mcqKE1choices .iex-choice-btn');
-  var fb=document.getElementById('mcqKE1fb');
-  var correctV='b';
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(btn.disabled)return;
-      btns.forEach(function(b){b.disabled=true;});
-      var correct=btn.dataset.v===correctV;
-      fb.style.display='block';
-      if(correct){
-        btn.className=btn.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-        _shoot(btn);
-      } else {
-        btn.className=btn.className.replace(' correct','')+' wrong';
-        var cb=document.querySelector('#mcqKE1choices .iex-choice-btn[data-v="'+correctV+'"]');
-        cb.className=cb.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% capture _o_mcqKE1choices %}[{"v": "a", "t": "Il ciclista frena"}, {"v": "b", "t": "Il ciclista pedala accelerando"}, {"v": "c", "t": "Il ciclista procede a velocità costante su un rettilineo"}, {"v": "d", "t": "Il ciclista sale in salita mantenendo la velocità costante"}]{% endcapture %}
+{% include mcq.html id="mcqKE1choices" opts=_o_mcqKE1choices ok="b" %}
 
 {% include ex-sol.html %}
 L'energia cinetica cambia solo se cambia la velocità. Pedalando e accelerando, il ciclista aumenta la sua velocità, quindi la sua energia cinetica aumenta. Negli altri tre casi la velocità resta costante (o diminuisce, se frena): l'energia cinetica non aumenta.
@@ -1374,40 +1026,8 @@ L'energia cinetica cambia solo se cambia la velocità. Pedalando e accelerando, 
 {% include ex.html diff=1 %}
 Il lavoro totale compiuto su un corpo è negativo. Cosa possiamo concludere sulla sua energia cinetica?
 
-<div class="iex-choices" id="mcqKE2choices">
-<button class="iex-choice-btn" data-v="a">È aumentata</button>
-<button class="iex-choice-btn" data-v="b">È diminuita</button>
-<button class="iex-choice-btn" data-v="c">È rimasta invariata</button>
-<button class="iex-choice-btn" data-v="d">È diventata negativa</button>
-</div>
-<div class="iex-fb" id="mcqKE2fb"></div>
-<script>
-(function(){
-  var btns=document.querySelectorAll('#mcqKE2choices .iex-choice-btn');
-  var fb=document.getElementById('mcqKE2fb');
-  var correctV='b';
-  window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
-  btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(btn.disabled)return;
-      btns.forEach(function(b){b.disabled=true;});
-      var correct=btn.dataset.v===correctV;
-      fb.style.display='block';
-      if(correct){
-        btn.className=btn.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto!';
-        _shoot(btn);
-      } else {
-        btn.className=btn.className.replace(' correct','')+' wrong';
-        var cb=document.querySelector('#mcqKE2choices .iex-choice-btn[data-v="'+correctV+'"]');
-        cb.className=cb.className.replace(' wrong','')+' correct';
-        fb.className='iex-fb err'; fb.innerHTML='Non è corretto. Riprova.';
-      }
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-    });
-  });
-})();
-</script>
+{% capture _o_mcqKE2choices %}[{"v": "a", "t": "È aumentata"}, {"v": "b", "t": "È diminuita"}, {"v": "c", "t": "È rimasta invariata"}, {"v": "d", "t": "È diventata negativa"}]{% endcapture %}
+{% include mcq.html id="mcqKE2choices" opts=_o_mcqKE2choices ok="b" %}
 
 {% include ex-sol.html %}
 Per il teorema dell'energia cinetica, $L=\Delta K$. Se $L<0$, allora $\Delta K<0$: l'energia cinetica **diminuisce**. Attenzione: l'energia cinetica $K=\frac12 mv^2$ non può mai diventare negativa (è sempre $\ge 0$), può solo avvicinarsi a zero.

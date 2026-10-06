@@ -152,20 +152,35 @@ Due barre di progresso, U e K. Nessun parametro.
     kmask.style.height=((1-k)*100)+'%';
   }
 
-  // Sintetizza un breve "tonfo" con la Web Audio API (nessun file audio da caricare).
-  var actx=null;
+  // Sintetizza un "tonfo" con la Web Audio API (nessun file audio da caricare):
+  // un tonfo grave + un colpo più acuto (udibile anche dagli altoparlanti piccoli
+  // di portatili e telefoni) + un breve rumore d'impatto, il tutto amplificato e
+  // passato in un compressore, così è forte ma non distorce.
+  var actx=null,master=null,noiseBuf=null;
   function playThud(){
     try{
-      if(!actx){ var AC=window.AudioContext||window.webkitAudioContext; if(!AC)return; actx=new AC(); }
+      if(!actx){
+        var AC=window.AudioContext||window.webkitAudioContext; if(!AC)return; actx=new AC();
+        var comp=actx.createDynamicsCompressor();
+        comp.threshold.value=-18; comp.knee.value=6; comp.ratio.value=8; comp.attack.value=0.002; comp.release.value=0.2;
+        master=actx.createGain(); master.gain.value=2.6;
+        master.connect(comp); comp.connect(actx.destination);
+        noiseBuf=actx.createBuffer(1,Math.floor(actx.sampleRate*0.12),actx.sampleRate);
+        var d=noiseBuf.getChannelData(0); for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3);
+      }
       if(actx.state==='suspended') actx.resume();
       var t0=actx.currentTime;
-      var osc=actx.createOscillator(), gain=actx.createGain();
-      osc.type='sine'; osc.frequency.setValueAtTime(150,t0); osc.frequency.exponentialRampToValueAtTime(60,t0+0.18);
-      gain.gain.setValueAtTime(0.001,t0);
-      gain.gain.exponentialRampToValueAtTime(0.55,t0+0.012);
-      gain.gain.exponentialRampToValueAtTime(0.001,t0+0.28);
-      osc.connect(gain); gain.connect(actx.destination);
-      osc.start(t0); osc.stop(t0+0.3);
+      function tone(type,f0,f1,peak,dur){
+        var o=actx.createOscillator(),g=actx.createGain();
+        o.type=type; o.frequency.setValueAtTime(f0,t0); o.frequency.exponentialRampToValueAtTime(f1,t0+dur*0.65);
+        g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(peak,t0+0.008); g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+        o.connect(g); g.connect(master); o.start(t0); o.stop(t0+dur+0.02);
+      }
+      tone('sine',140,50,1.0,0.45);        // tonfo grave
+      tone('triangle',330,110,0.6,0.25);   // colpo, udibile anche dagli altoparlanti piccoli
+      var n=actx.createBufferSource(),lp=actx.createBiquadFilter(),ng=actx.createGain();
+      n.buffer=noiseBuf; lp.type='lowpass'; lp.frequency.value=1400; ng.gain.value=0.9;
+      n.connect(lp); lp.connect(ng); ng.connect(master); n.start(t0);   // rumore d'impatto
     }catch(e){/* ignora: l'audio non è essenziale alla comprensione */}
   }
 

@@ -139,7 +139,7 @@ con $y$ e $z$ positivi, la due grandezze $x$ e $y$ si dicono <definizione>dirett
 {% include box-end.html %}
  
 {% include box-blue.html testo="Un esempio da ricordare" %}
-La definizione di grandezze direttamente proporzionali e inversamente proporzionali può essere ricordata con un esempio che conosci benissimo: dividere una pizza tra amici. Chiaramente, dato un certo numero di fette di pizza e un certo numero di amici, se si divide equamente risulte che il numero di fette a testa è dato da
+La definizione di grandezze direttamente proporzionali e inversamente proporzionali può essere ricordata con un esempio che conosci benissimo: dividere una pizza tra amici. Chiaramente, dato un certo numero di fette di pizza e un certo numero di amici, se si divide equamente risulta che il numero di fette a testa è dato da
 
 $$
 \text{fette a testa} = \frac{\text{fette totali}}{\text{numero di amici}}.

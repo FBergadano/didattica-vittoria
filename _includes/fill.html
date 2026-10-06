@@ -18,14 +18,16 @@ Esempi:
 <div class="fill-fb"></div>
 <script>
 if(!window._fillReady){window._fillReady=1;
-window._shoot=window._shoot||function(el){var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,cl=['#c026d3','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];for(var i=0;i<45;i++){var p=document.createElement('div'),a=Math.random()*Math.PI*2,sp=3+Math.random()*6;p.style.cssText='position:fixed;width:6px;height:6px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';document.body.appendChild(p);(function(p,vx,vy,x,y){var op=1;function s(){vy+=.25;x+=vx;y+=vy;op-=.02;p.style.left=x+'px';p.style.top=y+'px';p.style.opacity=op;if(op>0)requestAnimationFrame(s);else p.remove();}requestAnimationFrame(s);})(p,Math.cos(a)*sp,Math.sin(a)*sp-4,cx,cy);}};
+
 function _fillNorm(s){return s.toLowerCase().replace(/[àáâ]/g,'a').replace(/[èéê]/g,'e').replace(/[ìíî]/g,'i').replace(/[òóô]/g,'o').replace(/[ùúû]/g,'u').trim();}
 window._fillchk=function(btn){
   var wrap=btn.closest('.fill-wrap'),fb=wrap.nextElementSibling;
   var inp=wrap.querySelector('input,select'),v=(inp.value||'').trim();
   var ok=btn.dataset.ok.split(','),sol=btn.dataset.sol||'';
   if(!v){fb.className='fill-fb err';fb.textContent='Scrivi o seleziona una risposta.';return;}
-  var found=ok.some(function(a){return _fillNorm(a)===_fillNorm(v);});
+  // i numeri valgono uguali con la virgola o con il punto decimale, e con o senza spazi fra le cifre (0,25 = 0.25; 1 000 = 1000)
+  function num(x){x=x.replace(/\s+/g,'').replace(',','.');return /^[-+]?\d*\.?\d+$/.test(x)?parseFloat(x):null;}
+  var found=ok.some(function(a){var na=num(a),nv=num(v);return _fillNorm(a)===_fillNorm(v)||(na!==null&&nv!==null&&Math.abs(na-nv)<=1e-9*Math.max(1,Math.abs(na)));});
   fb.className='fill-fb '+(found?'ok':'err');
   fb.innerHTML=(found?'✓ Esatto!':'✗ Sbagliato.')+(sol?'&ensp;<small style="color:#6b7280">'+sol+'</small>':'');
   if(found){_shoot(btn);if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([fb]);}

@@ -1,4 +1,4 @@
-# CLAUDE.md — Bergadano Didattica Liceo Vittoria
+# CLAUDE.md — Didattica Vittoria Liceo Vittoria
 # Claude Code legge questo file automaticamente ad ogni sessione.
 
 ## Chi sono e cosa sto costruendo
@@ -48,6 +48,12 @@ Dentro `_corsi/Appunti/<classe>/` (es. `fisica-3b/`, `matematica-4acd/`) stanno
 **solo** i file LaTeX degli appunti (`appunti-*.tex/.pdf/.log/.aux/.out/.synctex.gz`),
 esclusi dalla build Jekyll (vedi `exclude:` in `_config.yml`). Non ci va
 contenuto `.md` del sito: quello vive tutto nelle cartelle per argomento sopra.
+
+## Guida per i nuovi capitoli
+
+La scaletta di ogni capitolo, le convenzioni (tono, notazione, box, quiz,
+niente codice nei `.md`) e la lista di controllo prima di pubblicare sono in
+**`GUIDA-CAPITOLI.md`**: seguila sempre quando scrivi o rivedi un capitolo.
 
 ## Regola fondamentale sui file
 
@@ -233,6 +239,25 @@ La soluzione è $x = 2$.
 - Placeholder personalizzabili (opzionali): `def_hint`, `car_hint`, `ex_hint`, `nonex_hint`
 - Nascosto in stampa PDF (come `fill-def`)
 
+### Risposta aperta (prevedi / spiega / trova l'errore)
+
+```liquid
+{% capture _r %}Risposta possibile, mostrata dopo.{% endcapture %}
+{% include risposta-aperta.html id="id-univoco" tipo="prevedi"
+   domanda="Prima di guardare l'animazione: cosa succederà?" risposta=_r %}
+```
+
+- `tipo` — `"prevedi"` (prima di un'animazione), `"spiega"` (con parole tue), `"errore"` (trova l'errore)
+- il pulsante "Confronta con una risposta possibile" si attiva solo dopo che lo studente ha scritto
+- la risposta scritta resta salvata nel browser
+
+### Domanda a scelta multipla
+
+```liquid
+{% capture _o %}[{"v":"a","t":"Opzione A"},{"v":"b","t":"Opzione B"}]{% endcapture %}
+{% include mcq.html id="id-univoco" opts=_o ok="b" s="Spiegazione." %}
+```
+
 ## Altri elementi
 
 ```
@@ -276,7 +301,7 @@ Quando Fulvio incolla del LaTeX grezzo, convertire così:
 
 ## Chat con Gemini (widget interattivo AI)
 
-Chat socratica alimentata da Gemini 2.0 Flash. La chiave API viene iniettata dal workflow GitHub Actions.
+Chat socratica (modello Llama via Groq). La chiave API **non** sta mai nelle pagine: la chat passa da un intermediario (Cloudflare Worker) il cui indirizzo è `chat_proxy_url` in `_config.yml`. Istruzioni in `strumenti/chat-proxy/LEGGIMI.md`.
 
 ```liquid
 {% capture _system %}Sei il Prof. Bergadano...{% endcapture %}

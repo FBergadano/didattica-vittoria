@@ -10,7 +10,7 @@ numero: 0
 
 <figure style="text-align:center;margin:1.5rem auto;">
 <img src="{{ site.baseurl }}/assets/img/aurora_boreale_funziona_a_meraviglia.png" 
-     alt="Descrizione" style="max-width:480px;width:100%;border-radius:8px;">
+     alt="Un'aurora boreale verde sopra un paesaggio innevato in Islanda" style="max-width:480px;width:100%;border-radius:8px;">
 <figcaption>Aurora Boreale in Islanda.</figcaption>
 </figure>
 

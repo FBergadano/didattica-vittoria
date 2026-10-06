@@ -1,10 +1,14 @@
-title: "Bergadano Didattica — Liceo Vittoria"
+title: "Didattica Vittoria"
 description: "Materiale didattico interattivo di Matematica e Fisica"
 author: "Prof. Fulvio Bergadano"
 school: "Liceo Vittoria, Torino"
 email: "fulvio.bergadano@vittoriaweb.it"           # aggiungi la tua email se vuoi
 baseurl: "/didattica-vittoria"         # lascia vuoto se il sito è nella root di GitHub Pages
 url: "https://fbergadano.github.io"   # ← sostituisci con il tuo GitHub username
+
+# Chat con l'intelligenza artificiale (gemini-chat.html): indirizzo dell'intermediario
+# che custodisce la chiave API. Vuoto = chat disattivata. Vedi strumenti/chat-proxy/LEGGIMI.md
+chat_proxy_url: ""
 
 # Build
 markdown: kramdown
@@ -39,6 +43,7 @@ exclude:
   - HOWTO.md
   - PROGETTO.md
   - STILE.md
+  - GUIDA-CAPITOLI.md
   - CLAUDE.md
   - Gemfile
   - Gemfile.lock
@@ -58,3 +63,4 @@ exclude:
   - "_corsi/**/esercizi-*.synctex.gz"
   - "latex/"
   - "verifiche/"
+  - "strumenti/"

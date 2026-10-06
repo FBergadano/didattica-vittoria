@@ -1,0 +1,3 @@
+<figure class="scorri-slide">{% if include.img %}<img src="{{ include.img | relative_url }}" alt="{{ include.alt }}" loading="lazy">{% endif %}
+<div class="scorri-text" markdown="1">
+{% if include.titolo %}**{{ include.titolo }}**{% endif %}

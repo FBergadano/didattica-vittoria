@@ -1,9 +1,9 @@
-PWD /home/fulvio/Desktop/bergadano-didattica/_corsi/Appunti/matematica-3b
+PWD /home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b
 INPUT /etc/texmf/web2c/texmf.cnf
 INPUT /usr/share/texmf/web2c/texmf.cnf
 INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/xetex/xelatex.fmt
-INPUT appunti-matematica-3b.tex
+INPUT /home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b/appunti-matematica-3b.tex
 OUTPUT build/appunti-matematica-3b.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/report.cls
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/report.cls

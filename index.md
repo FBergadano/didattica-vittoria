@@ -1,6 +1,6 @@
 ---
 layout: home
-title: "Bergadano Didattica — Liceo Vittoria"
+title: "Didattica Vittoria"
 ---
 
 <header class="hero">

@@ -24,7 +24,9 @@
 
 <script>
 (function(){
-  var GROQ_KEY = '__GROQ_KEY__';
+  // La chiave API NON sta nella pagina: le richieste passano dall'intermediario
+  // (vedi strumenti/chat-proxy/LEGGIMI.md), il cui indirizzo è in _config.yml.
+  var PROXY = '{{ site.chat_proxy_url }}';
   var root     = document.getElementById('{{ _id }}');
   function $$(s){ return root.querySelector(s); }
   var SYSTEM   = $$('.gchat-sys').textContent.trim();
@@ -65,14 +67,10 @@
     history.push({role:'user', content: userText});
     setLoading(true);
     try {
-      var resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      var resp = await fetch(PROXY, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + GROQ_KEY
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
           messages: [{role:'system', content: SYSTEM}].concat(history),
           max_tokens: MAX_TOK
         })
@@ -81,7 +79,7 @@
       if(!resp.ok){
         var errBody = await resp.text();
         bubble('assistant','⚠ Errore '+resp.status+'. Riprova tra qualche secondo.');
-        console.error('Groq error', resp.status, errBody);
+        console.error('Errore della chat', resp.status, errBody);
         return null;
       }
       var data = await resp.json();
@@ -113,7 +111,7 @@
     if(reply){ bubble('assistant', reply); $$('.gchat-reply-input').focus(); }
   }
 
-  if(!GROQ_KEY || GROQ_KEY[0] === '_'){
+  if(!PROXY){
     $$('.gchat-submit').addEventListener('click', function(){
       $$('.gchat-step1').style.display = 'none';
       $$('.gchat-step2').style.display = 'block';

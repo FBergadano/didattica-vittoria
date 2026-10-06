@@ -1,0 +1,422 @@
+{% comment %}
+Simulazione: la conduzione del calore in una barra, scaldata da un
+fornelletto ad alcol (fiamma sottile e alta, che avvolge tutta la sezione
+della barra). Il fornelletto si accende avvicinando allo stoppino il
+fiammifero (si prende dalla scatoletta sul tavolo, accanto al fornelletto, e preso in
+mano si accende); si spegne con un pulsante (che compare solo quando è acceso) e si trascina orizzontalmente dove si vuole.
+Le frecce ΔT sono sfumate dal blu (lato freddo) al rosso (lato caldo).
+Chicca: anche il fiammifero acceso, avvicinato alla barra, la scalda un
+pochino (molto meno del fornelletto), in entrambe le viste. Due scenari, con lo stesso fornelletto:
+
+- Vista macroscopica: la barra su due sostegni, con 5 termometri
+  equidistanti; la barra si colora secondo la temperatura. Sotto c'è (senza
+  mostrarla) la legge di Fourier: equazione del calore in 1D, con la fiamma
+  come sorgente e una piccola dispersione verso l'aria. Poiché la fiamma
+  avvolge tutta la sezione, il profilo di temperatura non dipende dalla
+  sezione A, mentre il calore che passa è proporzionale ad A.
+- Vista microscopica: un pezzetto della barra come reticolo di particelle
+  (più file se la sezione è più grande); il colore, dal blu (lenta) al rosso
+  (veloce), misura la velocità di vibrazione. La fiamma scalda tutte le file
+  sopra di sé (con intensità che oscilla da fila a fila); negli urti fra
+  particelle vicine (lampo giallo) la più veloce cede energia all'altra.
+
+Controlli: materiale (rame, alluminio, ferro, acciaio, vetro, legno) e
+sezione A (0,5 / 1 / 2 / 4 cm²); cambiandoli si ricomincia a 20 °C.
+
+MODALITÀ LABORATORIO (in entrambe le viste): due sezioni x₁ e x₂, da
+trascinare (x₁ resta sempre a sinistra di x₂, così Δx > 0 come nella formula), ciascuna con il suo termometro e la sua posizione; una freccia
+indica il verso di ΔT (verso cui la temperatura cresce).
+- In entrambe: un riquadretto-contatore della POTENZA TERMICA P scambiata fra
+  la sezione a x₁ e quella a x₂, in watt (positiva se il calore va da x₁
+  verso x₂, come nella legge di Fourier).
+  Vista macroscopica: P calcolata con la legge di Fourier (valori reali della
+  conducibilità k); freccia spessa del flusso di calore (etichetta P), con
+  segni che scorrono nel verso del flusso e toni tanto più caldi quanto più
+  è grande la potenza termica.
+  Vista microscopica (modello, non in scala, della stessa barra: posizioni
+  in cm): P è l'energia che ogni secondo, negli urti, attraversa la sezione
+  a x₁ nel verso di x₂ (media degli ultimi secondi, per poterla leggere).
+Nessun parametro.
+{% endcomment %}
+<style>
+#condBar .cb-top{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:center;margin-bottom:.5rem;}
+#condBar .cb-seg{display:inline-flex;border:1px solid #67e8f9;border-radius:6px;overflow:hidden;}
+#condBar .cb-seg button{border:none;background:#fff;color:#0e7490;padding:.3rem .7rem;cursor:pointer;font-size:.85rem;}
+#condBar .cb-seg button.on{background:#0e7490;color:#fff;}
+#condBar .cb-btn{border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:.3rem .75rem;cursor:pointer;font-size:.85rem;color:#334155;}
+#condBar .cb-btn:hover{border-color:#0e7490;}
+#condBar .cb-btn.on{background:#0e7490;border-color:#0e7490;color:#fff;}
+#condBar .cb-btn:disabled{opacity:.6;cursor:default;}
+#condBar .cb-btn.lit{background:#fff7ed;border-color:#f97316;color:#c2410c;}
+#condBar .cb-lbl{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;color:#334155;}
+#condBar .cb-lbl select{border:1px solid #cbd5e1;border-radius:6px;padding:.2rem .4rem;font-size:.85rem;background:#fff;}
+#condBar .cb-lbl input[type=range]{width:110px;accent-color:#0e7490;}
+#condBar .cb-aval{min-width:3.6rem;font-weight:600;}
+#condBar canvas{display:block;width:100%;max-width:540px;height:auto;margin:0 auto;touch-action:none;border-radius:10px;}
+#condBar .cb-lab{display:none;max-width:540px;margin:.5rem auto 0;background:#fff;border:1px solid #cbd5e1;border-radius:8px;padding:.5rem .8rem;font-size:.88rem;color:#1e293b;}
+#condBar .cb-lab.show{display:block;}
+#condBar .cb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.25rem .9rem;}
+#condBar .cb-grid span b{font-family:Georgia,serif;}
+#condBar .cb-big{font-size:1rem;font-weight:700;color:#b45309;}
+#condBar .cb-lab .cb-row{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap;margin-top:.4rem;}
+#condBar .cb-counter{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-top:.5rem;padding:.5rem .7rem;border:1px solid #cbd5e1;border-radius:8px;background:#f8fafc;}
+#condBar .cb-display{background:#0f172a;border-radius:6px;padding:.3rem .7rem;font-family:'Courier New',monospace;font-size:1.35rem;font-weight:700;color:#fbbf24;letter-spacing:.04em;min-width:9.5rem;text-align:right;box-shadow:inset 0 0 6px rgba(0,0,0,.6);}
+#condBar .cb-display .pos{color:#4ade80;}#condBar .cb-display .neg{color:#f87171;}
+#condBar .cb-cap{font-size:.82rem;color:#475569;line-height:1.3;flex:1 1 180px;}
+#condBar .cb-cap small{color:#94a3b8;}
+@media print{#condBar{display:none!important;}}
+</style>
+<div class="vdrag-widget" id="condBar">
+<p class="vdrag-hint">Accendi il fornelletto avvicinando allo stoppino il fiammifero (lo prendi dalla scatoletta accanto al fornelletto), poi trascina il fornelletto sotto la barra, nel punto che preferisci. Prova poi a cambiare materiale e sezione $A$ della barra, e a passare alla vista microscopica. In modalità laboratorio puoi trascinare le due sezioni $x_1$ e $x_2$ e misurare.</p>
+<div class="cb-top">
+  <span class="cb-seg"><button type="button" data-v="macro" class="on">Vista macroscopica</button><button type="button" data-v="micro">Vista microscopica</button></span>
+  <button type="button" class="cb-btn lit" id="cb-fire" style="display:none">Spegni il fornelletto</button>
+  <button type="button" class="cb-btn" id="cb-labbtn">🔬 Modalità laboratorio</button>
+  <button type="button" class="cb-btn" id="cb-reset">↺ Ricomincia</button>
+</div>
+<div class="cb-top">
+  <label class="cb-lbl">Materiale
+    <select id="cb-mat"><option value="rame">rame</option><option value="alluminio">alluminio</option><option value="ferro">ferro</option><option value="acciaio">acciaio</option><option value="vetro">vetro</option><option value="legno">legno</option></select></label>
+  <label class="cb-lbl">Sezione $A$
+    <input type="range" id="cb-A" min="0" max="3" step="1" value="1" aria-label="Sezione della barra"><span class="cb-aval" id="cb-Aval">1 cm²</span></label>
+</div>
+<canvas id="cb-cv" aria-label="Barra scaldata da un fornelletto ad alcol"></canvas>
+<div class="cb-lab" id="cb-lab"></div>
+</div>
+<script>
+(function(){
+  var cv=document.getElementById('cb-cv');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=540,H=350,dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+  var root=document.getElementById('condBar'),fireBtn=document.getElementById('cb-fire'),labBtn=document.getElementById('cb-labbtn'),labBox=document.getElementById('cb-lab');
+  var view='macro',lit=false,lab=false,burnerX=95,drag=null,dragDX=0;
+  var TABLE=330,WICK=TABLE-52;                    // tavolo; altezza dello stoppino del fornelletto
+
+  // ── materiali e sezioni
+  // D = diffusività termica (relativa), C = capacità termica per unità di volume (relativa al rame),
+  // k = conducibilità termica vera, in W/(m·K), FR = efficacia degli urti nella vista micro
+  var MATS={rame:{D:1500,C:1,k:390,FR:0.5,col:[184,115,51]},alluminio:{D:1310,C:0.70,k:237,FR:0.48,col:[203,213,225]},
+    ferro:{D:310,C:1.02,k:80,FR:0.22,col:[107,114,128]},acciaio:{D:162,C:1.13,k:16,FR:0.16,col:[148,163,184]},
+    vetro:{D:4.6,C:0.58,k:0.9,FR:0.012,col:[186,230,253]},legno:{D:1.1,C:0.35,k:0.13,FR:0.008,col:[161,98,7]}};
+  var AS=[0.5,1,2,4],BHS=[8,12,18,26],MRS=[4,6,8,10],AL=['0,5 cm²','1 cm²','2 cm²','4 cm²'];
+  var mat=MATS.rame,Ai=1;
+
+  // ── vista macroscopica: equazione del calore 1D (legge di Fourier)
+  var BBOT=200,BX0=70,BX1=470,BH=BHS[Ai],BY=BBOT-BH,N=80,DX=(BX1-BX0)/N,TAMB=20,PXCM=10;   // 10 px = 1 cm
+  var POW=110,LOSS=0.06,T=[];
+  var THX=[0,1,2,3,4].map(function(k){return BX0+20+k*(BX1-BX0-40)/4;});   // 5 termometri equidistanti
+  function resetMacro(){T=[];for(var i=0;i<N;i++)T.push(TAMB);}
+  function heatingAt(x){                           // la fiamma scalda solo se è sotto la barra
+    if(!lit||burnerX<BX0-8||burnerX>BX1+8)return 0;
+    return Math.exp(-Math.pow((x-burnerX)/10,2));
+  }
+  // il fiammifero acceso, se la sua fiammella tocca la barra, la scalda un pochino (molto meno del fornelletto)
+  function matchAt(x){
+    if(!matchHeld||mHX<BX0||mHX>BX1||mHY<BY-depth().oy-4||mHY>BBOT+18)return 0;
+    return 7*Math.exp(-Math.pow((x-mHX)/8,2));      // circa il 6% del fornelletto
+  }
+  function stepMacro(dt){
+    var Tn=T.slice();
+    for(var i=0;i<N;i++){
+      var l=T[Math.max(0,i-1)],r=T[Math.min(N-1,i+1)],x=BX0+(i+0.5)*DX,u=T[i]-TAMB;
+      // legge di Fourier (diffusione) + calore della fiamma (che avvolge tutta la sezione: il profilo
+      // non dipende da A) − dispersione nell'aria (cresce con la temperatura)
+      Tn[i]=T[i]+dt*(mat.D*(l-2*T[i]+r)/(DX*DX)+(POW*heatingAt(x)+matchAt(x))/mat.C-LOSS/mat.C*u*(1+u/200));
+    }
+    T=Tn;
+  }
+  function Tat(x){var f=(x-BX0)/DX-0.5,i=Math.max(0,Math.min(N-2,Math.floor(f))),s=Math.max(0,Math.min(1,f-i));return T[i]*(1-s)+T[i+1]*s;}
+  function mixCol(a,b,s){return a.map(function(v,k){return v+(b[k]-v)*s;});}
+  function rgb(c){return 'rgb('+c.map(Math.round).join(',')+')';}
+  function metalArr(t){                            // colore del materiale → rosso scuro → arancio
+    var s=Math.max(0,Math.min(1,(t-TAMB)/160));
+    return s<0.6?mixCol(mat.col,[185,28,28],s/0.6):mixCol([185,28,28],[249,115,22],(s-0.6)/0.4);
+  }
+  function metalColor(t){return rgb(metalArr(t));}
+  function depth(){var oy=5+BH*0.35;return {ox:oy*1.1,oy:oy};}   // profondità prospettica della barra
+  // barra in 3D: faccia superiore (più chiara), faccia frontale (luce dall'alto), testata a destra (più scura)
+  function drawBar3D(){
+    var d=depth(),ox=d.ox,oy=d.oy;
+    // ombra morbida sul tavolo
+    var sg=ctx.createRadialGradient((BX0+BX1)/2,TABLE+2,10,(BX0+BX1)/2,TABLE+2,(BX1-BX0)/2);
+    sg.addColorStop(0,'rgba(15,23,42,.18)');sg.addColorStop(1,'rgba(15,23,42,0)');
+    ctx.fillStyle=sg;ctx.beginPath();ctx.ellipse((BX0+BX1)/2+ox/2,TABLE+3,(BX1-BX0)/2+10,7,0,0,7);ctx.fill();
+    for(var i=0;i<N;i++){                          // faccia superiore
+      var x0=BX0+i*DX,x1=x0+DX+0.6;
+      ctx.fillStyle=rgb(mixCol(metalArr(T[i]),[255,255,255],0.38));
+      ctx.beginPath();ctx.moveTo(x0,BY);ctx.lineTo(x1,BY);ctx.lineTo(x1+ox,BY-oy);ctx.lineTo(x0+ox,BY-oy);ctx.closePath();ctx.fill();
+    }
+    ctx.fillStyle=rgb(mixCol(metalArr(T[N-1]),[0,0,0],0.3));   // testata destra
+    ctx.beginPath();ctx.moveTo(BX1,BY);ctx.lineTo(BX1+ox,BY-oy);ctx.lineTo(BX1+ox,BBOT-oy);ctx.lineTo(BX1,BBOT);ctx.closePath();ctx.fill();
+    for(i=0;i<N;i++){ctx.fillStyle=metalColor(T[i]);ctx.fillRect(BX0+i*DX,BY,DX+0.6,BH);}   // faccia frontale
+    var lg=ctx.createLinearGradient(0,BY,0,BBOT);  // luce dall'alto sulla faccia frontale
+    lg.addColorStop(0,'rgba(255,255,255,.42)');lg.addColorStop(0.35,'rgba(255,255,255,.08)');lg.addColorStop(1,'rgba(0,0,0,.28)');
+    ctx.fillStyle=lg;ctx.fillRect(BX0,BY,BX1-BX0,BH);
+    ctx.strokeStyle='rgba(255,255,255,.75)';ctx.lineWidth=1.2;   // riflesso sullo spigolo
+    ctx.beginPath();ctx.moveTo(BX0+2,BY+1.2);ctx.lineTo(BX1-2,BY+1.2);ctx.stroke();
+    ctx.strokeStyle='rgba(51,65,85,.75)';ctx.lineWidth=1;      // contorni
+    ctx.beginPath();ctx.moveTo(BX0,BBOT);ctx.lineTo(BX0,BY);ctx.lineTo(BX0+ox,BY-oy);ctx.lineTo(BX1+ox,BY-oy);ctx.lineTo(BX1+ox,BBOT-oy);ctx.lineTo(BX1,BBOT);ctx.closePath();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(BX0,BY);ctx.lineTo(BX1,BY);ctx.lineTo(BX1+ox,BY-oy);ctx.moveTo(BX1,BY);ctx.lineTo(BX1,BBOT);ctx.stroke();
+  }
+
+  // ── modalità laboratorio: due sezioni x₁, x₂ (posizioni in px sulla tela)
+  var lx1=190,lx2=330,Pmic=0,eCut=0,KJ=15,mT=[TAMB,TAMB];   // KJ: joule per unità di energia del modello micro
+  function fluxW(){                                // legge di Fourier: calore al secondo da x₁ a x₂ (W)
+    var T1=Tat(lx1),T2=Tat(lx2),dx=(lx2-lx1)/PXCM/100;
+    if(Math.abs(dx)<1e-4)return 0;
+    return -mat.k*AS[Ai]*1e-4*(T2-T1)/dx;
+  }
+  function resetLab(){Pmic=0;eCut=0;}
+  function fmt(v,d){return v.toFixed(d).replace('.',',').replace('-','−');}
+
+  // ── vista microscopica: reticolo di particelle che si urtano
+  var MC=24,MR=MRS[Ai],MSP=17,MR0=6,MX0=W/2-(MC-1)*MSP/2,MYB=205,MY0=MYB-(MR-1)*MSP;
+  var e=[],ph=[],touch={},flashes=[],rowNoise=[],HEAT=2,MLOSS=0.015;
+  function resetMicro(){MR=MRS[Ai];MY0=MYB-(MR-1)*MSP;e=[];ph=[];touch={};flashes=[];rowNoise=[];mT=[TAMB,TAMB];
+    for(var i=0;i<MC*MR;i++){e.push(0);ph.push([Math.random()*6.3,Math.random()*6.3]);}
+    for(var r=0;r<MR;r++)rowNoise.push({a:Math.random()*6.3,f:0.6+Math.random()*1.2});}
+  function mpos(i){var c=i%MC,r=Math.floor(i/MC),A=0.8+6.5*Math.sqrt(e[i]);return [MX0+c*MSP+A*Math.sin(ph[i][0]),MY0+r*MSP+A*Math.sin(ph[i][1])];}
+  function colOf(x){return Math.max(0,Math.min(MC-1,Math.round((x-MX0)/MSP)));}
+  var clock=0;
+  function stepMicro(dt){
+    clock+=dt;
+    for(var i=0;i<MC*MR;i++){
+      var c=i%MC,r=Math.floor(i/MC),se=Math.sqrt(e[i]),w=6+18*se;
+      ph[i][0]+=w*dt;ph[i][1]+=w*1.13*dt;
+      if(lit&&Math.abs(MX0+c*MSP-burnerX)<14){    // la fiamma scalda tutte le file sopra di sé, ma non tutte allo stesso modo
+        var rn=rowNoise[r],fl=0.35+0.65*(0.5+0.5*Math.sin(clock*rn.f*3+rn.a));
+        e[i]+=HEAT*fl*dt*(1-e[i]);
+      }
+      if(matchHeld){var mx=MX0+c*MSP-mHX,my=MY0+r*MSP-(mHY-6);   // il fiammifero scalda un pochino le particelle vicine alla fiammella
+        if(mx*mx+my*my<20*20)e[i]+=0.3*dt*(1-e[i]);}
+      e[i]-=MLOSS*e[i]*dt;                         // un po' di energia si disperde nell'aria
+    }
+    var P=[];for(i=0;i<MC*MR;i++)P.push(mpos(i));
+    var dir=lx2>=lx1?1:-1,k1=colOf(lx1),k2=colOf(lx2),ccut=dir>0?k1:k1-1;   // sezione a x₁, dal lato di x₂
+    for(i=0;i<MC*MR;i++){var ci=i%MC,ri=Math.floor(i/MC);
+      [[1,0],[0,1]].forEach(function(d){
+        var cc=ci+d[0],rr=ri+d[1];if(cc>=MC||rr>=MR)return;var j=rr*MC+cc,k=i+':'+j;
+        var dist=Math.hypot(P[i][0]-P[j][0],P[i][1]-P[j][1]);
+        if(dist<2*MR0){
+          if(!touch[k]){var tr=mat.FR*(e[i]-e[j]);e[i]-=tr;e[j]+=tr;        // urto: la più veloce cede energia all'altra
+            if(Math.abs(tr)>0.02&&flashes.length<80)flashes.push({x:(P[i][0]+P[j][0])/2,y:(P[i][1]+P[j][1])/2,k:Math.min(1,Math.abs(tr)*4),t:0});
+            if(lab&&k1!==k2&&d[0]===1&&ci===ccut)eCut+=dir*tr*KJ;}   // energia che attraversa la sezione a x₁ verso x₂
+          touch[k]=1;
+        }else touch[k]=0;
+      });
+    }
+    flashes.forEach(function(f){f.t+=dt;});flashes=flashes.filter(function(f){return f.t<0.25;});
+    // potenza termica micro: energia che attraversa la sezione ogni secondo (media mobile di circa 2 s)
+    if(dt>0){Pmic+=(eCut/dt-Pmic)*Math.min(1,dt/2);}eCut=0;
+    // temperatura misurata dai due termometri (media sulle colonne vicine, poco rumorosa)
+    [0,1].forEach(function(q){var cc=colOf(q?lx2:lx1),s=0,n=0;
+      for(var c=Math.max(0,cc-1);c<=Math.min(MC-1,cc+1);c++)for(var r=0;r<MR;r++){s+=e[r*MC+c];n++;}
+      var Tq=TAMB+280*s/n;mT[q]+=(Tq-mT[q])*Math.min(1,dt/0.6);});
+  }
+  function speedColor(s){                          // blu (lenta) → viola → rosso (veloce)
+    return rgb(s<0.5?mixCol([59,130,246],[147,51,234],s/0.5):mixCol([147,51,234],[220,38,38],(s-0.5)/0.5));
+  }
+
+  // ── disegno
+  var flick=0;
+  function drawBurner(tipY){
+    var x=burnerX,y=TABLE;
+    // fiamma (sottile e alta, azzurra con la punta gialla), semitrasparente: avvolge la sezione
+    if(lit){
+      var top=tipY-6+3*Math.sin(flick*7),wv=1.5*Math.sin(flick*11);
+      var g=ctx.createLinearGradient(0,WICK,0,top);
+      g.addColorStop(0,'rgba(59,130,246,.85)');g.addColorStop(0.45,'rgba(125,211,252,.6)');g.addColorStop(0.8,'rgba(253,224,71,.65)');g.addColorStop(1,'rgba(249,115,22,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(x,top);
+      ctx.bezierCurveTo(x+7+wv,top+(WICK-top)*0.35,x+6,WICK-6,x,WICK);
+      ctx.bezierCurveTo(x-6,WICK-6,x-7+wv,top+(WICK-top)*0.35,x,top);ctx.fill();
+    }
+    // fornelletto: vasetto di vetro con l'alcol, cappuccio e stoppino
+    ctx.fillStyle='rgba(224,242,254,.9)';ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x-20,y);ctx.lineTo(x-20,y-24);ctx.quadraticCurveTo(x-20,y-34,x-9,y-38);ctx.lineTo(x+9,y-38);ctx.quadraticCurveTo(x+20,y-34,x+20,y-24);ctx.lineTo(x+20,y);ctx.closePath();ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(147,197,253,.55)';ctx.fillRect(x-19,y-16,38,15);
+    ctx.fillStyle='#78716c';ctx.fillRect(x-7,y-46,14,9);
+    ctx.strokeStyle='#44403c';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x,y-46);ctx.lineTo(x,WICK);ctx.stroke();
+  }
+  // fiammifero: a riposo nella scatoletta sul tavolo; preso in mano si accende (la testa segue il puntatore)
+  var MBX=155,matchHeld=false,mHX=0,mHY=0;   // scatoletta accanto alla posizione iniziale del fornelletto
+  function drawMatch(){
+    ctx.fillStyle='#b45309';ctx.fillRect(MBX-24,TABLE-14,48,14);            // scatoletta
+    ctx.fillStyle='#fde68a';ctx.fillRect(MBX-24,TABLE-14,48,4);
+    ctx.fillStyle='#7c2d12';ctx.fillRect(MBX-24,TABLE-5,48,5);
+    var hx,hy,ang;
+    if(matchHeld){hx=mHX;hy=mHY;ang=Math.PI*0.28;}else{hx=MBX-20;hy=TABLE-19;ang=-0.06;}
+    var tx=hx+44*Math.cos(ang),ty=hy+44*Math.sin(ang);
+    ctx.strokeStyle='#e7c99a';ctx.lineWidth=3.5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(hx,hy);ctx.lineTo(tx,ty);ctx.stroke();ctx.lineCap='butt';
+    ctx.fillStyle=matchHeld?'#57534e':'#dc2626';ctx.beginPath();ctx.ellipse(hx,hy,4,3.2,ang,0,7);ctx.fill();
+    if(matchHeld){                                  // fiammella del fiammifero acceso
+      var fh=13+1.5*Math.sin(flick*12);
+      var g=ctx.createRadialGradient(hx,hy-4,0.5,hx,hy-5,fh);
+      g.addColorStop(0,'#fffbeb');g.addColorStop(0.4,'#fde047');g.addColorStop(0.8,'#f97316');g.addColorStop(1,'rgba(249,115,22,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(hx,hy-fh-2);ctx.quadraticCurveTo(hx+6,hy-4,hx,hy+2);ctx.quadraticCurveTo(hx-6,hy-4,hx,hy-fh-2);ctx.fill();
+    }
+  }
+  function drawTable(){ctx.fillStyle='#e7e5e4';ctx.fillRect(0,TABLE,W,H-TABLE);}
+  function smallThermo(x,top,bot,t,lab){
+    var frac=Math.max(0,Math.min(1,t/200));
+    ctx.fillStyle='#fff';ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.4;
+    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x-5,top,10,bot-top,5);else ctx.rect(x-5,top,10,bot-top);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.arc(x,bot+4,7,0,7);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#dc2626';ctx.beginPath();ctx.arc(x,bot+4,5,0,7);ctx.fill();
+    var ym=bot-(bot-top-6)*frac;ctx.fillRect(x-2.5,ym,5,bot+2-ym);
+    ctx.font='bold 13px Georgia,serif';ctx.textAlign='center';ctx.fillStyle='#1e293b';ctx.fillText((lab?lab+' = ':'')+Math.round(t)+' °C',x,top-7);
+  }
+  function arrowH(xa,xb,y,col,lw,label,wavy){     // freccia orizzontale da xa a xb; col='temp' = sfumata dal blu (freddo) al rosso (caldo)
+    if(Math.abs(xb-xa)<16)return;
+    var d=xb>xa?1:-1,len=Math.abs(xb-xa),hl=Math.min(16,len*0.3);
+    if(col==='temp'){var gr=ctx.createLinearGradient(xa,0,xb,0);gr.addColorStop(0,'#2563eb');gr.addColorStop(0.5,'#9333ea');gr.addColorStop(1,'#dc2626');col=gr;lw=Math.max(lw,3);}
+    ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=lw;ctx.lineCap='round';ctx.beginPath();
+    for(var s=0;s<=len-hl;s+=2){var x=xa+d*s,yy=y+(wavy?4*Math.sin(s/7-flick*6):0);if(s===0)ctx.moveTo(x,yy);else ctx.lineTo(x,yy);}
+    ctx.stroke();ctx.lineCap='butt';
+    ctx.beginPath();ctx.moveTo(xb,y);ctx.lineTo(xb-d*hl,y-lw*0.9-3);ctx.lineTo(xb-d*hl,y+lw*0.9+3);ctx.closePath();ctx.fill();
+    if(label){ctx.font='italic bold 14px Georgia,serif';ctx.textAlign='center';ctx.fillStyle=typeof col==='string'?col:'#7c3aed';ctx.fillText(label,(xa+xb)/2,y-lw-5);}
+  }
+  function flowArrow(xa,xb,y,col,lw,label){       // freccia spessa e diritta, con segni che scorrono nel verso del flusso
+    if(Math.abs(xb-xa)<24)return;
+    var d=xb>xa?1:-1,len=Math.abs(xb-xa),hl=Math.min(18,len*0.35),xe=xb-d*hl;
+    ctx.fillStyle=col;ctx.fillRect(Math.min(xa,xe),y-lw/2,Math.abs(xe-xa),lw);
+    ctx.beginPath();ctx.moveTo(xb,y);ctx.lineTo(xe,y-lw);ctx.lineTo(xe,y+lw);ctx.closePath();ctx.fill();
+    ctx.save();ctx.beginPath();ctx.rect(Math.min(xa,xe),y-lw/2,Math.abs(xe-xa),lw);ctx.clip();
+    ctx.strokeStyle='rgba(255,255,255,.75)';ctx.lineWidth=2;ctx.lineCap='round';
+    var off=(flick*40)%16;
+    for(var s=-16+off;s<len;s+=16){var x=xa+d*s;ctx.beginPath();ctx.moveTo(x-d*3,y-lw*0.3);ctx.lineTo(x+d*2,y);ctx.lineTo(x-d*3,y+lw*0.3);ctx.stroke();}
+    ctx.restore();ctx.lineCap='butt';
+    if(label){ctx.font='italic bold 14px Georgia,serif';ctx.textAlign='center';ctx.fillStyle=col;ctx.fillText(label,(xa+xe)/2,y-lw-4);}
+  }
+  function heatColor(P){                           // toni sempre più caldi al crescere del calore al secondo
+    var s=Math.min(1,Math.log10(1+Math.abs(P))/Math.log10(1+40));
+    return rgb(s<0.5?mixCol([253,224,71],[249,115,22],s/0.5):mixCol([249,115,22],[153,27,27],(s-0.5)/0.5));
+  }
+  function markerLine(x,y0,y1){
+    ctx.strokeStyle='#0e7490';ctx.lineWidth=1.6;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(x,y0);ctx.lineTo(x,y1);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle='#0e7490';ctx.beginPath();ctx.moveTo(x,y1-10);ctx.lineTo(x-7,y1+2);ctx.lineTo(x+7,y1+2);ctx.closePath();ctx.fill();
+  }
+  function posLabel(x,y,name,val){ctx.font='13px Georgia,serif';ctx.textAlign='center';ctx.fillStyle='#0e7490';ctx.fillText(name+' = '+val,x,y);}
+  function drawMacro(){
+    ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,W,H);drawTable();
+    ctx.fillStyle='#a8a29e';ctx.fillRect(BX0+4,BBOT,8,TABLE-BBOT);ctx.fillRect(BX1-12,BBOT,8,TABLE-BBOT);
+    drawBar3D();
+    var d=depth(),tb=BY-d.oy/2-10;                 // i termometri poggiano sulla faccia superiore
+    drawBurner(BY-d.oy-10);drawMatch();
+    if(!lab){THX.forEach(function(x){smallThermo(x+d.ox/2,30,tb,Tat(x));});return;}
+    // righello sotto la barra (cm)
+    ctx.strokeStyle='#64748b';ctx.lineWidth=1;ctx.font='11px Georgia,serif';ctx.fillStyle='#64748b';ctx.textAlign='center';
+    for(var c=0;c<=40;c++){var xx=BX0+c*PXCM,hh=c%10===0?8:(c%5===0?5:3);ctx.beginPath();ctx.moveTo(xx,BBOT);ctx.lineTo(xx,BBOT+hh);ctx.stroke();if(c%10===0)ctx.fillText(c+' cm',xx,BBOT+19);}
+    // le due sezioni, con termometro e posizione
+    [[lx1,'x₁','T₁'],[lx2,'x₂','T₂']].forEach(function(m){
+      markerLine(m[0],52,BBOT+38);smallThermo(m[0],48,tb,Tat(m[0]),m[2]);
+      posLabel(m[0],BBOT+54,m[1],fmt((m[0]-BX0)/PXCM,1)+' cm');
+    });
+    // freccia ondulata del calore (dal caldo al freddo) e freccia di ΔT (verso cui T cresce)
+    var T1=Tat(lx1),T2=Tat(lx2),P=fluxW();
+    if(Math.abs(T2-T1)>0.5){
+      var hot=T1>T2?lx1:lx2,cold=T1>T2?lx2:lx1;
+      flowArrow(hot,cold,BY-d.oy-34,heatColor(P),11,'P');
+      arrowH(cold,hot,BBOT+72,'temp',3,'ΔT',false);
+    }
+  }
+  function drawMicro(){
+    ctx.fillStyle='#f8fafc';ctx.fillRect(0,0,W,H);drawTable();
+    ctx.strokeStyle='#cbd5e1';ctx.lineWidth=1.2;ctx.setLineDash([5,4]);
+    ctx.strokeRect(MX0-14,MY0-14,(MC-1)*MSP+28,(MR-1)*MSP+28);ctx.setLineDash([]);
+    ctx.font='italic 12px Georgia,serif';ctx.textAlign='left';ctx.fillStyle='#94a3b8';ctx.fillText('la barra vista al microscopio (modello, non in scala)',MX0-14,MY0-22);
+    drawBurner(MY0-16);drawMatch();                // la fiamma avvolge tutte le file
+    for(var i=0;i<MC*MR;i++){
+      var p=mpos(i),col=speedColor(Math.sqrt(e[i]));
+      var g=ctx.createRadialGradient(p[0]-MR0*0.35,p[1]-MR0*0.4,0.5,p[0],p[1],MR0);
+      g.addColorStop(0,'#fff');g.addColorStop(0.4,col);g.addColorStop(1,col);
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(p[0],p[1],MR0,0,7);ctx.fill();
+    }
+    flashes.forEach(function(f){var al=1-f.t/0.25,rr=2.5+7*f.k;ctx.globalAlpha=al;ctx.fillStyle='#fde047';ctx.beginPath();
+      for(var k=0;k<10;k++){var an=k*Math.PI/5,rd=k%2?rr*0.4:rr;ctx.lineTo(f.x+rd*Math.cos(an),f.y+rd*Math.sin(an));}ctx.closePath();ctx.fill();});
+    ctx.globalAlpha=1;
+    // legenda del colore
+    var lgx=W-170,lgy=TABLE-30;
+    for(var k=0;k<=100;k++){ctx.fillStyle=speedColor(k/100);ctx.fillRect(lgx+k*1.3,lgy,1.4,8);}
+    ctx.font='11px Georgia,serif';ctx.fillStyle='#64748b';ctx.textAlign='left';ctx.fillText('lenta',lgx,lgy+21);ctx.textAlign='right';ctx.fillText('veloce',lgx+130,lgy+21);
+    if(!lab)return;
+    // le due sezioni, con termometro e posizione
+    [[lx1,'x₁','T₁',0],[lx2,'x₂','T₂',1]].forEach(function(m){
+      var x=MX0+colOf(m[0])*MSP;
+      markerLine(x,MY0-14,MYB+26);
+      ctx.font='bold 13px Georgia,serif';ctx.textAlign='center';ctx.fillStyle='#1e293b';ctx.fillText('🌡 '+m[2]+' = '+Math.round(mT[m[3]])+' °C',x,MYB+44);
+      posLabel(x,MYB+60,m[1],fmt((x-BX0)/PXCM,1)+' cm');
+    });
+    var x1=MX0+colOf(lx1)*MSP,x2=MX0+colOf(lx2)*MSP;
+    if(Math.abs(mT[1]-mT[0])>1){var hot=mT[0]>mT[1]?x1:x2,cold=mT[0]>mT[1]?x2:x1;arrowH(cold,hot,MYB+80,'temp',3,'ΔT',false);}
+  }
+  function draw(){if(view==='macro')drawMacro();else drawMicro();}
+
+  // ── pannello dei contatori (modalità laboratorio)
+  function counterBox(P){                          // riquadretto-contatore della potenza termica scambiata
+    var sg=P>=0?'+':'−',cl=P>=0?'pos':'neg';
+    return '<div class="cb-counter"><div class="cb-display"><span class="'+cl+'">'+sg+'</span> '+fmt(Math.abs(P),1)+' W</div>'+
+      '<div class="cb-cap">potenza termica scambiata tra la sezione a <b>x₁</b> e la sezione a <b>x₂</b><br>'+
+      '<small>positiva se il calore va da x₁ verso x₂, negativa se va da x₂ verso x₁</small></div></div>';
+  }
+  var lastPanel=0;
+  function panel(force){
+    if(!lab)return;var now=performance.now();if(!force&&now-lastPanel<250)return;lastPanel=now;
+    var T1,T2,x1,x2,extra='';
+    if(view==='macro'){T1=Tat(lx1);T2=Tat(lx2);x1=lx1;x2=lx2;
+      extra='<span><b>A</b> = '+AL[Ai]+'</span><span><b>k</b> = '+String(mat.k).replace('.',',')+' W/(m·K)</span>';}
+    else{T1=mT[0];T2=mT[1];x1=MX0+colOf(lx1)*MSP;x2=MX0+colOf(lx2)*MSP;}
+    labBox.innerHTML='<div class="cb-grid">'+
+      '<span><b>x₁</b> = '+fmt((x1-BX0)/PXCM,1)+' cm, <b>T₁</b> = '+fmt(T1,1)+' °C</span>'+
+      '<span><b>x₂</b> = '+fmt((x2-BX0)/PXCM,1)+' cm, <b>T₂</b> = '+fmt(T2,1)+' °C</span>'+
+      '<span><b>Δx</b> = '+fmt((x2-x1)/PXCM,1)+' cm</span>'+
+      '<span><b>ΔT</b> = '+fmt(T2-T1,1)+' K</span>'+extra+'</div>'+
+      counterBox(view==='macro'?fluxW():Pmic);
+  }
+
+  // ── ciclo: entrambe le simulazioni avanzano sempre, si disegna la vista scelta
+  var raf=null,last=null,visible=true;
+  function loop(ts){
+    var dt=last===null?0:Math.min(1/30,(ts-last)/1000);last=ts;flick+=dt;
+    for(var k=0;k<8;k++){stepMacro(dt/8);}
+    for(k=0;k<4;k++){stepMicro(dt/4);}
+    draw();panel();
+    if(visible)raf=requestAnimationFrame(loop);else{raf=null;last=null;}
+  }
+  function kick(){if(!raf&&visible)raf=requestAnimationFrame(loop);}
+
+  // ── trascinamento: fornelletto (sul tavolo) e, in laboratorio, le due sezioni
+  function pt(ev){var r=cv.getBoundingClientRect();return {x:(ev.clientX-r.left)*W/r.width,y:(ev.clientY-r.top)*H/r.height};}
+  function onMatch(q){return !matchHeld&&q.x>MBX-30&&q.x<MBX+30&&q.y>TABLE-30&&q.y<TABLE+2;}
+  function onBurner(q){return Math.abs(q.x-burnerX)<22&&q.y>TABLE-50&&q.y<TABLE+4;}
+  function markerX(m){return view==='macro'?m:MX0+colOf(m)*MSP;}
+  function onMarker(q){if(!lab||q.y>TABLE-50)return null;
+    var d1=Math.abs(q.x-markerX(lx1)),d2=Math.abs(q.x-markerX(lx2));
+    if(Math.min(d1,d2)>12)return null;return d1<=d2?'x1':'x2';}
+  cv.addEventListener('pointerdown',function(ev){var q=pt(ev),m=onMarker(q);
+    if(onMatch(q)){drag='match';matchHeld=true;mHX=q.x;mHY=q.y;}
+    else if(m){drag=m;}else if(onBurner(q)){drag='b';dragDX=q.x-burnerX;}else return;
+    cv.setPointerCapture(ev.pointerId);ev.preventDefault();});
+  cv.addEventListener('pointermove',function(ev){var q=pt(ev);
+    cv.style.cursor=drag?'grabbing':(onMarker(q)?'ew-resize':((onBurner(q)||onMatch(q))?'grab':'default'));
+    if(drag==='match'){mHX=q.x;mHY=q.y;                       // la fiammella accende lo stoppino
+      if(!lit&&Math.hypot(q.x-burnerX,q.y-WICK)<16)setFire(true);}
+    else if(drag==='b')burnerX=Math.max(24,Math.min(W-24,q.x-dragDX));
+    else if(drag){var x=Math.max(BX0,Math.min(BX1,q.x));      // x₁ resta sempre a sinistra di x₂ (almeno 2 cm): così Δx > 0 e "da x₁ a x₂" è il verso delle x crescenti, come nella formula
+      if(drag==='x1')lx1=Math.min(x,lx2-2*PXCM);else lx2=Math.max(x,lx1+2*PXCM);resetLab();panel(true);}});
+  cv.addEventListener('pointerup',function(){drag=null;matchHeld=false;});
+  cv.addEventListener('pointercancel',function(){drag=null;matchHeld=false;});
+
+  // ── pulsanti e controlli
+  function setFire(v){lit=v;fireBtn.style.display=lit?'':'none';}   // il pulsante serve solo a spegnere: si accende con il fiammifero
+  fireBtn.addEventListener('click',function(){if(lit)setFire(false);});
+  labBtn.addEventListener('click',function(){lab=!lab;labBtn.classList.toggle('on',lab);labBox.classList.toggle('show',lab);resetLab();panel(true);draw();});
+  document.getElementById('cb-reset').addEventListener('click',function(){setFire(false);burnerX=95;resetMacro();resetMicro();resetLab();panel(true);});
+  root.querySelectorAll('.cb-seg button').forEach(function(b){b.addEventListener('click',function(){view=b.dataset.v;
+    root.querySelectorAll('.cb-seg button').forEach(function(x){x.classList.toggle('on',x===b);});resetLab();panel(true);draw();});});
+  function newBar(){BH=BHS[Ai];BY=BBOT-BH;resetMacro();resetMicro();resetLab();panel(true);draw();}
+  document.getElementById('cb-mat').addEventListener('change',function(ev){mat=MATS[ev.target.value];newBar();});
+  document.getElementById('cb-A').addEventListener('input',function(ev){Ai=+ev.target.value;document.getElementById('cb-Aval').textContent=AL[Ai];newBar();});
+  if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(en){visible=en.isIntersecting;if(visible)kick();});}).observe(root);
+  resetMacro();resetMicro();draw();kick();
+})();
+</script>

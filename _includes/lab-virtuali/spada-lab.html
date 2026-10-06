@@ -5,6 +5,13 @@ bacinella d'acqua per osservare il flusso di calore fino all'equilibrio
 termico. La spada cambia colore secondo la scala tipica del fabbro (dal
 grigio freddo al bianco incandescente); l'acqua ha una capacità termica
 molto maggiore della spada (si scalda pochissimo), come nella tempra vera.
+LABORATORIO-QUIZ: ogni volta che la spada viene appoggiata (fornace, ghiaccio
+o acqua) la simulazione si ferma e chiede allo studente il segno del calore Q
+scambiato dalla spada (la spada è il sistema, tutto il resto l'ambiente):
+Q > 0, Q = 0 oppure Q < 0. Dopo la risposta (coriandoli se giusta, spiegazione
+in ogni caso) la simulazione riparte, e frecce ondulate rosse entrano nella
+spada (Q > 0) o ne escono (Q < 0) finché c'è scambio di calore. Un contatore
+tiene il conto delle risposte giuste.
 Nessun parametro.
 {% endcomment %}
 <style>
@@ -16,11 +23,20 @@ Nessun parametro.
 #calSword-sword.dragging { cursor:grabbing; }
 #calSwordWidget .cs-flame { transform-origin: 80px 300px; animation: csFlicker 1.1s ease-in-out infinite alternate; }
 @keyframes csFlicker { 0%{ transform:scale(1,1); opacity:1; } 50%{ transform:scale(.92,1.06); opacity:.82; } 100%{ transform:scale(1.06,.95); opacity:1; } }
+#calSwordWidget .cal-quiz { display:none; max-width:460px; margin:.6rem auto 0; padding:.6rem .8rem; border:1px solid #cbd5e1; border-radius:8px; background:#fff; font-size:.9rem; color:#1e293b; }
+#calSwordWidget .cal-quiz.show { display:block; }
+#calSwordWidget .cal-quiz .cq-btns { display:flex; gap:.5rem; justify-content:center; margin:.5rem 0 .2rem; flex-wrap:wrap; }
+#calSwordWidget .cal-quiz .cq-btns button { font-family:Georgia,serif; font-style:italic; font-size:1rem; min-width:5rem; }
+#calSwordWidget .cal-quiz .cq-btns button:disabled { cursor:default; opacity:.55; }
+#calSwordWidget .cal-quiz .cq-btns button.ok { background:#dcfce7; border-color:#22c55e; opacity:1; }
+#calSwordWidget .cal-quiz .cq-btns button.no { background:#fee2e2; border-color:#ef4444; opacity:1; }
+#calSwordWidget .cal-quiz .cq-fb { margin-top:.35rem; font-size:.86rem; }
+#calSwordWidget .cal-score { text-align:center; font-size:.8rem; color:#64748b; margin-top:.35rem; }
 @media print { #calSwordWidget { display:none !important; } }
 </style>
 
 <div class="vdrag-widget" id="calSwordWidget">
-<p class="vdrag-hint">Trascina la spada (tienila premuta e spostala) dentro la fornace, il cesto di ghiaccio o la bacinella d'acqua.</p>
+<p class="vdrag-hint">Trascina la spada (tienila premuta e spostala) dentro la fornace, il cesto di ghiaccio o la bacinella d'acqua. Ogni volta, prima di vedere che cosa succede, indovina il segno del calore $Q$, prendendo la spada come sistema e tutto il resto come ambiente.</p>
 <svg id="calSword-svg" viewBox="0 0 460 320" width="100%" style="max-width:460px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Simulazione: una spada può essere scaldata in una fornace, raffreddata in un cesto di ghiaccio, o immersa in una bacinella d'acqua fino all'equilibrio termico">
 <defs>
   <radialGradient id="csFlame1" cx="50%" cy="100%" r="100%"><stop offset="0%" stop-color="#fef08a"/><stop offset="45%" stop-color="#f97316"/><stop offset="100%" stop-color="#b91c1c"/></radialGradient>
@@ -86,11 +102,24 @@ Nessun parametro.
   <polygon id="calSword-blade" points="-6,-24 6,-24 3,40 0,50 -3,40" fill="#6b7280" stroke="#44403c" stroke-width="1"/>
 </g>
 
+<!-- Frecce del calore Q (entrano o escono dalla spada) -->
+<g id="calSword-q" opacity="0" pointer-events="none">
+  <defs>
+    <linearGradient id="csQg1" gradientUnits="userSpaceOnUse" x1="-74" y1="0" x2="-23" y2="0"><stop offset="0" stop-color="#fca5a5" stop-opacity="0"/><stop offset=".45" stop-color="#f87171" stop-opacity=".75"/><stop offset="1" stop-color="#dc2626"/></linearGradient>
+    <linearGradient id="csQg2" gradientUnits="userSpaceOnUse" x1="74" y1="0" x2="23" y2="0"><stop offset="0" stop-color="#fca5a5" stop-opacity="0"/><stop offset=".45" stop-color="#f87171" stop-opacity=".75"/><stop offset="1" stop-color="#dc2626"/></linearGradient>
+    <linearGradient id="csQg3" gradientUnits="userSpaceOnUse" x1="-12" y1="0" x2="-63" y2="0"><stop offset="0" stop-color="#fca5a5" stop-opacity="0"/><stop offset=".45" stop-color="#f87171" stop-opacity=".75"/><stop offset="1" stop-color="#dc2626"/></linearGradient>
+    <linearGradient id="csQg4" gradientUnits="userSpaceOnUse" x1="12" y1="0" x2="63" y2="0"><stop offset="0" stop-color="#fca5a5" stop-opacity="0"/><stop offset=".45" stop-color="#f87171" stop-opacity=".75"/><stop offset="1" stop-color="#dc2626"/></linearGradient>
+  </defs>
+  <g id="calSword-qin"></g><g id="calSword-qout"></g>
+  <text id="calSword-qlbl" x="-48" y="-6" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-weight="700" font-size="15" fill="#b91c1c"></text>
+</g>
 <text id="calSword-temp" x="230" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">20&#176;C</text>
 <text id="calSword-watertemp" x="230" y="315" text-anchor="middle" font-size="11" fill="#0369a1">acqua: 20&#176;C</text>
 </svg>
 
+<div class="cal-quiz" id="calSword-quiz"></div>
 <p class="cal-msg" id="calSword-msg"></p>
+<p class="cal-score" id="calSword-score"></p>
 <div class="cal-reset-row"><button id="calSword-reset">&#8635; Reset</button></div>
 </div>
 
@@ -109,6 +138,51 @@ Nessun parametro.
   var waterLbl=document.getElementById('calSword-watertemp');
   var msg=document.getElementById('calSword-msg');
   var resetBtn=document.getElementById('calSword-reset');
+  var quizBox=document.getElementById('calSword-quiz');
+  var scoreLbl=document.getElementById('calSword-score');
+  var qGroup=document.getElementById('calSword-q');
+  var qLbl=document.getElementById('calSword-qlbl');
+  var pending=false, score=0, tries=0;
+
+  // frecce ondulate del calore: onda sfumata nella coda, tratto dritto centrato sulla punta
+  function waveArrow(ax,bx,y,grad){
+    var d=bx>ax?1:-1,L=Math.abs(bx-ax),HL=11,ST=12,wl=L-HL-ST,lam=wl/Math.round(wl/14),amp=4,p='';
+    for(var k=0;k<=40;k++){var t=wl*k/40;p+=(k?' L':'M')+(ax+d*t).toFixed(1)+','+(y+amp*Math.sin(2*Math.PI*t/lam)).toFixed(1);}
+    var sx=bx-d*HL;p+=' L'+sx+','+y;
+    return '<path d="'+p+'" fill="none" stroke="url(#'+grad+')" stroke-width="3.5" stroke-linecap="round"/>'+
+      '<polygon points="'+bx+','+y+' '+sx+','+(y-6)+' '+sx+','+(y+6)+'" fill="#dc2626"/>';
+  }
+  document.getElementById('calSword-qin').innerHTML=waveArrow(-74,-12,8,'csQg1')+waveArrow(74,12,8,'csQg2');
+  document.getElementById('calSword-qout').innerHTML=waveArrow(-12,-74,8,'csQg3')+waveArrow(12,74,8,'csQg4');
+
+  var ENV_NAME={furnace:'la fornace',ice:'il ghiaccio',water:'l’acqua'};
+  var PLACE={furnace:'nella fornace',ice:'nel ghiaccio',water:'nell’acqua'};
+  function envT(z){return z==='furnace'?FURNACE_T:(z==='ice'?ICE_T:Twater);}
+  function qSign(z){var d=envT(z)-Tsword;return Math.abs(d)<1?0:(d>0?1:-1);}
+  function fmtT(T){return Math.round(T)+' °C';}
+  function updScore(){scoreLbl.textContent=tries?('Risposte giuste: '+score+' su '+tries):'';}
+  function hideQuiz(){quizBox.classList.remove('show');quizBox.innerHTML='';pending=false;}
+  function askQuiz(z){
+    var ok=qSign(z),Te=envT(z);
+    pending=true;
+    quizBox.innerHTML='<div>Hai messo la spada '+PLACE[z]+'. La spada è a <b>'+fmtT(Tsword)+'</b>, '+ENV_NAME[z]+' a <b>'+fmtT(Te)+'</b>. '+
+      'Prendendo la spada come sistema, il calore <i>Q</i> sarà…</div>'+
+      '<div class="cq-btns"><button type="button" data-v="1">Q &gt; 0</button><button type="button" data-v="0">Q = 0</button><button type="button" data-v="-1">Q &lt; 0</button></div>'+
+      '<div class="cq-fb"></div>';
+    quizBox.classList.add('show');
+    var fb=quizBox.querySelector('.cq-fb');
+    quizBox.querySelectorAll('.cq-btns button').forEach(function(b){b.addEventListener('click',function(){
+      var v=+b.dataset.v,good=v===ok;tries++;if(good)score++;updScore();
+      quizBox.querySelectorAll('.cq-btns button').forEach(function(x){x.disabled=true;if(+x.dataset.v===ok)x.classList.add('ok');else if(x===b)x.classList.add('no');});
+      var why=ok>0?(ENV_NAME[z].charAt(0).toUpperCase()+ENV_NAME[z].slice(1)+' è più calda della spada: il calore entra nella spada, che lo riceve dall’ambiente. Quindi <i>Q</i> &gt; 0.')
+        :ok<0?('La spada è più calda di '+ENV_NAME[z]+': il calore esce dalla spada e va all’ambiente. Quindi <i>Q</i> &lt; 0.')
+        :('La spada e '+ENV_NAME[z]+' sono già alla stessa temperatura: sono in equilibrio termico e non si scambiano calore. Quindi <i>Q</i> = 0.');
+      why=why.replace('Il ghiaccio è più calda','Il ghiaccio è più caldo');
+      fb.innerHTML=(good?'<b style="color:#15803d">✓ Giusto!</b> ':'<b style="color:#b91c1c">✗ Non proprio.</b> ')+why;
+      if(good&&window._shoot)window._shoot(b);
+      pending=false;ensureLoop();render();
+    });});
+  }
 
   var REST={x:230,y:85};
   var DOCK={furnace:{x:82,y:225}, ice:{x:382,y:225}, water:{x:230,y:238}};
@@ -183,11 +257,13 @@ Nessun parametro.
     zone=z;
     var d = z==='none' ? REST : DOCK[z];
     setSwordPos(d.x,d.y);
+    if(z!=='none')askQuiz(z);       // prima di vedere che cosa succede: indovina il segno di Q
     ensureLoop();
     render();
   }
   sword.addEventListener('pointerdown',function(e){
     e.preventDefault();
+    hideQuiz();
     dragging=true;
     sword.classList.add('dragging');
     sword.setPointerCapture(e.pointerId);
@@ -196,6 +272,7 @@ Nessun parametro.
   });
 
   function stepPhysics(dt){
+    if(pending) return;               // ferma finché lo studente non risponde
     if(zone==='furnace'){
       Tsword += (FURNACE_T-Tsword)*1.1*dt;
     } else if(zone==='ice'){
@@ -222,6 +299,17 @@ Nessun parametro.
     waterStop1.setAttribute('stop-color',wc.top);
     waterStop2.setAttribute('stop-color',wc.bot);
     waterLbl.textContent='acqua: '+Math.round(Twater)+'°C';
+
+    // frecce del calore Q, entranti (Q > 0) o uscenti (Q < 0) dalla spada
+    var qs=(zone==='none'||pending||dragging)?0:qSign(zone);
+    if(qs!==0){
+      var dq=Math.abs(envT(zone)-Tsword);
+      qGroup.setAttribute('opacity',Math.min(1,0.45+dq/60).toFixed(2));
+      qGroup.setAttribute('transform','translate('+pos.x+','+pos.y+')');
+      document.getElementById('calSword-qin').style.display=qs>0?'':'none';
+      document.getElementById('calSword-qout').style.display=qs<0?'':'none';
+      qLbl.textContent=qs>0?'Q > 0':'Q < 0';
+    } else qGroup.setAttribute('opacity',0);
 
     var diff=zone==='water' ? (Tsword-Twater) : 0;
     var absDiff=Math.abs(diff);
@@ -272,9 +360,9 @@ Nessun parametro.
     stepPhysics(dt);
     bubblePhase=(bubblePhase+dt*0.5)%1;
     render();
-    var stillActive = (zone==='furnace' && Math.abs(FURNACE_T-Tsword)>1) ||
+    var stillActive = !pending && ((zone==='furnace' && Math.abs(FURNACE_T-Tsword)>1) ||
                        (zone==='ice' && Math.abs(Tsword-ICE_T)>1) ||
-                       (zone==='water' && Math.abs(Tsword-Twater)>0.1);
+                       (zone==='water' && Math.abs(Tsword-Twater)>0.1));
     if(stillActive){ raf=requestAnimationFrame(loop); }
     else { raf=null; lastTs=null; }
   }
@@ -283,7 +371,7 @@ Nessun parametro.
   }
 
   resetBtn.addEventListener('click',function(){
-    Tsword=20; Twater=20; zone='none';
+    Tsword=20; Twater=20; zone='none'; hideQuiz(); score=0; tries=0; updScore();
     setSwordPos(REST.x,REST.y);
     render();
   });

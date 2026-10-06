@@ -91,7 +91,7 @@ Scegli i prefissi e clicca <strong>Mostra</strong>.
 <button class="iex-vbtn" onclick="ex7check(3)">Verifica</button>
 </div>
 <div class="iex-fb" id="ex7fb3"></div>
-<div class="iex-sol" id="ex7sol3">Soluzione: $500\ \text{µm}=0{,}5\ \text{mm}$ — diff μ→m: −6−(−3)=−3, quindi ÷10³.</div>
+<div class="iex-sol" id="ex7sol3">Soluzione: $500\ \text{µm}=0{,}5\ \text{mm}$ — diff μ→m: −6−(−3)=−3, quindi ×10⁻³.</div>
 </div>
 <div class="iex-q" id="ex7row4" style="display:none">
 <p class="iex-qt"><strong>v)</strong> Converti $1{,}5\ \text{km}$ in millimetri.</p>
@@ -388,7 +388,7 @@ goBtn.addEventListener('click',function(){
       drawScene(fi,ti,{x:XS[ti],y:LY,col:PFX_DATA[ti].col},
         doneLabels, doneArcs.concat([summaryArc]));
       if(cumExp!==0){
-        var ctotF=cumExp>=0?'×10'+supStr(cumExp):'÷10'+supStr(-cumExp);
+        var ctotF='×10'+supStr(cumExp);
         ctx.save();ctx.fillStyle='#0f766e';ctx.font='bold 20px sans-serif';ctx.textAlign='center';
         ctx.fillText('Fattore totale: '+ctotF,(XS[fi]+XS[ti])/2,visualY-14);
         ctx.restore();
@@ -400,7 +400,7 @@ goBtn.addEventListener('click',function(){
       var tsym=PFX_DATA[ti].sym==='—'?'':PFX_DATA[ti].sym;
       var rule;
       if(expDiff>0) rule='<strong>moltiplica per 10<sup>'+expDiff+'</sup></strong>';
-      else if(expDiff<0) rule='<strong>dividi per 10<sup>'+(-expDiff)+'</sup></strong>';
+      else if(expDiff<0) rule='<strong>moltiplica per 10<sup>'+expDiff+'</sup></strong>';
       else rule='nessun fattore';
       explDiv.innerHTML='Da <strong>'+fname+'</strong> a <strong>'+tname+'</strong>: '
         +rule+'. Equivalenza: <strong>1&thinsp;'+fsym+'X = 10<sup>'+expDiff+'</sup>&thinsp;'+tsym+'X</strong>.';
@@ -411,8 +411,8 @@ goBtn.addEventListener('click',function(){
     var nxtI=curI+dir;
     var seIdx=(dir>0)?curI:nxtI;
     var sExp=STEP_EXP[seIdx];
-    var op=dir>0?'÷':'×';
-    var lbl=op+'10'+supStr(sExp);
+    var op='×';
+    var lbl=op+'10'+supStr(dir>0?-sExp:sExp);
     var lblCol=dir>0?'#dc2626':'#0f766e';
     var x0=XS[curI],x1=XS[nxtI];
     var midX=(x0+x1)/2;
@@ -429,7 +429,7 @@ goBtn.addEventListener('click',function(){
       drawScene(fi,-1,{x:pt.x,y:pt.y,col:'#f59e0b'},
         doneLabels.concat([curLabel]), doneArcs.concat([curArc]));
       if(cumExp!==0){
-        var cpfx=cumExp>=0?'×10'+supStr(cumExp):'÷10'+supStr(-cumExp);
+        var cpfx='×10'+supStr(cumExp);
         ctx.save();ctx.fillStyle='rgba(15,118,110,.8)';ctx.font='bold 13px sans-serif';ctx.textAlign='right';
         ctx.fillText('Finora: '+cpfx,W-8,H-8);ctx.restore();
       }

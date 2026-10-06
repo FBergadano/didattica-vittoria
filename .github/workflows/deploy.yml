@@ -30,10 +30,9 @@ jobs:
         env:
           JEKYLL_ENV: production
 
-      - name: Inject Groq API key
-        run: |
-          find _site -name "*.html" \
-            -exec sed -i "s|__GROQ_KEY__|${{ secrets.GROQ_KEY }}|g" {} +
+      # NB: nessuna chiave API va mai scritta nelle pagine (sarebbe leggibile da
+      # chiunque nel sorgente). La chat passa da un intermediario: vedi
+      # strumenti/chat-proxy/LEGGIMI.md
 
       - uses: actions/upload-pages-artifact@v3
         with:

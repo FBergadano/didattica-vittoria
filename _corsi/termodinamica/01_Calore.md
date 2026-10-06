@@ -14,13 +14,36 @@ To hold infinity in the palm of your hand
 And eternity in an hour.
 </cit>
 In questo capitolo studieremo nel dettaglio una delle forme di energia che abbiamo incontrato: il <definizione>calore</definizione>.  
-Infatti, ricordiamo che nello scorso capitolo abbiamo scoperto ciò che riassumiamo qui di seguito.
+Abbiamo già detto, nello scorso capitolo, che l'energia meccanica può convertirsi in calore per azione dell'attrito. Questa scoperta fu fatta dall'inglese [James Prescott Joule](https://it.wikipedia.org/wiki/James_Prescott_Joule): un mastro birraio che aveva bisogno di fare esperimenti sul calore per trovare il modo ottimale di raffreddare la birra. A lui (e alla birra) si deve un esperimento che è noto come <definizione>il mulinello di Joule</definizione>. Per questa esperienza, gli fu intitolato il nome dell'unità di misura dell'energia: il “joule”.
+
+{% include figura.html id="james-prescott-joule"
+   src="/corsi/immagini/james-prescott-joule.jpeg"
+   didascalia="James Prescott Joule (1818–1889)."
+   alt="Ritratto di James Prescott Joule"
+   larghezza="220px" %}
+
+Puoi ripetere il suo esperimento con la seguente animazione.
+
+{% include lab-virtuali/mulinello-joule-lab.html %}
+
+Mentre i pesi scendono, perdono **energia potenziale gravitazionale**. Le corde, srotolandosi, fanno girare il mulinello, che agita l'acqua. Ma l'acqua non continua a girare per sempre: l'attrito con le palette la rallenta e l'energia viene **dissipata**. E infatti il termometro sale: <u markdown="span">l'energia meccanica persa dai pesi è diventata **calore**, che ha scaldato l'acqua</u>. Più volte fai cadere i pesi, più la temperatura aumenta.
+
+Joule comprese dunque la seguente cosa.
 
 {% include box-imp.html testo="Il calore" %}
-<u>Il calore</u> (simbolo $Q$) <u>è una forma di energia</u>. Pertanto, <u>essa si misura in joule</u> (simbolo J).  
-Inoltre, l'energia meccanica può convertirsi in calore tramite l'attrito.  
-{% include box-end.html %}
+<u>Il calore</u> (simbolo $Q$) <u markdown="span">è una forma di energia che si **trasmette** da un corpo a un altro</u>. Pertanto, <u>essa si misura in joule</u> (simbolo J).  
 
+
+{% include box-end.html %}
+{% include spoiler.html testo="Joule e la birra: la storia" %}
+{% include figure/joule-birra-figura.html %}
+
+James Prescott Joule (1818–1889) non era un professore universitario: era il figlio di un ricco birraio di Salford, vicino a Manchester, e da giovane si ritrovò a dirigere la birreria di famiglia. Fare la birra è, in gran parte, una questione di temperature: il mosto, dopo essere stato bollito, va **raffreddato** al punto giusto prima di aggiungere il lievito, e durante la fermentazione la temperatura va tenuta sotto controllo. Un buon birraio, quindi, doveva saper scaldare e raffreddare con precisione, sprecando meno carbone (e meno soldi) possibile.
+
+Per questo Joule si appassionò a una domanda molto concreta: *quanto* lavoro serve per produrre una certa quantità di calore, e viceversa? Diventò bravissimo a misurare le temperature, con termometri che apprezzavano differenze di pochi millesimi di grado (quelli del suo mulinello dovevano esserlo, visto che l'acqua si scaldava di una frazione di grado!), e fece i suoi esperimenti in casa e in birreria.
+
+Quando presentò i suoi risultati, negli anni Quaranta dell'Ottocento, molti scienziati non gli diedero retta: chi era questo birraio che pretendeva di misurare differenze di temperatura così piccole? Ma uno di loro, il giovane William Thomson (il futuro Lord Kelvin, quello della scala di temperatura!), capì che Joule aveva ragione. Si racconta che i due si incontrarono di nuovo per caso in Svizzera, dove Joule era in viaggio di nozze: Joule aveva con sé un lungo termometro, con cui voleva misurare se l'acqua di una cascata fosse più calda in fondo che in cima. Cadendo, infatti, l'acqua perde energia potenziale, che alla fine si trasforma in calore, proprio come nel suo mulinello.
+{% include spoiler-end.html %}
 
 In questo capitolo vedremo ***quando*** e ***come*** il calore si può **trasmettere**.  
 Cominciamo descrivendo ***quando*** il calore si può trasmettere, e per farlo abbiamo bisogno del concetto di <definizione>temperatura</definizione>.
@@ -42,9 +65,23 @@ Quando i due sistemi si trovano alla stessa temperatura, tra di essi non c'è sc
 
 Per comprendere quindi **se** il calore si trasmette tra due sistemi $A$ e $B$ e **in che verso** si trasmetta (da $A$ a $B$ o da $B$ ad $A$), dobbiamo conoscere la temperatura dei due sistemi $T_A$ e $T_B$. 
 
-Prova tu stesso: trascina la spada nella fornace per scaldarla, nel cesto di ghiaccio per raffreddarla, oppure immergila nella bacinella d'acqua e osserva il flusso di calore, finché spada e acqua non raggiungono l'equilibrio termico.
+Quando studiamo uno scambio di calore, conviene sempre dire con chiarezza chi è il <definizione>sistema</definizione>, cioè il corpo (o l'insieme di corpi) che ci interessa, e chi è l'<definizione>ambiente</definizione>, cioè tutto il resto. Il calore $Q$ scambiato dal sistema ha allora un **segno**, che ci dice in che verso va il calore.
+
+{% include box-imp.html testo="Il segno del calore" %}
+- $Q > 0$: è l'**ambiente** che riscalda il sistema, cioè il calore **entra** nel sistema.
+- $Q < 0$: è il **sistema** che cede calore all'ambiente, cioè il calore **esce** dal sistema.
+- $Q = 0$: sistema e ambiente non si scambiano calore (per esempio perché sono in equilibrio termico).
+{% include box-end.html %}
+
+{% include figure/segno-calore-figura.html %}
+
+È la stessa convenzione che hai usato per il lavoro: come un lavoro positivo fa aumentare l'energia del sistema ($\Delta E = L$), così un calore positivo è energia che il sistema riceve, e un calore negativo è energia che il sistema perde.
+
+Ora mettiti alla prova: trascina la spada nella fornace per scaldarla, nel cesto di ghiaccio per raffreddarla, oppure immergila nella bacinella d'acqua e osserva il flusso di calore, finché spada e acqua non raggiungono l'equilibrio termico. Ogni volta che appoggi la spada da qualche parte, prima di vedere che cosa succede, dovrai indovinare se, prendendo la **spada come sistema** e tutto il resto come ambiente, il calore $Q$ sarà positivo, negativo o nullo.
 
 {% include lab-virtuali/spada-lab.html %}
+
+
 
 
 
@@ -111,7 +148,7 @@ A far vacillare la teoria del calorico fu un esperimento sorprendente. Nel 1798 
 Ci vollero comunque ancora diversi decenni, e gli esperimenti di scienziati come James Prescott Joule, prima che l'idea del calorico venisse definitivamente abbandonata a favore della teoria che studieremo noi: quella per cui il calore è energia legata al movimento disordinato delle particelle che compongono la materia.
 {% include spoiler-end.html %}
 
-Oggi crediamo che la materia sia composta da un numero gigantesco di **molecole**, a loro volta composti da **atomi**. Ci riferiremo in genere agli atomi e alle molecole che compongono la materia con il nome di <definizione>particelle</definizione>. Le particelle che compongono un corpo sono in continuo movimento, anche se il corpo è fermo, per un'agitazione che si chiama <definizione>agitazione termica</definizione>, come puoi vedere nell'animazione qui sotto.
+Oggi crediamo che la materia sia composta da un numero gigantesco di **molecole**, a loro volta composte da **atomi**. Ci riferiremo in genere agli atomi e alle molecole che compongono la materia con il nome di <definizione>particelle</definizione>. Le particelle che compongono un corpo sono in continuo movimento, anche se il corpo è fermo, per un'agitazione che si chiama <definizione>agitazione termica</definizione>, come puoi vedere nell'animazione qui sotto.
 
 {% include figura.html id="alpha-elix"
    src="/corsi/gif/Thermally_Agitated_alpha-elix.gif"
@@ -142,10 +179,227 @@ Esso avviene perché, quando la temperatura di un corpo aumenta, aumenta anche l
 
 
 
+### Una Formula per la Dilatazione Termica
+
+{% include margin-note.html testo="Costruire la formula" %}
+Abbiamo compreso che un corpo con una lunghezza iniziale pari a $L_i$ si **allunga**, raggiungendo una lunghezza finale $L_f$, quando lo portiamo da una temperatura iniziale $T_i$ a una temperatura finale $T_f$. Chiamiamo, come al solito, la **variazione** di lunghezza $\Delta L = L_f-L_i$ e la variazione della temperatura $\Delta T = T_f-T_i.$  
+Per capire di quanto si allunga abbiamo bisogno di cercare una formula per $\Delta L.$  
+Possiamo intuire che l'allungamento $\Delta L$ sarà:
+- direttamente proporzionale alla variazione di temperatura $\Delta T$ (più riscaldo il corpo, più esso si allunga);
+- direttamente proporzionale alla lunghezza iniziale $L_i$ (una barra lunga si allunga più di quanto non faccia una barra corta);
+- dipendente dal tipo di materiale attraverso un certo <definizione>coefficiente di dilatazione termica</definizione>, che indicheremo con $\alpha$ ed esprime la facilità con cui un corpo si dilata quando lo si riscalda (diversi materiali si dilatano differentemente).
+
+La formula risulta quindi essere 
+
+{% include eq-annotated.html
+     id="dilatazione-termica"
+     formula="\Delta L = \alpha\, L_i\, \Delta T"
+     frammenti="\Delta L|\alpha|L_i|\Delta T"
+     etichette="allungamento|coefficiente di dilatazione termica (dipendenza dal materiale)|lunghezza iniziale|variazione della temperatura"
+     posizioni="alto|basso|alto|basso"
+  %}
+
+{% include margin-note-end.html %}
+
+
+Verifica con il seguente esercizio che <u>l'unità di misura del coefficiente di dilatazione termica $\alpha$ è l'inverso del kelvin</u>, cioè che
+
+$$[\alpha]=\frac 1 {\text{K}}.$$
+
+{% include esercizi/unita-alfa.html %}
+
+## Alcuni Esperimenti e alcune Applicazioni Tecnologiche della Dilatazione Termica
+
+La dimostrazione sperimentale di questa teoria avvenne con un esperimento molto simpatico, ideato dal fisico e filosofo olandese Willem 's Gravesande. Puoi vederlo con questo video.
+
+{% include video.html id="vfv7Ao2T1G0" didascalia="L'anello di 's Gravesande: la sfera passa nell'anello solo finché è fredda; scaldata, si dilata e non passa più." %}
+
+
+https://www.youtube.com/shorts/BnAQWYFggC8
+
+
+
+
+
+
+
+# La Legge Fondamentale della Calorimetria
+
+
+Sappiamo che la temperatura di un corpo cambia quando si fornisce ad esso --- o si sottrae da esso --- **calore**. Dobbiamo quindi trovare un modo per connettere la **variazione della temperatura** alla quantità di **calore** che forniamo ad un corpo o che sottraiamo da esso. Esprimeremo il calore fornito con un numero **positivo** e quello sottratto con un numero **negativo**.
+
+Puoi osservare il riscaldamento e il raffreddamento di un corpo con la seguente animazione.
+{% include phet-sim.html id="heating-up"
+   src="https://phet.colorado.edu/sims/html/energy-forms-and-changes/latest/energy-forms-and-changes_all.html"
+   didascalia="Simulazione PhET: Trascina il termometro dall'angolo in alto a sinistra fino a toccare (con la frecciolina sulla sinistra) uno dei corpi di cui ti interessa conoscere la temperatura. Attivando i fornelli, puoi riscaldare tutti i corpi. Inoltre, puoi vedere come un corpo caldo cede calore a un corpo più freddo mettendo a contatto due corpi che si trovano a temperature diverse."
+   altezza="550px" %}
+
+Notiamo che la variazione della temperatura è:
+- direttamente proporzionale alla quantità di calore $Q$ che viene fornita;
+- inversamente proporzionale alla massa da riscaldare;
+- dipendente dal tipo di materiale (prova a far bollire acqua e olio, vedrai come sono diversi!). Questa dipendenza è una caratteristica del materiale che chiameremo <definizione>calore specifico</definizione> e indicheremo con il simbolo $c$, e corrisponde alla resistenza che oppone il materiale al suo riscaldamento.
+
+La formula quindi si costruisce così
+
+{% include eq-annotated.html
+     id="calorimetria"
+     formula="\Delta T = \frac{Q}{c\,m}."
+     frammenti="\Delta T|Q|c\,|m"
+     etichette="variazione della temperatura|calore|calore specifico (proprietà del corpo)|massa"
+     posizioni="alto|alto|basso|basso"
+  %}
+
+Questa formula è nota come la <definizione>legge fondamentale della calorimetria</definizione>, che possiamo riscrivere, nella sua forma più famosa, come
+
+{% include lab-virtuali/calorimetria-inversione-lab.html %}
+
+$$Q = c\, m \, \Delta T.$$
+
+Notiamo che
+- se $Q$ è **negativo** (cioè sottraiamo calore dal corpo) allora $\Delta T <0$, cioè la temperatura **diminuisce**;
+- se $Q$ è **positivo** (cioè forniamo calore al corpo) allora $\Delta T>0$, cioè la temperatura **aumenta**.
+
+Inoltre, verifica con il seguente esercizio che l'unità di misura del calore specifico $c$ è il joule per chilogrammo kelvin, cioè che
+
+$$[c]=\dfrac{\text J}{\text{kg}\cdot\text K}.$$
+
+{% include esercizi/unita-calore-specifico.html %}
+
+{% include box-imp.html testo="Legge fondamentale della calorimetria" %}
+Il calore $Q$ fornito a un corpo è legato alla sua variazione di temperatura $\Delta T$ tramite la legge fondamentale della calorimetria
+
+$$
+Q=c\,m\, \Delta T,
+$$
+
+ove $c$ è il calore specifico: una caratteristica del materiale la cui unità di misura è il $\frac{\text J} {\text{kg}\cdot\text K}.$
+
+{% include box-end.html %}
+
+
+
+
 
 # La Trasmissione del Calore
 
+È fondamentale comprendere che <u markdown="span">il calore non è in nessun modo una *proprietà* di un corpo</u>. Un corpo non *ha* calore.  
+Il calore è una forma di energia <u markdown="span">che si **trasmette** da un corpo a un altro.</u> 
+
 La descrizione della trasmissione del calore è molto affascinante, perché non è possibile descrivere ***come*** esso avvenga se non in termini di ciò che succede **a livello microscopico**, cioè a livello delle molecole e degli atomi di cui sono composti i corpi, e questo rivela quanto sia complesso e ricco il mondo che abbiamo attorno, proprio quello a cui siamo più abituati.
 
+Le forme di trasmissione del calore sono solo tre e in questa sezione le affronteremo una ad una.
+
+Prima, però, ci serve una grandezza che ci dica *quanto velocemente* il calore si trasmette. Ricordi la [potenza]({{ '/corsi/meccanica/06_Energia/' | relative_url }}#la-potenza)? Nel capitolo sull'energia l'abbiamo definita come il lavoro compiuto diviso il tempo impiegato per compierlo, $P = \dfrac{L}{\Delta t}$, e l'abbiamo misurata in watt ($1\ \text W = 1\ \text J/\text s$): la pompa era più potente dell'omino non perché compisse più lavoro, ma perché compiva lo stesso lavoro in meno tempo.
+
+Poiché anche il calore è energia, possiamo fare esattamente la stessa cosa. Spesso, infatti, non ci interessa tanto *quanto* calore passa in totale da un corpo a un altro, ma *quanto ne passa ogni secondo*: un buon cappotto non impedisce al calore del nostro corpo di uscire, ma lo fa uscire molto più lentamente. Questa grandezza si chiama <definizione>potenza termica</definizione>.
+
+{% include box-imp.html testo="La potenza termica" %}
+La potenza termica $P$ è la quantità di calore $Q$ trasmessa in un certo intervallo di tempo $\Delta t$, divisa per l'intervallo di tempo stesso:
+
+$$P = \frac{Q}{\Delta t}.$$
+
+Come ogni potenza, si misura in watt (W): $1\ \text W = 1\ \text J/\text s$.
+{% include box-end.html %}
+
+
+## La Trasmissione del Calore per Conduzione
+
+Osserva la seguente animazione.
+
+{% include lab-virtuali/conduzione-barra-lab.html %}
+
+
+Nota che, riscaldando una barra di metallo a una estremità, l'energia si propaga dentro la barra, trasferendosi dalla regione più calda alla regione più fredda. Nello scenario “vista microscopica” puoi anche vedere ***come*** avvenga questa trasmissione di energia: le particelle delle zone più calde si muovono a velocità più elevate e impattano contro le particelle delle zone più fredde, donando loro energia cinetica, e quindi aumentando la temperatura di quella zona.
+
+Osserva anche, con la modalità laboratorio, che la potenza termica $P$ che si trasmette da un punto $x_1$ che si trova a temperatura $T_1$ a un punto $x_2$ che si trova a temperatura $T_2$ (cioè il calore che ogni secondo passa da $x_1$ a $x_2$) è:
+- direttamente proporzionale all'area $A$ della sezione (maggiore è l'area e maggiore è il numero di particelle che ogni secondo trasmettono il calore);
+- direttamente proporzionale alla variazione di temperatura $\Delta T = T_2-T_1$ cambiata di segno: ad esempio, se $T_2$ è maggiore di $T_1$ allora $\Delta T>0$ ma il calore va da $T_2$ a $T_1$, quindi la potenza termica da $x_1$ a $x_2$ è negativa;
+- inversamente proporzionale alla distanza tra i punti $x_1$ e $x_2$, cioè alla variazione della posizione $\Delta x = x_2 - x_1$;
+- dipendente dal materiale attraverso una grandezza che chiamiamo <definizione>conducibilità termica</definizione> e indichiamo con $k$, e che esprime la capacità di un materiale di trasmettere calore.
+
+
+Pertanto, la formula si costruisce in questo modo:
+{% include eq-annotated.html
+     id="fourier"
+     formula="P = -k\, A\, \frac{\Delta T}{\Delta x}."
+     frammenti="P|-|k|A|\Delta T|\Delta x"
+     etichette="potenza termica trasmessa tra due sezioni nelle posizioni $x_1$ e $x_2$|va nel verso opposto della crescita della temperatura|conducibilità termica (proprietà del materiale)|area della sezione|variazione della temperatura $T_2-T_1$|variazione della posizione delle due sezioni $x_2-x_1$"
+     posizioni="alto|basso|alto|basso|alto|basso"
+  %}
+
+Verifica con il seguente esercizio che l'unità di misura della conducibilità termica $k$ è $\dfrac{\text W}{\text m\cdot\text K}$.
+
+{% include esercizi/unita-conducibilita.html %}
+
+Ricapitolando:
+
+{% capture _ua_cond %}{"lhs":{"s":"k"},
+ "rhs":[{"o":"−","drop":true},{"f":[[{"s":"P","u":"W"},{"o":"·"},{"s":"Δx","u":"m"}],[{"s":"A","u":"m²"},{"o":"·"},{"s":"ΔT","u":"K"}]]}],
+ "passi":[[{"f":[["W",{"o":"·"},"m"],[{"t":"m","hl":true},{"o":"·"},{"t":"m","hl":true},{"o":"·"},"K"]]}],
+          [{"f":[["W",{"o":"·"},{"t":"m","x":true}],[{"t":"m","x":true},{"o":"·"},"m",{"o":"·"},"K"]]}],
+          [{"f":[["W"],["m",{"o":"·"},"K"]]}]]}{% endcapture %}
+{% include lab-virtuali/unita-anim.html id="ua-cond" dati=_ua_cond %}
+
+Quindi:
+
+$$[k]=\frac{[P]\cdot[\Delta x]}{[A]\cdot[\Delta T]}=\frac{\text W\cdot\text m}{\text m^2\cdot\text K}=\frac{\text W\cdot\cancel{\text m}}{\cancel{\text m}\cdot\text m\cdot\text K}=\frac{\text W}{\text m\cdot\text K}.$$
+
+
+  
+## La Trasmissione del Calore per Convezione
+
+Osserva la seguente animazione.
+
+{% include lab-virtuali/convezione-pentola-lab.html %}
+
+Nella vista microscopica, le particelle sul fondo, scaldate dalla fiamma, vibrano di più e [si allontanano](#il-termometro-e-la-dilatazione-termica) le une dalle altre: l'acqua calda si dilata e diventa **meno densa**. Le particelle fredde in alto, più vicine fra loro, scendono e si infilano negli spazi che si sono aperti, spingendo verso l'alto quelle calde.
+
+Nella vista macroscopica si vede il risultato: l'acqua calda sale al centro, in superficie si raffredda, scende lungo le pareti e sul fondo torna verso il centro. Si forma un circuito chiuso, detto <definizione>moto convettivo</definizione>, che porta il calore in tutta l'acqua. Questo modo di trasmettere il calore si chiama <definizione>convezione</definizione>.
+
+{% include box-imp.html testo="La convezione" %}
+La convezione è la trasmissione del calore in un **fluido** (un liquido o un gas) grazie al **movimento del fluido stesso**: la parte calda, meno densa, sale; quella fredda, più densa, scende a prenderne il posto.  
+A differenza della conduzione, qui **la materia si sposta**, portando con sé l'energia: per questo la convezione non avviene nei solidi.
+{% include box-end.html %}
+
+{% include box-warn.html testo="«Il calore sale»?" %}
+Non è così: il calore va sempre dalla zona più calda a quella più fredda, **in qualsiasi direzione**. Ciò che sale è il **fluido caldo**, perché è meno denso.
+{% include box-end.html %}
+
+{% include box-note.html testo="La convezione intorno a te" %}
+La convezione è dappertutto intorno a te: scorri gli esempi.
+
+{% include scorri.html %}
+{% include scorri-slide.html img="/corsi/immagini/convection-heater.png" alt="Una stanza con un termosifone: l'aria calda sale sopra il termosifone, attraversa la stanza vicino al soffitto, scende dalla parte opposta e torna verso il termosifone lungo il pavimento" titolo="Il termosifone" %}
+Il termosifone scalda l'aria vicina, che sale, attraversa la stanza vicino al soffitto, si raffredda, scende e torna verso il termosifone: un moto convettivo. Per questo i termosifoni si mettono in basso e i condizionatori in alto.
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html img="/corsi/immagini/convection-bird.jpeg" alt="Una sterna in volo con le ali spiegate" titolo="Gli uccelli e le correnti termiche" %}
+Il terreno scaldato dal Sole scalda l'aria sopra di sé, che sale in colonne: le **correnti termiche**. Molti uccelli (e i piloti di parapendio) le sfruttano per salire di quota quasi senza battere le ali.
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html img="/corsi/immagini/convection-currents-earth.png" alt="A sinistra, uno spaccato della Terra con i moti convettivi nel mantello sotto le placche; a destra, una pentola d'acqua sul fuoco con gli stessi moti convettivi" titolo="Sotto i tuoi piedi: il mantello terrestre" %}
+Le rocce caldissime del mantello terrestre si muovono per convezione, come l'acqua nella pentola, ma lentissimamente (pochi centimetri all'anno), e trascinano con sé le placche dei continenti.
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qconv %}[
+{"t":"La convezione può avvenire all'interno di una sbarra di ferro.","ok":false,"s":"No: nei solidi le particelle restano al loro posto e non possono spostarsi trasportando l'energia. Nei solidi il calore si trasmette per conduzione."},
+{"t":"Nella convezione è il fluido stesso a spostarsi, portando con sé l'energia.","ok":true,"s":"Sì, è proprio questa la differenza con la conduzione, in cui l'energia passa da una particella all'altra ma le particelle restano al loro posto."},
+{"t":"Scaldandosi, l'acqua si dilata e la sua densità diminuisce.","ok":true,"s":"Sì: le particelle si allontanano, quindi la stessa massa occupa un volume più grande."},
+{"t":"L'acqua calda sale perché il calore tende sempre ad andare verso l'alto.","ok":false,"s":"No: il calore va dalla zona più calda a quella più fredda, in qualsiasi direzione. L'acqua calda sale perché è meno densa ed è spinta verso l'alto dall'acqua fredda, più densa, che le scende sotto."},
+{"t":"Se scaldi una pentola d'acqua dall'alto (per esempio con una resistenza elettrica appena sotto la superficie), si formano gli stessi moti convettivi che scaldandola dal basso.","ok":false,"s":"No: l'acqua calda, meno densa, è già in alto e lì resta; quella fredda, più densa, è già in basso. Nessuno ha motivo di muoversi, e il calore scende solo per conduzione, molto lentamente."},
+{"t":"In un frigorifero, conviene che la parte che raffredda l'aria si trovi in alto.","ok":true,"s":"Sì: l'aria raffreddata in alto diventa più densa e scende, e al suo posto sale l'aria più calda del fondo, che a sua volta viene raffreddata. Si forma un moto convettivo che raffredda tutto il frigorifero."},
+{"t":"Fra 0 °C e 4 °C l'acqua fa un'eccezione: scaldandosi si contrae, invece di dilatarsi. Per questo d'inverno, in un lago, l'acqua a 4 °C si raccoglie sul fondo e il ghiaccio si forma in superficie.","ok":true,"s":"Sì: a 4 °C l'acqua ha la densità massima, quindi scende sul fondo. L'acqua più fredda, meno densa, resta in alto e lì gela: il ghiaccio galleggia e fa da coperta, e i pesci sopravvivono sul fondo a 4 °C."}
+]{% endcapture %}
+{% include quiz.html domande=_qconv id="q-convezione" senza_esempi="true" %}
+{% include box-end.html %}
+
+{% capture _r %}Il calore non «sale»: va sempre dalla zona più calda a quella più fredda, in qualsiasi direzione. Nella pentola a salire è l'acqua calda del fondo: scaldandosi si dilata, diventa meno densa, e l'acqua fredda della superficie, più densa, le scende sotto e la spinge verso l'alto. È l'acqua che si muove a portare il calore fino in superficie: questa è la convezione.{% endcapture %}
+{% include risposta-aperta.html id="ra-spiega-convezione" tipo="spiega"
+   domanda="Un compagno ti dice: «La superficie dell'acqua nella pentola si scalda perché il calore sale». Come gli spieghi dove sbaglia, e che cosa succede davvero?"
+   risposta=_r %}
+
+
+## La Trasmissione del Calore per Irraggiamento
 
 

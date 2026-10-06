@@ -99,6 +99,8 @@ Esempio:
       numSels.forEach(function (s) { s.disabled = true; });
       denSels.forEach(function (s) { s.disabled = true; });
       confetti();
+      root.dataset.ok = '1';
+      root.dispatchEvent(new CustomEvent('iex:correct', {bubbles: true}));   // per caroselli/esercizi a passi
       _lvSave('uderive', '{{ _uid }}', {
         num: Array.prototype.map.call(numSels, function(s){return s.value;}),
         den: Array.prototype.map.call(denSels, function(s){return s.value;})
@@ -141,6 +143,7 @@ Esempio:
     fb.style.display = 'block';
     fb.className = 'uderive-fb ok';
     fb.textContent = '✓ Esatto!';
+    root.dataset.ok = '1';
   }
 
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([root]);
