@@ -1,0 +1,100 @@
+{% comment %}
+Esercizio a carosello (Prova tu!) sulla potenza termica P = Q/Δt, dal più
+facile al più difficile: calcolo di P, di Δt e di Q (anche in notazione
+scientifica), un confronto fra due stufe (più calore non vuol dire più
+potenza) e la finestra con il doppio vetro. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexPotTerm">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexPotTermprev" onclick="iexPotTermnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexPotTermdots"></div>
+<button class="iex-navbtn" id="iexPotTermnext" onclick="iexPotTermnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexPotTermrow0">
+<p class="iex-qt">Una stufetta cede all'ambiente $36\,000\ \text J$ di calore in un minuto. Qual è la sua potenza termica?</p>
+{% include num.html id="numPotTerm0" valore="600" unit="W" %}
+</div>
+
+<div class="iex-q" id="iexPotTermrow1" style="display:none">
+<p class="iex-qt">Un forno a microonde ha una potenza di $800\ \text W$. Quanto tempo gli serve per fornire $64\,000\ \text J$ a una tazza di latte?</p>
+{% include num.html id="numPotTerm1" valore="80" unit="s" %}
+</div>
+
+<div class="iex-q" id="iexPotTermrow2" style="display:none">
+<p class="iex-qt">Un bollitore elettrico ha una potenza di $2\,000\ \text W$. Quanto calore fornisce all'acqua in 3 minuti? Scrivi il risultato in notazione scientifica.</p>
+{% include sci.html prima="Q =" coeff="3.6" exp="5" tol=1 s="Δt = 180 s, quindi Q = 2000 W × 180 s = 3,6 × 10⁵ J" %}
+</div>
+
+<div class="iex-q" id="iexPotTermrow3" style="display:none">
+<p class="iex-qt">Una persona a riposo cede all'ambiente circa $100\ \text W$ di calore. Quanto calore cede durante una notte di 8 ore? Scrivi il risultato in notazione scientifica.</p>
+{% include sci.html prima="Q =" coeff="2.88,2.9" exp="6" tol=1 s="Δt = 8 × 3600 s = 28 800 s, quindi Q = 100 W × 28 800 s ≈ 2,88 × 10⁶ J" %}
+</div>
+
+<div class="iex-q" id="iexPotTermrow4" style="display:none">
+<p class="iex-qt">La stufa A cede $1{,}2 \times 10^5\ \text J$ di calore in 2 minuti; la stufa B cede $2{,}7 \times 10^5\ \text J$ in 5 minuti. Quale delle due ha la potenza termica maggiore?</p>
+{% capture _o_pt %}[{"v":"a","t":"La stufa A"},{"v":"b","t":"La stufa B, perché cede più calore"},{"v":"c","t":"Hanno la stessa potenza"}]{% endcapture %}
+{% include mcq.html id="mcq-potterm" opts=_o_pt ok="a" s="A: $P = 1{,}2\times10^5\ \text J / 120\ \text s = 1000\ \text W$; B: $P = 2{,}7\times10^5\ \text J / 300\ \text s = 900\ \text W$. La stufa B cede più calore in totale, ma ci mette più tempo: è la stufa A a essere più potente." %}
+</div>
+
+<div class="iex-q" id="iexPotTermrow5" style="display:none">
+<p class="iex-qt">D'inverno, dal vetro di una finestra esce una potenza termica di circa $150\ \text W$. Quanto calore si disperde in una giornata (24 ore)? Scrivi il risultato in notazione scientifica.</p>
+{% include sci.html prima="Q =" coeff="1.3,1.296" exp="7" tol=1 s="Δt = 24 × 3600 s = 86 400 s, quindi Q = 150 W × 86 400 s ≈ 1,3 × 10⁷ J" %}
+<p class="iex-qt">Con un doppio vetro la potenza termica dispersa si dimezza. Quanto calore si risparmia in un mese di 30 giorni?</p>
+{% include sci.html prima="Q risparmiato =" coeff="1.94,1.944,1.9" exp="8" tol=1 s="Si risparmiano 75 W per 30 × 86 400 s = 2 592 000 s: Q = 75 W × 2 592 000 s ≈ 1,94 × 10⁸ J" %}
+</div>
+
+</div>
+
+<script>
+window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
+  var cur=0, ok=[];
+  for(var oi=0;oi<N;oi++)ok.push(false);
+  
+  function shootFW(){
+    for(var b=0;b<5;b++)(function(b){setTimeout(function(){
+      window._shoot({getBoundingClientRect:function(){return{left:window.innerWidth*(.1+Math.random()*.8),top:window.innerHeight*(.1+Math.random()*.5),width:0,height:0};}});
+    },b*200);})(b);
+  }
+  function updateDots(){
+    var dots=document.querySelectorAll('#'+ID+'dots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
+  }
+  function show(i){
+    document.querySelectorAll('#'+ID+' .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById(ID+'row'+i).style.display='block';
+    cur=i;
+    document.getElementById(ID+'prev').disabled=(i===0);
+    document.getElementById(ID+'next').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById(ID+'dots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Passo '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+  // Ogni esercizio annidato (invert.html o sci.html) segnala da sé quando
+  // viene risolto correttamente: lo contiamo per i fuochi d'artificio finali.
+  for(var k=0;k<N;k++){
+    (function(k){
+      var row=document.getElementById(ID+'row'+k);
+      if(!row)return;
+      row.addEventListener('iex:correct', function(){
+        if(ok[k])return;
+        ok[k]=true; updateDots();
+        if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+      });
+    })(k);
+  }
+};
+
+setupInvCarousel('iexPotTerm',6);
+</script>
