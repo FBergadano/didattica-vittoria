@@ -301,6 +301,10 @@ $$P = \frac{Q}{\Delta t}.$$
 Come ogni potenza, si misura in watt (W): $1\ \text W = 1\ \text J/\text s$.
 {% include box-end.html %}
 
+{% include esercizi/invert-potenza-termica.html %}
+
+{% include esercizi/esercizio-potenza-termica.html %}
+
 
 ## La Trasmissione del Calore per Conduzione
 
