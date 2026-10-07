@@ -2,8 +2,7 @@
 Esercizio guidato ("Verifica Subito!") sull'unità di misura della
 conducibilità termica k, in tre passi che si sbloccano uno dopo l'altro
 (come unita-alfa.html e unita-calore-specifico.html):
- 1. isolare k nella formula P = k · A · ΔT / Δx (in modulo: il segno meno non
-    ha unità di misura)  (invert.html);
+ 1. isolare k nella legge di Fourier P = k · A · ΔT / Δx  (invert.html);
  2. sostituire ogni grandezza con la sua unità di misura:
     [k] = [P]·[Δx] / ([A]·[ΔT])  (unit-derive.html);
  3. semplificare: W·m/(m²·K) = W/(m·K)  (mcq.html).
@@ -13,7 +12,7 @@ I progressi restano salvati nel browser. Nessun parametro.
 <p class="iex-lbl">Verifica Subito!</p>
 
 <div id="uaCond-s1">
-<p class="iex-qt"><strong>1.</strong> Isola $k$ nella formula $P = k\, A\, \dfrac{\Delta T}{\Delta x}$. (Il segno meno non ci interessa: non ha unità di misura.)</p>
+<p class="iex-qt"><strong>1.</strong> Isola $k$ nella formula $P = k\, A\, \dfrac{\Delta T}{\Delta x}$.</p>
 <div class="iex-nested">
 {% include invert.html id="inv-cond" variabili="P|k|A|DT|Dx" etichette="P|k|A|\Delta T|\Delta x"
    sinistra="P" destra="k*A*DT/Dx" obiettivo="k" %}

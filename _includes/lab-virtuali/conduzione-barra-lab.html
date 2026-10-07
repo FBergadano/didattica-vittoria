@@ -27,8 +27,8 @@ MODALITÀ LABORATORIO (in entrambe le viste): due sezioni x₁ e x₂, da
 trascinare (x₁ resta sempre a sinistra di x₂, così Δx > 0 come nella formula), ciascuna con il suo termometro e la sua posizione; una freccia
 indica il verso di ΔT (verso cui la temperatura cresce).
 - In entrambe: un riquadretto-contatore della POTENZA TERMICA P scambiata fra
-  la sezione a x₁ e quella a x₂, in watt (positiva se il calore va da x₁
-  verso x₂, come nella legge di Fourier).
+  la sezione a x₁ e quella a x₂, in watt (senza segno, come nella legge di
+  Fourier P = k·A·ΔT/Δx), con scritto in che verso passa il calore.
   Vista macroscopica: P calcolata con la legge di Fourier (valori reali della
   conducibilità k); freccia spessa del flusso di calore (etichetta P), con
   segni che scorrono nel verso del flusso e toni tanto più caldi quanto più
@@ -352,11 +352,11 @@ Nessun parametro.
   function draw(){if(view==='macro')drawMacro();else drawMicro();}
 
   // ── pannello dei contatori (modalità laboratorio)
-  function counterBox(P){                          // riquadretto-contatore della potenza termica scambiata
-    var sg=P>=0?'+':'−',cl=P>=0?'pos':'neg';
-    return '<div class="cb-counter"><div class="cb-display"><span class="'+cl+'">'+sg+'</span> '+fmt(Math.abs(P),1)+' W</div>'+
+  function counterBox(P){                          // riquadretto-contatore della potenza termica scambiata (legge di Fourier, senza segno)
+    var verso=Math.abs(P)<0.05?'nessun passaggio di calore':(P>0?'il calore passa da <b>x₁</b> a <b>x₂</b>':'il calore passa da <b>x₂</b> a <b>x₁</b>');
+    return '<div class="cb-counter"><div class="cb-display">'+fmt(Math.abs(P),1)+' W</div>'+
       '<div class="cb-cap">potenza termica scambiata tra la sezione a <b>x₁</b> e la sezione a <b>x₂</b><br>'+
-      '<small>positiva se il calore va da x₁ verso x₂, negativa se va da x₂ verso x₁</small></div></div>';
+      '<small>'+verso+'</small></div></div>';
   }
   var lastPanel=0;
   function panel(force){

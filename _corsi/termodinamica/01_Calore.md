@@ -77,7 +77,7 @@ Quando studiamo uno scambio di calore, conviene sempre dire con chiarezza chi è
 
 È la stessa convenzione che hai usato per il lavoro: come un lavoro positivo fa aumentare l'energia del sistema ($\Delta E = L$), così un calore positivo è energia che il sistema riceve, e un calore negativo è energia che il sistema perde.
 
-Ora mettiti alla prova: trascina la spada nella fornace per scaldarla, nel cesto di ghiaccio per raffreddarla, oppure immergila nella bacinella d'acqua e osserva il flusso di calore, finché spada e acqua non raggiungono l'equilibrio termico. Ogni volta che appoggi la spada da qualche parte, prima di vedere che cosa succede, dovrai indovinare se, prendendo la **spada come sistema** e tutto il resto come ambiente, il calore $Q$ sarà positivo, negativo o nullo.
+Trascina la spada nella fornace per scaldarla, nel cesto di ghiaccio per raffreddarla, oppure immergila nella bacinella d'acqua e osserva il flusso di calore, finché spada e acqua non raggiungono l'equilibrio termico. Ogni volta che appoggi la spada da qualche parte, prima di vedere che cosa succede, dovrai indovinare se, prendendo la **spada come sistema** e tutto il resto come ambiente, il calore $Q$ sarà positivo, negativo o nullo.
 
 {% include lab-virtuali/spada-lab.html %}
 
@@ -265,6 +265,8 @@ $$[c]=\dfrac{\text J}{\text{kg}\cdot\text K}.$$
 
 {% include esercizi/unita-calore-specifico.html %}
 
+Qual è il significato fisico del calore specifico? Ricavando $c$ dalla legge fondamentale, $c=\dfrac{Q}{m\,\Delta T}$, si vede che, se si prendono $m=1\ \text{kg}$ e $\Delta T = 1\ \text K$, allora $c = Q$. Cioè: <u markdown="span">il calore specifico è il calore che serve per aumentare di $1\ \text K$ la temperatura di $1\ \text{kg}$ di una sostanza</u>. Per l'acqua, ad esempio, servono circa $4\,186\ \text J$; per il ferro ne bastano circa $450$: a parità di massa e di calore fornito, il ferro si scalda circa nove volte di più dell'acqua.
+
 {% include box-imp.html testo="Legge fondamentale della calorimetria" %}
 Il calore $Q$ fornito a un corpo è legato alla sua variazione di temperatura $\Delta T$ tramite la legge fondamentale della calorimetria
 
@@ -306,7 +308,7 @@ Come ogni potenza, si misura in watt (W): $1\ \text W = 1\ \text J/\text s$.
 {% include esercizi/esercizio-potenza-termica.html %}
 
 
-## La Trasmissione del Calore per Conduzione
+## La Trasmissione del Calore per Conduzione e la Legge di Fourier
 
 Osserva la seguente animazione.
 
@@ -315,20 +317,20 @@ Osserva la seguente animazione.
 
 Nota che, riscaldando una barra di metallo a una estremità, l'energia si propaga dentro la barra, trasferendosi dalla regione più calda alla regione più fredda. Nello scenario “vista microscopica” puoi anche vedere ***come*** avvenga questa trasmissione di energia: le particelle delle zone più calde si muovono a velocità più elevate e impattano contro le particelle delle zone più fredde, donando loro energia cinetica, e quindi aumentando la temperatura di quella zona.
 
-Osserva anche, con la modalità laboratorio, che la potenza termica $P$ che si trasmette da un punto $x_1$ che si trova a temperatura $T_1$ a un punto $x_2$ che si trova a temperatura $T_2$ (cioè il calore che ogni secondo passa da $x_1$ a $x_2$) è:
+Osserva anche, con la modalità laboratorio, che la potenza termica $P$ che si trasmette fra due sezioni della barra, nei punti $x_1$ e $x_2$ (cioè il calore che ogni secondo passa dalla sezione più calda a quella più fredda), è:
 - direttamente proporzionale all'area $A$ della sezione (maggiore è l'area e maggiore è il numero di particelle che ogni secondo trasmettono il calore);
-- direttamente proporzionale alla variazione di temperatura $\Delta T = T_2-T_1$ cambiata di segno: ad esempio, se $T_2$ è maggiore di $T_1$ allora $\Delta T>0$ ma il calore va da $T_2$ a $T_1$, quindi la potenza termica da $x_1$ a $x_2$ è negativa;
-- inversamente proporzionale alla distanza tra i punti $x_1$ e $x_2$, cioè alla variazione della posizione $\Delta x = x_2 - x_1$;
+- direttamente proporzionale alla differenza di temperatura $\Delta T$ fra le due sezioni;
+- inversamente proporzionale alla distanza $\Delta x$ fra le due sezioni;
 - dipendente dal materiale attraverso una grandezza che chiamiamo <definizione>conducibilità termica</definizione> e indichiamo con $k$, e che esprime la capacità di un materiale di trasmettere calore.
 
 
-Pertanto, la formula si costruisce in questo modo:
+Pertanto, la formula si costruisce in questo modo, e prende il nome di <definizione>legge di Fourier</definizione>:
 {% include eq-annotated.html
      id="fourier"
-     formula="P = -k\, A\, \frac{\Delta T}{\Delta x}."
-     frammenti="P|-|k|A|\Delta T|\Delta x"
-     etichette="potenza termica trasmessa tra due sezioni nelle posizioni $x_1$ e $x_2$|va nel verso opposto della crescita della temperatura|conducibilità termica (proprietà del materiale)|area della sezione|variazione della temperatura $T_2-T_1$|variazione della posizione delle due sezioni $x_2-x_1$"
-     posizioni="alto|basso|alto|basso|alto|basso"
+     formula="P = k\, A\, \frac{\Delta T}{\Delta x}."
+     frammenti="P|k|A|\Delta T|\Delta x"
+     etichette="potenza termica trasmessa dalla sezione più calda a quella più fredda|conducibilità termica (proprietà del materiale)|area della sezione|differenza di temperatura fra le due sezioni|distanza fra le due sezioni"
+     posizioni="alto|basso|alto|basso|alto"
   %}
 
 Verifica con il seguente esercizio che l'unità di misura della conducibilità termica $k$ è $\dfrac{\text W}{\text m\cdot\text K}$.
@@ -338,7 +340,7 @@ Verifica con il seguente esercizio che l'unità di misura della conducibilità t
 Ricapitolando:
 
 {% capture _ua_cond %}{"lhs":{"s":"k"},
- "rhs":[{"o":"−","drop":true},{"f":[[{"s":"P","u":"W"},{"o":"·"},{"s":"Δx","u":"m"}],[{"s":"A","u":"m²"},{"o":"·"},{"s":"ΔT","u":"K"}]]}],
+ "rhs":[{"f":[[{"s":"P","u":"W"},{"o":"·"},{"s":"Δx","u":"m"}],[{"s":"A","u":"m²"},{"o":"·"},{"s":"ΔT","u":"K"}]]}],
  "passi":[[{"f":[["W",{"o":"·"},"m"],[{"t":"m","hl":true},{"o":"·"},{"t":"m","hl":true},{"o":"·"},"K"]]}],
           [{"f":[["W",{"o":"·"},{"t":"m","x":true}],[{"t":"m","x":true},{"o":"·"},"m",{"o":"·"},"K"]]}],
           [{"f":[["W"],["m",{"o":"·"},"K"]]}]]}{% endcapture %}
@@ -356,13 +358,12 @@ Osserva la seguente animazione.
 
 {% include lab-virtuali/convezione-pentola-lab.html %}
 
-Nella vista microscopica, le particelle sul fondo, scaldate dalla fiamma, vibrano di più e [si allontanano](#il-termometro-e-la-dilatazione-termica) le une dalle altre: l'acqua calda si dilata e diventa **meno densa**. Le particelle fredde in alto, più vicine fra loro, scendono e si infilano negli spazi che si sono aperti, spingendo verso l'alto quelle calde.
+Nella vista microscopica, le particelle sul fondo, scaldate dalla fiamma, vibrano di più e [si allontanano](#il-termometro-e-la-dilatazione-termica) le une dalle altre: l'acqua calda si dilata, diventa **meno densa** e spinge verso l'alto le particelle che le stanno sopra. L'acqua calda sale, e quella fredda, più densa, scende ai lati a prenderne il posto.
 
 Nella vista macroscopica si vede il risultato: l'acqua calda sale al centro, in superficie si raffredda, scende lungo le pareti e sul fondo torna verso il centro. Si forma un circuito chiuso, detto <definizione>moto convettivo</definizione>, che porta il calore in tutta l'acqua. Questo modo di trasmettere il calore si chiama <definizione>convezione</definizione>.
 
 {% include box-imp.html testo="La convezione" %}
-La convezione è la trasmissione del calore in un **fluido** (un liquido o un gas) grazie al **movimento del fluido stesso**: la parte calda, meno densa, sale; quella fredda, più densa, scende a prenderne il posto.  
-A differenza della conduzione, qui **la materia si sposta**, portando con sé l'energia: per questo la convezione non avviene nei solidi.
+La convezione è la trasmissione del calore nei liquidi e nei gas <u markdown="span">dovuto a uno **spostamento di materia** a causa di una **differenza di temperatura**</u>.
 {% include box-end.html %}
 
 {% include box-warn.html testo="«Il calore sale»?" %}
@@ -390,7 +391,7 @@ Le rocce caldissime del mantello terrestre si muovono per convezione, come l'acq
 {"t":"La convezione può avvenire all'interno di una sbarra di ferro.","ok":false,"s":"No: nei solidi le particelle restano al loro posto e non possono spostarsi trasportando l'energia. Nei solidi il calore si trasmette per conduzione."},
 {"t":"Nella convezione è il fluido stesso a spostarsi, portando con sé l'energia.","ok":true,"s":"Sì, è proprio questa la differenza con la conduzione, in cui l'energia passa da una particella all'altra ma le particelle restano al loro posto."},
 {"t":"Scaldandosi, l'acqua si dilata e la sua densità diminuisce.","ok":true,"s":"Sì: le particelle si allontanano, quindi la stessa massa occupa un volume più grande."},
-{"t":"L'acqua calda sale perché il calore tende sempre ad andare verso l'alto.","ok":false,"s":"No: il calore va dalla zona più calda a quella più fredda, in qualsiasi direzione. L'acqua calda sale perché è meno densa ed è spinta verso l'alto dall'acqua fredda, più densa, che le scende sotto."},
+{"t":"L'acqua calda sale perché il calore tende sempre ad andare verso l'alto.","ok":false,"s":"No: il calore va dalla zona più calda a quella più fredda, in qualsiasi direzione. L'acqua calda sale perché, scaldandosi, si è dilatata ed è diventata meno densa; l'acqua fredda, più densa, scende a prenderne il posto."},
 {"t":"Se scaldi una pentola d'acqua dall'alto (per esempio con una resistenza elettrica appena sotto la superficie), si formano gli stessi moti convettivi che scaldandola dal basso.","ok":false,"s":"No: l'acqua calda, meno densa, è già in alto e lì resta; quella fredda, più densa, è già in basso. Nessuno ha motivo di muoversi, e il calore scende solo per conduzione, molto lentamente."},
 {"t":"In un frigorifero, conviene che la parte che raffredda l'aria si trovi in alto.","ok":true,"s":"Sì: l'aria raffreddata in alto diventa più densa e scende, e al suo posto sale l'aria più calda del fondo, che a sua volta viene raffreddata. Si forma un moto convettivo che raffredda tutto il frigorifero."},
 {"t":"Fra 0 °C e 4 °C l'acqua fa un'eccezione: scaldandosi si contrae, invece di dilatarsi. Per questo d'inverno, in un lago, l'acqua a 4 °C si raccoglie sul fondo e il ghiaccio si forma in superficie.","ok":true,"s":"Sì: a 4 °C l'acqua ha la densità massima, quindi scende sul fondo. L'acqua più fredda, meno densa, resta in alto e lì gela: il ghiaccio galleggia e fa da coperta, e i pesci sopravvivono sul fondo a 4 °C."}
@@ -398,12 +399,31 @@ Le rocce caldissime del mantello terrestre si muovono per convezione, come l'acq
 {% include quiz.html domande=_qconv id="q-convezione" senza_esempi="true" %}
 {% include box-end.html %}
 
-{% capture _r %}Il calore non «sale»: va sempre dalla zona più calda a quella più fredda, in qualsiasi direzione. Nella pentola a salire è l'acqua calda del fondo: scaldandosi si dilata, diventa meno densa, e l'acqua fredda della superficie, più densa, le scende sotto e la spinge verso l'alto. È l'acqua che si muove a portare il calore fino in superficie: questa è la convezione.{% endcapture %}
+{% capture _r %}Il calore non «sale»: va sempre dalla zona più calda a quella più fredda, in qualsiasi direzione. Nella pentola a salire è l'acqua calda del fondo: scaldandosi si dilata, diventa meno densa e sale, mentre l'acqua fredda, più densa, scende a prenderne il posto. È l'acqua che si muove a portare il calore fino in superficie: questa è la convezione.{% endcapture %}
 {% include risposta-aperta.html id="ra-spiega-convezione" tipo="spiega"
    domanda="Un compagno ti dice: «La superficie dell'acqua nella pentola si scalda perché il calore sale». Come gli spieghi dove sbaglia, e che cosa succede davvero?"
    risposta=_r %}
 
 
+
 ## La Trasmissione del Calore per Irraggiamento
+I meccanismi di conduzione e convezione <u markdown="span">avvengono **nella materia**</u> (un solido, un liquido o un gas). Eppure sappiamo che tra noi e il Sole non c'è materia, bensì 150 milioni di chilometri di spazio assolutamente vuoto. Comprendiamo quindi che deve esistere un modo per trasmettere calore che sia diverso rispetto alla conduzione e alla convezione. 
+{% include box-imp.html testo="Irraggiamento" %}
+La trasmissione di calore nel vuoto è detta <definizione>irraggiamento</definizione>.
+{% include box-end.html %}
+
+Infatti, ogni corpo emette radiazioni elettromagnetiche, emettendo dunque energia. Contemporaneamente, ogni corpo che riceve onde elettromagnetiche assorbe energia.  
+<u markdown="span">Quando un corpo **assorbe** più radiazioni di quante non ne **emetta**, esso si riscalda; quando invece un corpo **emette** più radiazioni di quante non ne **assorba**, esso si raffredda.</u>
+
+{% include figure/bilancio-irraggiamento-figura.html %}
+
+Anche il nostro corpo, e quello degli animali, emette continuamente radiazione, soprattutto infrarossa, che i nostri occhi non vedono. Una termocamera la rileva e la trasforma in un'immagine: le zone più calde, che emettono di più, appaiono più chiare.
+
+{% include figura.html id="gatto-termocamera"
+   src="/corsi/immagini/cat-thermoscopy.jpeg"
+   didascalia="Un gatto fotografato con una termocamera. Le zone più calde (gli occhi, le orecchie, il naso: fino a 33 °C) emettono più radiazione infrarossa e appaiono gialle e bianche; lo sfondo, più freddo (circa 12 °C), appare viola scuro."
+   alt="Immagine termica di un gatto: occhi, orecchie e naso appaiono gialli e bianchi, il corpo viola, lo sfondo viola scuro"
+   larghezza="280px" %}
+
 
 

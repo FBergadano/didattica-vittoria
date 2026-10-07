@@ -67,6 +67,8 @@ Cavendish costruì il seguente apparato sperimentale, la cosiddetta <definizione
 - una sfera grande, di massa $M$, appesa al tappo dell'apparato, vicino alla parete di vetro;
 - una scala graduata, attorno al bilancere, per leggerne la rotazione;
 - un involucro di vetro che racchiude il tutto, per proteggere l'apparato dalle correnti d'aria, capaci da sole di disturbare una misura così delicata.
+
+Indicheremo, qui e nel seguito, la distanza <u markdown="span">tra i **centri** delle masse</u> con il simbolo $r$.
 {% include margin-note-end.html %}
 
 {% include figura.html id="bilancia_a_torsione"
@@ -102,7 +104,7 @@ Cavendish dedusse così che il modulo della forza gravitazionale fra due corpi �
    id="fga1"
    formula="F = G \dfrac{m_1 \cdot m_2}{r^2}"
    frammenti="F|G|m_1 \cdot m_2|r^2"
-   etichette="modulo della forza gravitazionale|costante di gravitazione universale|prodotto delle masse|quadrato della distanza"
+   etichette="modulo della forza gravitazionale|costante di gravitazione universale|prodotto delle masse|quadrato della distanza tra i centri"
    posizioni="alto|basso|alto|basso"
 %}
 
@@ -335,9 +337,6 @@ Inoltre, il campo **non dipende** dalla massa esploratrice $m$: dipende solo da 
    domanda="Un compagno ti dice: «Nella formula $g=F/m$ c'è la massa esploratrice $m$, quindi il campo dipende da $m$». Come gli spieghi che si sbaglia?"
    risposta=_r %}
 
-{% include margin-note.html testo="g è (quasi) costante sulla superficie di un pianeta" %}
-Sulla superficie di un pianeta, di una stella, o di una qualsiasi massa **sferica**, poiché tutti i punti della superficie si trovano alla <u markdown="span">stessa distanza dal centro</u> (il raggio del pianeta), <u markdown="span">anche il modulo del campo è praticamente costante</u> su tutta la superficie. Per la Terra, questo valore vale circa $g \approx 9{,}81\ \text{N/kg}$.
-{% include margin-note-end.html %}
 
 
 
@@ -788,17 +787,25 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 
 ### La Forza Peso
 
+{% include margin-note.html testo="Un'espressione per la forza peso" %}
 Quando una massa $m$ si trova in un campo gravitazionale, essa è soggetta a una forza gravitazionale che si chiama <definizione>forza peso</definizione>. Dalla definizione di campo, $\vec g =\frac{\vec F}m,$ otteniamo un'espressione per la forza peso:
 
 $$\vec g =\frac{\vec F}m \quad\Rightarrow\quad \vec F = m\vec g.$$
 
+Nota che $\vec g$ è il campo **in cui è immersa** la massa $m$, **non è** il campo **generato** dalla massa $m$.
+
+{% include margin-note-end.html %}
+
 
 
 {% include box-imp.html testo="La forza peso" %}
-La forza peso $\vec F = m\vec g$ è la forza che sperimenta una massa $m$ in un campo gravitazionale $\vec g$. Si misura in newton, come ogni altra forza.
+La forza peso $\vec F = m\vec g$ è la forza che sperimenta una massa $m$ immersa in un campo gravitazionale $\vec g$. Si misura in newton, come ogni altra forza.
 {% include box-end.html %}
 
-Spesso si parla di forza peso in relazione ai pianeti (anche se la forza peso è un concetto più generale). In particolare, per un pianeta di forma sferica, il modulo di $\vec g$ sulla superficie del pianeta è sostanzialmente costante su tutta la superficie (in quanto ogni punto si trova alla stessa distanza dal centro). Ad esempio, per la Terra, il valore è circa $g_{\text{Terra}}\approx 9,8 \ \text{m/s}^2$; per la Luna è circa $g_{\text{Luna}}\approx 1,5 \ \text{m/s}^2$.
+{% include margin-note.html testo="Il caso dei pianeti" %}
+Spesso si parla di forza peso in relazione ai pianeti (anche se la forza peso è un concetto più generale). In particolare, per un pianeta di forma sferica, il modulo di $\vec g$ sulla superficie del pianeta è sostanzialmente costante su tutta la superficie (in quanto ogni punto si trova alla stessa distanza dal centro). Ad esempio, per la Terra, il valore è circa $g_{\text{Terra}}\approx 9,8 \ \text{m/s}^2$; per la Luna è circa $g_{\text{Luna}}\approx 1,5 \ \text{m/s}^2$.  
+Nella realtà, nessun pianeta è perfettamente sferico, quindi il valore di $g$ cambia (anche se di poco) sulla superficie del pianeta.
+{% include margin-note-end.html %}
 
 {% include box-warn.html testo="Massa e peso non sono la stessa cosa" %}
 
@@ -811,6 +818,8 @@ Spesso si parla di forza peso in relazione ai pianeti (anche se la forza peso è
 Ad esempio, uno stesso astronauta ha la stessa massa sulla Terra e sulla Luna, ma un peso diverso, perché $g$ è diverso nei due luoghi (circa $9{,}8\ \text{m/s}^2$ sulla Terra, contro circa $1{,}6\ \text{m/s}^2$ sulla Luna). Un astronauta di $80\ \text{kg}$ pesa quindi circa $F = 80\times9{,}8\approx 780\ \text N$ sulla Terra, ma solo $F = 80\times1{,}6\approx 130\ \text N$ sulla Luna. Ma la sua massa è in ogni caso 80 kg.
 
 {% include box-end.html %}
+
+{% include lab-virtuali/forza-peso-pianeti-lab.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qpeso %}[
@@ -846,12 +855,18 @@ L'accelerazione $\vec a$ di una massa immersa in un campo gravitazionale $\vec g
 
 $$\vec a = \vec g.$$
 
+Non dipende dalla massa $m$ inserita nel campo.
+
 
 {% include box-end.html %}
 
+Nel 1971, durante la missione Apollo 15, l'astronauta David Scott fece un esperimento sulla Luna, dove non c'è aria: lasciò cadere nello stesso istante un martello e una piuma.
+
+{% include video.html id="Oo8TaPVsn9Y" didascalia="Apollo 15, 1971: David Scott lascia cadere sulla Luna un martello e una piuma, che toccano il suolo nello stesso istante." %}
+
 {% capture _r %}L'accelerazione di un corpo in un campo gravitazionale è $\vec a=\vec g$, e il campo $\vec g$ dipende solo dalla massa del pianeta e dalla distanza dal suo centro, <strong>non dalla massa del corpo che cade</strong>. Il martello è attratto con una forza molto più grande, ma ha anche una massa molto più grande: le due cose si compensano esattamente. Sulla Terra la piuma arriva dopo solo perché l'aria la frena; nel vuoto (o sulla Luna) arrivano insieme.{% endcapture %}
 {% include risposta-aperta.html id="ra-spiega-martello" tipo="spiega"
-   domanda="Nel 1971 un astronauta dell'Apollo 15 lasciò cadere sulla Luna, nello stesso istante, un martello e una piuma: toccarono il suolo insieme. Usando $\vec a=\vec g$, spiega perché."
+   domanda="Nel video, il martello e la piuma toccano il suolo insieme. Usando $\vec a=\vec g$, spiega perché."
    risposta=_r %}
 
 {% include box-ricorda.html testo="Dall'accelerazione al campo" %}
@@ -863,7 +878,7 @@ $$\vec g = \frac{\Delta \vec v}{\Delta t}.$$
 
 {% include box-end.html %}
 
-Infatti, puoi provare con il seguente esercizio che l'unità di misura del campo corrisponde all'unità di misura dell'accelerazione.
+Puoi provare con il seguente esercizio che l'unità di misura del campo corrisponde all'unità di misura dell'accelerazione.
 
 {% include esercizi/unita-nkg.html %}
 
