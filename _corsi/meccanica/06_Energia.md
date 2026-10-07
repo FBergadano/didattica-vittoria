@@ -532,11 +532,25 @@ Un sistema si dice <definizione>non isolato</definizione> se scambia energia con
 In questo caso, il sistema può **perdere** energia oppure **acquistare** energia, a seconda dei casi. Ad esempio, un corpo in movimento soggetto ad attrito **perde** energia meccanica, mentre un corpo su cui viene applicata una forza fino a produrne uno spostamento **acquista** energia meccanica.   
 In ogni caso, <u markdown="span">l'energia **non** può scomparire nel nulla né comparire dal nulla</u>, quindi viene fornita dall'Universo oppure finisce nel resto dell'Universo.
 
-Finora abbiamo incontrato solo un modo per trasmettere energia da un corpo all'altro: il lavoro. Noi considereremo quindi sistemi che scambiano **solo lavoro** lavoro con il resto dell'Universo. In questa situazione, vale il seguente teorema.
+Finora abbiamo incontrato solo un modo per trasmettere energia da un corpo all'altro: il lavoro. Noi considereremo quindi sistemi che scambiano **solo lavoro** con il resto dell'Universo.
+
+Il lavoro può passare in due versi:
+- il resto dell'Universo può compiere lavoro **sul sistema**: chiamiamolo $L_{U\to S}$. È energia che **entra** nel sistema;
+- il sistema può compiere lavoro **sul resto dell'Universo**: chiamiamolo $L_{S\to U}$. È energia che **esce** dal sistema.
+
+Ciò che conta, per l'energia del sistema, è la differenza fra l'energia che entra e quella che esce:
+
+{% include figure/figura-lavoro-scambiato.html %}
+
+$$L = L_{U\to S} - L_{S\to U}.$$
+
+D'ora in poi chiameremo semplicemente $L$ questo lavoro, cioè il <definizione>lavoro scambiato</definizione> dal sistema con il resto dell'Universo. Ad esempio, se spingi un carrello compiendo su di esso un lavoro di $50\ \text J$ e il carrello, urtando una molla, compie su di essa un lavoro di $20\ \text J$, allora $L = 50\ \text J - 20\ \text J = 30\ \text J$.
+
+In questa situazione, vale il seguente teorema.
 
 {% include box-thm.html testo="Teorema di Conservazione dell'Energia Meccanica Totale" %}
 
-Un sistema che scambia lavoro con il resto dell'Universo varia la sua energia meccanica secondo la legge
+Un sistema che scambia con il resto dell'Universo un lavoro $L = L_{U\to S} - L_{S\to U}$ varia la sua energia meccanica secondo la legge
 
 $$
 \Delta E=L.
@@ -548,8 +562,6 @@ Ci sono quindi tre situazioni:
 - se $L<0,$ allora $\Delta E<0$ e quindi l'energia meccanica diminuisce.
 
 {% include box-end.html %}
-
-{% include figure/figura-sistema-non-isolato.html %}
 
 Ad esempio, l'attrito compie sempre un lavoro negativo, perciò diminuisce l'energia meccanica, mentre un motore compie sempre un lavoro positivo, perciò aumenta l'energia meccanica.
 
@@ -565,6 +577,8 @@ Ad esempio, l'attrito compie sempre un lavoro negativo, perciò diminuisce l'ene
    label_no="Un esempio di lavoro che la fa diminuire"
    id="q-lavoro-energia" %}
 {% include box-end.html %}
+
+{% include esercizi/esercizio-lavoro-scambiato.html %}
 
 ### La palla da bowling
 
@@ -622,7 +636,7 @@ Prova tu stesso a esplorare la conservazione — e la dissipazione — dell'ener
 
 # Esercizi di Riepilogo
 
-### Mettiti alla prova: ripasso veloce
+### Ripasso veloce
 
 Prima di affrontare gli esercizi veri e propri, un ripasso rapido su tutto il capitolo.
 
@@ -1008,6 +1022,57 @@ Il kilowattora (kWh) è un'unità di misura che compare spesso sulle bollette e 
 Un kilowattora è il lavoro (cioè l'energia) compiuto da una potenza di $1\ \text{kW}=1\,000\ \text W$ mantenuta per un'ora, cioè per $3\,600\ \text s$:
 
 $$1\ \text{kWh} = P\cdot \Delta t = 1\,000\ \text W \times 3\,600\ \text s = 3{,}6\times10^6\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Una lampadina a LED da $8\ \text W$ resta accesa per $5$ ore. Quanta energia consuma? Esprimila in joule (in notazione scientifica) e in kilowattora.
+
+{% include sci.html prima="Energia =" coeff="1.44" exp="5" tol=1 s="1,44 × 10⁵ J" %}
+{% include num.html id="numPotRiep5" valore="0.04" unit="kWh" %}
+
+{% include ex-sol.html %}
+$\Delta t = 5 \times 3\,600\ \text s = 18\,000\ \text s$, quindi $L = P\cdot\Delta t = 8\ \text W \times 18\,000\ \text s = 1{,}44\times10^5\ \text J$. In kilowattora: $8\ \text W = 0{,}008\ \text{kW}$, quindi $0{,}008\ \text{kW}\times 5\ \text h = 0{,}04\ \text{kWh}$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un'automobile viaggia a velocità costante di $90\ \text{km/h}$; per mantenerla, il motore deve vincere forze resistenti (aria e attriti) per un totale di $600\ \text N$. Quale potenza sviluppa il motore?
+
+{% include num.html id="numPotRiep6" valore="15000" unit="W" %}
+
+{% include ex-sol.html %}
+$v = 90\ \text{km/h} = 25\ \text{m/s}$; la forza del motore è uguale alle forze resistenti, quindi
+$$P = F\cdot v = 600\ \text N \times 25\ \text{m/s} = 15\,000\ \text W.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un ascensore di massa totale $800\ \text{kg}$ sale di $30\ \text m$ in $20\ \text s$, a velocità costante. Quale potenza minima deve avere il motore? (Usa $g = 9{,}8\ \text{m/s}^2$.)
+
+{% include num.html id="numPotRiep7" valore="11760" unit="W" %}
+
+{% include ex-sol.html %}
+Il motore deve compiere almeno il lavoro necessario a sollevare l'ascensore: $L = mgh = 800\ \text{kg}\times 9{,}8\ \text{m/s}^2 \times 30\ \text m = 235\,200\ \text J$. Quindi
+$$P = \frac{L}{\Delta t} = \frac{235\,200\ \text J}{20\ \text s} = 11\,760\ \text W \approx 1{,}2\times10^4\ \text W.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Una gru ha una potenza di $5\ \text{kW}$. Quanto tempo le serve, come minimo, per sollevare un carico di $500\ \text{kg}$ di $20\ \text m$? (Usa $g = 9{,}8\ \text{m/s}^2$.)
+
+{% include num.html id="numPotRiep8" valore="19.6" unit="s" %}
+
+{% include ex-sol.html %}
+$L = mgh = 500\ \text{kg}\times 9{,}8\ \text{m/s}^2\times 20\ \text m = 98\,000\ \text J$, quindi
+$$\Delta t = \frac{L}{P} = \frac{98\,000\ \text J}{5\,000\ \text W} = 19{,}6\ \text s.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Un ciclista professionista può sviluppare per un'ora una potenza di circa $400\ \text W$. Il ciclista e la bicicletta hanno una massa complessiva di $75\ \text{kg}$. Trascurando gli attriti, quanti minuti gli servono, come minimo, per salire su un passo di montagna con un dislivello di $1\,000\ \text m$? (Usa $g = 9{,}8\ \text{m/s}^2$.)
+
+{% include num.html id="numPotRiep9" valore="30.6" tol="2" unit="min" %}
+
+{% include ex-sol.html %}
+Il lavoro minimo è quello necessario per sollevare ciclista e bici di $1\,000\ \text m$: $L = mgh = 75\ \text{kg}\times 9{,}8\ \text{m/s}^2\times 1\,000\ \text m = 735\,000\ \text J$. Quindi
+$$\Delta t = \frac{L}{P} = \frac{735\,000\ \text J}{400\ \text W} \approx 1\,838\ \text s \approx 30{,}6\ \text{min}.$$
+In realtà ci vuole di più, perché una parte del lavoro serve a vincere gli attriti e la resistenza dell'aria.
 {% include ex-sol-end.html %}
 
 ### Esercizi sul teorema dell'energia cinetica
@@ -1414,6 +1479,28 @@ Prova ora a rispondere anche a questa domanda, con parole tue.
 Il completamento segue lo schema ormai familiare: energia tutta potenziale in alto, tutta cinetica appena prima dell'urto, ed energia meccanica totale $E=K+U_g$ che resta sempre la stessa lungo tutto il percorso.
 
 Per quanto riguarda il numero di palline: se dall'altra parte se ne alzasse uno diverso (o a un'altezza diversa), l'energia meccanica del gruppo dopo l'urto sarebbe diversa da quella di prima, e questo violerebbe la sua conservazione. Poiché tutte le palline hanno la stessa massa, l'unico modo per non violarla è che ne escano esattamente tante quante ne sono entrate, con la stessa velocità: ecco perché risalgono sempre alla stessa altezza $h$. (Per spiegare fino in fondo perché è proprio così — e non, ad esempio, il doppio delle palline a un quarto della velocità, che avrebbe la stessa energia cinetica — serve anche un'altra legge di conservazione, quella della *quantità di moto*, che incontrerai più avanti nei tuoi studi.)
+{% include ex-sol-end.html %}
+
+#### Il lavoro scambiato con l'Universo
+
+{% include ex.html diff=1 %}
+Una gru solleva un container compiendo su di esso un lavoro di $6{,}0\times10^4\ \text J$; intanto l'aria, opponendosi al moto, sottrae al container $2{,}0\times10^3\ \text J$. Prendendo il container come sistema, quanto vale il lavoro scambiato $L$? E di quanto varia l'energia meccanica del container?
+
+{% include sci.html prima="$L = \Delta E =$" coeff="5.8" exp="4" tol=1 s="5,8 × 10⁴ J" %}
+
+{% include ex-sol.html %}
+$$L = L_{U\to S} - L_{S\to U} = 6{,}0\times10^4\ \text J - 2{,}0\times10^3\ \text J = 5{,}8\times10^4\ \text J,$$
+e per il teorema $\Delta E = L = 5{,}8\times10^4\ \text J$: l'energia meccanica del container aumenta.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Uno slittino di massa $10\ \text{kg}$, inizialmente fermo, viene tirato da un bambino su un tratto orizzontale: il bambino compie sullo slittino un lavoro di $200\ \text J$, mentre a causa dell'attrito lo slittino cede alla neve $110\ \text J$. Con quale velocità si muove lo slittino alla fine?
+
+{% include num.html id="numLavScambR2" valore="4.24" tol="2" unit="m/s" %}
+
+{% include ex-sol.html %}
+Il tratto è orizzontale, quindi l'energia potenziale non cambia e tutta la variazione di energia meccanica è energia cinetica:
+$$\Delta E = L = 200\ \text J - 110\ \text J = 90\ \text J = \tfrac12 m v^2 \quad\Rightarrow\quad v=\sqrt{\frac{2\cdot 90\ \text J}{10\ \text{kg}}}=\sqrt{18}\ \text{m/s}\approx 4{,}24\ \text{m/s}.$$
 {% include ex-sol-end.html %}
 
 #### L'energia dissipata: il calore

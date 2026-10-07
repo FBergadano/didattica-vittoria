@@ -1,0 +1,35 @@
+{% comment %}
+Figura statica: un sistema dentro l'Universo. Una freccia verde entra nel
+sistema: il lavoro L_{U→S} compiuto dall'Universo sul sistema (energia che
+entra); una freccia rossa esce: il lavoro L_{S→U} compiuto dal sistema
+sull'Universo (energia che esce). Sotto, la formula L = L_{U→S} − L_{S→U}.
+Nessun parametro.
+{% endcomment %}
+<div class="fig-block">
+<svg viewBox="0 0 420 290" width="100%" style="max-width:420px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Il sistema dentro l'Universo: il lavoro compiuto dall'Universo sul sistema entra nel sistema, il lavoro compiuto dal sistema sull'Universo esce; il lavoro scambiato è la loro differenza">
+  <defs>
+    <radialGradient id="lsUniv" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#f5f8ff"/><stop offset="100%" stop-color="#dbeafe"/></radialGradient>
+    <radialGradient id="lsSys" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="100%" stop-color="#fde68a"/></radialGradient>
+    <marker id="lsIn" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#15803d"/></marker>
+    <marker id="lsOut" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  </defs>
+  <rect x="8" y="8" width="404" height="218" rx="22" fill="url(#lsUniv)" stroke="#93c5fd" stroke-width="1.5"/>
+  <text x="26" y="34" font-size="15" font-weight="600" fill="#1e40af" font-family="Georgia,serif">Universo</text>
+  <circle cx="210" cy="125" r="56" fill="url(#lsSys)" stroke="#d97706" stroke-width="1.5"/>
+  <text x="210" y="131" text-anchor="middle" font-size="15" font-weight="600" fill="#92400e" font-family="Georgia,serif">Sistema</text>
+  <!-- lavoro compiuto dall'Universo sul sistema: entra -->
+  <line x1="40" y1="125" x2="146" y2="125" stroke="#15803d" stroke-width="4" marker-end="url(#lsIn)"/>
+  <text x="88" y="111" text-anchor="middle" font-size="17" font-style="italic" font-weight="700" fill="#15803d" font-family="Georgia,serif">L<tspan font-size="11" dy="4">U→S</tspan></text>
+  <text x="88" y="150" text-anchor="middle" font-size="11.5" fill="#15803d" font-family="Georgia,serif">l'Universo compie</text>
+  <text x="88" y="164" text-anchor="middle" font-size="11.5" fill="#15803d" font-family="Georgia,serif">lavoro sul sistema:</text>
+  <text x="88" y="178" text-anchor="middle" font-size="11.5" fill="#15803d" font-family="Georgia,serif">l'energia entra</text>
+  <!-- lavoro compiuto dal sistema sull'Universo: esce -->
+  <line x1="272" y1="125" x2="378" y2="125" stroke="#dc2626" stroke-width="4" marker-end="url(#lsOut)"/>
+  <text x="330" y="111" text-anchor="middle" font-size="17" font-style="italic" font-weight="700" fill="#dc2626" font-family="Georgia,serif">L<tspan font-size="11" dy="4">S→U</tspan></text>
+  <text x="330" y="150" text-anchor="middle" font-size="11.5" fill="#dc2626" font-family="Georgia,serif">il sistema compie</text>
+  <text x="330" y="164" text-anchor="middle" font-size="11.5" fill="#dc2626" font-family="Georgia,serif">lavoro sull'Universo:</text>
+  <text x="330" y="178" text-anchor="middle" font-size="11.5" fill="#dc2626" font-family="Georgia,serif">l'energia esce</text>
+  <!-- formula -->
+  <text x="210" y="266" text-anchor="middle" font-size="20" font-style="italic" fill="#1e293b" font-family="Georgia,serif">L = <tspan fill="#15803d" font-weight="700">L<tspan font-size="13" dy="5">U→S</tspan></tspan><tspan dy="-5"> − </tspan><tspan fill="#dc2626" font-weight="700">L<tspan font-size="13" dy="5">S→U</tspan></tspan></text>
+</svg>
+</div>
