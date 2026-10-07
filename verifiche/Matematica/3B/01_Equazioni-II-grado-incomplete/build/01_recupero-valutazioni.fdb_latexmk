@@ -1,14 +1,14 @@
 # Fdb version 4
-["xdvipdfmx"] 1791291145.03292 "build/01_valutazioni.xdv" "build/01_valutazioni.pdf" "build/01_valutazioni" 1791291145.6268 0
-  "build/01_valutazioni.xdv" 1791291144.88074 77452 2911da39b1ff20e30bb02e89ca2853d7 "xelatex"
+["xdvipdfmx"] 1791352410.28707 "build/01_recupero-valutazioni.xdv" "build/01_recupero-valutazioni.pdf" "build/01_recupero-valutazioni" 1791352411.30452 0
+  "build/01_recupero-valutazioni.xdv" 1791352409.83312 18752 eb84ce4b2d84c2179af6c335ebb4e38f "xelatex"
   (generated)
-  "build/01_valutazioni.pdf"
+  "build/01_recupero-valutazioni.pdf"
   (rewritten before read)
-["xelatex"] 1791291142.52166 "/home/fulvio/Desktop/Scuola/didattica-vittoria/verifiche/Matematica/3B/01_Equazioni-II-grado-incomplete/01_valutazioni.tex" "build/01_valutazioni.xdv" "01_valutazioni" 1791291145.62333 0
+["xelatex"] 1791352404.71747 "/home/fulvio/Desktop/Scuola/didattica-vittoria/verifiche/Matematica/3B/01_Equazioni-II-grado-incomplete/01_recupero-valutazioni.tex" "build/01_recupero-valutazioni.xdv" "01_recupero-valutazioni" 1791352411.29683 0
   "../../../preambolo-verifica-core.tex" 1790610153.61832 5986 fe2ae43a34c01385b404fa0317549ce1 ""
   "../../../preambolo-verifica.tex" 1790609937.33187 472 d8f0edfe6c9ac781b57550e27723730d ""
   "/etc/texmf/web2c/texmf.cnf" 1784293461.96888 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/fulvio/Desktop/Scuola/didattica-vittoria/verifiche/Matematica/3B/01_Equazioni-II-grado-incomplete/01_valutazioni.tex" 1791291138.78348 8880 56496b4008988e5d3980877cdc7753fb ""
+  "/home/fulvio/Desktop/Scuola/didattica-vittoria/verifiche/Matematica/3B/01_Equazioni-II-grado-incomplete/01_recupero-valutazioni.tex" 1791352403.72686 2149 d0654cdd505946326f9393595f4dcfcb ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm" 1136768653 1536 06717a2b50de47d4087ac0e6cd759455 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -95,10 +95,10 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1784293637 5946946 69ae8bc8924b15d5d8b35b1e757af58e ""
-  "01_valutazioni.tex" 1791291138.78348 8880 56496b4008988e5d3980877cdc7753fb ""
-  "build/01_valutazioni.aux" 1791291144.87874 389 420f009cab42a1ddca7654d781733e71 "xelatex"
+  "01_recupero-valutazioni.tex" 1791352403.72686 2149 d0654cdd505946326f9393595f4dcfcb ""
+  "build/01_recupero-valutazioni.aux" 1791352409.82786 368 b2043c06f6f4cb8564328064d6f34073 "xelatex"
   (generated)
-  "build/01_valutazioni.aux"
-  "build/01_valutazioni.log"
-  "build/01_valutazioni.xdv"
+  "build/01_recupero-valutazioni.aux"
+  "build/01_recupero-valutazioni.log"
+  "build/01_recupero-valutazioni.xdv"
   (rewritten before read)

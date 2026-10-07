@@ -1,0 +1,472 @@
+{% comment %}
+Animazione: la forza peso sui pianeti del Sistema Solare (e sulla Luna).
+Un personaggio (sulla Terra una persona, altrove un astronauta) si trascina
+per farlo saltare; se atterra sul piatto della bilancia digitale, la bilancia
+mostra la massa (in kg, sempre uguale) e la forza peso F = m·g (in N, che
+cambia da pianeta a pianeta). Durante il volo compare la freccia della forza
+peso. Si scelgono il pianeta (pulsanti, con il valore di g) e la massa
+(cursore, 30–300 kg). Il salto è più lento dove g è minore (la gravità
+"visiva" è esagerata sotto quella terrestre e compressa sopra, per renderla
+percepibile). Si ferma quando non è visibile. Nessun parametro.
+{% endcomment %}
+<style>
+#fpPl{--fp-bg:#0d0a08;--fp-copper:#b87333;--fp-copper-b:#e8983a;--fp-txt:#e8d5b0;--fp-txt2:#9a8060;
+  background:var(--fp-bg);color:var(--fp-txt);font-family:'Crimson Text',Georgia,serif;border-radius:10px;padding:.8rem;margin:1rem 0;user-select:none;}
+#fpPl *{box-sizing:border-box;}
+#fpPl .fp-head{text-align:center;margin-bottom:.5rem;}
+#fpPl .fp-title{font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;font-weight:700;color:var(--fp-txt);}
+#fpPl .fp-title em{color:var(--fp-copper-b);}
+#fpPl .fp-formula{font-size:.95rem;color:var(--fp-copper-b);margin-top:.1rem;}
+#fpPl .fp-pls{display:flex;flex-wrap:wrap;gap:.3rem;justify-content:center;margin-bottom:.55rem;}
+#fpPl .fp-pl{background:none;border:1px solid rgba(184,115,51,.25);border-radius:14px;color:var(--fp-txt2);font-family:inherit;font-size:.85rem;padding:.18rem .6rem;cursor:pointer;white-space:nowrap;}
+#fpPl .fp-pl:hover{border-color:var(--fp-copper);color:var(--fp-txt);}
+#fpPl .fp-pl.active{border-color:var(--fp-copper-b);color:var(--fp-txt);background:rgba(184,115,51,.18);}
+#fpPl .fp-pl .g{color:var(--fp-copper);font-size:.76rem;margin-left:.25rem;}
+#fpPl .fp-cwrap{border:1px solid rgba(184,115,51,.22);border-radius:5px;background:#1a1208;overflow:hidden;}
+#fpPl canvas{display:block;width:100%;height:auto;cursor:grab;touch-action:none;}
+#fpPl canvas.dragging{cursor:grabbing;}
+#fpPl .fp-bar{display:flex;flex-wrap:wrap;gap:.45rem .7rem;align-items:center;justify-content:center;margin-top:.55rem;}
+#fpPl .fp-pill{display:flex;align-items:center;gap:.45rem;background:rgba(17,22,32,.85);border:1px solid rgba(184,115,51,.2);border-radius:4px;padding:.25rem .6rem;font-size:.85rem;color:var(--fp-txt2);}
+#fpPl .fp-pill b{font-family:'Courier New',monospace;font-size:1rem;min-width:3.6em;text-align:right;}
+#fpPl input[type=range]{-webkit-appearance:none;appearance:none;width:110px;height:5px;background:rgba(184,115,51,.25);border-radius:3px;outline:none;}
+#fpPl input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--fp-copper);border-radius:50%;cursor:pointer;}
+#fpPl input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--fp-copper);border-radius:50%;border:none;cursor:pointer;}
+#fpPl .fp-reset{font-family:'Playfair Display',Georgia,serif;font-size:.85rem;padding:.25rem .8rem;border-radius:3px;cursor:pointer;background:none;border:1.5px solid var(--fp-copper);color:var(--fp-copper);}
+#fpPl .fp-reset:hover{background:var(--fp-copper);color:#0d0a08;}
+#fpPl .fp-instr{margin-top:.55rem;font-size:.86rem;line-height:1.45;text-align:center;color:var(--fp-txt);}
+@media print{#fpPl{display:none!important;}}
+</style>
+<div id="fpPl">
+<div class="fp-head">
+  <div class="fp-title">La <em>forza peso</em> sui pianeti</div>
+  <div class="fp-formula">$\vec F = m\,\vec g \qquad F = m\,g$</div>
+</div>
+<div class="fp-pls">
+  <button type="button" class="fp-pl" data-k="mercury">Mercurio<span class="g">3,7</span></button>
+  <button type="button" class="fp-pl" data-k="venus">Venere<span class="g">8,9</span></button>
+  <button type="button" class="fp-pl active" data-k="earth">Terra<span class="g">9,8</span></button>
+  <button type="button" class="fp-pl" data-k="moon">Luna<span class="g">1,6</span></button>
+  <button type="button" class="fp-pl" data-k="mars">Marte<span class="g">3,7</span></button>
+  <button type="button" class="fp-pl" data-k="jupiter">Giove<span class="g">24,8</span></button>
+  <button type="button" class="fp-pl" data-k="saturn">Saturno<span class="g">10,4</span></button>
+  <button type="button" class="fp-pl" data-k="uranus">Urano<span class="g">8,7</span></button>
+  <button type="button" class="fp-pl" data-k="neptune">Nettuno<span class="g">11,2</span></button>
+</div>
+<div class="fp-cwrap">
+  <canvas id="fp-cv" width="640" height="320" aria-label="Un personaggio da far saltare su una bilancia, su pianeti diversi"></canvas>
+</div>
+<div class="fp-bar">
+  <label class="fp-pill" for="fp-massR">Massa <input type="range" id="fp-massR" min="30" max="300" step="5" value="70"><b id="fp-massV" style="color:var(--fp-copper-b);">70 kg</b></label>
+  <span class="fp-pill" style="border-color:rgba(100,200,100,.3);">bilancia: <b id="fp-kg" style="color:#7eff7e;">—</b><span style="color:#5a9a5a;">kg</span></span>
+  <span class="fp-pill" style="border-color:rgba(255,100,200,.3);"><b id="fp-n" style="color:#ff88ee;">—</b><span style="color:#aa66aa;">N</span></span>
+  <span class="fp-pill" id="fp-g" style="color:var(--fp-copper);">g = — m/s²</span>
+  <button type="button" class="fp-reset" id="fp-reset">↺ Ripristina</button>
+</div>
+<p class="fp-instr"><strong>Trascina</strong> il personaggio per farlo saltare e portalo sulla bilancia per pesarlo. Poi cambia pianeta: la <span style="color:#7eff7e;">massa</span> (kg) resta la stessa, la <span style="color:#ff88ee;">forza peso</span> (N) cambia.</p>
+</div>
+<script>
+(function(){
+// ── Pianeti ───────────────────────────────────────────────────────────────
+var PLANETS = {
+  mercury:{ name:'Mercurio', g:3.70, sky:['#130a18','#221630'], ground:'#8a7060', groundTop:'#c4a882', star:true  },
+  venus:  { name:'Venere',   g:8.87, sky:['#1a1005','#352508'], ground:'#c8a060', groundTop:'#e8c878', star:false },
+  earth:  { name:'Terra',    g:9.81, sky:['#07111c','#0c2038'], ground:'#3a6030', groundTop:'#5a8848', star:false },
+  moon:   { name:'Luna',     g:1.62, sky:['#04060a','#080e18'], ground:'#888070', groundTop:'#b0a890', star:true  },
+  mars:   { name:'Marte',    g:3.72, sky:['#160804','#281005'], ground:'#8a4020', groundTop:'#c06030', star:false },
+  jupiter:{ name:'Giove',    g:24.8, sky:['#0a0810','#181022'], ground:'#c8b060', groundTop:'#e8d090', star:false },
+  saturn: { name:'Saturno',  g:10.4, sky:['#0e0b16','#1c1532'], ground:'#b09060', groundTop:'#d4b880', star:true  },
+  uranus: { name:'Urano',    g:8.69, sky:['#040e14','#081c28'], ground:'#507080', groundTop:'#7098a8', star:true  },
+  neptune:{ name:'Nettuno',  g:11.2, sky:['#040408','#080820'], ground:'#304060', groundTop:'#4060a0', star:true  }
+};
+var root=document.getElementById('fpPl');
+var canvas=document.getElementById('fp-cv');if(!canvas)return;
+var ctx=canvas.getContext('2d');
+var W=640,H=320,GROUND_Y=H-52;
+var SCALE_CX=500,SCALE_GBOT=GROUND_Y;
+var S_BASE_H=24,S_BODY_H=80,S_PLATE_W=140,S_PLATE_H=16;
+var S_PLATE_REST_Y=SCALE_GBOT-S_BASE_H-S_BODY_H-S_PLATE_H,S_PLATE_MAX_SINK=7;   // il piatto si abbassa un poco sotto il peso (al massimo su Giove)
+var G_PX_PER_MS2=0.52;
+var planet=PLANETS.earth,mass=70,tick=0;
+var elKg=document.getElementById('fp-kg'),elN=document.getElementById('fp-n'),elG=document.getElementById('fp-g');
+function fmt(v,d){return v.toFixed(d).replace('.',',');}
+
+var stars=[];for(var i=0;i<110;i++)stars.push({x:Math.random()*W,y:Math.random()*(GROUND_Y-15),r:Math.random()*1.3+0.3,a:Math.random()});
+
+// ── Stato del personaggio ─────────────────────────────────────────────────
+var person={state:'ground',x:200,y:GROUND_Y,vx:0,vy:0,facingRight:true};
+var scalePlateY=S_PLATE_REST_Y,personOnScale=false;
+var dragActive=false,dragOffX=0,dragOffY=0,dragPrevX=0,dragPrevY=0,dragVX=0,dragVY=0;
+function pScale(){return 0.8*Math.pow(mass/70,0.25);}   // grandezza del personaggio (cresce poco con la massa, per stare nel disegno)
+function personH(){return 70*pScale();}
+function grabR(){return personH()*0.4;}
+function torsoCX(){return person.x;}
+function torsoCY(){return person.y-personH()*0.55;}
+
+// ── Coordinate nel canvas ─────────────────────────────────────────────────
+function toC(e){var r=canvas.getBoundingClientRect();return {x:(e.clientX-r.left)*(W/r.width),y:(e.clientY-r.top)*(H/r.height)};}
+
+// ── Trascinamento ─────────────────────────────────────────────────────────
+function onDown(cx,cy){
+  if(person.state==='flying')return false;
+  if(Math.hypot(cx-torsoCX(),cy-torsoCY())<grabR()+10){
+    dragActive=true;dragOffX=cx-person.x;dragOffY=cy-person.y;
+    dragPrevX=cx;dragPrevY=cy;dragVX=0;dragVY=0;
+    person.state='dragging';canvas.classList.add('dragging');return true;
+  }
+  return false;
+}
+function onMove(cx,cy){
+  if(!dragActive)return;
+  dragVX=cx-dragPrevX;dragVY=cy-dragPrevY;dragPrevX=cx;dragPrevY=cy;
+  person.x=cx-dragOffX;person.y=cy-dragOffY;
+}
+function onUp(){
+  if(!dragActive)return;
+  dragActive=false;canvas.classList.remove('dragging');
+  person.vx=dragVX*0.55;person.vy=dragVY*0.55;
+  person.state='flying';personOnScale=false;
+  updateSideScale();
+}
+canvas.addEventListener('pointerdown',function(e){var p=toC(e);if(onDown(p.x,p.y)){canvas.setPointerCapture(e.pointerId);e.preventDefault();}});
+canvas.addEventListener('pointermove',function(e){var p=toC(e);onMove(p.x,p.y);});
+canvas.addEventListener('pointerup',onUp);
+canvas.addEventListener('pointercancel',onUp);
+
+// ── Controlli ─────────────────────────────────────────────────────────────
+document.getElementById('fp-massR').addEventListener('input',function(){
+  mass=parseInt(this.value,10);
+  document.getElementById('fp-massV').textContent=mass+' kg';
+  if(personOnScale)refreshScaleReading();
+  updateSideScale();
+});
+root.querySelectorAll('.fp-pl').forEach(function(b){b.addEventListener('click',function(){
+  planet=PLANETS[b.dataset.k];
+  root.querySelectorAll('.fp-pl').forEach(function(x){x.classList.toggle('active',x===b);});
+  if(personOnScale)refreshScaleReading();
+  updateSideScale();
+});});
+document.getElementById('fp-reset').addEventListener('click',function(){
+  person.state='ground';person.x=200;person.y=GROUND_Y;person.vx=0;person.vy=0;person.facingRight=true;
+  dragActive=false;canvas.classList.remove('dragging');
+  personOnScale=false;scalePlateY=S_PLATE_REST_Y;
+  updateSideScale();
+});
+function refreshScaleReading(){elKg.textContent=fmt(mass,1);elN.textContent=fmt(mass*planet.g,1);}
+function updateSideScale(){
+  elG.textContent='g = '+fmt(planet.g,2)+' m/s²';
+  if(!personOnScale){elKg.textContent='—';elN.textContent='—';}
+}
+
+function shadeCol(hex,pct){
+  var n=parseInt(hex.replace('#',''),16),a=Math.round(2.55*pct);
+  var R=Math.max(0,Math.min(255,(n>>16)+a)),G=Math.max(0,Math.min(255,(n>>8&0xFF)+a)),B=Math.max(0,Math.min(255,(n&0xFF)+a));
+  return '#'+(0x1000000+R*0x10000+G*0x100+B).toString(16).slice(1);
+}
+function rr(x,y,w,h,r){ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else ctx.rect(x,y,w,h);}
+
+// ── Freccia ───────────────────────────────────────────────────────────────
+function arrow(x1,y1,x2,y2,col,lw,hs){
+  var dx=x2-x1,dy=y2-y1,a=Math.atan2(dy,dx);
+  if(Math.hypot(dx,dy)<5)return;
+  ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=lw;
+  ctx.shadowColor=col;ctx.shadowBlur=9;
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.shadowBlur=0;
+  ctx.beginPath();ctx.moveTo(x2,y2);
+  ctx.lineTo(x2-hs*Math.cos(a-Math.PI/6),y2-hs*Math.sin(a-Math.PI/6));
+  ctx.lineTo(x2-hs*Math.cos(a+Math.PI/6),y2-hs*Math.sin(a+Math.PI/6));
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+
+// ── Sfondo ────────────────────────────────────────────────────────────────
+function drawBg(){
+  var p=planet;
+  var grad=ctx.createLinearGradient(0,0,0,GROUND_Y);
+  grad.addColorStop(0,p.sky[0]);grad.addColorStop(1,p.sky[1]);
+  ctx.fillStyle=grad;ctx.fillRect(0,0,W,GROUND_Y);
+  if(p.star){
+    stars.forEach(function(s){
+      var tw=0.38+0.62*Math.sin(tick*.038+s.a*9);
+      ctx.fillStyle='rgba(232,213,176,'+(s.a*tw)+')';
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+    });
+  }
+  var hz=ctx.createLinearGradient(0,GROUND_Y-80,0,GROUND_Y);
+  hz.addColorStop(0,'rgba(0,0,0,0)');hz.addColorStop(1,p.groundTop+'44');
+  ctx.fillStyle=hz;ctx.fillRect(0,GROUND_Y-80,W,80);
+  var gg=ctx.createLinearGradient(0,GROUND_Y,0,H);
+  gg.addColorStop(0,p.groundTop);gg.addColorStop(.22,p.ground);gg.addColorStop(1,'#080604');
+  ctx.fillStyle=gg;ctx.fillRect(0,GROUND_Y,W,H-GROUND_Y);
+  ctx.strokeStyle=p.groundTop+'aa';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(0,GROUND_Y);ctx.lineTo(W,GROUND_Y);ctx.stroke();
+}
+
+// ── Bilancia digitale ─────────────────────────────────────────────────────
+function drawWorldScale(){
+  var cx=SCALE_CX,bot=SCALE_GBOT,bodyTop=bot-S_BASE_H-S_BODY_H;
+  var bG=ctx.createLinearGradient(cx-S_PLATE_W/2-8,bot-S_BASE_H,cx+S_PLATE_W/2+8,bot);
+  bG.addColorStop(0,'#6a3818');bG.addColorStop(.5,'#9a5828');bG.addColorStop(1,'#6a3818');
+  ctx.fillStyle=bG;ctx.strokeStyle='#3a1a06';ctx.lineWidth=2;
+  rr(cx-S_PLATE_W/2-8,bot-S_BASE_H,S_PLATE_W+16,S_BASE_H,6);ctx.fill();ctx.stroke();
+  var hG=ctx.createLinearGradient(cx-44,bodyTop,cx+44,bodyTop+S_BODY_H);
+  hG.addColorStop(0,'#aaa');hG.addColorStop(.35,'#e2e2e2');hG.addColorStop(1,'#747474');
+  ctx.fillStyle=hG;ctx.strokeStyle='#555';ctx.lineWidth=2;
+  rr(cx-44,bodyTop,88,S_BODY_H,8);ctx.fill();ctx.stroke();
+  var dispX=cx-38,dispY=bodyTop+12,dispW=76,dispH=50;
+  ctx.fillStyle='#061006';rr(dispX,dispY,dispW,dispH,5);ctx.fill();
+  ctx.strokeStyle='#0e280e';ctx.lineWidth=1;rr(dispX,dispY,dispW,dispH,5);ctx.stroke();
+  if(personOnScale){
+    var kgVal=fmt(mass,1),nVal=fmt(mass*planet.g,1);
+    ctx.save();
+    ctx.shadowColor='#00ff55';ctx.shadowBlur=10;ctx.fillStyle='#00ff55';
+    ctx.font="bold 17px 'Courier New',monospace";ctx.textAlign='left';ctx.textBaseline='middle';
+    ctx.fillText(kgVal,dispX+5,dispY+dispH*0.30);ctx.shadowBlur=0;
+    ctx.font="bold 10px 'Courier New',monospace";ctx.fillStyle='rgba(0,210,70,.7)';ctx.textAlign='right';
+    ctx.fillText('kg',dispX+dispW-4,dispY+dispH*0.30);
+    ctx.strokeStyle='rgba(0,150,40,.35)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(dispX+4,dispY+dispH*0.52);ctx.lineTo(dispX+dispW-4,dispY+dispH*0.52);ctx.stroke();
+    var nFs=nVal.length>=6?13:nVal.length>=5?15:17;
+    ctx.shadowColor='#ff44cc';ctx.shadowBlur=10;ctx.fillStyle='#ff88ee';
+    ctx.font='bold '+nFs+"px 'Courier New',monospace";ctx.textAlign='left';
+    ctx.fillText(nVal,dispX+5,dispY+dispH*0.76);ctx.shadowBlur=0;
+    ctx.font="bold 10px 'Courier New',monospace";ctx.fillStyle='rgba(255,100,200,.7)';ctx.textAlign='right';
+    ctx.fillText('N',dispX+dispW-4,dispY+dispH*0.76);
+    ctx.restore();
+  } else {
+    ctx.save();ctx.fillStyle='rgba(0,150,45,.28)';ctx.font="bold 13px 'Courier New',monospace";
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('- - -',cx,dispY+dispH*0.30);
+    ctx.strokeStyle='rgba(0,120,35,.25)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(dispX+4,dispY+dispH*0.52);ctx.lineTo(dispX+dispW-4,dispY+dispH*0.52);ctx.stroke();
+    ctx.fillText('- - -',cx,dispY+dispH*0.76);ctx.restore();
+  }
+  ctx.fillStyle='rgba(255,255,255,.04)';rr(dispX+4,dispY+4,dispW*.35,5,3);ctx.fill();
+  ctx.fillStyle='rgba(60,60,60,.7)';ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText('DIGITAL SCALE',cx,bodyTop+S_BODY_H-8);
+  ctx.strokeStyle='#bbb';ctx.lineWidth=6;
+  ctx.beginPath();ctx.moveTo(cx,bodyTop);ctx.lineTo(cx,scalePlateY+S_PLATE_H);ctx.stroke();   // asta del piatto (sopra il corpo della bilancia, non sul display)
+  var pG=ctx.createLinearGradient(cx-S_PLATE_W/2,scalePlateY,cx+S_PLATE_W/2,scalePlateY+S_PLATE_H);
+  pG.addColorStop(0,'#aaa');pG.addColorStop(.5,'#e8e8e8');pG.addColorStop(1,'#888');
+  ctx.fillStyle=pG;ctx.strokeStyle='#666';ctx.lineWidth=2;
+  rr(cx-S_PLATE_W/2,scalePlateY,S_PLATE_W,S_PLATE_H,4);ctx.fill();ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,.22)';rr(cx-S_PLATE_W/2+8,scalePlateY+3,S_PLATE_W-16,5,3);ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,.15)';rr(cx-S_PLATE_W/2,scalePlateY+S_PLATE_H-3,S_PLATE_W,4,2);ctx.fill();
+}
+
+// ── Personaggio ───────────────────────────────────────────────────────────
+function drawPerson(footX,footY,facingR,airborne,onScale){
+  var sc=pScale();
+  ctx.save();ctx.translate(footX,footY);
+  if(!facingR)ctx.scale(-1,1);
+  if(planet===PLANETS.earth)drawHuman(sc,airborne,onScale);else drawAstronaut(sc,airborne,onScale);
+  ctx.restore();
+}
+function drawHuman(s,airborne,onScale){
+  var legSpread=airborne?18*s:(onScale?4*s:6*s);
+  var armRaise=airborne?-0.7:(onScale?-0.2:0.15);
+  var bob=onScale?Math.sin(tick*.08)*1.5:(airborne?0:Math.sin(tick*.055)*1.2);
+  var skin='#e8b87a',skinD='#c8906a',trouserC='#3a4a6a',trouserD='#1e2a46',shirtC='#c04020',shirtD='#8a2010',shoeC='#2a1a10',hairC='#2a1808';
+  ctx.save();ctx.fillStyle='rgba(0,0,0,.22)';ctx.beginPath();ctx.ellipse(0,3,18*s,5*s,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  [-legSpread,legSpread].forEach(function(lx){
+    ctx.save();ctx.translate(lx*0.5,0);ctx.fillStyle=shoeC;
+    ctx.beginPath();ctx.ellipse(0,-4*s,14*s,6*s,0,0,Math.PI*2);ctx.fill();ctx.restore();
+  });
+  [-legSpread,legSpread].forEach(function(lx){
+    var kx=lx*0.4,ky=-22*s+Math.abs(legSpread)*0.2;
+    ctx.strokeStyle=trouserD;ctx.lineWidth=11*s;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(lx*0.35,-4*s);ctx.quadraticCurveTo(kx,ky,0,-40*s+bob);ctx.stroke();
+    ctx.strokeStyle=trouserC;ctx.lineWidth=8*s;
+    ctx.beginPath();ctx.moveTo(lx*0.35,-4*s);ctx.quadraticCurveTo(kx,ky,0,-40*s+bob);ctx.stroke();
+  });
+  var torsoW=18*s,torsoH=26*s;
+  ctx.save();ctx.translate(0,-53*s+bob);
+  var tg=ctx.createLinearGradient(-torsoW,0,torsoW,0);
+  tg.addColorStop(0,shirtD);tg.addColorStop(.4,shirtC);tg.addColorStop(.7,'#e05030');tg.addColorStop(1,shirtD);
+  ctx.fillStyle=tg;ctx.strokeStyle=shirtD;ctx.lineWidth=1;
+  rr(-torsoW,-torsoH*.5,torsoW*2,torsoH,5);ctx.fill();ctx.stroke();
+  ctx.fillStyle=skinD;ctx.beginPath();ctx.ellipse(0,-torsoH*.38,7*s,5*s,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+  var armLen=20*s;
+  [-1,1].forEach(function(side){
+    var shoulderX=side*15*s,shoulderY=-60*s+bob;
+    var handX=shoulderX+side*armLen*Math.cos(armRaise),handY=shoulderY+armLen*Math.abs(Math.sin(armRaise+0.3));
+    ctx.strokeStyle=shirtD;ctx.lineWidth=9*s;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(shoulderX,shoulderY);ctx.lineTo(handX,handY);ctx.stroke();
+    ctx.strokeStyle=shirtC;ctx.lineWidth=6*s;
+    ctx.beginPath();ctx.moveTo(shoulderX,shoulderY);ctx.lineTo(handX,handY);ctx.stroke();
+    ctx.fillStyle=skin;ctx.strokeStyle=skinD;ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(handX,handY,5*s,0,Math.PI*2);ctx.fill();ctx.stroke();
+  });
+  ctx.fillStyle=skinD;rr(-5*s,-68*s+bob,10*s,10*s,2);ctx.fill();
+  var headCY=-78*s+bob;
+  var hg=ctx.createRadialGradient(-3*s,headCY-4*s,2,0,headCY,14*s);
+  hg.addColorStop(0,skin);hg.addColorStop(1,skinD);
+  ctx.fillStyle=hg;ctx.strokeStyle=skinD;ctx.lineWidth=1;
+  ctx.beginPath();ctx.ellipse(0,headCY,12*s,14*s,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle=hairC;
+  ctx.beginPath();ctx.ellipse(0,headCY-8*s,12*s,8*s,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(-11*s,headCY-2*s,5*s,9*s,-0.3,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#1a0a00';
+  ctx.beginPath();ctx.ellipse(-4*s,headCY-2*s,2.5*s,2.5*s,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(3*s,headCY-2*s,2.5*s,2.5*s,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.6)';ctx.beginPath();ctx.arc(-3*s,headCY-3*s,1*s,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#8a3010';ctx.lineWidth=1.5*s;ctx.lineCap='round';
+  ctx.beginPath();
+  if(airborne){ctx.ellipse(0,headCY+4*s,3*s,3*s,0,0,Math.PI*2);ctx.fillStyle='#3a1008';ctx.fill();ctx.stroke();}
+  else{ctx.arc(0,headCY+4*s,4*s,0.1,Math.PI-0.1);ctx.stroke();}
+  ctx.strokeStyle=hairC;ctx.lineWidth=1.5*s;
+  ctx.beginPath();ctx.arc(-4*s,headCY-5*s,3*s,Math.PI*1.1,Math.PI*1.7);ctx.stroke();
+  ctx.beginPath();ctx.arc(3*s,headCY-5*s,3*s,Math.PI*1.3,Math.PI*1.9);ctx.stroke();
+}
+function drawAstronaut(s,airborne,onScale){
+  var suitCol='#d8d8d8',dark=shadeCol(suitCol,-50),mid=shadeCol(suitCol,-20),light=shadeCol(suitCol,45);
+  var bob=onScale?Math.sin(tick*.08)*1.5:(airborne?0:Math.sin(tick*.055)*1.2);
+  var legSpread=airborne?16*s:(onScale?4*s:6*s),armRaise=airborne?0.6:0.1;
+  ctx.fillStyle='rgba(0,0,0,.2)';ctx.beginPath();ctx.ellipse(0,3,22*s,6*s,0,0,Math.PI*2);ctx.fill();
+  [-1,1].forEach(function(side){
+    var bx=side*legSpread*.5;
+    ctx.fillStyle=dark;ctx.beginPath();ctx.ellipse(bx,-3*s,13*s,6*s,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=mid;ctx.beginPath();ctx.ellipse(bx,-4.5*s,9*s,3.5*s,0,0,Math.PI*2);ctx.fill();
+  });
+  [-legSpread,legSpread].forEach(function(lx,i){
+    var kBend=airborne?(i===0?-0.35:0.35):0,kx=lx*0.4,ky=-24*s+Math.abs(legSpread)*.18;
+    ctx.strokeStyle=dark;ctx.lineWidth=13*s;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(lx*.38,-4*s);ctx.quadraticCurveTo(kx+kBend*8,ky,0,-44*s+bob);ctx.stroke();
+    ctx.strokeStyle=suitCol;ctx.lineWidth=9*s;
+    ctx.beginPath();ctx.moveTo(lx*.38,-4*s);ctx.quadraticCurveTo(kx+kBend*8,ky,0,-44*s+bob);ctx.stroke();
+    ctx.strokeStyle=light;ctx.lineWidth=5*s;
+    ctx.beginPath();ctx.moveTo(lx*.4,-5*s);ctx.quadraticCurveTo(kx+kBend*6,ky-2,-2,-44*s+bob);ctx.stroke();
+    ctx.strokeStyle=dark;ctx.lineWidth=4*s;
+    ctx.beginPath();ctx.arc(kx+kBend*5,ky,6*s,0,Math.PI*2);ctx.stroke();
+  });
+  (function(){
+    var jx=14*s,jy=-60*s+bob,jw=12*s,jh=24*s;
+    var pg=ctx.createLinearGradient(jx,jy,jx+jw,jy+jh);
+    pg.addColorStop(0,'#b0b0b0');pg.addColorStop(.4,'#e8e8e8');pg.addColorStop(1,'#888');
+    ctx.fillStyle=pg;ctx.strokeStyle='#555';ctx.lineWidth=1.2;rr(jx,jy,jw,jh,4);ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.32)';rr(jx+2,jy+3,jw*.35,jh*.5,2);ctx.fill();
+    var nbx=jx+jw;
+    [jy+jh*.28,jy+jh*.72].forEach(function(ny){
+      ctx.fillStyle='#777';ctx.strokeStyle='#444';ctx.lineWidth=.8;rr(nbx,ny-2.5*s,9*s,5*s,2);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#555';ctx.beginPath();
+      ctx.moveTo(nbx+7*s,ny-2.5*s);ctx.lineTo(nbx+12*s,ny-4.5*s);ctx.lineTo(nbx+12*s,ny+4.5*s);ctx.lineTo(nbx+7*s,ny+2.5*s);
+      ctx.closePath();ctx.fill();
+      if(airborne||onScale){
+        var fl=8+20*s,fw=3+8*s,fy2=Math.sin(tick*.35+ny)*3*s;
+        var og=ctx.createLinearGradient(nbx+12*s,ny,nbx+12*s+fl,ny+fy2);
+        og.addColorStop(0,'rgba(255,180,20,.95)');og.addColorStop(.5,'rgba(255,80,0,.7)');og.addColorStop(1,'rgba(255,40,0,0)');
+        ctx.fillStyle=og;ctx.shadowColor='#ff8800';ctx.shadowBlur=12*s;
+        ctx.beginPath();ctx.moveTo(nbx+12*s,ny-fw);
+        ctx.quadraticCurveTo(nbx+12*s+fl*.5,ny+fy2-fw*.5,nbx+12*s+fl,ny+fy2*.7);
+        ctx.quadraticCurveTo(nbx+12*s+fl*.5,ny+fy2+fw*.5,nbx+12*s,ny+fw);
+        ctx.closePath();ctx.fill();ctx.shadowBlur=0;
+      }
+    });
+  })();
+  var tw=20*s,th=34*s;
+  ctx.save();ctx.translate(0,-60*s+bob);
+  var tg=ctx.createLinearGradient(-tw,0,tw,0);
+  tg.addColorStop(0,dark);tg.addColorStop(.4,suitCol);tg.addColorStop(.65,light);tg.addColorStop(1,mid);
+  ctx.fillStyle=tg;ctx.strokeStyle=dark;ctx.lineWidth=1.5;rr(-tw,-th*.5,tw*2,th,7);ctx.fill();ctx.stroke();
+  ctx.fillStyle=dark;ctx.strokeStyle=mid;ctx.lineWidth=.8;rr(-tw*.45,-th*.28,tw*.9,th*.5,3);ctx.fill();ctx.stroke();
+  [[-tw*.28,-th*.08,'#ff4444'],[-tw*.04,-th*.08,'#44ff88'],[tw*.18,-th*.08,'#ffaa00']].forEach(function(l){
+    ctx.fillStyle=l[2];ctx.shadowColor=l[2];ctx.shadowBlur=5;ctx.beginPath();ctx.arc(l[0],l[1],2.2*s,0,Math.PI*2);ctx.fill();
+  });
+  ctx.shadowBlur=0;ctx.strokeStyle=dark;ctx.lineWidth=4*s;
+  ctx.beginPath();ctx.arc(-tw,-th*.38,4.5*s,0,Math.PI*2);ctx.stroke();
+  ctx.beginPath();ctx.arc(tw,-th*.38,4.5*s,0,Math.PI*2);ctx.stroke();
+  ctx.restore();
+  [-1,1].forEach(function(side){
+    var shX=side*tw,shY=-74*s+bob,reachX=side*(22+14*armRaise)*s,reachY=(10+12*armRaise)*s;
+    ctx.strokeStyle=dark;ctx.lineWidth=11*s;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(shX,shY);ctx.lineTo(shX+reachX,shY+reachY);ctx.stroke();
+    ctx.strokeStyle=suitCol;ctx.lineWidth=7*s;
+    ctx.beginPath();ctx.moveTo(shX,shY);ctx.lineTo(shX+reachX,shY+reachY);ctx.stroke();
+    ctx.strokeStyle=dark;ctx.lineWidth=3.5*s;ctx.beginPath();ctx.arc(shX+reachX,shY+reachY,5.5*s,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle=suitCol;ctx.strokeStyle=dark;ctx.lineWidth=1;ctx.beginPath();ctx.arc(shX+reachX,shY+reachY,4.5*s,0,Math.PI*2);ctx.fill();ctx.stroke();
+  });
+  ctx.fillStyle=dark;ctx.strokeStyle=mid;ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.ellipse(0,-76*s+bob,9*s,5*s,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  var hcx=0,hcy=-92*s+bob;
+  var hg=ctx.createRadialGradient(hcx-3*s,hcy-5*s,3,hcx,hcy,18*s);
+  hg.addColorStop(0,light);hg.addColorStop(.55,suitCol);hg.addColorStop(1,dark);
+  ctx.fillStyle=hg;ctx.strokeStyle=dark;ctx.lineWidth=2;ctx.beginPath();ctx.arc(hcx,hcy,18*s,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.save();ctx.translate(hcx,hcy);
+  var vg=ctx.createLinearGradient(-12*s,-9*s,3*s,7*s);
+  vg.addColorStop(0,'#88ddff');vg.addColorStop(.5,'#22aaee');vg.addColorStop(1,'#115577');
+  ctx.fillStyle=vg;ctx.strokeStyle='#0a3344';ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.ellipse(-2*s,1*s,12*s,10*s,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.fillStyle='rgba(200,240,255,.4)';ctx.beginPath();ctx.ellipse(-6*s,-4*s,4*s,2.5*s,-0.4,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+  if(airborne){ctx.fillStyle='#ff2200';ctx.shadowColor='#ff4400';ctx.shadowBlur=9;ctx.beginPath();ctx.arc(hcx+11*s,hcy-10*s,3*s,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;}
+}
+
+// ── Fisica ────────────────────────────────────────────────────────────────
+// Gravità "visiva": la Terra è il riferimento; sotto la Terra la differenza è
+// esagerata (sulla Luna il salto sembra circa 10 volte più lento), sopra è
+// compressa (Giove circa 1,8 volte più veloce), per renderla percepibile.
+var G_EARTH_REF=9.81;
+function visualG(realG){var ratio=realG/G_EARTH_REF,ex=ratio<1?1.5:0.55;return G_PX_PER_MS2*G_EARTH_REF*Math.pow(ratio,ex);}
+function physicsUpdate(){
+  if(person.state==='flying'){
+    person.vy+=visualG(planet.g);person.x+=person.vx;person.y+=person.vy;person.vx*=0.995;
+    var plateLeft=SCALE_CX-S_PLATE_W/2,plateRight=SCALE_CX+S_PLATE_W/2;
+    if(person.vy>0&&person.x>plateLeft&&person.x<plateRight&&person.y>=scalePlateY&&person.y<scalePlateY+20){
+      person.y=scalePlateY;person.vy=0;person.vx=0;person.state='onscale';personOnScale=true;refreshScaleReading();
+    }
+    if(person.y>=GROUND_Y){person.y=GROUND_Y;person.vy=0;person.vx=0;person.state='ground';}
+    if(person.x<20){person.x=20;person.vx=Math.abs(person.vx)*0.5;}
+    if(person.x>W-20){person.x=W-20;person.vx=-Math.abs(person.vx)*0.5;}
+    if(Math.abs(person.vx)>0.3)person.facingRight=person.vx>0;
+  }
+  if(person.state==='onscale')person.y=scalePlateY;
+  var targetSink=personOnScale?S_PLATE_MAX_SINK*Math.min(1,mass*planet.g/(300*24.8)*2):0;
+  scalePlateY+=(S_PLATE_REST_Y+targetSink-scalePlateY)*0.1;
+  if(personOnScale)refreshScaleReading();
+}
+
+// ── Scritte in alto a sinistra ────────────────────────────────────────────
+function drawInfo(){
+  ctx.save();ctx.font="bold 17px 'Crimson Text',Georgia,serif";ctx.textAlign='left';ctx.textBaseline='alphabetic';
+  ctx.fillStyle='rgba(232,152,58,.95)';ctx.fillText(planet.name+':  g = '+fmt(planet.g,2)+' m/s²',12,24);
+  ctx.fillStyle='rgba(255,120,220,.95)';ctx.fillText('F = m·g = '+fmt(mass*planet.g,1)+' N',12,46);
+  ctx.restore();
+}
+function drawGrabHandle(){
+  if(person.state==='flying')return;
+  var tx=torsoCX(),ty=torsoCY();
+  ctx.save();ctx.strokeStyle='rgba(184,115,51,.5)';ctx.lineWidth=1.5;ctx.setLineDash([3,3]);
+  ctx.beginPath();ctx.arc(tx,ty,grabR()+8,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+  if(!dragActive&&tick<300){
+    ctx.fillStyle='rgba(184,115,51,.6)';ctx.font="italic 11px 'Playfair Display',Georgia,serif";
+    ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText('trascina',tx,ty-grabR()-12);
+  }
+  ctx.restore();
+}
+// freccia della forza peso (durante il volo), con l'etichetta F e la freccetta del vettore
+function drawWeightArrow(){
+  if(person.state!=='flying')return;
+  var tx=torsoCX(),ty=torsoCY(),P=mass*planet.g,alen=Math.min(14+P*0.5,90);
+  arrow(tx,ty,tx,ty+alen,'#ff44cc',3,11);
+  ctx.save();ctx.fillStyle='#ff44cc';ctx.font="italic bold 15px 'Playfair Display',Georgia,serif";
+  ctx.textAlign='left';ctx.textBaseline='middle';
+  var lx=tx+14,ly=ty+alen/2;ctx.fillText('F',lx,ly);
+  var aw=ctx.measureText('F').width*1.1;
+  ctx.strokeStyle='#ff44cc';ctx.lineWidth=1.2;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(lx-1,ly-9);ctx.lineTo(lx+aw+1,ly-9);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(lx+aw+2,ly-9);ctx.lineTo(lx+aw-2,ly-12);ctx.lineTo(lx+aw-2,ly-6);ctx.closePath();ctx.fill();
+  ctx.restore();
+}
+
+// ── Ciclo (si ferma quando l'animazione non è visibile) ───────────────────
+var raf=null,visible=true;
+function loop(){
+  tick++;ctx.clearRect(0,0,W,H);
+  drawBg();physicsUpdate();drawWorldScale();
+  drawPerson(person.x,person.y,person.facingRight,person.state==='flying',person.state==='onscale');
+  drawWeightArrow();drawGrabHandle();drawInfo();
+  raf=visible?requestAnimationFrame(loop):null;
+}
+if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(en){visible=en.isIntersecting;if(visible&&!raf)raf=requestAnimationFrame(loop);});}).observe(root);
+updateSideScale();loop();
+})();
+</script>
