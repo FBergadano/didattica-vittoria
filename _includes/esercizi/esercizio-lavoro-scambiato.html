@@ -1,0 +1,41 @@
+{% comment %}
+Esercizio a carosello (Prova tu!) sul teorema ΔE = L, con
+L = L_{U→S} − L_{S→U} (lavoro compiuto dall'Universo sul sistema meno lavoro
+compiuto dal sistema sull'Universo): calcolo di ΔE, di un lavoro mancante e
+una domanda concettuale. Usa setupInvCarousel (definita in invert-lavoro.html,
+inclusa prima nella pagina). Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexLavScamb">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexLavScambprev" onclick="iexLavScambnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexLavScambdots"></div>
+<button class="iex-navbtn" id="iexLavScambnext" onclick="iexLavScambnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexLavScambrow0">
+<p class="iex-qt">Su un sistema l'Universo compie un lavoro $L_{U\to S} = 120\ \text J$, mentre il sistema compie sull'Universo un lavoro $L_{S\to U} = 45\ \text J$. Di quanto varia l'energia meccanica del sistema?</p>
+{% include num.html id="numLavScamb0" valore="75" unit="J" %}
+</div>
+
+<div class="iex-q" id="iexLavScambrow1" style="display:none">
+<p class="iex-qt">Un bambino spinge un carrello compiendo su di esso un lavoro di $30\ \text J$; intanto il carrello, strisciando sul pavimento, cede all'ambiente $50\ \text J$ di energia a causa dell'attrito. Di quanto varia l'energia meccanica del carrello? (Attenzione al segno.)</p>
+{% include num.html id="numLavScamb1" valore="-20" unit="J" %}
+</div>
+
+<div class="iex-q" id="iexLavScambrow2" style="display:none">
+<p class="iex-qt">L'energia meccanica di un sistema aumenta di $200\ \text J$, mentre il sistema compie sull'Universo un lavoro di $80\ \text J$. Quanto lavoro ha compiuto l'Universo sul sistema?</p>
+{% include num.html id="numLavScamb2" valore="280" unit="J" %}
+</div>
+
+<div class="iex-q" id="iexLavScambrow3" style="display:none">
+<p class="iex-qt">Un sistema riceve dall'Universo un lavoro di $100\ \text J$ e, nello stesso tempo, compie sull'Universo un lavoro di $100\ \text J$. Che cosa succede alla sua energia meccanica?</p>
+{% capture _o_lavscamb %}[{"v":"a","t":"Resta costante, anche se il sistema non è isolato"},{"v":"b","t":"Aumenta di $200\\ \\text J$"},{"v":"c","t":"Diminuisce di $100\\ \\text J$"},{"v":"d","t":"Non si può dire, perché il sistema non è isolato"}]{% endcapture %}
+{% include mcq.html id="mcq-lavscamb" opts=_o_lavscamb ok="a" s="$L = L_{U\to S} - L_{S\to U} = 100\ \text J - 100\ \text J = 0$, quindi $\Delta E = 0$. Il sistema scambia energia con l'Universo (non è isolato), ma tanta ne entra quanta ne esce." %}
+</div>
+
+</div>
+
+<script>
+setupInvCarousel('iexLavScamb',4);
+</script>

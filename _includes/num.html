@@ -23,7 +23,7 @@ Esempio:
 <script>
 
 function nc_{{ include.id }}(){
-  var v=parseFloat(document.getElementById('{{ include.id }}').value.trim().replace(',','.'));
+  var v=parseFloat(document.getElementById('{{ include.id }}').value.trim().replace(',','.').replace(/[−–]/,'-'));
   var fb=document.getElementById('fb-{{ include.id }}');
   var target={{ include.valore }};
   var tol=Math.abs(target)*{{ _tol }}/100;
