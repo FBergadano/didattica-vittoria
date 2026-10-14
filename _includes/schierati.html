@@ -1,0 +1,30 @@
+{% comment %}
+"Da che parte stai?": una frase su cui non c'è una risposta giusta. Lo
+studente sceglie quanto è d'accordo su una scala a cinque posizioni e scrive
+perché. Scelta e motivazione restano salvate nel browser.
+
+Parametri:
+  id    — ID univoco (obbligatorio)
+  frase — l'affermazione da valutare (HTML ammesso)
+
+Esempio:
+  {% include schierati.html id="sc-tecnologia" frase="La tecnologia basterà a fermare il riscaldamento globale." %}
+{% endcomment %}
+<div class="sc-box" id="sc-{{ include.id }}">
+<p class="sc-frase">«{{ include.frase }}»</p>
+<div class="sc-scale" role="radiogroup" aria-label="Quanto sei d'accordo?">
+<button type="button" data-v="0">Per niente d'accordo</button><button type="button" data-v="1">Poco</button><button type="button" data-v="2">Non so</button><button type="button" data-v="3">Abbastanza</button><button type="button" data-v="4">Del tutto d'accordo</button>
+</div>
+<textarea class="ra-area sc-why" rows="2" placeholder="Perché?" aria-label="Perché?"></textarea>
+</div>
+<script>
+(function(){
+  var root=document.getElementById('sc-{{ include.id }}');if(!root)return;
+  var bs=root.querySelectorAll('.sc-scale button'),ta=root.querySelector('.sc-why'),ID='{{ include.id }}',v=null;
+  function show(){for(var i=0;i<bs.length;i++){var on=+bs[i].dataset.v===v;bs[i].classList.toggle('on',on);bs[i].setAttribute('aria-checked',on);bs[i].setAttribute('role','radio');}}
+  function save(){if(window._lvSave)_lvSave('schierati',ID,{v:v,t:ta.value});}
+  var s=window._lvLoad&&_lvLoad('schierati',ID);if(s){v=s.v;ta.value=s.t||'';}show();
+  for(var i=0;i<bs.length;i++)bs[i].addEventListener('click',function(){v=+this.dataset.v;show();save();});
+  var t;ta.addEventListener('input',function(){clearTimeout(t);t=setTimeout(save,400);});
+})();
+</script>

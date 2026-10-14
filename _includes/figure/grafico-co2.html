@@ -1,0 +1,18 @@
+{% comment %}
+Grafico (dati reali, inseriti nel file): concentrazione media annua di CO2
+nell'atmosfera dal 1925 al 2025, in ppm. 1925–1958: spline dei carotaggi
+di Law Dome (Etheridge et al., NOAA Paleo, law2006.txt); 1959–2025: medie
+annue di Mauna Loa (NOAA GML, co2_annmean_mlo.csv). Linea con riquadro dei
+valori al passaggio del mouse; tabella dei dati a scomparsa. Nessun parametro.
+{% endcomment %}
+{% include figure/grafico-serie-engine.html %}
+<div class="gs-wrap" id="gsCO2">
+<p class="gs-title">La concentrazione di anidride carbonica nell'atmosfera, 1925–2025</p>
+<p class="gs-sub">Parti per milione (ppm): molecole di CO<sub>2</sub> ogni milione di molecole d'aria. Passa il mouse o il dito sul grafico per leggere i valori.</p>
+<div class="gs-box"><div class="gs-tip"></div></div>
+<p class="gs-src">Fonti: carotaggi di ghiaccio di Law Dome, Antartide (1925–1958; Etheridge e altri, CSIRO) e misure dell'osservatorio di Mauna Loa, Hawaii (1959–2025; NOAA).</p>
+<details><summary>Mostra i dati in una tabella</summary><table><thead><tr><th>Anno</th><th>CO<sub>2</sub> (ppm)</th></tr></thead><tbody></tbody></table></details>
+</div>
+<script>
+gsChart('gsCO2',{type:"line",data:[[1925, 304.7], [1926, 305.0], [1927, 305.4], [1928, 305.8], [1929, 306.2], [1930, 306.6], [1931, 307.0], [1932, 307.3], [1933, 307.6], [1934, 308.0], [1935, 308.4], [1936, 308.7], [1937, 309.2], [1938, 309.6], [1939, 310.1], [1940, 310.5], [1941, 310.8], [1942, 311.0], [1943, 311.0], [1944, 311.0], [1945, 310.9], [1946, 310.8], [1947, 310.8], [1948, 310.9], [1949, 311.0], [1950, 311.2], [1951, 311.5], [1952, 311.8], [1953, 312.2], [1954, 312.8], [1955, 313.5], [1956, 314.1], [1957, 314.7], [1958, 315.2], [1959, 315.98], [1960, 316.91], [1961, 317.64], [1962, 318.45], [1963, 318.99], [1964, 319.62], [1965, 320.04], [1966, 321.37], [1967, 322.18], [1968, 323.05], [1969, 324.62], [1970, 325.68], [1971, 326.32], [1972, 327.46], [1973, 329.68], [1974, 330.19], [1975, 331.13], [1976, 332.03], [1977, 333.84], [1978, 335.41], [1979, 336.84], [1980, 338.76], [1981, 340.12], [1982, 341.48], [1983, 343.15], [1984, 344.87], [1985, 346.35], [1986, 347.61], [1987, 349.31], [1988, 351.69], [1989, 353.2], [1990, 354.45], [1991, 355.7], [1992, 356.54], [1993, 357.21], [1994, 358.96], [1995, 360.97], [1996, 362.74], [1997, 363.88], [1998, 366.84], [1999, 368.54], [2000, 369.71], [2001, 371.32], [2002, 373.45], [2003, 375.98], [2004, 377.7], [2005, 379.98], [2006, 382.09], [2007, 384.02], [2008, 385.83], [2009, 387.64], [2010, 390.1], [2011, 391.85], [2012, 394.06], [2013, 396.74], [2014, 398.81], [2015, 401.01], [2016, 404.41], [2017, 406.76], [2018, 408.72], [2019, 411.65], [2020, 414.21], [2021, 416.41], [2022, 418.53], [2023, 421.08], [2024, 424.61], [2025, 427.35]],ymin:280,ymax:440,yticks:[280,300,320,340,360,380,400,420,440],dec:1,unit:"ppm",u:"ppm",color:"#0e7490",aria:"Grafico della concentrazione di anidride carbonica dal 1925 al 2025: sale da circa 305 a circa 427 parti per milione, sempre più rapidamente.",marks:[[1925,4,-16,"start"],[2025,-6,-10,"end"]]});
+</script>

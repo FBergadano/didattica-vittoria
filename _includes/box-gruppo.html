@@ -1,0 +1,14 @@
+{% comment %}
+Riquadro di un gruppo di lavoro (progetti in cui le lezioni le tengono gli
+studenti): numero del gruppo, titolo del tema e domanda guida in evidenza.
+Si chiude con box-end.html.
+
+Parametri:
+  n       — numero del gruppo
+  titolo  — tema del gruppo
+  domanda — la domanda guida a cui la lezione deve rispondere
+{% endcomment %}
+<div class="box box-gruppo">
+<div class="gr-head"><span class="gr-n">Gruppo {{ include.n }}</span><span class="gr-t">{{ include.titolo }}</span></div>
+<p class="gr-q">{{ include.domanda }}</p>
+<div class="box-content" markdown="1">

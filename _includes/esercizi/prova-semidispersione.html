@@ -1,0 +1,59 @@
+{% comment %}
+Esercizio a carosello (Prova tu!): valore medio, semidispersione e incertezza
+totale di cinque misure dell'altezza di una porta. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexProvaSemi">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexProvaSemiprev" onclick="iexProvaSeminav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexProvaSemidots"></div>
+<button class="iex-navbtn" id="iexProvaSeminext" onclick="iexProvaSeminav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexProvaSemirow0">
+<p class="iex-qt">Misuri cinque volte l'altezza di una porta con un metro a nastro che ha una tacca ogni centimetro, e ottieni $2{,}10\ \text m$, $2{,}12\ \text m$, $2{,}09\ \text m$, $2{,}11\ \text m$, $2{,}13\ \text m$. Calcola il valore medio.</p>
+{% include num.html id="numPortaMedia" valore="2.11" unit="m" %}
+</div>
+
+<div class="iex-q" id="iexProvaSemirow1" style="display:none">
+<p class="iex-qt">Misuri cinque volte l'altezza di una porta con un metro a nastro che ha una tacca ogni centimetro, e ottieni $2{,}10\ \text m$, $2{,}12\ \text m$, $2{,}09\ \text m$, $2{,}11\ \text m$, $2{,}13\ \text m$. Calcola la semidispersione.</p>
+{% include num.html id="numPortaSemi" valore="0.02" unit="m" %}
+</div>
+
+<div class="iex-q" id="iexProvaSemirow2" style="display:none">
+<p class="iex-qt">Misuri cinque volte l'altezza di una porta con un metro a nastro che ha una tacca ogni centimetro, e ottieni $2{,}10\ \text m$, $2{,}12\ \text m$, $2{,}09\ \text m$, $2{,}11\ \text m$, $2{,}13\ \text m$. Calcola l'incertezza totale. <em>Indizio:</em> l'incertezza strumentale del metro è metà di un centimetro.</p>
+{% include num.html id="numPortaDelta" valore="0.025" unit="m" %}
+</div>
+
+</div>
+
+<script>
+window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
+  var cur=0;
+  function updateDots(){
+    var dots=document.querySelectorAll('#'+ID+'dots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'');
+  }
+  function show(i){
+    document.querySelectorAll('#'+ID+' .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById(ID+'row'+i).style.display='block';
+    cur=i;
+    document.getElementById(ID+'prev').disabled=(i===0);
+    document.getElementById(ID+'next').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById(ID+'dots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Passo '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+};
+setupInvCarousel('iexProvaSemi',3);
+</script>

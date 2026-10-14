@@ -1,0 +1,123 @@
+{% comment %}
+Animazione a pulsante sulla schermatura (screening) della forza elettrica.
+Due cariche di segno opposto si attraggono; le frecce rappresentano la forza
+su ciascuna. Premendo il pulsante lo spazio si riempie di molecole polari
+(tipo acqua), che prima si agitano a caso e poi si orientano lungo il campo:
+attorno a ogni carica si forma uno strato di estremità di segno opposto e la
+forza diminuisce. Nessun parametro.
+{% endcomment %}
+<div class="scr-widget" id="scrWidget">
+<canvas id="scrCanvas" width="840" height="440" aria-label="Animazione: le molecole polari di un materiale si orientano attorno a due cariche e ne riducono la forza di attrazione"></canvas>
+<button class="scr-btn" id="scrBtn">Riempi lo spazio di acqua ▶</button>
+<p class="scr-caption" id="scrCaption">Nel vuoto: le due cariche si attraggono con tutta la forza prevista dalla legge di Coulomb.</p>
+</div>
+
+<style>
+.scr-widget { margin: 1.6rem auto; max-width: 440px; text-align: center; }
+#scrCanvas { width: 100%; height: auto; display: block; margin: 0 auto; }
+.scr-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .88rem; margin-top: .4rem; }
+.scr-btn:hover { background: #e2e8f0; }
+.scr-caption { min-height: 3.6em; font-size: .85rem; font-style: italic; color: #6b7280; margin-top: .5rem; max-width: 420px; margin-left: auto; margin-right: auto; }
+@media print { .scr-widget { display: none; } }
+</style>
+
+<script>
+(function(){
+  var cv = document.getElementById('scrCanvas');
+  if(!cv) return;
+  var ctx = cv.getContext('2d');
+  var btn = document.getElementById('scrBtn');
+  var cap = document.getElementById('scrCaption');
+  var W = 420, H = 220, S = 2;            // coordinate logiche, canvas a doppia risoluzione
+  var P = {x: 120, y: 110}, N = {x: 300, y: 110};   // carica positiva e negativa
+  var RED = '#be123c', BLUE = '#1d4ed8';
+
+  // molecole su una griglia irregolare, lontano dalle cariche
+  var mols = [];
+  for(var gx = 18; gx < W; gx += 26){
+    for(var gy = 16; gy < H; gy += 26){
+      var x = gx + (Math.random() - .5) * 10, y = gy + (Math.random() - .5) * 10;
+      if(Math.hypot(x - P.x, y - P.y) < 26 || Math.hypot(x - N.x, y - N.y) < 26) continue;
+      if(Math.abs(y - P.y) < 26 && x > P.x && x < N.x) continue;   // lascia libero lo spazio delle frecce
+      mols.push({x: x, y: y, a0: Math.random() * 6.283, w: .6 + Math.random() * 1.4, ph: Math.random() * 6.283});
+    }
+  }
+
+  // direzione del campo delle due cariche nel punto (x,y)
+  function field(x, y){
+    var ex = 0, ey = 0;
+    [[P, 1], [N, -1]].forEach(function(c){
+      var dx = x - c[0].x, dy = y - c[0].y, r2 = dx*dx + dy*dy, r = Math.sqrt(r2);
+      ex += c[1] * dx / (r2 * r); ey += c[1] * dy / (r2 * r);
+    });
+    return Math.atan2(ey, ex);
+  }
+  mols.forEach(function(m){ m.target = field(m.x, m.y); });
+
+  var fill = 0, align = 0, on = false, last = null;
+
+  function arrow(x, dir, len, col){
+    var y = P.y, x2 = x + dir * len;
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 3.5;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x2 - dir * 7, y); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2, y); ctx.lineTo(x2 - dir * 10, y - 6); ctx.lineTo(x2 - dir * 10, y + 6); ctx.closePath(); ctx.fill();
+  }
+
+  function charge(c, col, sign){
+    var g = ctx.createRadialGradient(c.x - 5, c.y - 5, 2, c.x, c.y, 16);
+    g.addColorStop(0, '#ffffff'); g.addColorStop(1, col);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, 16, 0, 6.283); ctx.fill();
+    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(sign, c.x, c.y + 1);
+  }
+
+  function molecule(m, t){
+    // angolo: agitazione casuale che, man mano che align cresce, cede il posto all'allineamento
+    var ra = m.a0 + Math.sin(t * m.w + m.ph) * 1.6;
+    var wob = Math.sin(t * 3 * m.w + m.ph) * .25;
+    var vx = (1 - align) * Math.cos(ra) + align * Math.cos(m.target + wob);
+    var vy = (1 - align) * Math.sin(ra) + align * Math.sin(m.target + wob);
+    var a = Math.atan2(vy, vx);
+    ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(a); ctx.globalAlpha = fill;
+    ctx.fillStyle = RED;  ctx.beginPath(); ctx.ellipse(4, 0, 6, 4.2, 0, 0, 6.283); ctx.fill();   // estremità positiva
+    ctx.fillStyle = BLUE; ctx.beginPath(); ctx.ellipse(-4, 0, 6, 4.2, 0, 0, 6.283); ctx.fill();  // estremità negativa
+    ctx.restore();
+  }
+
+  function draw(ts){
+    var t = ts / 1000, dt = last === null ? 0 : Math.min(t - last, .05); last = t;
+    // prima compare il materiale, poi le molecole si orientano
+    if(on){ fill = Math.min(1, fill + dt * 1.2); if(fill > .6) align = Math.min(1, align + dt * .45); }
+    else  { align = Math.max(0, align - dt * 1.2); if(align < .3) fill = Math.max(0, fill - dt * 1.5); }
+
+    ctx.setTransform(S, 0, 0, S, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    if(fill > 0){
+      ctx.globalAlpha = .12 * fill; ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1;
+      mols.forEach(function(m){ molecule(m, t); });
+      ctx.globalAlpha = 1;
+    }
+    var len = 62 * (1 - .72 * align);
+    arrow(P.x + 18, 1, len, '#16a34a');
+    arrow(N.x - 18, -1, len, '#16a34a');
+    charge(P, RED, '+'); charge(N, BLUE, '−');
+    ctx.fillStyle = '#16a34a'; ctx.font = 'italic bold 15px serif'; ctx.textAlign = 'center';
+    ctx.fillText('F', P.x + 18 + len / 2, P.y - 14);
+    ctx.fillText('F', N.x - 18 - len / 2, N.y - 14);
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  btn.addEventListener('click', function(){
+    on = !on;
+    if(on){
+      btn.textContent = '◀ Torna al vuoto';
+      cap.textContent = 'Le molecole d’acqua hanno un’estremità positiva (rossa) e una negativa (blu). Si orientano: attorno alla carica + si raccolgono le estremità negative, attorno alla carica − quelle positive. Le cariche risultano in parte «coperte» e la forza diminuisce.';
+    } else {
+      btn.textContent = 'Riempi lo spazio di acqua ▶';
+      cap.textContent = 'Nel vuoto: le due cariche si attraggono con tutta la forza prevista dalla legge di Coulomb.';
+    }
+  });
+})();
+</script>

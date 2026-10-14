@@ -1,0 +1,56 @@
+{% comment %}
+Animazione: il meccanismo interno del termometro bimetallico. Una lamina
+bimetallica (ottone, giallo, all'esterno; acciaio, grigio, all'interno) è
+avvolta a spirale: l'estremo esterno è fissato al supporto, quello interno è
+collegato all'asse della lancetta. Con il cursore si cambia la temperatura:
+scaldandosi la spirale si svolge e fa ruotare la lancetta sulla scala in °C;
+raffreddandosi si riavvolge. Si ferma quando non è visibile. Nessun parametro.
+{% endcomment %}
+<div id="bimLab" style="max-width:300px;margin:0 auto;">
+<canvas id="bim-cv" style="display:block;width:100%;height:auto;" aria-label="Spirale bimetallica collegata a una lancetta su una scala di temperatura"></canvas>
+<label style="display:flex;align-items:center;justify-content:center;gap:.4rem;font-size:.85rem;margin-top:.3rem;">Temperatura <input type="range" id="bim-T" min="-20" max="120" step="1" value="20" style="width:120px;accent-color:#ea580c;"> <b id="bim-Tv">20 °C</b></label>
+</div>
+<script>
+(function(){
+  var cv=document.getElementById('bim-cv');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=300,H=320,dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+  var sl=document.getElementById('bim-T'),lab=document.getElementById('bim-Tv');
+  var CX=150,CY=196,R0=11,R1=74,TURNS=4.2,T=20,Tshow=20;
+  var OUT=-Math.PI/2+0.35;                           // angolo dell'estremo esterno, fissato al supporto
+  function needleAng(t){return -Math.PI/2-1.05+(t+20)/140*2.1;}   // da −20 °C a 120 °C
+  function draw(){
+    var g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#1e293b');g.addColorStop(1,'#0f172a');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    // supporto
+    ctx.fillStyle='#cbd5e1';ctx.fillRect(CX-9,CY-150,18,262);
+    var b=ctx.createLinearGradient(0,H-36,0,H);b.addColorStop(0,'#e7c08a');b.addColorStop(1,'#b8834f');ctx.fillStyle=b;ctx.fillRect(40,H-30,W-80,22);
+    // scala ad arco, con i gradi
+    var a0=needleAng(-20),a1=needleAng(120),RS=118,CYs=CY;
+    ctx.strokeStyle='#e2e8f0';ctx.lineWidth=24;ctx.beginPath();ctx.arc(CX,CYs,RS,a0-0.06,a1+0.06);ctx.stroke();
+    ctx.strokeStyle='#334155';ctx.lineWidth=1;ctx.font='9px Georgia,serif';ctx.fillStyle='#1e293b';ctx.textAlign='center';
+    for(var v=-20;v<=120;v+=5){var a=needleAng(v),big=v%20===0;
+      ctx.beginPath();ctx.moveTo(CX+Math.cos(a)*(RS-(big?10:6)),CYs+Math.sin(a)*(RS-(big?10:6)));ctx.lineTo(CX+Math.cos(a)*(RS+10),CYs+Math.sin(a)*(RS+10));ctx.stroke();
+      if(big){ctx.save();ctx.fillStyle='#e2e8f0';ctx.font='bold 10px Georgia,serif';ctx.translate(CX+Math.cos(a)*(RS+21),CYs+Math.sin(a)*(RS+21));ctx.rotate(a+Math.PI/2);ctx.fillText(v+'°',0,3);ctx.restore();}}
+    // spirale bimetallica: l'estremo esterno è fisso, quello interno ruota con la lancetta
+    var rot=needleAng(Tshow)-needleAng(20),IN=OUT+TURNS*2*Math.PI+rot;
+    function spiral(off,col,lw){ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.beginPath();
+      for(var k=0;k<=400;k++){var s=k/400,r=R1-(R1-R0)*s+off,a=OUT+(IN-OUT)*s;var x=CX+r*Math.cos(a),y=CY+r*Math.sin(a);if(k===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();}
+    spiral(1.4,'#facc15',2.6);spiral(-1.4,'#94a3b8',2.6);
+    // attacco esterno al supporto e asse centrale
+    var ox=CX+R1*Math.cos(OUT),oy=CY+R1*Math.sin(OUT);ctx.fillStyle='#64748b';ctx.fillRect(ox-4,oy-4,8,8);
+    var cg=ctx.createRadialGradient(CX-3,CY-3,1,CX,CY,9);cg.addColorStop(0,'#f8fafc');cg.addColorStop(1,'#64748b');ctx.fillStyle=cg;ctx.beginPath();ctx.arc(CX,CY,9,0,7);ctx.fill();
+    // lancetta, solidale con l'estremo interno della spirale
+    var na=needleAng(Tshow);ctx.strokeStyle='#dc2626';ctx.lineWidth=2.5;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(CX-Math.cos(na)*12,CY-Math.sin(na)*12);ctx.lineTo(CX+Math.cos(na)*(RS+6),CY+Math.sin(na)*(RS+6));ctx.stroke();ctx.lineCap='butt';
+    ctx.fillStyle='#334155';ctx.beginPath();ctx.arc(CX,CY,3.5,0,7);ctx.fill();
+    // legenda
+    ctx.font='11px Georgia,serif';ctx.textAlign='left';ctx.fillStyle='#facc15';ctx.fillText('ottone',14,H-46);ctx.fillStyle='#cbd5e1';ctx.fillText('acciaio',14,H-32);
+  }
+  var raf=null,visible=true;
+  function loop(){Tshow+=(T-Tshow)*0.08;draw();if(visible&&Math.abs(T-Tshow)>0.05)raf=requestAnimationFrame(loop);else raf=null;}
+  function kick(){if(!raf)raf=requestAnimationFrame(loop);}
+  sl.addEventListener('input',function(){T=+sl.value;lab.textContent=T+' °C';kick();});
+  if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(en){visible=en.isIntersecting;if(visible)kick();});}).observe(cv);
+  draw();
+})();
+</script>

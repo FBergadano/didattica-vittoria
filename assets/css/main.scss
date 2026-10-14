@@ -2009,6 +2009,33 @@ cit em, cit i { font-style: normal; }
 @media print { .iex-widget { display: none !important; } }
 
 // ── Domanda a risposta aperta (risposta-aperta.html): prevedi / spiega / trova l'errore
+// ── Riflessione libera (riflessione.html) ──
+.rf-box { border-left: 4px solid #64748b; background: #f8fafc; border-radius: 0 8px 8px 0; padding: .9rem 1.2rem; margin: 1.2rem 0; }
+.rf-label { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin: 0 0 .4rem; color: #475569; }
+.rf-q { margin: 0 0 .5rem; }
+.rf-note { font-size: .78rem; color: #94a3b8; margin: .3rem 0 0; }
+.rf-prev { background: #fff; border: 1px dashed #cbd5e1; border-radius: 6px; padding: .5rem .75rem; margin: 0 0 .7rem; }
+.rf-prev-l { font-size: .8rem; color: #64748b; margin: 0 0 .2rem; }
+.rf-prev-t { margin: 0; font-style: italic; white-space: pre-wrap; }
+
+// ── Da che parte stai? (schierati.html) ──
+.sc-box { border: 1px solid #e2e8f0; border-radius: 8px; padding: .8rem 1rem; margin: 1rem 0; background: #fff; }
+.sc-frase { font-weight: 600; margin: 0 0 .6rem; }
+.sc-scale { display: flex; gap: 3px; margin-bottom: .5rem; }
+.sc-scale button { flex: 1; border: 1px solid #cbd5e1; background: #f8fafc; color: #334155; font-size: .78rem; line-height: 1.2; padding: .45rem .2rem; cursor: pointer; font-family: inherit; }
+.sc-scale button:first-child { border-radius: 6px 0 0 6px; background: #fef2f2; }
+.sc-scale button:last-child  { border-radius: 0 6px 6px 0; background: #f0fdf4; }
+.sc-scale button.on { background: #0e7490; border-color: #0e7490; color: #fff; font-weight: 700; }
+@media (max-width: 600px) { .sc-scale button { font-size: .68rem; } }
+@media print { .sc-scale button.on { outline: 2px solid #000; } }
+
+// ── Riquadro di un gruppo di lavoro (box-gruppo.html) ──
+.box.box-gruppo { border-left: none; border-top: 4px solid #0f766e; border-radius: 0 0 $radius-md $radius-md; background: #f8fafc; box-shadow: 0 1px 3px rgba(15,23,42,.08); }
+.gr-head { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; margin-bottom: .3rem; }
+.gr-n { font-family: $font-accessible; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: #0f766e; border-radius: 4px; padding: .1rem .45rem; }
+.gr-t { font-weight: 700; font-size: 1.08rem; color: #134e4a; }
+.gr-q { font-style: italic; font-size: 1.02rem; color: #0f766e; margin: 0 0 .7rem; }
+
 .ra-box { border-left: 4px solid #0f766e; background: #f0fdfa; border-radius: 0 8px 8px 0; padding: .9rem 1.2rem; margin: 1.2rem 0; }
 .ra-box.ra-prevedi { border-left-color: #7c3aed; background: #f5f3ff; }
 .ra-box.ra-errore  { border-left-color: #d97706; background: #fffbeb; }

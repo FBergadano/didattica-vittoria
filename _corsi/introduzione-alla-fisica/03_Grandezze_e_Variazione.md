@@ -625,7 +625,7 @@ $$\Delta h = \text{var}_{h,s}\times \Delta s = 0{,}08\times 250 = 20\ \text{m}.$
 Un'altra strada scende con pendenza $\text{var}_{h,s} = -0{,}15$. Se la quota scende di $\Delta h = -30$ m, quanto tratto $\Delta s$ hai percorso?
 
 {% include spoiler.html testo="Mostra la soluzione" %}
-Dalla formula $\text{var}_{h,s}=\dfrac{\Delta h}{\Delta s}$, isolando $\Delta s$ (divido entrambi i membri per $\text{var}_{h,s}$):
+Dalla formula $\text{var}\_{h,s}=\dfrac{\Delta h}{\Delta s}$, isolando $\Delta s$ (divido entrambi i membri per $\text{var}\_{h,s}$):
 
 $$\Delta s = \frac{\Delta h}{\text{var}_{h,s}} = \frac{-30}{-0{,}15} = 200\ \text{m}.$$
 {% include spoiler-end.html %}

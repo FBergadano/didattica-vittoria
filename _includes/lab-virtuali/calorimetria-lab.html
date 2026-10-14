@@ -1,0 +1,301 @@
+{% comment %}
+Laboratorio di calorimetria (ispirato a PhET "Energy Forms and Changes").
+Due "secchi-fornello", ciascuno con un cursore Calore: verso destra si accende
+il fuoco e il secchio fornisce calore (Q > 0), verso sinistra si riempie di
+ghiaccio e sottrae calore (Q < 0). Quattro corpi da trascinare: acqua e olio
+(in due bicchieri), un mattone e un blocco di ferro; ognuno ha accanto il suo
+termometro. Lo studente sceglie la massa di ciascuno (0,5 / 1 / 2 kg).
+Fisica: ΔT = Q/(c·m) con i calori specifici veri (acqua 4186, olio 1970,
+mattone 840, ferro 450 J/(kg·K)); un secchio acceso fornisce a qualsiasi corpo
+la stessa potenza. Due corpi che si toccano (appoggiati uno sull'altro,
+affiancati, oppure un blocco dentro un bicchiere) si scambiano calore dal più
+caldo al più freddo (freccia "Q") fino all'equilibrio termico. L'acqua resta a
+100 °C mentre bolle e a 0 °C mentre ghiaccia; olio e solidi fra −20 e 200 °C.
+Un po' di calore si disperde verso l'ambiente (20 °C).
+Vista microscopica (modello): ogni corpo è riempito di particelle; nei solidi
+vibrano attorno a posizioni fisse, nei liquidi si muovono liberamente. Stessa
+temperatura = stessa agitazione, per tutti i materiali. I materiali però hanno
+un numero diverso di particelle: l'acqua tante e piccole, il ferro poche e
+grandi (numero ∝ calore specifico). Con la stessa energia fornita, le poche
+particelle del ferro ne ricevono ciascuna molta di più e si agitano subito;
+quelle dell'acqua, molto più numerose, accelerano poco: per questo è più
+facile riscaldare il ferro che l'acqua.
+Nessun parametro.
+{% endcomment %}
+<style>
+#calLab canvas{display:block;width:100%;max-width:680px;height:auto;margin:0 auto;touch-action:none;border-radius:10px;}
+#calLab .cl-bar{max-width:680px;margin:.5rem auto 0;display:flex;flex-wrap:wrap;gap:.45rem .9rem;justify-content:center;align-items:center;font-size:.86rem;color:#334155;}
+#calLab .cl-q{display:flex;align-items:center;gap:.35rem;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:.25rem .55rem;}
+#calLab .cl-q input{width:120px;accent-color:#ea580c;}
+#calLab .cl-q small{font-size:.75rem;color:#64748b;}
+#calLab .cl-m{display:inline-flex;align-items:center;gap:.25rem;}
+#calLab select{border:1px solid #cbd5e1;border-radius:5px;padding:.15rem .3rem;font-size:.84rem;background:#fff;}
+#calLab .cl-btn{border:1px solid #cbd5e1;background:#fff;border-radius:6px;padding:.3rem .75rem;cursor:pointer;font-size:.85rem;color:#334155;}
+#calLab .cl-btn.on{background:#0e7490;border-color:#0e7490;color:#fff;}
+@media print{#calLab{display:none!important;}}
+</style>
+<div class="vdrag-widget" id="calLab">
+<p class="vdrag-hint">Trascina i corpi sui secchi e regola il calore: verso destra il fuoco fornisce calore, verso sinistra il ghiaccio lo sottrae. Metti a contatto due corpi a temperature diverse (uno sull'altro, uno accanto all'altro, oppure un blocco dentro un bicchiere) e osserva i termometri.</p>
+<canvas id="cl-cv" aria-label="Laboratorio di calorimetria: due fornelli, acqua, olio, un mattone e un blocco di ferro con i loro termometri"></canvas>
+<div class="cl-bar">
+  <label class="cl-q">Secchio sinistro <small>ghiaccio</small><input type="range" id="cl-q0" min="-1" max="1" step="0.05" value="0"><small>fuoco</small></label>
+  <label class="cl-q">Secchio destro <small>ghiaccio</small><input type="range" id="cl-q1" min="-1" max="1" step="0.05" value="0"><small>fuoco</small></label>
+</div>
+<div class="cl-bar">
+  <span>Masse:</span>
+  <label class="cl-m">acqua <select data-k="0"><option value="0.5">0,5 kg</option><option value="1" selected>1 kg</option><option value="2">2 kg</option></select></label>
+  <label class="cl-m">olio <select data-k="1"><option value="0.5">0,5 kg</option><option value="1" selected>1 kg</option><option value="2">2 kg</option></select></label>
+  <label class="cl-m">mattone <select data-k="2"><option value="0.5">0,5 kg</option><option value="1" selected>1 kg</option><option value="2">2 kg</option></select></label>
+  <label class="cl-m">ferro <select data-k="3"><option value="0.5">0,5 kg</option><option value="1" selected>1 kg</option><option value="2">2 kg</option></select></label>
+</div>
+<div class="cl-bar">
+  <button type="button" class="cl-btn" id="cl-micro">🔬 Vista microscopica</button>
+  <button type="button" class="cl-btn" id="cl-reset">↺ Ricomincia</button>
+</div>
+</div>
+<script>
+(function(){
+  var cv=document.getElementById('cl-cv');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=680,H=330,dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+  var root=document.getElementById('calLab'),micro=false,TAMB=20,TABLE=268;
+
+  // ── materiali (c in J/(kg·K)); per la vista micro: particelle per kg e "massa" delle particelle
+  var MAT=[
+    {name:'acqua',  c:4186,liquid:true, col:[59,130,246], w:66,h:84,tmin:0,  tmax:100,np:90,pr:2.8},
+    {name:'olio',   c:1970,liquid:true, col:[234,179,8],  w:66,h:84,tmin:-20,tmax:200,np:44,pr:3.6},
+    {name:'mattone',c:840, liquid:false,col:[190,85,52],  w:72,h:36,tmin:-20,tmax:200,np:18,pr:5.0},
+    {name:'ferro',  c:450, liquid:false,col:[125,133,146],w:44,h:32,tmin:-20,tmax:200,np:10,pr:6.6}
+  ];
+  // ── secchi-fornello
+  var ST=[{x:60,w:124,top:TABLE-70,q:0},{x:222,w:124,top:TABLE-70,q:0}];
+  var PMAX=6000,GC=180,GA=3;              // potenza massima di un secchio (W), conduttanza fra corpi a contatto e verso l'aria (W/K)
+  var objs=[];
+  function size(o){var s=Math.cbrt(o.m);o.w=MAT[o.k].w*s;o.h=MAT[o.k].h*s;}
+  function reset(){
+    objs=[];
+    var xs=[400,480,560,630];
+    MAT.forEach(function(M,k){var o={k:k,m:1,T:TAMB,x:0,y:TABLE,on:null,inside:null,parts:[]};size(o);o.x=xs[k]-o.w/2;objs.push(o);makeParts(o);});
+    ST.forEach(function(s,i){s.q=0;document.getElementById('cl-q'+i).value=0;});
+  }
+  // ── particelle (vista micro): numero ∝ massa (e ∝ calore specifico del materiale);
+  //    l'agitazione dipende SOLO dalla temperatura: stessa temperatura = stessa agitazione
+  function makeParts(o){var M=MAT[o.k],n=Math.max(4,Math.round(M.np*o.m));o.parts=[];
+    for(var i=0;i<n;i++)o.parts.push({u:Math.random(),v:Math.random(),a:Math.random()*6.283,ph:Math.random()*6.283,ph2:Math.random()*6.283,fr:0.8+0.4*Math.random()});}
+  function agit(o){return Math.max(0.03,Math.min(1,(o.T+30)/230));}
+
+  // ── appoggi e contatti
+  function top(o){return o.y-o.h;}
+  function overlapX(a,b){return Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x);}
+  function stationUnder(o){var cx=o.x+o.w/2;for(var i=0;i<ST.length;i++){var s=ST[i];if(cx>s.x&&cx<s.x+s.w)return i;}return -1;}
+  function children(o){return objs.filter(function(p){return p.on===o||p.inside===o;});}
+  function family(o){var f=[o];children(o).forEach(function(c){f=f.concat(family(c));});return f;}
+  function place(o){                               // fa "cadere" il corpo sull'appoggio più alto sotto di lui
+    o.on=null;o.inside=null;var M=MAT[o.k],fam=family(o);
+    o.x=Math.max(6,Math.min(W-o.w-6,o.x));
+    var best={y:TABLE,ref:null};var si=stationUnder(o);if(si>=0)best={y:ST[si].top,ref:'s'+si};
+    var others=objs.filter(function(p){return fam.indexOf(p)<0&&!p.inside;});
+    // un blocco lasciato sopra un bicchiere ci finisce dentro
+    if(!M.liquid){var cx=o.x+o.w/2;for(var i=0;i<others.length;i++){var b=others[i];
+      if(MAT[b.k].liquid&&cx>b.x+4&&cx<b.x+b.w-4&&o.w<b.w-8&&!objs.some(function(p){return p.inside===b;})){
+        o.inside=b;o.x=b.x+(b.w-o.w)/2;o.y=b.y-6;moveFamily(o);return;}}}
+    others.forEach(function(b){if(overlapX(o,b)>2){
+      if(MAT[b.k].liquid||M.liquid){                // i bicchieri non si impilano: si sposta accanto
+        o.x=(o.x+o.w/2<b.x+b.w/2)?b.x-o.w-1:b.x+b.w+1;o.x=Math.max(6,Math.min(W-o.w-6,o.x));}
+      else if(top(b)<best.y){best={y:top(b),ref:b};}}});
+    var si2=stationUnder(o);if(best.ref===null&&si2>=0)best={y:ST[si2].top,ref:'s'+si2};
+    if(typeof best.ref==='string'||best.ref===null){
+      // controlla ancora gli ostacoli dopo lo spostamento laterale
+      others.forEach(function(b){if(overlapX(o,b)>2&&!MAT[b.k].liquid&&!M.liquid&&top(b)<best.y)best={y:top(b),ref:b};});}
+    o.y=best.y;o.on=best.ref;
+    // aggancio laterale: se è vicino a un corpo sulla stessa base, lo tocca
+    others.forEach(function(b){if(b.on===o.on&&!b.inside){var g1=b.x-(o.x+o.w),g2=o.x-(b.x+b.w);
+      if(g1>=-1&&g1<12)o.x=b.x-o.w;else if(g2>=-1&&g2<12)o.x=b.x+b.w;}});
+    moveFamily(o);
+  }
+  function moveFamily(o){children(o).forEach(function(c){
+    if(c.inside===o){c.x=o.x+(o.w-c.w)/2;c.y=o.y-6;}else{c.y=top(o);c.x=Math.max(o.x-c.w+6,Math.min(o.x+o.w-6,c.x));}
+    moveFamily(c);});}
+  function contacts(){var L=[];
+    objs.forEach(function(a){if(a.on&&typeof a.on==='object')L.push([a,a.on]);if(a.inside)L.push([a,a.inside]);});
+    for(var i=0;i<objs.length;i++)for(var j=i+1;j<objs.length;j++){var a=objs[i],b=objs[j];
+      if(a.inside||b.inside||a.on!==b.on)continue;
+      if(Math.abs(a.x+a.w-b.x)<1.5||Math.abs(b.x+b.w-a.x)<1.5)L.push([a,b]);}
+    return L;}
+
+  // ── fisica
+  var flows=[];
+  function step(dt){
+    var dQ=objs.map(function(){return 0;});
+    objs.forEach(function(o,i){
+      if(typeof o.on==='string'){var s=ST[+o.on.slice(1)];dQ[i]+=s.q*PMAX*dt;}   // il secchio fornisce o sottrae calore
+      dQ[i]+=GA*(TAMB-o.T)*dt;});
+    flows=[];
+    contacts().forEach(function(p){var a=p[0],b=p[1],q=GC*(b.T-a.T)*dt;dQ[objs.indexOf(a)]+=q;dQ[objs.indexOf(b)]-=q;
+      if(Math.abs(a.T-b.T)>0.5)flows.push(a.T>b.T?[a,b]:[b,a]);});
+    objs.forEach(function(o,i){var M=MAT[o.k];o.T+=dQ[i]/(M.c*o.m);
+      o.boil=M.name==='acqua'&&o.T>=100&&dQ[i]>0;o.ice=M.name==='acqua'&&o.T<=0&&dQ[i]<0;
+      o.T=Math.max(M.tmin,Math.min(M.tmax,o.T));});
+    ST.forEach(function(s){s.ph=(s.ph||0)+dt;});
+    if(micro)objs.forEach(function(o){var g=agit(o),M=MAT[o.k];o.parts.forEach(function(p){
+      if(M.liquid){var sp=(0.04+1.1*g)*dt;            // nei liquidi le particelle si muovono liberamente
+        p.u+=Math.cos(p.a)*sp;p.v+=Math.sin(p.a)*sp*1.3;
+        if(p.u<0||p.u>1){p.a=Math.PI-p.a;p.u=Math.max(0,Math.min(1,p.u));}
+        if(p.v<0||p.v>1){p.a=-p.a;p.v=Math.max(0,Math.min(1,p.v));}
+        p.a+=(Math.random()-0.5)*0.5;}
+      else{p.ph+=(5+22*g)*p.fr*dt;p.ph2+=(5+22*g)*p.fr*1.17*dt;}   // nei solidi vibrano attorno a posizioni fisse
+    });});
+  }
+
+  // ── disegno
+  var t=0,sprites={};
+  function rgb(c,a){return 'rgba('+c.map(Math.round).join(',')+','+(a===undefined?1:a)+')';}
+  function mix(a,b,u){return a.map(function(v,k){return v+(b[k]-v)*u;});}
+  function shade(c,u){return u>=0?mix(c,[255,255,255],u):mix(c,[0,0,0],-u);}
+  function tempTint(o,c){var d=o.T-TAMB;return d>=0?mix(c,[220,38,38],Math.min(0.55,d/240)):mix(c,[147,197,253],Math.min(0.6,-d/50));}
+  function rr(x,y,w,h,r){ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,w,h,r);else ctx.rect(x,y,w,h);}
+  function sprite(col,r){var key=col.join()+'|'+r;if(sprites[key])return sprites[key];
+    var c=document.createElement('canvas'),z=Math.ceil((2*r+2)*dpr);c.width=c.height=z;var g=c.getContext('2d');g.scale(dpr,dpr);
+    var gr=g.createRadialGradient(r+1-r*0.35,r+1-r*0.4,0.4,r+1,r+1,r);gr.addColorStop(0,'#fff');gr.addColorStop(0.35,rgb(shade(col,0.15)));gr.addColorStop(1,rgb(shade(col,-0.35)));
+    g.fillStyle=gr;g.beginPath();g.arc(r+1,r+1,r,0,7);g.fill();return (sprites[key]=c);}
+  function background(){
+    var g=ctx.createLinearGradient(0,0,0,TABLE);g.addColorStop(0,'#f1f5f9');g.addColorStop(1,'#e2e8f0');ctx.fillStyle=g;ctx.fillRect(0,0,W,TABLE);
+    var b=ctx.createLinearGradient(0,TABLE,0,H);b.addColorStop(0,'#c8a27a');b.addColorStop(0.12,'#b88b5e');b.addColorStop(1,'#8b6340');ctx.fillStyle=b;ctx.fillRect(0,TABLE,W,H-TABLE);
+    ctx.fillStyle='rgba(255,255,255,.35)';ctx.fillRect(0,TABLE,W,2);
+    ctx.strokeStyle='rgba(90,60,30,.18)';ctx.lineWidth=1;for(var k=0;k<5;k++){ctx.beginPath();ctx.moveTo(0,TABLE+12+k*12);ctx.bezierCurveTo(W*0.3,TABLE+8+k*12,W*0.6,TABLE+16+k*12,W,TABLE+11+k*12);ctx.stroke();}
+  }
+  function drawStation(s,i){
+    var x=s.x,w=s.w,y=s.top,bot=TABLE,ry=9;
+    // ombra
+    ctx.fillStyle='rgba(30,20,10,.25)';ctx.beginPath();ctx.ellipse(x+w/2,bot+2,w/2+6,6,0,0,7);ctx.fill();
+    // interno (visibile dall'apertura): fuoco o ghiaccio
+    ctx.save();ctx.beginPath();ctx.ellipse(x+w/2,y,w/2-4,ry-2,0,0,7);ctx.clip();
+    ctx.fillStyle='#1f2937';ctx.fillRect(x,y-ry,w,2*ry);
+    if(s.q>0.01){var gl=ctx.createRadialGradient(x+w/2,y+4,2,x+w/2,y,w/2);gl.addColorStop(0,'rgba(253,224,71,'+(0.6+0.4*s.q)+')');gl.addColorStop(1,'rgba(234,88,12,'+(0.5*s.q)+')');ctx.fillStyle=gl;ctx.fillRect(x,y-ry,w,2*ry);}
+    if(s.q<-0.01){ctx.fillStyle='rgba(219,234,254,'+(0.5-0.4*s.q)+')';ctx.fillRect(x,y-ry,w,2*ry);}
+    ctx.restore();
+    if(s.q>0.01)for(var k=0;k<6;k++){var fx=x+18+k*(w-36)/5,fh=(10+20*s.q)*(0.75+0.3*Math.sin(t*10+k*1.7));   // fiamme che escono dall'apertura
+      var fg=ctx.createLinearGradient(0,y+2,0,y-fh);fg.addColorStop(0,'rgba(234,88,12,.95)');fg.addColorStop(0.55,'rgba(250,204,21,.9)');fg.addColorStop(1,'rgba(254,249,195,0)');
+      ctx.fillStyle=fg;ctx.beginPath();ctx.moveTo(fx-8,y+2);ctx.quadraticCurveTo(fx-7,y-fh*0.55,fx+2*Math.sin(t*9+k),y-fh);ctx.quadraticCurveTo(fx+7,y-fh*0.55,fx+8,y+2);ctx.closePath();ctx.fill();}
+    if(s.q<-0.01){var n=Math.round(2+5*(-s.q));for(var k=0;k<n;k++){var cx=x+20+((k*29)%(w-40)),cy=y-3-((k*7)%8),cs=10;   // cubetti di ghiaccio
+      ctx.fillStyle='rgba(224,242,254,.95)';ctx.strokeStyle='rgba(96,165,250,.9)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(cx,cy-cs);ctx.lineTo(cx+cs,cy-cs*0.6);ctx.lineTo(cx+cs,cy+cs*0.4);ctx.lineTo(cx,cy);ctx.lineTo(cx-cs,cy+cs*0.4);ctx.lineTo(cx-cs,cy-cs*0.6);ctx.closePath();ctx.fill();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,cy-cs);ctx.moveTo(cx-cs,cy-cs*0.6);ctx.lineTo(cx,cy-cs*0.2);ctx.lineTo(cx+cs,cy-cs*0.6);ctx.stroke();}}
+    // corpo del secchio (metallo)
+    var g=ctx.createLinearGradient(x,0,x+w,0);g.addColorStop(0,'#475569');g.addColorStop(0.3,'#cbd5e1');g.addColorStop(0.55,'#94a3b8');g.addColorStop(1,'#334155');
+    ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+8,bot);ctx.ellipse(x+w/2,bot,w/2-8,6,0,Math.PI,0,true);ctx.lineTo(x+w,y);ctx.ellipse(x+w/2,y,w/2,ry,0,0,Math.PI);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(15,23,42,.35)';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(x+w/2,y+(bot-y)*0.55,w/2-4,ry-2,0,0,Math.PI);ctx.stroke();
+    if(s.q>0.01){ctx.fillStyle='rgba(249,115,22,'+(0.18*s.q)+')';ctx.fill();}
+    // bordo
+    ctx.strokeStyle='#64748b';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x+w/2,y,w/2,ry,0,0,7);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.6)';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(x+w/2,y-1,w/2-1,ry-1,0,Math.PI*1.05,Math.PI*1.95);ctx.stroke();
+    label(s.q>0.01?'fuoco: Q > 0':(s.q<-0.01?'ghiaccio: Q < 0':'spento'),x+w/2,bot+20,s.q>0.01?'#9a3412':(s.q<-0.01?'#1d4ed8':'#334155'));
+  }
+  function label(txt,x,y,col){ctx.font='bold 11px Georgia,serif';var wd=ctx.measureText(txt).width+12;
+    ctx.fillStyle='rgba(255,255,255,.85)';rr(x-wd/2,y-11,wd,16,8);ctx.fill();ctx.fillStyle=col||'#334155';ctx.textAlign='center';ctx.fillText(txt,x,y+1);}
+  function drawThermo(o){
+    var M=MAT[o.k],x=o.x+o.w-12,bot=M.liquid?o.y-14:o.y-o.h-8,topY=bot-(M.liquid?88:60),frac=Math.max(0,Math.min(1,(o.T+20)/220));
+    var g=ctx.createLinearGradient(x-5,0,x+5,0);g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(1,'rgba(226,232,240,.95)');
+    ctx.fillStyle=g;ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.2;rr(x-4.5,topY,9,bot-topY,4.5);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.arc(x,bot+3,6.5,0,7);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#dc2626';ctx.beginPath();ctx.arc(x,bot+3,4.6,0,7);ctx.fill();
+    var ym=bot-(bot-topY-5)*frac;ctx.fillRect(x-2,ym,4,bot+2-ym);
+    ctx.strokeStyle='rgba(100,116,139,.8)';ctx.lineWidth=1;for(var v=0;v<=200;v+=50){var yy=bot-(bot-topY-5)*((v+20)/220);ctx.beginPath();ctx.moveTo(x+4.5,yy);ctx.lineTo(x+8,yy);ctx.stroke();}
+    var txt=Math.round(o.T)+' °C';ctx.font='bold 11px Georgia,serif';var wd=ctx.measureText(txt).width+10;
+    ctx.fillStyle='#0f172a';rr(x-wd/2,topY-19,wd,15,7);ctx.fill();ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(txt,x,topY-8);
+  }
+  function drawBeaker(o,microMode){
+    var M=MAT[o.k],x=o.x,y=o.y,w=o.w,h=o.h,ry=w*0.13,lv=h*0.72,ly=y-lv;
+    ctx.fillStyle='rgba(30,20,10,.18)';ctx.beginPath();ctx.ellipse(x+w/2,y+2,w/2+3,ry*0.6,0,0,7);ctx.fill();
+    // vetro, parete posteriore
+    ctx.fillStyle='rgba(226,232,240,.35)';ctx.fillRect(x,y-h,w,h);
+    // liquido
+    var lc=tempTint(o,M.col);
+    if(!microMode){var lg=ctx.createLinearGradient(x,0,x+w,0);lg.addColorStop(0,rgb(shade(lc,-0.15),0.9));lg.addColorStop(0.4,rgb(shade(lc,0.15),0.9));lg.addColorStop(1,rgb(shade(lc,-0.25),0.9));
+      ctx.fillStyle=lg;ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x,y);ctx.ellipse(x+w/2,y,w/2,ry,0,Math.PI,0,true);ctx.lineTo(x+w,ly);ctx.closePath();ctx.fill();
+      ctx.fillStyle=rgb(shade(lc,0.3),0.95);ctx.beginPath();ctx.ellipse(x+w/2,ly,w/2,ry,0,0,7);ctx.fill();
+      if(o.boil)for(var k=0;k<7;k++){var bx=x+8+((k*17+t*30)%(w-16)),by=y-6-((t*50+k*13)%(lv-8));ctx.strokeStyle='rgba(255,255,255,.95)';ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(bx,by,2.2+k%2,0,7);ctx.stroke();}
+      if(o.ice){ctx.fillStyle='rgba(240,249,255,.85)';ctx.beginPath();ctx.ellipse(x+w/2,ly,w/2,ry,0,0,7);ctx.fill();}
+    }else{ctx.fillStyle='rgba(248,250,252,.92)';ctx.beginPath();ctx.moveTo(x,ly);ctx.lineTo(x,y);ctx.ellipse(x+w/2,y,w/2,ry,0,Math.PI,0,true);ctx.lineTo(x+w,ly);ctx.closePath();ctx.fill();
+      drawParticles(o,x+3,ly+2,w-6,lv-4);}
+    // contorno e riflessi del vetro
+    ctx.strokeStyle='rgba(100,116,139,.9)';ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(x,y-h);ctx.lineTo(x,y);ctx.ellipse(x+w/2,y,w/2,ry,0,Math.PI,0,true);ctx.lineTo(x+w,y-h);ctx.stroke();
+    ctx.beginPath();ctx.ellipse(x+w/2,y-h,w/2,ry,0,0,7);ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,.45)';ctx.fillRect(x+5,y-h+ry+2,4,h-ry-8);ctx.fillRect(x+w-12,y-h+ry+6,2,h-ry-16);
+  }
+  function drawBlock(o,microMode){
+    var M=MAT[o.k],x=o.x,y=o.y,w=o.w,h=o.h,dx=Math.min(10,w*0.18),dy=dx*0.7,c=tempTint(o,M.col);
+    ctx.fillStyle='rgba(30,20,10,.22)';ctx.beginPath();ctx.ellipse(x+w/2+dx/2,y+2,w/2+4,4,0,0,7);ctx.fill();
+    // faccia superiore e laterale (3D)
+    ctx.fillStyle=rgb(shade(c,0.3));ctx.beginPath();ctx.moveTo(x,y-h);ctx.lineTo(x+dx,y-h-dy);ctx.lineTo(x+w+dx,y-h-dy);ctx.lineTo(x+w,y-h);ctx.closePath();ctx.fill();
+    ctx.fillStyle=rgb(shade(c,-0.3));ctx.beginPath();ctx.moveTo(x+w,y-h);ctx.lineTo(x+w+dx,y-h-dy);ctx.lineTo(x+w+dx,y-dy);ctx.lineTo(x+w,y);ctx.closePath();ctx.fill();
+    // faccia frontale
+    if(!microMode){var g=ctx.createLinearGradient(0,y-h,0,y);g.addColorStop(0,rgb(shade(c,0.12)));g.addColorStop(1,rgb(shade(c,-0.15)));ctx.fillStyle=g;ctx.fillRect(x,y-h,w,h);
+      if(M.name==='mattone'){ctx.strokeStyle='rgba(255,240,230,.45)';ctx.lineWidth=1.2;ctx.beginPath();
+        ctx.moveTo(x,y-h/2);ctx.lineTo(x+w,y-h/2);ctx.moveTo(x+w/2,y-h);ctx.lineTo(x+w/2,y-h/2);ctx.moveTo(x+w/4,y-h/2);ctx.lineTo(x+w/4,y);ctx.moveTo(x+3*w/4,y-h/2);ctx.lineTo(x+3*w/4,y);ctx.stroke();}
+      else{ctx.fillStyle='rgba(255,255,255,.35)';ctx.fillRect(x+3,y-h+3,w-6,3);}}
+    else{ctx.fillStyle='rgba(248,250,252,.92)';ctx.fillRect(x,y-h,w,h);drawParticles(o,x+2,y-h+2,w-4,h-4);}
+    ctx.strokeStyle='rgba(30,41,59,.55)';ctx.lineWidth=1;ctx.strokeRect(x+0.5,y-h+0.5,w-1,h-1);
+  }
+  function drawParticles(o,x,y,w,h){                 // vista micro: stessa temperatura = stessa agitazione
+    var M=MAT[o.k],g=agit(o),r=M.pr,sp=sprite(tempTint(o,M.col).map(Math.round),r);
+    if(M.liquid){o.parts.forEach(function(p){ctx.drawImage(sp,x+r+p.u*(w-2*r)-r-1,y+r+p.v*(h-2*r)-r-1,2*r+2,2*r+2);});}
+    else{var n=o.parts.length,cols=Math.max(1,Math.round(Math.sqrt(n*w/h))),rows=Math.ceil(n/cols),dxg=w/cols,dyg=h/rows,A=Math.min(dxg,dyg)*(0.05+0.32*g);
+      o.parts.forEach(function(p,i){var cx=x+dxg*(i%cols+0.5),cy=y+dyg*(Math.floor(i/cols)+0.5);
+        ctx.drawImage(sp,cx+A*Math.sin(p.ph)-r-1,cy+A*Math.sin(p.ph2)-r-1,2*r+2,2*r+2);});}
+  }
+  function drawFlow(a,b){                          // freccia del calore dal più caldo al più freddo
+    var ax=a.x+a.w/2,ay=a.y-a.h/2,bx=b.x+b.w/2,by=b.y-b.h/2,dx=bx-ax,dy=by-ay,L=Math.hypot(dx,dy);
+    if(a.inside===b||b.inside===a){var c=a.inside?a:b;ax=c.x+c.w/2;ay=c.y-c.h-8;dx=0;dy=a.inside?-1:1;L=1;}
+    if(L<1){dx=0;dy=-1;L=1;}
+    var ux=dx/L,uy=dy/L,mx=(a.inside||b.inside)?ax:(ax+bx)/2,my=(a.inside||b.inside)?ay:(ay+by)/2,len=26;
+    ctx.strokeStyle='#dc2626';ctx.fillStyle='#dc2626';ctx.lineWidth=4;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(mx-ux*len/2,my-uy*len/2);ctx.lineTo(mx+ux*(len/2-7),my+uy*(len/2-7));ctx.stroke();ctx.lineCap='butt';
+    ctx.beginPath();ctx.moveTo(mx+ux*len/2,my+uy*len/2);ctx.lineTo(mx+ux*(len/2-10)-uy*7,my+uy*(len/2-10)+ux*7);ctx.lineTo(mx+ux*(len/2-10)+uy*7,my+uy*(len/2-10)-ux*7);ctx.closePath();ctx.fill();
+    var qx=mx-uy*16,qy=my+ux*16-2;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(qx,qy,8,0,7);ctx.fill();ctx.strokeStyle='#dc2626';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.fillStyle='#dc2626';ctx.font='italic bold 12px Georgia,serif';ctx.textAlign='center';ctx.fillText('Q',qx,qy+4);
+  }
+  function draw(){
+    background();
+    ST.forEach(drawStation);
+    var order=objs.slice().sort(function(a,b){return (a.inside?1:0)-(b.inside?1:0)||b.y-a.y;});
+    order.forEach(function(o){var M=MAT[o.k];
+      if(o.inside){drawBlock(o,micro);var b=o.inside;              // blocco dentro un bicchiere: il liquido lo copre in parte
+        if(!micro){var lc=tempTint(b,MAT[b.k].col);ctx.fillStyle=rgb(lc,0.35);ctx.fillRect(b.x+1,b.y-b.h*0.72,b.w-2,b.h*0.72);}}
+      else if(M.liquid)drawBeaker(o,micro);else drawBlock(o,micro);});
+    objs.forEach(function(o){if(!o.inside){drawThermo(o);label(MAT[o.k].name+' · '+String(o.m).replace('.',',')+' kg',o.x+o.w/2,o.y+16);}
+      else{var b=o.inside;label('dentro: '+MAT[o.k].name+' '+Math.round(o.T)+' °C',b.x+b.w/2,b.y+33,'#7c2d12');}});
+    flows.forEach(function(f){drawFlow(f[0],f[1]);});
+    if(micro){ctx.font='italic 12px Georgia,serif';ctx.fillStyle='#334155';ctx.textAlign='left';
+      ctx.fillText('Vista microscopica (modello): più la temperatura è alta, più le particelle si agitano.',10,18);
+      ctx.fillText('Il ferro ha poche particelle grandi, l’acqua tante e piccole: con la stessa energia, quelle del ferro si agitano di più.',10,34);}
+  }
+
+  // ── trascinamento
+  var drag=null,dx=0,dy=0;
+  function pt(ev){var r=cv.getBoundingClientRect();return {x:(ev.clientX-r.left)*W/r.width,y:(ev.clientY-r.top)*H/r.height};}
+  function hit(q){var c=objs.filter(function(o){return q.x>=o.x&&q.x<=o.x+o.w&&q.y>=o.y-o.h&&q.y<=o.y;});
+    c.sort(function(a,b){return (b.inside?1:0)-(a.inside?1:0)||a.y-b.y;});return c[0]||null;}
+  cv.addEventListener('pointerdown',function(ev){var q=pt(ev),o=hit(q);if(!o)return;
+    drag=o;dx=q.x-o.x;dy=q.y-o.y;o.on=null;o.inside=null;cv.setPointerCapture(ev.pointerId);ev.preventDefault();});
+  cv.addEventListener('pointermove',function(ev){var q=pt(ev);
+    if(!drag){cv.style.cursor=hit(q)?'grab':'default';return;}
+    cv.style.cursor='grabbing';drag.x=q.x-dx;drag.y=Math.min(TABLE,q.y-dy);moveFamily(drag);});
+  function drop(){if(!drag)return;place(drag);drag=null;cv.style.cursor='default';}
+  cv.addEventListener('pointerup',drop);cv.addEventListener('pointercancel',drop);
+
+  // ── controlli
+  [0,1].forEach(function(i){document.getElementById('cl-q'+i).addEventListener('input',function(e){ST[i].q=+e.target.value;});});
+  root.querySelectorAll('select[data-k]').forEach(function(s){s.addEventListener('change',function(){
+    var o=objs[+s.dataset.k];o.m=+s.value;size(o);makeParts(o);place(o);objs.forEach(function(p){if(p!==o&&(p.on===o||p.inside===o))place(p);});});});
+  var mbtn=document.getElementById('cl-micro');
+  mbtn.addEventListener('click',function(){micro=!micro;mbtn.classList.toggle('on',micro);});
+  document.getElementById('cl-reset').addEventListener('click',function(){reset();root.querySelectorAll('select[data-k]').forEach(function(s){s.value='1';});});
+
+  var raf=null,last=null,visible=true;
+  function loop(ts){var d=last===null?0:Math.min(0.05,(ts-last)/1000);last=ts;t+=d;for(var k=0;k<4;k++)step(d/4);draw();
+    if(visible)raf=requestAnimationFrame(loop);else{raf=null;last=null;}}
+  if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(en){visible=en.isIntersecting;if(visible&&!raf)raf=requestAnimationFrame(loop);});}).observe(root);
+  reset();draw();raf=requestAnimationFrame(loop);
+})();
+</script>

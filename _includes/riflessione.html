@@ -1,0 +1,35 @@
+{% comment %}
+Riflessione libera: una domanda personale senza risposta giusta. Lo studente
+scrive in una casella; il testo resta salvato nel browser. Non c'è nessuna
+"risposta possibile" da confrontare.
+
+Parametri:
+  id        — ID univoco (obbligatorio)
+  domanda   — testo della domanda (HTML ammesso)
+  etichetta — titoletto in alto (default: "💭 La tua idea")
+  rileggi   — (facoltativo) id di una riflessione precedente nella stessa
+              pagina: il suo testo viene mostrato sopra la casella
+              ("All'inizio avevi scritto…"), per confrontare prima e dopo
+
+Esempio:
+  {% include riflessione.html id="inizio" domanda="Che cosa sai già di…?" %}
+  ...
+  {% include riflessione.html id="fine" rileggi="inizio" domanda="E adesso?" %}
+{% endcomment %}
+<div class="rf-box" id="rf-{{ include.id }}">
+<p class="rf-label">{{ include.etichetta | default: "💭 La tua idea" }}</p>
+{% if include.rileggi %}<div class="rf-prev" hidden><p class="rf-prev-l">All'inizio avevi scritto:</p><p class="rf-prev-t"></p></div>{% endif %}
+<p class="rf-q">{{ include.domanda }}</p>
+<textarea class="ra-area" rows="3" placeholder="Scrivi qui…" aria-label="La tua risposta"></textarea>
+<p class="rf-note">Quello che scrivi resta salvato in questo browser.</p>
+</div>
+<script>
+(function(){
+  var root=document.getElementById('rf-{{ include.id }}');if(!root)return;
+  var ta=root.querySelector('textarea'),ID='{{ include.id }}';
+  var s=window._lvLoad&&_lvLoad('riflessione',ID);if(s)ta.value=s.v||'';
+  {% if include.rileggi %}var p=window._lvLoad&&_lvLoad('riflessione','{{ include.rileggi }}');
+  if(p&&p.v&&p.v.trim()){var box=root.querySelector('.rf-prev');box.querySelector('.rf-prev-t').textContent=p.v;box.hidden=false;}{% endif %}
+  var t;ta.addEventListener('input',function(){clearTimeout(t);t=setTimeout(function(){if(window._lvSave)_lvSave('riflessione',ID,{v:ta.value});},400);});
+})();
+</script>

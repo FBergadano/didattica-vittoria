@@ -1,0 +1,54 @@
+{% comment %}
+Esercizio a carosello (Prova tu!) sull'incertezza strumentale di strumenti
+analogici: cilindro graduato, metro a nastro. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="iexProvaIs">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="iexProvaIsprev" onclick="iexProvaIsnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="iexProvaIsdots"></div>
+<button class="iex-navbtn" id="iexProvaIsnext" onclick="iexProvaIsnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="iexProvaIsrow0">
+<p class="iex-qt">Un cilindro graduato ha una tacca ogni $2\ \text{mL}$. Qual è la sua incertezza strumentale?</p>
+{% include num.html id="numIsCilindro" valore="1" unit="mL" %}
+</div>
+
+<div class="iex-q" id="iexProvaIsrow1" style="display:none">
+<p class="iex-qt">Il metro a nastro di una sarta ha una tacca ogni mezzo centimetro. Qual è la sua incertezza strumentale, in millimetri? È più o meno sensibile di un metro da falegname, che ha una tacca ogni millimetro?</p>
+{% include num.html id="numIsSarta" valore="2.5" unit="mm" %}
+</div>
+
+</div>
+
+<script>
+window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
+  var cur=0;
+  function updateDots(){
+    var dots=document.querySelectorAll('#'+ID+'dots .iex-dot');
+    for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'');
+  }
+  function show(i){
+    document.querySelectorAll('#'+ID+' .iex-q').forEach(function(q){q.style.display='none';});
+    document.getElementById(ID+'row'+i).style.display='block';
+    cur=i;
+    document.getElementById(ID+'prev').disabled=(i===0);
+    document.getElementById(ID+'next').disabled=(i===N-1);
+    updateDots();
+  }
+  function buildDots(){
+    var c=document.getElementById(ID+'dots');
+    for(var j=0;j<N;j++){
+      var d=document.createElement('span');
+      d.className='iex-dot'+(j===0?' cur':'');
+      d.title='Passo '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j);
+      c.appendChild(d);
+    }
+  }
+  buildDots();
+  window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+};
+setupInvCarousel('iexProvaIs',2);
+</script>

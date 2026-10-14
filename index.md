@@ -10,7 +10,9 @@ title: "Didattica Vittoria"
     Materiale didattico interattivo per i miei corsi al Liceo Vittoria.
     Scegli un argomento per accedere agli appunti, simulazioni ed esercizi.
 
-    Per segnalare errori, suggerimenti, o qualsiasi altra cosa, potete contattarmi alla mail <a href="mailto:fulvio.bergadano@vittoriaweb.it">fulvio.bergadano@vittoriaweb.it</a>
+
+
+    Per segnalare errori, suggerimenti, o qualsiasi altra cosa, puoi contattarmi alla mail <a href="mailto:fulvio.bergadano@vittoriaweb.it">fulvio.bergadano@vittoriaweb.it</a>
   </p>
 </header>
 

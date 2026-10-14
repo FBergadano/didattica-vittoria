@@ -24,6 +24,7 @@ per tenerli ordinati nel finder — l'ordine vero (pagina del corso, link
 | `termodinamica/` | Termodinamica | fisica |
 | `gravitazione-elettromagnetismo/` | La Gravitazione e l'Elettromagnetismo | fisica |
 | `cittadinanza/` | Cittadinanza e Prospettive Globali | cittadinanza |
+| `clima/` | Lezioni sul Clima | cittadinanza |
 
 Ogni argomento ha anche una pagina di presentazione `_corsi/<argomento>.md`
 (layout `corso`) con titolo, `slug` e `ordine` (posizione all'interno della
@@ -177,6 +178,17 @@ La soluzione è $x = 2$.
 - `s` — spiegazione opzionale
 - Risposta giusta → coriandoli; sbagliata → messaggio rosso
 
+### Completa la frase con più caselle
+
+```liquid
+{% include fill-multi.html testo="Per scaldare di [1] K un chilo di acqua servono [4186|4.186] J." %}
+```
+
+- ogni risposta va fra `[ ]` e diventa una casella da riempire (niente tendina); varianti separate da `|`
+- l'unità di misura si scrive fuori dalle parentesi, nel testo
+- un solo ✓ controlla tutte le caselle; numeri accettati con virgola o punto
+- `s` — spiegazione opzionale mostrata quando è tutto giusto
+
 ### Abbinamento a tre colonne
 
 ```liquid
@@ -250,6 +262,34 @@ La soluzione è $x = 2$.
 - `tipo` — `"prevedi"` (prima di un'animazione), `"spiega"` (con parole tue), `"errore"` (trova l'errore)
 - il pulsante "Confronta con una risposta possibile" si attiva solo dopo che lo studente ha scritto
 - la risposta scritta resta salvata nel browser
+
+### Riflessione libera (nessuna risposta giusta)
+
+```liquid
+{% include riflessione.html id="inizio" etichetta="💭 Il punto di partenza"
+   domanda="Che cosa sai già di…?" %}
+...
+{% include riflessione.html id="fine" rileggi="inizio" domanda="E adesso?" %}
+```
+
+- casella di testo salvata nel browser, senza "risposta possibile" da confrontare
+- `rileggi` — id di una riflessione precedente: il suo testo compare sopra ("All'inizio avevi scritto…")
+
+### Da che parte stai?
+
+```liquid
+{% include schierati.html id="sc-tecnologia" frase="La tecnologia basterà a fermare il riscaldamento globale." %}
+```
+
+- scala a cinque posizioni (per niente d'accordo … del tutto d'accordo) più un campo "Perché?"; nessuna risposta giusta
+
+### Riquadro di un gruppo di lavoro
+
+```liquid
+{% include box-gruppo.html n="1" titolo="La fisica dell'effetto serra" domanda="Domanda guida" %}
+Testo in Markdown.
+{% include box-end.html %}
+```
 
 ### Domanda a scelta multipla
 

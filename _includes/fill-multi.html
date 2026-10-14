@@ -1,0 +1,47 @@
+{% comment %}
+Completa la frase con PIÙ caselle (risposta libera, niente menu a tendina).
+Parametri:
+  testo — la frase; ogni risposta va fra parentesi quadre e diventa una casella.
+          Varianti accettate separate da | (es. [4186|4 186]). I numeri valgono
+          uguali con la virgola o con il punto decimale e con o senza spazi.
+          Le formule $...$ fuori dalle parentesi funzionano come sempre.
+  s     — soluzione/spiegazione mostrata dopo la verifica (facoltativa)
+Un solo pulsante ✓ controlla tutte le caselle (verde giusta, rossa sbagliata);
+coriandoli se sono tutte giuste. Le risposte restano salvate nel browser.
+Esempio:
+  {% include fill-multi.html testo="Per scaldare di [1] K un chilo di acqua servono [4186] J." %}
+{% endcomment %}
+<p class="fillm-wrap" data-tpl="{{ include.testo | escape }}" data-sol="{{ include.s | escape }}"></p>
+<div class="fill-fb"></div>
+<script>
+(function(){
+  var w=document.currentScript.previousElementSibling.previousElementSibling;
+  if(!w||!w.classList.contains('fillm-wrap'))return;
+  var tpl=w.dataset.tpl,ans=[],html='',k=0;
+  html=tpl.replace(/\[([^\]]*)\]/g,function(m,a){ans.push(a.split('|'));var n=Math.max(3,a.split('|')[0].length+2);
+    return '<input class="fill-inline fillm-in" type="text" placeholder="…" size="'+n+'" data-i="'+(k++)+'">';});
+  w.innerHTML=html+' <button class="fill-vbtn" type="button">✓</button>';
+  var ins=w.querySelectorAll('.fillm-in'),btn=w.querySelector('.fill-vbtn'),fb=w.nextElementSibling;
+  function norm(s){return s.toLowerCase().replace(/\s+/g,'').replace(/[−–]/,'-');}
+  function num(x){x=norm(x).replace(',','.');return /^[-+]?\d*\.?\d+$/.test(x)?parseFloat(x):null;}
+  function same(a,v){var na=num(a),nv=num(v);return norm(a)===norm(v)||(na!==null&&nv!==null&&Math.abs(na-nv)<=1e-9*Math.max(1,Math.abs(na)));}
+  var key=window._lvHash?_lvHash('fillm|'+tpl):null;
+  function check(save){
+    var all=true,any=false;
+    ins.forEach(function(inp,i){var v=inp.value.trim();if(v)any=true;var ok=v&&ans[i].some(function(a){return same(a,v);});
+      inp.style.borderColor=v?(ok?'#16a34a':'#dc2626'):'';inp.style.background=v?(ok?'#f0fdf4':'#fef2f2'):'';if(!ok)all=false;});
+    if(!any){fb.className='fill-fb err';fb.textContent='Completa le caselle.';return;}
+    var sol=w.dataset.sol;
+    fb.className='fill-fb '+(all?'ok':'err');
+    fb.innerHTML=(all?'✓ Esatto!':'✗ Controlla le caselle in rosso.')+(sol&&all?'&ensp;<small style="color:#6b7280">'+sol+'</small>':'');
+    if(all&&save&&window._shoot)_shoot(btn);
+    if(save&&key&&window._lvSave)_lvSave('fillm',key,[].map.call(ins,function(x){return x.value;}));
+  }
+  btn.addEventListener('click',function(){check(true);});
+  ins.forEach(function(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter')check(true);});});
+  document.addEventListener('DOMContentLoaded',function(){
+    if(!key||!window._lvLoad)return;var s=_lvLoad('fillm',key);
+    if(s&&s.length===ins.length){ins.forEach(function(x,i){x.value=s[i];});check(false);}
+  });
+})();
+</script>

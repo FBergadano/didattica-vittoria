@@ -54,6 +54,27 @@ Osserviamo quindi le seguenti cose.
 
 È essenziale notare che questo fenomeno non ha niente a che fare con la forza gravitazionale. È per questo che possiamo comprendere l'esistenza di una forza completamente nuova e diversa, come quella elettrica. In questo capitolo cercheremo di comprendere di cosa si tratti.
 
+{% include spoiler.html testo="Prima degli elettroni: come si spiegava l'elettricità nei secoli passati" %}
+Che un pezzo d'ambra strofinato attiri le pagliuzze lo sapevano già i Greci: secondo la tradizione fu Talete di Mileto, nel VI secolo a.C., a notarlo per primo, e qualcuno racconta che ne avesse concluso che l'ambra avesse un'anima. Il nome greco dell'ambra, *élektron*, è all'origine della parola "elettricità".
+
+Per più di duemila anni il fenomeno rimase una curiosità. Nel 1600 il medico inglese William Gilbert, nel suo libro *De Magnete*, provò a dargli una spiegazione: strofinando l'ambra se ne libererebbe un "effluvio", una sostanza sottilissima che si allunga verso le pagliuzze come un braccio invisibile, le afferra e le riporta indietro.
+
+Nel 1730 Stephen Gray, un tintore inglese appassionato di esperimenti, scoprì che la "virtù elettrica" può viaggiare lungo un filo per decine di metri: era la scoperta dei conduttori. Per dimostrarlo inventò l'esperimento del "ragazzo volante": appendeva al soffitto, con corde di seta, un ragazzino disteso in orizzontale, gli avvicinava ai piedi un tubo di vetro strofinato, e dalle mani e dal viso del ragazzo pezzetti di carta e foglioline d'oro saltavano verso di lui.
+
+Pochi anni dopo il francese Charles Du Fay si accorse che esistono due tipi di elettricità, che chiamò *vitrea* (quella del vetro strofinato) e *resinosa* (quella dell'ambra e delle resine): due corpi con lo stesso tipo si respingono, due corpi con tipi diversi si attraggono. Pensava che fossero due fluidi distinti. Il suo assistente, l'abate Jean-Antoine Nollet, divenne famoso per le dimostrazioni pubbliche: davanti al re Luigi XV fece passare una scarica elettrica attraverso 180 guardie reali che si tenevano per mano, facendole saltare tutte nello stesso istante, e in seguito ripeté l'esperimento con circa duecento monaci in fila.
+
+Infine, a metà del Settecento, l'americano Benjamin Franklin propose che il fluido elettrico fosse uno solo: un corpo che ne ha troppo è carico "più", uno che ne ha troppo poco è carico "meno". Sono i nomi *positivo* e *negativo* che usiamo ancora oggi. Franklin dovette però scegliere a caso quale dei due corpi avesse il fluido in eccesso, e decise che fosse il vetro strofinato. Oggi sappiamo che a spostarsi sono gli elettroni, e che il vetro strofinato li perde: con la convenzione di Franklin, gli elettroni si sono ritrovati con carica negativa.
+
+{% include figura.html id="franklin-aquilone"
+   src="/corsi/immagini/franklin.jpeg"
+   didascalia="Benjamin Franklin e il figlio William durante l'esperimento dell'aquilone (illustrazione ottocentesca). Ai piedi di Franklin c'è la bottiglia di Leida in cui raccolse la carica."
+   larghezza="300px" %}
+
+Franklin è ricordato soprattutto per un esperimento rimasto celebre. Sospettava che il fulmine fosse una gigantesca scintilla elettrica, ma come dimostrarlo? Nel giugno del 1752, durante un temporale a Filadelfia, fece volare un aquilone di seta (che resiste alla pioggia meglio della carta) con in cima un filo metallico appuntito. Al fondo dello spago di canapa, che bagnato dalla pioggia conduce l'elettricità, era legata una chiave di metallo; Franklin teneva l'aquilone con un nastro di seta, al riparo sotto una tettoia perché restasse asciutto e isolante. A un certo punto vide le fibre dello spago rizzarsi, come i capelli dei bambini nella prima figura di questo capitolo. Avvicinò una nocca alla chiave e scoccò una scintilla. Con la chiave caricò poi una *bottiglia di Leida*, una specie di barattolo capace di immagazzinare carica elettrica, e verificò che quella carica si comportava esattamente come quella ottenuta strofinando il vetro. Il "fuoco" del cielo e l'elettricità dei laboratori erano la stessa cosa.
+
+Il fulmine non colpì mai l'aquilone: lo spago raccolse soltanto la carica presente nell'aria durante il temporale. Se l'avesse colpito, Franklin sarebbe quasi certamente morto, come accadde l'anno dopo al fisico Georg Richmann, ucciso a San Pietroburgo mentre ripeteva un esperimento simile. Alcuni storici dubitano perfino che Franklin abbia fatto l'esperimento esattamente come lo raccontò, mesi dopo, in una lettera. Di sicuro ne ricavò un'invenzione che usiamo ancora oggi: il parafulmine.
+{% include spoiler-end.html %}
+
 ## La materia è piena di cariche elettriche
 {% include margin-note.html testo="Ogni corpo è costituito da moltissime cariche elettriche" %}
 Tutta la materia che ti circonda in questo momento è composta da un numero gigantesco di minuscole molecole, composte da ancor più minuscoli atomi, composti da ancor più minuscole particelle dotate di carica che si muovono freneticamente.
@@ -105,8 +126,12 @@ Queste tre particelle hanno carica e massa molto diverse tra loro:
 {% include box-imp.html testo="Stessa carica, massa enormemente diversa" %}
 Protone ed elettrone hanno <u markdown="span">esattamente **la stessa carica in valore assoluto**</u>, chiamata <definizione>carica elementare</definizione> e indicata con $e$, ma di segno opposto. La loro massa, invece, è profondamente diversa: <u markdown="span">un protone è **migliaia di volte più massiccio** di un elettrone</u>. 
 {% include box-end.html %}
-{% include margin-note.html testo="Perché si spostano solo gli elettroni"%}
-È proprio il fatto che il protone sia così tanto più massivo dell'elettrone a determinare il fatto che siano sempre gli elettroni a spostarsi, mentre i protoni rimangono sostanzialmente ancorati al nucleo.
+{% include margin-note.html testo="L'atomo è quasi tutto vuoto"%}
+Quasi tutta la massa dell'atomo è concentrata nel nucleo, che però è circa centomila volte più piccolo dell'atomo intero. Gli elettroni si muovono attorno al nucleo in uno spazio enorme rispetto alle loro dimensioni, e tutto il resto è vuoto. Se un atomo fosse grande come la cupola di San Pietro, il nucleo sarebbe un granello di sale al centro della cupola.
+{% include margin-note-end.html %}
+
+{% include margin-note.html testo="Gli elettroni si spostano, i protoni no"%}
+Questa differenza ha una conseguenza importante. I protoni sono pesanti e stanno nel nucleo, tenuti insieme ai neutroni dalle forze nucleari; gli elettroni sono leggerissimi e occupano la parte esterna dell'atomo. Per questo, quando due corpi si scambiano carica elettrica, sono gli elettroni a passare dall'uno all'altro, mentre i protoni restano al loro posto. Lo vedremo accadere in tutti i fenomeni di questo capitolo.
 {% include margin-note-end.html %}
 
 
@@ -120,11 +145,27 @@ Ecco alcuni esempi di atomi di specie chimiche piuttosto comuni:
    didascalia="Alcuni degli atomi che ti circondano in questo momento: Carbonio (C), Fosforo (P), Titanio (Ti), Neodimio (Nd). Osserva come variano il numero di elettroni, protoni e neutroni in base alla specie chimica."
    larghezza="280px" %}
 
+{% include spoiler.html testo="Quanto sono piccoli gli atomi? Un esperimento mentale" %}
+Questo esperimento mentale è raccontato dal fisico Fritjof Capra nel libro *Il Tao della fisica*. Qui lo rifacciamo con i nostri numeri.
+
+Prendiamo un'arancia, larga circa $8\ \text{cm}$, e immaginiamo di ingrandirla, ingrandendo nello stesso modo anche tutti i suoi atomi, che sono larghi circa $10^{-10}\ \text m$.
+
+Ingrandiamola finché diventa grande come un elefante, circa $4\ \text m$: l'abbiamo ingrandita di $50$ volte, e i suoi atomi sono diventati larghi qualche milionesimo di millimetro. Sono ancora del tutto invisibili.
+
+Continuiamo finché l'arancia diventa grande come la città di Torino, circa $15\ \text{km}$. Ora i suoi atomi sono larghi un paio di centesimi di millimetro: ancora troppo piccoli per vederli a occhio nudo, che riesce a distinguere al massimo oggetti di un decimo di millimetro.
+
+Ingrandiamola ancora, finché diventa grande come la Terra. A questo punto i suoi atomi sono larghi circa $1{,}5\ \text{cm}$, più o meno come delle ciliegie. L'arancia sarebbe una sfera grande come un pianeta, completamente piena di ciliegie.
+
+Ma se potessimo guardare dentro una di quelle ciliegie, non vedremmo niente. Il nucleo dell'atomo è circa centomila volte più piccolo dell'atomo intero, e gli elettroni sono ancora più piccoli: l'atomo è quasi tutto vuoto. Per vedere il nucleo bisogna ingrandire ancora, finché la ciliegia diventa grande come la cupola più grande del mondo, la cupola di San Pietro a Roma, che è larga più di $40\ \text m$. Il nucleo, al centro della cupola, sarebbe grande come un granello di sale. Gli elettroni sarebbero granelli di polvere ancora più fini, che sfrecciano attorno al granello di sale in tutto lo spazio vuoto della cupola.
+
+E l'arancia? Con tutti questi ingrandimenti l'abbiamo ingrandita in tutto di circa $4\times10^{11}$ volte. Ora è larga circa $3\times10^{10}\ \text m$: più di venti volte il diametro del Sole.
+{% include spoiler-end.html %}
+
 {% include margin-note.html testo="Gli atomi, normalmente, sono elettricamente neutri" %}
 Nota che <u>il numero di protoni in ogni atomo</u>, in condizioni normali, <u>è sempre uguale al numero di elettroni</u>. Cioè, il numero di cariche positive è identico al numero di cariche negative, e pertanto <u>l'atomo è complessivamente neutro</u>.  
 {% include margin-note-end.html %}
 {% include margin-note.html testo="Atomi ionizzati" %}
-È possibile estrarre o aggiungere un elettrone a un atomo. In queste condizioni, l'atomo si dice <definizione>ionizzato</definizione> (positivamente se un elettrone è stato sottratto, negativamente se è stato aggiunto).
+È possibile estrarre o aggiungere un elettrone a un atomo. In queste condizioni, l'atomo si dice <definizione>ionizzato</definizione>. Un atomo si dice **ionizzato positivamente** se ha <u>un numero di protoni maggiore del numero di elettroni</u> e si dice **ionizzato negativamente** se <u>il numero di elettroni è maggiore del numero di protoni.</u>
 {% include margin-note-end.html %}
 
 
@@ -366,7 +407,7 @@ Notiamo dal disegno che <u markdown="span">il vettore forza ha **sempre** come d
 
 Come abbiamo fatto per la forza gravitazionale, dobbiamo ora chiederci quali fattori determinino il modulo della forza elettrica, e in che modo. Charles-Augustin de Coulomb rispose a questa domanda nel 1785, usando esattamente lo stesso tipo di apparato con cui Cavendish avrebbe in seguito misurato la forza gravitazionale: una bilancia a torsione — con la differenza che, al posto di due masse, Coulomb utilizzò due sferette cariche elettricamente.
 
-Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa identica bilancia a torsione del capitolo precedente, solo che ora, al posto della massa fissa e di quella mobile, si sceglie il valore della carica fissa $Q$ e di quella mobile $q$. Poiché le due sferette hanno lo stesso segno di carica, si respingono: il bilancere ruota quindi allontanandosi dalla sferetta fissa, invece che avvicinandosi come accadeva per la gravità — ma, a parte questo, osserverai esattamente le stesse cose.
+Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa identica bilancia a torsione del capitolo precedente, solo che ora, al posto della massa fissa e di quella mobile, si sceglie il valore della carica fissa $Q$ e di quella mobile $q.$ Poiché le due sferette hanno lo stesso segno di carica, si respingono: il bilancere ruota quindi allontanandosi dalla sferetta fissa, invece che avvicinandosi come accadeva per la gravità — ma, a parte questo, osserverai esattamente le stesse cose.
 
 {% include lab-virtuali/coulomb-lab.html %}
 
@@ -377,7 +418,7 @@ Verifica con l'animazione che:
 - nello scenario "Dipendenza da r", i pulsanti spostano davvero il bilancere alla nuova distanza (indicata dalla linea tratteggiata $r$): raddoppiando $r$ l'intensità della forza non si dimezza, ma diventa un quarto; triplicando $r$ diventa un nono; quadruplicando $r$ diventa un sedicesimo — <u markdown="span">proprio quello che significa dire che $F$ è inversamente proporzionale al **quadrato** della distanza</u>, verificabile confrontando il valore di $F$ prima e dopo ogni cambio.
 
 {% include margin-note.html testo="Dall'esperimento alla formula di Coulomb" %}
-Coulomb dedusse così che il modulo della forza elettrica fra due cariche è **direttamente proporzionale al prodotto delle due cariche** e **inversamente proporzionale al quadrato della distanza** — esattamente la stessa dipendenza trovata da Cavendish per la forza gravitazionale. Cioè, la forza elettrica tra due cariche $q_1$ e $q_2$ è descritta dalla seguente equazione
+Coulomb dedusse così che il modulo della forza elettrica fra due cariche è **direttamente proporzionale al prodotto delle due cariche** e **inversamente proporzionale al quadrato della distanza** — esattamente la stessa dipendenza trovata da Cavendish per la forza gravitazionale. Cioè, la forza elettrica tra due cariche $q_1$ e $q_2$ è descritta dalla seguente equazione, nota come <definizione>legge di Coulomb</definizione>:
 {% include eq-annotated.html
    id="fel1"
    formula="F = k \dfrac{\lvert q_1 \cdot q_2 \rvert}{r^2}"
@@ -398,6 +439,18 @@ Il valore assoluto serve ad **assicurare che il modulo sia sempre positivo**. In
 {% include margin-note.html testo="La costante di Coulomb dipende dal materiale" %}
 La costante di Coulomb dipende dal materiale in cui sono immerse le cariche elettriche. Infatti, poiché ogni materiale risponde alla presenza delle cariche (ad esempio, polarizzandosi), può capitare che alcuni materiali “assorbano” parte della forza elettrica, diminuendone il modulo. È quindi intuitivo che il valore della costante di Coulomb $k$ sia massimo per il vuoto, e sia sempre minore per ogni altro materiale. 
 {% include margin-note-end.html %}
+
+{% include spoiler.html testo="Come fa un materiale ad «assorbire» la forza elettrica?" %}
+Prendiamo l'acqua. La molecola d'acqua è complessivamente neutra, ma le sue cariche non sono distribuite in modo uniforme: gli elettroni passano più tempo vicino all'atomo di ossigeno che vicino ai due atomi di idrogeno. Così la molecola ha un'estremità leggermente negativa (l'ossigeno) e una leggermente positiva (gli idrogeni). Una molecola fatta così si dice <definizione>polare</definizione>.
+
+Normalmente le molecole d'acqua sono orientate a caso, e si agitano in continuazione. Ma se nell'acqua mettiamo una carica positiva, le molecole vicine ruotano e le rivolgono la loro estremità negativa; attorno a una carica negativa, al contrario, si raccolgono le estremità positive. È lo stesso fenomeno della polarizzazione che abbiamo visto per i conduttori, con una differenza: qui le cariche non possono lasciare la molecola, e quindi è la molecola intera a girarsi.
+
+Il risultato è che ogni carica si ritrova circondata da uno strato di cariche di segno opposto, che in parte la "copre". Vista da lontano, la carica sembra più piccola di quanto sia davvero, e la forza che esercita sulle altre cariche diminuisce. Questo effetto si chiama <definizione>schermatura</definizione> della carica.
+
+{% include lab-virtuali/schermatura-lab.html %}
+
+Nell'acqua la schermatura è fortissima: la forza fra due cariche è circa 80 volte più debole che nel vuoto. È anche per questo che il sale si scioglie nell'acqua. Il sale da cucina è fatto di ioni sodio positivi e ioni cloro negativi, tenuti insieme proprio dalla forza elettrica; immersi nell'acqua, gli ioni si attraggono 80 volte di meno, e l'agitazione delle molecole basta a separarli.
+{% include spoiler-end.html %}
 
 {% include margin-note.html testo="Determinazione sperimentale del valore di k" %}
 Il valore della costante di Coulomb **nel vuoto**, misurato sperimentalmente, corrisponde a
@@ -453,6 +506,39 @@ Nell'animazione sopra, i moduli di $\vec F_1$ e $\vec F_2$ si ottengono con la l
 $$
 F_1 = k \frac{|Q_1\cdot q|}{r_1^2}, \qquad\qquad F_2 = k \frac{|Q_2\cdot q|}{r_2^2} 
 $$
+
+### La legge di gravitazione universale e la legge di Coulomb a confronto
+
+Le due leggi si somigliano molto, ma non sono affatto uguali. Ecco in che cosa differiscono:
+
+| | Legge di gravitazione universale | Legge di Coulomb |
+|---|---|---|
+| Formula | $F = G\,\dfrac{m_1\cdot m_2}{r^2}$ | $F = k\,\dfrac{\lvert q_1\cdot q_2\rvert}{r^2}$ |
+| Che cosa produce la forza | la massa | la carica elettrica |
+| Segno | le masse sono sempre positive: non serve il valore assoluto | le cariche possono essere positive o negative: serve il valore assoluto |
+| Attrattiva o repulsiva? | sempre attrattiva | attrattiva fra cariche di segno opposto, repulsiva fra cariche dello stesso segno |
+| Costante | $G = 6{,}67\times10^{-11}\ \text{N}\cdot\text{m}^2/\text{kg}^2$ | $k = 8{,}99\times10^{9}\ \text{N}\cdot\text{m}^2/\text{C}^2$ (nel vuoto) |
+| Valore della costante | piccolissimo: la forza si fa sentire solo con masse enormi, come quella di un pianeta | enorme: bastano cariche piccolissime per avere forze notevoli |
+| Dipende dal materiale? | no: $G$ è una costante universale, e la gravità non si può schermare | sì: $k$ è massima nel vuoto e diminuisce in ogni altro materiale |
+
+E queste sono invece le analogie:
+
+| Caratteristica | Vale per entrambe le leggi |
+|---|---|
+| Dipendenza dalla distanza | la forza è inversamente proporzionale al quadrato della distanza, $r^2$ |
+| Dipendenza dalle sorgenti | la forza è direttamente proporzionale al prodotto delle due masse, o delle due cariche |
+| Direzione | sono forze centrali: agiscono lungo la retta che congiunge i due corpi |
+| Contatto | sono forze a distanza: agiscono anche se i corpi non si toccano, e anche nel vuoto |
+| Più corpi | vale il principio di sovrapposizione: la forza totale è la somma vettoriale delle singole forze |
+| Come si misurano | entrambe con una bilancia a torsione: Coulomb per $k$ (1785), Cavendish per $G$ (1798) |
+
+Per avere un'idea di quanto sia diverso il valore delle due costanti, si può calcolare il rapporto fra la forza elettrica e la forza gravitazionale con cui un protone e un elettrone si attraggono. Poiché entrambe dipendono da $1/r^2$, la distanza si semplifica:
+
+$$
+\frac{F_{el}}{F_{g}} = \frac{k\,e^2}{G\,m_p\,m_e} = \frac{8{,}99\times10^{9}\times(1{,}602\times10^{-19})^2}{6{,}67\times10^{-11}\times1{,}673\times10^{-27}\times9{,}109\times10^{-31}} \approx 2\times10^{39}.
+$$
+
+La forza elettrica è più intensa di quella gravitazionale per un fattore con trentanove zeri. Eppure a governare il moto dei pianeti e delle galassie è la gravità. Il motivo è che la materia, su larga scala, è neutra: le forze elettriche delle cariche positive e quelle delle cariche negative si compensano. Le masse invece sono tutte positive e le loro forze si sommano sempre, così la gravità, per quanto debolissima, finisce per prevalere.
 
 
 # Il Campo Elettrico

@@ -1,0 +1,534 @@
+{% comment %}
+Strumenti di annotazione per lo studente, su ogni pagina-capitolo.
+Un pulsante in basso a destra apre una barra con:
+  - Evidenzia: seleziona del testo e viene evidenziato (4 colori);
+    cliccando un'evidenziazione la si può ricolorare o togliere.
+  - Penna: scrittura a mano libera con mouse, penna o dito (4 colori, 3 spessori).
+  - Gomma: cancella i tratti di penna su cui passa.
+  - Nota: tocca un punto del testo e si apre un fumetto nel margine destro,
+    collegato a quel punto, che non copre il testo. Ogni nota si può
+    comprimere in una piccola vignetta e riaprire con un clic. Se lo schermo
+    è troppo stretto per il margine, le note restano sempre compresse
+    accanto al testo e si aprono sopra di esso solo quando le si tocca.
+  - Annulla, Comprimi/espandi tutte le note, Cancella tutto.
+Tutto viene salvato nel browser dello studente (localStorage), separatamente
+per ogni pagina. Le annotazioni sono agganciate al paragrafo a cui si
+riferiscono, così seguono il testo anche se la finestra cambia larghezza.
+Nessun parametro: è incluso da _layouts/capitolo.html.
+{% endcomment %}
+<div id="lv-ann-fab" class="lv-ui" title="Annota la pagina" aria-label="Annota la pagina" role="button" tabindex="0">✎</div>
+<div id="lv-ann-bar" class="lv-ui" hidden>
+  <div class="lv-row">
+    <button data-mode="read" title="Leggi (nessuno strumento attivo)">👆<span>Leggi</span></button>
+    <button data-mode="hl" title="Evidenzia: seleziona il testo">🖍<span>Evidenzia</span></button>
+    <button data-mode="pen" title="Penna: scrivi a mano libera">✒️<span>Penna</span></button>
+    <button data-mode="eraser" title="Gomma: passa sui tratti di penna">🧽<span>Gomma</span></button>
+    <button data-mode="note" title="Nota: tocca un punto del testo">💬<span>Nota</span></button>
+  </div>
+  <div class="lv-row lv-colors" data-for="hl"></div>
+  <div class="lv-row lv-colors" data-for="pen"></div>
+  <div class="lv-row lv-widths" data-for="pen">
+    <button data-w="2" title="Tratto fine"><i style="height:2px"></i></button>
+    <button data-w="4" title="Tratto medio"><i style="height:4px"></i></button>
+    <button data-w="8" title="Tratto spesso"><i style="height:8px"></i></button>
+  </div>
+  <div class="lv-row lv-actions">
+    <button data-act="undo" title="Annulla l'ultima modifica">↶<span>Annulla</span></button>
+    <button data-act="fold" title="Comprimi o espandi tutte le note">🗂<span>Note</span></button>
+    <button data-act="clear" title="Cancella tutte le annotazioni di questa pagina">🗑<span>Cancella</span></button>
+    <button data-act="close" title="Chiudi la barra">✕</button>
+  </div>
+  <p class="lv-hint"></p>
+</div>
+<div id="lv-ann-layer" class="lv-ui" aria-hidden="true">
+  <svg id="lv-ann-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+<div id="lv-ann-notes" class="lv-ui"></div>
+<div id="lv-hl-menu" class="lv-ui" hidden></div>
+
+<style>
+#lv-ann-fab {
+  position: fixed; right: 18px; bottom: 18px; z-index: 160;
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--accent, #0f766e); color: #fff;
+  font-size: 22px; line-height: 48px; text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,.25); cursor: pointer; user-select: none;
+}
+#lv-ann-fab.lv-on { box-shadow: 0 0 0 4px var(--accent-border, #86efac), 0 3px 10px rgba(0,0,0,.25); }
+#lv-ann-bar {
+  position: fixed; right: 18px; bottom: 76px; z-index: 160;
+  background: #fff; border: 1px solid #d1d5db; border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18); padding: .5rem; width: 300px; max-width: calc(100vw - 36px);
+  font-family: "Atkinson Hyperlegible", sans-serif; font-size: .8rem;
+}
+#lv-ann-bar .lv-row { display: flex; flex-wrap: wrap; gap: .3rem; margin-bottom: .35rem; }
+#lv-ann-bar button {
+  border: 1px solid #d1d5db; background: #f9fafb; border-radius: 8px; cursor: pointer;
+  padding: .3rem .4rem; font-size: .95rem; display: inline-flex; align-items: center; gap: .25rem;
+}
+#lv-ann-bar button span { font-size: .72rem; }
+#lv-ann-bar button.lv-sel { border-color: var(--accent, #0f766e); background: var(--accent-light, #f0fdf4); box-shadow: inset 0 0 0 1px var(--accent, #0f766e); }
+#lv-ann-bar .lv-colors button { width: 30px; height: 30px; border-radius: 50%; padding: 0; }
+#lv-ann-bar .lv-widths button { width: 44px; height: 30px; justify-content: center; }
+#lv-ann-bar .lv-widths i { display: block; width: 26px; background: #374151; border-radius: 4px; }
+#lv-ann-bar .lv-hint { margin: .1rem .2rem 0; color: #6b7280; font-style: italic; font-size: .74rem; line-height: 1.3; }
+#lv-ann-layer { position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; z-index: 40; }
+#lv-ann-svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+#lv-ann-svg path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+body.lv-mode-pen #lv-ann-layer, body.lv-mode-eraser #lv-ann-layer { pointer-events: auto; touch-action: none; cursor: crosshair; }
+body.lv-mode-eraser #lv-ann-svg path { pointer-events: stroke; }
+body.lv-mode-note .chapter-prose { cursor: copy; }
+mark.lv-hl { color: inherit; border-radius: 2px; padding: 0; }
+body.lv-mode-hl mark.lv-hl { cursor: pointer; }
+#lv-ann-notes { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 45; }
+.lv-dot { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: #f59e0b; border: 2px solid #fff; box-shadow: 0 0 0 1px #b45309; cursor: pointer; }
+.lv-note {
+  position: absolute; width: 180px; background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12); font-family: "Atkinson Hyperlegible", sans-serif; font-size: .82rem;
+}
+.lv-note::before { /* la "coda" del fumetto */
+  content: ""; position: absolute; left: -9px; top: 12px; border: 8px solid transparent; border-left: 0;
+  border-right-color: #f59e0b;
+}
+.lv-note::after { content: ""; position: absolute; left: -6px; top: 13px; border: 7px solid transparent; border-left: 0; border-right-color: #fffbeb; }
+.lv-note.lv-pop::before, .lv-note.lv-pop::after { display: none; }
+.lv-note-head { display: flex; justify-content: flex-end; gap: .2rem; padding: .15rem .25rem 0; }
+.lv-note-head button { border: none; background: none; cursor: pointer; font-size: .85rem; color: #92400e; padding: .1rem .25rem; }
+.lv-note textarea {
+  display: block; width: 100%; box-sizing: border-box; border: none; background: transparent; resize: none;
+  font: inherit; color: #1f2937; padding: .1rem .5rem .5rem; min-height: 3.2em; outline: none; overflow: hidden;
+}
+.lv-chip {
+  position: absolute; max-width: 110px; background: #fffbeb; border: 1.5px solid #f59e0b; border-radius: 12px 12px 12px 3px;
+  padding: .1rem .45rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .72rem; color: #92400e;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.12);
+}
+.lv-note-line { stroke: #f59e0b; stroke-width: 1.2; stroke-dasharray: 3 3; fill: none; }
+#lv-hl-menu {
+  position: absolute; z-index: 170; background: #fff; border: 1px solid #d1d5db; border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.18); padding: .3rem; display: flex; gap: .3rem; align-items: center;
+  font-family: "Atkinson Hyperlegible", sans-serif; font-size: .75rem;
+}
+#lv-hl-menu button { width: 26px; height: 26px; border-radius: 50%; border: 1px solid #d1d5db; cursor: pointer; padding: 0; }
+#lv-hl-menu button.lv-del { width: auto; border-radius: 8px; padding: 0 .5rem; background: #fef2f2; color: #b91c1c; }
+#lv-hl-menu[hidden], #lv-ann-bar[hidden] { display: none; }
+@media print {
+  #lv-ann-fab, #lv-ann-bar, #lv-hl-menu, #lv-ann-notes { display: none !important; }
+}
+</style>
+
+<script>
+(function(){
+  var prose = document.querySelector('.chapter-prose');
+  if (!prose) return;
+
+  var KEY = 'lv-annot:v1:' + location.pathname;
+  var BLOCKS = 'p, li, h1, h2, h3, h4, h5, h6, td, th, figcaption, blockquote, dt, dd, summary';
+  var SKIP = 'mjx-container, script, style, textarea, input, select, button, .lv-ui';
+  var HL_COLORS = [['giallo','rgba(253,224,71,.55)'],['verde','rgba(134,239,172,.6)'],['azzurro','rgba(125,211,252,.55)'],['rosa','rgba(249,168,212,.6)']];
+  var PEN_COLORS = [['blu','#1d4ed8'],['rosso','#dc2626'],['verde','#15803d'],['nero','#111827']];
+  var HINTS = {
+    read: 'Nessuno strumento attivo: la pagina si usa normalmente.',
+    hl: 'Seleziona del testo per evidenziarlo. Tocca un’evidenziazione per cambiarne il colore o toglierla.',
+    pen: 'Scrivi o disegna con il mouse, la penna o il dito. Per scorrere la pagina torna su “Leggi”.',
+    eraser: 'Passa sopra i tratti di penna per cancellarli.',
+    note: 'Tocca un punto del testo per attaccarci una nota.'
+  };
+
+  var fab = document.getElementById('lv-ann-fab'), bar = document.getElementById('lv-ann-bar');
+  var layer = document.getElementById('lv-ann-layer'), svg = document.getElementById('lv-ann-svg');
+  var notesBox = document.getElementById('lv-ann-notes'), hlMenu = document.getElementById('lv-hl-menu');
+  var NS = 'http://www.w3.org/2000/svg';
+
+  var data = load(), undoStack = [], mode = 'read';
+  var hlColor = HL_COLORS[0][1], penColor = PEN_COLORS[0][1], penW = 4;
+  var openNote = null; // nota aperta come popup (schermi stretti)
+
+  // ───────── salvataggio ─────────
+  function load(){
+    try { var d = JSON.parse(localStorage.getItem(KEY)); if (d && d.v === 1) return d; } catch(e){}
+    return { v: 1, hl: [], strokes: [], notes: [] };
+  }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){} }
+  function snapshot(){ undoStack.push(JSON.stringify(data)); if (undoStack.length > 40) undoStack.shift(); }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+  // ───────── blocchi e testo ─────────
+  function blocks(){ return Array.prototype.filter.call(prose.querySelectorAll(BLOCKS), function(b){ return !b.closest('.lv-ui'); }); }
+  function blockOf(node){
+    var el = node.nodeType === 1 ? node : node.parentElement;
+    if (!el) return null;
+    var b = el.closest(BLOCKS);
+    return b && prose.contains(b) && !b.closest('.lv-ui') ? b : null;
+  }
+  function accepted(tn){ var p = tn.parentElement; return p && !p.closest(SKIP); }
+  // nodi di testo che appartengono direttamente al blocco (non a blocchi annidati)
+  function textNodes(block){
+    var out = [], w = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())) if (accepted(n) && blockOf(n) === block) out.push(n);
+    return out;
+  }
+  function blockText(block){ return textNodes(block).map(function(n){ return n.data; }).join(''); }
+
+  // ───────── evidenziazioni ─────────
+  function selectionToSegs(range){
+    var segs = [], bl = blocks(), seen = new Map();
+    var w = document.createTreeWalker(prose, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())) {
+      if (!accepted(n) || !range.intersectsNode(n)) continue;
+      var b = blockOf(n); if (!b) continue;
+      var s = n === range.startContainer ? range.startOffset : 0;
+      var e = n === range.endContainer ? range.endOffset : n.data.length;
+      if (e <= s) continue;
+      var nodes = textNodes(b), base = 0;
+      for (var i = 0; i < nodes.length && nodes[i] !== n; i++) base += nodes[i].data.length;
+      var seg = seen.get(b);
+      if (!seg) { seg = { b: bl.indexOf(b), s: base + s, e: base + e }; seen.set(b, seg); segs.push(seg); }
+      else seg.e = base + e;
+    }
+    segs.forEach(function(seg){ seg.t = blockText(bl[seg.b]).slice(seg.s, seg.e); });
+    return segs.filter(function(seg){ return seg.b >= 0 && seg.t.trim(); });
+  }
+  function wrapSeg(block, s, e, h){
+    var nodes = textNodes(block), pos = 0;
+    nodes.forEach(function(n){
+      var a = pos, z = pos + n.data.length; pos = z;
+      var from = Math.max(s, a), to = Math.min(e, z);
+      if (to <= from) return;
+      var t = n;
+      if (from > a) t = t.splitText(from - a);
+      if (to < z) t.splitText(to - from);
+      var m = document.createElement('mark');
+      m.className = 'lv-hl'; m.dataset.hl = h.id; m.style.background = h.color;
+      t.parentNode.insertBefore(m, t); m.appendChild(t);
+    });
+  }
+  function applyHl(h){
+    var bl = blocks();
+    h.segs.forEach(function(seg){
+      var b = bl[seg.b]; if (!b) return;
+      var txt = blockText(b);
+      if (txt.slice(seg.s, seg.e) !== seg.t) { // il testo è cambiato: provo a ritrovarlo
+        var k = txt.indexOf(seg.t); if (k < 0) return;
+        seg.s = k; seg.e = k + seg.t.length;
+      }
+      wrapSeg(b, seg.s, seg.e, h);
+    });
+  }
+  function unwrapHl(id){
+    prose.querySelectorAll('mark.lv-hl[data-hl="' + id + '"]').forEach(function(m){
+      var p = m.parentNode; while (m.firstChild) p.insertBefore(m.firstChild, m); p.removeChild(m); p.normalize();
+    });
+  }
+  function clearAllHl(){ data.hl.forEach(function(h){ unwrapHl(h.id); }); }
+
+  function tryHighlight(){
+    var sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+    var r = sel.getRangeAt(0);
+    if (!prose.contains(r.commonAncestorContainer)) return;
+    var segs = selectionToSegs(r);
+    sel.removeAllRanges();
+    if (!segs.length) return;
+    snapshot();
+    var h = { id: uid(), color: hlColor, segs: segs };
+    data.hl.push(h); applyHl(h); save();
+  }
+
+  function showHlMenu(mark){
+    var id = mark.dataset.hl, r = mark.getBoundingClientRect();
+    hlMenu.innerHTML = '';
+    HL_COLORS.forEach(function(c){
+      var b = document.createElement('button'); b.style.background = c[1]; b.title = c[0];
+      b.onclick = function(){ snapshot(); var h = find(data.hl, id); h.color = c[1];
+        prose.querySelectorAll('mark.lv-hl[data-hl="' + id + '"]').forEach(function(m){ m.style.background = c[1]; });
+        save(); hlMenu.hidden = true; };
+      hlMenu.appendChild(b);
+    });
+    var del = document.createElement('button'); del.className = 'lv-del'; del.textContent = 'Togli';
+    del.onclick = function(){ snapshot(); unwrapHl(id); data.hl = data.hl.filter(function(h){ return h.id !== id; }); save(); hlMenu.hidden = true; };
+    hlMenu.appendChild(del);
+    hlMenu.hidden = false;
+    hlMenu.style.left = Math.max(8, r.left + scrollX) + 'px';
+    hlMenu.style.top = (r.bottom + scrollY + 6) + 'px';
+  }
+
+  // ───────── geometria ─────────
+  function anchorRect(b){
+    var el = b >= 0 ? blocks()[b] : prose;
+    if (!el) return null;
+    var r = el.getBoundingClientRect();
+    if (!r.width && !r.height) return null; // blocco nascosto (es. spoiler chiuso)
+    return { x: r.left + scrollX, y: r.top + scrollY };
+  }
+  function anchorAt(clientX, clientY){
+    layer.style.display = 'none'; notesBox.style.display = 'none';
+    var el = document.elementFromPoint(clientX, clientY);
+    layer.style.display = ''; notesBox.style.display = '';
+    var b = el && prose.contains(el) ? blockOf(el) : null;
+    return b ? blocks().indexOf(b) : -1;
+  }
+  function sizeLayer(){
+    layer.style.height = '0px';
+    var h = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+    layer.style.height = h + 'px';
+  }
+
+  // ───────── penna ─────────
+  function pathD(pts, ox, oy){
+    if (!pts.length) return '';
+    var d = 'M' + (pts[0][0] + ox).toFixed(1) + ' ' + (pts[0][1] + oy).toFixed(1);
+    if (pts.length === 1) d += ' l0.1 0';
+    for (var i = 1; i < pts.length; i++) d += ' L' + (pts[i][0] + ox).toFixed(1) + ' ' + (pts[i][1] + oy).toFixed(1);
+    return d;
+  }
+  function drawStroke(s){
+    var a = anchorRect(s.b); if (!a) return;
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('d', pathD(s.pts, a.x, a.y));
+    p.setAttribute('stroke', s.color); p.setAttribute('stroke-width', s.w);
+    p.dataset.id = s.id; svg.appendChild(p);
+  }
+  var cur = null, curPath = null;
+  layer.addEventListener('pointerdown', function(ev){
+    if (mode === 'pen') {
+      ev.preventDefault(); try { layer.setPointerCapture(ev.pointerId); } catch(e){}
+      var b = anchorAt(ev.clientX, ev.clientY), a = anchorRect(b) || { x: 0, y: 0 };
+      cur = { id: uid(), b: b, color: penColor, w: penW, pts: [], ax: a.x, ay: a.y };
+      curPath = document.createElementNS(NS, 'path');
+      curPath.setAttribute('stroke', penColor); curPath.setAttribute('stroke-width', penW);
+      svg.appendChild(curPath); addPt(ev);
+    } else if (mode === 'eraser') { ev.preventDefault(); try { layer.setPointerCapture(ev.pointerId); } catch(e){} erasing = true; eraseAt(ev); }
+  });
+  layer.addEventListener('pointermove', function(ev){
+    if (cur) { ev.preventDefault(); addPt(ev); } else if (erasing) eraseAt(ev);
+  });
+  function endStroke(){
+    if (cur) {
+      if (cur.pts.length) { snapshot(); delete cur.ax; delete cur.ay; data.strokes.push(cur); save(); }
+      cur = null; curPath = null; render();
+    }
+    erasing = false;
+  }
+  layer.addEventListener('pointerup', endStroke);
+  layer.addEventListener('pointercancel', endStroke);
+  function addPt(ev){
+    var x = ev.clientX + scrollX - cur.ax, y = ev.clientY + scrollY - cur.ay, l = cur.pts[cur.pts.length - 1];
+    if (l && Math.abs(l[0] - x) + Math.abs(l[1] - y) < 1.5) return;
+    cur.pts.push([Math.round(x * 10) / 10, Math.round(y * 10) / 10]);
+    curPath.setAttribute('d', pathD(cur.pts, cur.ax, cur.ay));
+  }
+  var erasing = false, erasedThisDrag = false;
+  function eraseAt(ev){
+    var el = document.elementFromPoint(ev.clientX, ev.clientY);
+    if (el && el.tagName === 'path' && el.dataset.id) {
+      if (!erasedThisDrag) { snapshot(); erasedThisDrag = true; }
+      var id = el.dataset.id;
+      data.strokes = data.strokes.filter(function(s){ return s.id !== id; });
+      el.remove(); save();
+    }
+  }
+  layer.addEventListener('pointerup', function(){ erasedThisDrag = false; });
+
+  // ───────── note ─────────
+  var NOTE_W = 180;
+  // colonna delle note subito a destra del testo, se lo schermo ha abbastanza spazio
+  function marginX(){
+    var r = prose.getBoundingClientRect(), x = r.right + 16;
+    return (window.innerWidth - x >= NOTE_W + 14) ? x + scrollX : null;
+  }
+  // note a margine del docente (.mn-line): le note dello studente non devono coprirle
+  function obstacles(){
+    return Array.prototype.map.call(document.querySelectorAll('.mn-line'), function(el){
+      if (getComputedStyle(el).position !== 'absolute') return null;
+      var r = el.getBoundingClientRect(); if (!r.width) return null;
+      return { l: r.left + scrollX, r: r.right + scrollX, t: r.top + scrollY - 6, b: r.bottom + scrollY + 6 };
+    }).filter(Boolean);
+  }
+  function find(arr, id){ for (var i = 0; i < arr.length; i++) if (arr[i].id === id) return arr[i]; return null; }
+  function preview(t){ t = (t || '').trim(); return t ? t.split(/\s+/).slice(0, 3).join(' ') : '…'; }
+
+  function renderNotes(){
+    notesBox.innerHTML = '';
+    svg.querySelectorAll('.lv-note-line').forEach(function(l){ l.remove(); });
+    var mx = marginX(), pr = prose.getBoundingClientRect(), obs = mx === null ? [] : obstacles();
+    var placed = data.notes.map(function(n){ var a = anchorRect(n.b); return a ? { n: n, ax: a.x + n.x, ay: a.y + n.y } : null; })
+      .filter(Boolean).sort(function(p, q){ return p.ay - q.ay; });
+    var bottom = -1e9;
+    placed.forEach(function(p){
+      var n = p.n;
+      var dot = document.createElement('div'); dot.className = 'lv-dot';
+      dot.style.left = p.ax + 'px'; dot.style.top = p.ay + 'px'; dot.title = 'Nota';
+      notesBox.appendChild(dot);
+      var compact = mx === null, folded = compact ? openNote !== n.id : n.collapsed;
+      var el;
+      if (folded) {
+        el = document.createElement('div'); el.className = 'lv-chip';
+        el.textContent = compact ? '💬' : '💬 ' + preview(n.text); el.title = n.text || 'Nota vuota';
+        el.onclick = function(){ if (compact) openNote = n.id; else { snapshot(); n.collapsed = false; save(); } renderNotes(); };
+        dot.onclick = el.onclick;
+      } else {
+        el = noteEl(n, compact);
+        dot.onclick = function(){ var ta = el.querySelector('textarea'); ta && ta.focus(); };
+      }
+      notesBox.appendChild(el);
+      var left, top;
+      if (compact) {
+        // schermo stretto: vignetta subito a destra del testo; aperta, la nota compare sotto il punto
+        if (folded) { left = pr.right + scrollX - 2; top = p.ay - 10;
+          var maxL = window.innerWidth + scrollX - el.offsetWidth - 4; if (left > maxL) left = maxL; }
+        else { el.classList.add('lv-pop'); el.style.width = Math.min(260, window.innerWidth - 24) + 'px';
+          left = Math.min(p.ax - 20, window.innerWidth + scrollX - el.offsetWidth - 12); left = Math.max(scrollX + 12, left); top = p.ay + 12; }
+        el.style.left = left + 'px'; el.style.top = top + 'px';
+      } else {
+        top = Math.max(p.ay - 18, bottom + 8);
+        left = mx;
+        var h = el.offsetHeight, moved = true;
+        while (moved) {
+          moved = false;
+          obs.forEach(function(o){
+            if (left < o.r && left + el.offsetWidth > o.l && top < o.b && top + h > o.t) { top = o.b + 4; moved = true; }
+          });
+        }
+        el.style.left = left + 'px'; el.style.top = top + 'px';
+        bottom = top + h;
+        var line = document.createElementNS(NS, 'path'); line.setAttribute('class', 'lv-note-line');
+        line.setAttribute('d', 'M' + p.ax + ' ' + p.ay + ' C' + (p.ax + 60) + ' ' + p.ay + ' ' + (left - 60) + ' ' + (top + 18) + ' ' + (left - 8) + ' ' + (top + 18));
+        svg.appendChild(line);
+      }
+    });
+  }
+  function noteEl(n, compact){
+    var el = document.createElement('div'); el.className = 'lv-note';
+    var head = document.createElement('div'); head.className = 'lv-note-head';
+    var fold = document.createElement('button'); fold.textContent = '–'; fold.title = 'Comprimi la nota';
+    fold.onclick = function(){ if (compact) openNote = null; else { snapshot(); n.collapsed = true; save(); } renderNotes(); };
+    var del = document.createElement('button'); del.textContent = '🗑'; del.title = 'Elimina la nota';
+    del.onclick = function(){ snapshot(); data.notes = data.notes.filter(function(x){ return x.id !== n.id; }); save(); openNote = null; renderNotes(); };
+    head.appendChild(fold); head.appendChild(del);
+    var ta = document.createElement('textarea'); ta.value = n.text || ''; ta.placeholder = 'Scrivi qui la tua nota…';
+    var t0 = null, edited = false;
+    ta.addEventListener('input', function(){
+      if (!edited) { snapshot(); edited = true; }
+      n.text = ta.value; autosize(ta); clearTimeout(t0); t0 = setTimeout(save, 300);
+    });
+    ta.addEventListener('blur', function(){ save(); edited = false; });
+    el.appendChild(head); el.appendChild(ta);
+    setTimeout(function(){ autosize(ta); }, 0);
+    return el;
+  }
+  function autosize(ta){ ta.style.height = 'auto'; ta.style.height = (ta.scrollHeight + 2) + 'px'; }
+
+  prose.addEventListener('click', function(ev){
+    if (mode === 'hl') {
+      var m = ev.target.closest && ev.target.closest('mark.lv-hl');
+      if (m && window.getSelection().isCollapsed) { ev.preventDefault(); showHlMenu(m); }
+      return;
+    }
+    if (mode !== 'note') return;
+    if (ev.target.closest('.lv-ui')) return;
+    ev.preventDefault();
+    var b = anchorAt(ev.clientX, ev.clientY), a = anchorRect(b);
+    if (!a) return;
+    snapshot();
+    var n = { id: uid(), b: b, x: Math.round(ev.clientX + scrollX - a.x), y: Math.round(ev.clientY + scrollY - a.y), text: '', collapsed: false };
+    data.notes.push(n); save();
+    openNote = n.id; setMode('read'); renderNotes();
+    var ta = notesBox.querySelector('.lv-note textarea:placeholder-shown');
+    if (ta) ta.focus();
+  }, true);
+
+  // ───────── disegno complessivo ─────────
+  function render(){
+    sizeLayer();
+    svg.querySelectorAll('path[data-id]').forEach(function(p){ p.remove(); });
+    data.strokes.forEach(drawStroke);
+    renderNotes();
+  }
+  var rT = null;
+  function scheduleRender(){ clearTimeout(rT); rT = setTimeout(render, 120); }
+
+  // ───────── barra degli strumenti ─────────
+  function swatches(sel, list, get, set){
+    var row = bar.querySelector('.lv-colors[data-for="' + sel + '"]');
+    list.forEach(function(c){
+      var b = document.createElement('button'); b.style.background = c[1]; b.title = c[0];
+      b.onclick = function(){ set(c[1]); refreshBar(); };
+      b.dataset.c = c[1]; row.appendChild(b);
+    });
+  }
+  swatches('hl', HL_COLORS, function(){ return hlColor; }, function(c){ hlColor = c; });
+  swatches('pen', PEN_COLORS, function(){ return penColor; }, function(c){ penColor = c; });
+  bar.querySelectorAll('.lv-widths button').forEach(function(b){ b.onclick = function(){ penW = +b.dataset.w; refreshBar(); }; });
+  bar.querySelectorAll('[data-mode]').forEach(function(b){ b.onclick = function(){ setMode(b.dataset.mode); }; });
+  bar.querySelector('[data-act="close"]').onclick = function(){ setMode('read'); bar.hidden = true; fab.classList.remove('lv-on'); };
+  bar.querySelector('[data-act="undo"]').onclick = function(){
+    if (!undoStack.length) return;
+    clearAllHl(); data = JSON.parse(undoStack.pop()); data.hl.forEach(applyHl); save(); render();
+  };
+  bar.querySelector('[data-act="fold"]').onclick = function(){
+    if (!data.notes.length) return;
+    snapshot(); var any = data.notes.some(function(n){ return !n.collapsed; });
+    data.notes.forEach(function(n){ n.collapsed = any; }); openNote = null; save(); renderNotes();
+  };
+  bar.querySelector('[data-act="clear"]').onclick = function(){
+    if (!(data.hl.length || data.strokes.length || data.notes.length)) return;
+    if (!confirm('Vuoi cancellare tutte le evidenziazioni, i disegni e le note di questa pagina?')) return;
+    snapshot(); clearAllHl(); data = { v: 1, hl: [], strokes: [], notes: [] }; save(); render();
+  };
+  function refreshBar(){
+    bar.querySelectorAll('[data-mode]').forEach(function(b){ b.classList.toggle('lv-sel', b.dataset.mode === mode); });
+    bar.querySelectorAll('.lv-colors[data-for="hl"] button').forEach(function(b){ b.classList.toggle('lv-sel', b.dataset.c === hlColor); });
+    bar.querySelectorAll('.lv-colors[data-for="pen"] button').forEach(function(b){ b.classList.toggle('lv-sel', b.dataset.c === penColor); });
+    bar.querySelectorAll('.lv-widths button').forEach(function(b){ b.classList.toggle('lv-sel', +b.dataset.w === penW); });
+    bar.querySelectorAll('[data-for]').forEach(function(r){ r.style.display = r.dataset.for === mode ? '' : 'none'; });
+    bar.querySelector('.lv-hint').textContent = HINTS[mode];
+  }
+  function setMode(m){
+    mode = m;
+    document.body.classList.remove('lv-mode-hl', 'lv-mode-pen', 'lv-mode-eraser', 'lv-mode-note');
+    if (m !== 'read') document.body.classList.add('lv-mode-' + m);
+    hlMenu.hidden = true; refreshBar();
+  }
+  fab.addEventListener('click', function(){
+    bar.hidden = !bar.hidden; fab.classList.toggle('lv-on', !bar.hidden);
+    if (bar.hidden) setMode('read'); else refreshBar();
+  });
+  fab.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fab.click(); } });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { setMode('read'); openNote = null; renderNotes(); } });
+  document.addEventListener('mousedown', function(e){ if (!hlMenu.hidden && !hlMenu.contains(e.target)) hlMenu.hidden = true; });
+
+  // evidenziazione: col mouse appena si rilascia, col dito quando la selezione si ferma
+  prose.addEventListener('mouseup', function(){ if (mode === 'hl') setTimeout(tryHighlight, 0); });
+  var selT = null;
+  document.addEventListener('selectionchange', function(){
+    if (mode !== 'hl' || !touching) return;
+    clearTimeout(selT); selT = setTimeout(function(){ if (!touching) tryHighlight(); }, 700);
+  });
+  var touching = false;
+  prose.addEventListener('touchstart', function(){ touching = true; }, { passive: true });
+  document.addEventListener('touchend', function(){
+    if (!touching) return;
+    setTimeout(function(){ touching = false; if (mode === 'hl') tryHighlight(); }, 450);
+  }, { passive: true });
+
+  // ───────── avvio ─────────
+  function start(){
+    data.hl.forEach(applyHl);
+    render();
+    if (window.ResizeObserver) new ResizeObserver(scheduleRender).observe(prose);
+    window.addEventListener('resize', scheduleRender);
+    document.addEventListener('toggle', scheduleRender, true); // spoiler aperti/chiusi
+    window.addEventListener('load', scheduleRender);
+  }
+  // aspetto MathJax, che cambia il testo delle formule e quindi le posizioni
+  var tries = 0;
+  (function wait(){
+    var mj = window.MathJax;
+    if (mj && mj.startup && mj.startup.promise) { mj.startup.promise.then(start, start); return; }
+    if (++tries > 60) { start(); return; }
+    setTimeout(wait, 100);
+  })();
+  refreshBar();
+})();
+</script>

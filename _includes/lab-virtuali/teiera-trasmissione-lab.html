@@ -1,0 +1,181 @@
+{% comment %}
+Animazione-esercizio: una teiera di vetro che bolle su un fornello a gas
+(fiamme blu che tremolano, bolle che salgono, frecce dei moti convettivi che
+scorrono nell'acqua, calore che risale lungo il manico, frecce dalla fiamma al fondo,
+frecce ondulate dal fornello verso la stanza, vapore che esce dal beccuccio). Al posto delle etichette ci
+sono cinque cerchietti numerati con una linea di richiamo; sotto il disegno,
+per ciascuno, lo studente sceglie da un menu il modo in cui si trasmette il
+calore (conduzione, convezione, irraggiamento). "Verifica": correzione con una
+breve spiegazione, coriandoli se sono tutte giuste. Si ferma quando non è
+visibile. Nessun parametro.
+{% endcomment %}
+<style>
+#teiera canvas{display:block;width:100%;max-width:600px;height:auto;margin:0 auto;}
+#teiera .te-list{max-width:600px;margin:.6rem auto 0;display:grid;gap:.4rem;}
+#teiera .te-row{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;font-size:.92rem;}
+#teiera .te-num{display:inline-flex;align-items:center;justify-content:center;width:1.6rem;height:1.6rem;border-radius:50%;background:#0e7490;color:#fff;font-weight:700;font-size:.85rem;flex-shrink:0;}
+#teiera .te-row label{flex:1 1 220px;}
+#teiera select{border:1px solid #cbd5e1;border-radius:6px;padding:.25rem .4rem;font-size:.9rem;background:#fff;}
+#teiera select.ok{border-color:#16a34a;background:#f0fdf4;}#teiera select.no{border-color:#dc2626;background:#fef2f2;}
+#teiera .te-fb{flex-basis:100%;font-size:.84rem;color:#475569;padding-left:2.1rem;display:none;}
+#teiera .te-ctrl{text-align:center;margin-top:.6rem;}
+#teiera .te-ctrl button{border:1px solid #0e7490;background:#0e7490;color:#fff;border-radius:6px;padding:.35rem 1rem;cursor:pointer;font-size:.9rem;}
+#teiera .te-msg{text-align:center;font-weight:600;font-size:.9rem;min-height:1.2em;margin-top:.4rem;}
+@media print{#teiera canvas{display:none;}}
+</style>
+<div class="vdrag-widget" id="teiera">
+<p class="vdrag-hint">Una teiera che bolle sul fornello. In che modo si trasmette il calore nei cinque punti indicati?</p>
+<canvas id="te-cv" aria-label="Teiera di vetro che bolle su un fornello a gas, con quattro punti numerati"></canvas>
+<div class="te-list" id="te-list"></div>
+<div class="te-ctrl"><button type="button" id="te-check">Verifica</button></div>
+<p class="te-msg" id="te-msg"></p>
+</div>
+<script>
+(function(){
+  var cv=document.getElementById('te-cv');if(!cv)return;
+  var ctx=cv.getContext('2d'),W=600,H=440,dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+  var root=document.getElementById('teiera');
+
+  // ── le quattro domande
+  var Q=[
+    {t:'il vapore che esce dal beccuccio e sale',ok:'convezione',s:'Il vapore caldo è meno denso dell’aria intorno e sale, portando con sé il calore: è convezione.',mx:92,my:70,px:118,py:150},
+    {t:'l’acqua che si muove dentro la teiera',ok:'convezione',s:'L’acqua calda del fondo sale e quella più fredda scende a prenderne il posto: sono moti convettivi.',mx:300,my:112,px:300,py:255},
+    {t:'il manico che si scalda',ok:'conduzione',s:'Il calore passa attraverso il materiale solido del manico, da una particella all’altra: è conduzione.',mx:548,my:150,px:478,py:232},
+    {t:'la fiamma che sale fino al fondo della teiera',ok:'convezione',s:'I gas caldi della fiamma sono meno densi dell\u2019aria e salgono, portando il calore fino al fondo della teiera: è convezione.',mx:96,my:332,px:262,py:362},
+    {t:'il calore che si diffonde nella stanza intorno al fornello',ok:'irraggiamento',s:'La fiamma e la teiera calda emettono radiazione (soprattutto infrarossa) in tutte le direzioni: chi sta vicino al fornello sente caldo anche senza toccare nulla. È irraggiamento.',mx:560,my:300,px:492,py:362}
+  ];
+  var list=document.getElementById('te-list');
+  Q.forEach(function(q,i){
+    var row=document.createElement('div');row.className='te-row';
+    row.innerHTML='<span class="te-num">'+(i+1)+'</span><label for="te-s'+i+'">'+q.t.charAt(0).toUpperCase()+q.t.slice(1)+'</label>'+
+      '<select id="te-s'+i+'"><option value="">— scegli —</option><option value="conduzione">conduzione</option><option value="convezione">convezione</option><option value="irraggiamento">irraggiamento</option></select>'+
+      '<div class="te-fb"></div>';
+    list.appendChild(row);q.sel=row.querySelector('select');q.fb=row.querySelector('.te-fb');
+    q.sel.addEventListener('change',function(){q.sel.className='';q.fb.style.display='none';});
+  });
+  document.getElementById('te-check').addEventListener('click',function(){
+    var good=0,msg=document.getElementById('te-msg');
+    Q.forEach(function(q){var v=q.sel.value,ok=v===q.ok;if(ok)good++;
+      q.sel.className=v?(ok?'ok':'no'):'';
+      q.fb.style.display=v?'block':'none';q.fb.textContent=v?(ok?'✓ ':'✗ La risposta è «'+q.ok+'». ')+q.s:'';});
+    msg.style.color=good===Q.length?'#15803d':'#b45309';
+    msg.textContent=good===Q.length?'✓ Tutte giuste!':'Risposte giuste: '+good+' su '+Q.length+'.';
+    if(good===Q.length&&window._shoot)window._shoot(document.getElementById('te-check'));
+  });
+
+  // ── particelle: bolle e vapore
+  var t=0,bubbles=[],steam=[];
+  function rnd(a,b){return a+Math.random()*(b-a);}
+  var CX=300,CY=262,RX=138,RY=96,BOT=330,WL=205;   // corpo della teiera, fondo, livello dell'acqua
+  function bodyPath(){ctx.beginPath();ctx.ellipse(CX,CY,RX,RY,0,0,Math.PI*2);}
+  function step(dt){
+    t+=dt;
+    if(Math.random()<dt*22)bubbles.push({x:rnd(CX-90,CX+90),y:BOT-14,r:rnd(1.5,4.5),w:rnd(0,6)});
+    bubbles.forEach(function(b){b.y-=dt*(30+12*b.r);b.x+=Math.sin(t*3+b.w)*0.3;b.r+=dt*0.6;});
+    bubbles=bubbles.filter(function(b){return b.y>WL+4;});
+    if(Math.random()<dt*9)steam.push({x:112,y:156,vx:rnd(-22,-8),vy:rnd(-40,-26),r:rnd(5,9),a:0.75});
+    steam.forEach(function(p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.r+=dt*11;p.a-=dt*0.28;});
+    steam=steam.filter(function(p){return p.a>0;});
+  }
+
+  // ── disegno
+  function arrowHead(x,y,ang,col,s){ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-s*Math.cos(ang-0.45),y-s*Math.sin(ang-0.45));ctx.lineTo(x-s*Math.cos(ang+0.45),y-s*Math.sin(ang+0.45));ctx.closePath();ctx.fill();}
+  function drawBurner(){
+    var g=ctx.createLinearGradient(0,372,0,410);g.addColorStop(0,'#475569');g.addColorStop(1,'#1e293b');
+    ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(CX,388,118,24,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#0f172a';ctx.beginPath();ctx.ellipse(CX,380,92,15,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='rgba(249,115,22,.55)';ctx.beginPath();ctx.ellipse(CX,378,60,9,0,0,Math.PI*2);ctx.fill();
+    for(var k=0;k<14;k++){                           // fiammelle blu intorno al bruciatore
+      var a=Math.PI*(0.05+0.9*k/13),x=CX-Math.cos(a)*84,y=378+Math.sin(a)*12,h=18+4*Math.sin(t*12+k*1.7);
+      var fg=ctx.createLinearGradient(0,y,0,y-h);fg.addColorStop(0,'rgba(37,99,235,.95)');fg.addColorStop(0.6,'rgba(96,165,250,.85)');fg.addColorStop(1,'rgba(191,219,254,.2)');
+      ctx.fillStyle=fg;ctx.beginPath();ctx.moveTo(x-6,y);ctx.quadraticCurveTo(x-6,y-h*0.6,x,y-h);ctx.quadraticCurveTo(x+6,y-h*0.6,x+6,y);ctx.closePath();ctx.fill();
+    }
+  }
+  // freccia ondulata: l'onda si smorza verso la fine, l'ultimo tratto è dritto e centrato sulla punta
+  function waveArrow(x0,y0,x1,y1,ph,col,lw){
+    var L=Math.hypot(x1-x0,y1-y0),ux=(x1-x0)/L,uy=(y1-y0)/L,nx=-uy,ny=ux,hl=8,st=10,wl=L-hl-st;
+    var g=ctx.createLinearGradient(x0,y0,x1,y1);g.addColorStop(0,'rgba(239,68,68,0)');g.addColorStop(0.5,'rgba(239,68,68,.75)');g.addColorStop(1,col);
+    ctx.strokeStyle=g;ctx.lineWidth=lw;ctx.lineCap='round';ctx.beginPath();
+    for(var k=0;k<=30;k++){var s=wl*k/30,env=Math.min(1,(wl-s)/(wl*0.3)),d=4*env*Math.sin(s/5-ph);
+      var x=x0+ux*s+nx*d,y=y0+uy*s+ny*d;if(k===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}
+    var sx=x0+ux*(L-hl),sy=y0+uy*(L-hl);ctx.lineTo(sx,sy);ctx.stroke();ctx.lineCap='butt';
+    ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(sx+nx*5.5,sy+ny*5.5);ctx.lineTo(sx-nx*5.5,sy-ny*5.5);ctx.closePath();ctx.fill();
+  }
+  function drawRadiation(){
+    for(var k=0;k<5;k++){var x0=CX-80+k*40;waveArrow(x0,398,x0,BOT+14,t*7+k,'#dc2626',2.2);}          // la fiamma che sale fino al fondo
+    [[-1,0],[-1,1],[1,0],[1,1]].forEach(function(q,k){var sd=q[0],y0=356+q[1]*22;                      // calore che si diffonde nella stanza
+      waveArrow(CX+sd*112,y0,CX+sd*188,y0+(q[1]?18:-14),t*6+k,'#ea580c',2.2);});
+  }
+  function edgeX(y){return CX+RX*Math.sqrt(Math.max(0,1-Math.pow((y-CY)/RY,2)));}   // bordo destro del corpo alla quota y
+  function drawHandle(){                             // manico che si scalda (conduzione)
+    var y1=212,y2=312,a=[edgeX(y1)-8,y1],b=[CX+RX+62,y1-18],c=[CX+RX+66,y2+14],d=[edgeX(y2)-8,y2];
+    ctx.save();ctx.lineCap='round';
+    var g=ctx.createLinearGradient(0,y2,0,y1);g.addColorStop(0,'#ef4444');g.addColorStop(1,'#fca5a5');
+    ctx.strokeStyle=g;ctx.lineWidth=15;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.bezierCurveTo(b[0],b[1],c[0],c[1],d[0],d[1]);ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(a[0]+4,a[1]-3);ctx.bezierCurveTo(b[0],b[1]-4,c[0]-2,c[1]-30,c[0]-8,(y1+y2)/2+20);ctx.stroke();
+    for(var k=0;k<3;k++){var u=1-((t*0.35+k/3)%1);   // puntini che risalgono il manico, dal fondo verso l'alto
+      var x=Math.pow(1-u,3)*a[0]+3*Math.pow(1-u,2)*u*b[0]+3*(1-u)*u*u*c[0]+u*u*u*d[0],y=Math.pow(1-u,3)*a[1]+3*Math.pow(1-u,2)*u*b[1]+3*(1-u)*u*u*c[1]+u*u*u*d[1];
+      ctx.fillStyle='#b91c1c';ctx.beginPath();ctx.arc(x,y,2.8,0,Math.PI*2);ctx.fill();}
+    ctx.restore();
+  }
+  function drawSpout(){
+    ctx.fillStyle='rgba(186,230,253,.55)';ctx.strokeStyle='rgba(56,189,248,.8)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(176,236);ctx.quadraticCurveTo(140,226,108,152);ctx.lineTo(124,148);ctx.quadraticCurveTo(150,206,184,280);ctx.closePath();ctx.fill();ctx.stroke();
+  }
+  function convArrow(x0,y0,cx1,cy1,x1,y1,col,ph){     // freccia curva che "scorre"
+    ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.setLineDash([10,7]);ctx.lineDashOffset=-ph*30;
+    ctx.beginPath();ctx.moveTo(x0,y0);ctx.quadraticCurveTo(cx1,cy1,x1,y1);ctx.stroke();ctx.setLineDash([]);
+    arrowHead(x1,y1,Math.atan2(y1-cy1,x1-cx1),col,9);
+  }
+  function drawPot(){
+    // fondo metallico
+    var mg=ctx.createLinearGradient(CX-100,0,CX+100,0);mg.addColorStop(0,'#94a3b8');mg.addColorStop(0.5,'#e2e8f0');mg.addColorStop(1,'#64748b');
+    ctx.fillStyle=mg;ctx.beginPath();ctx.ellipse(CX,BOT+6,100,16,0,0,Math.PI*2);ctx.fill();
+    // corpo di vetro
+    bodyPath();var bg=ctx.createRadialGradient(CX-50,CY-50,10,CX,CY,RX);bg.addColorStop(0,'rgba(240,249,255,.95)');bg.addColorStop(1,'rgba(186,230,253,.75)');
+    ctx.fillStyle=bg;ctx.fill();
+    // acqua (sotto il livello), con bolle e moti convettivi
+    ctx.save();bodyPath();ctx.clip();
+    var hw=edgeX(WL)-CX;                                // superficie dell'acqua: un'ellisse vista dall'alto, in prospettiva
+    ctx.fillStyle='rgba(125,211,252,.45)';ctx.fillRect(CX-RX,WL,2*RX,CY+RY-WL);
+    ctx.fillStyle='rgba(186,230,253,.85)';ctx.beginPath();ctx.ellipse(CX,WL,hw,12,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='rgba(14,116,144,.45)';ctx.lineWidth=1.3;ctx.beginPath();ctx.ellipse(CX,WL,hw,12,0,0,Math.PI*2);ctx.stroke();
+    var ph=t;
+    convArrow(CX-30,BOT-12,CX-40,260,CX-55,WL+14,'#dc2626',ph);convArrow(CX+30,BOT-12,CX+40,260,CX+55,WL+14,'#dc2626',ph);
+    convArrow(CX-70,WL+12,CX-125,240,CX-95,BOT-22,'#2563eb',ph);convArrow(CX+70,WL+12,CX+125,240,CX+95,BOT-22,'#2563eb',ph);
+    bubbles.forEach(function(b){ctx.strokeStyle='rgba(255,255,255,.95)';ctx.fillStyle='rgba(255,255,255,.35)';ctx.lineWidth=1;ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();ctx.stroke();});
+    ctx.restore();
+    bodyPath();ctx.strokeStyle='rgba(56,189,248,.9)';ctx.lineWidth=2;ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=5;ctx.beginPath();ctx.ellipse(CX-60,CY-40,60,45,0,Math.PI*1.05,Math.PI*1.45);ctx.stroke();   // riflesso
+    // coperchio e pomello
+    ctx.fillStyle='rgba(224,242,254,.95)';ctx.strokeStyle='rgba(56,189,248,.9)';ctx.lineWidth=1.8;
+    ctx.beginPath();ctx.ellipse(CX,180,78,20,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.ellipse(CX,172,62,16,0,Math.PI,0);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.ellipse(CX,152,8,6,0,0,Math.PI*2);ctx.fill();ctx.fillRect(CX-3,152,6,8);
+  }
+  function drawSteam(){
+    steam.forEach(function(p){ctx.fillStyle='rgba(226,232,240,'+(p.a*0.9).toFixed(3)+')';ctx.strokeStyle='rgba(148,163,184,'+(p.a*0.7).toFixed(3)+')';ctx.lineWidth=1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.stroke();});
+    for(var k=0;k<3;k++){var s=(t*0.6+k/3)%1,x=114-28*s-8*k,y=148-60*s;   // frecce rosse nel vapore
+      ctx.globalAlpha=Math.sin(Math.PI*s);ctx.strokeStyle='#dc2626';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x+8,y+16);ctx.lineTo(x,y);ctx.stroke();arrowHead(x,y,Math.atan2(-16,-8),'#dc2626',7);ctx.globalAlpha=1;}
+  }
+  function drawMarkers(){
+    Q.forEach(function(q,i){
+      ctx.strokeStyle='#0f172a';ctx.lineWidth=1.3;ctx.beginPath();ctx.moveTo(q.mx,q.my);ctx.lineTo(q.px,q.py);ctx.stroke();
+      ctx.fillStyle='#0f172a';ctx.beginPath();ctx.arc(q.px,q.py,3,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#0e7490';ctx.beginPath();ctx.arc(q.mx,q.my,14,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#fff';ctx.font='bold 15px Georgia,serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(i+1),q.mx,q.my+1);
+    });
+  }
+  function draw(){
+    ctx.fillStyle='#ffffff';ctx.fillRect(0,0,W,H);
+    drawBurner();drawRadiation();drawHandle();drawSpout();drawPot();drawSteam();drawMarkers();
+  }
+  var raf=null,last=null,visible=true;
+  function loop(ts){var dt=last===null?0:Math.min(0.05,(ts-last)/1000);last=ts;step(dt);draw();
+    if(visible)raf=requestAnimationFrame(loop);else{raf=null;last=null;}}
+  if(window.IntersectionObserver)new IntersectionObserver(function(es){es.forEach(function(en){visible=en.isIntersecting;if(visible&&!raf)raf=requestAnimationFrame(loop);});}).observe(root);
+  draw();raf=requestAnimationFrame(loop);
+})();
+</script>

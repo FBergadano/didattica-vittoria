@@ -1,0 +1,71 @@
+{% comment %}
+Motore comune per i grafici di serie temporali (una sola serie): disegna in SVG
+una linea ("line") oppure barre colorate secondo il segno ("bars": blu sotto lo
+zero, rosso sopra), con assi, griglia leggera, etichette, una tacca su un valore
+evidenziato e un riquadro con anno e valore al passaggio del mouse o del dito.
+Sotto il grafico, una tabella dei dati (a scomparsa) per chi non legge i colori.
+Si include una sola volta (è protetto); lo usano grafico-co2.html e
+grafico-temperatura.html. Nessun parametro.
+{% endcomment %}
+<style>
+.gs-wrap{max-width:640px;margin:1rem auto;font-family:Georgia,serif;}
+.gs-title{font-size:.95rem;font-weight:700;color:#1e293b;margin:0 0 .15rem;}
+.gs-sub{font-size:.8rem;color:#64748b;margin:0 0 .3rem;}
+.gs-box{position:relative;}
+.gs-box svg{display:block;width:100%;height:auto;touch-action:pan-y;}
+.gs-tip{position:absolute;pointer-events:none;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:.25rem .5rem;font-size:.8rem;color:#1e293b;box-shadow:0 2px 6px rgba(15,23,42,.12);white-space:nowrap;display:none;}
+.gs-src{font-size:.72rem;color:#64748b;margin:.3rem 0 0;}
+.gs-wrap details{font-size:.8rem;color:#334155;margin-top:.3rem;}
+.gs-wrap table{border-collapse:collapse;font-size:.75rem;margin-top:.3rem;}
+.gs-wrap td,.gs-wrap th{border:1px solid #e2e8f0;padding:.1rem .4rem;text-align:right;}
+@media print{.gs-tip,.gs-wrap details{display:none!important;}}
+</style>
+<script>
+window.gsChart=window.gsChart||function(id,o){
+  var root=document.getElementById(id);if(!root)return;
+  var NS='http://www.w3.org/2000/svg',W=640,H=330,L=52,R=16,T=30,B=34,data=o.data;
+  var x0=data[0][0],x1=data[data.length-1][0],y0=o.ymin,y1=o.ymax;
+  function X(x){return L+(x-x0)/(x1-x0)*(W-L-R);}
+  function Y(y){return T+(y1-y)/(y1-y0)*(H-T-B);}
+  function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e;}
+  function fmt(v){return (o.dec?v.toFixed(o.dec):String(v)).replace('.',',').replace('-','−');}
+  var box=root.querySelector('.gs-box'),svg=el('svg',{viewBox:'0 0 '+W+' '+H,role:'img','aria-label':o.aria},box);
+  var tip=box.querySelector('.gs-tip');
+  // griglia orizzontale e asse y
+  o.yticks.forEach(function(v){var y=Y(v);
+    el('line',{x1:L,x2:W-R,y1:y,y2:y,stroke:v===0?'#94a3b8':'#e2e8f0','stroke-width':1});
+    var t=el('text',{x:L-6,y:y+4,'text-anchor':'end','font-size':11,fill:'#64748b'});t.textContent=(o.sign&&v>0?'+':'')+String(+v.toFixed(o.tdec||0)).replace('.',',').replace('-','−');});
+  // asse x
+  for(var yr=Math.ceil(x0/10)*10;yr<=x1;yr+=10){var x=X(yr);
+    el('line',{x1:x,x2:x,y1:H-B,y2:H-B+4,stroke:'#94a3b8'});
+    var t=el('text',{x:x,y:H-B+17,'text-anchor':'middle','font-size':11,fill:'#64748b'});t.textContent=yr;}
+  var u=el('text',{x:L-6,y:14,'font-size':11,fill:'#334155','text-anchor':'end'});u.textContent=o.unit;   // unità sopra l'asse
+  // dati
+  if(o.type==='line'){
+    var d='';data.forEach(function(p,i){d+=(i?'L':'M')+X(p[0]).toFixed(1)+','+Y(p[1]).toFixed(1);});
+    el('path',{d:d,fill:'none',stroke:o.color,'stroke-width':2.2,'stroke-linejoin':'round'});
+  }else{
+    var bw=(W-L-R)/data.length-1;
+    data.forEach(function(p){var y=Y(p[1]),z=Y(0);
+      el('rect',{x:(X(p[0])-bw/2).toFixed(1),y:Math.min(y,z).toFixed(1),width:bw.toFixed(1),height:Math.max(0.5,Math.abs(y-z)).toFixed(1),rx:1,fill:p[1]>=0?o.pos:o.neg});});
+  }
+  // valori evidenziati (primo e ultimo, o quelli indicati)
+  (o.marks||[]).forEach(function(m){var p=data.filter(function(q){return q[0]===m[0];})[0];if(!p)return;
+    el('circle',{cx:X(p[0]),cy:Y(p[1]),r:4,fill:'#fff',stroke:'#1e293b','stroke-width':1.5});
+    var t=el('text',{x:X(p[0])+(m[1]||0),y:Y(p[1])+(m[2]||-9),'text-anchor':m[3]||'middle','font-size':12,'font-weight':700,fill:'#1e293b'});
+    t.textContent=p[0]+': '+(o.sign&&p[1]>0?'+':'')+fmt(p[1])+' '+o.u;});
+  // riquadro al passaggio
+  var cross=el('line',{y1:T,y2:H-B,stroke:'#475569','stroke-width':1,'stroke-dasharray':'3 3',opacity:0}),dot=el('circle',{r:4,fill:o.color||'#1e293b',opacity:0});
+  function show(ev){var r=svg.getBoundingClientRect(),sx=(ev.clientX-r.left)*W/r.width;
+    var yr=Math.round(x0+(sx-L)/(W-L-R)*(x1-x0));yr=Math.max(x0,Math.min(x1,yr));
+    var p=data.filter(function(q){return q[0]===yr;})[0];if(!p)return;
+    cross.setAttribute('x1',X(yr));cross.setAttribute('x2',X(yr));cross.setAttribute('opacity',1);
+    dot.setAttribute('cx',X(yr));dot.setAttribute('cy',Y(p[1]));dot.setAttribute('opacity',1);
+    tip.innerHTML='<b>'+yr+'</b>: '+(o.sign&&p[1]>0?'+':'')+fmt(p[1])+' '+o.u;tip.style.display='block';
+    var px=X(yr)/W*r.width;tip.style.left=Math.min(r.width-tip.offsetWidth-4,Math.max(4,px+10))+'px';tip.style.top=(Y(p[1])/H*r.height-34)+'px';}
+  function hide(){cross.setAttribute('opacity',0);dot.setAttribute('opacity',0);tip.style.display='none';}
+  svg.addEventListener('pointermove',show);svg.addEventListener('pointerdown',show);svg.addEventListener('pointerleave',hide);
+  // tabella dei dati
+  var tb=root.querySelector('tbody');if(tb)data.forEach(function(p){var tr=document.createElement('tr');tr.innerHTML='<td>'+p[0]+'</td><td>'+(o.sign&&p[1]>0?'+':'')+fmt(p[1])+'</td>';tb.appendChild(tr);});
+};
+</script>
