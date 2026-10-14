@@ -20,13 +20,17 @@ Esempio:
 <script>
 if(!window._tfReady){window._tfReady=1;
 
-window._tfsel=function(btn,v){var sp=btn.closest('.tf-btns');sp.querySelectorAll('.tf-btn').forEach(function(b){b.classList.remove('sel-v','sel-f');});btn.classList.add(v==='V'?'sel-v':'sel-f');sp.dataset.sel=v;};
+window._tfsel=function(btn,v){var sp=btn.closest('.tf-btns');sp.querySelectorAll('.tf-btn').forEach(function(b){b.classList.remove('sel-v','sel-f');});btn.classList.add(v==='V'?'sel-v':'sel-f');sp.dataset.sel=v;_lvSave('tfsel',_tfKey(btn.closest('.tf-item')),{sel:v});};
 window._tfKey=function(item){var q=item.querySelector('.tf-q').textContent,ok=item.querySelector('.tf-vbtn').dataset.ok;return _lvHash(q+'|'+ok);};
 window._tfchk=function(btn){var ok=btn.dataset.ok,sol=btn.dataset.sol||'',item=btn.closest('.tf-item'),sp=btn.closest('.tf-btns'),sel=sp.dataset.sel,fb=item.nextElementSibling;if(!sel){fb.className='tf-fb err';fb.textContent='Seleziona V o F prima di verificare.';return;}var right=(sel===ok);fb.className='tf-fb '+(right?'ok':'err');fb.innerHTML=(right?'✓ Esatto!':'✗ Sbagliato.')+(sol?'&ensp;<small style="color:#6b7280">'+sol+'</small>':'');if(right){_shoot(btn);if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([fb]);}_lvSave('tf',_tfKey(item),{sel:sel,right:right});};
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.tf-item').forEach(function(item){
     var s=_lvLoad('tf',_tfKey(item));
-    if(!s)return;
+    if(!s){ // scelta fatta ma non ancora verificata
+      var d=_lvLoad('tfsel',_tfKey(item)),sp0=item.querySelector('.tf-btns');
+      if(d&&d.sel){sp0.dataset.sel=d.sel;var b0=sp0.querySelector('.tf-btn[data-v="'+d.sel+'"]');if(b0)b0.classList.add(d.sel==='V'?'sel-v':'sel-f');}
+      return;
+    }
     var sp=item.querySelector('.tf-btns'),fb=item.nextElementSibling,vbtn=item.querySelector('.tf-vbtn');
     sp.dataset.sel=s.sel;
     var selBtn=sp.querySelector('.tf-btn[data-v="'+s.sel+'"]');

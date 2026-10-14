@@ -34,5 +34,85 @@ inline appena la pagina viene disegnata.
     for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) | 0; }
     return (h >>> 0).toString(36);
   };
+
+  // ── Salvataggio automatico di tutti i campi della pagina ──────────────
+  // Molti widget salvano solo quando si preme "Verifica": qui ogni campo
+  // (input, textarea, select, caselle) viene salvato mentre lo si compila,
+  // e rimesso al suo posto quando si riapre la pagina. Se il widget ha già
+  // ripristinato da sé il proprio valore (con l'esito della verifica), il
+  // campo non viene toccato.
+  // La chiave di ogni campo è il suo id, se c'è; altrimenti un'impronta del
+  // testo che lo circonda, calcolata all'apertura della pagina (prima che
+  // compaiano messaggi di esito o formule MathJax), più un contatore per
+  // distinguere campi con lo stesso contesto.
+  var SKIP = '.lv-ui, .gchat-widget, [data-nosave]';
+  var CTX = '.sci-wrap, .fill-wrap, .iex-ir, .iex-q, .tf-item, li, p, td, tr, label, figure, .box, div';
+  var keys = new WeakMap();
+  function isField(el) {
+    if (!el || !el.matches || !el.matches('input, textarea, select')) return false;
+    var t = (el.type || '').toLowerCase();
+    if (['button', 'submit', 'reset', 'hidden', 'file', 'password', 'image'].indexOf(t) >= 0) return false;
+    return !!el.closest('main') && !el.closest(SKIP);
+  }
+  // Testo del contesto, ignorando formule (prima o dopo MathJax), messaggi di
+  // esito e pulsanti, che possono cambiare fra un caricamento e l'altro.
+  var NOISE = 'mjx-container, script, style, button, select, .lv-ui, [class*="fb"], [class*="feedback"]';
+  function ctxText(c) {
+    var out = '', w = document.createTreeWalker(c, NodeFilter.SHOW_TEXT, null), n;
+    while ((n = w.nextNode())) { var p = n.parentElement; if (p && !p.closest(NOISE)) out += n.data; }
+    return out.replace(/\$\$[\s\S]*?\$\$|\$[^$]*\$|\\\([\s\S]*?\\\)/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160);
+  }
+  function sigOf(el) {
+    var c = el.parentElement && el.parentElement.closest(CTX);
+    var txt = c ? ctxText(c) : '';
+    return el.tagName + '|' + (el.type || '') + '|' + (el.name || '') + '|' + (el.placeholder || '') + '|' + txt;
+  }
+  function assignKeys() {
+    var seen = {};
+    document.querySelectorAll('main input, main textarea, main select').forEach(function(el) {
+      if (!isField(el) || keys.has(el)) return;
+      var k;
+      if (el.id) k = 'id:' + el.id;
+      else { var s = _lvHash(sigOf(el)); seen[s] = (seen[s] || 0) + 1; k = s + ':' + seen[s]; }
+      keys.set(el, k);
+    });
+  }
+  function keyOf(el) {
+    if (!keys.has(el)) { assignKeys(); if (!keys.has(el)) keys.set(el, _lvHash(sigOf(el)) + ':x'); }
+    return keys.get(el);
+  }
+  function stateOf(el) {
+    var t = (el.type || '').toLowerCase();
+    return (t === 'checkbox' || t === 'radio') ? { c: el.checked } : { v: el.value };
+  }
+  function onEdit(e) {
+    var el = e.target;
+    if (!isField(el)) return;
+    _lvSave('field', keyOf(el), stateOf(el));
+  }
+  document.addEventListener('input', onEdit, true);
+  document.addEventListener('change', onEdit, true);
+  document.addEventListener('DOMContentLoaded', function() {
+    assignKeys(); // prima che i widget ripristinino esiti e messaggi
+    setTimeout(function() {
+      document.querySelectorAll('main input, main textarea, main select').forEach(function(el) {
+        if (!isField(el)) return;
+        var s = _lvLoad('field', keyOf(el));
+        if (!s) return;
+        var t = (el.type || '').toLowerCase();
+        if (t === 'checkbox' || t === 'radio') {
+          if (el.checked !== !!s.c) { el.checked = !!s.c; el.dispatchEvent(new Event('change', { bubbles: true })); }
+        } else if (el.tagName === 'SELECT') {
+          // una tendina non è mai "vuota": la ripristino solo se è ancora sulla prima voce
+          if (s.v !== undefined && el.selectedIndex <= 0 && el.value !== s.v) {
+            el.value = s.v; el.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        } else if (s.v !== undefined && s.v !== '' && el.value === '') {
+          el.value = s.v;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      });
+    }, 0);
+  });
 })();
 </script>
