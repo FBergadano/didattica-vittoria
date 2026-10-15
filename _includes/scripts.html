@@ -32,18 +32,37 @@
 (function() {
   var prose = document.querySelector('.chapter-prose');
   if (!prose) return;
-  var RE = /^\s*(Verifica Subito|Prova tu|Esercizio)\b/i, n = 0;
-  prose.querySelectorAll('.box.box-ex > .box-label, .iex-lbl').forEach(function(lbl) {
-    if (!RE.test(lbl.textContent)) return;
-    var box = lbl.classList.contains('box-label') ? lbl.parentElement : lbl.parentElement;
+  var RE = /^\s*(Verifica Subito|Prova tu|Esercizio)\b/i, n = 0, SEL = '.box.box-ex > .box-label, .iex-lbl';
+  function etichetta(el) { return el.matches(SEL) && RE.test(el.textContent); }
+  function haEtichetta(el) { return etichetta(el) || [].some.call(el.querySelectorAll(SEL), etichetta); }
+  // un'etichetta scritta direttamente nel testo (senza un riquadro tutto suo):
+  // raccolgo lei e ciò che la segue, fino al prossimo titolo o esercizio
+  function raggruppa(lbl) {
+    var w = document.createElement('div'), x = lbl;
+    w.className = 'es-gruppo';
+    lbl.parentNode.insertBefore(w, lbl);
+    while (x) {
+      var dopo = x.nextSibling;
+      w.appendChild(x);
+      x = dopo;
+      if (x && x.nodeType === 1 && (/^H[1-6]$/.test(x.tagName) || x.matches('.box') || haEtichetta(x))) break;
+    }
+    return w;
+  }
+  [].slice.call(prose.querySelectorAll(SEL)).forEach(function(lbl) {
+    if (!etichetta(lbl)) return;
+    var box = lbl.parentElement;
+    if ([].filter.call(box.querySelectorAll(SEL), etichetta).length > 1) box = raggruppa(lbl);
     if (!box || (box.parentElement && box.parentElement.closest('[data-es]'))) return; // già dentro un esercizio numerato
     n++;
     box.dataset.es = n;
     if (!box.id) box.id = 'es-' + n;
     // "Esercizio 3 — Titolo": il numero scritto a mano lascia il posto a quello nel cerchietto
     var t = lbl.firstChild;
-    if (t && t.nodeType === 3 && /^\s*Esercizio\b/i.test(t.data))
-      t.data = t.data.replace(/^\s*Esercizio[\s\u00a0]*\d*[\s\u00a0]*(?:[—–-][\s\u00a0]*)?/i, function(m) { return /[—–-]/.test(m) || t.data.trim() !== m.trim() ? 'Esercizio — ' : 'Esercizio'; });
+    if (t && t.nodeType === 3 && /^\s*Esercizio\b/i.test(t.data)) {
+      var resto = t.data.replace(/^\s*Esercizio[\s\u00a0]*\d*[\s\u00a0]*(?:[—–-][\s\u00a0]*)?/i, '');
+      t.data = resto ? 'Esercizio — ' + resto : 'Esercizio';
+    }
     var b = document.createElement('span');
     b.className = 'es-num'; b.textContent = n; b.title = 'Esercizio ' + n;
     lbl.insertBefore(b, lbl.firstChild);

@@ -9,8 +9,9 @@
 #              _config.yml; per un compito diverso aggiungi  ora: "14:00")
 #    capitolo: cartella/file del capitolo, come in _corsi/ ma senza ".md"
 #              (più capitoli: tra parentesi quadre, separati da virgole)
-#    esercizi: facoltativo — i numeri dei "Verifica Subito!"/"Prova tu!"
-#              del capitolo (il cerchietto accanto all'etichetta), tra
+#    esercizi: facoltativo — i numeri dei "Verifica Subito!", "Prova tu!"
+#              ed "Esercizio" del capitolo (il cerchietto accanto
+#              all'etichetta: una sola serie per capitolo), tra
 #              parentesi quadre: [3, 5, 7]. Contano solo quelli.
 #              Se il compito ha più capitoli, scrivi un compito per
 #              capitolo (stessa data), perché i numeri ripartono da 1.
