@@ -12,7 +12,7 @@ chat_proxy_url: ""
 
 # Consegna dei compiti e dubbi degli studenti: indirizzo del server delle
 # consegne. Vuoto = disattivato. Vedi strumenti/consegne/LEGGIMI.md
-consegne_url: ""
+consegne_url: "https://consegne-vittoria.consegne.workers.dev"
 consegne_scadenza: "08:00"   # ora, nel giorno della lezione, entro cui consegnare
 
 # Build

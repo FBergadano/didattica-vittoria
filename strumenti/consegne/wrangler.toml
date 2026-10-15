@@ -1,0 +1,21 @@
+# Configurazione per pubblicare la Worker delle consegne dal terminale:
+#   cd strumenti/consegne
+#   npx wrangler deploy
+# (vedi LEGGIMI.md). La password del docente NON sta qui: è un "secret"
+# impostato con  npx wrangler secret put DOCENTE_PASSWORD
+
+name = "consegne-vittoria"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+# niente log delle richieste (privacy degli studenti)
+[observability]
+enabled = false
+
+[vars]
+ORIGINE = "https://fbergadano.github.io"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "consegne"
+database_id = "212c9a13-b8bf-4d55-a68e-c6c5adef4bb8"

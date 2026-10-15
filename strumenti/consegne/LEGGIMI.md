@@ -33,6 +33,29 @@
 - A fine quadrimestre, scheda **Dati** della tua pagina: cancella tutto ciò
   che è vecchio.
 
+## Stato attuale (ottobre 2026)
+
+Già fatto: database D1 `consegne`, Worker pubblicata su
+`https://consegne-vittoria.consegne.workers.dev` (log disattivati),
+password del docente impostata, `consegne_url` scritto in `_config.yml`.
+I punti 1–3 qui sotto servono solo per rifare tutto da capo.
+
+## Metodo più semplice: dal terminale
+
+Da questa cartella (`strumenti/consegne`), dove `wrangler.toml` contiene già
+tutte le impostazioni:
+
+```bash
+npx wrangler@4 login                          # una volta: conferma nel browser
+npx wrangler@4 deploy                         # pubblica (o aggiorna) la Worker
+npx wrangler@4 secret put DOCENTE_PASSWORD    # imposta/cambia la password del docente
+```
+
+Per **cambiare la password** del docente basta rilanciare l'ultimo comando.
+Per **aggiornare la Worker** dopo una modifica a `worker.js`: `npx wrangler@4 deploy`.
+
+## Metodo dal pannello di Cloudflare
+
 ## 1. Crea il database (una volta sola)
 
 1. Account gratuito su <https://dash.cloudflare.com> (lo stesso che userai
