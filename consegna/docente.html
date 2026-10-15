@@ -1,0 +1,454 @@
+---
+layout: null
+permalink: /consegna/docente/
+sitemap: false
+---
+{% comment %}
+Pagina del docente: compiti consegnati, dubbi, codici degli studenti.
+Legge i dati dal server delle consegne (consegne_url in _config.yml) con la
+password del docente. I compiti di ogni classe vengono da _data/compiti.yml.
+Nel server ci sono solo codici (es. GIUR), mai nomi.
+{% endcomment %}
+{% assign _capitoli = site.corsi | where: "layout", "capitolo" %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Consegne — pagina del docente</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --accent: #0f766e; --accent-light: #f0fdf4; --bordo: #e2e8f0; --testo2: #4a5568; --muto: #718096;
+          --ok: #15803d; --ok-bg: #dcfce7; --meta-bg: #fef3c7; --meta: #92400e; --no-bg: #f1f5f9; --err: #dc2626; --err-bg: #fee2e2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: 15px; color: #1a202c; background: #fafaf8; }
+  header { background: #fff; border-bottom: 1px solid var(--bordo); padding: .7rem 1.2rem; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center; }
+  header h1 { font-size: 1.1rem; margin: 0; color: var(--accent); }
+  header .sp { flex: 1; }
+  main { padding: 1rem 1.2rem 3rem; max-width: 1400px; margin: 0 auto; }
+  button, select, input, textarea { font: inherit; }
+  button { cursor: pointer; border: 1px solid #cbd5e0; background: #fff; border-radius: 8px; padding: .35rem .75rem; }
+  button.pri { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.peric { color: var(--err); border-color: #fca5a5; }
+  select, input, textarea { border: 1px solid #cbd5e0; border-radius: 8px; padding: .35rem .5rem; background: #fff; }
+  .schede { display: flex; gap: .3rem; flex-wrap: wrap; }
+  .schede button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .badge { display: inline-block; min-width: 1.3em; padding: 0 .35em; border-radius: 999px; background: var(--err); color: #fff; font-size: .75rem; text-align: center; margin-left: .25rem; }
+  .nota { color: var(--muto); font-size: .85rem; margin: .4rem 0 .8rem; }
+  .err { color: var(--err); }
+  .card { background: #fff; border: 1px solid var(--bordo); border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
+  #accesso { max-width: 380px; margin: 4rem auto; }
+  #accesso label { display: block; margin: .6rem 0 .25rem; color: var(--testo2); }
+  #accesso input[type=password] { width: 100%; }
+  /* tabella compiti */
+  .tab-wrap { overflow-x: auto; background: #fff; border: 1px solid var(--bordo); border-radius: 12px; }
+  table.griglia { border-collapse: collapse; font-size: .85rem; }
+  table.griglia th, table.griglia td { border-bottom: 1px solid var(--bordo); border-right: 1px solid var(--bordo); padding: .35rem .5rem; text-align: center; white-space: nowrap; }
+  table.griglia th.cod, table.griglia td.cod { position: sticky; left: 0; background: #fff; text-align: left; font-weight: 700; letter-spacing: .05em; z-index: 1; }
+  table.griglia thead th { background: #f8fafc; vertical-align: bottom; cursor: pointer; font-weight: 400; }
+  table.griglia thead th .d { font-weight: 700; }
+  table.griglia thead th .c { display: block; color: var(--testo2); max-width: 11rem; white-space: normal; font-size: .78rem; line-height: 1.25; }
+  table.griglia thead th.futura { color: var(--muto); }
+  td.cella { cursor: pointer; min-width: 6.5rem; line-height: 1.3; }
+  td.cella.tutto { background: var(--ok-bg); }
+  td.cella.parte { background: var(--meta-bg); }
+  td.cella.niente { background: var(--no-bg); color: var(--muto); }
+  td.cella.mancante { background: var(--err-bg); color: var(--err); }
+  td.cella .t { font-size: .75rem; color: var(--testo2); }
+  td.cella:hover { outline: 2px solid var(--accent); outline-offset: -2px; }
+  tr.media td { font-style: italic; background: #f8fafc; cursor: default; }
+  .legenda { display: flex; flex-wrap: wrap; gap: .4rem 1rem; font-size: .8rem; color: var(--testo2); margin: .6rem 0; }
+  .legenda span::before { content: ''; display: inline-block; width: .9em; height: .9em; border-radius: 3px; margin-right: .3em; vertical-align: -.1em; background: var(--c); border: 1px solid #cbd5e0; }
+  /* finestra di dettaglio */
+  #modale { position: fixed; inset: 0; background: rgba(15,23,42,.45); display: none; align-items: flex-start; justify-content: center; padding: 3vh 1rem; z-index: 50; overflow-y: auto; }
+  #modale.on { display: flex; }
+  #modale .box { background: #fff; border-radius: 12px; max-width: 900px; width: 100%; padding: 1rem 1.3rem 1.3rem; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+  #modale .testa { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+  #modale h2 { font-size: 1.1rem; margin: .2rem 0 .3rem; }
+  table.dett { border-collapse: collapse; width: 100%; font-size: .85rem; margin-top: .6rem; }
+  table.dett th, table.dett td { border-bottom: 1px solid var(--bordo); padding: .4rem .45rem; text-align: left; vertical-align: top; }
+  table.dett th { font-weight: 700; color: var(--testo2); font-size: .8rem; }
+  table.dett td.e { white-space: nowrap; font-weight: 700; }
+  .e-ok { color: var(--ok); } .e-no { color: var(--err); } .e-meta { color: var(--meta); } .e-nd { color: var(--muto); font-weight: 400; }
+  .risp { white-space: pre-wrap; background: #f8fafc; border-radius: 6px; padding: .3rem .45rem; margin-top: .25rem; }
+  .barra { height: .55rem; background: var(--no-bg); border-radius: 4px; overflow: hidden; min-width: 80px; }
+  .barra i { display: block; height: 100%; background: var(--ok); }
+  /* dubbi */
+  .dubbio { background: #fff; border: 1px solid var(--bordo); border-radius: 12px; padding: .8rem 1rem; margin-bottom: .7rem; }
+  .dubbio.aperto { border-left: 4px solid var(--err); }
+  .dubbio .meta { color: var(--muto); font-size: .82rem; }
+  .dubbio .meta b { color: #1a202c; letter-spacing: .05em; }
+  .dubbio .q { white-space: pre-wrap; margin: .35rem 0 .5rem; font-size: 1rem; }
+  .dubbio textarea { width: 100%; min-height: 3.5em; }
+  .dubbio .az { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .4rem; }
+  /* studenti */
+  .stud { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .4rem; margin-top: .6rem; }
+  .stud div { border: 1px solid var(--bordo); border-radius: 8px; padding: .35rem .55rem; display: flex; justify-content: space-between; align-items: center; gap: .4rem; background: #fff; }
+  .stud b { letter-spacing: .05em; }
+  .stud small { color: var(--muto); }
+  textarea.codici { width: 100%; min-height: 9em; font-family: ui-monospace, monospace; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Consegne e dubbi</h1>
+  <select id="classe" hidden></select>
+  <nav class="schede" id="schede" hidden>
+    <button data-s="compiti" class="on">Compiti</button>
+    <button data-s="dubbi">Dubbi<span id="nd"></span></button>
+    <button data-s="studenti">Studenti</button>
+    <button data-s="dati">Dati</button>
+  </nav>
+  <span class="sp"></span>
+  <button id="aggiorna" hidden title="Ricarica i dati dal server">↻ Aggiorna</button>
+  <button id="esci" hidden>Esci</button>
+</header>
+
+<main>
+  {% if site.consegne_url == nil or site.consegne_url == "" %}
+  <div class="card">Le consegne non sono ancora attivate: manca <code>consegne_url</code> in <code>_config.yml</code>
+  (istruzioni in <code>strumenti/consegne/LEGGIMI.md</code>).</div>
+  {% endif %}
+
+  <div id="accesso" class="card" hidden>
+    <b>Pagina del docente</b>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autocomplete="current-password">
+    <label style="display:flex;gap:.4rem;align-items:center"><input id="ricorda" type="checkbox"> Ricorda su questo computer</label>
+    <p><button class="pri" id="entra">Entra</button> <span id="pwmsg" class="err"></span></p>
+  </div>
+
+  <section id="s-compiti" hidden></section>
+  <section id="s-dubbi" hidden></section>
+  <section id="s-studenti" hidden></section>
+  <section id="s-dati" hidden></section>
+</main>
+
+<div id="modale"><div class="box"></div></div>
+
+<script>
+(function() {
+  var URL = {{ site.consegne_url | default: "" | jsonify }}.replace(/\/+$/, '');
+  var BASE = {{ site.baseurl | jsonify }};
+  var SCADENZA = {{ site.consegne_scadenza | default: "08:00" | jsonify }};
+  var COMPITI = {{ site.data.compiti | default: nil | jsonify }} || {};
+  var CAPITOLI = {
+    {% for c in _capitoli %}{{ c.url | jsonify }}: {{ c.title | jsonify }}{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+  var PK = 'lv-docente:pw';
+  var $ = function(s, r) { return (r || document).querySelector(s); };
+  var $$ = function(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function pw() { try { return sessionStorage.getItem(PK) || localStorage.getItem(PK) || ''; } catch (e) { return ''; } }
+
+  function chiama(percorso, corpo) {
+    return fetch(URL + percorso, {
+      method: corpo ? 'POST' : 'GET',
+      headers: Object.assign({ 'X-Docente': pw() }, corpo ? { 'Content-Type': 'application/json' } : {}),
+      body: corpo ? JSON.stringify(corpo) : undefined
+    }).then(function(r) {
+      return r.json().catch(function() { return {}; }).then(function(j) {
+        if (r.status === 401) { esci(j.errore === 'bloccato' ? 'Troppi tentativi sbagliati: riprova fra un quarto d\'ora.' : 'Password sbagliata.'); throw new Error('accesso'); }
+        if (!r.ok) throw new Error(j.errore || ('errore ' + r.status));
+        return j;
+      });
+    });
+  }
+
+  // ───────── date e tempi ─────────
+  var GIORNI = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'], MESI = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
+  function giorno(s) { var p = String(s).slice(0, 10).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function bella(d) { return GIORNI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()]; }
+  function ora(ts) { var d = new Date(ts); return bella(d) + ' ' + d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2); }
+  function scadenza(c) { var d = giorno(c.data), hm = String(c.ora || SCADENZA).split(':'); d.setHours(+hm[0] || 0, +hm[1] || 0, 0, 0); return d.getTime(); }
+  function durata(ms) {
+    var m = Math.round(ms / 60000);
+    if (m < 1) return '< 1 min';
+    if (m < 60) return m + ' min';
+    if (m < 24 * 60) return Math.floor(m / 60) + ' h ' + (m % 60 ? (m % 60) + ' min' : '');
+    var g = Math.round(m / 1440); return g + (g === 1 ? ' giorno' : ' giorni');
+  }
+  function capitoliDi(c) { return [].concat(c.capitolo || []).map(function(p) { return '/corsi/' + String(p).replace(/^\/+|\/+$/g, '').replace(/^corsi\//, '') + '/'; }); }
+  function norm(s) { return String(s || '').toLowerCase().replace(/\s+/g, ' ').trim(); }
+  function titoloCompito(c) { return capitoliDi(c).map(function(u) { return CAPITOLI[u] || u; }).join(' + ') + (c.sezione ? ' — ' + c.sezione : ''); }
+
+  // ───────── stato ─────────
+  var studenti = [], classe = null, righe = [], dubbi = [], scheda = 'compiti';
+  function codiciDi(cl) { return studenti.filter(function(s) { return s.classe === cl; }).map(function(s) { return s.codice; }); }
+
+  // ───────── accesso ─────────
+  function esci(msg) {
+    try { sessionStorage.removeItem(PK); localStorage.removeItem(PK); } catch (e) {}
+    $('#accesso').hidden = false; ['#schede', '#classe', '#esci', '#aggiorna'].forEach(function(s) { $(s).hidden = true; });
+    $$('main > section').forEach(function(s) { s.hidden = true; });
+    $('#pwmsg').textContent = msg || '';
+  }
+  $('#entra').onclick = function() {
+    var v = $('#pw').value; if (!v) return;
+    try { sessionStorage.setItem(PK, v); if ($('#ricorda').checked) localStorage.setItem(PK, v); } catch (e) {}
+    avvia();
+  };
+  $('#pw').addEventListener('keydown', function(e) { if (e.key === 'Enter') $('#entra').click(); });
+  $('#esci').onclick = function() { esci(''); };
+  $('#aggiorna').onclick = function() { avvia(); };
+
+  function avvia() {
+    if (!URL) return;
+    chiama('/docente/studenti').then(function(j) {
+      studenti = j.studenti || [];
+      $('#accesso').hidden = true; ['#schede', '#classe', '#esci', '#aggiorna'].forEach(function(s) { $(s).hidden = false; });
+      var classi = {}; studenti.forEach(function(s) { classi[s.classe] = 1; }); Object.keys(COMPITI).forEach(function(k) { classi[k] = 1; });
+      var lista = Object.keys(classi).sort();
+      var sel = $('#classe'), prima = classe || localStorage.getItem('lv-docente:classe') || lista[0];
+      sel.innerHTML = lista.map(function(c) { return '<option>' + esc(c) + '</option>'; }).join('') + '<option value="">+ nuova classe…</option>';
+      if (lista.indexOf(prima) >= 0) sel.value = prima;
+      cambiaClasse();
+    }).catch(function(e) { if (e.message !== 'accesso') $('#pwmsg').textContent = 'Non riesco a contattare il server (' + e.message + ').'; $('#accesso').hidden = !pw() ? false : $('#accesso').hidden; });
+  }
+  $('#classe').onchange = cambiaClasse;
+  function cambiaClasse() {
+    var v = $('#classe').value;
+    if (!v) { var n = (prompt('Nome della nuova classe (es. 3B):') || '').trim(); if (!n) { $('#classe').value = classe || ''; return; }
+      var o = document.createElement('option'); o.textContent = n; $('#classe').insertBefore(o, $('#classe').lastChild); $('#classe').value = n; v = n; scheda = 'studenti'; }
+    classe = v; try { localStorage.setItem('lv-docente:classe', v); } catch (e) {}
+    Promise.all([
+      chiama('/docente/risposte?classe=' + encodeURIComponent(classe)).then(function(j) {
+        righe = j.righe.map(function(r) { var o = {}; j.colonne.forEach(function(c, i) { o[c] = r[i]; }); return o; });
+      }),
+      chiama('/docente/dubbi?classe=' + encodeURIComponent(classe)).then(function(j) { dubbi = j.dubbi || []; })
+    ]).then(mostra).catch(function(e) { if (e.message !== 'accesso') alert('Errore: ' + e.message); });
+  }
+  $$('#schede button').forEach(function(b) { b.onclick = function() { scheda = b.dataset.s; mostra(); }; });
+  function mostra() {
+    $$('#schede button').forEach(function(b) { b.classList.toggle('on', b.dataset.s === scheda); });
+    $$('main > section').forEach(function(s) { s.hidden = s.id !== 's-' + scheda; });
+    var aperti = dubbi.filter(function(d) { return !d.risolto; }).length;
+    $('#nd').innerHTML = aperti ? '<span class="badge">' + aperti + '</span>' : '';
+    ({ compiti: vistaCompiti, dubbi: vistaDubbi, studenti: vistaStudenti, dati: vistaDati })[scheda]();
+  }
+
+  // ───────── compiti ─────────
+  function lezioni() {
+    return (COMPITI[classe] || []).slice().sort(function(a, b) { return giorno(b.data) - giorno(a.data); }); // più recenti a sinistra
+  }
+  function righeDi(c) {
+    var pag = capitoliDi(c), sez = norm(c.sezione);
+    return righe.filter(function(r) { return pag.indexOf(r.pagina) >= 0 && (!sez || !r.sezione || norm(r.sezione) === sez); });
+  }
+  function riepilogo(c, rr, codice) {
+    var mie = rr.filter(function(r) { return r.codice === codice; });
+    var chiavi = {}; rr.forEach(function(r) { chiavi[r.pagina + '|' + r.chiave] = 1; });
+    var tot = Object.keys(chiavi).length, s = scadenza(c);
+    var t0 = Infinity, t1 = -Infinity, tardi = 0, giusti = 0, punti = 0, valutate = 0;
+    mie.forEach(function(r) {
+      if (r.primo_ts) t0 = Math.min(t0, r.primo_ts);
+      if (r.ultimo_ts) t1 = Math.max(t1, r.ultimo_ts);
+      if (r.primo_ts && r.primo_ts > s) tardi++;
+      if (r.ok !== null) { valutate++; punti += r.ok; if (r.ok >= 1) giusti++; }
+    });
+    return { fatti: mie.length, tot: tot, giusti: giusti, valutate: valutate, media: valutate ? punti / valutate : null,
+             durata: t1 >= t0 ? t1 - t0 : null, tardi: tardi, scaduto: Date.now() > s };
+  }
+  function vistaCompiti() {
+    var sec = $('#s-compiti'), lz = lezioni(), cod = codiciDi(classe).sort();
+    if (!lz.length) { sec.innerHTML = '<div class="card">Nessun compito per la classe <b>' + esc(classe) + '</b> in <code>_data/compiti.yml</code>.</div>'; return; }
+    if (!cod.length) { sec.innerHTML = '<div class="card">La classe <b>' + esc(classe) + '</b> non ha ancora codici: aggiungili nella scheda <b>Studenti</b>.</div>'; return; }
+    var cache = lz.map(function(c) { return righeDi(c); });
+    var h = '<div class="legenda"><span style="--c:var(--ok-bg)">tutto svolto</span><span style="--c:var(--meta-bg)">in parte</span>' +
+      '<span style="--c:var(--err-bg)">niente, ed è scaduto</span><span style="--c:var(--no-bg)">niente, non ancora scaduto</span>' +
+      '<span style="--c:#fff">✓ = giuste · ⏱ = tempo fra la prima e l\'ultima risposta · ⏰ = iniziato dopo la scadenza</span></div>';
+    h += '<div class="tab-wrap"><table class="griglia"><thead><tr><th class="cod">Codice</th>';
+    lz.forEach(function(c, i) {
+      var fut = !riepilogo(c, [], '').scaduto;
+      h += '<th data-l="' + i + '" class="' + (fut ? 'futura' : '') + '" title="Clic: risultati domanda per domanda"><span class="d">' + bella(giorno(c.data)) + '</span>' +
+           '<span class="c">' + esc(titoloCompito(c)) + '</span></th>';
+    });
+    h += '</tr></thead><tbody>';
+    cod.forEach(function(k) {
+      h += '<tr><td class="cod">' + esc(k) + '</td>';
+      lz.forEach(function(c, i) {
+        var r = riepilogo(c, cache[i], k), cl;
+        if (!r.fatti) cl = r.scaduto ? 'mancante' : 'niente';
+        else cl = r.fatti >= r.tot ? 'tutto' : 'parte';
+        h += '<td class="cella ' + cl + '" data-k="' + esc(k) + '" data-l="' + i + '">';
+        if (!r.fatti) h += r.scaduto ? 'non svolto' : '—';
+        else h += '<b>' + r.fatti + '/' + r.tot + '</b>' + (r.valutate ? ' · ✓' + r.giusti : '') +
+          '<div class="t">' + (r.durata !== null ? '⏱ ' + durata(r.durata) : '') + (r.tardi ? ' ⏰' : '') + '</div>';
+        h += '</td>';
+      });
+      h += '</tr>';
+    });
+    // riga delle medie
+    h += '<tr class="media"><td class="cod">classe</td>';
+    lz.forEach(function(c, i) {
+      var tutti = cod.map(function(k) { return riepilogo(c, cache[i], k); }), chi = tutti.filter(function(r) { return r.fatti; });
+      var dur = chi.filter(function(r) { return r.durata !== null; }).map(function(r) { return r.durata; }).sort(function(a, b) { return a - b; });
+      h += '<td>' + chi.length + '/' + cod.length + ' l\'hanno fatto' + (dur.length ? '<div class="t">⏱ mediana ' + durata(dur[Math.floor(dur.length / 2)]) + '</div>' : '') + '</td>';
+    });
+    h += '</tr></tbody></table></div>';
+    h += '<p class="nota">Il totale di ogni compito è il numero di esercizi diversi a cui ha risposto almeno uno studente della classe. ' +
+         'Un esercizio a passi conta come «giusto» solo se tutti i passi sono giusti. Clic su una casella per vedere le risposte, sull\'intestazione per i risultati domanda per domanda.</p>';
+    sec.innerHTML = h;
+    $$('td.cella', sec).forEach(function(td) { td.onclick = function() { dettaglioStudente(lz[+td.dataset.l], cache[+td.dataset.l], td.dataset.k); }; });
+    $$('thead th[data-l]', sec).forEach(function(th) { th.onclick = function() { dettaglioDomande(lz[+th.dataset.l], cache[+th.dataset.l]); }; });
+  }
+
+  function etichette(rr) {
+    var m = {};
+    rr.forEach(function(r) { var k = r.pagina + '|' + r.chiave; if (!m[k] || (!m[k].etichetta && r.etichetta)) m[k] = { pagina: r.pagina, chiave: r.chiave, etichetta: r.etichetta, sezione: r.sezione }; });
+    return Object.keys(m).map(function(k) { return m[k]; });
+  }
+  function esitoHtml(ok) {
+    if (ok === null || ok === undefined) return '<span class="e-nd">svolto</span>';
+    if (ok >= 1) return '<span class="e-ok">✓ giusto</span>';
+    if (ok <= 0) return '<span class="e-no">✗ sbagliato</span>';
+    return '<span class="e-meta">' + Math.round(ok * 100) + '%</span>';
+  }
+  function datiHtml(d) {
+    if (!d) return '';
+    try { d = JSON.parse(d); } catch (e) { return ''; }
+    if (!d || typeof d !== 'object') return '';
+    var t = [];
+    if (typeof d.v === 'string' && d.v.trim()) t.push(d.v);
+    if (typeof d.t === 'string' && d.t.trim()) t.push(d.t);
+    if (d.sel) t.push('Risposta: ' + ({ V: 'Vero', F: 'Falso' }[d.sel] || d.sel));
+    if (d.chosen) t.push('Scelta: ' + d.chosen);
+    ['def', 'car', 'ex', 'nonex'].forEach(function(k) { if (typeof d[k] === 'string' && d[k].trim()) t.push(k + ': ' + d[k]); });
+    if (Array.isArray(d.vals) && d.vals.some(Boolean)) t.push('Valori: ' + d.vals.filter(function(x) { return x !== null && x !== ''; }).join(' · '));
+    return t.length ? '<div class="risp">' + esc(t.join('\n')) + '</div>' : '';
+  }
+  function apriModale(html) { var m = $('#modale'); $('.box', m).innerHTML = html; m.classList.add('on'); $('[data-chiudi]', m).onclick = chiudi; }
+  function chiudi() { $('#modale').classList.remove('on'); }
+  $('#modale').addEventListener('click', function(e) { if (e.target.id === 'modale') chiudi(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') chiudi(); });
+  function linkPagina(p, sez) { return '<a href="' + esc(BASE + p) + '" target="_blank">' + esc(CAPITOLI[p] || p) + '</a>' + (sez ? ' · ' + esc(sez) : ''); }
+
+  function dettaglioStudente(c, rr, codice) {
+    var r = riepilogo(c, rr, codice), tutte = etichette(rr);
+    var testa = '<div class="testa"><div><h2>' + esc(codice) + ' — compito per ' + bella(giorno(c.data)) + '</h2><div class="nota" style="margin:0">' + esc(titoloCompito(c)) +
+      (c.note ? ' · ' + esc(c.note) : '') + '</div></div><button data-chiudi>Chiudi ✕</button></div>';
+    var riass = '<p>' + r.fatti + ' esercizi su ' + r.tot + (r.valutate ? ', ' + r.giusti + ' giusti' : '') +
+      (r.durata !== null ? ' · tempo fra la prima e l\'ultima risposta: <b>' + durata(r.durata) + '</b>' : '') +
+      (r.tardi ? ' · <span class="err">⏰ ' + r.tardi + ' iniziati dopo la scadenza</span>' : '') + '</p>';
+    apriModale(testa + riass + '<p class="nota">Carico le risposte…</p>');
+    chiama('/docente/dettaglio?classe=' + encodeURIComponent(classe) + '&codice=' + encodeURIComponent(codice) + '&pagine=' + encodeURIComponent(capitoliDi(c).join(','))).then(function(j) {
+      var mie = {}; (j.risposte || []).forEach(function(x) { mie[x.pagina + '|' + x.chiave] = x; });
+      var h = '<table class="dett"><tr><th>Esercizio</th><th>Esito</th><th>Al primo colpo</th><th>Verifiche</th><th>Quando</th></tr>';
+      tutte.forEach(function(t) {
+        var x = mie[t.pagina + '|' + t.chiave];
+        h += '<tr><td>' + esc(t.etichetta || '(esercizio senza testo)') + '<div class="nota" style="margin:.1rem 0 0">' + linkPagina(t.pagina, t.sezione) + '</div>' + (x ? datiHtml(x.dati) : '') + '</td>';
+        if (!x) h += '<td class="e"><span class="e-nd">non svolto</span></td><td></td><td></td><td></td>';
+        else h += '<td class="e">' + esitoHtml(x.ok) + '</td><td>' + (x.primo_ok === null ? '' : x.primo_ok >= 1 ? '✓' : '✗') + '</td><td>' + (x.verifiche || '') + '</td>' +
+          '<td>' + (x.ultimo_ts ? ora(x.ultimo_ts) : '<span class="e-nd">prima dell\'accesso</span>') + '</td>';
+        h += '</tr>';
+      });
+      apriModale(testa + riass + h + '</table>');
+    }).catch(function(e) { if (e.message !== 'accesso') apriModale(testa + '<p class="err">Errore: ' + esc(e.message) + '</p>'); });
+  }
+
+  function dettaglioDomande(c, rr) {
+    var cod = codiciDi(classe), tutte = etichette(rr);
+    var stat = tutte.map(function(t) {
+      var qui = rr.filter(function(r) { return r.pagina === t.pagina && r.chiave === t.chiave; });
+      var val = qui.filter(function(r) { return r.ok !== null; });
+      return { t: t, n: qui.length, val: val.length,
+               ok: val.length ? val.filter(function(r) { return r.ok >= 1; }).length / val.length : null,
+               primo: val.length ? val.filter(function(r) { return r.primo_ok >= 1; }).length / val.length : null };
+    }).sort(function(a, b) { return (a.ok === null ? 2 : a.ok) - (b.ok === null ? 2 : b.ok); });
+    var h = '<div class="testa"><div><h2>Compito per ' + bella(giorno(c.data)) + ': domanda per domanda</h2><div class="nota" style="margin:0">' + esc(titoloCompito(c)) +
+      '</div></div><button data-chiudi>Chiudi ✕</button></div><p class="nota">In alto le domande andate peggio.</p>' +
+      '<table class="dett"><tr><th>Esercizio</th><th>Svolto da</th><th>Giusto (alla fine)</th><th>Giusto al primo colpo</th></tr>';
+    function bar(x) { return x === null ? '<span class="e-nd">—</span>' : '<div class="barra"><i style="width:' + Math.round(x * 100) + '%"></i></div>' + Math.round(x * 100) + '%'; }
+    stat.forEach(function(s) {
+      h += '<tr><td>' + esc(s.t.etichetta || '(esercizio senza testo)') + '<div class="nota" style="margin:.1rem 0 0">' + linkPagina(s.t.pagina, s.t.sezione) + '</div></td>' +
+        '<td>' + s.n + '/' + cod.length + '</td><td>' + bar(s.ok) + '</td><td>' + bar(s.primo) + '</td></tr>';
+    });
+    apriModale(h + '</table>');
+  }
+
+  // ───────── dubbi ─────────
+  function vistaDubbi() {
+    var sec = $('#s-dubbi');
+    if (!dubbi.length) { sec.innerHTML = '<div class="card">Nessun dubbio dalla classe <b>' + esc(classe) + '</b>.</div>'; return; }
+    sec.innerHTML = dubbi.map(function(d) {
+      var dove = d.pagina ? '<a href="' + esc(BASE + d.pagina + (d.ancora ? '#' + d.ancora : '')) + '" target="_blank">' + esc(CAPITOLI[d.pagina] || d.pagina) + '</a>' + (d.sezione ? ' · ' + esc(d.sezione) : '') : '';
+      return '<div class="dubbio' + (d.risolto ? '' : ' aperto') + '" data-id="' + d.id + '"><div class="meta"><b>' + esc(d.codice) + '</b> · ' + ora(d.ts) + (dove ? ' · ' + dove : '') +
+        (d.risolto ? ' · ✓ risolto' : '') + '</div><div class="q">' + esc(d.testo) + '</div>' +
+        '<textarea placeholder="Risposta per lo studente (la vedrà nella sua finestrella)…">' + esc(d.risposta || '') + '</textarea>' +
+        '<div class="az"><button class="pri" data-a="rispondi">' + (d.risposta ? 'Aggiorna la risposta' : 'Rispondi') + '</button>' +
+        '<button data-a="risolto">' + (d.risolto ? 'Segna come da fare' : 'Segna come risolto (senza rispondere)') + '</button>' +
+        '<button class="peric" data-a="elimina">Elimina</button></div></div>';
+    }).join('');
+    $$('.dubbio button', sec).forEach(function(b) {
+      b.onclick = function() {
+        var box = b.closest('.dubbio'), id = +box.dataset.id, d = dubbi.filter(function(x) { return x.id === id; })[0], a = b.dataset.a, corpo = { id: id };
+        if (a === 'rispondi') corpo.risposta = $('textarea', box).value;
+        if (a === 'risolto') corpo.risolto = !d.risolto;
+        if (a === 'elimina') { if (!confirm('Eliminare questo dubbio?')) return; corpo.elimina = true; }
+        b.disabled = true;
+        chiama('/docente/dubbio', corpo).then(function() {
+          return chiama('/docente/dubbi?classe=' + encodeURIComponent(classe));
+        }).then(function(j) { dubbi = j.dubbi || []; mostra(); }).catch(function(e) { b.disabled = false; if (e.message !== 'accesso') alert('Errore: ' + e.message); });
+      };
+    });
+  }
+
+  // ───────── studenti ─────────
+  function vistaStudenti() {
+    var sec = $('#s-studenti'), mie = studenti.filter(function(s) { return s.classe === classe; });
+    var h = '<div class="card"><b>Codici della classe ' + esc(classe) + '</b>' +
+      '<p class="nota">Uno per riga (o separati da virgole): tre lettere del nome e una del cognome, per esempio GIUR; ' +
+      'in caso di omonimi aggiungi la seconda lettera del cognome (GIURO). Solo lettere. ' +
+      'Togliendo un codice si cancellano anche le sue risposte e i suoi dubbi.</p>' +
+      '<textarea class="codici">' + esc(mie.map(function(s) { return s.codice; }).join('\n')) + '</textarea>' +
+      '<p><button class="pri" id="salvacod">Salva l\'elenco</button> <span id="codmsg" class="nota"></span></p></div>';
+    if (mie.length) {
+      h += '<div class="card"><b>PIN</b><p class="nota">Il PIN lo sceglie lo studente al primo accesso: tu non lo vedi mai. ' +
+        'Se lo dimentica, azzeralo: al prossimo accesso ne sceglierà uno nuovo.</p><div class="stud">' +
+        mie.map(function(s) {
+          return '<div><span><b>' + esc(s.codice) + '</b><br><small>' + (s.bloccato ? '🔒 bloccato per troppi tentativi' : s.pin ? 'PIN scelto' : 'non ancora entrato') + '</small></span>' +
+            (s.pin || s.bloccato ? '<button data-c="' + esc(s.codice) + '">azzera PIN</button>' : '') + '</div>';
+        }).join('') + '</div></div>';
+    }
+    sec.innerHTML = h;
+    $('#salvacod').onclick = function() {
+      var codici = $('textarea.codici', sec).value.toUpperCase().split(/[\s,;]+/).filter(Boolean);
+      var tolti = mie.map(function(s) { return s.codice; }).filter(function(c) { return codici.indexOf(c) < 0; });
+      if (tolti.length && !confirm('Stai togliendo ' + tolti.join(', ') + ': verranno cancellati anche le loro risposte e i loro dubbi. Continuare?')) return;
+      chiama('/docente/studenti', { classe: classe, codici: codici }).then(function(j) {
+        $('#codmsg').textContent = '✓ Salvato (' + j.aggiunti + ' aggiunti, ' + j.tolti + ' tolti).';
+        return chiama('/docente/studenti');
+      }).then(function(j) { studenti = j.studenti || []; setTimeout(mostra, 900); })
+        .catch(function(e) { if (e.message !== 'accesso') $('#codmsg').innerHTML = '<span class="err">' + esc(e.message) + '</span>'; });
+    };
+    $$('.stud button', sec).forEach(function(b) {
+      b.onclick = function() {
+        if (!confirm('Azzerare il PIN di ' + b.dataset.c + '? Dovrà sceglierne uno nuovo al prossimo accesso.')) return;
+        chiama('/docente/azzera-pin', { classe: classe, codice: b.dataset.c }).then(function() { return chiama('/docente/studenti'); })
+          .then(function(j) { studenti = j.studenti || []; mostra(); });
+      };
+    });
+  }
+
+  // ───────── dati ─────────
+  function vistaDati() {
+    var sec = $('#s-dati');
+    sec.innerHTML = '<div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte arrivate e i dubbi inviati prima della data scelta. ' +
+      'Conviene farlo a fine quadrimestre: sul server resta solo ciò che serve.</p>' +
+      '<p>Cancella tutto ciò che è precedente al <input type="date" id="primadi"> <button class="peric" id="cancella">Cancella</button> <span id="canmsg" class="nota"></span></p></div>';
+    $('#cancella').onclick = function() {
+      var v = $('#primadi').value; if (!v) return;
+      var t = giorno(v).getTime();
+      if (!confirm('Cancellare definitivamente risposte e dubbi precedenti al ' + bella(giorno(v)) + ' ' + v.slice(0, 4) + '?')) return;
+      chiama('/docente/cancella', { prima_di: t }).then(function(j) { $('#canmsg').textContent = '✓ Cancellate ' + j.risposte + ' risposte e ' + j.dubbi + ' dubbi.'; });
+    };
+  }
+
+  if (pw()) avvia(); else esci('');
+})();
+</script>
+</body>
+</html>

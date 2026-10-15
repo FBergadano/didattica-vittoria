@@ -58,7 +58,7 @@ Esempio:
       var chosen=b.dataset.v;
       var isOk=render(chosen);
       if(isOk){ _shoot(b); root.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true})); }
-      _lvSave('mcq',ID,{chosen:chosen});
+      _lvSave('mcq',ID,{chosen:chosen,ok:isOk});
     });
   });
 

@@ -132,6 +132,7 @@ document.getElementById('sv-'+ID).addEventListener('click',function(){
   if(pool.querySelector('.sort-item')){fb.className='sort-fb err';fb.textContent='Posiziona tutti gli elementi prima di verificare.';return;}
   var allOk=colorAndReport(true);
   persist(allOk);
+  if(window._lvEsito)_lvEsito('sort',ID,allOk);
 });
 
 document.getElementById('sr-'+ID).addEventListener('click',function(){_lvClear('sort',ID);render();});

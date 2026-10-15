@@ -92,6 +92,7 @@ function nextQ(){
     $$('.ubx-card').style.display='none';
     $$('.ubx-fine').style.display='block';
     if(allOk)fireworks();
+    if(window._lvEsito)_lvEsito('unitbuild','{{ _uid }}',allOk);
   }
 }
 root.addEventListener('click',function(e){

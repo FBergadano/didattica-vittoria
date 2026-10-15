@@ -1,0 +1,204 @@
+{% comment %}
+Consegna dei compiti — parte "invisibile" (va nel <head>, subito dopo
+persist.html). Si aggancia a _lvSave, la funzione con cui tutti i widget
+salvano le risposte nel browser: ogni risposta viene messa in coda, con
+l'ora in cui è stata data, e spedita al server delle consegne appena lo
+studente ha fatto l'accesso (codice + PIN). Le risposte date prima
+dell'accesso, o senza rete, partono più tardi.
+Definisce anche _lvEsito(ns, id, giusto), che i widget chiamano quando
+l'esito non è già scritto nei dati salvati (abbinamenti, classificazioni…).
+Se consegne_url in _config.yml è vuoto non fa nulla.
+L'interfaccia (pulsante 👤, accesso, dubbi) è in consegne.html.
+{% endcomment %}
+<script>
+window._lvEsito = window._lvEsito || function() {};
+</script>
+{% if site.consegne_url and site.consegne_url != "" %}
+<script>
+(function() {
+  var BASE = {{ site.baseurl | jsonify }};
+  var C = window.LVC = {
+    url: {{ site.consegne_url | jsonify }}.replace(/\/+$/, ''),
+    pagina: location.pathname.indexOf(BASE) === 0 ? location.pathname.slice(BASE.length) : location.pathname
+  };
+  var QK = 'lv-cons:coda', SK = 'lv-cons:inviati', AK = 'lv-cons:accesso';
+  // namespace che non sono risposte (tasti premuti, scelte non ancora verificate)
+  var SKIP = { field: 1, tfsel: 1 };
+  // risposte aperte: si salvano a ogni tasto, quindi le spedisco con calma
+  var TESTO = { defcmp: 1, filldef: 1, frayer: 1, riflessione: 1, raperta: 1, schierati: 1 };
+
+  function get(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function put(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  C.accesso = function() { return get(AK, null); };
+  C.salvaAccesso = function(a) { if (a) put(AK, a); else { try { localStorage.removeItem(AK); } catch (e) {} } };
+  C.inCoda = function() { return get(QK, []).length; };
+
+  // ── esito di una risposta, ricavato dai dati che il widget salva ──
+  // 1 = giusta, 0 = sbagliata, fra 0 e 1 = in parte (esercizi a passi), null = non si sa / risposta aperta
+  function esitoDi(ns, d) {
+    if (!d || typeof d !== 'object') return null;
+    if (typeof d.right === 'boolean') return d.right ? 1 : 0;
+    if (typeof d.found === 'boolean') return d.found ? 1 : 0;
+    if (typeof d.ok === 'boolean') return d.ok ? 1 : 0;
+    if (Array.isArray(d.ok) && d.ok.length) return d.ok.filter(Boolean).length / d.ok.length;
+    if (ns === 'quiz' && Array.isArray(d.results) && d.results.length) return d.results.filter(Boolean).length / d.results.length;
+    if (ns === 'uderive') return 1; // si salva solo quando è giusto
+    return null;
+  }
+
+  // ── dove si trova la domanda: sezione del capitolo e un pezzetto di testo ──
+  // ultimo elemento toccato dallo studente, e quando: un salvataggio che non
+  // segue di poco un'azione dello studente è solo un widget che rimette a
+  // posto una risposta vecchia mentre la pagina si apre (niente orario nuovo)
+  var last = null, lastT = 0;
+  ['pointerdown', 'keydown', 'input', 'change', 'click'].forEach(function(t) {
+    document.addEventListener(t, function(e) { if (e.isTrusted && e.target && e.target.nodeType === 1) { last = e.target; lastT = Date.now(); } }, true);
+  });
+  function dalVivo() { return Date.now() - lastT < 5000; }
+  function texDi(c) {
+    try {
+      var items = MathJax.startup.document.math;
+      for (var it = items.list.next; it !== items.list; it = it.next)
+        if (it.data && it.data.typesetRoot === c) return ' $' + it.data.math + '$ ';
+    } catch (e) {}
+    return ' [formula] ';
+  }
+  function testoDi(n) {
+    var s = '';
+    n.childNodes.forEach(function(c) {
+      if (c.nodeType === 3) s += c.data;
+      else if (c.nodeType === 1) {
+        var t = c.tagName;
+        if (t === 'MJX-CONTAINER') s += texDi(c);
+        else if (t === 'INPUT' || t === 'SELECT') s += ' ___ ';
+        else if (/^(BUTTON|SCRIPT|STYLE|TEXTAREA|SVG|CANVAS|MJX-ASSISTIVE-MML)$/.test(t)) {}
+        else if (c.matches && c.matches('[class*="-fb"], .lv-ui, .cons-ui')) {}
+        else s += testoDi(c);
+      }
+    });
+    return s;
+  }
+  C.sezioneDi = function(el) {
+    var prose = document.querySelector('.chapter-prose'), sez = null;
+    if (!prose || !el || !prose.contains(el)) return null;
+    prose.querySelectorAll('h1').forEach(function(h) {
+      if (h.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) sez = { t: h.textContent.trim(), id: h.id || '' };
+    });
+    return sez;
+  };
+  function contesto() {
+    var prose = document.querySelector('.chapter-prose');
+    if (!last || !prose || !prose.contains(last)) return {};
+    var a = last, t = '';
+    while (a && a !== prose) { t = testoDi(a).replace(/\s+/g, ' ').trim(); if (t.length >= 30) break; a = a.parentElement; }
+    var s = C.sezioneDi(last);
+    return { sezione: s ? s.t : null, etichetta: t.slice(0, 160) || null };
+  }
+
+  // ── coda delle risposte da spedire ──
+  function impronta(x) { return window._lvHash ? _lvHash(JSON.stringify(x)) : JSON.stringify(x); }
+  function accoda(pagina, ns, id, dati, ok, ts, ctx, conta) {
+    var k = pagina + '|' + ns + '|' + id;
+    var imp = impronta([dati, ok]);
+    var inviati = get(SK, {});
+    var coda = get(QK, []), it = null;
+    for (var i = 0; i < coda.length; i++) if (coda[i].k === k) { it = coda[i]; break; }
+    if (!it && inviati[k] === imp) return false; // già arrivata uguale
+    if (!it) { it = { k: k, pagina: pagina, ns: ns, id: String(id), ts0: ts, n: 0 }; coda.push(it); }
+    if (dati !== undefined) it.dati = dati;
+    if (ok !== null && ok !== undefined) { it.ok = ok; if (it.ok0 === undefined) it.ok0 = ok; }
+    if (ts && (!it.ts0 || ts < it.ts0)) it.ts0 = ts;
+    it.ts = ts || it.ts || null;
+    if (conta) it.n++;
+    if (ctx && ctx.sezione) it.sezione = ctx.sezione;
+    if (ctx && ctx.etichetta) it.etichetta = ctx.etichetta;
+    it.imp = imp;
+    if (coda.length > 3000) coda = coda.slice(-3000);
+    put(QK, coda);
+    return true;
+  }
+  function registra(ns, id, dati, okEsplicito) {
+    var ok = okEsplicito !== null ? okEsplicito : esitoDi(ns, dati);
+    var vivo = dalVivo();
+    var nuovo = vivo ? accoda(C.pagina, ns, id, dati, ok, Date.now(), contesto(), ok !== null)
+                     : accoda(C.pagina, ns, id, dati, ok, null, null, false);
+    if (!nuovo || !vivo) return;
+    if (!C.accesso()) { if (C.avvisaAccesso) C.avvisaAccesso(); return; }
+    clearTimeout(C._t);
+    C._t = setTimeout(function() { C.invia(true); }, TESTO[ns] ? 4000 : 800);
+  }
+  var orig = window._lvSave;
+  window._lvSave = function(ns, id, data) {
+    orig.apply(this, arguments);
+    if (!SKIP[ns]) { try { registra(ns, id, data, null); } catch (e) {} }
+  };
+  window._lvEsito = function(ns, id, giusto) {
+    try { registra(ns, id, undefined, giusto ? 1 : 0); } catch (e) {}
+  };
+
+  // risposte già salvate nel browser prima dell'accesso (senza orario: non si sa quando sono state date)
+  C.recuperaVecchie = function() {
+    var P = 'lv-ans:v1:';
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        if (key.indexOf(P) !== 0) continue;
+        var rest = key.slice(P.length), a = rest.indexOf(':'), b = rest.indexOf(':', a + 1);
+        if (a < 0 || b < 0) continue;
+        var path = rest.slice(0, a), ns = rest.slice(a + 1, b), id = rest.slice(b + 1);
+        if (SKIP[ns]) continue;
+        if (path.indexOf(BASE) === 0) path = path.slice(BASE.length);
+        var d = JSON.parse(localStorage.getItem(key));
+        accoda(path, ns, id, d, esitoDi(ns, d), null, null, false);
+      }
+    } catch (e) {}
+  };
+
+  C.chiama = function(percorso, corpo) {
+    return fetch(C.url + percorso, {
+      method: corpo ? 'POST' : 'GET',
+      headers: corpo ? { 'Content-Type': 'application/json' } : {},
+      body: corpo ? JSON.stringify(corpo) : undefined,
+      keepalive: !!corpo && JSON.stringify(corpo).length < 60000
+    }).then(function(r) {
+      return r.json().catch(function() { return {}; }).then(function(j) { if (!r.ok) { var e = new Error(j.errore || ('HTTP ' + r.status)); e.codice = j.errore; e.status = r.status; throw e; } return j; });
+    });
+  };
+
+  var inVolo = false;
+  C.invia = function(dalVivo) {
+    var acc = C.accesso();
+    if (!acc || inVolo) return Promise.resolve(0);
+    var coda = get(QK, []);
+    if (!coda.length) return Promise.resolve(0);
+    var lotto = coda.slice(0, 100);
+    inVolo = true;
+    return C.chiama('/risposte', {
+      token: acc.token,
+      items: lotto.map(function(it) {
+        return { pagina: it.pagina, ns: it.ns, id: it.id, dati: it.dati, ok: it.ok, ok0: it.ok0,
+                 ts0: it.ts0, ts: it.ts, n: it.n, sezione: it.sezione, etichetta: it.etichetta };
+      })
+    }).then(function() {
+      inVolo = false;
+      var inviati = get(SK, {}), ora = get(QK, []), fatti = {};
+      lotto.forEach(function(it) { fatti[it.k] = it.imp; inviati[it.k] = it.imp; });
+      // tolgo dalla coda solo ciò che non è cambiato nel frattempo
+      put(QK, ora.filter(function(it) { return fatti[it.k] !== it.imp; }));
+      put(SK, inviati);
+      if (dalVivo && C.notifica) C.notifica('✓ Risposta arrivata al prof');
+      if (C.aggiornaStato) C.aggiornaStato();
+      if (get(QK, []).length && lotto.length === 100) return C.invia(false);
+      return lotto.length;
+    }).catch(function(e) {
+      inVolo = false;
+      if (e.status === 401) { C.salvaAccesso(null); if (C.aggiornaStato) C.aggiornaStato(); }
+      return 0;
+    });
+  };
+  window.addEventListener('online', function() { C.invia(false); });
+  window.addEventListener('load', function() { setTimeout(function() { C.invia(false); }, 1500); });
+  document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') C.invia(false); });
+})();
+</script>
+{% endif %}

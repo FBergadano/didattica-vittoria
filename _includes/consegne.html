@@ -1,0 +1,272 @@
+{% comment %}
+Consegna dei compiti — interfaccia per lo studente (in fondo al <body>).
+Aggiunge alla barra in alto un pulsante 👤 che apre una finestrella con:
+  - accesso: classe, codice (es. GIUR) e PIN di 4 cifre scelto dallo
+    studente la prima volta (il prof non lo conosce: se lo dimentica, il
+    prof lo azzera dalla sua pagina);
+  - lo stato dell'invio delle risposte e i prossimi compiti della classe
+    (da _data/compiti.yml);
+  - "Hai un dubbio?": una domanda per il prof, con allegata la pagina e la
+    sezione che si sta leggendo, e le risposte del prof ai dubbi già inviati.
+Parametro facoltativo: inline=true mostra la finestrella dentro la pagina
+(usato da consegna/index.html) invece che dal pulsante.
+Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra nulla.
+{% endcomment %}
+{% if site.consegne_url and site.consegne_url != "" %}
+{% assign _capitoli = site.corsi | where: "layout", "capitolo" %}
+<style>
+#cons-btn { position: relative; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .8rem; padding: 5px 10px;
+  border: 1px solid var(--accent, #0f766e); color: var(--accent, #0f766e); background: #fff; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+#cons-btn.cons-on { background: var(--accent, #0f766e); color: #fff; }
+#cons-btn .cons-badge { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; border-radius: 9px; background: #dc2626; color: #fff;
+  font-size: .68rem; line-height: 18px; text-align: center; padding: 0 4px; }
+#cons-panel { position: fixed; top: 62px; right: 12px; z-index: 300; width: 340px; max-width: calc(100vw - 24px); max-height: calc(100vh - 80px); overflow-y: auto;
+  background: #fff; border: 1px solid #d1d5db; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,.18); padding: .9rem 1rem;
+  font-family: "Atkinson Hyperlegible", sans-serif; font-size: .88rem; line-height: 1.45; color: #1a202c; }
+#cons-panel.cons-inline { position: static; width: auto; max-width: 560px; max-height: none; margin: 0 auto; box-shadow: none; }
+#cons-panel h4 { font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--accent, #0f766e); margin: .9rem 0 .4rem; }
+#cons-panel h4:first-child { margin-top: 0; }
+#cons-panel label { display: block; font-size: .8rem; color: #4a5568; margin: .45rem 0 .15rem; }
+#cons-panel select, #cons-panel input, #cons-panel textarea { width: 100%; box-sizing: border-box; font: inherit; padding: .4rem .55rem; border: 1px solid #cbd5e0; border-radius: 8px; background: #fff; }
+#cons-panel input.cons-codice { text-transform: uppercase; letter-spacing: .1em; }
+#cons-panel input.cons-pin { letter-spacing: .4em; width: 8.5em; }
+#cons-panel textarea { min-height: 4.5em; resize: vertical; }
+#cons-panel .cons-b { margin-top: .6rem; border: none; background: var(--accent, #0f766e); color: #fff; border-radius: 8px; padding: .45rem .9rem; font: inherit; cursor: pointer; }
+#cons-panel .cons-b[disabled] { opacity: .5; cursor: default; }
+#cons-panel .cons-link { background: none; border: none; color: #6b7280; text-decoration: underline; cursor: pointer; font: inherit; font-size: .8rem; padding: 0; }
+#cons-panel .cons-msg { margin-top: .45rem; font-size: .82rem; }
+#cons-panel .cons-msg.err { color: #dc2626; } #cons-panel .cons-msg.ok { color: #15803d; }
+#cons-panel .cons-hint { color: #6b7280; font-size: .78rem; margin-top: .35rem; }
+#cons-panel .cons-chi { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+#cons-panel .cons-chi b { font-size: 1.05rem; letter-spacing: .06em; }
+#cons-panel ul { list-style: none; margin: 0; padding: 0; }
+#cons-panel li.cons-compito { padding: .35rem 0; border-top: 1px solid #edf2f7; }
+#cons-panel li.cons-compito:first-child { border-top: none; }
+#cons-panel .cons-data { font-weight: 700; }
+#cons-panel .cons-dubbio { border: 1px solid #e2e8f0; border-radius: 8px; padding: .45rem .6rem; margin-top: .45rem; }
+#cons-panel .cons-dubbio .cons-q { white-space: pre-wrap; }
+#cons-panel .cons-dubbio .cons-r { margin-top: .35rem; padding: .35rem .5rem; background: #f0fdf4; border-left: 3px solid #15803d; border-radius: 4px; white-space: pre-wrap; }
+#cons-panel .cons-dubbio .cons-meta { color: #6b7280; font-size: .74rem; }
+#cons-panel .cons-dubbio.cons-nuovo { border-color: #15803d; }
+#cons-toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 310; background: #1f2937; color: #fff;
+  font-family: "Atkinson Hyperlegible", sans-serif; font-size: .85rem; padding: .5rem .9rem; border-radius: 999px; box-shadow: 0 4px 16px rgba(0,0,0,.25);
+  max-width: calc(100vw - 40px); opacity: 0; pointer-events: none; transition: opacity .25s; }
+#cons-toast.cons-vis { opacity: 1; pointer-events: auto; }
+#cons-toast button { margin-left: .6rem; border: none; background: #fff; color: #1f2937; border-radius: 999px; padding: .15rem .6rem; font: inherit; cursor: pointer; }
+@media (max-width: 600px) { #cons-btn .cons-lbl { display: none; } }
+@media print { #cons-btn, #cons-panel, #cons-toast { display: none !important; } }
+</style>
+
+<div id="cons-panel" class="cons-ui{% if include.inline %} cons-inline{% endif %}"{% unless include.inline %} hidden{% endunless %}></div>
+<div id="cons-toast" class="cons-ui" role="status" aria-live="polite"></div>
+
+<script>
+(function() {
+  var C = window.LVC; if (!C) return;
+  var INLINE = {{ include.inline | default: false | jsonify }};
+  var BASE = {{ site.baseurl | jsonify }};
+  var COMPITI = {{ site.data.compiti | default: nil | jsonify }} || {};
+  var CAPITOLI = {
+    {% for c in _capitoli %}{{ c.url | jsonify }}: {{ c.title | jsonify }}{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
+  var VK = 'lv-cons:visti';
+  var panel = document.getElementById('cons-panel'), toast = document.getElementById('cons-toast'), btn = null;
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function get(k, d) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+  function put(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+  // ── pulsante nella barra in alto ──
+  if (!INLINE) {
+    var dove = document.querySelector('.topbar-right');
+    if (dove) {
+      btn = document.createElement('button');
+      btn.id = 'cons-btn'; btn.className = 'cons-ui'; btn.type = 'button';
+      dove.insertBefore(btn, dove.firstChild);
+      btn.addEventListener('click', function() {
+        panel.hidden = !panel.hidden;
+        if (!panel.hidden) { disegna(); caricaDubbi(); }
+      });
+      document.addEventListener('pointerdown', function(e) {
+        if (!panel.hidden && !panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) panel.hidden = true;
+      });
+    }
+  }
+  var nonLetti = 0;
+  function aggiornaBtn() {
+    if (!btn) return;
+    var a = C.accesso();
+    btn.classList.toggle('cons-on', !!a);
+    btn.innerHTML = '👤<span class="cons-lbl"> ' + (a ? esc(a.codice) : 'Accedi') + '</span>' +
+      (nonLetti ? '<span class="cons-badge">' + nonLetti + '</span>' : '');
+    btn.title = a ? 'Sei ' + a.codice + ' (' + a.classe + '): consegne e dubbi' : 'Accedi per consegnare i compiti al prof';
+  }
+
+  // ── piccoli avvisi in basso ──
+  var tT = null;
+  C.notifica = function(testo, azione, durata) {
+    toast.innerHTML = esc(testo);
+    if (azione) {
+      var b = document.createElement('button'); b.textContent = azione.testo;
+      b.onclick = function() { toast.classList.remove('cons-vis'); azione.fn(); };
+      toast.appendChild(b);
+    }
+    toast.classList.add('cons-vis');
+    clearTimeout(tT); tT = setTimeout(function() { toast.classList.remove('cons-vis'); }, durata || 2200);
+  };
+  var avvisato = false;
+  C.avvisaAccesso = function() {
+    if (avvisato) return; avvisato = true;
+    C.notifica('Le tue risposte non arrivano ancora al prof.', { testo: 'Accedi', fn: apri }, 7000);
+  };
+  function apri() { if (INLINE) { panel.scrollIntoView({ behavior: 'smooth' }); return; } panel.hidden = false; disegna(); }
+
+  // ── date ──
+  var GIORNI = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'], MESI = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
+  function giorno(s) { var p = String(s).slice(0, 10).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function bella(d) { return GIORNI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()]; }
+  function quando(ts) { var d = new Date(ts); return bella(d) + ', ' + d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2); }
+  function capitoliDi(c) { return [].concat(c.capitolo || []).map(function(p) { return '/corsi/' + String(p).replace(/^\/+|\/+$/g, '').replace(/^corsi\//, '') + '/'; }); }
+
+  // ── contenuto della finestrella ──
+  function disegna() {
+    aggiornaBtn();
+    var a = C.accesso();
+    if (!a) return disegnaAccesso();
+    var h = '<div class="cons-chi"><span>Sei <b>' + esc(a.codice) + '</b> · classe ' + esc(a.classe) + '</span>' +
+            '<button class="cons-link" data-az="esci">esci</button></div>';
+    h += '<div class="cons-stato"></div>';
+    // prossimi compiti della classe
+    var oggi = new Date(); oggi.setHours(0, 0, 0, 0);
+    var lista = (COMPITI[a.classe] || []).filter(function(c) { return giorno(c.data) >= oggi; })
+      .sort(function(x, y) { return giorno(x.data) - giorno(y.data); }).slice(0, 4);
+    h += '<h4>Prossimi compiti</h4>';
+    if (!lista.length) h += '<div class="cons-hint">Nessun compito in programma.</div>';
+    else h += '<ul>' + lista.map(function(c) {
+      var cap = capitoliDi(c).map(function(u) { return '<a href="' + esc(BASE + u) + '">' + esc(CAPITOLI[u] || u) + '</a>'; }).join(', ');
+      return '<li class="cons-compito"><span class="cons-data">per ' + bella(giorno(c.data)) + '</span>: ' + cap +
+        (c.sezione ? ' — sezione «' + esc(c.sezione) + '»' : '') + (c.note ? '<div class="cons-hint">' + esc(c.note) + '</div>' : '') + '</li>';
+    }).join('') + '</ul>';
+    // dubbi
+    var sez = sezioneVisibile();
+    h += '<h4>Hai un dubbio?</h4>' +
+      '<textarea class="cons-testo" maxlength="2000" placeholder="Scrivi la tua domanda per il prof…"></textarea>' +
+      '<div class="cons-hint">' + (sez ? 'Verrà allegato il punto che stai leggendo: «' + esc(sez.t) + '».' : 'Il prof vedrà la tua domanda nella sua pagina.') + '</div>' +
+      '<button class="cons-b" data-az="dubbio">Invia il dubbio</button><div class="cons-msg cons-dmsg"></div>' +
+      '<div class="cons-miei"></div>';
+    panel.innerHTML = h;
+    stato(); mostraDubbi();
+  }
+  function stato() {
+    var el = panel.querySelector('.cons-stato'); if (!el) return;
+    var n = C.inCoda();
+    el.className = 'cons-stato cons-msg ' + (n ? '' : 'ok');
+    el.textContent = n ? '⏳ ' + n + ' rispost' + (n === 1 ? 'a' : 'e') + ' in attesa di invio (partono appena c\'è rete)' : '✓ Tutte le tue risposte sono arrivate al prof';
+  }
+
+  function disegnaAccesso() {
+    panel.innerHTML = '<h4>Accedi per consegnare</h4>' +
+      '<div class="cons-hint" style="margin-top:0">Le risposte che dai agli esercizi del sito arriveranno al prof da sole.</div>' +
+      '<label>Classe</label><select class="cons-classe"><option value="">caricamento…</option></select>' +
+      '<label>Il tuo codice</label><input class="cons-codice" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" placeholder="es. GIUR">' +
+      '<label>PIN (4 cifre)</label><input class="cons-pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off">' +
+      '<div class="cons-hint">La prima volta il PIN lo scegli tu: inventane uno e ricordalo. Se lo dimentichi, chiedi al prof di azzerarlo.</div>' +
+      '<button class="cons-b" data-az="entra">Entra</button><div class="cons-msg cons-amsg"></div>';
+    var sel = panel.querySelector('.cons-classe');
+    C.chiama('/classi').then(function(j) {
+      var cl = j.classi || [];
+      sel.innerHTML = '<option value="">scegli…</option>' + cl.map(function(c) { return '<option>' + esc(c) + '</option>'; }).join('');
+      if (cl.length === 1) sel.value = cl[0];
+    }).catch(function() { sel.innerHTML = '<option value="">impossibile caricare: controlla la connessione</option>'; });
+  }
+
+  function msg(sel, testo, tipo) { var m = panel.querySelector(sel); if (m) { m.className = 'cons-msg ' + sel.slice(1) + ' ' + (tipo || ''); m.textContent = testo; } }
+
+  panel.addEventListener('click', function(e) {
+    var b = e.target.closest('[data-az]'); if (!b) return;
+    var az = b.dataset.az;
+    if (az === 'entra') {
+      var classe = panel.querySelector('.cons-classe').value, codice = panel.querySelector('.cons-codice').value.trim().toUpperCase(),
+          pin = panel.querySelector('.cons-pin').value.trim();
+      if (!classe) return msg('.cons-amsg', 'Scegli la tua classe.', 'err');
+      if (!/^[A-Z]{2,12}$/.test(codice)) return msg('.cons-amsg', 'Il codice è fatto solo di lettere, per esempio GIUR.', 'err');
+      if (!/^\d{4}$/.test(pin)) return msg('.cons-amsg', 'Il PIN è di 4 cifre.', 'err');
+      b.disabled = true;
+      C.chiama('/accedi', { classe: classe, codice: codice, pin: pin }).then(function(j) {
+        C.salvaAccesso({ token: j.token, classe: classe, codice: codice });
+        C.recuperaVecchie();
+        disegna();
+        if (j.nuovo) C.notifica('PIN registrato: ricordatelo!', null, 4000);
+        C.invia(false); caricaDubbi();
+      }).catch(function(err) {
+        b.disabled = false;
+        var t = { codice: 'Questo codice non è nell\'elenco della classe: controlla con il prof.',
+                  pin: 'PIN sbagliato.', bloccato: 'Troppi tentativi sbagliati: riprova fra un quarto d\'ora.' }[err.codice];
+        msg('.cons-amsg', t || 'Non riesco a contattare il server: controlla la connessione.', 'err');
+      });
+    } else if (az === 'esci') {
+      var n = C.inCoda();
+      if (!confirm(n ? 'Hai ' + n + ' risposte non ancora arrivate al prof: se esci partiranno solo quando rientri. Vuoi uscire?' : 'Vuoi uscire? Per consegnare dovrai rientrare con codice e PIN.')) return;
+      C.salvaAccesso(null); disegna();
+    } else if (az === 'dubbio') {
+      var a = C.accesso(), ta = panel.querySelector('.cons-testo'), testo = ta.value.trim();
+      if (!testo) return msg('.cons-dmsg', 'Scrivi prima la tua domanda.', 'err');
+      var s = sezioneVisibile();
+      b.disabled = true;
+      C.chiama('/dubbi', { token: a.token, pagina: C.pagina, sezione: s ? s.t : null, ancora: s ? s.id : null, testo: testo }).then(function() {
+        ta.value = ''; b.disabled = false; msg('.cons-dmsg', '✓ Dubbio inviato al prof.', 'ok'); caricaDubbi();
+      }).catch(function(err) {
+        b.disabled = false;
+        msg('.cons-dmsg', err.codice === 'troppi' ? 'Hai già inviato molti dubbi oggi: riprova domani.' : 'Non riesco a inviarlo: controlla la connessione e riprova.', 'err');
+        if (err.status === 401) { C.salvaAccesso(null); disegna(); }
+      });
+    }
+  });
+  panel.addEventListener('keydown', function(e) { if (e.key === 'Enter' && e.target.matches('.cons-pin, .cons-codice')) { var b = panel.querySelector('[data-az="entra"]'); if (b) b.click(); } });
+
+  // sezione del capitolo che lo studente sta leggendo (l'ultimo titolo sopra la metà alta dello schermo)
+  function sezioneVisibile() {
+    var prose = document.querySelector('.chapter-prose'); if (!prose) return null;
+    var s = null;
+    prose.querySelectorAll('h1').forEach(function(h) { if (h.getBoundingClientRect().top < window.innerHeight * 0.4) s = { t: h.textContent.trim(), id: h.id || '' }; });
+    return s;
+  }
+
+  // ── i miei dubbi, con le risposte del prof ──
+  var dubbi = [];
+  function caricaDubbi() {
+    var a = C.accesso(); if (!a) return;
+    C.chiama('/miei-dubbi', { token: a.token }).then(function(j) {
+      dubbi = j.dubbi || [];
+      var visti = get(VK, {});
+      nonLetti = dubbi.filter(function(d) { return d.risposta && visti[d.id] !== d.risposta_ts; }).length;
+      aggiornaBtn(); mostraDubbi();
+    }).catch(function(err) { if (err.status === 401) { C.salvaAccesso(null); aggiornaBtn(); } });
+  }
+  function mostraDubbi() {
+    var box = panel.querySelector('.cons-miei'); if (!box || !dubbi.length) return;
+    var visti = get(VK, {});
+    box.innerHTML = '<h4>I tuoi dubbi</h4>' + dubbi.slice(0, 15).map(function(d) {
+      var nuovo = d.risposta && visti[d.id] !== d.risposta_ts;
+      var dove = d.pagina ? (CAPITOLI[d.pagina] || '') + (d.sezione ? ' · ' + d.sezione : '') : '';
+      return '<div class="cons-dubbio' + (nuovo ? ' cons-nuovo' : '') + '"><div class="cons-meta">' + quando(d.ts) + (dove ? ' · ' + esc(dove) : '') + '</div>' +
+        '<div class="cons-q">' + esc(d.testo) + '</div>' +
+        (d.risposta ? '<div class="cons-r"><b>Prof:</b> ' + esc(d.risposta) + '</div>' : '<div class="cons-meta">' + (d.risolto ? '✓ visto dal prof' : 'in attesa di risposta') + '</div>') + '</div>';
+    }).join('');
+    // aprendo la finestrella le risposte nuove diventano "lette"
+    if (!panel.hidden) {
+      dubbi.forEach(function(d) { if (d.risposta) visti[d.id] = d.risposta_ts; });
+      put(VK, visti); nonLetti = 0; aggiornaBtn();
+    }
+  }
+
+  C.aggiornaStato = function() {
+    var dentro = !!panel.querySelector('.cons-chi');
+    if (dentro !== !!C.accesso()) disegna(); else { stato(); aggiornaBtn(); }
+  };
+  aggiornaBtn();
+  if (INLINE) disegna();
+  if (C.accesso()) caricaDubbi();
+})();
+</script>
+{% endif %}

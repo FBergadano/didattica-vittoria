@@ -644,8 +644,16 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
   max-width: 100%;
   video { width: 100%; height: auto; display: block; }
 }
-@media print { .video-loop-wrap { display: none !important; } }
 .fig-block video { display: inline-block; vertical-align: top; }
+// Animazioni (.mp4): sullo schermo il video; in stampa, al suo posto,
+// l'immagine fissa "nome-fermo.webp"
+.fig-block .anim-stampa, .img-row .anim-stampa, .video-loop-wrap .anim-stampa { display: none; }
+@media print {
+  .video-loop-wrap video, .fig-block video, .img-row video { display: none !important; }
+  .video-loop-wrap .anim-stampa { display: block !important; width: 100%; height: auto; }
+  .fig-block .anim-stampa, .img-row .anim-stampa { display: inline-block !important; }
+  .video-loop-wrap, .fig-block, .img-row { break-inside: avoid; }
+}
 
 // ── Simulation container ──────────────────────────────────────
 .sim-container {
@@ -1214,6 +1222,7 @@ cit em, cit i { font-style: normal; }
 @media print {
   // Hide navigation, interactive widgets, and topbar controls
   .sidebar, .chapter-nav, .chapter-toc,
+  .read-progress-track, .read-progress, .read-progress-pct,
   .fill-def, .homework-section,
   #font-toggle, #pdf-btn, footer { display: none !important; }
 

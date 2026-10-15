@@ -19,7 +19,7 @@ Abbiamo già detto, nello scorso capitolo, che l'energia meccanica può converti
 {% include margin-note-end.html %}
 
 {% include figura.html id="james-prescott-joule"
-   src="/corsi/immagini/james-prescott-joule.jpeg"
+   src="/corsi/immagini/james-prescott-joule.webp"
    didascalia="James Prescott Joule (1818–1889)."
    alt="Ritratto di James Prescott Joule"
    larghezza="220px" %}
@@ -192,7 +192,7 @@ Secondo questa teoria, il calore non era energia, ma una vera e propria **sostan
 Tra i più autorevoli sostenitori di questa teoria c'erano il chimico Antoine Lavoisier e il matematico e fisico Pierre-Simon Laplace, che costruirono insieme uno dei primi <definizione>calorimetri</definizione> della storia — un contenitore pieno di ghiaccio, con cui misuravano la quantità di calorico ceduta da un corpo osservando quanto ghiaccio riuscivano a fondere.
 
 {% include figura.html id="laplace-calorico"
-   src="/corsi/immagini/pierre-simon-laplace.jpg"
+   src="/corsi/immagini/pierre-simon-laplace.webp"
    didascalia="Pierre-Simon Laplace (1749-1827), tra i più autorevoli sostenitori della teoria del calorico." larghezza="220px" %}
 
 A far vacillare la teoria del calorico fu un esperimento sorprendente. Nel 1798 il fisico Benjamin Thompson, conte di Rumford, stava supervisionando la foratura di cannoni di bronzo in un arsenale, e si accorse che l'attrito tra il trapano e il metallo produceva una quantità di calore enorme e, apparentemente, inesauribile — tanto da riuscire a far bollire dell'acqua. Se il calorico fosse stato un fluido presente in quantità limitata dentro il metallo, prima o poi si sarebbe dovuto esaurire; invece continuava a essere prodotto finché si continuava a far girare il trapano. Rumford ne concluse che il calore non potesse essere una sostanza contenuta nei corpi, ma dovesse avere a che fare con il **movimento**.
@@ -205,7 +205,7 @@ Oggi crediamo che la materia sia composta da un numero gigantesco di **molecole*
 {% include margin-note-end.html %}
 
 {% include figura.html id="alpha-elix"
-   src="/corsi/gif/Thermally_Agitated_alpha-elix.gif"
+   src="/corsi/gif/Thermally_Agitated_alpha-elix.mp4"
    didascalia="Un segmento di proteina di alfa-elica che vibra per agitazione termica."
    larghezza="190px" %}
 
@@ -306,13 +306,13 @@ Una <definizione>lamina bimetallica</definizione> è fatta di due strisce di met
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="Il termometro bimetallico" %}
 <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;align-items:center;">
-<img src="{{ '/corsi/immagini/bimetal-thermometer.jpeg' | relative_url }}" alt="Termometro a quadrante per barbecue, con una lancetta e una scala da 100 a 500 gradi Fahrenheit" loading="lazy" style="width:200px;max-width:100%;border-radius:8px;">
+<img src="{{ '/corsi/immagini/bimetal-thermometer.webp' | relative_url }}" alt="Termometro a quadrante per barbecue, con una lancetta e una scala da 100 a 500 gradi Fahrenheit" loading="lazy" style="width:200px;max-width:100%;border-radius:8px;">
 {% include lab-virtuali/termometro-bimetallico-lab.html %}
 </div>
 
 Dentro il termometro della foto c'è il meccanismo dell'animazione: una lamina bimetallica avvolta a spirale. Scaldandosi la spirale si svolge e fa ruotare la lancetta. (La scala della foto è in gradi Fahrenheit, l'unità usata negli Stati Uniti.)
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html img="/corsi/immagini/giunto-dilatazione.JPG" alt="Binari ferroviari con un giunto di dilatazione: le estremità di due rotaie sono tagliate in obliquo e affiancate" titolo="I binari del treno" %}
+{% include scorri-slide.html img="/corsi/immagini/giunto-dilatazione.webp" alt="Binari ferroviari con un giunto di dilatazione: le estremità di due rotaie sono tagliate in obliquo e affiancate" titolo="I binari del treno" %}
 Le rotaie, d'estate, si allungano. Se fossero bloccate senza spazio, si deformerebbero. Per questo, in alcuni punti, i binari hanno dei <definizione>giunti di dilatazione</definizione>: le estremità di due rotaie sono tagliate in obliquo e affiancate, così possono scorrere l'una accanto all'altra quando si allungano o si accorciano, senza lasciare un vuoto sotto le ruote.
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html img="/corsi/immagini/giunti-dilatazione-strada.jpeg" alt="Un operaio cammina accanto a un giunto di dilatazione che attraversa la carreggiata di un viadotto" titolo="I ponti e i viadotti" %}
@@ -517,7 +517,7 @@ $$[k]=\frac{\text W}{\text m\cdot\text K}.$$
 {% include margin-note-end.html %}
 
 {% capture _r %}Il metallo della padella è un buon conduttore termico: il calore della fiamma passa rapidamente dal fondo a tutta la padella. Se anche il manico fosse di metallo, il calore arriverebbe fino alla mano e lo scotterebbe. Il legno, invece, ha una conducibilità termica migliaia di volte più piccola: è un isolante termico, quindi attraverso il manico passa pochissimo calore e lo si può impugnare senza scottarsi.{% endcapture %}
-{% capture _dpad %}<img src="{{ '/corsi/immagini/padella-manico-legno.jpeg' | relative_url }}" alt="Padella arancione di metallo con il manico di legno, appoggiata su un tagliere" style="display:block;width:100%;max-width:340px;margin:.3rem auto .6rem;border-radius:6px;">Perché molte padelle hanno il manico di legno? Usa la conducibilità termica per spiegarlo.{% endcapture %}
+{% capture _dpad %}<img src="{{ '/corsi/immagini/padella-manico-legno.webp' | relative_url }}" alt="Padella arancione di metallo con il manico di legno, appoggiata su un tagliere" style="display:block;width:100%;max-width:340px;margin:.3rem auto .6rem;border-radius:6px;">Perché molte padelle hanno il manico di legno? Usa la conducibilità termica per spiegarlo.{% endcapture %}
 {% include risposta-aperta.html id="ra-spiega-padella" tipo="spiega"
    domanda=_dpad
    risposta=_r %}
@@ -564,10 +564,10 @@ Non è così: il calore va sempre dalla zona più calda a quella più fredda, **
 La convezione è dappertutto intorno a te: scorri gli esempi.
 
 {% include scorri.html %}
-{% include scorri-slide.html img="/corsi/immagini/convection-heater.png" alt="Una stanza con un termosifone: l'aria calda sale sopra il termosifone, attraversa la stanza vicino al soffitto, scende dalla parte opposta e torna verso il termosifone lungo il pavimento" titolo="Il termosifone" %}
+{% include scorri-slide.html img="/corsi/immagini/convection-heater.webp" alt="Una stanza con un termosifone: l'aria calda sale sopra il termosifone, attraversa la stanza vicino al soffitto, scende dalla parte opposta e torna verso il termosifone lungo il pavimento" titolo="Il termosifone" %}
 Il termosifone scalda l'aria vicina, che sale, attraversa la stanza vicino al soffitto, si raffredda, scende e torna verso il termosifone: un moto convettivo. Per questo i termosifoni si mettono in basso e i condizionatori in alto.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html img="/corsi/immagini/convection-bird.jpeg" alt="Una sterna in volo con le ali spiegate" titolo="Gli uccelli e le correnti termiche" %}
+{% include scorri-slide.html img="/corsi/immagini/convection-bird.webp" alt="Una sterna in volo con le ali spiegate" titolo="Gli uccelli e le correnti termiche" %}
 Il terreno scaldato dal Sole scalda l'aria sopra di sé, che sale in colonne: le **correnti termiche**. Molti uccelli (e i piloti di parapendio) le sfruttano per salire di quota quasi senza battere le ali.
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html img="/corsi/immagini/convection-currents-earth.webp" alt="A sinistra, uno spaccato della Terra con i moti convettivi nel mantello sotto le placche; a destra, una pentola d'acqua sul fuoco con gli stessi moti convettivi" titolo="Sotto i tuoi piedi: il mantello terrestre" %}
@@ -616,7 +616,7 @@ Anche il nostro corpo, e quello degli animali, emette continuamente radiazione, 
 {% include margin-note-end.html %}
 
 {% include figura.html id="gatto-termocamera"
-   src="/corsi/immagini/cat-thermoscopy.jpeg"
+   src="/corsi/immagini/cat-thermoscopy.webp"
    didascalia="Un gatto fotografato con una termocamera. Le zone più calde (gli occhi, le orecchie, il naso: fino a 33 °C) emettono più radiazione infrarossa e appaiono gialle e bianche; lo sfondo, più freddo (circa 12 °C), appare viola scuro."
    alt="Immagine termica di un gatto: occhi, orecchie e naso appaiono gialli e bianchi, il corpo viola, lo sfondo viola scuro"
    larghezza="280px" %}

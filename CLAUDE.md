@@ -410,6 +410,21 @@ blocco): se non è ovviamente separabile, meglio lasciarlo dov'è piuttosto che
 rischiare di romperlo spostando lo script prima che il markup a cui si
 riferisce sia stato scritto nella pagina.
 
+## Consegna dei compiti e dubbi
+
+Gli studenti entrano dal pulsante 👤 (o da `/consegna/`) con classe, codice
+(es. GIUR, scelto dal docente) e un PIN che scelgono loro; le risposte ai
+widget arrivano da sole al server (Cloudflare Worker + D1,
+`strumenti/consegne/`), e il docente le vede in `/consegna/docente/`.
+I compiti per lezione stanno in `_data/compiti.yml`. Attivo solo se
+`consegne_url` in `_config.yml` non è vuoto.
+
+- Nel server non devono mai finire nomi di studenti: solo codici.
+- Ogni nuovo widget con una risposta giusta/sbagliata deve, quando lo
+  studente verifica, salvare con `_lvSave(ns, id, {..., ok: true/false})`
+  oppure chiamare `if (window._lvEsito) _lvEsito(ns, id, giusto)`:
+  altrimenti nella pagina del docente risulta solo "svolto".
+
 ## Pubblicazione
 
 ```bash

@@ -207,4 +207,10 @@ function toggleFont() {
   window.addEventListener('resize', later);
   document.addEventListener('toggle', later, true); // spoiler e soluzioni aperti
 })();
+
+// ── Stampa: carica subito le immagini "pigre" non ancora arrivate ────
+// (altrimenti nel PDF mancherebbero le figure più in basso nella pagina)
+window.addEventListener('beforeprint', function() {
+  document.querySelectorAll('img[loading="lazy"]').forEach(function(img) { img.loading = 'eager'; });
+});
 </script>

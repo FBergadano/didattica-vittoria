@@ -10,6 +10,11 @@ url: "https://fbergadano.github.io"   # ← sostituisci con il tuo GitHub userna
 # che custodisce la chiave API. Vuoto = chat disattivata. Vedi strumenti/chat-proxy/LEGGIMI.md
 chat_proxy_url: ""
 
+# Consegna dei compiti e dubbi degli studenti: indirizzo del server delle
+# consegne. Vuoto = disattivato. Vedi strumenti/consegne/LEGGIMI.md
+consegne_url: ""
+consegne_scadenza: "08:00"   # ora, nel giorno della lezione, entro cui consegnare
+
 # Build
 markdown: kramdown
 highlighter: rouge

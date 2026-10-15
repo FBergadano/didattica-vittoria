@@ -130,7 +130,7 @@ Esercizio a carosello (Verifica Subito!) sull'energia potenziale gravitazionale.
           fb.innerHTML = msgErr;
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-        if(!restoring)_lvSave('mcqchoice',choicesId,{chosen:btn.dataset.v});
+        if(!restoring)_lvSave('mcqchoice',choicesId,{chosen:btn.dataset.v,ok:correct});
       });
     });
   }

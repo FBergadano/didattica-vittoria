@@ -99,6 +99,7 @@ document.getElementById('ov-'+ID).addEventListener('click',function(){
     if(!ok)allOk=false;
   });
   var btn=document.getElementById('ov-'+ID);
+  if(window._lvEsito)_lvEsito('order',ID,allOk);
   if(allOk){
     fb.className='order-fb ok';fb.textContent='✓ Perfetto! Hai ordinato correttamente tutti gli elementi.';
     _shoot(btn);

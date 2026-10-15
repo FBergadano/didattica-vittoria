@@ -304,14 +304,14 @@ Vediamo adesso un'altra forma di energia in cui si può trasformare il lavoro. A
 
 Immagina di comprimere una molla spingendo con la mano. Poiché eserciti una forza lungo uno spostamento, stai compiendo un lavoro.
 {% include figura.html id="compressing-string"
-   src="/corsi/gif/compressing-string.gif"
+   src="/corsi/gif/compressing-string.mp4"
    didascalia="Comprimendo la molla, applichi una forza lungo uno spostamento: stai compiendo un lavoro. Il risultato di questo lavoro è immagazzinato dentro la molla."
    larghezza="250px" %}
 Tuttavia, nel momento in cui la tua mano si ferma, lo spostamento finisce e quindi il lavoro diventa nullo. D'altra parte, niente si sta muovendo, quindi non c'è energia cinetica. Deve quindi esistere una nuova energia, immagazzinata dentro la molla, che potrebbe portarla, *potenzialmente*, ad esplodere. Questa energia si chiama pertanto <definizione>energia potenziale</definizione>. Nel caso di una molla, si parla di <definizione>energia potenziale elastica</definizione>.
 
 La stessa cosa succede quando solleviamo un peso. 
 {% include figura.html id="bimbo-sollevamento-pesi"
-   src="/corsi/gif/bimbo_solleva_pesi.webp"
+   src="/corsi/gif/bimbo_solleva_pesi.mp4"
    didascalia="Sollevando il peso, si applica una forza lungo uno spostamento: stai compiendo un lavoro. Il risultato di questo lavoro è che il peso si trova a un'altezza da cui può cadere, acquisendo velocità e quindi energia cinetica."
    larghezza="300px" %}
 Per sollevare il peso compiamo un lavoro, ma quando poi lo manteniamo fisso a una certa altezza il lavoro è nullo e poiché tutto è fermo non c'è energia cinetica. Anche in questo caso, quindi, l'energia è immagazzinata dentro il corpo, che ora ha il *potenziale* di cadere. Il corpo ha dunque una certa **energia potenziale**. In questo caso, si parla di <definizione>energia potenziale gravitazionale</definizione>.
@@ -600,7 +600,7 @@ L'energia non è scomparsa — non potrebbe, per il principio di conservazione d
 Un esperimento semplice per visualizzare questo concetto è sfregare le proprie mani l'una contro l'altra: l'attrito dissipa l'energia cinetica delle mani e sentiamo che esse si riscaldano. La stessa cosa succede con la punta di un trapano che si riscalda, o con un fiammifero che si accende: in tutti questi casi il lavoro si converte prima in energia cinetica, che a sua volta viene dissipata sotto forma di calore dall'attrito.
 
 {% include img-row.html
-   immagini="/corsi/gif/alcaraz-rubbing-hands.mp4|/corsi/gif/drill-heating-up.webp|/corsi/gif/fiammifero.webp"
+   immagini="/corsi/gif/alcaraz-rubbing-hands.mp4|/corsi/gif/drill-heating-up.mp4|/corsi/gif/fiammifero.mp4"
    alt="Sfregamento delle mani che si riscaldano per attrito|Punta di un trapano che si riscalda per attrito|Un fiammifero che si accende per attrito"
    larghezza="170px" %}
 
@@ -917,7 +917,7 @@ $$\Delta s = \frac{|L|}{F} = \frac{180\ \text J}{30\ \text N} = 6\ \text m.$$
 Una gatta di massa $4\ \text{kg}$ trasporta uno dei suoi cuccioli, di massa $0{,}5\ \text{kg}$, per la collottola. Nel primo tratto accelera con un'accelerazione di $0{,}5\ \text{m/s}^2$, per $4\ \text m$. Poi procede con velocità costante per $6\ \text m$. Qual è il lavoro totale? Esprimi il risultato in joule.
 
 {% include figura.html id="mamma-gatta"
-   src="/corsi/immagini/mamma-gatta.jpeg"
+   src="/corsi/immagini/mamma-gatta.webp"
    didascalia="Una gatta trasporta il proprio cucciolo per la collottola."
    larghezza="320px" %}
 

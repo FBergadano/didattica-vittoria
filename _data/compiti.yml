@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════════════════════════════════
+#  COMPITI — cosa va fatto per ogni lezione, classe per classe.
+#  Lo leggono la finestrella degli studenti ("Prossimi compiti") e la tua
+#  pagina /consegna/docente/ (una colonna per ogni lezione).
+#
+#  Per ogni compito:
+#    data:     giorno della lezione (AAAA-MM-GG): il compito va consegnato
+#              entro quel giorno alle 8:00 (orario in consegne_scadenza,
+#              _config.yml; per un compito diverso aggiungi  ora: "14:00")
+#    capitolo: cartella/file del capitolo, come in _corsi/ ma senza ".md"
+#              (più capitoli: tra parentesi quadre, separati da virgole)
+#    sezione:  facoltativo — il titolo di una sezione (# Titolo) del
+#              capitolo: contano solo gli esercizi di quella sezione
+#    note:     facoltativo — testo mostrato agli studenti
+#              (es. gli esercizi della dispensa da fare su carta)
+#
+#  Il nome della classe deve essere uguale a quello usato nella scheda
+#  "Studenti" della pagina del docente.
+# ═══════════════════════════════════════════════════════════════════════
+
+# Esempio (togli i # per usarlo):
+#
+# "5ACD":
+#   - data: 2026-10-21
+#     capitolo: gravitazione-elettromagnetismo/01_Gravitazione
+#     sezione: Il Campo Gravitazionale
+#     note: "Vero/falso della sezione, più esercizi 3 e 5 della dispensa"
+#   - data: 2026-10-23
+#     capitolo: [gravitazione-elettromagnetismo/01_Gravitazione, gravitazione-elettromagnetismo/02_Elettrostatica]

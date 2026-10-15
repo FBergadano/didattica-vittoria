@@ -36,6 +36,7 @@ Esempio:
     fb.innerHTML=(all?'✓ Esatto!':'✗ Controlla le caselle in rosso.')+(sol&&all?'&ensp;<small style="color:#6b7280">'+sol+'</small>':'');
     if(all&&save&&window._shoot)_shoot(btn);
     if(save&&key&&window._lvSave)_lvSave('fillm',key,[].map.call(ins,function(x){return x.value;}));
+    if(save&&key&&window._lvEsito)_lvEsito('fillm',key,all);
   }
   btn.addEventListener('click',function(){check(true);});
   ins.forEach(function(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter')check(true);});});

@@ -154,7 +154,7 @@ Esercizio a carosello (Verifica Subito!) di confronto fra forza gravitazionale e
           fb.innerHTML = msgErr;
         }
         if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-        if(!restoring)_lvSave('mcqchoice',choicesId,{chosen:btn.dataset.v});
+        if(!restoring)_lvSave('mcqchoice',choicesId,{chosen:btn.dataset.v,ok:correct});
       });
     });
   }

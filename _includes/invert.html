@@ -343,6 +343,7 @@ function finish(silent){
   }
   typeset(res);
   if(!silent)_lvSave('invert','{{ _iid }}',{left:left,right:right,count:count});
+  if(!silent&&window._lvEsito)_lvEsito('invert','{{ _iid }}',true);
 }
 function reset(){
   left=clone(LEFT0);right=clone(RIGHT0);count=0;done=false;

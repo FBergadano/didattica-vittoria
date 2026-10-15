@@ -184,8 +184,9 @@ function restore(){
 document.getElementById('mv-'+ID).addEventListener('click',function(){
   var incomplete=COLS===3?(Object.keys(cLM).length<N||Object.keys(cMR).length<N):(Object.keys(cLR).length<N);
   if(incomplete){fb.className='match-fb err';fb.textContent='Collega tutti gli elementi prima di verificare.';return;}
-  colorAndReport(true);
+  var okAll=colorAndReport(true);
   persist();
+  if(window._lvEsito)_lvEsito('match',ID,okAll);
 });
 document.getElementById('mr-'+ID).addEventListener('click',function(){_lvClear('match',ID);render();});
 window.addEventListener('resize',function(){setTimeout(rsz,100);});

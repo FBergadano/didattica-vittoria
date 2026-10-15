@@ -8,6 +8,9 @@ Parametri:
   didascalia — testo mostrato sotto il video (opzionale)
   larghezza  — larghezza massima CSS, es. "420px" (opzionale)
 
+Accanto al video deve esserci l'immagine fissa "nome-fermo.webp": è mostrata
+mentre il video carica e al suo posto quando si stampa la pagina.
+
 Esempio:
   {% include video-loop.html id="telo-analogia"
      src="/corsi/video/campo_gravitazionale_analogia_telo.mp4"
@@ -15,6 +18,8 @@ Esempio:
      larghezza="420px" %}
 {% endcomment %}
 <div class="video-loop-wrap"{% if include.larghezza %} style="max-width: {{ include.larghezza }};"{% endif %}>
-  <video src="{{ include.src | relative_url }}" autoplay muted loop playsinline></video>
+  {% assign _fermo = include.src | replace: ".mp4", "-fermo.webp" | relative_url %}
+  <video src="{{ include.src | relative_url }}" poster="{{ _fermo }}" autoplay muted loop playsinline></video>
+  <img class="anim-stampa" src="{{ _fermo }}" alt="">
 </div>
 {% if include.didascalia %}<p class="video-caption">{{ include.didascalia }}</p>{% endif %}

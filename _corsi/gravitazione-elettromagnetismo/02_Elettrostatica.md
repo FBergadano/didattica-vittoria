@@ -30,7 +30,7 @@ Abbiamo imparato a descrivere l'attrazione gravitazionale e a ricondurre ad essa
 # La Carica Elettrica
 
 {% include figura.html id="bimbi-capelli"
-   src="/corsi/gif/bimbi_capelli_elettrizzati.webp"
+   src="/corsi/gif/bimbi_capelli_elettrizzati.mp4"
    didascalia="Quando ci strofiniamo su una poltrona di velluto (senza toccare per terra) diventiamo carichi elettricamente. I nostri capelli si dispongono radialmente per motivi che saranno chiari alla fine del capitolo."
    larghezza="290px" %}
 
@@ -175,7 +175,7 @@ Nota che <u>il numero di protoni in ogni atomo</u>, in condizioni normali, <u>è
 {% include spoiler.html testo="Il modello che abbiamo usato è semplificato. Clicca qui se sei curiosa di conoscere un modello più avanzato." %}
 Nelle animazioni di questo capitolo abbiamo disegnato gli elettroni come pallini che percorrono orbite circolari nette attorno al nucleo. In realtà gli elettroni non seguono traiettorie definite: si trovano piuttosto in una "nube" attorno al nucleo, più densa in alcune zone e più rarefatta in altre. Anche protoni e neutroni sono delle nubi dai contorni sfumati. Insomma queste particelle non hanno una posizione definita, e questo, in effetti, perché non sono particelle, bensì onde. Questo è uno dei principi della Fisica Quantistica, e si chiama <definizione>dualismo onda-particella</definizione>. Ogni particella è anche un'onda, sicché non si può parlare dei contorni precisi di un atomo, né di una molecola, né di un tavolo. Tutto è un'onda. 
 {% include figura.html id="atomo-reale"
-   src="/corsi/immagini/real-atom-wikipedia.jpeg"
+   src="/corsi/immagini/real-atom-wikipedia.webp"
    didascalia="Una rappresentazione più realistica (anche se sempre semplificata) della nube elettronica di un atomo, ben diversa dal modello 'planetario' usato finora."
    larghezza="200px" %}
 {% include spoiler-end.html %}
@@ -342,11 +342,11 @@ Ogni grandezza fisica deve essere misurabile, e quindi deve esistere (almeno ide
 
 <div class="fig-row">
 {% include figura.html id="elettroscopio-neutro"
-   src="/corsi/immagini/elettroscopio_a_foglie.png"
+   src="/corsi/immagini/elettroscopio_a_foglie.webp"
    didascalia="Elettroscopio scarico: le due foglioline, neutre, restano chiuse."
    larghezza="240px" %}
 {% include figura.html id="elettroscopio-attivo"
-   src="/corsi/immagini/elettroscopio_a_foglie_attivo.png"
+   src="/corsi/immagini/elettroscopio_a_foglie_attivo.webp"
    didascalia="Elettroscopio carico: le foglioline, cariche dello stesso segno, si respingono e si aprono."
    larghezza="240px" %}
 </div>

@@ -41,6 +41,7 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
 {% include persist.html %}
+{% include consegne-head.html %}
 
 {% seo %}
 </head>
@@ -106,5 +107,6 @@
 {% include scripts.html %}
 {% include annotazioni.html %}
 
+{% unless page.consegne_inline %}{% include consegne.html %}{% endunless %}
 </body>
 </html>

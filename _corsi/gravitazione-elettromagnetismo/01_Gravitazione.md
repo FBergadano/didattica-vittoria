@@ -18,7 +18,7 @@ Tutti noi sappiamo che la forza gravitazionale è quella che ci attrae verso il 
 {% include margin-note-end.html %}
 
 {% include figura.html id="newton-mela"
-   src="/corsi/gif/newton-apple.gif"
+   src="/corsi/gif/newton-apple.mp4"
    didascalia="La leggenda (forse vera) della mela caduta sulla testa di Newton, all'origine della sua intuizione sulla gravitazione universale."
    larghezza="290px" %}
 
@@ -32,8 +32,8 @@ La teoria che vedremo in questo capitolo fu essenzialmente formulata nel 1687 da
 Fu solo dopo più di un secolo, nel 1798, che Cavendish riuscì a dimostrare **sperimentalmente**, in un laboratorio, la legge trovata da Newton.  
 
 {% include staffetta-storica.html
-   img1="/corsi/immagini/isaac_newton_ritratto.jpg" nome1="Newton" ruolo1="Sviluppa la teoria"
-   img2="/corsi/immagini/henry_cavendish_ritratto.jpg" nome2="Cavendish" ruolo2="Prova sperimentalmente"
+   img1="/corsi/immagini/isaac_newton_ritratto.webp" nome1="Newton" ruolo1="Sviluppa la teoria"
+   img2="/corsi/immagini/henry_cavendish_ritratto.webp" nome2="Cavendish" ruolo2="Prova sperimentalmente"
    intervallo="Cent'anni dopo" %}
 
 
