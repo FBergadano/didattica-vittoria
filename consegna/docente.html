@@ -97,6 +97,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   <select id="classe" hidden></select>
   <nav class="schede" id="schede" hidden>
     <button data-s="compiti" class="on">Compiti</button>
+    <button data-s="tutte">Tutte le risposte</button>
     <button data-s="dubbi">Dubbi<span id="nd"></span></button>
     <button data-s="studenti">Studenti</button>
     <button data-s="dati">Dati</button>
@@ -121,6 +122,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   </div>
 
   <section id="s-compiti" hidden></section>
+  <section id="s-tutte" hidden></section>
   <section id="s-dubbi" hidden></section>
   <section id="s-studenti" hidden></section>
   <section id="s-dati" hidden></section>
@@ -163,7 +165,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   function giorno(s) { var p = String(s).slice(0, 10).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
   function bella(d) { return GIORNI[d.getDay()] + ' ' + d.getDate() + ' ' + MESI[d.getMonth()]; }
   function ora(ts) { var d = new Date(ts); return bella(d) + ' ' + d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2); }
-  function scadenza(c) { var d = giorno(c.data), hm = String(c.ora || SCADENZA).split(':'); d.setHours(+hm[0] || 0, +hm[1] || 0, 0, 0); return d.getTime(); }
+  function scadenza(c) { if (!c.data) return Infinity; var d = giorno(c.data), hm = String(c.ora || SCADENZA).split(':'); d.setHours(+hm[0] || 0, +hm[1] || 0, 0, 0); return d.getTime(); }
   function durata(ms) {
     var m = Math.round(ms / 60000);
     if (m < 1) return '< 1 min';
@@ -227,7 +229,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     $$('main > section').forEach(function(s) { s.hidden = s.id !== 's-' + scheda; });
     var aperti = dubbi.filter(function(d) { return !d.risolto; }).length;
     $('#nd').innerHTML = aperti ? '<span class="badge">' + aperti + '</span>' : '';
-    ({ compiti: vistaCompiti, dubbi: vistaDubbi, studenti: vistaStudenti, dati: vistaDati })[scheda]();
+    ({ compiti: vistaCompiti, tutte: vistaTutte, dubbi: vistaDubbi, studenti: vistaStudenti, dati: vistaDati })[scheda]();
   }
 
   // ───────── compiti ─────────
@@ -253,17 +255,35 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
              durata: t1 >= t0 ? t1 - t0 : null, tardi: tardi, scaduto: Date.now() > s };
   }
   function vistaCompiti() {
-    var sec = $('#s-compiti'), lz = lezioni(), cod = codiciDi(classe).sort();
-    if (!lz.length) { sec.innerHTML = '<div class="card">Nessun compito per la classe <b>' + esc(classe) + '</b> in <code>_data/compiti.yml</code>.</div>'; return; }
+    var sec = $('#s-compiti'), lz = lezioni();
+    if (!lz.length) { sec.innerHTML = '<div class="card">Nessun compito per la classe <b>' + esc(classe) + '</b> in <code>_data/compiti.yml</code>. ' +
+      'Le risposte date fuori dai compiti sono nella scheda <b>Tutte le risposte</b>.</div>'; return; }
+    griglia(sec, lz, false);
+  }
+  // tutte le risposte, capitolo per capitolo, compiti o no (il capitolo con l'attività più recente a sinistra)
+  function vistaTutte() {
+    var sec = $('#s-tutte'), ultimo = {};
+    righe.forEach(function(r) { if (/^\/corsi\//.test(r.pagina)) ultimo[r.pagina] = Math.max(ultimo[r.pagina] || 0, r.ultimo_ts || 0); });
+    var lz = Object.keys(ultimo).sort(function(a, b) { return ultimo[b] - ultimo[a]; })
+      .map(function(p) { return { capitolo: p.replace(/^\/corsi\//, '').replace(/\/$/, ''), ultimo: ultimo[p] }; });
+    if (!lz.length) { sec.innerHTML = '<div class="card">Nessuna risposta dalla classe <b>' + esc(classe) + '</b>, per ora.</div>'; return; }
+    griglia(sec, lz, true);
+  }
+  function griglia(sec, lz, libero) {
+    var cod = codiciDi(classe).sort();
     if (!cod.length) { sec.innerHTML = '<div class="card">La classe <b>' + esc(classe) + '</b> non ha ancora codici: aggiungili nella scheda <b>Studenti</b>.</div>'; return; }
     var cache = lz.map(function(c) { return righeDi(c); });
-    var h = '<div class="legenda"><span style="--c:var(--ok-bg)">tutto svolto</span><span style="--c:var(--meta-bg)">in parte</span>' +
-      '<span style="--c:var(--err-bg)">niente, ed è scaduto</span><span style="--c:var(--no-bg)">niente, non ancora scaduto</span>' +
-      '<span style="--c:#fff">✓ = giuste · ⏱ = tempo fra la prima e l\'ultima risposta · ⏰ = iniziato dopo la scadenza</span></div>';
+    var h = libero
+      ? '<div class="legenda"><span style="--c:var(--ok-bg)">ha fatto tutti gli esercizi svolti dalla classe</span><span style="--c:var(--meta-bg)">una parte</span>' +
+        '<span style="--c:var(--no-bg)">niente</span><span style="--c:#fff">✓ = giuste · ⏱ = tempo fra la prima e l\'ultima risposta</span></div>'
+      : '<div class="legenda"><span style="--c:var(--ok-bg)">tutto svolto</span><span style="--c:var(--meta-bg)">in parte</span>' +
+        '<span style="--c:var(--err-bg)">niente, ed è scaduto</span><span style="--c:var(--no-bg)">niente, non ancora scaduto</span>' +
+        '<span style="--c:#fff">✓ = giuste · ⏱ = tempo fra la prima e l\'ultima risposta · ⏰ = iniziato dopo la scadenza</span></div>';
     h += '<div class="tab-wrap"><table class="griglia"><thead><tr><th class="cod">Codice</th>';
     lz.forEach(function(c, i) {
-      var fut = !riepilogo(c, [], '').scaduto;
-      h += '<th data-l="' + i + '" class="' + (fut ? 'futura' : '') + '" title="Clic: risultati domanda per domanda"><span class="d">' + bella(giorno(c.data)) + '</span>' +
+      var fut = !libero && !riepilogo(c, [], '').scaduto;
+      h += '<th data-l="' + i + '" class="' + (fut ? 'futura' : '') + '" title="Clic: risultati domanda per domanda"><span class="d">' +
+           (libero ? (c.ultimo ? 'ultima: ' + bella(new Date(c.ultimo)) : '') : bella(giorno(c.data))) + '</span>' +
            '<span class="c">' + esc(titoloCompito(c)) + '</span></th>';
     });
     h += '</tr></thead><tbody>';
@@ -289,7 +309,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       h += '<td>' + chi.length + '/' + cod.length + ' l\'hanno fatto' + (dur.length ? '<div class="t">⏱ mediana ' + durata(dur[Math.floor(dur.length / 2)]) + '</div>' : '') + '</td>';
     });
     h += '</tr></tbody></table></div>';
-    h += '<p class="nota">Il totale di ogni compito è il numero di esercizi diversi a cui ha risposto almeno uno studente della classe. ' +
+    h += '<p class="nota">' + (libero ? 'Qui ci sono tutte le risposte, anche fuori dai compiti. ' : '') + 'Il totale di ogni ' + (libero ? 'capitolo' : 'compito') + ' è il numero di esercizi diversi a cui ha risposto almeno uno studente della classe. ' +
          'Un esercizio a passi conta come «giusto» solo se tutti i passi sono giusti. Clic su una casella per vedere le risposte, sull\'intestazione per i risultati domanda per domanda.</p>';
     sec.innerHTML = h;
     $$('td.cella', sec).forEach(function(td) { td.onclick = function() { dettaglioStudente(lz[+td.dataset.l], cache[+td.dataset.l], td.dataset.k); }; });
@@ -328,7 +348,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
 
   function dettaglioStudente(c, rr, codice) {
     var r = riepilogo(c, rr, codice), tutte = etichette(rr);
-    var testa = '<div class="testa"><div><h2>' + esc(codice) + ' — compito per ' + bella(giorno(c.data)) + '</h2><div class="nota" style="margin:0">' + esc(titoloCompito(c)) +
+    var testa = '<div class="testa"><div><h2>' + esc(codice) + ' — ' + (c.data ? 'compito per ' + bella(giorno(c.data)) : 'tutte le risposte') + '</h2><div class="nota" style="margin:0">' + esc(titoloCompito(c)) +
       (c.note ? ' · ' + esc(c.note) : '') + '</div></div><button data-chiudi>Chiudi ✕</button></div>';
     var riass = '<p>' + r.fatti + ' esercizi su ' + r.tot + (r.valutate ? ', ' + r.giusti + ' giusti' : '') +
       (r.durata !== null ? ' · tempo fra la prima e l\'ultima risposta: <b>' + durata(r.durata) + '</b>' : '') +
@@ -358,7 +378,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
                ok: val.length ? val.filter(function(r) { return r.ok >= 1; }).length / val.length : null,
                primo: val.length ? val.filter(function(r) { return r.primo_ok >= 1; }).length / val.length : null };
     }).sort(function(a, b) { return (a.ok === null ? 2 : a.ok) - (b.ok === null ? 2 : b.ok); });
-    var h = '<div class="testa"><div><h2>Compito per ' + bella(giorno(c.data)) + ': domanda per domanda</h2><div class="nota" style="margin:0">' + esc(titoloCompito(c)) +
+    var h = '<div class="testa"><div><h2>' + (c.data ? 'Compito per ' + bella(giorno(c.data)) : 'Tutte le risposte') + ': domanda per domanda</h2><div class="nota" style="margin:0">' + esc(titoloCompito(c)) +
       '</div></div><button data-chiudi>Chiudi ✕</button></div><p class="nota">In alto le domande andate peggio.</p>' +
       '<table class="dett"><tr><th>Esercizio</th><th>Svolto da</th><th>Giusto (alla fine)</th><th>Giusto al primo colpo</th></tr>';
     function bar(x) { return x === null ? '<span class="e-nd">—</span>' : '<div class="barra"><i style="width:' + Math.round(x * 100) + '%"></i></div>' + Math.round(x * 100) + '%'; }

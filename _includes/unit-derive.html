@@ -108,6 +108,7 @@ Esempio:
     } else {
       fb.className = 'uderive-fb err';
       fb.textContent = '✗ Non ancora corretto: riprova.';
+      if (window._lvEsito) _lvEsito('uderive', '{{ _uid }}', false);   // anche gli errori arrivano al prof
     }
   }
   checkBtn.addEventListener('click', check);
