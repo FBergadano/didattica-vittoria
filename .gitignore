@@ -3,3 +3,7 @@ _site/
 
 # file personale con comandi e token: non va mai pubblicato
 Comandi github.txt
+
+# Verifiche, soluzioni e valutazioni: stanno in un repository PRIVATO a parte
+# (github.com/FBergadano/verifiche-vittoria), mai in questo che è pubblico.
+verifiche/
