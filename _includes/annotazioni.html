@@ -75,6 +75,7 @@ Nessun parametro: è incluso da _layouts/capitolo.html.
 #lv-ann-layer { position: absolute; left: 0; top: 0; width: 100%; pointer-events: none; z-index: 40; }
 #lv-ann-svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
 #lv-ann-svg path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+body.lv-mode-hl .chapter-prose { -webkit-touch-callout: none; }
 body.lv-mode-pen #lv-ann-layer, body.lv-mode-eraser #lv-ann-layer { pointer-events: auto; touch-action: none; cursor: crosshair; }
 body.lv-mode-eraser #lv-ann-layer { cursor: none; }
 #lv-eraser { position: fixed; z-index: 150; width: 28px; height: 28px; margin: -14px 0 0 -14px; border-radius: 50%;
@@ -153,7 +154,7 @@ body.lv-mode-hl mark.lv-hl { cursor: pointer; }
   var PEN_COLORS = [['blu','#1d4ed8'],['rosso','#dc2626'],['verde','#15803d'],['nero','#111827']];
   var HINTS = {
     read: 'Nessuno strumento attivo: la pagina si usa normalmente.',
-    hl: 'Seleziona del testo per evidenziarlo. Tocca un’evidenziazione per cambiarne il colore o toglierla.',
+    hl: 'Seleziona del testo per evidenziarlo (col dito: trascinalo sulle parole; per scorrere la pagina torna su “Leggi”). Tocca un’evidenziazione per cambiarne il colore o toglierla.',
     pen: 'Scrivi o disegna con il mouse, la penna o il dito. Per scorrere la pagina torna su “Leggi”.',
     eraser: 'Tieni premuto e passa con il cerchio sopra i tratti di penna per cancellarli.',
     note: 'Tocca un punto del testo per attaccarci una nota.'
@@ -626,21 +627,64 @@ body.lv-mode-hl mark.lv-hl { cursor: pointer; }
   });
   fab.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fab.click(); } });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { setMode('read'); openNote = null; renderNotes(); } });
-  document.addEventListener('mousedown', function(e){ if (!hlMenu.hidden && !hlMenu.contains(e.target)) hlMenu.hidden = true; });
+  document.addEventListener('pointerdown', function(e){ if (!hlMenu.hidden && !hlMenu.contains(e.target)) hlMenu.hidden = true; });
 
-  // evidenziazione: col mouse appena si rilascia, col dito quando la selezione si ferma
+  // evidenziazione col mouse: appena si rilascia il tasto
   prose.addEventListener('mouseup', function(){ if (mode === 'hl') setTimeout(tryHighlight, 0); });
-  var selT = null;
-  document.addEventListener('selectionchange', function(){
-    if (mode !== 'hl' || !touching) return;
-    clearTimeout(selT); selT = setTimeout(function(){ if (!touching) tryHighlight(); }, 700);
+
+  // evidenziazione col dito (o con la penna del tablet): si trascina sul testo.
+  // Non uso la selezione nativa del telefono (su iOS evidenzierebbe subito la
+  // prima parola, senza lasciare il tempo di allungare la selezione): come per
+  // la penna da disegno, in questa modalità un dito non fa scorrere la pagina.
+  var INTERACTIVE = 'a, button, input, select, textarea, label, summary, canvas, svg, video, iframe, [role="button"], [draggable="true"], .lv-ui';
+  function caretAt(x, y){
+    layer.style.display = 'none'; notesBox.style.display = 'none';
+    var r = null;
+    if (document.caretRangeFromPoint) r = document.caretRangeFromPoint(x, y);
+    else if (document.caretPositionFromPoint) {
+      var c = document.caretPositionFromPoint(x, y);
+      if (c) { r = document.createRange(); r.setStart(c.offsetNode, c.offset); }
+    }
+    layer.style.display = ''; notesBox.style.display = '';
+    return r;
+  }
+  // col dito è difficile essere precisi: allargo la selezione a parole intere
+  var WORD = /[0-9A-Za-zÀ-ÖØ-öø-ÿ'’]/;
+  function snapToWords(){
+    var sel = window.getSelection();
+    if (!sel.rangeCount || sel.isCollapsed) return;
+    var r = sel.getRangeAt(0), a = r.startContainer, s = r.startOffset, z = r.endContainer, e = r.endOffset;
+    if (a.nodeType === 3) while (s > 0 && WORD.test(a.data[s - 1])) s--;
+    if (z.nodeType === 3) while (e < z.data.length && WORD.test(z.data[e])) e++;
+    r.setStart(a, s); r.setEnd(z, e);
+    sel.removeAllRanges(); sel.addRange(r);
+  }
+  var tStart = null, tMoved = false, tX = 0, tY = 0;
+  prose.addEventListener('touchstart', function(ev){
+    tStart = null;
+    if (mode !== 'hl' || ev.touches.length > 1) return;
+    if (ev.target.closest && ev.target.closest(INTERACTIVE)) return;
+    var t = ev.touches[0];
+    ev.preventDefault(); // niente scorrimento, niente selezione nativa
+    tStart = caretAt(t.clientX, t.clientY); tMoved = false; tX = t.clientX; tY = t.clientY;
+  }, { passive: false });
+  prose.addEventListener('touchmove', function(ev){
+    if (mode !== 'hl' || !tStart) return;
+    ev.preventDefault();
+    var t = ev.touches[0];
+    if (Math.abs(t.clientX - tX) + Math.abs(t.clientY - tY) > 8) tMoved = true;
+    if (!tMoved) return;
+    var c = caretAt(t.clientX, t.clientY); if (!c) return;
+    try { window.getSelection().setBaseAndExtent(tStart.startContainer, tStart.startOffset, c.startContainer, c.startOffset); } catch(e){}
+  }, { passive: false });
+  prose.addEventListener('touchend', function(ev){
+    if (mode !== 'hl' || !tStart) return;
+    tStart = null;
+    if (tMoved) { snapToWords(); tryHighlight(); return; }
+    // un tocco senza trascinare: su un'evidenziazione apre il menu colori
+    var m = ev.target.closest && ev.target.closest('mark.lv-hl');
+    if (m) showHlMenu(m); else hlMenu.hidden = true;
   });
-  var touching = false;
-  prose.addEventListener('touchstart', function(){ touching = true; }, { passive: true });
-  document.addEventListener('touchend', function(){
-    if (!touching) return;
-    setTimeout(function(){ touching = false; if (mode === 'hl') tryHighlight(); }, 450);
-  }, { passive: true });
 
   // ───────── avvio ─────────
   function start(){

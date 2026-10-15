@@ -141,7 +141,7 @@ Le diverse specie chimiche sono semplicemente atomi con un numero diverso di ele
 
 Ecco alcuni esempi di atomi di specie chimiche piuttosto comuni:
 {% include figura.html id="atomi"
-   src="/corsi/gif/atoms_rutherford_model.webp"
+   src="/corsi/gif/atoms_rutherford_model.mp4"
    didascalia="Alcuni degli atomi che ti circondano in questo momento: Carbonio (C), Fosforo (P), Titanio (Ti), Neodimio (Nd). Osserva come variano il numero di elettroni, protoni e neutroni in base alla specie chimica."
    larghezza="280px" %}
 

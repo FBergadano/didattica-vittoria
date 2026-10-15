@@ -202,7 +202,7 @@ Immagina di spingere una bimba su una bici. Finché la stai spingendo, stai comp
 {% include margin-note-end.html %}
 
 {% include figura.html id="bimbo-bici"
-   src="/corsi/gif/bimbo_bici.webp"
+   src="/corsi/gif/bimbo_bici.mp4"
    didascalia="Spingendo la bimba sulla bici, applichi una forza lungo lo spostamento: stai compiendo lavoro su di lei. Il risultato di questo lavoro è che la bambina acquisisce un'energia di movimento."
    larghezza="360px" %}
 
@@ -600,7 +600,7 @@ L'energia non è scomparsa — non potrebbe, per il principio di conservazione d
 Un esperimento semplice per visualizzare questo concetto è sfregare le proprie mani l'una contro l'altra: l'attrito dissipa l'energia cinetica delle mani e sentiamo che esse si riscaldano. La stessa cosa succede con la punta di un trapano che si riscalda, o con un fiammifero che si accende: in tutti questi casi il lavoro si converte prima in energia cinetica, che a sua volta viene dissipata sotto forma di calore dall'attrito.
 
 {% include img-row.html
-   immagini="/corsi/gif/alcaraz-rubbing-hands.webp|/corsi/gif/drill-heating-up.webp|/corsi/gif/fiammifero.webp"
+   immagini="/corsi/gif/alcaraz-rubbing-hands.mp4|/corsi/gif/drill-heating-up.webp|/corsi/gif/fiammifero.webp"
    alt="Sfregamento delle mani che si riscaldano per attrito|Punta di un trapano che si riscalda per attrito|Un fiammifero che si accende per attrito"
    larghezza="170px" %}
 
@@ -1526,7 +1526,7 @@ cioè 200 000 schiaffi — un numero completamente assurdo, che spiega bene perc
 L'immagine seguente è una termoscopia (una foto scattata con una telecamera a infrarossi) di una moto appena utilizzata: le zone arancioni sono quelle a temperatura più alta, quelle blu le più fredde.
 
 {% include figura.html id="moto-termoscopia"
-   src="/corsi/immagini/moto_termoscopia.png"
+   src="/corsi/immagini/moto_termoscopia.webp"
    didascalia="Termoscopia di una moto appena utilizzata: le zone arancioni sono le più calde."
    larghezza="420px" %}
 

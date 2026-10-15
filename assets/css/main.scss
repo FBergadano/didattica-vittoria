@@ -378,6 +378,7 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
 .main-content {
   padding: 2.5rem 3rem;
   max-width: $content-max;
+  min-width: 0;   // la colonna si restringe anche se dentro c'è qualcosa di largo
 }
 
 // ── Course hero ───────────────────────────────────────────────
@@ -411,7 +412,7 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
 }
 
 .chapter-header {
-  display: flex; align-items: baseline; gap: 0.75rem;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.75rem;
   margin-bottom: 1.5rem;
 }
 
@@ -424,6 +425,7 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
 
 .chapter-title {
   font-family: $font-display; font-size: 1.55rem;
+  min-width: 0; overflow-wrap: break-word; hyphens: auto;
   border-bottom: 2px solid var(--accent-light, #{$teal-light});
   flex: 1; padding-bottom: 0.25rem;
 }
@@ -452,16 +454,9 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
   font-family: $font-accessible; font-size: 0.78rem; line-height: 1.35;
   color: $cyan; font-style: italic;
 }
+// Quando a destra del testo non c'è spazio (tablet, telefono) la nota a margine
+// sparisce del tutto: resta solo il paragrafo.
 @media (max-width: 1150px) {
-  .mn-line {
-    position: static; height: auto;
-    border-left: none; border-top: 2px dotted $cyan;
-    width: auto; padding-left: 0; padding-top: 0.4rem;
-    margin: 0.3rem 0 1rem;
-  }
-}
-// Su schermi da telefono la nota a margine sparisce del tutto: resta solo il paragrafo.
-@media (max-width: 600px) {
   .mn-line { display: none; }
 }
 @media print { .mn-line { display: none; } }
@@ -650,6 +645,7 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
   video { width: 100%; height: auto; display: block; }
 }
 @media print { .video-loop-wrap { display: none !important; } }
+.fig-block video { display: inline-block; vertical-align: top; }
 
 // ── Simulation container ──────────────────────────────────────
 .sim-container {
@@ -959,6 +955,31 @@ h1.chapter-title {
   &-title { font-family: $font-display; font-size: 1rem; }
 }
 
+// ── Contenuti più larghi dello schermo ───────────────────────
+// Formule, tabelle e simili troppo larghe non devono allargare la pagina
+// (su telefono la pagina diventerebbe scorrevole di lato e il pulsante ✎
+// finirebbe fuori schermo): scorrono di lato dentro il proprio spazio,
+// con una barra sotto, come le formule di Wikipedia.
+.chapter-prose {
+  mjx-container[display="true"] {
+    display: block; max-width: 100%;
+    overflow-x: auto; overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding: 2px 0;
+  }
+  // formula inline più larga della riga (marcata da scripts.html)
+  mjx-container.mjx-wide {
+    display: inline-block; max-width: 100%; vertical-align: middle;
+    overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
+  }
+  pre { max-width: 100%; overflow-x: auto; }
+  img { max-width: 100%; height: auto; }
+  select { max-width: 100%; }
+}
+// Rete di sicurezza: qualunque cosa sfugga ancora viene tagliata invece di
+// allargare tutta la pagina.
+html, body { overflow-x: clip; }
+
 // ── Responsive ─────────────────────────────────────────────────
 //
 // Breakpoints:
@@ -967,8 +988,20 @@ h1.chapter-title {
 //    600px — telefono: nascondi chrome superfluo, riduci tutto
 //    380px — telefono piccolo: topbar minimale
 
+// box-imp: la decorazione esterna sta nel margine destro, come le note a
+// margine: senza margine (sotto i 1150px) sparisce.
+// (selettore con la stessa specificità della regola base in .box.box-imp,
+// altrimenti quella vince sempre e la decorazione resta visibile anche qui)
+@media (max-width: 1150px) {
+  .box.box-imp .box-imp-deco { display: none; }
+}
+
 @media (max-width: 1024px) {
   .main-content { padding: 2rem 1.75rem; }
+  // Tabelle: scorrimento orizzontale invece di uscire dallo schermo
+  .chapter-prose table {
+    display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1040,18 +1073,9 @@ h1.chapter-title {
     a { max-width: 100%; justify-content: center; }
   }
 
-  // box-imp: nascondi decorazione esterna (nessun margine)
-  // (selettore con la stessa specificità della regola base in .box.box-imp,
-  // altrimenti quella vince sempre e la decorazione resta visibile anche qui)
-  .box.box-imp .box-imp-deco { display: none; }
-
   // TOC: nascondi completamente su telefono (la barra progresso è sufficiente)
   .sidebar-toc { display: none; }
 
-  // Tabelle: scorrimento orizzontale invece di overflow
-  .chapter-prose table {
-    display: block; overflow-x: auto; -webkit-overflow-scrolling: touch;
-  }
 
   // Card griglia: colonna singola
   .classi-grid  { grid-template-columns: 1fr; }
@@ -1285,6 +1309,7 @@ cit em, cit i { font-style: normal; }
 
 .ex-body {
   flex: 1;
+  min-width: 0;   // permette all'esercizio di restringersi (le formule larghe scorrono)
   > p:first-child { margin-top: 0; }
   > p:last-child { margin-bottom: 0.1rem; }
 }
@@ -1554,7 +1579,8 @@ cit em, cit i { font-style: normal; }
   padding: 0.2rem 0.6rem;
   background: #fff; border: 1.5px solid var(--accent-border);
   border-radius: 20px; cursor: grab; font-size: 0.82rem;
-  white-space: nowrap; touch-action: none;
+  max-width: 100%;   // le voci lunghe vanno a capo invece di uscire dallo schermo
+  touch-action: none;
   transition: box-shadow 0.1s;
   &:hover { box-shadow: 0 2px 6px rgba(0,0,0,.12); }
   &.sort-dragging { opacity: 0.25; cursor: grabbing; }
@@ -1841,7 +1867,7 @@ cit em, cit i { font-style: normal; }
 
 // ── Figure numerate (come \figure / \ref in LaTeX) ──────────────────────
 .fig-block { margin: 1.5rem auto; text-align: center; }
-.fig-block img {
+.fig-block img, .fig-block video {
   max-width: 100%; height: auto; border-radius: 6px;
   border: 1px solid $border; box-shadow: 0 4px 16px rgba(0,0,0,.08);
 }
@@ -1866,7 +1892,7 @@ cit em, cit i { font-style: normal; }
   display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start;
   gap: .8rem; margin: 1.5rem auto;
 }
-.img-row img {
+.img-row img, .img-row video {
   object-fit: cover; border-radius: 8px; border: 1px solid $border;
   box-shadow: 0 4px 16px rgba(0,0,0,.08); display: block;
 }

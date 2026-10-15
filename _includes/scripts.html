@@ -177,4 +177,34 @@ function toggleFont() {
   window.addEventListener('scroll', updateActive, { passive: true });
   updateActive();
 })();
+
+// ── Formule inline più larghe della riga: diventano scorrevoli ───────
+// (le formule in display scorrono già via CSS; quelle inline solo se
+// davvero non ci stanno, per non toccare l'allineamento delle altre)
+(function() {
+  var prose = document.querySelector('.chapter-prose');
+  if (!prose) return;
+  function blockOf(el) {
+    var a = el.parentElement;
+    while (a && a !== prose && getComputedStyle(a).display.indexOf('inline') === 0) a = a.parentElement;
+    return a || prose;
+  }
+  function check() {
+    prose.querySelectorAll('mjx-container:not([display="true"])').forEach(function(m) {
+      m.classList.remove('mjx-wide');
+      var b = blockOf(m);
+      if (m.getBoundingClientRect().right > b.getBoundingClientRect().right + 1) m.classList.add('mjx-wide');
+    });
+  }
+  var t = null;
+  function later() { clearTimeout(t); t = setTimeout(check, 200); }
+  var tries = 0;
+  (function wait() {
+    var mj = window.MathJax;
+    if (mj && mj.startup && mj.startup.promise) { mj.startup.promise.then(check); return; }
+    if (++tries < 60) setTimeout(wait, 100);
+  })();
+  window.addEventListener('resize', later);
+  document.addEventListener('toggle', later, true); // spoiler e soluzioni aperti
+})();
 </script>

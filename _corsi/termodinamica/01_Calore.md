@@ -570,7 +570,7 @@ Il termosifone scalda l'aria vicina, che sale, attraversa la stanza vicino al so
 {% include scorri-slide.html img="/corsi/immagini/convection-bird.jpeg" alt="Una sterna in volo con le ali spiegate" titolo="Gli uccelli e le correnti termiche" %}
 Il terreno scaldato dal Sole scalda l'aria sopra di sé, che sale in colonne: le **correnti termiche**. Molti uccelli (e i piloti di parapendio) le sfruttano per salire di quota quasi senza battere le ali.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html img="/corsi/immagini/convection-currents-earth.png" alt="A sinistra, uno spaccato della Terra con i moti convettivi nel mantello sotto le placche; a destra, una pentola d'acqua sul fuoco con gli stessi moti convettivi" titolo="Sotto i tuoi piedi: il mantello terrestre" %}
+{% include scorri-slide.html img="/corsi/immagini/convection-currents-earth.webp" alt="A sinistra, uno spaccato della Terra con i moti convettivi nel mantello sotto le placche; a destra, una pentola d'acqua sul fuoco con gli stessi moti convettivi" titolo="Sotto i tuoi piedi: il mantello terrestre" %}
 Le rocce caldissime del mantello terrestre si muovono per convezione, come l'acqua nella pentola, ma lentissimamente (pochi centimetri all'anno), e trascinano con sé le placche dei continenti.
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}

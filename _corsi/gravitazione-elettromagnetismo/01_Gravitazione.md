@@ -42,7 +42,7 @@ Noi faremo il processo contrario, guarderemo prima l'esperimento di Cavendish e 
 {% include spoiler.html testo="Se sei curioso sulla follia di Newton, apri qui" %}
 
 {% include figura.html id="ritratto-newton"
-   src="/corsi/immagini/Portrait_of_Sir_Isaac_Newton,_1689_(brightened).jpg"
+   src="/corsi/immagini/Portrait_of_Sir_Isaac_Newton,_1689_(brightened).webp"
    didascalia="Isaac Newton in un ritratto del 1689, l'anno prima della pubblicazione dei Philosophiæ Naturalis Principia Mathematica."
    larghezza="220px" %}
 
@@ -72,7 +72,7 @@ Indicheremo, qui e nel seguito, la distanza <u markdown="span">tra i **centri** 
 {% include margin-note-end.html %}
 
 {% include figura.html id="bilancia_a_torsione"
-   src="/corsi/immagini/bilancia_a_torsione_cavendish.png"
+   src="/corsi/immagini/bilancia_a_torsione_cavendish.webp"
    didascalia="La bilancia di torsione di Cavendish."
    larghezza="280px" %}
 
@@ -234,7 +234,7 @@ Il campo gravitazionale corrisponde a una mappa che associa <u markdown="span">a
 Il motivo per cui si parla di “campo” è che proprio come in un campo di grano in ogni punto dello spazio c'è una spiga, così allo stesso modo in un campo vettoriale in ogni punto dello spazio c'è un vettore.
 
 {% include figura.html id="campo-grano-vettoriale"
-   src="/corsi/immagini/similitudine_campo_di_grano.png"
+   src="/corsi/immagini/similitudine_campo_di_grano.webp"
    didascalia="In ogni punto del campo di grano c'è una spiga; in ogni punto del campo vettoriale c'è un vettore."
    larghezza="380px" %}
 {% include spoiler-end.html %}
@@ -407,7 +407,7 @@ Abbiamo detto che il campo gravitazionale associa a ogni punto dello spazio un v
 Considera il seguente esempio di campo vettoriale, che associa ad ogni punto del mare italiano la direzione e il verso della corrente in quel punto:
 
 {% include figura.html id="campo-correnti"
-   src="/corsi/immagini/campo_correnti_mare.png"
+   src="/corsi/immagini/campo_correnti_mare.webp"
    didascalia="Le frecce indicano il vettore velocità della corrente marina punto per punto."
    larghezza="300px" %}
 

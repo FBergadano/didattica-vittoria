@@ -6,17 +6,24 @@ nella pagina) e resta coerente ovunque venga citata, anche prima della figura st
 
 Parametri:
   id         — identificatore univoco della figura (obbligatorio, es. "bilancia_a_torsione")
-  src        — percorso dell'immagine, dalla root del sito (es. "/corsi/immagini/foo.png")
+  src        — percorso dell'immagine, dalla root del sito (es. "/corsi/immagini/foo.png");
+               se finisce in .mp4 viene mostrato come animazione in loop, muta
+               (un'animazione in .mp4 pesa molto meno della stessa in .gif/.webp)
   didascalia — testo della didascalia (obbligatorio)
   alt        — testo alternativo (opzionale, default = didascalia)
   larghezza  — larghezza massima CSS dell'immagine, es. "320px" (opzionale)
 
 Esempio:
   {% include figura.html id="bilancia_a_torsione"
-     src="/corsi/immagini/bilancia_a_torsione_cavendish.png"
+     src="/corsi/immagini/bilancia_a_torsione_cavendish.webp"
      didascalia="La bilancia di torsione di Cavendish." larghezza="280px" %}
 {% endcomment %}
 <figure class="fig-block" id="fig-{{ include.id }}">
-  <img src="{{ include.src | relative_url }}" alt="{{ include.alt | default: include.didascalia }}"{% if include.larghezza %} style="width: {{ include.larghezza }}; max-width: 100%;"{% endif %}>
+  {% assign _ext = include.src | split: "." | last | downcase %}
+  {% if _ext == "mp4" %}
+  <video src="{{ include.src | relative_url }}" autoplay muted loop playsinline preload="metadata" aria-label="{{ include.alt | default: include.didascalia | strip_html | escape }}"{% if include.larghezza %} style="width: {{ include.larghezza }}; max-width: 100%;"{% endif %}></video>
+  {% else %}
+  <img loading="lazy" decoding="async" src="{{ include.src | relative_url }}" alt="{{ include.alt | default: include.didascalia }}"{% if include.larghezza %} style="width: {{ include.larghezza }}; max-width: 100%;"{% endif %}>
+  {% endif %}
   <figcaption><span class="fig-num" data-fig-id="{{ include.id }}">Figura</span> — {{ include.didascalia }}</figcaption>
 </figure>

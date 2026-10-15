@@ -18,7 +18,7 @@ Esempio:
 {% assign _sid = include.id | default: "staffetta" %}
 <div class="staffetta" id="{{ _sid }}">
   <div class="staffetta-persona">
-    <img src="{{ include.img1 | relative_url }}" alt="{{ include.nome1 }}">
+    <img loading="lazy" decoding="async" src="{{ include.img1 | relative_url }}" alt="{{ include.nome1 }}">
     <p class="staffetta-nome">{{ include.nome1 }}</p>
     <p class="staffetta-ruolo">{{ include.ruolo1 }}</p>
   </div>
@@ -27,7 +27,7 @@ Esempio:
     <span class="staffetta-arrow" aria-hidden="true">&#10230;</span>
   </div>
   <div class="staffetta-persona">
-    <img src="{{ include.img2 | relative_url }}" alt="{{ include.nome2 }}">
+    <img loading="lazy" decoding="async" src="{{ include.img2 | relative_url }}" alt="{{ include.nome2 }}">
     <p class="staffetta-nome">{{ include.nome2 }}</p>
     <p class="staffetta-ruolo">{{ include.ruolo2 }}</p>
   </div>
