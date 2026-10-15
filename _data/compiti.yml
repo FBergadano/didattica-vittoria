@@ -27,3 +27,10 @@
 #     note: "Vero/falso della sezione, più esercizi 3 e 5 della dispensa"
 #   - data: 2026-10-23
 #     capitolo: [gravitazione-elettromagnetismo/01_Gravitazione, gravitazione-elettromagnetismo/02_Elettrostatica]
+
+"3B":
+   - data: 2026-10-21
+     capitolo: 01_Misurazione
+     sezione: Che cosa significa *misurare*?
+     note: "Vero/falso della sezione"
+   
