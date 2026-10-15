@@ -493,8 +493,6 @@ $$1 \ \text ℓ= 1 \ \text{dm}^3.$$
 {% include sci.html prima="Un cucchiaio contiene circa 15 mℓ di sciroppo. Quanti cucchiai servono per svuotare un flacone da 0,3 ℓ?" coeff="2" exp="1" tol=1 s="0,3 ℓ = 300 mℓ; 300 : 15 = 20 = 2 × 10¹ cucchiai" %}
 </div>
 
-{% include lab-virtuali/rinumera-esercizi-util.html %}
-
 # Esercizi di riepilogo
 ### Le unità di misura e il Sistema Internazionale
 

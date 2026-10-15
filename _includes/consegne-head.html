@@ -72,7 +72,7 @@ window._lvEsito = window._lvEsito || function() {};
         if (t === 'MJX-CONTAINER') s += texDi(c);
         else if (t === 'INPUT' || t === 'SELECT') s += ' ___ ';
         else if (/^(BUTTON|SCRIPT|STYLE|TEXTAREA|SVG|CANVAS|MJX-ASSISTIVE-MML)$/.test(t)) {}
-        else if (c.matches && c.matches('[class*="-fb"], .lv-ui, .cons-ui')) {}
+        else if (c.matches && c.matches('[class*="-fb"], [class*="choice"], [class*="nav"], [class*="dots"], .es-num, .lv-ui, .cons-ui')) {}
         else s += testoDi(c);
       }
     });
@@ -91,8 +91,8 @@ window._lvEsito = window._lvEsito || function() {};
     if (!last || !prose || !prose.contains(last)) return {};
     var a = last, t = '';
     while (a && a !== prose) { t = testoDi(a).replace(/\s+/g, ' ').trim(); if (t.length >= 30) break; a = a.parentElement; }
-    var s = C.sezioneDi(last);
-    return { sezione: s ? s.t : null, etichetta: t.slice(0, 160) || null };
+    var s = C.sezioneDi(last), es = last.closest('[data-es]');
+    return { sezione: s ? s.t : null, etichetta: t.slice(0, 160) || null, esercizio: es ? es.dataset.es : null };
   }
 
   // ── coda delle risposte da spedire ──
@@ -112,6 +112,7 @@ window._lvEsito = window._lvEsito || function() {};
     if (conta) it.n++;
     if (ctx && ctx.sezione) it.sezione = ctx.sezione;
     if (ctx && ctx.etichetta) it.etichetta = ctx.etichetta;
+    if (ctx && ctx.esercizio) it.esercizio = ctx.esercizio;
     it.imp = imp;
     if (coda.length > 3000) coda = coda.slice(-3000);
     put(QK, coda);
@@ -177,7 +178,7 @@ window._lvEsito = window._lvEsito || function() {};
       token: acc.token,
       items: lotto.map(function(it) {
         return { pagina: it.pagina, ns: it.ns, id: it.id, dati: it.dati, ok: it.ok, ok0: it.ok0,
-                 ts0: it.ts0, ts: it.ts, n: it.n, sezione: it.sezione, etichetta: it.etichetta };
+                 ts0: it.ts0, ts: it.ts, n: it.n, sezione: it.sezione, etichetta: it.etichetta, esercizio: it.esercizio };
       })
     }).then(function() {
       inVolo = false;

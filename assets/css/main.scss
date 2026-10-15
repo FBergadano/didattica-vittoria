@@ -1996,6 +1996,13 @@ cit em, cit i { font-style: normal; }
 
 // ── Esercizio a più passi in notazione scientifica (stile "iex", vedi 3b) ──
 .iex-widget { background:#ecfeff; border-left:4px solid #0e7490; border-radius:0 8px 8px 0; padding:1.2rem 1.5rem; margin:1.5rem 0; }
+// numero degli esercizi "Verifica Subito!" / "Prova tu!" (scripts.html)
+.es-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.6em; height: 1.6em; padding: 0 .35em; margin-right: .5em;
+  border-radius: 999px; background: $box-ex-border; color: #fff; vertical-align: .05em;
+  font-size: .95em; letter-spacing: 0; line-height: 1;
+}
 .iex-lbl { font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#0e7490; margin:0 0 .8rem; }
 .iex-topnav { display:flex; align-items:center; gap:.6rem; margin-bottom:1.1rem; flex-wrap:wrap; }
 .iex-navbtn { background:#cffafe; color:#0e7490; border:1px solid #67e8f9; border-radius:5px; padding:.22rem .7rem; cursor:pointer; font-size:.85rem; }

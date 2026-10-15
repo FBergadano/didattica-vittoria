@@ -99,7 +99,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     btn.classList.toggle('cons-on', !!a);
     btn.innerHTML = '👤<span class="cons-lbl"> ' + (a ? esc(a.codice) : 'Accedi') + '</span>' +
       (nonLetti ? '<span class="cons-badge">' + nonLetti + '</span>' : '');
-    btn.title = a ? 'Sei ' + a.codice + ' (' + a.classe + '): consegne e dubbi' : 'Accedi per consegnare i compiti al prof';
+    btn.title = a ? 'Sei ' + a.codice + ' (' + a.classe + '): consegne e dubbi' : 'Accedi per consegnarmi i compiti';
   }
 
   // ── piccoli avvisi in basso ──
@@ -117,7 +117,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
   var avvisato = false;
   C.avvisaAccesso = function() {
     if (avvisato) return; avvisato = true;
-    C.notifica('Le tue risposte non arrivano ancora al prof.', { testo: 'Accedi', fn: apri }, 7000);
+    C.notifica('Le tue risposte non mi arrivano ancora.', { testo: 'Accedi', fn: apri }, 7000);
   };
   function apri() { if (INLINE) { panel.scrollIntoView({ behavior: 'smooth' }); return; } panel.hidden = false; disegna(); }
 
@@ -144,14 +144,16 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     if (!lista.length) h += '<div class="cons-hint">Nessun compito in programma.</div>';
     else h += '<ul>' + lista.map(function(c) {
       var cap = capitoliDi(c).map(function(u) { return '<a href="' + esc(BASE + u) + '">' + esc(CAPITOLI[u] || u) + '</a>'; }).join(', ');
+      var es = [].concat(c.esercizi || []), u0 = capitoliDi(c)[0];
+      var esHtml = es.length ? ' — es. ' + es.map(function(n) { return '<a href="' + esc(BASE + u0) + '#es-' + esc(n) + '">' + esc(n) + '</a>'; }).join(', ') : '';
       return '<li class="cons-compito"><span class="cons-data">per ' + bella(giorno(c.data)) + '</span>: ' + cap +
-        (c.sezione ? ' — sezione «' + esc(c.sezione) + '»' : '') + (c.note ? '<div class="cons-hint">' + esc(c.note) + '</div>' : '') + '</li>';
+        (c.sezione ? ' — sezione «' + esc(c.sezione) + '»' : '') + esHtml + (c.note ? '<div class="cons-hint">' + esc(c.note) + '</div>' : '') + '</li>';
     }).join('') + '</ul>';
     // dubbi
     var sez = sezioneVisibile();
     h += '<h4>Hai un dubbio?</h4>' +
-      '<textarea class="cons-testo" maxlength="2000" placeholder="Scrivi la tua domanda per il prof…"></textarea>' +
-      '<div class="cons-hint">' + (sez ? 'Verrà allegato il punto che stai leggendo: «' + esc(sez.t) + '».' : 'Il prof vedrà la tua domanda nella sua pagina.') + '</div>' +
+      '<textarea class="cons-testo" maxlength="2000" placeholder="Scrivi qui la tua domanda…"></textarea>' +
+      '<div class="cons-hint">' + (sez ? 'Verrà allegato il punto che stai leggendo: «' + esc(sez.t) + '».' : 'La leggerò nella mia pagina e ti risponderò qui.') + '</div>' +
       '<button class="cons-b" data-az="dubbio">Invia il dubbio</button><div class="cons-msg cons-dmsg"></div>' +
       '<div class="cons-miei"></div>';
     panel.innerHTML = h;
@@ -161,16 +163,16 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     var el = panel.querySelector('.cons-stato'); if (!el) return;
     var n = C.inCoda();
     el.className = 'cons-stato cons-msg ' + (n ? '' : 'ok');
-    el.textContent = n ? '⏳ ' + n + ' rispost' + (n === 1 ? 'a' : 'e') + ' in attesa di invio (partono appena c\'è rete)' : '✓ Tutte le tue risposte sono arrivate al prof';
+    el.textContent = n ? '⏳ ' + n + ' rispost' + (n === 1 ? 'a' : 'e') + ' in attesa di invio (partono appena c\'è rete)' : '✓ Mi sono arrivate tutte le tue risposte';
   }
 
   function disegnaAccesso() {
     panel.innerHTML = '<h4>Accedi per consegnare</h4>' +
-      '<div class="cons-hint" style="margin-top:0">Le risposte che dai agli esercizi del sito arriveranno al prof da sole.</div>' +
+      '<div class="cons-hint" style="margin-top:0">Le risposte che dai agli esercizi del sito mi arriveranno da sole.</div>' +
       '<label>Classe</label><select class="cons-classe"><option value="">caricamento…</option></select>' +
       '<label>Il tuo codice</label><input class="cons-codice" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" placeholder="es. GIUR">' +
       '<label>PIN (4 cifre)</label><input class="cons-pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off">' +
-      '<div class="cons-hint">La prima volta il PIN lo scegli tu: inventane uno e ricordalo. Se lo dimentichi, chiedi al prof di azzerarlo.</div>' +
+      '<div class="cons-hint">La prima volta il PIN lo scegli tu: inventane uno e ricordalo. Se lo dimentichi, chiedimi di azzerarlo.</div>' +
       '<button class="cons-b" data-az="entra">Entra</button><div class="cons-msg cons-amsg"></div>';
     var sel = panel.querySelector('.cons-classe');
     C.chiama('/classi').then(function(j) {
@@ -200,13 +202,13 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
         C.invia(false); caricaDubbi();
       }).catch(function(err) {
         b.disabled = false;
-        var t = { codice: 'Questo codice non è nell\'elenco della classe: controlla con il prof.',
+        var t = { codice: 'Questo codice non è nell\'elenco della classe: controlla con me.',
                   pin: 'PIN sbagliato.', bloccato: 'Troppi tentativi sbagliati: riprova fra un quarto d\'ora.' }[err.codice];
         msg('.cons-amsg', t || 'Non riesco a contattare il server: controlla la connessione.', 'err');
       });
     } else if (az === 'esci') {
       var n = C.inCoda();
-      if (!confirm(n ? 'Hai ' + n + ' risposte non ancora arrivate al prof: se esci partiranno solo quando rientri. Vuoi uscire?' : 'Vuoi uscire? Per consegnare dovrai rientrare con codice e PIN.')) return;
+      if (!confirm(n ? 'Hai ' + n + ' risposte che non mi sono ancora arrivate: se esci partiranno solo quando rientri. Vuoi uscire?' : 'Vuoi uscire? Per consegnare dovrai rientrare con codice e PIN.')) return;
       C.salvaAccesso(null); disegna();
     } else if (az === 'dubbio') {
       var a = C.accesso(), ta = panel.querySelector('.cons-testo'), testo = ta.value.trim();
@@ -251,7 +253,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       var dove = d.pagina ? (CAPITOLI[d.pagina] || '') + (d.sezione ? ' · ' + d.sezione : '') : '';
       return '<div class="cons-dubbio' + (nuovo ? ' cons-nuovo' : '') + '"><div class="cons-meta">' + quando(d.ts) + (dove ? ' · ' + esc(dove) : '') + '</div>' +
         '<div class="cons-q">' + esc(d.testo) + '</div>' +
-        (d.risposta ? '<div class="cons-r"><b>Prof:</b> ' + esc(d.risposta) + '</div>' : '<div class="cons-meta">' + (d.risolto ? '✓ visto dal prof' : 'in attesa di risposta') + '</div>') + '</div>';
+        (d.risposta ? '<div class="cons-r"><b>La mia risposta:</b> ' + esc(d.risposta) + '</div>' : '<div class="cons-meta">' + (d.risolto ? '✓ l\'ho letto' : 'in attesa di risposta') + '</div>') + '</div>';
     }).join('');
     // aprendo la finestrella le risposte nuove diventano "lette"
     if (!panel.hidden) {

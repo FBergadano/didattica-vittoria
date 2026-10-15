@@ -24,6 +24,32 @@
   });
 })();
 
+// ── Numerazione degli esercizi "Verifica Subito!", "Prova tu!", "Esercizio" ──
+// Una sola serie per capitolo, nell'ordine della pagina (1, 2, 3, ...): il
+// numero compare in un cerchietto accanto all'etichetta, il riquadro riceve
+// l'ancora #es-N e l'attributo data-es (usato dalle consegne per sapere da
+// quale esercizio arriva una risposta, e dai compiti "esercizi: [3, 5]").
+(function() {
+  var prose = document.querySelector('.chapter-prose');
+  if (!prose) return;
+  var RE = /^\s*(Verifica Subito|Prova tu|Esercizio)\b/i, n = 0;
+  prose.querySelectorAll('.box.box-ex > .box-label, .iex-lbl').forEach(function(lbl) {
+    if (!RE.test(lbl.textContent)) return;
+    var box = lbl.classList.contains('box-label') ? lbl.parentElement : lbl.parentElement;
+    if (!box || (box.parentElement && box.parentElement.closest('[data-es]'))) return; // già dentro un esercizio numerato
+    n++;
+    box.dataset.es = n;
+    if (!box.id) box.id = 'es-' + n;
+    // "Esercizio 3 — Titolo": il numero scritto a mano lascia il posto a quello nel cerchietto
+    var t = lbl.firstChild;
+    if (t && t.nodeType === 3 && /^\s*Esercizio\b/i.test(t.data))
+      t.data = t.data.replace(/^\s*Esercizio[\s\u00a0]*\d*[\s\u00a0]*(?:[—–-][\s\u00a0]*)?/i, function(m) { return /[—–-]/.test(m) || t.data.trim() !== m.trim() ? 'Esercizio — ' : 'Esercizio'; });
+    var b = document.createElement('span');
+    b.className = 'es-num'; b.textContent = n; b.title = 'Esercizio ' + n;
+    lbl.insertBefore(b, lbl.firstChild);
+  });
+})();
+
 // ── Numerazione automatica delle figure (come \ref in LaTeX) ──────────
 (function() {
   var map = {};

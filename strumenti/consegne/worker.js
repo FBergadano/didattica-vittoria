@@ -24,7 +24,7 @@ const SCHEMA = [
      classe TEXT NOT NULL, codice TEXT NOT NULL, pagina TEXT NOT NULL, chiave TEXT NOT NULL,
      sezione TEXT, etichetta TEXT, dati TEXT,
      ok REAL, primo_ok REAL, primo_ts INTEGER, ultimo_ts INTEGER,
-     verifiche INTEGER NOT NULL DEFAULT 0, ricevuto INTEGER,
+     verifiche INTEGER NOT NULL DEFAULT 0, ricevuto INTEGER, esercizio TEXT,
      PRIMARY KEY (classe, codice, pagina, chiave))`,
   `CREATE TABLE IF NOT EXISTS dubbi (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,7 +46,10 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     try {
       if (!env.DB) return json({ errore: 'manca il database (binding DB)' }, 500, cors);
-      if (!pronto) pronto = env.DB.batch(SCHEMA.map((s) => env.DB.prepare(s))).catch((e) => { pronto = null; throw e; });
+      if (!pronto) pronto = env.DB.batch(SCHEMA.map((s) => env.DB.prepare(s)))
+        // database creati prima che esistesse la colonna "esercizio" (numero del Verifica Subito!/Prova tu!)
+        .then(() => env.DB.prepare('ALTER TABLE risposte ADD COLUMN esercizio TEXT').run().catch(() => {}))
+        .catch((e) => { pronto = null; throw e; });
       await pronto;
       const url = new URL(req.url);
       const p = url.pathname.replace(/\/+$/, '') || '/';
@@ -166,8 +169,8 @@ async function risposte(c, env, cors) {
   const items = Array.isArray(c.items) ? c.items.slice(0, 100) : [];
   const ora = Date.now();
   const sql = env.DB.prepare(`
-    INSERT INTO risposte (classe, codice, pagina, chiave, sezione, etichetta, dati, ok, primo_ok, primo_ts, ultimo_ts, verifiche, ricevuto)
-    VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)
+    INSERT INTO risposte (classe, codice, pagina, chiave, sezione, etichetta, dati, ok, primo_ok, primo_ts, ultimo_ts, verifiche, ricevuto, esercizio)
+    VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14)
     ON CONFLICT (classe, codice, pagina, chiave) DO UPDATE SET
       sezione   = COALESCE(excluded.sezione, sezione),
       etichetta = COALESCE(excluded.etichetta, etichetta),
@@ -181,7 +184,8 @@ async function risposte(c, env, cors) {
                        WHEN excluded.ultimo_ts IS NULL THEN ultimo_ts
                        ELSE MAX(ultimo_ts, excluded.ultimo_ts) END,
       verifiche = verifiche + excluded.verifiche,
-      ricevuto  = excluded.ricevuto`);
+      ricevuto  = excluded.ricevuto,
+      esercizio = COALESCE(excluded.esercizio, esercizio)`);
   const righe = [];
   for (const it of items) {
     const pagina = str(it.pagina, 200), ns = str(it.ns, 30), id = str(it.id, 120);
@@ -191,7 +195,7 @@ async function risposte(c, env, cors) {
     const ts0 = orario(it.ts0, ora), ts = orario(it.ts, ora);
     righe.push(sql.bind(st.classe, st.codice, pagina, ns + ':' + id, str(it.sezione, 120), str(it.etichetta, 200), dati,
       num01(it.ok), num01(it.ok0 !== undefined ? it.ok0 : it.ok), ts0 ?? ts, ts ?? ts0,
-      Math.max(0, Math.min(50, Number(it.n) || 0)), ora));
+      Math.max(0, Math.min(50, Number(it.n) || 0)), ora, str(it.esercizio, 10)));
   }
   if (righe.length) await env.DB.batch(righe);
   return json({ ok: righe.length }, 200, cors);
@@ -266,14 +270,14 @@ async function docente(p, url, c, env, cors) {
       return json({ ok: true }, 200, cors);
     }
     case '/docente/risposte': { // riassunto di tutta la classe (senza i dati delle risposte)
-      const r = await DB.prepare('SELECT codice, pagina, chiave, sezione, etichetta, ok, primo_ok, primo_ts, ultimo_ts, verifiche FROM risposte WHERE classe = ?')
+      const r = await DB.prepare('SELECT codice, pagina, chiave, sezione, etichetta, ok, primo_ok, primo_ts, ultimo_ts, verifiche, esercizio FROM risposte WHERE classe = ?')
         .bind(q('classe')).raw();
-      return json({ colonne: ['codice', 'pagina', 'chiave', 'sezione', 'etichetta', 'ok', 'primo_ok', 'primo_ts', 'ultimo_ts', 'verifiche'], righe: r }, 200, cors);
+      return json({ colonne: ['codice', 'pagina', 'chiave', 'sezione', 'etichetta', 'ok', 'primo_ok', 'primo_ts', 'ultimo_ts', 'verifiche', 'esercizio'], righe: r }, 200, cors);
     }
     case '/docente/dettaglio': { // tutte le risposte di uno studente su alcune pagine, con i dati
       const pagine = String(q('pagine') || '').split(',').filter(Boolean).slice(0, 20);
       if (!pagine.length) return json({ risposte: [] }, 200, cors);
-      const r = await DB.prepare(`SELECT pagina, chiave, sezione, etichetta, dati, ok, primo_ok, primo_ts, ultimo_ts, verifiche FROM risposte
+      const r = await DB.prepare(`SELECT pagina, chiave, sezione, etichetta, dati, ok, primo_ok, primo_ts, ultimo_ts, verifiche, esercizio FROM risposte
                                   WHERE classe = ? AND codice = ? AND pagina IN (${pagine.map(() => '?').join(',')})`)
         .bind(q('classe'), q('codice'), ...pagine).all();
       return json({ risposte: r.results }, 200, cors);
