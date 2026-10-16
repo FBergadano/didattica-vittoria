@@ -48,6 +48,13 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
 #cons-panel .cons-dubbio .cons-r { margin-top: .35rem; padding: .35rem .5rem; background: #f0fdf4; border-left: 3px solid #15803d; border-radius: 4px; white-space: pre-wrap; }
 #cons-panel .cons-dubbio .cons-meta { color: #6b7280; font-size: .74rem; }
 #cons-panel .cons-dubbio.cons-nuovo { border-color: #15803d; }
+#cons-panel .cons-file { display: inline-block; }
+#cons-panel .cons-file input { display: none; }
+#cons-panel .cons-anteprime { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+#cons-panel .cons-anteprime div { position: relative; width: 64px; height: 64px; border-radius: 6px; overflow: hidden; border: 1px solid #cbd5e0; }
+#cons-panel .cons-anteprime img { width: 100%; height: 100%; object-fit: cover; display: block; }
+#cons-panel .cons-anteprime button { position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; border-radius: 50%; border: none; background: rgba(0,0,0,.6); color: #fff; font-size: .7rem; line-height: 20px; padding: 0; cursor: pointer; }
+#cons-panel .cons-inviate li { display: flex; justify-content: space-between; align-items: center; font-size: .8rem; color: #4a5568; padding: .15rem 0; }
 #cons-toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 310; background: #1f2937; color: #fff;
   font-family: "Atkinson Hyperlegible", sans-serif; font-size: .85rem; padding: .5rem .9rem; border-radius: 999px; box-shadow: 0 4px 16px rgba(0,0,0,.25);
   max-width: calc(100vw - 40px); opacity: 0; pointer-events: none; transition: opacity .25s; }
@@ -85,7 +92,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       dove.insertBefore(btn, dove.firstChild);
       btn.addEventListener('click', function() {
         panel.hidden = !panel.hidden;
-        if (!panel.hidden) { disegna(); caricaDubbi(); }
+        if (!panel.hidden) { disegna(); caricaDubbi(); caricaFoto(); }
       });
       document.addEventListener('pointerdown', function(e) {
         if (!panel.hidden && !panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) panel.hidden = true;
@@ -149,6 +156,19 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       return '<li class="cons-compito"><span class="cons-data">per ' + bella(giorno(c.data)) + '</span>: ' + cap +
         (c.sezione ? ' — sezione «' + esc(c.sezione) + '»' : '') + esHtml + (c.note ? '<div class="cons-hint">' + esc(c.note) + '</div>' : '') + '</li>';
     }).join('') + '</ul>';
+    // compiti su carta: foto
+    var scelte = (COMPITI[a.classe] || []).filter(function(c) { return giorno(c.data) >= new Date(oggi.getTime() - 14 * 864e5); })
+      .sort(function(x, y) { return giorno(x.data) - giorno(y.data); });
+    if (fotoCompito === null) { var prox = scelte.filter(function(c) { return giorno(c.data) >= oggi; })[0] || scelte[scelte.length - 1]; fotoCompito = prox ? chiaveCompito(prox) : ''; }
+    h += '<h4>Compiti su carta</h4>' +
+      '<label>Per quale compito?</label><select class="cons-fcompito">' +
+      scelte.map(function(c) { var k = chiaveCompito(c); return '<option value="' + esc(k) + '"' + (k === fotoCompito ? ' selected' : '') + '>per ' + bella(giorno(c.data)) + ' — ' + esc(capitoliDi(c).map(function(u) { return CAPITOLI[u] || u; }).join(', ')) + '</option>'; }).join('') +
+      '<option value=""' + (fotoCompito === '' ? ' selected' : '') + '>altro (non legato a un compito)</option></select>' +
+      '<div style="margin-top:.6rem"><label class="cons-b cons-file">📷 Scatta o scegli le foto<input type="file" accept="image/*" multiple class="cons-finput"></label></div>' +
+      '<div class="cons-anteprime"></div>' +
+      '<button class="cons-b" data-az="foto-invia" hidden>Invia le foto</button><div class="cons-msg cons-fmsg"></div>' +
+      '<div class="cons-hint">Inquadra tutto il foglio, con buona luce. Non scrivere il tuo nome sul foglio: mi basta il tuo codice.</div>' +
+      '<ul class="cons-inviate"></ul>';
     // dubbi
     var sez = sezioneVisibile();
     h += '<h4>Hai un dubbio?</h4>' +
@@ -157,8 +177,53 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       '<button class="cons-b" data-az="dubbio">Invia il dubbio</button><div class="cons-msg cons-dmsg"></div>' +
       '<div class="cons-miei"></div>';
     panel.innerHTML = h;
-    stato(); mostraDubbi();
+    stato(); mostraDubbi(); mostraAnteprime(); mostraFoto();
   }
+
+  // ── foto dei compiti su carta ──
+  var fotoCompito = null, inAttesa = [], mieFoto = [];
+  function chiaveCompito(c) { return String(c.data).slice(0, 10) + '|' + [].concat(c.capitolo || []).join(','); }
+  function mostraAnteprime() {
+    var box = panel.querySelector('.cons-anteprime'), b = panel.querySelector('[data-az="foto-invia"]'); if (!box) return;
+    box.innerHTML = inAttesa.map(function(f, i) { return '<div><img src="' + f.url + '" alt=""><button data-az="foto-togli" data-i="' + i + '" title="Togli">✕</button></div>'; }).join('');
+    b.hidden = !inAttesa.length;
+    b.textContent = inAttesa.length === 1 ? 'Invia la foto' : 'Invia le ' + inAttesa.length + ' foto';
+  }
+  function mostraFoto() {
+    var ul = panel.querySelector('.cons-inviate'); if (!ul) return;
+    var qui = mieFoto.filter(function(f) { return (f.compito || '') === fotoCompito; });
+    ul.innerHTML = qui.length ? '<li><b>Già inviate per questo compito: ' + qui.length + '</b></li>' + qui.map(function(f) {
+      return '<li><span>📷 ' + quando(f.ts) + '</span><button class="cons-link" data-az="foto-elimina" data-id="' + f.id + '">elimina</button></li>';
+    }).join('') : '';
+  }
+  function caricaFoto() {
+    var a = C.accesso(); if (!a) return;
+    C.chiama('/mie-foto', { token: a.token }).then(function(j) { mieFoto = j.foto || []; mostraFoto(); }).catch(function() {});
+  }
+  // riduce la foto (lato lungo 1600 px, JPEG) prima di spedirla: ~300 KB invece di diversi MB
+  function riduci(file) {
+    return new Promise(function(ok, ko) {
+      var img = new Image(), u = URL.createObjectURL(file);
+      img.onload = function() {
+        var k = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+        var cv = document.createElement('canvas'); cv.width = Math.round(img.naturalWidth * k); cv.height = Math.round(img.naturalHeight * k);
+        var g = cv.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, cv.width, cv.height); g.drawImage(img, 0, 0, cv.width, cv.height);
+        URL.revokeObjectURL(u);
+        var q = 0.75, d = cv.toDataURL('image/jpeg', q);
+        while (d.length > 1000000 && q > 0.35) { q -= 0.1; d = cv.toDataURL('image/jpeg', q); }
+        ok(d);
+      };
+      img.onerror = function() { URL.revokeObjectURL(u); ko(new Error('immagine')); };
+      img.src = u;
+    });
+  }
+  panel.addEventListener('change', function(e) {
+    if (e.target.matches('.cons-fcompito')) { fotoCompito = e.target.value; mostraFoto(); }
+    if (e.target.matches('.cons-finput')) {
+      [].forEach.call(e.target.files, function(f) { if (/^image\//.test(f.type) || /\.(jpe?g|png|heic|webp)$/i.test(f.name)) inAttesa.push({ file: f, url: URL.createObjectURL(f) }); });
+      e.target.value = ''; mostraAnteprime(); msg('.cons-fmsg', '', '');
+    }
+  });
   function stato() {
     var el = panel.querySelector('.cons-stato'); if (!el) return;
     var n = C.inCoda();
@@ -199,13 +264,37 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
         C.recuperaVecchie();
         disegna();
         if (j.nuovo) C.notifica('PIN registrato: ricordatelo!', null, 4000);
-        C.invia(false); caricaDubbi();
+        C.invia(false); caricaDubbi(); caricaFoto();
       }).catch(function(err) {
         b.disabled = false;
         var t = { codice: 'Questo codice non è nell\'elenco della classe: controlla con me.',
                   pin: 'PIN sbagliato.', bloccato: 'Troppi tentativi sbagliati: riprova fra un quarto d\'ora.' }[err.codice];
         msg('.cons-amsg', t || 'Non riesco a contattare il server: controlla la connessione.', 'err');
       });
+    } else if (az === 'foto-togli') {
+      var f = inAttesa.splice(+b.dataset.i, 1)[0]; if (f) URL.revokeObjectURL(f.url); mostraAnteprime();
+    } else if (az === 'foto-elimina') {
+      if (!confirm('Eliminare questa foto? Non la vedrò più.')) return;
+      C.chiama('/foto-elimina', { token: C.accesso().token, id: +b.dataset.id }).then(caricaFoto);
+    } else if (az === 'foto-invia') {
+      var acc = C.accesso(), lista = inAttesa.slice(), fatte = 0, compito = fotoCompito || '';
+      b.disabled = true;
+      (function prossima() {
+        if (!lista.length) {
+          b.disabled = false; inAttesa = []; mostraAnteprime(); caricaFoto();
+          msg('.cons-fmsg', '✓ ' + (fatte === 1 ? 'Foto inviata' : fatte + ' foto inviate') + ' al prof.', 'ok'); return;
+        }
+        var f = lista.shift();
+        msg('.cons-fmsg', 'Invio ' + (fatte + 1) + ' di ' + (fatte + 1 + lista.length) + '…', '');
+        riduci(f.file).then(function(d) { return C.chiama('/foto', { token: acc.token, compito: compito, immagine: d }); })
+          .then(function() { fatte++; URL.revokeObjectURL(f.url); inAttesa = inAttesa.filter(function(x) { return x !== f; }); mostraAnteprime(); prossima(); })
+          .catch(function(err) {
+            b.disabled = false;
+            var t = { troppe: 'Hai già inviato molte foto oggi: riprova domani.', grande: 'Questa foto è troppo grande.', formato: 'Questo file non è una foto.' }[err.codice];
+            msg('.cons-fmsg', (t || (err.message === 'immagine' ? 'Non riesco ad aprire questa foto.' : 'Non riesco a inviarla: controlla la connessione e riprova.')) + (fatte ? ' (' + fatte + ' già inviate)' : ''), 'err');
+            if (err.status === 401) { C.salvaAccesso(null); disegna(); }
+          });
+      })();
     } else if (az === 'esci') {
       var n = C.inCoda();
       if (!confirm(n ? 'Hai ' + n + ' risposte che non mi sono ancora arrivate: se esci partiranno solo quando rientri. Vuoi uscire?' : 'Vuoi uscire? Per consegnare dovrai rientrare con codice e PIN.')) return;
@@ -267,7 +356,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     if (dentro !== !!C.accesso()) disegna(); else { stato(); aggiornaBtn(); }
   };
   aggiornaBtn();
-  if (INLINE) disegna();
+  if (INLINE) { disegna(); caricaFoto(); }
   if (C.accesso()) caricaDubbi();
 })();
 </script>

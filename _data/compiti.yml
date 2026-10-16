@@ -9,9 +9,9 @@
 #              _config.yml; per un compito diverso aggiungi  ora: "14:00")
 #    capitolo: cartella/file del capitolo, come in _corsi/ ma senza ".md"
 #              (più capitoli: tra parentesi quadre, separati da virgole)
-#    esercizi: facoltativo — i numeri dei "Verifica Subito!", "Prova tu!"
-#              ed "Esercizio" del capitolo (il cerchietto accanto
-#              all'etichetta: una sola serie per capitolo), tra
+#    esercizi: facoltativo — i numeri degli esercizi della teoria
+#              (il cerchietto accanto all'etichetta: una sola serie
+#              per capitolo), tra
 #              parentesi quadre: [3, 5, 7]. Contano solo quelli.
 #              Se il compito ha più capitoli, scrivi un compito per
 #              capitolo (stessa data), perché i numeri ripartono da 1.
@@ -34,9 +34,9 @@
 #   - data: 2026-10-23
 #     capitolo: [gravitazione-elettromagnetismo/01_Gravitazione, gravitazione-elettromagnetismo/02_Elettrostatica]
 
-"3B":
-   - data: 2026-10-21
-     capitolo: introduzione-alla-fisica/01_Misurazione
-     sezione: Cosa vuol dire *misurare*?
-     note: "Vero/falso della sezione"
+
    
+"4B":
+  - data: 2026-10-20
+    capitolo: gravitazione-elettromagnetismo/01_Gravitazione
+    esercizi: [1]

@@ -420,10 +420,12 @@ I compiti per lezione stanno in `_data/compiti.yml`. Attivo solo se
 `consegne_url` in `_config.yml` non è vuoto.
 
 - Nel server non devono mai finire nomi di studenti: solo codici.
-- Gli esercizi "Verifica Subito!", "Prova tu!" ed "Esercizio…" vengono
-  numerati da soli (scripts.html: un'unica serie per capitolo, cerchietto
-  accanto all'etichetta, ancora `#es-N`); nei compiti si assegnano con
-  `esercizi: [3, 5]`. Non scrivere numeri a mano nelle etichette.
+- Tutti gli esercizi della teoria (qualunque nome: Verifica Subito!, Prova
+  tu!, Isola le altre grandezze, completamenti, Frayer…) vengono numerati da
+  soli (scripts.html: un'unica serie per capitolo, cerchietto accanto
+  all'etichetta, ancora `#es-N`); nei compiti si assegnano con
+  `esercizi: [3, 5]`. Non scrivere numeri a mano nelle etichette. Esclusi:
+  esempi già risolti, simulazioni, esercizi di riepilogo (ex.html).
 - Ogni nuovo widget con una risposta giusta/sbagliata deve, quando lo
   studente verifica, salvare con `_lvSave(ns, id, {..., ok: true/false})`
   oppure chiamare `if (window._lvEsito) _lvEsito(ns, id, giusto)`:

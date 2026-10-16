@@ -24,19 +24,30 @@
   });
 })();
 
-// ── Numerazione degli esercizi "Verifica Subito!", "Prova tu!", "Esercizio" ──
-// Una sola serie per capitolo, nell'ordine della pagina (1, 2, 3, ...): il
-// numero compare in un cerchietto accanto all'etichetta, il riquadro riceve
-// l'ancora #es-N e l'attributo data-es (usato dalle consegne per sapere da
-// quale esercizio arriva una risposta, e dai compiti "esercizi: [3, 5]").
+// ── Numerazione degli esercizi della teoria ───────────────────────────
+// Ogni esercizio della teoria riceve un numero, qualunque sia il suo nome
+// ("Verifica Subito!", "Prova tu!", "Isola le altre grandezze", "Trova
+// l'unità di misura", un completamento, una scheda Frayer…): una sola serie
+// per capitolo, nell'ordine della pagina. Il numero compare in un cerchietto
+// accanto all'etichetta (o all'inizio del widget, se non ha etichetta), il
+// riquadro riceve l'ancora #es-N e l'attributo data-es (usato dalle consegne
+// e dai compiti "esercizi: [3, 5]").
+// Restano senza numero: i riquadri d'esempio già risolti (niente a cui
+// rispondere), le simulazioni/laboratori e gli esercizi di riepilogo (ex.html,
+// che hanno la loro numerazione).
 (function() {
   var prose = document.querySelector('.chapter-prose');
   if (!prose) return;
-  var RE = /^\s*(Verifica Subito|Prova tu|Esercizio)\b/i, n = 0, SEL = '.box.box-ex > .box-label, .iex-lbl';
-  function etichetta(el) { return el.matches(SEL) && RE.test(el.textContent); }
-  function haEtichetta(el) { return etichetta(el) || [].some.call(el.querySelectorAll(SEL), etichetta); }
+  // ciò a cui si risponde (gli slider delle simulazioni non contano)
+  var RISPOSTA = 'input:not([type=range]), select, textarea, .tf-btn, .iex-choice-btn, .qgf-btn-si, .match-widget, .sort-widget, .order-widget';
+  // widget che sono esercizi anche senza un riquadro intorno
+  var SCIOLTI = '.uderive-widget, .invx-widget, .ubx-widget, .frayer, .fillm-wrap, .fill-wrap, .sci-wrap, .sciex-widget, .tplcz-widget, ' +
+                '.match-widget, .sort-widget, .order-widget, .qgf-widget, .tf-item, .iex-choices, .raperta, .riflessione';
+  var CAND = '.iex-widget, .box.box-ex, .iex-lbl, ' + SCIOLTI;
+  var n = 0;
   // un'etichetta scritta direttamente nel testo (senza un riquadro tutto suo):
   // raccolgo lei e ciò che la segue, fino al prossimo titolo o esercizio
+  function fine(x) { return /^H[1-6]$/.test(x.tagName) || x.matches('.box, .iex-widget, .iex-lbl') || !!x.querySelector('.iex-widget, .iex-lbl, .box'); }
   function raggruppa(lbl) {
     var w = document.createElement('div'), x = lbl;
     w.className = 'es-gruppo';
@@ -45,27 +56,35 @@
       var dopo = x.nextSibling;
       w.appendChild(x);
       x = dopo;
-      if (x && x.nodeType === 1 && (/^H[1-6]$/.test(x.tagName) || x.matches('.box') || haEtichetta(x))) break;
+      if (x && x.nodeType === 1 && fine(x)) break;
     }
     return w;
   }
-  [].slice.call(prose.querySelectorAll(SEL)).forEach(function(lbl) {
-    if (!etichetta(lbl)) return;
-    var box = lbl.parentElement;
-    if ([].filter.call(box.querySelectorAll(SEL), etichetta).length > 1) box = raggruppa(lbl);
-    if (!box || (box.parentElement && box.parentElement.closest('[data-es]'))) return; // già dentro un esercizio numerato
+  [].slice.call(prose.querySelectorAll(CAND)).forEach(function(el) {
+    if (el.closest('[data-es], .ex-box')) return; // già dentro un esercizio numerato, o esercizio di riepilogo
+    var box = el, lbl = null;
+    if (el.matches('.iex-lbl')) { box = raggruppa(el); lbl = el; }
+    else if (el.matches('.box.box-ex')) {
+      lbl = el.querySelector(':scope > .box-label');
+      var titolo = /^\s*(Esercizio|Verifica Subito|Prova tu)\b/i.test(lbl ? lbl.textContent : '');
+      if (!titolo && !el.querySelector(RISPOSTA + ', ' + SCIOLTI)) return; // un esempio già risolto
+    }
+    else if (el.matches('.iex-widget')) lbl = el.querySelector('.iex-lbl');
+    else lbl = el.querySelector(':scope > [class*="-lbl"], :scope > [class*="title"], :scope > [class*="titolo"]');
     n++;
     box.dataset.es = n;
     if (!box.id) box.id = 'es-' + n;
-    // "Esercizio 3 — Titolo": il numero scritto a mano lascia il posto a quello nel cerchietto
-    var t = lbl.firstChild;
-    if (t && t.nodeType === 3 && /^\s*Esercizio\b/i.test(t.data)) {
-      var resto = t.data.replace(/^\s*Esercizio[\s\u00a0]*\d*[\s\u00a0]*(?:[—–-][\s\u00a0]*)?/i, '');
-      t.data = resto ? 'Esercizio — ' + resto : 'Esercizio';
-    }
     var b = document.createElement('span');
     b.className = 'es-num'; b.textContent = n; b.title = 'Esercizio ' + n;
-    lbl.insertBefore(b, lbl.firstChild);
+    if (lbl) {
+      // "Esercizio 3 — Titolo": il numero scritto a mano lascia il posto a quello nel cerchietto
+      var t = lbl.firstChild;
+      if (t && t.nodeType === 3 && /^\s*Esercizio\b/i.test(t.data)) {
+        var resto = t.data.replace(/^\s*Esercizio[\s ]*\d*[\s ]*(?:[—–-][\s ]*)?/i, '');
+        t.data = resto ? 'Esercizio — ' + resto : 'Esercizio';
+      }
+      lbl.insertBefore(b, lbl.firstChild);
+    } else box.insertBefore(b, box.firstChild);
   });
 })();
 

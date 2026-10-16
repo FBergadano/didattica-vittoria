@@ -32,10 +32,17 @@ const SCHEMA = [
      testo TEXT NOT NULL, ts INTEGER NOT NULL,
      risposta TEXT, risposta_ts INTEGER, risolto INTEGER NOT NULL DEFAULT 0)`,
   `CREATE INDEX IF NOT EXISTS dubbi_classe ON dubbi (classe, ts)`,
+  // foto dei compiti su carta: l'immagine (già ridotta dal telefono) è salvata come testo base64
+  `CREATE TABLE IF NOT EXISTS foto (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     classe TEXT NOT NULL, codice TEXT NOT NULL, compito TEXT, ts INTEGER NOT NULL,
+     tipo TEXT NOT NULL, dim INTEGER NOT NULL, dati TEXT NOT NULL)`,
+  `CREATE INDEX IF NOT EXISTS foto_classe ON foto (classe, compito)`,
 ];
 
 const MAX_ERRORI_PIN = 8, BLOCCO_MS = 15 * 60 * 1000;
 const MAX_DUBBI_GIORNO = 20;
+const MAX_FOTO_GIORNO = 40, MAX_FOTO_B64 = 1400000; // ~1 MB per foto (il telefono le riduce a ~300 KB)
 const RE_CLASSE = /^[A-Za-z0-9][A-Za-z0-9 _-]{0,15}$/, RE_CODICE = /^[A-Z]{2,12}$/;
 
 let pronto = null; // le tabelle si creano una volta sola per istanza
@@ -67,6 +74,9 @@ export default {
         case '/risposte':    return await risposte(corpo, env, cors);
         case '/dubbi':       return await nuovoDubbio(corpo, env, cors);
         case '/miei-dubbi':  return await mieiDubbi(corpo, env, cors);
+        case '/foto':        return await nuovaFoto(corpo, env, cors);
+        case '/mie-foto':    return await mieFoto(corpo, env, cors);
+        case '/foto-elimina': return await eliminaFoto(corpo, env, cors);
       }
       return json({ errore: 'percorso sconosciuto' }, 404, cors);
     } catch (e) {
@@ -222,6 +232,32 @@ async function mieiDubbi(c, env, cors) {
   return json({ dubbi: r.results }, 200, cors);
 }
 
+async function nuovaFoto(c, env, cors) {
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  const m = /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/.exec(String(c.immagine || ''));
+  if (!m) return json({ errore: 'formato' }, 400, cors);
+  if (m[2].length > MAX_FOTO_B64) return json({ errore: 'grande' }, 413, cors);
+  const ora = Date.now();
+  const n = await env.DB.prepare('SELECT COUNT(*) AS n FROM foto WHERE classe = ? AND codice = ? AND ts > ?').bind(st.classe, st.codice, ora - 24 * 3600 * 1000).first();
+  if (n.n >= MAX_FOTO_GIORNO) return json({ errore: 'troppe' }, 429, cors);
+  const r = await env.DB.prepare('INSERT INTO foto (classe, codice, compito, ts, tipo, dim, dati) VALUES (?, ?, ?, ?, ?, ?, ?)')
+    .bind(st.classe, st.codice, str(c.compito, 200) || '', ora, m[1], Math.round(m[2].length * 3 / 4), m[2]).run();
+  return json({ ok: true, id: r.meta.last_row_id }, 200, cors);
+}
+async function mieFoto(c, env, cors) {
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  const r = await env.DB.prepare('SELECT id, compito, ts, dim FROM foto WHERE classe = ? AND codice = ? ORDER BY ts DESC LIMIT 100').bind(st.classe, st.codice).all();
+  return json({ foto: r.results }, 200, cors);
+}
+async function eliminaFoto(c, env, cors) {
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  await env.DB.prepare('DELETE FROM foto WHERE id = ? AND classe = ? AND codice = ?').bind(Number(c.id), st.classe, st.codice).run();
+  return json({ ok: true }, 200, cors);
+}
+
 // ───────── docente ─────────
 async function docenteAutorizzato(req, env) {
   if (!env.DOCENTE_PASSWORD) return 'password non impostata';
@@ -260,6 +296,7 @@ async function docente(p, url, c, env, cors) {
         ops.push(DB.prepare('DELETE FROM studenti WHERE classe = ? AND codice = ?').bind(classe, x));
         ops.push(DB.prepare('DELETE FROM risposte WHERE classe = ? AND codice = ?').bind(classe, x));
         ops.push(DB.prepare('DELETE FROM dubbi WHERE classe = ? AND codice = ?').bind(classe, x));
+        ops.push(DB.prepare('DELETE FROM foto WHERE classe = ? AND codice = ?').bind(classe, x));
       }
       if (ops.length) await DB.batch(ops);
       return json({ ok: true, aggiunti: codici.filter((x) => !attuali.includes(x)).length, tolti: via.length }, 200, cors);
@@ -296,12 +333,26 @@ async function docente(p, url, c, env, cors) {
       if (c.elimina) await DB.prepare('DELETE FROM dubbi WHERE id = ?').bind(id).run();
       return json({ ok: true }, 200, cors);
     }
-    case '/docente/cancella': { // cancella risposte e dubbi più vecchi di una data
+    case '/docente/foto': { // elenco delle foto di una classe (senza le immagini)
+      const r = await DB.prepare('SELECT id, codice, compito, ts, dim FROM foto WHERE classe = ? ORDER BY ts DESC').bind(q('classe')).all();
+      return json({ foto: r.results }, 200, cors);
+    }
+    case '/docente/immagine': { // una foto, come data URL
+      const f = await DB.prepare('SELECT tipo, dati FROM foto WHERE id = ?').bind(Number(q('id'))).first();
+      if (!f) return json({ errore: 'non trovata' }, 404, cors);
+      return json({ src: 'data:' + f.tipo + ';base64,' + f.dati }, 200, cors);
+    }
+    case '/docente/foto-elimina': {
+      await DB.prepare('DELETE FROM foto WHERE id = ?').bind(Number(c.id)).run();
+      return json({ ok: true }, 200, cors);
+    }
+    case '/docente/cancella': { // cancella risposte, dubbi e foto più vecchi di una data
       const prima = Number(c.prima_di);
       if (!isFinite(prima) || prima <= 0) return json({ errore: 'data non valida' }, 400, cors);
       const a = await DB.prepare('DELETE FROM risposte WHERE ricevuto < ?').bind(prima).run();
       const b = await DB.prepare('DELETE FROM dubbi WHERE ts < ?').bind(prima).run();
-      return json({ ok: true, risposte: a.meta.changes, dubbi: b.meta.changes }, 200, cors);
+      const f = await DB.prepare('DELETE FROM foto WHERE ts < ?').bind(prima).run();
+      return json({ ok: true, risposte: a.meta.changes, dubbi: b.meta.changes, foto: f.meta.changes }, 200, cors);
     }
   }
   return json({ errore: 'percorso sconosciuto' }, 404, cors);

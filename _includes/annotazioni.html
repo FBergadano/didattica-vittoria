@@ -22,7 +22,7 @@ Nessun parametro: è incluso da _layouts/capitolo.html.
     <button data-mode="read" title="Leggi (nessuno strumento attivo)">👆<span>Leggi</span></button>
     <button data-mode="hl" title="Evidenzia: seleziona il testo">🖍<span>Evidenzia</span></button>
     <button data-mode="pen" title="Penna: scrivi a mano libera">✒️<span>Penna</span></button>
-    <button data-mode="eraser" title="Gomma: passa sui tratti di penna">🧽<span>Gomma</span></button>
+    <button data-mode="eraser" title="Gomma: passa sui tratti di penna o sulle evidenziazioni">🧽<span>Gomma</span></button>
     <button data-mode="note" title="Nota: tocca un punto del testo">💬<span>Nota</span></button>
   </div>
   <div class="lv-row lv-colors" data-for="hl"></div>
@@ -153,10 +153,10 @@ body.lv-mode-hl mark.lv-hl { cursor: pointer; }
   var HL_COLORS = [['giallo','rgba(253,224,71,.55)'],['verde','rgba(134,239,172,.6)'],['azzurro','rgba(125,211,252,.55)'],['rosa','rgba(249,168,212,.6)']];
   var PEN_COLORS = [['blu','#1d4ed8'],['rosso','#dc2626'],['verde','#15803d'],['nero','#111827']];
   var HINTS = {
-    read: 'Nessuno strumento attivo: la pagina si usa normalmente.',
+    read: 'Nessuno strumento attivo: la pagina si usa normalmente. Tocca un’evidenziazione per cambiarne il colore o toglierla.',
     hl: 'Seleziona del testo per evidenziarlo (col dito: trascinalo sulle parole; per scorrere la pagina torna su “Leggi”). Tocca un’evidenziazione per cambiarne il colore o toglierla.',
     pen: 'Scrivi o disegna con il mouse, la penna o il dito. Per scorrere la pagina torna su “Leggi”.',
-    eraser: 'Tieni premuto e passa con il cerchio sopra i tratti di penna per cancellarli.',
+    eraser: 'Tieni premuto e passa con il cerchio sopra i tratti di penna o le evidenziazioni per cancellarli.',
     note: 'Tocca un punto del testo per attaccarci una nota.'
   };
 
@@ -370,8 +370,14 @@ body.lv-mode-hl mark.lv-hl { cursor: pointer; }
         if (segDist(x, y, P[i], P[Math.min(i + 1, P.length - 1)]) <= r) { hit.push(s.id); return; }
       }
     });
-    if (!hit.length) return;
+    // anche le evidenziazioni sotto il cerchio della gomma
+    layer.style.display = 'none'; notesBox.style.display = 'none';
+    var under = document.elementFromPoint(ev.clientX, ev.clientY);
+    layer.style.display = ''; notesBox.style.display = '';
+    var mk = under && under.closest && under.closest('mark.lv-hl');
+    if (!hit.length && !mk) return;
     if (!erasedThisDrag) { snapshot(); erasedThisDrag = true; }
+    if (mk) { var hid = mk.dataset.hl; unwrapHl(hid); data.hl = data.hl.filter(function(h){ return h.id !== hid; }); }
     data.strokes = data.strokes.filter(function(s){ return hit.indexOf(s.id) < 0; });
     hit.forEach(function(id){ var p = svg.querySelector('path[data-id="' + id + '"]'); if (p) p.remove(); delete absPts[id]; });
     save();
@@ -550,7 +556,7 @@ body.lv-mode-hl mark.lv-hl { cursor: pointer; }
   function autosize(ta){ ta.style.height = 'auto'; ta.style.height = Math.max(ta.scrollHeight + 2, 40) + 'px'; }
 
   prose.addEventListener('click', function(ev){
-    if (mode === 'hl') {
+    if (mode === 'hl' || mode === 'read') {
       var m = ev.target.closest && ev.target.closest('mark.lv-hl');
       if (m && window.getSelection().isCollapsed) { ev.preventDefault(); showHlMenu(m); }
       return;

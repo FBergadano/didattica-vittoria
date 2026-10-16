@@ -143,6 +143,7 @@ a
       if(ok)correct++;
     });
     fb.style.display='block';
+    if(window._lvSave)_lvSave('cloze',root.id,{v:[].map.call(blanks,function(b){return b.value;}),ok:correct/total});
     if(correct===total){
       fb.className='tplcz-fb ok';
       fb.innerHTML='&#10003; Tutto corretto! Hai ricostruito perfettamente il ciclo di scambio energetico.';

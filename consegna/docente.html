@@ -83,6 +83,12 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   .dubbio textarea { width: 100%; min-height: 3.5em; }
   .dubbio .az { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .4rem; }
   /* studenti */
+  .fotos { display: flex; flex-wrap: wrap; gap: .6rem; margin: .6rem 0; }
+  .fotos figure { margin: 0; width: 180px; border: 1px solid var(--bordo); border-radius: 8px; overflow: hidden; background: #f8fafc; }
+  .fotos img { display: block; width: 100%; height: 180px; object-fit: cover; cursor: zoom-in; background: #eef2f7; }
+  .fotos figcaption { font-size: .78rem; color: var(--testo2); padding: .3rem .45rem; display: flex; justify-content: space-between; gap: .3rem; align-items: center; }
+  .fotos figcaption button { padding: .1rem .4rem; font-size: .75rem; }
+  img.grande { max-width: 100%; display: block; margin: .5rem auto; border-radius: 6px; }
   .stud { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .4rem; margin-top: .6rem; }
   .stud div { border: 1px solid var(--bordo); border-radius: 8px; padding: .35rem .55rem; display: flex; justify-content: space-between; align-items: center; gap: .4rem; background: #fff; }
   .stud b { letter-spacing: .05em; }
@@ -98,6 +104,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   <nav class="schede" id="schede" hidden>
     <button data-s="compiti" class="on">Compiti</button>
     <button data-s="tutte">Tutte le risposte</button>
+    <button data-s="foto">Foto</button>
     <button data-s="dubbi">Dubbi<span id="nd"></span></button>
     <button data-s="studenti">Studenti</button>
     <button data-s="dati">Dati</button>
@@ -123,6 +130,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
 
   <section id="s-compiti" hidden></section>
   <section id="s-tutte" hidden></section>
+  <section id="s-foto" hidden></section>
   <section id="s-dubbi" hidden></section>
   <section id="s-studenti" hidden></section>
   <section id="s-dati" hidden></section>
@@ -182,7 +190,21 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   }
 
   // ───────── stato ─────────
-  var studenti = [], classe = null, righe = [], dubbi = [], scheda = 'compiti';
+  var studenti = [], classe = null, righe = [], dubbi = [], foto = [], scheda = 'compiti';
+  function chiaveCompito(c) { return String(c.data).slice(0, 10) + '|' + [].concat(c.capitolo || []).join(','); }
+  function fotoDi(c, codice) { var k = chiaveCompito(c); return foto.filter(function(f) { return f.compito === k && (!codice || f.codice === codice); }); }
+  // carica le immagini (una richiesta per foto) dentro gli <img data-foto="id">
+  function caricaImmagini(box) {
+    $$('img[data-foto]', box).forEach(function(img) {
+      chiama('/docente/immagine?id=' + img.dataset.foto).then(function(j) { img.src = j.src; img.onclick = function() { apriModale('<div class="testa"><span></span><button data-chiudi>Chiudi ✕</button></div><img class="grande" src="' + j.src + '" alt="">'); }; }).catch(function() {});
+    });
+  }
+  function fotoHtml(lista, elimina) {
+    return '<div class="fotos">' + lista.map(function(f) {
+      return '<figure><img data-foto="' + f.id + '" alt="foto di ' + esc(f.codice) + '"><figcaption><span><b>' + esc(f.codice) + '</b> · ' + ora(f.ts) + '</span>' +
+        (elimina ? '<button class="peric" data-fe="' + f.id + '" title="Elimina la foto">🗑</button>' : '') + '</figcaption></figure>';
+    }).join('') + '</div>';
+  }
   function codiciDi(cl) { return studenti.filter(function(s) { return s.classe === cl; }).map(function(s) { return s.codice; }); }
 
   // ───────── accesso ─────────
@@ -224,7 +246,8 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       chiama('/docente/risposte?classe=' + encodeURIComponent(classe)).then(function(j) {
         righe = j.righe.map(function(r) { var o = {}; j.colonne.forEach(function(c, i) { o[c] = r[i]; }); return o; });
       }),
-      chiama('/docente/dubbi?classe=' + encodeURIComponent(classe)).then(function(j) { dubbi = j.dubbi || []; })
+      chiama('/docente/dubbi?classe=' + encodeURIComponent(classe)).then(function(j) { dubbi = j.dubbi || []; }),
+      chiama('/docente/foto?classe=' + encodeURIComponent(classe)).then(function(j) { foto = j.foto || []; }).catch(function() { foto = []; })
     ]).then(mostra).catch(function(e) { if (e.message !== 'accesso') alert('Errore: ' + e.message); });
   }
   $$('#schede button').forEach(function(b) { b.onclick = function() { scheda = b.dataset.s; mostra(); }; });
@@ -233,7 +256,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     $$('main > section').forEach(function(s) { s.hidden = s.id !== 's-' + scheda; });
     var aperti = dubbi.filter(function(d) { return !d.risolto; }).length;
     $('#nd').innerHTML = aperti ? '<span class="badge">' + aperti + '</span>' : '';
-    ({ compiti: vistaCompiti, tutte: vistaTutte, dubbi: vistaDubbi, studenti: vistaStudenti, dati: vistaDati })[scheda]();
+    ({ compiti: vistaCompiti, tutte: vistaTutte, foto: vistaFoto, dubbi: vistaDubbi, studenti: vistaStudenti, dati: vistaDati })[scheda]();
   }
 
   // ───────── compiti ─────────
@@ -296,13 +319,13 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     cod.forEach(function(k) {
       h += '<tr><td class="cod">' + esc(k) + '</td>';
       lz.forEach(function(c, i) {
-        var r = riepilogo(c, cache[i], k), cl;
-        if (!r.fatti) cl = r.scaduto ? 'mancante' : 'niente';
+        var r = riepilogo(c, cache[i], k), cl, nf = libero ? 0 : fotoDi(c, k).length;
+        if (!r.fatti) cl = nf ? (r.tot ? 'parte' : 'tutto') : r.scaduto ? 'mancante' : 'niente';
         else cl = r.fatti >= r.tot ? 'tutto' : 'parte';
         h += '<td class="cella ' + cl + '" data-k="' + esc(k) + '" data-l="' + i + '">';
-        if (!r.fatti) h += r.scaduto ? 'non svolto' : '—';
-        else h += '<b>' + r.fatti + '/' + r.tot + '</b>' + (r.valutate ? ' · ✓' + r.giusti : '') +
-          '<div class="t">' + (r.durata !== null ? '⏱ ' + durata(r.durata) : '') + (r.tardi ? ' ⏰' : '') + '</div>';
+        if (!r.fatti) h += nf ? '' : r.scaduto ? 'non svolto' : '—';
+        else h += '<b>' + r.fatti + '/' + r.tot + '</b>' + (r.valutate ? ' · ✓' + r.giusti : '');
+        if (r.fatti || nf) h += '<div class="t">' + (r.durata !== null ? '⏱ ' + durata(r.durata) : '') + (r.tardi ? ' ⏰' : '') + (nf ? ' 📷' + nf : '') + '</div>';
         h += '</td>';
       });
       h += '</tr>';
@@ -364,10 +387,12 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     var r = riepilogo(c, rr, codice), tutte = etichette(rr);
     var testa = '<div class="testa"><div><h2>' + esc(codice) + ' — ' + (c.data ? 'compito per ' + bella(giorno(c.data)) : 'tutte le risposte') + '</h2><div class="nota" style="margin:0">' + esc(titoloCompito(c)) +
       (c.note ? ' · ' + esc(c.note) : '') + '</div></div><button data-chiudi>Chiudi ✕</button></div>';
-    var riass = '<p>' + r.fatti + ' esercizi su ' + r.tot + (r.valutate ? ', ' + r.giusti + ' giusti' : '') +
+    var riass = !r.tot ? '' : '<p>' + r.fatti + ' esercizi su ' + r.tot + (r.valutate ? ', ' + r.giusti + ' giusti' : '') +
       (r.durata !== null ? ' · tempo fra la prima e l\'ultima risposta: <b>' + durata(r.durata) + '</b>' : '') +
       (r.tardi ? ' · <span class="err">⏰ ' + r.tardi + ' iniziati dopo la scadenza</span>' : '') + '</p>';
-    apriModale(testa + riass + '<p class="nota">Carico le risposte…</p>');
+    var lf = c.data ? fotoDi(c, codice) : [];
+    if (lf.length) riass += '<p><b>Foto dei compiti su carta</b></p>' + fotoHtml(lf, false);
+    apriModale(testa + riass + '<p class="nota">Carico le risposte…</p>'); caricaImmagini($('#modale'));
     chiama('/docente/dettaglio?classe=' + encodeURIComponent(classe) + '&codice=' + encodeURIComponent(codice) + '&pagine=' + encodeURIComponent(capitoliDi(c).join(','))).then(function(j) {
       var mie = {}; (j.risposte || []).forEach(function(x) { mie[x.pagina + '|' + x.chiave] = x; });
       var h = '<table class="dett"><tr><th>Esercizio</th><th>Esito</th><th>Al primo colpo</th><th>Verifiche</th><th>Quando</th></tr>';
@@ -379,7 +404,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
           '<td>' + (x.ultimo_ts ? ora(x.ultimo_ts) : '<span class="e-nd">prima dell\'accesso</span>') + '</td>';
         h += '</tr>';
       });
-      apriModale(testa + riass + h + '</table>');
+      apriModale(testa + riass + (tutte.length ? h + '</table>' : '<p class="nota">Nessuna risposta online per questo compito.</p>')); caricaImmagini($('#modale'));
     }).catch(function(e) { if (e.message !== 'accesso') apriModale(testa + '<p class="err">Errore: ' + esc(e.message) + '</p>'); });
   }
 
@@ -401,6 +426,26 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
         '<td>' + s.n + '/' + cod.length + '</td><td>' + bar(s.ok) + '</td><td>' + bar(s.primo) + '</td></tr>';
     });
     apriModale(h + '</table>');
+  }
+
+  // ───────── foto ─────────
+  function vistaFoto() {
+    var sec = $('#s-foto');
+    if (!foto.length) { sec.innerHTML = '<div class="card">Nessuna foto dalla classe <b>' + esc(classe) + '</b>.</div>'; return; }
+    var gruppi = {}, ordine = [];
+    foto.forEach(function(f) { var k = f.compito || ''; if (!gruppi[k]) { gruppi[k] = []; ordine.push(k); } gruppi[k].push(f); });
+    var tit = {}; (COMPITI[classe] || []).forEach(function(c) { tit[chiaveCompito(c)] = 'Compito per ' + bella(giorno(c.data)) + ' — ' + titoloCompito(c); });
+    sec.innerHTML = ordine.map(function(k) {
+      var t = k ? (tit[k] || 'Compito per ' + bella(giorno(k)) + ' (non più nel calendario)') : 'Non legate a un compito';
+      return '<div class="card"><b>' + esc(t) + '</b> · ' + gruppi[k].length + ' foto' + fotoHtml(gruppi[k], true) + '</div>';
+    }).join('');
+    caricaImmagini(sec);
+    $$('[data-fe]', sec).forEach(function(b) {
+      b.onclick = function() {
+        if (!confirm('Eliminare questa foto?')) return;
+        chiama('/docente/foto-elimina', { id: +b.dataset.fe }).then(function() { foto = foto.filter(function(f) { return f.id !== +b.dataset.fe; }); mostra(); });
+      };
+    });
   }
 
   // ───────── dubbi ─────────
@@ -470,14 +515,14 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   // ───────── dati ─────────
   function vistaDati() {
     var sec = $('#s-dati');
-    sec.innerHTML = '<div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte arrivate e i dubbi inviati prima della data scelta. ' +
+    sec.innerHTML = '<div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte, le foto e i dubbi arrivati prima della data scelta. ' +
       'Conviene farlo a fine quadrimestre: sul server resta solo ciò che serve.</p>' +
       '<p>Cancella tutto ciò che è precedente al <input type="date" id="primadi"> <button class="peric" id="cancella">Cancella</button> <span id="canmsg" class="nota"></span></p></div>';
     $('#cancella').onclick = function() {
       var v = $('#primadi').value; if (!v) return;
       var t = giorno(v).getTime();
       if (!confirm('Cancellare definitivamente risposte e dubbi precedenti al ' + bella(giorno(v)) + ' ' + v.slice(0, 4) + '?')) return;
-      chiama('/docente/cancella', { prima_di: t }).then(function(j) { $('#canmsg').textContent = '✓ Cancellate ' + j.risposte + ' risposte e ' + j.dubbi + ' dubbi.'; });
+      chiama('/docente/cancella', { prima_di: t }).then(function(j) { $('#canmsg').textContent = '✓ Cancellati ' + j.risposte + ' risposte, ' + (j.foto || 0) + ' foto e ' + j.dubbi + ' dubbi.'; });
     };
   }
 

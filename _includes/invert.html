@@ -92,6 +92,24 @@ if(ALLOW_SQUARE){
   VARS.forEach(function(v){LEFT0[v]=LEFT0[v]/2;RIGHT0[v]=RIGHT0[v]/2;});
 }
 
+// Per ogni grandezza, di quanto la si moltiplica/divide in una mossa: se nella formula
+// di partenza compare al quadrato (es. r² nella legge di gravitazione), i suoi tasti
+// diventano ×r² e ÷r², così basta una mossa sola invece di due.
+var MAG={};
+VARS.forEach(function(v){
+  var m=Math.max(Math.abs(LEFT0[v]||0),Math.abs(RIGHT0[v]||0));
+  MAG[v]=(m>=2&&m%2===0)?2:1;
+  if(ALLOW_SQRT&&v===TARGET)MAG[v]=2;
+});
+root.querySelectorAll('.invx-btn[data-v]').forEach(function(b){
+  var v=b.dataset.v;
+  if(MAG[v]===2&&!b.dataset.mag){
+    b.dataset.mag='2';
+    var sym=b.querySelector('.invx-btnsym');
+    if(sym)sym.innerHTML='$'+wrapLblEarly(LABELS[v])+'^2$';
+  }
+});
+function wrapLblEarly(l){return l.indexOf('\\')!==-1?'('+l+')':l;}
 function clone(d){var o={};VARS.forEach(function(v){o[v]=d[v];});return o;}
 function stateKey(st){
   return VARS.map(function(v){return st.left[v];}).join(',')+'|'+VARS.map(function(v){return st.right[v];}).join(',');
@@ -114,11 +132,8 @@ function isGoal(left,right){
 function allMoves(){
   var m=[{type:'swap'}];
   VARS.forEach(function(v){
-    if(ALLOW_SQRT&&v===TARGET){
-      m.push({type:'mul',v:v,mag:2});m.push({type:'div',v:v,mag:2});
-    } else {
-      m.push({type:'mul',v:v});m.push({type:'div',v:v});
-    }
+    if(MAG[v]===2){m.push({type:'mul',v:v,mag:2});m.push({type:'div',v:v,mag:2});}
+    else {m.push({type:'mul',v:v});m.push({type:'div',v:v});}
   });
   if(ALLOW_SQRT)m.push({type:'sqrt'});
   if(ALLOW_SQUARE)m.push({type:'square'});
@@ -234,20 +249,22 @@ function buildStages(oldMap,moveVar,delta){
   });
   var lbl=LABELS[moveVar];
   var magLbl=mag===2?(wrapLbl(lbl)+'^2'):lbl;
+  var newLbl='{\\color{#0891b2}{'+magLbl+'}}';
   var hasCancel=false;
   if(sameSign){
     var oldTerm=oldV!==0?termPlain(moveVar,Math.abs(oldV)):null;
     var terms=oldTerm?[oldTerm,magLbl]:[magLbl];
-    if(delta>0||(oldV>0)){numsRaw=numsRaw.concat(terms);numsCancel=numsCancel.concat(terms);}
-    else{densRaw=densRaw.concat(terms);densCancel=densCancel.concat(terms);}
+    var termsNew=oldTerm?[oldTerm,newLbl]:[newLbl];
+    if(delta>0||(oldV>0)){numsRaw=numsRaw.concat(termsNew);numsCancel=numsCancel.concat(terms);}
+    else{densRaw=densRaw.concat(termsNew);densCancel=densCancel.concat(terms);}
   } else {
     hasCancel=true;
     var oldAbs=Math.abs(oldV),newAbsMag=Math.abs(newV);
     var oldRawTerm=termPlain(moveVar,oldAbs);
     var oldCancelTerm=newAbsMag===0?('\\cancel{'+oldRawTerm+'}'):(wrapLbl(lbl)+'^{\\cancelto{'+newAbsMag+'}{'+oldAbs+'}}');
     var newCancelTerm='\\cancel{'+magLbl+'}';
-    if(oldV>0){numsRaw.push(oldRawTerm);densRaw.push(magLbl);numsCancel.push(oldCancelTerm);densCancel.push(newCancelTerm);}
-    else{densRaw.push(oldRawTerm);numsRaw.push(magLbl);densCancel.push(oldCancelTerm);numsCancel.push(newCancelTerm);}
+    if(oldV>0){numsRaw.push(oldRawTerm);densRaw.push(newLbl);numsCancel.push(oldCancelTerm);densCancel.push(newCancelTerm);}
+    else{densRaw.push(oldRawTerm);numsRaw.push(newLbl);densCancel.push(oldCancelTerm);numsCancel.push(newCancelTerm);}
   }
   return {hasCancel:hasCancel,raw:{num:numsRaw,den:densRaw},cancel:{num:numsCancel,den:densCancel}};
 }
@@ -267,7 +284,7 @@ function renderEq(){
 // 'hold' è il tempo (ms) per cui la fase resta visibile prima di richiamare cb.
 function renderStage(latex,opts,cb){
   opts=opts||{};
-  var hold=opts.hold!=null?opts.hold:1700, dur=280;
+  var hold=opts.hold!=null?opts.hold:700, dur=250;
   var box=$$('.invx-eq');
   box.style.transition='none';box.style.transform='none';box.style.opacity=0;
   box.innerHTML='$$'+latex+'$$';
@@ -299,7 +316,7 @@ function renderAppear(mvType,lbl,cb){
   typeset(box);
   void box.offsetWidth;
   root.querySelectorAll('.invx-add,.invx-fracden').forEach(function(el){el.classList.add('show');});
-  if(cb)setTimeout(cb,1900);
+  if(cb)setTimeout(cb,750);
 }
 function setCaption(text){
   var cap=$$('.invx-caption');
@@ -375,20 +392,20 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
 
     if(mv.type==='swap'){
       // Scambiare i membri non conta come mossa.
-      renderStage(eqStr(ns.left,ns.right),{hold:1700},function(){afterMove(ns,true);});
+      renderStage(eqStr(ns.left,ns.right),{hold:0},function(){afterMove(ns,true);});
       return;
     }
     if(mv.type==='sqrt'){
       var preLatex='\\sqrt{'+toLatexInner(left)+'} = '+negPrefix()+'\\sqrt{'+toLatexInner(right)+'}';
-      renderStage(preLatex,{hold:1700},function(){
-        renderStage(eqStr(ns.left,ns.right),{hold:1700},function(){afterMove(ns);});
+      renderStage(preLatex,{hold:800},function(){
+        renderStage(eqStr(ns.left,ns.right),{hold:0},function(){afterMove(ns);});
       });
       return;
     }
     if(mv.type==='square'){
       var preLatexSq='\\left('+toLatex(left)+'\\right)^2 = \\left('+negPrefix()+'\\left('+toLatex(right)+'\\right)\\right)^2';
-      renderStage(preLatexSq,{hold:1700},function(){
-        renderStage(eqStr(ns.left,ns.right),{hold:1700},function(){afterMove(ns);});
+      renderStage(preLatexSq,{hold:800},function(){
+        renderStage(eqStr(ns.left,ns.right),{hold:0},function(){afterMove(ns);});
       });
       return;
     }
@@ -413,25 +430,29 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
     var cancelCaption=hasCancel?('Le $'+magLbl+'$ si semplificano.'):null;
 
     function finalStage(){
-      renderStage(eqStr(ns.left,ns.right),{hold:1700},function(){afterMove(ns);});
+      // la forma nuova compare e i tasti tornano subito utilizzabili
+      renderStage(eqStr(ns.left,ns.right),{hold:0},function(){afterMove(ns);});
     }
-    renderAppear(mv.type,magLbl,function(){
+    function afterAppear(){
       if(hasCancel){
+        // la didascalia compare insieme alla semplificazione, non prima
         setCaption(cancelCaption);
-        setTimeout(function(){
-          setCaption(null);
-          renderStage(cancelLatex,{hold:1700},finalStage);
-        },1600);
+        renderStage(cancelLatex,{hold:700},function(){setCaption(null);finalStage();});
       } else if(combineCaption){
         setCaption(combineCaption);
-        setTimeout(function(){
-          setCaption(null);
-          finalStage();
-        },1600);
+        setTimeout(function(){setCaption(null);finalStage();},700);
       } else {
         finalStage();
       }
-    });
+    }
+    if(mv.type==='div'){
+      // Dividendo, la grandezza si aggiunge al denominatore (evidenziata), senza
+      // creare una "frazione di frazione".
+      var rawLatex=joinFrac(li.raw.num,li.raw.den)+' = '+negPrefix()+joinFrac(ri.raw.num,ri.raw.den);
+      renderStage(rawLatex,{hold:550},afterAppear);
+    } else {
+      renderAppear(mv.type,magLbl,afterAppear);
+    }
   });
 });
 $$('.invx-reset').addEventListener('click',reset);

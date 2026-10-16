@@ -58,9 +58,17 @@ Vale la pena ricordarlo: la mente che ha scritto l'equazione che state per studi
 
 {% include spoiler-end.html %}
 
-## L'esperimento di Cavendish
+
+## Il Modulo della Forza Gravitazionale
+
+{% include margin-note.html testo="L'ordine che seguiremo" %}
+Ciò che dobbiamo determinare adesso sono le caratteristiche della forza gravitazionale. Sappiamo già che <u markdown="span">le forze sono quantità **vettoriali**</u> e che pertanto <u markdown="span">c'è bisogno di specificare **modulo**, **direzione** e **verso** della forza gravitazionale</u>. Noi cominciamo con il modulo (ovvero l'intensità della forza), poi studieremo anche la direzione e il verso. 
+{% include margin-note-end.html %}
+
+###  L'Esperimento di Cavendish
+
 {% include margin-note.html testo="Descrizione della bilancia a torsione"%}
-Cavendish costruì il seguente apparato sperimentale, la cosiddetta <definizione>bilancia a torsione</definizione> (si veda la {% include fig-ref.html id="bilancia_a_torsione" %}):
+Per misurare l'intensità della forza gravitazionale, Cavendish costruì il seguente apparato sperimentale, la cosiddetta <definizione>bilancia a torsione</definizione> (si veda la {% include fig-ref.html id="bilancia_a_torsione" %}):
 
 - un'asta rigida orizzontale (il “bilancere”), sospesa al centro a un filo sottilissimo, molto sensibile alla torsione;
 - una piccola sfera, di massa $m$, fissata a un estremo del bilancere; all'altro estremo, un piattino che indica la posizione sulla scala;
@@ -96,6 +104,8 @@ Verifica con l'animazione che:
 
 - nello scenario "Dipendenza dalle masse", la forza mostrata si aggiorna subito quando scegli $M$ e $m$, misurata sempre alla stessa distanza: raddoppiando una delle due masse la forza raddoppia esattamente (confronta pure i valori mostrati per le diverse combinazioni). Premendo "Avvia" il bilancere ruota lentamente verso la sfera grande e si ferma in una posizione di equilibrio — è la stessa attrazione che stai misurando, resa visibile: più le masse sono grandi, più il bilancere ruota;
 - nello scenario "Dipendenza da r", i pulsanti spostano davvero il bilancere alla nuova distanza (indicata dalla linea tratteggiata $r$): raddoppiando $r$ l'intensità della forza non si dimezza, ma diventa un quarto; triplicando $r$ diventa un nono; quadruplicando $r$ diventa un sedicesimo — <u markdown="span">proprio quello che significa dire che $F$ è inversamente proporzionale al **quadrato** della distanza</u>, verificabile confrontando il valore di $F$ prima e dopo ogni cambio.
+
+### La Formula della Legge di Gravitazione Universale
 
 {% include margin-note.html testo="Dall'esperimento alla formula di Newton" %}
 Cavendish dedusse così che il modulo della forza gravitazionale fra due corpi è <u markdown="span">**direttamente proporzionale al prodotto delle loro masse** e **inversamente proporzionale al quadrato della distanza**</u>. Cioè, la forza gravitazionale tra due masse $m_1$ ed $m_2$ è descritta dalla seguente equazione, detta <definizione>legge di gravitazione universale</definizione>:
