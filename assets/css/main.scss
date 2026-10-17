@@ -2164,3 +2164,28 @@ cit em, cit i { font-style: normal; }
   .testo-fronte { grid-template-columns: 1fr; }
   .testo-fronte .tf-trad { border-left: none; padding-left: 0; border-top: 1px solid #cbd5e1; padding-top: .7rem; }
 }
+
+// ── Note a piè di pagina (kramdown: [^nome]) ─────────────────
+// staccate dalla fine del testo, con un titolo "Note" e un carattere più piccolo
+.footnotes {
+  margin-top: 3.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid #cbd5e1;
+  font-size: .88rem;
+  color: #475569;
+  &::before {
+    content: "Note";
+    display: block;
+    font-family: $font-accessible;
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--accent, #64748b);
+    margin-bottom: .6rem;
+  }
+  ol { padding-left: 1.4rem; }
+  li { margin-bottom: .55rem; }
+  li p { margin: 0 0 .4rem; }
+}
+.footnote { font-size: .75em; }
