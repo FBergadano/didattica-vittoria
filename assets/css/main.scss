@@ -2111,3 +2111,28 @@ cit em, cit i { font-style: normal; }
 // Quando si arriva a una simulazione da un link interno (es. "rivedi l'esperimento"),
 // la barra in alto non deve coprirla.
 .phet-wrap { scroll-margin-top: calc(#{$topbar-height} + 24px); }
+
+// ── Dialoghi teatrali (Platone, Brecht…) ─────────────────────
+// <div class="dialogo" markdown="1"> con le battute che cominciano con
+// <span class="batt">Nome</span>; <p class="dialogo-rif"> per il riferimento.
+.dialogo {
+  margin: 1.5rem 0;
+  padding: .3rem 0 .3rem 1.1rem;
+  border-left: 3px solid var(--accent-border, #cbd5e1);
+  p { margin: .55rem 0; }
+  .batt {
+    font-variant: small-caps;
+    font-weight: 700;
+    letter-spacing: .05em;
+    margin-right: .5em;
+    color: var(--accent, #334155);
+  }
+  .dialogo-rif { text-align: right; font-size: .87rem; }
+}
+// Una domanda isolata e centrata, da cui partire per una scelta
+.domanda-centrale {
+  text-align: center;
+  font-size: 1.25rem;
+  font-style: italic;
+  margin: 1.6rem 0;
+}

@@ -56,7 +56,8 @@ title: "Didattica Vittoria"
     <h2 class="courses-group-title">Cittadinanza</h2>
     <div class="courses-grid">
       {% for corso in corsi_cittadinanza %}
-      <a href="{{ corso.url | relative_url }}" class="course-card citt">
+      {% assign _href = corso.url %}{% if corso.diretto %}{% assign _primo = site.corsi | where: "corso", corso.slug | sort: "numero" | first %}{% if _primo %}{% assign _href = _primo.url %}{% endif %}{% endif %}
+      <a href="{{ _href | relative_url }}" class="course-card citt">
         <p class="card-tag">Cittadinanza</p>
         <p class="card-name">{{ corso.title }}</p>
         <span class="card-arrow" aria-hidden="true">→</span>

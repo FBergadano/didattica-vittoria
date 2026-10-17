@@ -9,8 +9,8 @@
     {% assign corso_url = '/corsi/' | append: page.corso | append: '/' %}
     <span class="breadcrumb">
       <a href="{{ '/' | relative_url }}">Home</a> ›
-      <a href="{{ corso_url | relative_url }}">{{ page.corso_titolo }}</a> ›
-      Cap.&thinsp;{{ page.numero }}
+      {% if page.unico %}<span>{{ page.title }}</span>{% else %}<a href="{{ corso_url | relative_url }}">{{ page.corso_titolo }}</a> ›
+      Cap.&thinsp;{{ page.numero }}{% endif %}
     </span>
     {% endif %}
     <button id="pdf-btn" onclick="exportPDF()"

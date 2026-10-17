@@ -61,7 +61,7 @@
 
   <!-- Sidebar con TOC del capitolo corrente (popolata da JS) -->
   <aside class="sidebar" aria-label="Indice del capitolo">
-    {% assign corso_url = '/corsi/' | append: page.corso | append: '/' %}
+    {% assign corso_url = '/corsi/' | append: page.corso | append: '/' %}{% if page.unico %}{% assign corso_url = '/' %}{% endif %}
     <a href="{{ corso_url | relative_url }}" class="sidebar-course-name">{{ page.corso_titolo }}</a>
     <p class="sidebar-course-class">Liceo Vittoria</p>
     <p class="sidebar-toc-label">In questo capitolo</p>
@@ -74,7 +74,7 @@
   <main class="main-content" id="main">
 
     <header class="chapter-header">
-      <span class="chapter-number">Capitolo {{ page.numero }}</span>
+      {% unless page.unico %}<span class="chapter-number">Capitolo {{ page.numero }}</span>{% endunless %}
       <h1 class="chapter-title">{{ page.title }}</h1>
       {% if page.subtitle %}<p class="chapter-subtitle">{{ page.subtitle }}</p>{% endif %}
     </header>

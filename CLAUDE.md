@@ -25,6 +25,12 @@ per tenerli ordinati nel finder — l'ordine vero (pagina del corso, link
 | `gravitazione-elettromagnetismo/` | La Gravitazione e l'Elettromagnetismo | fisica |
 | `cittadinanza/` | Cittadinanza e Prospettive Globali | cittadinanza |
 | `clima/` | Lezioni sul Clima | cittadinanza |
+| `cittadinanza/dissenso-eresia/` | Dissenso ed Eresia | cittadinanza |
+
+Un argomento con un solo capitolo può saltare il menù dei capitoli: con
+`diretto: true` nella pagina di presentazione, la scheda della home porta
+subito al capitolo (es. `dissenso-eresia.md`); nel capitolo, `unico: true`
+toglie l'etichetta "Capitolo 1".
 
 Ogni argomento ha anche una pagina di presentazione `_corsi/<argomento>.md`
 (layout `corso`) con titolo, `slug` e `ordine` (posizione all'interno della

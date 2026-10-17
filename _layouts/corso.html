@@ -10,6 +10,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+{% comment %} Argomento "diretto" (diretto: true nel front matter): ha un solo capitolo, e
+la pagina dell'argomento rimanda subito a quel capitolo, senza mostrare il menù. {% endcomment %}
+{% if page.diretto %}{% assign _primo = site.corsi | where: "corso", page.slug | sort: "numero" | first %}{% if _primo %}
+<meta http-equiv="refresh" content="0; url={{ _primo.url | relative_url }}">
+<script>location.replace("{{ _primo.url | relative_url }}");</script>
+{% endif %}{% endif %}
 
 <!-- CSS variables per il colore di accento del corso -->
 <style>
