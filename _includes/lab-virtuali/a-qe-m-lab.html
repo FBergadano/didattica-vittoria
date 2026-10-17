@@ -1,0 +1,41 @@
+{% comment %}
+Animazione (in loop, senza didascalia), analoga a a-uguale-g-lab.html (gravità):
+le due equazioni F = m a (secondo principio) e F = q E (forza elettrica)
+compaiono affiancate; le due F si illuminano (sono la stessa forza), le
+equazioni si fondono in m a = q E, la m scende sotto la riga di frazione dal
+lato di q E e resta a = qE/m, incorniciata. A differenza della gravità, la m
+non si semplifica. Lo studente può mettere in pausa, ricominciare e scegliere
+la velocità (motore: formula-anim-engine.html). Nessun parametro.
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap"><canvas id="cv-aqem"></canvas></div>
+<script>
+FormulaAnim.create({id:'cv-aqem',W:420,H:104,cycle:11,still:8.5,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,Y=66,yb=Y-8,yn=yb-7,yd=yb+21,V={it:true,vec:true},I={it:true};
+  var h=p(t,1.0,1.5)*(1-p(t,2.6,3.2));        // evidenzia le due F
+  var fadeEq=1-p(t,2.5,3.1);                   // spariscono "F ="
+  var pB=p(t,2.7,3.7);                         // fusione in m a = q E
+  var hm=p(t,4.0,4.4);                         // la m si illumina…
+  var pM=p(t,4.6,5.6);                         // …e va sotto, dal lato di q E
+  var box=p(t,6.2,6.8);
+  var colF=mix(A.DARK,A.OR,h),colR=mix(A.DARK,A.TEAL,box);
+  A.arc(62,34,171,-4,282,34,h);
+  A.tok('F',60,Y,fadeEq,colF,V);
+  A.tok('=',88,Y,fadeEq,A.DARK);
+  A.tok('F',282,Y,fadeEq,colF,V);
+  A.tok('=',310,Y,fadeEq,A.DARK);
+  // m: da "F = m a" al centro, poi sotto la riga di frazione
+  var mx=L(L(114,150,pB),244,pM), my=L(Y,yd+2,pM)+18*Math.sin(Math.PI*pM);
+  A.tok('m',mx,my,1,mix(mix(A.DARK,A.OR,hm),colR,box),{it:true,size:L(26,22,pM)});
+  // a: si sposta a sinistra quando la m se ne va
+  A.tok('a',L(L(136,176,pB),168,pM),Y,1,colR,V);
+  A.tok('=',L(206,196,pM),Y,p(t,3.0,3.6),colR);
+  // q E: salgono al numeratore
+  var fs=L(26,22,pM);
+  A.tok('q',L(L(336,236,pB),232,pM),L(Y,yn,pM),1,colR,{it:true,size:fs});
+  A.tok('E',L(L(358,258,pB),256,pM),L(Y,yn,pM),1,colR,{it:true,vec:true,size:fs});
+  // riga di frazione
+  if(pM>0.3){ctx.globalAlpha=p(t,4.9,5.4)*A.G;ctx.strokeStyle=colR;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(218,yb);ctx.lineTo(270,yb);ctx.stroke();ctx.globalAlpha=1;}
+  A.box(146,Y-46,138,72,box);
+}});
+</script>

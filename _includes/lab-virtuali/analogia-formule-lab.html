@@ -1,87 +1,114 @@
 {% comment %}
-Animazione (in loop, senza didascalia): costruire una formula elettrica per
-analogia con quella gravitazionale. A sinistra compare la formula della
-gravità; poi, a destra, la sua controparte elettrica si costruisce un simbolo
-alla volta: ogni simbolo gravitazionale si illumina (arancione) e al suo posto,
-a destra, compare il simbolo elettrico corrispondente (G → k, masse → cariche,
-r → r). Alla fine si evidenzia la differenza:
-  tipo="forza"      F = G·m₁m₂/r²  →  F = k·|q₁q₂|/r²   (compare il valore assoluto)
-  tipo="energia"    U = −G·Mm/r    →  U = k·Qq/r       (sparisce il segno meno)
-  tipo="potenziale" V = −G·M/r     →  V = k·Q/r        (sparisce il segno meno)
+Animazione (in loop, senza didascalia): l'analogia fra una formula
+gravitazionale (a sinistra) e la sua controparte elettrica (a destra).
+Ogni coppia di simboli corrispondenti ha un suo colore, ed è collegata da una
+freccia curva che parte dal simbolo gravitazionale e arriva a quello elettrico
+(G → k, masse → cariche, r → r).
+  tipo="forza"      F = G·m₁m₂/r²  e  F = k·|q₁q₂|/r²: le due leggi sono già
+                    scritte una accanto all'altra; le frecce collegano i simboli
+                    uno alla volta; alla fine si illumina il valore assoluto.
+  tipo="energia"    U = −G·Mm/r  →  U = k·Qq/r: la formula elettrica si
+                    costruisce; ogni freccia, arrivando, fa comparire il simbolo
+                    elettrico; alla fine il segno meno viene cancellato.
+  tipo="potenziale" V = −G·M/r   →  V = k·Q/r: come sopra.
 Parametri: id (univoco), tipo. Lo studente può mettere in pausa, ricominciare
 e scegliere la velocità (motore: formula-anim-engine.html).
 {% endcomment %}
 {% include lab-virtuali/formula-anim-engine.html %}
 {% assign _afid = include.id | default: "afor" %}
-<div class="fa-wrap" style="max-width:560px"><canvas id="cv-{{ _afid }}"></canvas></div>
+<div class="fa-wrap" style="max-width:600px"><canvas id="cv-{{ _afid }}"></canvas></div>
 <script>
 (function(){
 var TIPO='{{ include.tipo | default: "forza" }}';
-// ogni formula: simboli con posizione (x relativa all'inizio, riga: 'm' centrale, 'n' numeratore, 'd' denominatore)
-// "k" = chiave del simbolo, per accoppiare il simbolo gravitazionale a quello elettrico
-var F={
+// simboli: x (rispetto all'inizio della formula), riga ('n' numeratore, 'd' denominatore, altrimenti la riga principale),
+// k = chiave della coppia (lo stesso k a sinistra e a destra), e = esponente
+var D={
   forza:{
-    g:[{t:'F',x:0,k:'F'},{t:'=',x:26,k:'eq',it:false},{t:'G',x:52,k:'C'},{t:'m₁',x:88,r:'n',k:'a'},{t:'m₂',x:116,r:'n',k:'b'},{t:'r',x:100,r:'d',k:'r',e:'2'}],
-    gb:[70,132],
-    e:[{t:'F',x:0,k:'F'},{t:'=',x:26,k:'eq',it:false},{t:'k',x:52,k:'C'},{t:'q₁',x:92,r:'n',k:'a'},{t:'q₂',x:120,r:'n',k:'b'},{t:'r',x:106,r:'d',k:'r',e:'2'}],
-    eb:[68,146], extra:'abs', nota:'Il valore assoluto: le cariche possono essere negative.', lab:['forza gravitazionale','forza elettrica']
+    g:[{t:'F',x:0,k:'F'},{t:'=',x:28,k:'eq',up:1},{t:'G',x:56,k:'C'},{t:'m₁',x:96,r:'n',k:'a'},{t:'m₂',x:128,r:'n',k:'b'},{t:'r',x:112,r:'d',k:'r',e:'2'}],
+    gb:[76,150],
+    e:[{t:'F',x:0,k:'F'},{t:'=',x:28,k:'eq',up:1},{t:'k',x:56,k:'C'},{t:'q₁',x:100,r:'n',k:'a'},{t:'q₂',x:132,r:'n',k:'b'},{t:'r',x:116,r:'d',k:'r',e:'2'}],
+    eb:[74,160], abs:[82,152], nota:'Le stesse forme, con k al posto di G e le cariche al posto delle masse. In più, il valore assoluto: le cariche possono essere negative.',
+    lab:['legge di gravitazione universale','legge di Coulomb'], costruisci:false
   },
   energia:{
-    g:[{t:'U',x:0,k:'U'},{t:'=',x:26,k:'eq',it:false},{t:'−',x:50,k:'meno',it:false},{t:'G',x:74,k:'C'},{t:'M',x:110,r:'n',k:'a'},{t:'m',x:134,r:'n',k:'b'},{t:'r',x:122,r:'d',k:'r'}],
-    gb:[96,148],
-    e:[{t:'U',x:0,k:'U'},{t:'=',x:26,k:'eq',it:false},{t:'k',x:52,k:'C'},{t:'Q',x:88,r:'n',k:'a'},{t:'q',x:112,r:'n',k:'b'},{t:'r',x:100,r:'d',k:'r'}],
-    eb:[74,126], extra:'meno', nota:'Niente segno meno: il segno di U lo danno le cariche.', lab:['energia potenziale gravitazionale','energia potenziale elettrica']
+    g:[{t:'U',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'−',x:54,k:'meno',up:1},{t:'G',x:80,k:'C'},{t:'M',x:118,r:'n',k:'a'},{t:'m',x:144,r:'n',k:'b'},{t:'r',x:131,r:'d',k:'r'}],
+    gb:[102,160],
+    e:[{t:'U',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'k',x:56,k:'C'},{t:'Q',x:94,r:'n',k:'a'},{t:'q',x:120,r:'n',k:'b'},{t:'r',x:107,r:'d',k:'r'}],
+    eb:[78,136], nota:'Il segno meno sparisce: nella formula elettrica il segno di U lo danno le cariche.',
+    lab:['energia potenziale gravitazionale','energia potenziale elettrica'], costruisci:true
   },
   potenziale:{
-    g:[{t:'V',x:0,k:'U'},{t:'=',x:26,k:'eq',it:false},{t:'−',x:50,k:'meno',it:false},{t:'G',x:74,k:'C'},{t:'M',x:110,r:'n',k:'a'},{t:'r',x:110,r:'d',k:'r'}],
-    gb:[96,124],
-    e:[{t:'V',x:0,k:'U'},{t:'=',x:26,k:'eq',it:false},{t:'k',x:52,k:'C'},{t:'Q',x:88,r:'n',k:'a'},{t:'r',x:88,r:'d',k:'r'}],
-    eb:[74,102], extra:'meno', nota:'Niente segno meno: il segno di V lo dà la carica Q.', lab:['potenziale gravitazionale','potenziale elettrico']
+    g:[{t:'V',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'−',x:54,k:'meno',up:1},{t:'G',x:80,k:'C'},{t:'M',x:118,r:'n',k:'a'},{t:'r',x:118,r:'d',k:'r'}],
+    gb:[104,132],
+    e:[{t:'V',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'k',x:56,k:'C'},{t:'Q',x:94,r:'n',k:'a'},{t:'r',x:94,r:'d',k:'r'}],
+    eb:[80,108], nota:'Il segno meno sparisce: nella formula elettrica il segno di V lo dà la carica Q.',
+    lab:['potenziale gravitazionale','potenziale elettrico'], costruisci:true
   }
 }[TIPO];
-var ORD=['F','U','eq','C','a','b','r'];   // ordine in cui si costruisce la formula elettrica
-var steps=ORD.filter(function(k){ return F.e.some(function(s){ return s.k===k; }); });
-var T0=2.0, DT=0.95, TEND=T0+steps.length*DT;
-FormulaAnim.create({id:'cv-{{ _afid }}',W:560,H:150,cycle:TEND+5.5,still:TEND+3,draw:function(A,t){
-  var p=A.p,mix=A.mix,ctx=A.ctx,Y=78,yb=Y-8,yn=yb-8,yd=yb+22,GX=30,EX=330;
-  var pG=p(t,0.3,1.0), pArr=p(t,1.2,1.7), box=p(t,TEND+1.6,TEND+2.2);
-  function yy(s){ return s.r==='n'?yn:s.r==='d'?yd:Y; }
-  function sz(s){ return s.r?22:26; }
-  // quando si illumina il simbolo gravitazionale con chiave k, e quando compare quello elettrico
-  function stepOf(k){ var i=steps.indexOf(k); return i<0?null:T0+i*DT; }
-  function draw(list,X,alpha,isG){
-    list.forEach(function(s){
-      var ts=stepOf(s.k), col=A.DARK, al=alpha;
-      if (isG) { if (ts!==null) col=mix(A.DARK,A.OR,p(t,ts,ts+.3)*(1-p(t,ts+.7,ts+1.0))); }
-      else { if (ts===null) return; al=p(t,ts+.25,ts+.6); col=mix(A.OR,A.DARK,p(t,ts+.6,ts+1.0)); }
-      if (s.k==='meno' && isG) col=mix(col,A.RED,p(t,TEND+.2,TEND+.6));
-      A.tok(s.t,X+s.x,yy(s),al,mix(col,A.TEAL,box),{it:s.it!==false,size:sz(s)});
-      if (s.e) A.tok(s.e,X+s.x+10,yy(s)-10,al,mix(col,A.TEAL,box),{size:13});
-      if (s.k==='meno' && isG) A.slash(X+s.x,Y+1,p(t,TEND+.4,TEND+.9),1);
-    });
-  }
-  function bar(X,b,al,col){ if(al<=.01)return; ctx.globalAlpha=al*A.G; ctx.strokeStyle=col; ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(X+b[0],yb); ctx.lineTo(X+b[1],yb); ctx.stroke(); ctx.globalAlpha=1; }
+var COL={F:'#2563eb',U:'#2563eb',C:'#db2777',a:'#7c3aed',b:'#0891b2',r:'#ea580c'};
+var ORD=['F','U','C','a','b','r'];
+var pairs=ORD.filter(function(k){ return D.e.some(function(s){ return s.k===k; }); });
+var W=600, H=250, GX=40, EX=350, Y=130, T0=1.4, DT=1.15, TEND=T0+pairs.length*DT;
+var yb=Y-9, yn=yb-9, yd=yb+25;
+function yy(s){ return s.r==='n'?yn:s.r==='d'?yd:Y; }
+function find(list,k){ for (var i=0;i<list.length;i++) if (list[i].k===k) return list[i]; return null; }
+FormulaAnim.create({id:'cv-{{ _afid }}',W:W,H:H,cycle:TEND+6,still:TEND+3.2,draw:function(A,t){
+  var p=A.p,mix=A.mix,ctx=A.ctx,DARK='#0f172a';
+  var pL=p(t,0.2,0.8), pX=p(t,TEND+.3,TEND+.9), pNote=p(t,TEND+.6,TEND+1.2);
+  // quando la coppia k viene collegata
+  function when(k){ var i=pairs.indexOf(k); return i<0?null:T0+i*DT; }
+  // colore di un simbolo: scuro finché la sua coppia non viene collegata, poi del colore della coppia
+  function colOf(k){ var tk=when(k); if (tk===null) return DARK; return mix(DARK,COL[k],p(t,tk,tk+.35)); }
   // etichette
-  ctx.globalAlpha=A.G; ctx.font='italic 13px Georgia, serif'; ctx.textAlign='left'; ctx.fillStyle='#64748b';
-  ctx.globalAlpha=pG*A.G; ctx.fillText(F.lab[0],GX,22);
-  ctx.globalAlpha=pArr*A.G; ctx.fillText(F.lab[1],EX,22); ctx.globalAlpha=1;
-  // a sinistra la formula della gravità
-  draw(F.g,GX,pG,true); bar(GX,F.gb,pG,mix(A.DARK,A.TEAL,box));
-  // freccia
-  A.tok('→',285,Y,pArr,'#64748b',{size:26});
-  // a destra la controparte elettrica, un simbolo alla volta
-  draw(F.e,EX,1,false);
-  var pBar=p(t,stepOf('a')+.25,stepOf('a')+.6); bar(EX,F.eb,pBar,mix(A.DARK,A.TEAL,box));
-  // la differenza
-  var pX=p(t,TEND+.2,TEND+.7);
-  if (F.extra==='abs') {
-    var cAbs=mix(mix(A.RED,A.DARK,p(t,TEND+1.0,TEND+1.4)),A.TEAL,box);
-    A.tok('|',EX+76,yn,pX,cAbs,{size:22}); A.tok('|',EX+136,yn,pX,cAbs,{size:22});
+  ctx.font='italic 14px Georgia, serif'; ctx.textAlign='left'; ctx.fillStyle='#475569';
+  ctx.globalAlpha=pL*A.G; ctx.fillText(D.lab[0],GX-8,24);
+  ctx.globalAlpha=(D.costruisci?p(t,T0-.4,T0):pL)*A.G; ctx.fillText(D.lab[1],EX-8,24); ctx.globalAlpha=1;
+  function bar(X,b,al){ if(al<=.01)return; ctx.globalAlpha=al*A.G; ctx.strokeStyle=DARK; ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(X+b[0],yb); ctx.lineTo(X+b[1],yb); ctx.stroke(); ctx.globalAlpha=1; }
+  function sym(s,X,al,col){
+    var big=!s.r; A.tok(s.t,X+s.x,yy(s),al,col,{it:s.t!=='='&&s.t!=='−',size:big?30:25});
+    if (s.e) A.tok(s.e,X+s.x+11,yy(s)-12,al,col,{size:15});
   }
-  ctx.globalAlpha=pX*A.G*(1-box*.3); ctx.font='italic 13px Georgia, serif'; ctx.fillStyle=A.RED; ctx.textAlign='center';
-  ctx.fillText(F.nota,280,H_NOTE); ctx.globalAlpha=1;
-  A.box(EX-14,Y-48,(F.extra==='abs'?186:150),76,box);
+  // a sinistra: la formula gravitazionale, sempre visibile
+  D.g.forEach(function(s){
+    var c = s.k==='meno' ? mix(DARK,A.RED,pX) : colOf(s.k);
+    sym(s,GX,pL,c);
+    if (s.k==='meno') A.slash(GX+s.x,Y+1,p(t,TEND+.5,TEND+1.0),1);
+  });
+  bar(GX,D.gb,pL);
+  // a destra: la formula elettrica (già scritta, oppure costruita simbolo per simbolo)
+  D.e.forEach(function(s){
+    var tk=when(s.k), al;
+    if (!D.costruisci) al=pL;
+    else al = tk===null ? p(t,T0-.4,T0) : p(t,tk+.7,tk+.95);   // compare quando la freccia arriva
+    sym(s,EX,al,colOf(s.k));
+  });
+  bar(EX,D.eb,D.costruisci?p(t,when('a')+.7,when('a')+.95):pL);
+  if (D.abs) { var ca=mix(DARK,A.RED,pX); A.tok('|',EX+D.abs[0],yn,pL,ca,{size:27}); A.tok('|',EX+D.abs[1],yn,pL,ca,{size:27}); }
+  // frecce curve: dal simbolo gravitazionale al suo corrispondente elettrico
+  pairs.forEach(function(k,i){
+    var tk=when(k), s1=find(D.g,k), s2=find(D.e,k); if (!s1||!s2) return;
+    var pr=p(t,tk,tk+.8); if (pr<=0) return;
+    var down = s1.r==='d';
+    // le frecce dei simboli della riga principale (F, G…) passano più in alto di quelle dei numeratori,
+    // così non attraversano la frazione; quella del denominatore passa sotto
+    var main = !s1.r;
+    var x1=GX+s1.x+6, x2=EX+s2.x-6, y1=yy(s1)+(down?14:(main?-30:-20)), y2=yy(s2)+(down?14:(main?-30:-20));
+    var h = down ? 44 : (main ? 72+10*i : 26+8*i), cy = down ? Math.max(y1,y2)+h : Math.min(y1,y2)-h, cx=(x1+x2)/2;
+    function pt(u){ var a=1-u; return [a*a*x1+2*a*u*cx+u*u*x2, a*a*y1+2*a*u*cy+u*u*y2]; }
+    ctx.globalAlpha=A.G; ctx.strokeStyle=COL[k]; ctx.fillStyle=COL[k]; ctx.lineWidth=2; ctx.setLineDash([]);
+    ctx.beginPath(); var q=pt(0); ctx.moveTo(q[0],q[1]);
+    var N=40, M=Math.max(1,Math.round(N*pr)); for (var j=1;j<=M;j++){ q=pt(j/N); ctx.lineTo(q[0],q[1]); } ctx.stroke();
+    // punta della freccia
+    var q0=pt(Math.max(0,(M-1)/N)), ang=Math.atan2(q[1]-q0[1],q[0]-q0[0]);
+    ctx.beginPath(); ctx.moveTo(q[0],q[1]); ctx.lineTo(q[0]-9*Math.cos(ang-.45),q[1]-9*Math.sin(ang-.45)); ctx.lineTo(q[0]-9*Math.cos(ang+.45),q[1]-9*Math.sin(ang+.45)); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha=1;
+  });
+  // la differenza, scritta in basso
+  ctx.globalAlpha=pNote*A.G; ctx.font='italic 14px Georgia, serif'; ctx.fillStyle=A.RED; ctx.textAlign='center';
+  var words=D.nota.split(' '), line='', lines=[];
+  words.forEach(function(w){ var tl=line?line+' '+w:w; if (ctx.measureText(tl).width>W-60){ lines.push(line); line=w; } else line=tl; }); lines.push(line);
+  lines.forEach(function(l,i){ ctx.fillText(l,W/2,H-12-(lines.length-1-i)*17); });
+  ctx.globalAlpha=1;
 }});
-var H_NOTE=142;
 })();
 </script>

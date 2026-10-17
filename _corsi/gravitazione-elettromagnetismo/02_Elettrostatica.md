@@ -361,6 +361,7 @@ I vestiti sintetici, strofinandosi fra loro nell'asciugatrice o addosso, si cari
 {% include quiz.html domande=_qStrof id="q-strofinio" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl1" %}
 Strofinando un palloncino su un maglione, il palloncino acquista $5\times10^{11}$ elettroni. Quale carica ha, alla fine, il maglione? (Usa $e=1{,}6\times10^{-19}\ \text C$.)
 {% capture _oStrof %}[
 {"v":"a","t":"$-8\\times10^{-8}\\ \\text C$"},
@@ -369,6 +370,7 @@ Strofinando un palloncino su un maglione, il palloncino acquista $5\times10^{11}
 {"v":"d","t":"$+5\\times10^{11}\\ \\text C$"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-strofinio-maglione" opts=_oStrof ok="b" s="Il maglione ha perso proprio i $5\times10^{11}$ elettroni acquistati dal palloncino, quindi è carico positivamente: $Q=5\times10^{11}\times1{,}6\times10^{-19}\ \text C=+8\times10^{-8}\ \text C$. Il palloncino ha la carica opposta, $-8\times10^{-8}\ \text C$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Torna all'esperimento dello scotch (il primo del riquadro qui sopra). Due strisce di nastro adesivo, staccate dal tavolo con uno strappo deciso, si respingono. Perché?
@@ -445,6 +447,7 @@ Chi monta o ripara i computer indossa un braccialetto antistatico come quello de
 {% include quiz.html domande=_qCont id="q-contatto" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl2" %}
 Due sfere metalliche identiche hanno cariche $+8\times10^{-9}\ \text C$ e $-2\times10^{-9}\ \text C$. Vengono messe a contatto e poi separate. Quale carica ha ciascuna sfera alla fine?
 {% capture _oCont %}[
 {"v":"a","t":"$+3\\times10^{-9}\\ \\text C$ ciascuna"},
@@ -453,6 +456,7 @@ Due sfere metalliche identiche hanno cariche $+8\times10^{-9}\ \text C$ e $-2\ti
 {"v":"d","t":"le stesse di prima: $+8\\times10^{-9}\\ \\text C$ e $-2\\times10^{-9}\\ \\text C$"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-contatto-sfere" opts=_oCont ok="a" s="La carica totale si conserva: $+8\times10^{-9}\ \text C-2\times10^{-9}\ \text C=+6\times10^{-9}\ \text C$. Poiché le sfere sono identiche, se la dividono a metà: $+3\times10^{-9}\ \text C$ ciascuna." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 {% include figura.html id="nastro-antistatico"
@@ -473,7 +477,7 @@ Per lo stesso motivo, prima di scaricare il carburante, le autocisterne vengono 
    didascalia="Le gomme del carrello di un aereo."
    larghezza="320px" %}
 
-**Un'applicazione: le gomme degli aerei.** Muovendosi, un aereo si carica per strofinio con l'aria. Per questo le sue gomme contengono materiali conduttori (per esempio polvere di carbonio): appena le ruote toccano la pista, l'aereo si scarica quasi completamente. Lo stesso accade alle autocisterne, che si caricano con la strada e con il carburante che sciaborda.
+**Un'applicazione: le gomme degli aerei.** Muovendosi, un aereo si carica per strofinio con l'aria. Per questo le sue gomme contengono materiali conduttori (per esempio polvere di carbonio): appena le ruote toccano la pista, l'aereo si scarica quasi completamente.
 
 Perché, al contatto, quasi tutta la carica dell'aereo passa al terreno?
 {% capture _oGomme %}[
@@ -867,14 +871,22 @@ Due cariche si respingono con una forza $F$. Se la distanza fra i loro centri tr
 {% include mcq.html id="mcq-coulomb-proporzioni" opts=_oCoulP ok="b" s="I due cambiamenti si combinano: triplicando la distanza la forza diventa 9 volte più piccola, raddoppiando una carica diventa 2 volte più grande. In tutto: $F\cdot\dfrac{2}{9}$." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl3" %}
 Due cariche puntiformi, entrambe uguali a $+1\times10^{-6}\ \text C$, si trovano nel vuoto, con i centri a $1\ \text m$ di distanza.
 
-{% include fill-multi.html testo="Il modulo della forza fra le due cariche è [9] $\times10^{-3}\ \text N$, e la forza è [repulsiva|repulsive]." s="$F = 9\times10^{9}\cdot\dfrac{1\times10^{-6}\cdot1\times10^{-6}}{1^2}\ \text N = 9\times10^{9}\cdot10^{-12}\ \text N = 9\times10^{-3}\ \text N$. Le cariche hanno lo stesso segno, quindi si respingono." %}
+{% include fill-multi.html testo="Il modulo della forza fra le due cariche è [9] $\times10^{-3}\ \text N$." s="$F = 9\times10^{9}\cdot\dfrac{1\times10^{-6}\cdot1\times10^{-6}}{1^2}\ \text N = 9\times10^{9}\cdot10^{-12}\ \text N = 9\times10^{-3}\ \text N$." %}
+
+{% include fill.html prima="Le due cariche si" tipo="drop" opts="attraggono|respingono" ok="respingono" dopo="." s="Le cariche hanno lo stesso segno, quindi si respingono: la forza è repulsiva." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-Due cariche puntiformi $q_1 = +2\times10^{-6}\ \text C$ e $q_2 = -3\times10^{-6}\ \text C$ si trovano nel vuoto, con i centri a $3\ \text m$ di distanza.
+{% include calc-margin.html id="calcEl4" %}
+Due cariche puntiformi $q_1 = +2\times10^{-6}\ \text C$ e $q_2 = -3\times10^{-6}\ \text C$ si trovano nel vuoto, con i centri a $30\ \text{cm}$ di distanza. Attenzione alle unità di misura!
 
-{% include fill-multi.html testo="Il modulo della forza è [6] $\times10^{-3}\ \text N$, e la forza è [attrattiva|attrattive]." s="$F = 9\times10^{9}\cdot\dfrac{2\times10^{-6}\cdot3\times10^{-6}}{3^2}\ \text N = \dfrac{54\times10^{-3}}{9}\ \text N = 6\times10^{-3}\ \text N$. Nel calcolo del modulo il segno meno non conta (c'è il valore assoluto); le cariche hanno segno opposto, quindi si attraggono." %}
+{% include fill-multi.html testo="Il modulo della forza fra le due cariche è [0,6|0.6|0,60] N." s="$F = 9\times10^{9}\cdot\dfrac{2\times10^{-6}\cdot3\times10^{-6}}{(0{,}3)^2}\ \text N = \dfrac{54\times10^{-3}}{0{,}09}\ \text N = 0{,}6\ \text N$. Attenzione a scrivere la distanza in metri: $30\ \text{cm} = 0{,}3\ \text m$." %}
+
+{% include fill.html prima="Le due cariche si" tipo="drop" opts="attraggono|respingono" ok="attraggono" dopo="." s="Le cariche hanno segno opposto, quindi si attraggono." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Isola le altre grandezze della legge di Coulomb. Per ciascuna, cerca la sequenza più breve di mosse, poi appuntala sul quaderno in un punto facile da ritrovare: ti servirà spesso.
@@ -891,11 +903,14 @@ Isola le altre grandezze della legge di Coulomb. Per ciascuna, cerca la sequenza
    sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="r" radice="1" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-Due cariche puntiformi $q_1 = +2\times10^{-6}\ \text C$ e $q_2 = -3\times10^{-6}\ \text C$ si trovano nel vuoto, con i centri a $30\ \text{cm}$ di distanza. Attenzione alle unità di misura!
+{% include calc-margin.html id="calcEl5" %}
+Due cariche puntiformi, $q_1 = +2\times10^{-6}\ \text C$ e $q_2 = +3\times10^{-6}\ \text C$, sono immerse nell'olio, e si respingono con una forza di $0{,}6\ \text N$. A che distanza si trovano i loro centri? Usa il valore di $k$ dell'olio della tabella, $k_{\text{olio}} \approx 4\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 
-{% include fill-multi.html testo="Il modulo della forza fra le due cariche è [0,6|0.6|0,60] N, e la forza è [attrattiva|attrattive]." s="$F = 9\times10^{9}\cdot\dfrac{2\times10^{-6}\cdot3\times10^{-6}}{(0{,}3)^2}\ \text N = \dfrac{54\times10^{-3}}{0{,}09}\ \text N = 0{,}6\ \text N$. Le cariche hanno segno opposto, quindi si attraggono. Attenzione a scrivere la distanza in metri: $30\ \text{cm} = 0{,}3\ \text m$." %}
+{% include fill-multi.html testo="$r =$ [0,2|0.2|0,20] m" s="Isolando $r$ nella legge di Coulomb: $r^2 = k_{\text{olio}}\dfrac{\lvert q_1\cdot q_2\rvert}{F} = 4\times10^{9}\cdot\dfrac{2\times10^{-6}\cdot3\times10^{-6}}{0{,}6}\ \text m^2 = \dfrac{24\times10^{-3}}{0{,}6}\ \text m^2 = 0{,}04\ \text m^2$, quindi $r = \sqrt{0{,}04}\ \text m = 0{,}2\ \text m = 20\ \text{cm}$. Attenzione a usare la $k$ dell'olio, non quella del vuoto!" %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl6" %}
 Due sferette con la stessa carica si respingono nel vuoto con una forza di $0{,}9\ \text N$ quando i loro centri distano $10\ \text{cm}$. Quanto vale la carica di ciascuna sferetta?
 {% capture _oCoulQ %}[
 {"v":"a","t":"$1\\times10^{-12}\\ \\text C$"},
@@ -904,8 +919,10 @@ Due sferette con la stessa carica si respingono nel vuoto con una forza di $0{,}
 {"v":"d","t":"$9\\times10^{-6}\\ \\text C$"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-coulomb-carica" opts=_oCoulQ ok="b" s="Le cariche sono uguali, quindi $F = k\,\dfrac{q^2}{r^2}$ e $q^2 = \dfrac{F\,r^2}{k} = \dfrac{0{,}9\cdot(0{,}1)^2}{9\times10^{9}}\ \text C^2 = 1\times10^{-12}\ \text C^2$. Ma questo è $q^2$: bisogna ancora estrarre la radice, $q = 1\times10^{-6}\ \text C$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl7" %}
 Due ioni, immersi nell'acqua, hanno i centri a $1\ \text{nm}$ di distanza. A quale distanza dovrebbero trovarsi nel vuoto per attrarsi con la stessa forza? Guarda la tabella dei valori di $k$.
 {% capture _oCoulW %}[
 {"v":"a","t":"a $80\\ \\text{nm}$"},
@@ -914,6 +931,7 @@ Due ioni, immersi nell'acqua, hanno i centri a $1\ \text{nm}$ di distanza. A qua
 {"v":"d","t":"alla stessa distanza, $1\\ \\text{nm}$"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-coulomb-acqua" opts=_oCoulW ok="b" s="Nell'acqua $k$ è circa 80 volte più piccola che nel vuoto, quindi la forza è 80 volte più debole. Nel vuoto, per avere una forza 80 volte più debole bisogna che $r^2$ sia 80 volte più grande, cioè che $r$ sia $\sqrt{80}\approx 9$ volte più grande: circa $9\ \text{nm}$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
@@ -990,6 +1008,7 @@ Trascina ciascuna caratteristica nella colonna giusta: solo forza gravitazionale
 {% include esercizi/classifica-forze.html %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl8" %}
 In un atomo di idrogeno un protone e un elettrone si attraggono sia con la forza elettrica sia con la forza gravitazionale. Quante volte la forza elettrica è più intensa di quella gravitazionale? Usa i valori di carica e massa della tabella di inizio capitolo, e $G = 6{,}67\times10^{-11}\ \text N\cdot\text m^2/\text{kg}^2$.
 
 *Suggerimento:* scrivi il rapporto $F_{el}/F_g$. Che cosa succede alla distanza $r$?
@@ -1000,6 +1019,7 @@ In un atomo di idrogeno un protone e un elettrone si attraggono sia con la forza
 {"v":"d","t":"dipende dalla distanza fra protone ed elettrone"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-protone-elettrone" opts=_oPE ok="c" s="Entrambe le forze sono inversamente proporzionali a $r^2$, quindi nel rapporto la distanza si semplifica: $\dfrac{F_{el}}{F_g}=\dfrac{k\,e^2}{G\,m_p\,m_e}=\dfrac{8{,}99\times10^{9}\times(1{,}602\times10^{-19})^2}{6{,}67\times10^{-11}\times1{,}673\times10^{-27}\times9{,}109\times10^{-31}}\approx2\times10^{39}$. Un numero con trentanove zeri." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 La forza elettrica è enormemente più intensa di quella gravitazionale. Eppure a governare il moto dei pianeti e delle galassie è la gravità, non la forza elettrica. Perché?
@@ -1043,7 +1063,7 @@ Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta con le
 
 # Il Campo Elettrico
 
-La legge di Coulomb ci dice ***quanto*** due cariche si attraggano. Ma, esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, per spiegare i suoi esperimenti sull'elettromagnetismo).
+La legge di Coulomb ci dice ***quanto*** due cariche si attraggano. Ma, esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, nel 1831, per spiegare i suoi esperimenti sull'elettromagnetismo; il campo gravitazionale arrivò molto tempo più tardi, con Einstein, nella teoria della relatività del 1915).
 
 {% include box-ricorda.html testo="Il campo gravitazionale, in breve" %}
 Una massa $M$ modifica lo spazio attorno a sé, come una biglia pesante deforma un telo elastico; un'altra massa, posata sul telo, si muove seguendo quella deformazione.
@@ -1173,14 +1193,18 @@ Nella formula $E = k\,\dfrac{\lvert Q\rvert}{r^2}$, che cosa sono $Q$ e $r$?
 {% include mcq.html id="mcq-simboli-campo" opts=_oSimbE ok="a" s="Il campo è una proprietà della carica $Q$ che lo genera: nella formula la carica di prova non c'è nemmeno. La distanza $r$ si misura dal centro di $Q$ fino al punto in cui vogliamo conoscere il campo (dove, eventualmente, metteremo una carica di prova)." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl9" %}
 Una carica $Q = +2\times10^{-6}\ \text C$ è nel vuoto. Quanto vale il campo elettrico a $3\ \text m$ dal suo centro?
 
 {% include fill-multi.html testo="$E =$ [2000|2 000] N/C" s="$E = k\dfrac{\lvert Q\rvert}{r^2} = 9\times10^{9}\cdot\dfrac{2\times10^{-6}}{3^2}\ \text{N/C} = \dfrac{18\times10^{3}}{9}\ \text{N/C} = 2000\ \text{N/C}$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl10" %}
 In un punto il campo elettrico vale $2000\ \text{N/C}$. Quanto vale la forza su una carica $q = 3\times10^{-6}\ \text C$ posta in quel punto?
 
 {% include fill-multi.html testo="$F =$ [6] $\times10^{-3}\ \text N$" s="Da $E = F/q$ si ricava $F = q\,E = 3\times10^{-6}\ \text C\cdot 2000\ \text{N/C} = 6\times10^{-3}\ \text N$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Un elettrone si trova vicino a una sferetta metallica carica. Vogliamo calcolare la forza che agisce sull'elettrone con la formula $F = \lvert q\rvert\,E$. Che cosa sono, qui, $q$ ed $E$?
@@ -1237,29 +1261,33 @@ Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 {% include quiz.html domande=_qCampoDir id="q-campo-dir" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-In un punto il campo elettrico punta verso destra. In quel punto mettiamo un elettrone. In che verso è la forza che agisce su di lui?
+In un punto $P$ c'è un campo elettrico, generato da altre cariche, e il vettore $\vec E$ in $P$ punta verso destra. Mettiamo in $P$ un elettrone. In che verso viene spinto l'elettrone?
 {% capture _oCE1 %}[
-{"v":"a","t":"verso destra, come il campo"},
-{"v":"b","t":"verso sinistra"},
-{"v":"c","t":"non c'è nessuna forza, perché il campo è generato da altre cariche"},
+{"v":"a","t":"verso destra, nello stesso verso del campo"},
+{"v":"b","t":"verso sinistra, nel verso opposto al campo"},
+{"v":"c","t":"non viene spinto: il campo agisce solo sulle cariche che lo generano"},
 {"v":"d","t":"dipende dalla massa dell'elettrone"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-campo-elettrone" opts=_oCE1 ok="b" s="La carica dell'elettrone è negativa, quindi $\vec F = q\vec E$ ha verso opposto al campo: verso sinistra. Il campo indica il verso in cui verrebbe spinta una carica positiva." %}
+{% include mcq.html id="mcq-campo-elettrone" opts=_oCE1 ok="b" s="La carica dell'elettrone è negativa, quindi la forza $\vec F = q\vec E$ ha verso opposto al campo: l'elettrone viene spinto verso sinistra. Il campo indica il verso in cui verrebbe spinta una carica positiva; una carica negativa va nel verso contrario. E il campo agisce proprio sulle cariche che <em>non</em> lo generano." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-In uno stesso punto mettiamo, una volta, un protone e, un'altra volta, un elettrone. Che cosa si può dire delle forze che agiscono su di loro?
+Nello stesso punto $P$ dell'esercizio precedente, dove il campo punta verso destra, mettiamo prima un protone, poi, al suo posto, un elettrone. Confronta le due forze: quella sul protone e quella sull'elettrone.
 {% capture _oPE3 %}[
-{"v":"a","t":"sono uguali in tutto"},
-{"v":"b","t":"hanno lo stesso modulo e versi opposti"},
+{"v":"a","t":"sono uguali: stesso modulo e stesso verso"},
+{"v":"b","t":"hanno lo stesso modulo, ma versi opposti: sul protone verso destra, sull'elettrone verso sinistra"},
 {"v":"c","t":"sull'elettrone la forza è molto più piccola, perché la sua massa è molto più piccola"},
 {"v":"d","t":"hanno lo stesso verso, ma moduli diversi"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-protone-elettrone-campo" opts=_oPE3 ok="b" s="Il campo nel punto è lo stesso. Le due cariche hanno lo stesso valore assoluto, $e$, quindi $F = \lvert q\rvert E$ è uguale; ma hanno segno opposto, quindi le forze hanno versi opposti: quella sul protone nel verso del campo, quella sull'elettrone al contrario. La massa non c'entra con la forza (c'entrerà con l'accelerazione)." %}
+{% include mcq.html id="mcq-protone-elettrone-campo" opts=_oPE3 ok="b" s="Il campo in $P$ è lo stesso. Le due cariche hanno lo stesso valore assoluto, $e$, quindi $F = \lvert q\rvert E$ è uguale; ma hanno segno opposto, quindi le forze hanno versi opposti: quella sul protone nel verso del campo, verso destra, quella sull'elettrone al contrario, verso sinistra. La massa non c'entra con la forza (c'entrerà con l'accelerazione)." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl11" %}
 Una carica $Q = -4\times10^{-9}\ \text C$ è nel vuoto. Quanto vale il campo elettrico a $20\ \text{cm}$ dal suo centro? Attenzione alle unità di misura!
 
-{% include fill-multi.html testo="$E =$ [900] N/C, e il campo punta [verso la carica|verso Q|verso la carica Q]." s="$r = 20\ \text{cm} = 0{,}2\ \text m$, quindi $E = 9\times10^{9}\cdot\dfrac{4\times10^{-9}}{(0{,}2)^2}\ \text{N/C} = \dfrac{36}{0{,}04}\ \text{N/C} = 900\ \text{N/C}$. La carica è negativa, quindi il campo punta verso di essa." %}
+{% include fill-multi.html testo="Il modulo del campo è $E =$ [900] N/C." s="$r = 20\ \text{cm} = 0{,}2\ \text m$, quindi $E = 9\times10^{9}\cdot\dfrac{4\times10^{-9}}{(0{,}2)^2}\ \text{N/C} = \dfrac{36}{0{,}04}\ \text{N/C} = 900\ \text{N/C}$." %}
+
+{% include fill.html prima="In quel punto, il vettore campo elettrico punta" tipo="drop" opts="verso la carica Q|lontano dalla carica Q" ok="verso la carica Q" dopo="." s="La carica Q è negativa: una carica di prova positiva verrebbe attratta da lei, quindi il campo punta verso Q." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
@@ -1415,7 +1443,13 @@ Come per la gravità, l'energia immagazzinata si può immaginare con una molla c
 {% include lab-virtuali/molla-cariche-lab.html %}
 
 {% include margin-note.html testo="Un'espressione equivalente per U" %}
-Per la gravità avevamo scritto $U = -mgr$, usando direttamente il campo $g$. Possiamo fare lo stesso con il campo elettrico. Se la carica $Q$ è positiva, il modulo del campo che genera nel punto in cui si trova $q$ è $E = k\,\dfrac{Q}{r^2}$, quindi
+Per la gravità avevamo scritto $U = -mgr$, usando direttamente il campo $g$. Possiamo fare lo stesso con il campo elettrico generato da $Q$ nel punto in cui si trova $q$, a patto di scriverlo **con un segno**:
+
+$$
+E = k\,\frac{Q}{r^2},
+$$
+
+con $Q$ scritta con il suo segno. Così $E$ è **positivo** se il campo punta **lontano** da $Q$ (cioè se $Q$ è positiva) e **negativo** se punta **verso** $Q$ (se $Q$ è negativa); il suo valore assoluto è il modulo del campo. Con questa convenzione una sola formula vale in tutti i casi:
 
 {% include lab-virtuali/u-qer-lab.html id="uqer" %}
 
@@ -1423,7 +1457,7 @@ $$
 U = q\,E\,r = k\,\frac{Q\cdot q}{r}.
 $$
 
-Qui $E$ è il campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$, e $q$ va scritta con il suo segno. Se invece $Q$ è negativa, il modulo del campo è $E = k\,\dfrac{\lvert Q\rvert}{r^2}$, e compare un segno meno: $U = -q\,E\,r$. È lo stesso segno meno della gravità, $U = -mgr$: le masse si comportano sempre come una carica $Q$ negativa che attira una carica $q$ positiva.
+Qui $E$ è il campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$, e anche $q$ va scritta con il suo segno. Ora si capisce anche il segno meno della gravità: il campo gravitazionale punta sempre **verso** la massa che lo genera, quindi con questa convenzione sarebbe negativo, $-g$. Da $U = m\cdot(-g)\cdot r$ si ritrova proprio $U = -mgr$.
 {% include margin-note-end.html %}
 
 {% include box-warn.html testo="Nell'energia potenziale niente valore assoluto" %}
@@ -1446,7 +1480,7 @@ $$[U]=[k]\cdot\frac{[Q]\cdot[q]}{[r]}=\frac{\text N\cdot\text m^2}{\text C^2}\cd
 
 {% include box-imp.html testo="Energia potenziale elettrica" %}
 - **Che cos'è:** l'energia immagazzinata da due cariche $Q$ e $q$ a distanza $r$, a causa della forza elettrica fra loro.
-- **Formula:** $U = k\,\dfrac{Q\cdot q}{r}$, con le cariche scritte con il loro segno. In modo equivalente, $U = q\,E\,r$ se $Q$ è positiva ($U = -q\,E\,r$ se $Q$ è negativa), dove $E$ è il modulo del campo generato da $Q$ nel punto in cui si trova $q$.
+- **Formula:** $U = k\,\dfrac{Q\cdot q}{r}$, con le cariche scritte con il loro segno. In modo equivalente, $U = q\,E\,r$, dove $E = k\,Q/r^2$ è il campo generato da $Q$ nel punto in cui si trova $q$, scritto con il segno di $Q$ (positivo se punta lontano da $Q$, negativo se punta verso $Q$).
 - **Segno:** negativa se le cariche si attraggono, positiva se si respingono; zero a distanza infinita.
 - **Unità di misura:** joule (J).
 {% include box-end.html %}
@@ -1477,9 +1511,11 @@ Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 {% include quiz.html domande=_qEnEl id="q-energia-el" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl12" %}
 Due cariche puntiformi, $Q = +2\times10^{-6}\ \text C$ e $q = +3\times10^{-6}\ \text C$, sono nel vuoto a $3\ \text m$ di distanza. Quanto vale la loro energia potenziale?
 
 {% include fill-multi.html testo="$U =$ [18] $\times10^{-3}\ \text J$" s="$U = k\dfrac{Q\cdot q}{r} = 9\times10^{9}\cdot\dfrac{2\times10^{-6}\cdot3\times10^{-6}}{3}\ \text J = 18\times10^{-3}\ \text J$. È positiva: le cariche si respingono." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 E se la carica $q$ fosse $-3\times10^{-6}\ \text C$, sempre a $3\ \text m$ da $Q = +2\times10^{-6}\ \text C$?
@@ -1537,9 +1573,11 @@ Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 
 {% include scorri.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl13" %}
 Una carica $q = +1\times10^{-6}\ \text C$ si trova a $1\ \text m$ da una carica $Q_1 = +2\times10^{-6}\ \text C$ e a $2\ \text m$ da una carica $Q_2 = -2\times10^{-6}\ \text C$.
 
 {% include fill-multi.html testo="$U_1 =$ [18] $\times10^{-3}\ \text J$, $U_2 =$ [-9|−9] $\times10^{-3}\ \text J$, $U_{tot} =$ [9] $\times10^{-3}\ \text J$" s="$U_1 = 9\times10^{9}\cdot\dfrac{2\times10^{-6}\cdot1\times10^{-6}}{1}\ \text J = 18\times10^{-3}\ \text J$; $U_2 = 9\times10^{9}\cdot\dfrac{(-2\times10^{-6})\cdot1\times10^{-6}}{2}\ \text J = -9\times10^{-3}\ \text J$. La somma, con i segni: $U_{tot} = 18\times10^{-3}\ \text J - 9\times10^{-3}\ \text J = 9\times10^{-3}\ \text J$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Una carica $q$ si trova vicino a due cariche: con la prima ha energia potenziale $U_1 = +5\ \text J$, con la seconda $U_2 = -5\ \text J$. Quale affermazione è corretta?
@@ -1571,7 +1609,7 @@ Il potenziale non dipende dalla carica di prova, ma solo dalla carica $Q$ che lo
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Un'espressione equivalente per V" %}
-Come per l'energia potenziale, anche il potenziale si può scrivere con il campo. Se $Q$ è positiva, con $E = k\,\dfrac{Q}{r^2}$:
+Come per l'energia potenziale, anche il potenziale si può scrivere con il campo $E = k\,Q/r^2$, scritto con il segno di $Q$ (positivo se il campo punta lontano da $Q$, negativo se punta verso $Q$):
 
 {% include lab-virtuali/u-qer-lab.html id="ver" v="true" %}
 
@@ -1579,7 +1617,7 @@ $$
 V = E\,r = k\,\frac{Q}{r}.
 $$
 
-Se $Q$ è negativa, con $E = k\,\dfrac{\lvert Q\rvert}{r^2}$, si ha $V = -E\,r$: il potenziale è negativo. Per la gravità era $V = -gr$, sempre con il segno meno, perché la massa si comporta sempre come una carica negativa.
+Vicino a una carica negativa $E$ è negativo, e quindi lo è anche il potenziale. Per la gravità, con $-g$ al posto di $E$, si ritrova $V = -gr$.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Il volt" %}
@@ -1600,7 +1638,7 @@ $$1\ \text V = 1\ \frac{\text J}{\text C}.$$
 
 {% include box-imp.html testo="Potenziale elettrico" %}
 - **Che cos'è:** l'energia potenziale elettrica "per unità di carica di prova". Non dipende da $q$, proprio come il campo $\vec E$.
-- **Formula:** $V = \dfrac{U}{q} = k\,\dfrac{Q}{r}$, con $Q$ scritta con il suo segno. In modo equivalente, $V = E\,r$ se $Q$ è positiva ($V = -E\,r$ se $Q$ è negativa), dove $E$ è il modulo del campo generato da $Q$ a distanza $r$.
+- **Formula:** $V = \dfrac{U}{q} = k\,\dfrac{Q}{r}$, con $Q$ scritta con il suo segno. In modo equivalente, $V = E\,r$, dove $E = k\,Q/r^2$ è il campo generato da $Q$ a distanza $r$, scritto con il segno di $Q$.
 - **Unità di misura:** volt (V): $1\ \text V = 1\ \text J/\text C$.
 - **Legame con l'energia:** una carica $q$ in un punto in cui il potenziale vale $V$ ha energia potenziale $U = q\,V$.
 {% include box-end.html %}
@@ -1645,14 +1683,18 @@ Nella formula $V = k\,\dfrac{Q}{r}$, che cosa sono $Q$ e $r$?
 {% include mcq.html id="mcq-simboli-potenziale" opts=_oSimbV ok="b" s="Come il campo, il potenziale è una proprietà della carica $Q$ che lo genera: la carica di prova non compare. Qui però $Q$ va scritta con il suo segno (niente valore assoluto), e $r$ è la distanza dal centro di $Q$ al punto." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl14" %}
 Una carica $Q = +2\times10^{-6}\ \text C$ è nel vuoto. Quanto vale il potenziale elettrico a $3\ \text m$ dal suo centro?
 
 {% include fill-multi.html testo="$V =$ [6000|6 000] V" s="$V = k\dfrac{Q}{r} = 9\times10^{9}\cdot\dfrac{2\times10^{-6}}{3}\ \text V = 6000\ \text V$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl15" %}
 Nel punto dell'esercizio precedente, dove il potenziale vale $6000\ \text V$, mettiamo una carica $q = +3\times10^{-6}\ \text C$. Quanto vale la sua energia potenziale?
 
 {% include fill-multi.html testo="$U =$ [18] $\times10^{-3}\ \text J$" s="$U = q\,V = 3\times10^{-6}\ \text C\cdot 6000\ \text V = 18\times10^{-3}\ \text J$: lo stesso risultato che si ottiene con la formula $U = k\dfrac{Q\cdot q}{r}$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Una minuscola goccia d'olio carica galleggia fra due lastre metalliche cariche. Per calcolare la sua energia potenziale usiamo $U = q\,V$. Che cos'è, qui, $V$?
@@ -1675,9 +1717,11 @@ Se in quel punto mettiamo invece una carica $q = -3\times10^{-6}\ \text C$, che 
 {% include mcq.html id="mcq-potenziale-segno" opts=_oVseg ok="b" s="Il potenziale non dipende dalla carica di prova: resta $6000\ \text V$. Cambia invece $U = q\,V = -3\times10^{-6}\cdot 6000\ \text J = -18\times10^{-3}\ \text J$." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl16" %}
 A quale distanza da una carica $Q = +4\times10^{-9}\ \text C$ il potenziale vale $90\ \text V$?
 
 {% include fill-multi.html testo="$r =$ [0,4|0.4|0,40] m" s="Da $V = k\dfrac{Q}{r}$ si ricava $r = k\dfrac{Q}{V} = 9\times10^{9}\cdot\dfrac{4\times10^{-9}}{90}\ \text m = \dfrac{36}{90}\ \text m = 0{,}4\ \text m$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
@@ -1699,9 +1743,11 @@ Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 
 {% include scorri.html %}
 {% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl17" %}
 Un punto $P$ si trova a $1\ \text m$ da una carica $Q_1 = +2\times10^{-6}\ \text C$ e a $2\ \text m$ da una carica $Q_2 = -2\times10^{-6}\ \text C$. Quanto vale il potenziale in $P$?
 
 {% include fill-multi.html testo="$V_1 =$ [18000|18 000] V, $V_2 =$ [-9000|−9000|-9 000|−9 000] V, $V_{tot} =$ [9000|9 000] V" s="$V_1 = 9\times10^{9}\cdot\dfrac{2\times10^{-6}}{1}\ \text V = 18\,000\ \text V$, $V_2 = 9\times10^{9}\cdot\dfrac{-2\times10^{-6}}{2}\ \text V = -9000\ \text V$. Sommandoli con il loro segno: $V_{tot} = 9000\ \text V$." %}
+<div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Due cariche opposte, $+Q$ e $-Q$, sono a una certa distanza fra loro. Quanto vale il potenziale nel punto a metà strada?
@@ -1746,14 +1792,249 @@ Nel simulatore delle linee di campo puoi ora mostrare anche le superfici equipot
 
 ## Il moto di una particella carica in un campo elettrico
 
-{% comment %}
-Da usare in questa sezione, dopo aver spiegato che le cariche positive vanno dal potenziale più alto a quello più basso (e le negative al contrario): una slide per un Verifica Subito.
+Finora ci siamo chiesti quale campo generano le cariche. Ora facciamo la domanda opposta, la stessa che ci eravamo posti per la gravità: che cosa succede a una carica $q$ che si trova in un campo elettrico generato da *altre* cariche? Quale forza sente, con quale accelerazione si muove, e dove va?
 
+### La forza su una carica in un campo elettrico
+
+{% include box-ricorda.html testo="La forza peso" %}
+Una massa $m$ immersa in un campo gravitazionale $\vec g$ è soggetta alla forza peso
+
+$$\vec F = m\,\vec g,$$
+
+dove $\vec g$ è il campo in cui la massa si trova (per esempio quello generato dalla Terra), e non quello che la massa stessa genera.
+{% include box-end.html %}
+
+Per le cariche vale lo stesso, ed è la definizione del campo elettrico letta al contrario: da $\vec E = \vec F/q$ si ricava che una carica $q$, in un punto in cui il campo vale $\vec E$, subisce la forza
+
+$$\vec F = q\,\vec E.$$
+
+La differenza con la gravità sta nel segno. Le masse sono tutte positive, e il peso ha sempre lo stesso verso di $\vec g$. Le cariche invece possono essere negative: un protone viene spinto nel verso del campo, un elettrone nel verso opposto.
+
+{% include box-imp.html testo="La forza su una carica in un campo elettrico" %}
+- **Formula:** $\vec F = q\,\vec E$, dove $q$ è la carica, con il suo segno, e $\vec E$ è il campo generato dalle *altre* cariche nel punto in cui si trova $q$: mai quello generato da $q$ stessa.
+- **Modulo:** $F = \lvert q\rvert\,E$.
+- **Verso:** se $q$ è positiva, $\vec F$ ha lo stesso verso di $\vec E$; se $q$ è negativa, ha verso opposto.
+{% include box-end.html %}
+
+Un caso molto importante è quello di due lastre piane, vicine fra loro, cariche con segni opposti. Fra le lastre il campo è (quasi) **uniforme**: ha lo stesso modulo, la stessa direzione e lo stesso verso in ogni punto, e le linee di campo sono segmenti paralleli ed equidistanti che vanno dalla lastra positiva a quella negativa. È l'analogo elettrico del campo gravitazionale in una stanza: lì $\vec g$ vale $9{,}8\ \text{m/s}^2$ e punta verso il basso dappertutto. In un campo uniforme la forza su una carica è la stessa ovunque la si metta.
+
+{% include box-note.html testo="La goccia d'olio di Millikan" %}
+Nel 1909 il fisico americano Robert Millikan spruzzò minuscole goccioline d'olio fra due lastre orizzontali cariche. Le goccioline, strofinandosi nello spruzzatore, si caricavano. Regolando il campo fra le lastre, Millikan riusciva a tenerne una ferma a mezz'aria: la forza elettrica verso l'alto equilibrava esattamente il peso, cioè $\lvert q\rvert\,E = m\,g$. Conoscendo $E$, $m$ e $g$ poteva così ricavare la carica della goccia. Ripetendo la misura su moltissime gocce, trovò che la carica era sempre un multiplo intero di uno stesso valore, $1{,}6\times10^{-19}\ \text C$: la carica dell'elettrone.
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+Quando serve, usa $e = 1{,}6\times10^{-19}\ \text C$ e $g = 9{,}8\ \text{m/s}^2$.
+
+{% include scorri.html %}
+{% include scorri-slide.html %}
+{% capture _qForzaE %}[
+{"t":"Se a parità di campo raddoppia la carica, raddoppia anche la forza che essa subisce.","ok":true,"s":"Sì: $F = |q|\\,E$ è direttamente proporzionale alla carica."},
+{"t":"Un elettrone in un campo elettrico subisce una forza con lo stesso verso del campo.","ok":false,"s":"No: l'elettrone è negativo, quindi in $\\vec F = q\\,\\vec E$ la forza ha verso opposto al campo."},
+{"t":"In $\\vec F = q\\,\\vec E$, $\\vec E$ è il campo generato dalla carica $q$.","ok":false,"s":"No: è il campo generato dalle altre cariche nel punto in cui si trova $q$. Una carica non subisce forze dal proprio campo, così come una mela non è attirata dalla propria gravità."},
+{"t":"Fra due lastre cariche con segni opposti, un protone subisce la stessa forza in qualunque punto si trovi.","ok":true,"s":"Sì: fra le lastre il campo è uniforme, quindi anche $\\vec F = q\\,\\vec E$ è la stessa in ogni punto."}
+]{% endcapture %}
+{% include quiz.html domande=_qForzaE id="q-forza-qE" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl18" %}
+Una carica $q = +2\times10^{-6}\ \text C$ si trova in un punto in cui il campo elettrico vale $E = 3000\ \text{N/C}$. Quanto vale il modulo della forza che subisce?
+
+{% include fill-multi.html testo="$F =$ [6] $\times10^{-3}$ N" s="$F = q\,E = 2\times10^{-6}\ \text C\cdot 3000\ \text{N/C} = 6\times10^{-3}\ \text N$." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Fra due lastre orizzontali, quella in alto è carica positivamente e quella in basso negativamente. Fra le due si trova un elettrone.
+
+{% include fill.html prima="Il campo fra le lastre punta" tipo="drop" opts="verso l'alto|verso il basso" ok="verso il basso" dopo="," s="Il campo va dalla lastra positiva a quella negativa." %}
+
+{% include fill.html prima="e la forza sull'elettrone punta" tipo="drop" opts="verso l'alto|verso il basso" ok="verso l'alto" dopo="." s="L'elettrone è negativo: la forza ha verso opposto al campo, cioè verso la lastra positiva, da cui è attratto." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl19" %}
+Un protone si trova fra due lastre cariche, dove il campo vale $E = 1000\ \text{N/C}$. Quanto vale il modulo della forza che subisce?
+
+{% include fill-multi.html testo="$F =$ [1,6|1.6] $\times10^{-16}$ N" s="La carica del protone è $e = 1{,}6\times10^{-19}\ \text C$, quindi $F = e\,E = 1{,}6\times10^{-19}\cdot 1000\ \text N = 1{,}6\times10^{-16}\ \text N$." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl20" %}
+Come Millikan, teniamo ferma a mezz'aria una goccia d'olio di massa $m = 4{,}9\times10^{-15}\ \text{kg}$, carica negativamente, fra due lastre orizzontali in cui il campo vale $E = 1{,}0\times10^{5}\ \text{N/C}$.
+
+{% include fill.html prima="Perché la goccia stia ferma, la lastra positiva deve stare" tipo="drop" opts="in alto|in basso" ok="in alto" dopo="." s="La forza elettrica deve puntare verso l'alto per equilibrare il peso. La goccia è negativa, quindi il campo deve puntare verso il basso: dalla lastra positiva, in alto, a quella negativa, in basso." %}
+
+{% include fill-multi.html testo="Il peso della goccia è $mg =$ [4,8|4.8] $\times10^{-14}$ N, la sua carica in valore assoluto è $|q| =$ [4,8|4.8] $\times10^{-19}$ C, cioè [3] volte la carica dell'elettrone." s="$mg = 4{,}9\times10^{-15}\cdot 9{,}8\ \text N \approx 4{,}8\times10^{-14}\ \text N$. Da $|q|\,E = mg$: $|q| = \dfrac{mg}{E} = \dfrac{4{,}8\times10^{-14}}{1{,}0\times10^{5}}\ \text C = 4{,}8\times10^{-19}\ \text C$, e $\dfrac{4{,}8\times10^{-19}}{1{,}6\times10^{-19}} = 3$: la goccia ha 3 elettroni in eccesso." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
+### L'accelerazione
+
+Per il secondo principio della dinamica, una carica di massa $m$ soggetta alla forza $\vec F = q\,\vec E$ accelera, con $\vec F = m\,\vec a$. Uguagliando le due espressioni della forza:
+
+{% include lab-virtuali/a-qe-m-lab.html %}
+
+$$\vec a = \frac{q}{m}\,\vec E.$$
+
+Nella gravità, la massa compariva sia nella forza ($\vec F = m\,\vec g$) sia nel secondo principio ($\vec F = m\,\vec a$), e si semplificava: tutti i corpi cadono con la stessa accelerazione $\vec a = \vec g$, il martello come la piuma. Qui invece la forza dipende dalla carica e l'inerzia dalla massa, che sono due proprietà diverse: non si semplifica niente, e l'accelerazione dipende dal rapporto $q/m$.
+
+{% include box-imp.html testo="L'accelerazione di una carica in un campo elettrico" %}
+Una particella di carica $q$ e massa $m$, in un punto in cui il campo generato dalle altre cariche vale $\vec E$, ha accelerazione
+
+$$\vec a = \frac{q}{m}\,\vec E.$$
+
+A differenza della gravità, l'accelerazione **dipende** dalla particella: dalla sua carica (con il segno, che ne decide il verso) e dalla sua massa.
+{% include box-end.html %}
+
+|  | Massa in un campo gravitazionale | Carica in un campo elettrico |
+|---|:---:|:---:|
+| **Forza** | $\vec F = m\,\vec g$ | $\vec F = q\,\vec E$ |
+| **Accelerazione** | $\vec a = \vec g$: uguale per tutti i corpi | $\vec a = \dfrac{q}{m}\,\vec E$: dipende da $q$ e da $m$ |
+| **Verso** | sempre quello di $\vec g$ | quello di $\vec E$ se $q > 0$, opposto se $q < 0$ |
+
+Per esempio, un protone e un elettrone hanno cariche con lo stesso valore assoluto, ma la massa dell'elettrone ($9{,}1\times10^{-31}\ \text{kg}$) è circa $1800$ volte più piccola di quella del protone ($1{,}67\times10^{-27}\ \text{kg}$). Nello stesso campo, l'elettrone subisce una forza uguale in modulo e opposta in verso, ma accelera circa $1800$ volte di più.
+
+{% capture _rParab %}Il campo fra le lastre è uniforme, quindi la forza sul protone è costante, sempre verticale. In orizzontale non c'è nessuna forza, e il protone continua ad andare avanti con la stessa velocità; in verticale accelera in modo uniforme. È esattamente quello che succede a un sasso lanciato orizzontalmente, con il peso al posto della forza elettrica: la traiettoria è un arco di parabola.{% endcapture %}
+{% include risposta-aperta.html id="ra-prevedi-parabola" tipo="prevedi"
+   domanda="Prima di usare il simulatore: un protone viene lanciato orizzontalmente fra due lastre orizzontali cariche. Che traiettoria seguirà? A quale moto che conosci già assomiglia?"
+   risposta=_rParab %}
+
+Nel simulatore puoi scegliere la particella, scambiare i segni delle lastre e decidere se lasciarla andare da ferma o lanciarla orizzontalmente.
+
+{% include lab-virtuali/moto-carica-campo-lab.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+{% capture _qAccE %}[
+{"t":"In un campo gravitazionale tutti i corpi, qualunque sia la loro massa, hanno la stessa accelerazione.","ok":true,"s":"Sì: $\\vec a = \\vec g$, perché la massa si semplifica."},
+{"t":"In un campo elettrico, due particelle con la stessa carica ma massa diversa hanno la stessa accelerazione.","ok":false,"s":"No: $a = \\dfrac{|q|}{m}\\,E$, quindi a parità di carica la particella con massa più piccola accelera di più."},
+{"t":"Nello stesso campo elettrico, un protone e un elettrone subiscono forze con lo stesso modulo.","ok":true,"s":"Sì: le loro cariche hanno lo stesso valore assoluto $e$, quindi $F = e\\,E$ per entrambi. Le forze hanno però verso opposto."},
+{"t":"In un campo uniforme, una carica lasciata ferma si muove di moto uniformemente accelerato lungo una linea di campo.","ok":true,"s":"Sì: la forza è costante, quindi lo è anche l'accelerazione. È come un sasso lasciato cadere."}
+]{% endcapture %}
+{% include quiz.html domande=_qAccE id="q-acc-qE" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl21" %}
+Una sferetta di massa $m = 4\times10^{-3}\ \text{kg}$ e carica $q = +2\times10^{-6}\ \text C$ si trova in un campo elettrico $E = 5000\ \text{N/C}$. Trascurando il peso, quanto vale la sua accelerazione?
+
+{% include fill-multi.html testo="$F =$ [1] $\times10^{-2}$ N, $a =$ [2,5|2.5] m/s²" s="$F = q\,E = 2\times10^{-6}\cdot 5000\ \text N = 1\times10^{-2}\ \text N$, e $a = \dfrac{F}{m} = \dfrac{1\times10^{-2}}{4\times10^{-3}}\ \text{m/s}^2 = 2{,}5\ \text{m/s}^2$." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un protone e un elettrone si trovano nello stesso campo elettrico. Che cosa si può dire dell'accelerazione dell'elettrone, rispetto a quella del protone?
+{% capture _oAccPE %}[
+{"v":"a","t":"è uguale, perché le due cariche hanno lo stesso valore assoluto"},
+{"v":"b","t":"è circa $1800$ volte più grande, e ha verso opposto"},
+{"v":"c","t":"è circa $1800$ volte più piccola, e ha lo stesso verso"},
+{"v":"d","t":"è uguale in modulo, ma ha verso opposto"}
+]{% endcapture %}
+{% include mcq.html id="mcq-acc-protone-elettrone" opts=_oAccPE ok="b" s="Le forze hanno lo stesso modulo $e\,E$ e verso opposto. Ma in $a = F/m$ la massa dell'elettrone è circa $1800$ volte più piccola, quindi la sua accelerazione è circa $1800$ volte più grande." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl22" %}
+Una pallina di polistirolo di massa $2\ \text g$, con carica $q = -4\times10^{-7}\ \text C$, si trova in un campo $E = 2\times10^{4}\ \text{N/C}$. Trascurando il peso, quanto vale la sua accelerazione?
+
+{% include fill-multi.html testo="$F =$ [8] $\times10^{-3}$ N, $a =$ [4] m/s²" s="$F = |q|\,E = 4\times10^{-7}\cdot 2\times10^{4}\ \text N = 8\times10^{-3}\ \text N$. Attenzione alla massa: $2\ \text g = 2\times10^{-3}\ \text{kg}$, quindi $a = \dfrac{8\times10^{-3}}{2\times10^{-3}}\ \text{m/s}^2 = 4\ \text{m/s}^2$, con verso opposto al campo." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una particella alfa (un nucleo di elio) ha una carica doppia di quella del protone e una massa circa quattro volte più grande. Nello stesso campo elettrico, la sua accelerazione rispetto a quella del protone è
+{% capture _oAlfa %}[
+{"v":"a","t":"il doppio"},
+{"v":"b","t":"la stessa"},
+{"v":"c","t":"la metà"},
+{"v":"d","t":"un quarto"}
+]{% endcapture %}
+{% include mcq.html id="mcq-acc-alfa" opts=_oAlfa ok="c" s="$a = \dfrac{q}{m}\,E$: la carica raddoppia e la massa quadruplica, quindi il rapporto $q/m$ diventa $\dfrac{2}{4} = \dfrac{1}{2}$ di quello del protone." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
+### Il moto dal punto di vista dell'energia
+
+{% include box-ricorda.html testo="La conservazione dell'energia meccanica" %}
+Se agiscono solo forze conservative, come la forza peso, l'energia meccanica si conserva:
+
+$$K + U = \text{costante},\qquad\text{cioè}\qquad \Delta K = -\Delta U.$$
+
+Un sasso lasciato cadere scende, la sua energia potenziale diminuisce e diventa energia cinetica. Poiché $U = m\,V$ e le masse sono sempre positive, una massa lasciata libera va sempre verso il potenziale gravitazionale più basso, cioè verso la Terra. Lo trovi nel capitolo sull'[energia]({{ '/corsi/meccanica/06_Energia/' | relative_url }}#i-sistemi-isolati-e-la-conservazione-dellenergia-meccanica).
+{% include box-end.html %}
+
+Anche la forza elettrica è conservativa: è per questo che abbiamo potuto definire l'energia potenziale elettrica. Una carica che si muove liberamente in un campo elettrico conserva quindi la sua energia meccanica, e una carica lasciata ferma si mette in moto nel verso in cui la sua energia potenziale $U = q\,V$ diminuisce, come una pallina su una discesa.
+
+Qui però entra di nuovo in gioco il segno. Per una carica positiva, $U = q\,V$ diminuisce quando diminuisce $V$: la carica va verso il potenziale più basso, come le masse. Per una carica negativa, $U = q\,V$ diminuisce quando $V$ **aumenta**: la carica va verso il potenziale più alto.
+
+{% include lab-virtuali/rotola-potenziale-lab.html %}
+
+{% include box-imp.html testo="Il moto di una carica dal punto di vista dell'energia" %}
+- **Conservazione:** $K + U = $ costante, cioè $\Delta K = -\Delta U$.
+- **Energia e potenziale:** $U = q\,V$, quindi $\Delta U = q\,\Delta V$ e $\Delta K = -q\,\Delta V$, con $\Delta V = V_{finale} - V_{iniziale}$.
+- **Dove va una carica lasciata libera:** sempre verso l'energia potenziale più bassa. Una carica **positiva** va dal potenziale più alto a quello più basso; una carica **negativa** va dal potenziale più basso a quello più alto.
+{% include box-end.html %}
+
+#### La differenza di potenziale
+
+Per il moto di una carica non conta il valore del potenziale in un punto, ma la **differenza di potenziale** $\Delta V$ fra il punto di partenza e quello di arrivo, che si chiama anche **tensione** e si misura in volt. Moltiplicata per la carica, dice quanta energia viene scambiata: $\lvert\Delta U\rvert = \lvert q\rvert\,\lvert\Delta V\rvert$.
+
+È il numero scritto su ogni pila. Fra i due poli di una pila stilo c'è una differenza di potenziale di $1{,}5\ \text V$: ogni coulomb di carica che va da un polo all'altro, attraverso la lampadina di una torcia, scambia $1{,}5\ \text J$ di energia. In una pila da $9\ \text V$ ogni coulomb scambia $9\ \text J$, fra i due fori di una presa di casa $230\ \text J$. Per questo una pila si può toccare senza problemi e una presa no.
+
+{% include box-note.html testo="Il tubo catodico" %}
+Nei vecchi televisori (quelli profondi, non piatti) gli elettroni uscivano da un filamento caldo e venivano accelerati da una differenza di potenziale di circa $20\,000\ \text V$, verso il potenziale più alto. Poi passavano fra lastre (e bobine) che li deviavano, esattamente come nel simulatore, e colpivano lo schermo in un punto diverso a seconda della deviazione, facendolo illuminare. Lo stesso principio, con differenze di potenziale enormemente più grandi, si usa negli acceleratori di particelle, come quelli del CERN di Ginevra.
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+{% capture _qEnMoto %}[
+{"t":"Una carica positiva lasciata libera si sposta verso i punti a potenziale più basso.","ok":true,"s":"Sì: per $q > 0$, $U = q\\,V$ diminuisce quando diminuisce $V$."},
+{"t":"Una carica negativa lasciata libera si sposta verso i punti a potenziale più basso.","ok":false,"s":"No: per $q < 0$, $U = q\\,V$ diminuisce quando $V$ aumenta, quindi la carica va verso il potenziale più alto."},
+{"t":"Quando una carica si muove liberamente in un campo elettrico, la sua energia potenziale diminuisce e la sua energia cinetica aumenta.","ok":true,"s":"Sì: $\\Delta K = -\\Delta U$. È lo stesso che succede a un sasso che cade."},
+{"t":"Una massa lasciata libera in un campo gravitazionale va sempre verso il potenziale gravitazionale più basso.","ok":true,"s":"Sì: le masse sono sempre positive, quindi in $U = m\\,V$ l'energia potenziale diminuisce sempre quando diminuisce il potenziale."}
+]{% endcapture %}
+{% include quiz.html domande=_qEnMoto id="q-energia-moto" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un elettrone, inizialmente fermo, si trova fra il punto $A$, a potenziale $100\ \text V$, e il punto $B$, a potenziale $300\ \text V$.
+
+{% include fill.html prima="Lasciato libero, l'elettrone si muove verso" tipo="drop" opts="A|B" ok="B" dopo="." s="L'elettrone è negativo: va verso il potenziale più alto, cioè verso B. Lì la sua energia potenziale $U = q\,V$ è più bassa, perché $q$ è negativa." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl23" %}
+Una carica di $2\ \text C$ passa da un polo all'altro di una pila da $9\ \text V$. Quanta energia scambia?
+
+{% include fill-multi.html testo="$|\Delta U| =$ [18] J" s="$|\Delta U| = |q|\,|\Delta V| = 2\ \text C\cdot 9\ \text V = 18\ \text J$: $9\ \text J$ per ogni coulomb." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Gli uccelli si posano tranquillamente sui fili dell'alta tensione, che hanno un potenziale di migliaia di volt rispetto al terreno, e non prendono la scossa.
 {% capture _rUccelli %}Perché la carica si sposti attraverso un corpo serve una differenza di potenziale fra due punti del corpo. L'uccello tocca il filo con entrambe le zampe, e lo tocca soltanto: le due zampe sono quasi allo stesso potenziale, quindi attraverso il suo corpo non passa praticamente nessuna carica. Se invece toccasse contemporaneamente il filo e un palo collegato a terra, fra i due punti ci sarebbe una differenza di potenziale enorme, e la carica lo attraverserebbe: per questo è pericolosissimo per una persona su una scala che tocchi un filo.{% endcapture %}
 {% include risposta-aperta.html id="ra-uccelli-filo" tipo="spiega"
    domanda="Perché gli uccelli posati sul filo non prendono la scossa? Che cosa succederebbe se l'uccello toccasse insieme il filo e il palo?" risposta=_rUccelli %}
 {% include scorri-slide-end.html %}
-{% endcomment %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl24" %}
+Una carica $q = +2\times10^{-6}\ \text C$ parte da ferma dal punto $A$, dove il potenziale vale $500\ \text V$, e arriva nel punto $B$, dove vale $200\ \text V$.
 
+{% include fill-multi.html testo="$\Delta V =$ [-300|−300] V, $\Delta U =$ [-6|−6] $\times10^{-4}$ J, energia cinetica in $B$: $K_B =$ [6] $\times10^{-4}$ J" s="$\Delta V = V_B - V_A = 200\ \text V - 500\ \text V = -300\ \text V$. $\Delta U = q\,\Delta V = 2\times10^{-6}\cdot(-300)\ \text J = -6\times10^{-4}\ \text J$. L'energia potenziale persa diventa cinetica: $K_B = 0 - \Delta U = 6\times10^{-4}\ \text J$." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl25" %}
+Un protone, inizialmente fermo, viene accelerato da una differenza di potenziale di $1000\ \text V$. Con quale velocità arriva? Usa $e = 1{,}6\times10^{-19}\ \text C$ e $m_p = 1{,}67\times10^{-27}\ \text{kg}$.
+
+{% include fill-multi.html testo="$K =$ [1,6|1.6] $\times10^{-16}$ J, $v \approx$ [4,4|4.4|4,38|4.38] $\times10^{5}$ m/s" s="L'energia potenziale persa diventa cinetica: $K = e\,|\Delta V| = 1{,}6\times10^{-19}\cdot 1000\ \text J = 1{,}6\times10^{-16}\ \text J$. Da $K = \dfrac12 m v^2$: $v = \sqrt{\dfrac{2K}{m_p}} = \sqrt{\dfrac{3{,}2\times10^{-16}}{1{,}67\times10^{-27}}}\ \text{m/s} \approx 4{,}4\times10^{5}\ \text{m/s}$: più di mille volte la velocità del suono." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un protone e un elettrone, partendo da fermi, vengono accelerati dalla stessa differenza di potenziale (il protone verso il potenziale più basso, l'elettrone verso quello più alto). Alla fine,
+{% capture _oPEenergia %}[
+{"v":"a","t":"hanno la stessa energia cinetica e la stessa velocità"},
+{"v":"b","t":"hanno la stessa energia cinetica, ma l'elettrone è molto più veloce"},
+{"v":"c","t":"il protone ha più energia cinetica, perché è più pesante"},
+{"v":"d","t":"l'elettrone ha più energia cinetica, perché è più leggero"}
+]{% endcapture %}
+{% include mcq.html id="mcq-energia-protone-elettrone" opts=_oPEenergia ok="b" s="$K = |q|\,|\Delta V|$ e le due cariche hanno lo stesso valore assoluto: l'energia cinetica è la stessa. Ma in $K = \dfrac12 m v^2$ l'elettrone ha una massa circa $1800$ volte più piccola, quindi la sua velocità è molto più grande (circa $\sqrt{1800}\approx 43$ volte)." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}

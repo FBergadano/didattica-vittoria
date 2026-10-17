@@ -1,0 +1,109 @@
+{% comment %}
+Simulatore: il moto di una carica dal punto di vista dell'energia. In alto,
+due lastre verticali: A a potenziale alto, B a potenziale basso (il campo va
+da A verso B). In basso, il grafico dell'energia potenziale U = qV lungo il
+tratto fra le lastre, su cui la carica è disegnata come una pallina: lasciata
+andare da ferma, "rotola" sempre verso dove U è più bassa, come una pallina
+su una discesa. Con una carica positiva U scende da A verso B (la carica va
+verso il potenziale più basso); con una carica negativa il grafico si
+capovolge, e la carica va verso il potenziale più alto. A destra, due barre:
+energia potenziale U ed energia cinetica K, la cui somma resta costante.
+Nessun parametro.
+{% endcomment %}
+<div class="rpl-widget" id="rplLab">
+<div class="rpl-ctrl">
+  <span>Carica: <button data-s="1" class="on">positiva</button><button data-s="-1">negativa</button></span>
+  <button class="rpl-go">Lasciala andare ▶</button>
+  <button class="rpl-reset">↺ Ricomincia</button>
+</div>
+<canvas class="rpl-canvas" aria-label="Simulatore: una carica fra due lastre e il grafico della sua energia potenziale, su cui la carica scende come una pallina"></canvas>
+<p class="rpl-info"></p>
+</div>
+<style>
+.rpl-widget { margin: 1.4rem auto; max-width: 600px; text-align: center; }
+.rpl-ctrl { display: flex; gap: .5rem 1rem; justify-content: center; flex-wrap: wrap; margin: .3rem 0; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .85rem; color: #334155; align-items: center; }
+.rpl-ctrl button { padding: .28rem .7rem; border-radius: 999px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .84rem; color: #334155; font-family: inherit; }
+.rpl-ctrl button.on { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+.rpl-ctrl button.rpl-go { border-radius: 6px; background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+.rpl-canvas { width: 100%; height: auto; display: block; border-radius: 8px; }
+.rpl-widget p.rpl-info { text-align: center; font-size: .84rem; font-style: italic; color: #4b5563; margin: .35rem auto 0; max-width: 560px; min-height: 2.6em; }
+@media print { .rpl-widget { display: none; } }
+</style>
+<script>
+(function(){
+  var root = document.getElementById('rplLab'); if (!root) return;
+  var cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), info = root.querySelector('.rpl-info'), goBtn = root.querySelector('.rpl-go');
+  var W = 600, H = 340, S = 2; cv.width = W * S; cv.height = H * S;
+  var XA = 70, XB = 470, GT = 160, GB = 316;            // lastre A e B; zona del grafico (in alto e in basso)
+  var sign = 1, x, v, anim = null, done = false;
+  var XM = (XA + XB) / 2;
+  function Vof(px){ return 1 - (px - XA) / (XB - XA); }             // potenziale: 1 in A (alto), 0 in B (basso)
+  function Uof(px){ return sign * Vof(px); }                          // U = qV (q = ±1)
+  function yU(u){ return GT + 20 + (1 - (u + 1) / 2) * (GB - GT - 40); }   // U fra −1 e +1 → coordinata del grafico
+  function ball(px, py, r, pos){
+    var g = ctx.createRadialGradient(px - r * .35, py - r * .4, .5, px, py, r);
+    g.addColorStop(0, pos ? '#fff1f2' : '#eff6ff'); g.addColorStop(1, pos ? '#fda4af' : '#93c5fd');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(px, py, r, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = pos ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.3; ctx.stroke();
+    ctx.fillStyle = pos ? '#9f1239' : '#1e3a8a'; ctx.font = 'bold ' + Math.round(r * 1.3) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(pos ? '+' : '−', px, py + .5); ctx.textBaseline = 'alphabetic';
+  }
+  function bar(bx, label, val, col){
+    var top = 40, bot = 300, h = (bot - top) * Math.max(0, Math.min(1, val));
+    ctx.fillStyle = '#f1f5f9'; ctx.fillRect(bx, top, 26, bot - top); ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1.2; ctx.strokeRect(bx, top, 26, bot - top);
+    ctx.fillStyle = col; ctx.fillRect(bx, bot - h, 26, h);
+    ctx.fillStyle = '#334155'; ctx.font = 'italic bold 15px Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(label, bx + 13, bot + 20);
+  }
+  function draw(){
+    ctx.setTransform(S, 0, 0, S, 0, 0); ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, W, H);
+    // lastre: A positiva (potenziale alto), B negativa (potenziale basso)
+    [[XA, true, 'A'], [XB, false, 'B']].forEach(function(p){
+      ctx.fillStyle = p[1] ? '#fecdd3' : '#bfdbfe'; ctx.fillRect(p[0] - 7, 22, 14, 104);
+      ctx.strokeStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.2; ctx.strokeRect(p[0] - 7, 22, 14, 104);
+      ctx.fillStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+      for (var y = 34; y < 126; y += 18) ctx.fillText(p[1] ? '+' : '−', p[0], y + 4);
+      ctx.font = 'italic bold 14px Georgia, serif'; ctx.fillText(p[2], p[0], 16);
+      ctx.font = 'italic 12px Georgia, serif'; ctx.fillStyle = '#475569'; ctx.fillText(p[1] ? 'V alto' : 'V basso', p[0], 144);
+    });
+    // campo (da A verso B)
+    ctx.globalAlpha = .35; ctx.strokeStyle = '#0891b2'; ctx.fillStyle = '#0891b2'; ctx.lineWidth = 1.6;
+    [50, 98].forEach(function(y){ ctx.beginPath(); ctx.moveTo(XA + 20, y); ctx.lineTo(XB - 26, y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(XB - 20, y); ctx.lineTo(XB - 30, y - 5); ctx.lineTo(XB - 30, y + 5); ctx.closePath(); ctx.fill(); });
+    ctx.globalAlpha = 1; ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0891b2'; ctx.textAlign = 'center'; ctx.fillText('E', (XA + XB) / 2, 80);
+    // la carica fra le lastre
+    ball(x, 74, 12, sign > 0);
+    // grafico di U = qV
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(XA, GT); ctx.lineTo(XA, GB); ctx.lineTo(XB + 6, GB); ctx.stroke();
+    ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(XA, yU(0)); ctx.lineTo(XB, yU(0)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = '#64748b'; ctx.font = 'italic 13px Georgia, serif'; ctx.textAlign = 'right'; ctx.fillText('U = qV', XA - 6, GT + 12); ctx.fillText('0', XA - 6, yU(0) + 4);
+    ctx.strokeStyle = sign > 0 ? '#e11d48' : '#2563eb'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(XA, yU(Uof(XA))); ctx.lineTo(XB, yU(Uof(XB))); ctx.stroke();
+    ball(x, yU(Uof(x)) - 11, 10, sign > 0);
+    // barre: U (rispetto al punto più basso del tratto) e K; la somma resta costante
+    var U0 = Uof(XM), Umin = Math.min(Uof(XA), Uof(XB));
+    var Urel = Uof(x) - Umin, K = U0 - Uof(x);
+    bar(510, 'U', Urel, sign > 0 ? '#e11d48' : '#2563eb'); bar(552, 'K', K, '#16a34a');
+  }
+  function setInfo(){
+    info.textContent = !done ? (sign > 0 ? 'Carica positiva: la sua energia potenziale U = qV è più alta vicino ad A, dove il potenziale è alto.' : 'Carica negativa: U = qV si capovolge, ed è più alta vicino a B, dove il potenziale è basso.') + ' Lasciala andare: in che verso andrà?'
+      : (sign > 0 ? 'La carica positiva va verso B, cioè verso il potenziale più basso: la sua energia potenziale diminuisce e diventa energia cinetica.' : 'La carica negativa va verso A, cioè verso il potenziale più alto: anche qui la sua energia potenziale U = qV diminuisce e diventa energia cinetica.');
+  }
+  function reset(){ if (anim) cancelAnimationFrame(anim); anim = null; x = XM; v = 0; done = false; goBtn.disabled = false; setInfo(); draw(); }
+  function go(){
+    if (anim) return; goBtn.disabled = true;
+    var acc = 180 * sign, last = null;   // verso le U più basse: a destra se positiva, a sinistra se negativa
+    function step(t){
+      var dt = last === null ? 0 : Math.min((t - last) / 1000, .04); last = t;
+      v += acc * dt; x += v * dt;
+      if (x >= XB - 16 || x <= XA + 16) { x = Math.max(XA + 16, Math.min(XB - 16, x)); done = true; setInfo(); draw(); anim = null; return; }
+      draw(); anim = requestAnimationFrame(step);
+    }
+    anim = requestAnimationFrame(step);
+  }
+  root.querySelectorAll('[data-s]').forEach(function(b){ b.addEventListener('click', function(){
+    sign = +b.dataset.s; root.querySelectorAll('[data-s]').forEach(function(x){ x.classList.toggle('on', x === b); }); reset(); }); });
+  goBtn.addEventListener('click', go);
+  root.querySelector('.rpl-reset').addEventListener('click', reset);
+  reset();
+})();
+</script>
