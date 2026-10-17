@@ -2,8 +2,9 @@
 Simulatore: il moto di una carica dal punto di vista dell'energia. In alto,
 due lastre verticali A e B cariche con segni opposti (lo studente sceglie
 quale è positiva); fra le lastre, le linee equipotenziali tratteggiate con il
-loro valore del potenziale (la lastra positiva è a 400 V, quella negativa a
-0 V; le linee sono a 350, 250, 150 e 50 V). Sotto, due grafici lungo il tratto fra le lastre: il
+loro valore del potenziale (la lastra positiva è a +200 V, quella negativa a
+−200 V, con il potenziale zero all'infinito, come nel resto del capitolo:
+le linee sono a 150, 50, −50 e −150 V). Sotto, due grafici lungo il tratto fra le lastre: il
 potenziale V, e l'energia potenziale U = qV della carica, su cui la carica è
 disegnata come una pallina. Lasciata andare da ferma, la carica "rotola"
 sempre verso dove U è più bassa, come una pallina su uno scivolo: una carica
@@ -42,11 +43,12 @@ Nessun parametro.
   var W = 600, H = 470, S = 2; cv.width = W * S; cv.height = H * S;
   var XA = 70, XB = 470, XM = (XA + XB) / 2;
   var VT = 172, VB = 288, UT = 316, UB = 446;         // zone dei due grafici (V sopra, U sotto)
-  var VMAX = 400;                                     // potenziale della lastra positiva, in volt
+  var VMAX = 200;                                     // potenziale della lastra positiva, in volt (quella negativa è a −VMAX)
   var sign = 1, swap = false, x, v, anim = null, done = false;
   function Vof(px){ var s = (px - XA) / (XB - XA); return swap ? s : 1 - s; }   // 1 vicino alla lastra positiva, 0 vicino a quella negativa
-  function Uof(px){ return sign * Vof(px); }                                   // U = qV (q = ±1)
-  function yV(f){ return VB - 12 - f * (VB - VT - 24); }
+  function Vn(px){ return 2 * Vof(px) - 1; }                                    // potenziale, fra −1 (lastra negativa) e +1 (positiva)
+  function Uof(px){ return sign * Vn(px); }                                    // U = qV (q = ±1)
+  function yV(v){ return VB - 12 - (v + 1) / 2 * (VB - VT - 24); }
   function yU(u){ return UT + 14 + (1 - (u + 1) / 2) * (UB - UT - 28); }
   function ball(px, py, r, pos){
     var g = ctx.createRadialGradient(px - r * .35, py - r * .4, .5, px, py, r);
@@ -85,10 +87,10 @@ Nessun parametro.
     // linee equipotenziali con il loro valore
     ctx.setLineDash([4, 4]); ctx.strokeStyle = '#ea580c'; ctx.lineWidth = 1.2;
     for (var k = 0; k < 4; k++) {
-      var xe = XA + (2 * k + 1) * (XB - XA) / 8;                 // 50, 150, 250, 350 V
+      var xe = XA + (2 * k + 1) * (XB - XA) / 8;                 // −150, −50, 50, 150 V
       ctx.beginPath(); ctx.moveTo(xe, 26); ctx.lineTo(xe, 122); ctx.stroke();
       ctx.fillStyle = '#c2410c'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText(Math.round(Vof(xe) * VMAX) + ' V', xe, 140);
+      ctx.fillText(Math.round(Vn(xe) * VMAX).toString().replace('-', '−') + ' V', xe, 140);
     }
     ctx.setLineDash([]);
     // campo: dalla lastra positiva a quella negativa
@@ -103,9 +105,9 @@ Nessun parametro.
     ball(x, 74, 12, sign > 0);
     // grafico di V
     axes(VT, VB, yV(0), 'V');
-    ctx.strokeStyle = '#ea580c'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(XA, yV(Vof(XA))); ctx.lineTo(XB, yV(Vof(XB))); ctx.stroke();
-    ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right'; ctx.fillText('400 V', XA - 4, yV(1) + 4); ctx.fillText('0', XA - 4, yV(0) + 4);
-    ctx.fillStyle = '#ea580c'; ctx.beginPath(); ctx.arc(x, yV(Vof(x)), 5, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = '#ea580c'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(XA, yV(Vn(XA))); ctx.lineTo(XB, yV(Vn(XB))); ctx.stroke();
+    ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right'; ctx.fillText('200 V', XA - 4, yV(1) + 4); ctx.fillText('0', XA - 4, yV(0) + 4); ctx.fillText('−200 V', XA - 4, yV(-1) + 4);
+    ctx.fillStyle = '#ea580c'; ctx.beginPath(); ctx.arc(x, yV(Vn(x)), 5, 0, 6.283); ctx.fill();
     ctx.setLineDash([2, 3]); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, 88); ctx.lineTo(x, UB); ctx.stroke(); ctx.setLineDash([]);
     // grafico di U = qV
     axes(UT, UB, yU(0), 'U = qV');

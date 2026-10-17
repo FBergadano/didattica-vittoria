@@ -4,8 +4,11 @@ fra due lastre cariche sono uniformi. A sinistra, un pianeta con i vettori
 del campo gravitazionale disegnati su una griglia: con lo slider ci si
 avvicina a un punto della superficie, e i vettori, che da lontano convergono
 verso il centro e cambiano lunghezza, diventano paralleli e tutti uguali.
-A destra, due lastre piane cariche con segni opposti: lì i vettori del campo
-elettrico sono paralleli e uguali dappertutto (lontano dai bordi).
+A destra, nello stesso tempo, una carica positiva e una negativa puntiformi
+si allargano in due lastre piane sempre più larghe, finché le lastre escono
+dal riquadro: le linee del campo elettrico, all'inizio curve come quelle di
+due cariche opposte, diventano parallele ed equidistanti (a metà strada si
+vedono ancora i bordi, dove le linee si incurvano).
 Nessun parametro.
 {% endcomment %}
 <div class="cul-widget" id="culLab">
@@ -59,20 +62,58 @@ Nessun parametro.
     ctx.fillStyle = '#334155'; ctx.font = 'italic 13px Georgia, serif'; ctx.textAlign = 'center';
     ctx.fillText(u < .5 ? 'un pianeta e il suo campo gravitazionale' : 'vicino alla superficie: il campo è uniforme', CX, PY + PH + 20);
     ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0f766e'; ctx.textAlign = 'left'; ctx.fillText('g', X0 + 8, PY + 20);
-    // destra: le lastre
+    // destra: due cariche puntiformi che, avvicinandosi al pianeta, si allargano in due lastre
     var X1 = 320; panel(X1);
-    var T = PY + 34, B = PY + PH - 34;
+    var XC = X1 + PW / 2, T = PY + 72, B = PY + PH - 72, hw = 4 * Math.pow(175, u) - 4, N = 41 + Math.round(hw / 5);   // semilarghezza delle lastre: alla fine escono dal riquadro
+    var Q = [];
+    for (var i = 0; i < N; i++) { var xq = XC + hw * (N > 1 ? 2 * i / (N - 1) - 1 : 0); Q.push([xq, T, 1 / N], [xq, B, -1 / N]); }
+    function field(x, y){
+      var ex = 0, ey = 0;
+      for (var k = 0; k < Q.length; k++) { var dx = x - Q[k][0], dy = y - Q[k][1], r2 = dx * dx + dy * dy + 1, r3 = r2 * Math.sqrt(r2); ex += Q[k][2] * dx / r3; ey += Q[k][2] * dy / r3; }
+      return [ex, ey];
+    }
+    function distNeg(x, y){ var cx = Math.max(XC - hw, Math.min(XC + hw, x)); return Math.hypot(x - cx, y - B); }
+    // punti di partenza delle linee: attorno alla lastra positiva, distribuiti secondo il flusso del campo
+    var d = 7, per = 4 * hw + 2 * Math.PI * d, NS = 480 + Math.round(hw * 2), samp = [], tot = 0;
+    for (var k = 0; k < NS; k++) {
+      var sArc = (k + .5) / NS * per, px, py, nx, ny;
+      if (sArc < 2 * hw) { px = XC + hw - sArc; py = T - d; nx = 0; ny = -1; }
+      else if (sArc < 2 * hw + Math.PI * d) { var a = (sArc - 2 * hw) / d; nx = -Math.sin(a); ny = -Math.cos(a); px = XC - hw + d * nx; py = T + d * ny; }
+      else if (sArc < 4 * hw + Math.PI * d) { px = XC - hw + (sArc - 2 * hw - Math.PI * d); py = T + d; nx = 0; ny = 1; }
+      else { var a2 = (sArc - 4 * hw - Math.PI * d) / d; nx = Math.sin(a2); ny = Math.cos(a2); px = XC + hw + d * nx; py = T + d * ny; }
+      var Ef = field(px, py), fl = Math.max(0, Ef[0] * nx + Ef[1] * ny); tot += fl; samp.push([px, py, tot]);
+    }
+    ctx.save(); ctx.beginPath(); ctx.rect(X1, PY, PW, PH); ctx.clip();
+    var M = Math.round(16 * Math.max(1, (2 * hw + 14) / 250)), si = 0;   // con lastre larghe, più linee (ma si tracciano solo quelle visibili)
+    for (var m = 0; m < M; m++) {
+      var target = (m + .5) / M * tot; while (si < NS - 1 && samp[si][2] < target) si++;
+      var x = samp[si][0], y = samp[si][1], pts = [[x, y]];
+      if (Math.abs(x - XC) > PW / 2 + 30) continue;
+      for (var st = 0; st < 900; st++) {
+        var E = field(x, y), e = Math.hypot(E[0], E[1]) || 1;
+        x += 2.5 * E[0] / e; y += 2.5 * E[1] / e; pts.push([x, y]);
+        if (distNeg(x, y) < 6 || Math.abs(x - XC) > 700 || y < -500 || y > 800) break;
+      }
+      ctx.strokeStyle = '#0891b2'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
+      for (var k2 = 1; k2 < pts.length; k2++) ctx.lineTo(pts[k2][0], pts[k2][1]); ctx.stroke();
+      // freccia: a metà fra le lastre per le linee che le collegano, vicino all'inizio per le altre
+      var ia = -1; for (var k3 = 1; k3 < pts.length; k3++) if (pts[k3 - 1][1] < (T + B) / 2 && pts[k3][1] >= (T + B) / 2 && Math.abs(pts[k3][0] - XC) < PW / 2) { ia = k3; break; }
+      if (ia < 0) ia = Math.min(pts.length - 1, 30);
+      var p0 = pts[Math.max(0, ia - 8)], p1 = pts[ia]; arrow(p0[0], p0[1], p1[0], p1[1], '#0891b2', 1.4);
+    }
+    // le cariche: puntiformi all'inizio, poi lastre
     [[T, true], [B, false]].forEach(function(p){
-      ctx.fillStyle = p[1] ? '#fecdd3' : '#bfdbfe'; ctx.fillRect(X1 + 20, p[0] - 7, PW - 40, 14);
-      ctx.strokeStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.2; ctx.strokeRect(X1 + 20, p[0] - 7, PW - 40, 14);
+      ctx.fillStyle = p[1] ? '#fecdd3' : '#bfdbfe'; ctx.strokeStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.2;
+      ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(XC - hw - 7, p[0] - 7, 2 * hw + 14, 14, 7); else ctx.rect(XC - hw - 7, p[0] - 7, 2 * hw + 14, 14); ctx.fill(); ctx.stroke();
       ctx.fillStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      for (var x = X1 + 32; x < X1 + PW - 20; x += 22) ctx.fillText(p[1] ? '+' : '−', x, p[0] + .5);
+      var n = Math.max(1, Math.floor((2 * hw) / 22) + 1);   // un segno ogni 22 pixel circa
+      for (var k = 0; k < n; k++) ctx.fillText(p[1] ? '+' : '−', n === 1 ? XC : XC - hw + k * (2 * hw) / (n - 1), p[0] + .5);
       ctx.textBaseline = 'alphabetic';
     });
-    for (var ax = X1 + 40; ax < X1 + PW - 20; ax += 34) for (var ay = T + 22; ay < B - 30; ay += 34) arrow(ax, ay, ax, ay + 24, '#0891b2', 1.6);
+    ctx.restore();
     ctx.fillStyle = '#334155'; ctx.font = 'italic 13px Georgia, serif'; ctx.textAlign = 'center';
-    ctx.fillText('fra due lastre cariche: il campo è uniforme', X1 + PW / 2, PY + PH + 20);
-    ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0891b2'; ctx.textAlign = 'left'; ctx.fillText('E', X1 + PW - 18, PY + PH / 2 + 5);
+    ctx.fillText(u < .12 ? 'una carica positiva e una negativa' : u < .8 ? 'le cariche si allargano in due lastre' : 'fra due lastre larghe: il campo è uniforme', X1 + PW / 2, PY + PH + 20);
+    ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0891b2'; ctx.textAlign = 'left'; ctx.fillText('E', X1 + 8, PY + PH - 10);
   }
   sl.addEventListener('input', draw);
   draw();

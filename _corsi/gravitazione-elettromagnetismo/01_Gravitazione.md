@@ -160,7 +160,7 @@ Quindi, la massa grande attrae la massa piccola tanto quanto la massa piccola at
 
 
 {% include box-imp.html testo="La forza gravitazionale" %}
-- **Che cos'è:** una forza <u markdown="span">centrale</u> e <u markdown="span">attrattiva</u> fra due masse qualsiasi $m_1$ ed $m_2$.
+- **La forza gravitazionale** è una forza <u markdown="span">centrale</u> e <u markdown="span">attrattiva</u> fra due masse qualsiasi $m_1$ ed $m_2$.
 - **Modulo:** $F = G\,\dfrac{m_1 \cdot m_2}{r^2}$.
 - **Direzione e verso:** si disegna così:
 
@@ -560,7 +560,7 @@ $$[U]=[G]\cdot\frac{[M]\cdot[m]}{[r]}=\frac{\text N\cdot\text m^2}{\text{kg}^2}\
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="Energia potenziale gravitazionale" %}
-- **Che cos'è:** è uno <u markdown="span">scalare</u> che esprime l'energia immagazzinata da una massa $m$ a causa della sua posizione nel campo gravitazionale generato da una massa $M$.
+- **L'energia potenziale gravitazionale** è uno <u markdown="span">scalare</u> che esprime l'energia immagazzinata da una massa $m$ a causa della sua posizione nel campo gravitazionale generato da una massa $M$.
 - **Formula:** $U = -mgr = -G\dfrac{Mm}{r}$.
 - **Unità di misura:** essendo un'energia, si misura in joule (simbolo J).
 {% include box-end.html %}
@@ -640,7 +640,7 @@ $$[V]=\frac{[U]}{[m]}=\frac{\text J}{\text{kg}}.$$ -->
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="Potenziale gravitazionale" %}
-- **Che cos'è:** l'energia potenziale gravitazionale "per unità di massa esploratrice" — non dipende da $m$, proprio come il campo $\vec g$ non dipende da $m$.
+- **Il potenziale gravitazionale** è l'energia potenziale gravitazionale "per unità di massa esploratrice" — non dipende da $m$, proprio come il campo $\vec g$ non dipende da $m$.
 - **Formula:** $V = \dfrac{U}{m} = -gr = -G\dfrac{M}{r}$, indipendente dalla massa $m$.
 - **Unità di misura:** J/kg.
 {% include box-end.html %}
@@ -720,7 +720,7 @@ Quando il campo è generato da più masse, come nel sistema Terra-Luna, le super
 {% include lab-virtuali/equipotenziali-terra-luna-lab.html %}
 
 <!-- {% include box-imp.html testo="Superfici equipotenziali" %}
-- **Che cosa sono:** l'insieme dei punti dello spazio che hanno lo stesso potenziale gravitazionale.
+- **Le superfici equipotenziali** sono l'insieme dei punti dello spazio che hanno lo stesso potenziale gravitazionale.
 - **Per una singola massa:** sono sfere concentriche alla massa che genera il campo.
 - **Proprietà fondamentale:** sono sempre perpendicolari alle linee di campo.
 {% include box-end.html %} -->

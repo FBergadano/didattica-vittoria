@@ -1004,7 +1004,10 @@ html, body { overflow-x: clip; }
 // (selettore con la stessa specificità della regola base in .box.box-imp,
 // altrimenti quella vince sempre e la decorazione resta visibile anche qui)
 @media (max-width: 1150px) {
-  .box.box-imp .box-imp-deco { display: none; }
+  // senza margine il titolo del box entra nel box, in alto (la freccetta sparisce)
+  .box.box-imp .box-imp-deco { position: static; transform: none; display: block; margin-bottom: .45rem; }
+  .box.box-imp .box-imp-arm, .box.box-imp .box-imp-dot { display: none; }
+  .box.box-imp .box-imp-lbl { margin-left: 0; max-width: none; }
 }
 
 @media (max-width: 1024px) {
