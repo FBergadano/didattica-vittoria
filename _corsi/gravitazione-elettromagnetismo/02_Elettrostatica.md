@@ -52,7 +52,7 @@ Osserviamo quindi le seguenti cose.
 - Quando il palloncino carico negativamente è avvicinato al muro, gli elettroni nel muro vengono respinti, mentre i protoni rimangono fermi. Si viene quindi a creare una zona di carica positiva, da cui il palloncino (negativo) è attratto.
 {% include spoiler-end.html %}
 
-È essenziale notare che questo fenomeno non ha niente a che fare con la forza gravitazionale. È per questo che possiamo comprendere l'esistenza di una forza completamente nuova e diversa. Questa forza, che studieremo nel dettaglio in questo capitolo, è la **forza elettrica**.
+È essenziale notare che <u>questo fenomeno non ha niente a che fare con la forza gravitazionale</u>. È per questo che possiamo comprendere l'esistenza di una forza completamente nuova e diversa. Questa forza, che studieremo nel dettaglio in questo capitolo, è la **forza elettrica**.
 
 {% include spoiler.html testo="Prima degli elettroni: come si spiegava l'elettricità nei secoli passati" %}
 Che un pezzo d'ambra strofinato attiri le pagliuzze lo sapevano già i Greci: secondo la tradizione fu Talete di Mileto, nel VI secolo a.C., a notarlo per primo, e qualcuno racconta che ne avesse concluso che l'ambra avesse un'anima. Il nome greco dell'ambra, *élektron*, è all'origine della parola "elettricità".
@@ -90,7 +90,7 @@ Tutti i comportamenti comuni della materia sono comprensibili in termini del mov
 ### L'unità di misura della carica elettrica
 Per parlare di particelle elettricamente cariche, dobbiamo quindi introdurre un'unità di misura per la carica elettrica. Nel Sistema Internazionale si sceglie di adottare l'unità del <definizione>coulomb</definizione>.
 {% include box-imp.html testo="Il Coulomb" %}
-L'unità di misura della carica elettrica è il coulomb, che si indica con il simbolo C.
+<u markdown="span">L'unità di misura della carica elettrica è il **coulomb**</u>, che si indica con il simbolo C.
 {% include box-end.html%}
 
 ### Atomi, Elettroni e Protoni
@@ -124,14 +124,15 @@ Queste tre particelle hanno carica e massa molto diverse tra loro:
 
 {% include margin-note-end.html %}
 {% include box-imp.html testo="Stessa carica, massa enormemente diversa" %}
-Protone ed elettrone hanno <u markdown="span">esattamente **la stessa carica in valore assoluto**</u>, chiamata <definizione>carica elementare</definizione> e indicata con $e$, ma di segno opposto. La loro massa, invece, è profondamente diversa: <u markdown="span">un protone è **migliaia di volte più massiccio** di un elettrone</u>. 
+Protone ed elettrone hanno <u markdown="span">esattamente **la stessa carica in valore assoluto**</u>, chiamata <definizione>carica elementare</definizione>, indicata con $e$, ma di segno opposto. La loro massa, invece, è profondamente diversa: <u markdown="span">un protone è **migliaia di volte più massiccio** di un elettrone</u>.  
+Il neutrone, invece, ha carica nulla e massa leggermente maggiore del protone. 
 {% include box-end.html %}
 <!-- {% include margin-note.html testo="L'atomo è quasi tutto vuoto"%}
 Quasi tutta la massa dell'atomo è concentrata nel nucleo, che però è circa centomila volte più piccolo dell'atomo intero. Gli elettroni si muovono attorno al nucleo in uno spazio enorme rispetto alle loro dimensioni, e tutto il resto è vuoto. Se un atomo fosse grande come la cupola di San Pietro, il nucleo sarebbe un granello di sale al centro della cupola.
 {% include margin-note-end.html %} -->
 
 {% include margin-note.html testo="Gli elettroni si spostano, i protoni no"%}
-Questa differenza ha una conseguenza importante. I protoni sono pesanti e stanno nel nucleo, tenuti insieme ai neutroni dalle forze nucleari; gli elettroni sono leggerissimi e occupano la parte esterna dell'atomo. Per questo, quando due corpi si scambiano carica elettrica, sono gli elettroni a passare dall'uno all'altro, mentre i protoni restano al loro posto. Lo vedremo accadere in tutti i fenomeni di questo capitolo.
+Questa differenza ha una conseguenza importante. I protoni sono pesanti e stanno nel nucleo, tenuti insieme ai neutroni dalle forze nucleari; gli elettroni sono leggerissimi e occupano la parte esterna dell'atomo. Per questo, <u>quando due corpi si scambiano carica elettrica, sono gli elettroni a passare dall'uno all'altro, mentre i protoni restano al loro posto</u>. Lo vedremo accadere in tutti i fenomeni di questo capitolo.
 {% include margin-note-end.html %}
 
 
@@ -232,7 +233,7 @@ Quando molti atomi si uniscono per formare un corpo, le cariche si comportano in
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Esempi di conduttori e isolanti" %}
-I metalli sono in genere ottimi conduttori (argento, rame e oro fra i migliori); vetro, gomma, plastica e aria secca sono invece buoni isolanti. È per questo che i fili elettrici sono fatti di rame e rivestiti di plastica. Il miglior conduttore in assoluto è l'oro; il miglior isolante è il teflon (o il vuoto, che però non è a tutti gli effetti “un materiale”).
+I metalli sono in genere ottimi conduttori (argento, rame e oro fra i migliori); vetro, gomma, plastica e aria secca sono invece buoni isolanti. È per questo che i fili elettrici sono fatti di rame e rivestiti di plastica. Il miglior conduttore in assoluto è l'oro; il miglior isolante è il teflon (il vuoto è un isolante anche migliore del teflon, però non è a tutti gli effetti “un materiale”).
 {% include margin-note-end.html %}
 
 Osserva l'animazione seguente: nel conduttore (ferro) alcuni elettroni sono liberi di muoversi fra i nuclei; nell'isolante (legno), invece, ogni elettrone orbita sempre e soltanto attorno al proprio nucleo. Poi trascina la carica vicino ai due materiali e confronta che cosa succede.
@@ -240,7 +241,8 @@ Osserva l'animazione seguente: nel conduttore (ferro) alcuni elettroni sono libe
 {% include lab-virtuali/conduttore-isolante-lab.html %}
 
 {% include box-imp.html testo="Conduttori e Isolanti" %}
-I conduttori sono quei materiali che presentano al loro interno cariche libere di muoversi. Gli isolanti sono quei materiali che non presentano cariche libere di muoversi.
+I **conduttori** sono quei materiali che presentano al loro interno cariche **libere di muoversi**.  
+Gli **isolanti** sono quei materiali che **non** presentano cariche libere di muoversi.
 {% include box-end.html %}
 
 {% include margin-note.html testo="Il nostro corpo è un conduttore" %}
@@ -289,7 +291,7 @@ Ci sono diversi modi in cui un corpo può **cambiare** la sua carica. Questo con
 È essenziale osservare che, per quanto la carica di un corpo cambi, <u>la carica dell'Universo rimane invariata</u>. Vale a dire, se un corpo acquista carica negativa significa che un altro corpo ne ha acquistata di positiva.
 
 {% include box-imp.html testo="Conservazione della carica" %}
-La carica non si crea e non si distrugge: semplicemente, può passare da un corpo a un altro.
+<u markdown="span">La carica ***non*** si **crea** e ***non*** si **distrugge**</u>: semplicemente, può passare da un corpo a un altro.
 {% include box-end.html %}
 
 {% include spoiler.html testo="Qual è la carica dell'Universo?" %}
@@ -302,16 +304,16 @@ In effetti, se la Terra per qualche motivo dovesse caricarsi elettricamente, è 
 
 Il fenomeno che abbiamo osservato all'inizio del capitolo ([rivedi l'esperimento](#electrisation-lab)), per cui un palloncino strofinato su un maglione di lana diventa elettricamente attivo, è noto come <definizione>elettrizzazione per strofinio</definizione>.
 {% include box-imp.html testo="Elettrizzazione per strofinio" %}
-L'elettrizzazione per strofinio è il fenomeno per cui, strofinando un corpo inizialmente neutro su un altro corpo, i **due** corpi si caricano elettricamente.
+L'**elettrizzazione per strofinio** è il fenomeno per cui, **strofinando** un corpo inizialmente neutro su un altro corpo, i **due** corpi si **caricano elettricamente**, di segno **opposto**.
 {% include box-end.html %}
 Ci sono tre caratteristiche essenziali di questo fenomeno:
 1. gli elettroni si **trasferiscono** da uno dei due corpi all'altro corpo, mentre i protoni stanno fermi;
 2. il corpo che ha **perso** elettroni si carica **positivamente**, quello che ha acquisito elettroni si carica **negativamente**;
 3. la carica non è <u>né comparsa né scomparsa</u>: la carica totale rimane la stessa.
 
-Alcuni materiali, come il vetro, quando vengono strofinati, **perdono** elettroni (li cedono al panno di lana), caricandosi positivamente. Altri materiali, invece, come la plastica o l'ambra, **acquisiscono** elettroni quando vengono strofinati, e perciò si caricano negativamente.
+Alcuni materiali, come il vetro, quando vengono strofinati con un apposito materiale (ad esempio la lana), **perdono** elettroni (li cedono al panno di lana), caricandosi positivamente. Altri materiali, invece, come la plastica o l'ambra, **acquisiscono** elettroni quando vengono strofinati (li prendono dal panno di lana), e perciò si caricano negativamente.
 
-Il fenomeno è molto facile da osservare negli isolanti (un palloncino, una penna di plastica, una bacchetta di vetro, ecc.), ma è più difficile con i conduttori. Il motivo è che quando teniamo in mano un materiale conduttore e lo strofiniamo su un panno di lana, la carica acquisita dal conduttore si scarica molto velocemente attraverso il nostro corpo fino alla Terra, che rappresenta un enorme bacino di carica.  
+Il fenomeno è molto facile da osservare negli isolanti (un palloncino, una penna di plastica, una bacchetta di vetro, ecc.), ma è più difficile con i conduttori. Il motivo è che quando teniamo in mano un materiale conduttore e lo strofiniamo su un panno di lana, la carica acquisita dal conduttore si scarica molto velocemente attraverso il nostro corpo fino alla Terra.  
 Per elettrizzare con un panno di lana un metallo dobbiamo quindi indossare un guanto di gomma, di modo da impedire alla carica di passare attraverso di noi.
 
 Nella simulazione seguente John Travolta strofina il piede sul tappeto, e così si carica. Muovi la sua gamba per strofinare, poi avvicina la sua mano alla maniglia della porta: guarda che cosa succede alle cariche, e quando.
@@ -323,9 +325,6 @@ Nella simulazione seguente John Travolta strofina il piede sul tappeto, e così 
 
 {% include box-note.html testo="L'elettrizzazione per strofinio, dall'esperimento alla tecnologia" %}
 {% include scorri.html %}
-{% include scorri-slide.html titolo="Lo scotch che si respinge" %}
-Attacca sul tavolo due strisce di nastro adesivo lunghe una decina di centimetri, poi staccale con uno strappo deciso e avvicinale tenendole sospese: si respingono. Strappandole dal tavolo si sono caricate per strofinio, ed essendo state trattate allo stesso modo hanno carica dello stesso segno. Ora attacca una striscia sopra l'altra e staccale di colpo: questa volta si attraggono, perché strofinandosi fra loro si sono caricate con segni opposti.
-{% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="Lo scotch che fa i raggi X" %}
 Una curiosità vera: nel 2008 alcuni ricercatori dell'Università della California hanno srotolato del nastro adesivo dentro una camera a vuoto, e hanno scoperto che lo strappo emette lampi di luce e perfino raggi X, abbastanza intensi da fare una radiografia di un dito! Le cariche separate dallo strappo sono così concentrate che, ricombinandosi, accelerano fortissimo gli elettroni. Nell'aria non succede: l'aria scarica le cariche prima che diventino così intense.
 {% include scorri-slide-end.html %}
@@ -365,6 +364,26 @@ Strofinando un palloncino su un maglione, il palloncino acquista $5\times10^{11}
 {"v":"d","t":"$+5\\times10^{11}\\ \\text C$"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-strofinio-maglione" opts=_oStrof ok="b" s="Il maglione ha perso proprio i $5\times10^{11}$ elettroni acquistati dal palloncino, quindi è carico positivamente: $Q=5\times10^{11}\times1{,}6\times10^{-19}\ \text C=+8\times10^{-8}\ \text C$. Il palloncino ha la carica opposta, $-8\times10^{-8}\ \text C$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Attacca sul tavolo due strisce di nastro adesivo lunghe una decina di centimetri, poi staccale con uno strappo deciso e avvicinale tenendole sospese: si respingono. Perché?
+{% capture _oScotch1 %}[
+{"v":"a","t":"Perché staccandole dal tavolo si caricano per strofinio, entrambe con carica dello stesso segno"},
+{"v":"b","t":"Perché staccandole dal tavolo una si carica positivamente e l'altra negativamente"},
+{"v":"c","t":"Perché la colla del nastro è magnetica"},
+{"v":"d","t":"Perché sono neutre, e due corpi neutri si respingono"}
+]{% endcapture %}
+{% include mcq.html id="mcq-scotch-1" opts=_oScotch1 ok="a" s="Strappandole dal tavolo, le strisce si caricano per strofinio. Sono fatte dello stesso materiale e sono state trattate allo stesso modo, quindi si caricano con lo stesso segno, e cariche dello stesso segno si respingono." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Ora attacca una striscia sopra l'altra, e staccale di colpo l'una dall'altra: questa volta si attraggono. Perché?
+{% capture _oScotch2 %}[
+{"v":"a","t":"Perché si sono scaricate, e due corpi neutri si attraggono"},
+{"v":"b","t":"Perché strofinandosi fra loro si sono caricate con segni opposti: una ha ceduto elettroni all'altra"},
+{"v":"c","t":"Perché sono ancora cariche con lo stesso segno, ma più deboli"},
+{"v":"d","t":"Perché la colla di una striscia è rimasta attaccata all'altra"}
+]{% endcapture %}
+{% include mcq.html id="mcq-scotch-2" opts=_oScotch2 ok="b" s="Strappando una striscia dall'altra, gli elettroni passano da una striscia all'altra, proprio come fra il palloncino e il maglione: una resta con elettroni in più (negativa), l'altra con elettroni in meno (positiva). Cariche di segno opposto si attraggono." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 {% include figura.html id="nastro-antistatico"
@@ -408,14 +427,8 @@ Inoltre, quanta carica finisce su ciascun corpo dipende dalla sua forma e dalle 
 
 {% include box-note.html testo="L'elettrizzazione per contatto, dall'esperimento alla tecnologia" %}
 {% include scorri.html %}
-{% include scorri-slide.html titolo="Il pendolino elettrico" %}
-Appendi a un filo di cotone una pallina di carta stagnola e avvicinale una penna di plastica strofinata: la pallina viene attratta, tocca la penna e subito dopo viene respinta, come se avesse cambiato idea. Prima la penna polarizza la pallina e la attira; poi, al contatto, le cede un po' della sua carica: ora le due hanno carica dello stesso segno, e si respingono.
-{% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="La verniciatura elettrostatica" %}
 Le carrozzerie delle automobili si verniciano con uno spruzzo di goccioline di vernice cariche, che si caricano uscendo dall'ugello. La carrozzeria è collegata a terra, e le goccioline vengono attirate su di lei: si distribuiscono in modo uniforme e arrivano anche sui lati nascosti, che lo spruzzo non vede direttamente. In più, si spreca molta meno vernice.
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="La verniciatura a polvere" %}
-Molti oggetti di metallo, come le biciclette, i termosifoni o le ringhiere, sono verniciati con una polvere colorata invece che con una vernice liquida. I granelli di polvere vengono caricati e si attaccano all'oggetto, collegato a terra; poi l'oggetto viene messo in un forno, dove la polvere si scioglie e forma uno strato liscio e resistente.
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="Stampanti laser e fotocopiatrici" %}
 Dentro una stampante laser c'è un cilindro che viene caricato, e un raggio laser lo scarica nei punti che devono restare bianchi. Le particelle di toner, una polvere nera finissima, si caricano strofinandosi e toccando altre particelle, e si attaccano al cilindro solo dove è rimasto carico, cioè dove ci sono le lettere. Poi il toner passa sul foglio e viene fissato dal calore: per questo i fogli escono dalla stampante tiepidi.
@@ -466,6 +479,9 @@ Appoggia una lattina vuota di metallo su un tavolo, sdraiata. Avvicinale un pall
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="I pezzettini di carta che saltano" %}
 Strappa dei pezzettini di carta, piccolissimi, e avvicina una penna di plastica strofinata: i pezzettini saltano su e si attaccano alla penna. Qualcuno, dopo un po', schizza via: toccando la penna si è caricato con lo stesso segno, ed è stato respinto.
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="Il pendolino elettrico" %}
+Appendi a un filo di cotone una pallina di carta stagnola e avvicinale una penna di plastica strofinata: la pallina viene attratta, tocca la penna e subito dopo viene respinta, come se avesse cambiato idea. Qui si vedono, uno dopo l'altro, due fenomeni che conosci: prima la penna polarizza la pallina e la attira; poi, al contatto, le cede un po' della sua carica (elettrizzazione per contatto): ora le due hanno carica dello stesso segno, e si respingono.
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="I filtri elettrostatici" %}
 Nei camini delle fabbriche e in molti purificatori d'aria, i fumi passano accanto a lastre o fili carichi. Le particelle di polvere e di fuliggine, anche se sono neutre, vengono polarizzate e attirate, e restano attaccate ai filtri invece di finire nell'aria che respiriamo.
