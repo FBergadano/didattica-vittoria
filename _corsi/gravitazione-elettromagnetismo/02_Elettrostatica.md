@@ -1508,9 +1508,8 @@ Lo vedi nel simulatore: avvicinati alla superficie del pianeta, e guarda come ca
 
 
 {% include box-imp.html testo="Il campo uniforme" %}
-Un campo è **uniforme** se ha lo stesso modulo, la stessa direzione e lo stesso verso in ogni punto: le sue linee di campo sono parallele ed equidistanti.
-- Il campo gravitazionale è (quasi) uniforme vicino alla superficie di un pianeta, in una regione piccola rispetto al suo raggio.
-- Il campo elettrico è (quasi) uniforme fra due lastre piane parallele cariche con segni opposti, lontano dai bordi: va dalla lastra positiva a quella negativa.
+Un campo è **uniforme** se ha lo stesso modulo, la stessa direzione e lo stesso verso in ogni punto: le sue linee di campo sono parallele ed equidistanti.  
+Il campo elettrico è (quasi) uniforme fra due lastre piane parallele cariche con segni opposti, lontano dai bordi: va dalla lastra positiva a quella negativa.
 {% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
