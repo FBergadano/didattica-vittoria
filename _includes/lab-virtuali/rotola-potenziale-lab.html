@@ -1,22 +1,27 @@
 {% comment %}
 Simulatore: il moto di una carica dal punto di vista dell'energia. In alto,
-due lastre verticali: A a potenziale alto, B a potenziale basso (il campo va
-da A verso B). In basso, il grafico dell'energia potenziale U = qV lungo il
-tratto fra le lastre, su cui la carica è disegnata come una pallina: lasciata
-andare da ferma, "rotola" sempre verso dove U è più bassa, come una pallina
-su una discesa. Con una carica positiva U scende da A verso B (la carica va
-verso il potenziale più basso); con una carica negativa il grafico si
-capovolge, e la carica va verso il potenziale più alto. A destra, due barre:
-energia potenziale U ed energia cinetica K, la cui somma resta costante.
+due lastre verticali A e B cariche con segni opposti (lo studente sceglie
+quale è positiva); fra le lastre, le linee equipotenziali tratteggiate con il
+loro valore del potenziale (la lastra positiva è a 400 V, quella negativa a
+0 V; le linee sono a 350, 250, 150 e 50 V). Sotto, due grafici lungo il tratto fra le lastre: il
+potenziale V, e l'energia potenziale U = qV della carica, su cui la carica è
+disegnata come una pallina. Lasciata andare da ferma, la carica "rotola"
+sempre verso dove U è più bassa, come una pallina su uno scivolo: una carica
+positiva va verso il potenziale più basso, una negativa (il grafico di U si
+capovolge) verso il potenziale più alto. A destra, due barre: energia
+potenziale U ed energia cinetica K, la cui somma resta costante.
 Nessun parametro.
 {% endcomment %}
 <div class="rpl-widget" id="rplLab">
+<div class="rpl-ctrl">
+  <span>Lastre: <button data-l="0" class="on">A positiva, B negativa</button><button data-l="1">A negativa, B positiva</button></span>
+</div>
 <div class="rpl-ctrl">
   <span>Carica: <button data-s="1" class="on">positiva</button><button data-s="-1">negativa</button></span>
   <button class="rpl-go">Lasciala andare ▶</button>
   <button class="rpl-reset">↺ Ricomincia</button>
 </div>
-<canvas class="rpl-canvas" aria-label="Simulatore: una carica fra due lastre e il grafico della sua energia potenziale, su cui la carica scende come una pallina"></canvas>
+<canvas class="rpl-canvas" aria-label="Simulatore: una carica fra due lastre, il grafico del potenziale e quello dell'energia potenziale, su cui la carica scende come una pallina"></canvas>
 <p class="rpl-info"></p>
 </div>
 <style>
@@ -25,6 +30,7 @@ Nessun parametro.
 .rpl-ctrl button { padding: .28rem .7rem; border-radius: 999px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .84rem; color: #334155; font-family: inherit; }
 .rpl-ctrl button.on { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
 .rpl-ctrl button.rpl-go { border-radius: 6px; background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+.rpl-ctrl button:disabled { opacity: .5; cursor: default; }
 .rpl-canvas { width: 100%; height: auto; display: block; border-radius: 8px; }
 .rpl-widget p.rpl-info { text-align: center; font-size: .84rem; font-style: italic; color: #4b5563; margin: .35rem auto 0; max-width: 560px; min-height: 2.6em; }
 @media print { .rpl-widget { display: none; } }
@@ -33,13 +39,15 @@ Nessun parametro.
 (function(){
   var root = document.getElementById('rplLab'); if (!root) return;
   var cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), info = root.querySelector('.rpl-info'), goBtn = root.querySelector('.rpl-go');
-  var W = 600, H = 340, S = 2; cv.width = W * S; cv.height = H * S;
-  var XA = 70, XB = 470, GT = 160, GB = 316;            // lastre A e B; zona del grafico (in alto e in basso)
-  var sign = 1, x, v, anim = null, done = false;
-  var XM = (XA + XB) / 2;
-  function Vof(px){ return 1 - (px - XA) / (XB - XA); }             // potenziale: 1 in A (alto), 0 in B (basso)
-  function Uof(px){ return sign * Vof(px); }                          // U = qV (q = ±1)
-  function yU(u){ return GT + 20 + (1 - (u + 1) / 2) * (GB - GT - 40); }   // U fra −1 e +1 → coordinata del grafico
+  var W = 600, H = 470, S = 2; cv.width = W * S; cv.height = H * S;
+  var XA = 70, XB = 470, XM = (XA + XB) / 2;
+  var VT = 172, VB = 288, UT = 316, UB = 446;         // zone dei due grafici (V sopra, U sotto)
+  var VMAX = 400;                                     // potenziale della lastra positiva, in volt
+  var sign = 1, swap = false, x, v, anim = null, done = false;
+  function Vof(px){ var s = (px - XA) / (XB - XA); return swap ? s : 1 - s; }   // 1 vicino alla lastra positiva, 0 vicino a quella negativa
+  function Uof(px){ return sign * Vof(px); }                                   // U = qV (q = ±1)
+  function yV(f){ return VB - 12 - f * (VB - VT - 24); }
+  function yU(u){ return UT + 14 + (1 - (u + 1) / 2) * (UB - UT - 28); }
   function ball(px, py, r, pos){
     var g = ctx.createRadialGradient(px - r * .35, py - r * .4, .5, px, py, r);
     g.addColorStop(0, pos ? '#fff1f2' : '#eff6ff'); g.addColorStop(1, pos ? '#fda4af' : '#93c5fd');
@@ -49,59 +57,87 @@ Nessun parametro.
     ctx.fillText(pos ? '+' : '−', px, py + .5); ctx.textBaseline = 'alphabetic';
   }
   function bar(bx, label, val, col){
-    var top = 40, bot = 300, h = (bot - top) * Math.max(0, Math.min(1, val));
+    var top = 172, bot = 446, h = (bot - top) * Math.max(0, Math.min(1, val));
     ctx.fillStyle = '#f1f5f9'; ctx.fillRect(bx, top, 26, bot - top); ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1.2; ctx.strokeRect(bx, top, 26, bot - top);
     ctx.fillStyle = col; ctx.fillRect(bx, bot - h, 26, h);
-    ctx.fillStyle = '#334155'; ctx.font = 'italic bold 15px Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(label, bx + 13, bot + 20);
+    ctx.fillStyle = '#334155'; ctx.font = 'italic bold 15px Georgia, serif'; ctx.textAlign = 'center'; ctx.fillText(label, bx + 13, bot + 18);
+  }
+  function axes(top, bot, y0, label){
+    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(XA, top); ctx.lineTo(XA, bot); ctx.moveTo(XA, y0); ctx.lineTo(XB + 6, y0); ctx.stroke();
+    ctx.fillStyle = '#64748b'; ctx.font = 'italic 13px Georgia, serif'; ctx.textAlign = 'left'; ctx.fillText(label, XA + 8, top + 4);
   }
   function draw(){
     ctx.setTransform(S, 0, 0, S, 0, 0); ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, W, H);
-    // lastre: A positiva (potenziale alto), B negativa (potenziale basso)
-    [[XA, true, 'A'], [XB, false, 'B']].forEach(function(p){
+    // sfumatura del potenziale fra le lastre: più calda dove V è più alto
+    for (var i = 0; i < 40; i++) {
+      var xx = XA + 8 + i * (XB - XA - 16) / 40, f = Vof(xx);
+      ctx.fillStyle = 'rgba(234,88,12,' + (0.03 + 0.14 * f).toFixed(3) + ')'; ctx.fillRect(xx, 22, (XB - XA - 16) / 40 + .5, 104);
+    }
+    // lastre
+    [[XA, !swap, 'A'], [XB, swap, 'B']].forEach(function(p){
       ctx.fillStyle = p[1] ? '#fecdd3' : '#bfdbfe'; ctx.fillRect(p[0] - 7, 22, 14, 104);
       ctx.strokeStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.2; ctx.strokeRect(p[0] - 7, 22, 14, 104);
       ctx.fillStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
       for (var y = 34; y < 126; y += 18) ctx.fillText(p[1] ? '+' : '−', p[0], y + 4);
       ctx.font = 'italic bold 14px Georgia, serif'; ctx.fillText(p[2], p[0], 16);
-      ctx.font = 'italic 12px Georgia, serif'; ctx.fillStyle = '#475569'; ctx.fillText(p[1] ? 'V alto' : 'V basso', p[0], 144);
     });
-    // campo (da A verso B)
-    ctx.globalAlpha = .35; ctx.strokeStyle = '#0891b2'; ctx.fillStyle = '#0891b2'; ctx.lineWidth = 1.6;
-    [50, 98].forEach(function(y){ ctx.beginPath(); ctx.moveTo(XA + 20, y); ctx.lineTo(XB - 26, y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(XB - 20, y); ctx.lineTo(XB - 30, y - 5); ctx.lineTo(XB - 30, y + 5); ctx.closePath(); ctx.fill(); });
-    ctx.globalAlpha = 1; ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0891b2'; ctx.textAlign = 'center'; ctx.fillText('E', (XA + XB) / 2, 80);
-    // la carica fra le lastre
+    // linee equipotenziali con il loro valore
+    ctx.setLineDash([4, 4]); ctx.strokeStyle = '#ea580c'; ctx.lineWidth = 1.2;
+    for (var k = 0; k < 4; k++) {
+      var xe = XA + (2 * k + 1) * (XB - XA) / 8;                 // 50, 150, 250, 350 V
+      ctx.beginPath(); ctx.moveTo(xe, 26); ctx.lineTo(xe, 122); ctx.stroke();
+      ctx.fillStyle = '#c2410c'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(Math.round(Vof(xe) * VMAX) + ' V', xe, 140);
+    }
+    ctx.setLineDash([]);
+    // campo: dalla lastra positiva a quella negativa
+    ctx.globalAlpha = .45;
+    [50, 98].forEach(function(y){
+      var a0 = swap ? XB - 20 : XA + 20, a1 = swap ? XA + 20 : XB - 20, dir = swap ? -1 : 1;
+      ctx.strokeStyle = '#0891b2'; ctx.fillStyle = '#0891b2'; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(a0, y); ctx.lineTo(a1 - dir * 6, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(a1, y); ctx.lineTo(a1 - dir * 10, y - 5); ctx.lineTo(a1 - dir * 10, y + 5); ctx.closePath(); ctx.fill();
+    });
+    ctx.globalAlpha = 1; ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0891b2'; ctx.textAlign = 'center'; ctx.fillText('E', XM + 52, 80);
     ball(x, 74, 12, sign > 0);
+    // grafico di V
+    axes(VT, VB, yV(0), 'V');
+    ctx.strokeStyle = '#ea580c'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(XA, yV(Vof(XA))); ctx.lineTo(XB, yV(Vof(XB))); ctx.stroke();
+    ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right'; ctx.fillText('400 V', XA - 4, yV(1) + 4); ctx.fillText('0', XA - 4, yV(0) + 4);
+    ctx.fillStyle = '#ea580c'; ctx.beginPath(); ctx.arc(x, yV(Vof(x)), 5, 0, 6.283); ctx.fill();
+    ctx.setLineDash([2, 3]); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, 88); ctx.lineTo(x, UB); ctx.stroke(); ctx.setLineDash([]);
     // grafico di U = qV
-    ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.moveTo(XA, GT); ctx.lineTo(XA, GB); ctx.lineTo(XB + 6, GB); ctx.stroke();
-    ctx.setLineDash([3, 4]); ctx.beginPath(); ctx.moveTo(XA, yU(0)); ctx.lineTo(XB, yU(0)); ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillStyle = '#64748b'; ctx.font = 'italic 13px Georgia, serif'; ctx.textAlign = 'right'; ctx.fillText('U = qV', XA - 6, GT + 12); ctx.fillText('0', XA - 6, yU(0) + 4);
+    axes(UT, UB, yU(0), 'U = qV');
     ctx.strokeStyle = sign > 0 ? '#e11d48' : '#2563eb'; ctx.lineWidth = 2.5;
     ctx.beginPath(); ctx.moveTo(XA, yU(Uof(XA))); ctx.lineTo(XB, yU(Uof(XB))); ctx.stroke();
+    ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right'; ctx.fillText('0', XA - 4, yU(0) + 4);
     ball(x, yU(Uof(x)) - 11, 10, sign > 0);
     // barre: U (rispetto al punto più basso del tratto) e K; la somma resta costante
-    var U0 = Uof(XM), Umin = Math.min(Uof(XA), Uof(XB));
-    var Urel = Uof(x) - Umin, K = U0 - Uof(x);
-    bar(510, 'U', Urel, sign > 0 ? '#e11d48' : '#2563eb'); bar(552, 'K', K, '#16a34a');
+    var Umin = Math.min(Uof(XA), Uof(XB));
+    bar(510, 'U', Uof(x) - Umin, sign > 0 ? '#e11d48' : '#2563eb'); bar(552, 'K', Uof(XM) - Uof(x), '#16a34a');
   }
   function setInfo(){
-    info.textContent = !done ? (sign > 0 ? 'Carica positiva: la sua energia potenziale U = qV è più alta vicino ad A, dove il potenziale è alto.' : 'Carica negativa: U = qV si capovolge, ed è più alta vicino a B, dove il potenziale è basso.') + ' Lasciala andare: in che verso andrà?'
-      : (sign > 0 ? 'La carica positiva va verso B, cioè verso il potenziale più basso: la sua energia potenziale diminuisce e diventa energia cinetica.' : 'La carica negativa va verso A, cioè verso il potenziale più alto: anche qui la sua energia potenziale U = qV diminuisce e diventa energia cinetica.');
+    var hi = swap ? 'B' : 'A', lo = swap ? 'A' : 'B';
+    info.textContent = !done ? (sign > 0 ? 'Carica positiva: la sua energia potenziale U = qV è più alta dove il potenziale è più alto, cioè vicino a ' + hi + '.' : 'Carica negativa: U = qV si capovolge, ed è più alta dove il potenziale è più basso, cioè vicino a ' + lo + '.') + ' Lasciala andare: in che verso andrà?'
+      : (sign > 0 ? 'La carica positiva va verso ' + lo + ', cioè verso il potenziale più basso: la sua energia potenziale diminuisce e si trasforma in energia cinetica.' : 'La carica negativa va verso ' + hi + ', cioè verso il potenziale più alto: anche qui la sua energia potenziale U = qV diminuisce e si trasforma in energia cinetica.');
   }
   function reset(){ if (anim) cancelAnimationFrame(anim); anim = null; x = XM; v = 0; done = false; goBtn.disabled = false; setInfo(); draw(); }
   function go(){
-    if (anim) return; goBtn.disabled = true;
-    var acc = 180 * sign, last = null;   // verso le U più basse: a destra se positiva, a sinistra se negativa
+    if (anim || done) return; goBtn.disabled = true;
+    var acc = 180 * sign * (swap ? -1 : 1), last = null;    // verso dove U = qV diminuisce
     function step(t){
       var dt = last === null ? 0 : Math.min((t - last) / 1000, .04); last = t;
       v += acc * dt; x += v * dt;
-      if (x >= XB - 16 || x <= XA + 16) { x = Math.max(XA + 16, Math.min(XB - 16, x)); done = true; setInfo(); draw(); anim = null; return; }
+      if (x >= XB - 16 || x <= XA + 16) { x = Math.max(XA + 16, Math.min(XB - 16, x)); done = true; anim = null; setInfo(); draw(); return; }
       draw(); anim = requestAnimationFrame(step);
     }
     anim = requestAnimationFrame(step);
   }
-  root.querySelectorAll('[data-s]').forEach(function(b){ b.addEventListener('click', function(){
-    sign = +b.dataset.s; root.querySelectorAll('[data-s]').forEach(function(x){ x.classList.toggle('on', x === b); }); reset(); }); });
+  function group(attr, fn){ root.querySelectorAll('[' + attr + ']').forEach(function(b){ b.addEventListener('click', function(){
+    root.querySelectorAll('[' + attr + ']').forEach(function(x){ x.classList.toggle('on', x === b); }); fn(b); reset(); }); }); }
+  group('data-s', function(b){ sign = +b.dataset.s; });
+  group('data-l', function(b){ swap = b.dataset.l === '1'; });
   goBtn.addEventListener('click', go);
   root.querySelector('.rpl-reset').addEventListener('click', reset);
   reset();

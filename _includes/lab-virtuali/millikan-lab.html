@@ -1,0 +1,117 @@
+{% comment %}
+Simulatore dell'esperimento di Millikan. Una goccia d'olio carica
+negativamente è fra due lastre orizzontali (positiva in alto); sulla goccia
+agiscono il peso (verde, verso il basso) e la forza elettrica (rossa, verso
+l'alto). Lo studente sceglie una goccia (1, 2 o 3: la massa è indicata, la
+carica no) e regola con lo slider il campo E fra le lastre, finché la goccia
+resta ferma: lì |q| E = m g, e da E si ricava la carica.
+Le gocce sono fisse, perché servono negli esercizi del box "Il problema di
+Millikan":
+  goccia 1: m = 4,9e-15 kg, 3 elettroni in eccesso → ferma con E = 100 kN/C
+  goccia 2: m = 4,9e-15 kg, 2 elettroni           → E = 150 kN/C
+  goccia 3: m = 9,8e-15 kg, 5 elettroni           → E = 120 kN/C
+(con g = 9,8 m/s² ed e = 1,6e-19 C). Nell'aria la goccia raggiunge subito una
+velocità costante, proporzionale alla forza totale: così si muove nel
+simulatore, con un piccolo tremolio dovuto agli urti con le molecole d'aria.
+Nessun parametro.
+{% endcomment %}
+<div class="mil-widget" id="milLab">
+<div class="mil-ctrl">
+  <span>Goccia: <button data-d="0" class="on">1</button><button data-d="1">2</button><button data-d="2">3</button></span>
+  <span class="mil-m"></span>
+</div>
+<canvas class="mil-canvas" aria-label="Simulatore: una goccia d'olio carica fra due lastre; regolando il campo elettrico la si può tenere ferma"></canvas>
+<div class="mil-ctrl">
+  <label>Campo fra le lastre: <input type="range" min="0" max="200" step="1" value="60"> <b class="mil-E"></b></label>
+  <button class="mil-reset">↺ Riporta la goccia al centro</button>
+</div>
+<p class="mil-info"></p>
+</div>
+<style>
+.mil-widget { margin: 1.4rem auto; max-width: 560px; text-align: center; }
+.mil-ctrl { display: flex; gap: .5rem 1rem; justify-content: center; align-items: center; flex-wrap: wrap; margin: .3rem 0; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .85rem; color: #334155; }
+.mil-ctrl button { padding: .28rem .7rem; border-radius: 999px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .84rem; color: #334155; font-family: inherit; }
+.mil-ctrl button.on { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+.mil-ctrl input { width: 200px; vertical-align: middle; accent-color: var(--accent, #0f766e); }
+.mil-E { display: inline-block; min-width: 6.5em; text-align: left; }
+.mil-canvas { width: 100%; height: auto; display: block; border-radius: 8px; }
+.mil-widget p.mil-info { text-align: center; font-size: .86rem; font-style: italic; color: #4b5563; margin: .35rem auto 0; max-width: 520px; min-height: 1.5em; }
+.mil-widget p.mil-info.ok { color: #15803d; font-weight: 600; font-style: normal; }
+@media print { .mil-widget { display: none; } }
+</style>
+<script>
+(function(){
+  var root = document.getElementById('milLab'); if (!root) return;
+  var cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), sl = root.querySelector('input[type=range]');
+  var info = root.querySelector('.mil-info'), mOut = root.querySelector('.mil-m'), EOut = root.querySelector('.mil-E');
+  var W = 560, H = 300, S = 2; cv.width = W * S; cv.height = H * S;
+  var TOP = 40, BOT = 262, CX = W / 2, MID = (TOP + BOT) / 2;
+  var e = 1.6e-19, g = 9.8;
+  var DROPS = [{ m: 4.9e-15, n: 3, t: '4,9' }, { m: 4.9e-15, n: 2, t: '4,9' }, { m: 9.8e-15, n: 5, t: '9,8' }];
+  var d = 0, y = MID, jx = 0, jy = 0, still = 0, anim = null, visible = false, last = null;
+  function arrow(x0, y0, x1, y1, col, w){
+    var a = Math.atan2(y1 - y0, x1 - x0), L = Math.hypot(x1 - x0, y1 - y0); if (L < 3) return;
+    var hl = Math.min(10, L * .5);
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = w;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - hl * .8 * Math.cos(a), y1 - hl * .8 * Math.sin(a)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 - hl * Math.cos(a - .45), y1 - hl * Math.sin(a - .45)); ctx.lineTo(x1 - hl * Math.cos(a + .45), y1 - hl * Math.sin(a + .45)); ctx.closePath(); ctx.fill();
+  }
+  function ratio(){ var D = DROPS[d]; return D.n * e * sl.value * 1000 / (D.m * g); }   // forza elettrica / peso
+  function draw(){
+    ctx.setTransform(S, 0, 0, S, 0, 0); ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, W, H);
+    [[TOP, true], [BOT, false]].forEach(function(p){
+      ctx.fillStyle = p[1] ? '#fecdd3' : '#bfdbfe'; ctx.fillRect(40, p[0] - 8, W - 80, 16);
+      ctx.strokeStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.2; ctx.strokeRect(40, p[0] - 8, W - 80, 16);
+      ctx.fillStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (var x = 56; x < W - 40; x += 28) ctx.fillText(p[1] ? '+' : '−', x, p[0] + .5);
+      ctx.textBaseline = 'alphabetic';
+    });
+    // campo (verso il basso), più marcato se il campo è più intenso
+    ctx.globalAlpha = .12 + .3 * sl.value / 200;
+    for (var x = 80; x < W - 60; x += 80) arrow(x, TOP + 20, x, BOT - 20, '#0891b2', 1.5);
+    ctx.globalAlpha = 1; ctx.fillStyle = '#0891b2'; ctx.font = 'italic bold 16px Georgia, serif'; ctx.textAlign = 'left'; ctx.fillText('E', W - 34, MID + 5);
+    // la goccia (ingrandita moltissimo)
+    var R = DROPS[d].m > 5e-15 ? 15 : 12, X = CX + jx, Y = y + jy;
+    var gr = ctx.createRadialGradient(X - R * .35, Y - R * .4, 1, X, Y, R);
+    gr.addColorStop(0, '#fef9c3'); gr.addColorStop(1, '#ca8a04');
+    ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(X, Y, R, 0, 6.2832); ctx.fill();
+    ctx.strokeStyle = '#854d0e'; ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.fillStyle = '#1e3a8a'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('−', X, Y + 4);
+    // forze: peso (sempre lo stesso) e forza elettrica (cresce con E)
+    var Lp = 50, Le = Math.min(130, 50 * ratio());
+    arrow(X + 4, Y + R + 2, X + 4, Y + R + 2 + Lp, '#16a34a', 3);
+    arrow(X - 4, Y - R - 2, X - 4, Y - R - 2 - Le, '#dc2626', 3);
+    ctx.font = 'italic bold 14px Georgia, serif'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#16a34a'; ctx.fillText('mg', X + 12, Y + R + Lp - 4);
+    ctx.fillStyle = '#dc2626'; ctx.fillText('|q|E', X + 8, Y - R - Math.max(14, Le - 8));
+  }
+  function setLabels(){
+    mOut.innerHTML = 'massa <i>m</i> = ' + DROPS[d].t + ' × 10<sup>−15</sup> kg';
+    EOut.textContent = 'E = ' + sl.value + ' kN/C';
+  }
+  function step(t){
+    var dt = last === null ? 0 : Math.min((t - last) / 1000, .05); last = t;
+    var r = ratio(), v = -300 * (r - 1);                     // verso l'alto se la forza elettrica supera il peso
+    if (Math.abs(r - 1) < .004) v = 0;
+    y += v * dt;
+    jx += (Math.random() - .5) * 1.2 - jx * .15; jy += (Math.random() - .5) * 1.2 - jy * .15;
+    var hit = false;
+    if (y < TOP + 26) { y = TOP + 26; hit = true; } if (y > BOT - 26) { y = BOT - 26; hit = true; }
+    still = v === 0 && !hit ? still + dt : 0;
+    info.classList.toggle('ok', still > .6);
+    info.textContent = still > .6 ? 'La goccia è ferma: la forza elettrica e il peso si equilibrano.'
+      : hit ? 'La goccia è arrivata a una lastra: riportala al centro.'
+      : r > 1 ? 'La forza elettrica è più grande del peso: la goccia sale.' : 'Il peso è più grande della forza elettrica: la goccia scende.';
+    draw();
+    anim = visible ? requestAnimationFrame(step) : null; if (!anim) last = null;
+  }
+  function kick(){ if (!anim && visible) anim = requestAnimationFrame(step); }
+  root.querySelectorAll('[data-d]').forEach(function(b){ b.addEventListener('click', function(){
+    d = +b.dataset.d; root.querySelectorAll('[data-d]').forEach(function(x){ x.classList.toggle('on', x === b); });
+    y = MID; still = 0; setLabels(); draw(); }); });
+  sl.addEventListener('input', function(){ setLabels(); draw(); });
+  root.querySelector('.mil-reset').addEventListener('click', function(){ y = MID; still = 0; draw(); });
+  new IntersectionObserver(function(en){ visible = en[0].isIntersecting; kick(); }).observe(cv);
+  setLabels(); draw();
+})();
+</script>

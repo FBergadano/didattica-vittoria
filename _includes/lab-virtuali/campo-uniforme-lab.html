@@ -1,0 +1,80 @@
+{% comment %}
+Simulatore: perché il campo vicino alla superficie di un pianeta e il campo
+fra due lastre cariche sono uniformi. A sinistra, un pianeta con i vettori
+del campo gravitazionale disegnati su una griglia: con lo slider ci si
+avvicina a un punto della superficie, e i vettori, che da lontano convergono
+verso il centro e cambiano lunghezza, diventano paralleli e tutti uguali.
+A destra, due lastre piane cariche con segni opposti: lì i vettori del campo
+elettrico sono paralleli e uguali dappertutto (lontano dai bordi).
+Nessun parametro.
+{% endcomment %}
+<div class="cul-widget" id="culLab">
+<canvas class="cul-canvas" aria-label="Simulatore: avvicinandosi alla superficie di un pianeta il campo gravitazionale diventa uniforme, come quello fra due lastre cariche"></canvas>
+<div class="cul-ctrl">
+  <label>Avvicinati alla superficie del pianeta <input type="range" min="0" max="100" value="0"></label>
+</div>
+</div>
+<style>
+.cul-widget { margin: 1.4rem auto; max-width: 620px; text-align: center; }
+.cul-canvas { width: 100%; height: auto; display: block; border-radius: 8px; }
+.cul-ctrl { margin: .4rem 0; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .85rem; color: #334155; }
+.cul-ctrl input { width: 220px; vertical-align: middle; accent-color: var(--accent, #0f766e); }
+@media print { .cul-widget { display: none; } }
+</style>
+<script>
+(function(){
+  var root = document.getElementById('culLab'); if (!root) return;
+  var cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), sl = root.querySelector('input');
+  var W = 620, H = 290, S = 2; cv.width = W * S; cv.height = H * S;
+  var PW = 290, PH = 240, PY = 10;                 // i due pannelli: sinistra x 10..300, destra x 320..610
+  function arrow(x0, y0, x1, y1, col, w){
+    var a = Math.atan2(y1 - y0, x1 - x0), d = Math.hypot(x1 - x0, y1 - y0); if (d < 3) return;
+    var hl = Math.min(8, d * .45);
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = w;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - hl * .8 * Math.cos(a), y1 - hl * .8 * Math.sin(a)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 - hl * Math.cos(a - .45), y1 - hl * Math.sin(a - .45)); ctx.lineTo(x1 - hl * Math.cos(a + .45), y1 - hl * Math.sin(a + .45)); ctx.closePath(); ctx.fill();
+  }
+  function panel(x){ ctx.fillStyle = '#f8fafc'; ctx.fillRect(x, PY, PW, PH); ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1; ctx.strokeRect(x, PY, PW, PH); }
+  function draw(){
+    ctx.setTransform(S, 0, 0, S, 0, 0); ctx.clearRect(0, 0, W, H);
+    var u = sl.value / 100, z = 0.45 * Math.pow(60 / 0.45, u);     // ingrandimento: pixel per unità = 100 z
+    var w = Math.min(1, u * 2.2), cy = (1 + 0.45 / z) * w;           // punto del mondo al centro del pannello
+    var X0 = 10, CX = X0 + PW / 2, CY = PY + PH / 2, sc = 100 * z;
+    panel(X0);
+    ctx.save(); ctx.beginPath(); ctx.rect(X0, PY, PW, PH); ctx.clip();
+    // il pianeta
+    var px = CX, py = CY + cy * sc;
+    var g = ctx.createRadialGradient(px - sc * .3, py - sc * .3, sc * .1, px, py, sc);
+    g.addColorStop(0, '#93c5fd'); g.addColorStop(1, '#1d4ed8');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(px, py, sc, 0, 6.2832); ctx.fill();
+    // vettori del campo su una griglia (lunghezza proporzionale a 1/r²)
+    var step = 34;
+    for (var gx = X0 + step / 2; gx < X0 + PW; gx += step) for (var gy = PY + step / 2; gy < PY + PH; gy += step) {
+      var wx = (gx - CX) / sc, wy = cy - (gy - CY) / sc, r = Math.hypot(wx, wy);
+      if (r < 1.02) continue;
+      var len = Math.min(26, 24 / (r * r));
+      arrow(gx, gy, gx - wx / r * len, gy + wy / r * len, '#0f766e', 1.6);
+    }
+    ctx.restore();
+    ctx.fillStyle = '#334155'; ctx.font = 'italic 13px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText(u < .5 ? 'un pianeta e il suo campo gravitazionale' : 'vicino alla superficie: il campo è uniforme', CX, PY + PH + 20);
+    ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0f766e'; ctx.textAlign = 'left'; ctx.fillText('g', X0 + 8, PY + 20);
+    // destra: le lastre
+    var X1 = 320; panel(X1);
+    var T = PY + 34, B = PY + PH - 34;
+    [[T, true], [B, false]].forEach(function(p){
+      ctx.fillStyle = p[1] ? '#fecdd3' : '#bfdbfe'; ctx.fillRect(X1 + 20, p[0] - 7, PW - 40, 14);
+      ctx.strokeStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.2; ctx.strokeRect(X1 + 20, p[0] - 7, PW - 40, 14);
+      ctx.fillStyle = p[1] ? '#9f1239' : '#1e3a8a'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      for (var x = X1 + 32; x < X1 + PW - 20; x += 22) ctx.fillText(p[1] ? '+' : '−', x, p[0] + .5);
+      ctx.textBaseline = 'alphabetic';
+    });
+    for (var ax = X1 + 40; ax < X1 + PW - 20; ax += 34) for (var ay = T + 22; ay < B - 30; ay += 34) arrow(ax, ay, ax, ay + 24, '#0891b2', 1.6);
+    ctx.fillStyle = '#334155'; ctx.font = 'italic 13px Georgia, serif'; ctx.textAlign = 'center';
+    ctx.fillText('fra due lastre cariche: il campo è uniforme', X1 + PW / 2, PY + PH + 20);
+    ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0891b2'; ctx.textAlign = 'left'; ctx.fillText('E', X1 + PW - 18, PY + PH / 2 + 5);
+  }
+  sl.addEventListener('input', draw);
+  draw();
+})();
+</script>

@@ -8,6 +8,16 @@ materia: fisica
 numero: 2
 ---
 
+<cit autore="Francesco De Gregori, Alice">
+Alice guarda i gatti e i gatti guardano nel Sole,
+Mentre il Sole sta girando senza fretta.
+Irene al quarto piano è lì tranquilla
+Che si guarda nello specchio e accende un'altra sigaretta.
+E Lady Marlen, bella più che mai,
+Sorride, non ti dice la sua età.
+Ma tutto questo Alice non lo sa.
+</cit>
+
 <section id="cap1" class="chapter-section">
 <header class="chapter-header">
   <span class="chapter-number">Parte I</span>

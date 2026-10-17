@@ -1406,6 +1406,46 @@ Le linee di campo si possono anche rendere visibili. In un piattino si versa un 
 {% include scorri-end.html %}
 {% include box-end.html %}
 
+### Il campo fra due lastre piane
+
+Il campo gravitazionale di un pianeta punta verso il suo centro, e diventa più debole allontanandosi. Eppure, in un'aula, $\vec g$ vale $9{,}8\ \text{m/s}^2$ e punta verso il basso in ogni punto: sul banco, alla lavagna, vicino al soffitto. Il motivo è che l'aula è piccolissima rispetto al raggio della Terra. Vicino alla superficie, e in una regione piccola, le linee di campo che convergono verso il centro sono praticamente parallele, e la distanza dal centro è quasi la stessa ovunque. Il campo è <definizione>uniforme</definizione>: ha lo stesso modulo, la stessa direzione e lo stesso verso in ogni punto.
+
+Lo vedi nel simulatore: avvicinati alla superficie del pianeta, e guarda come cambiano i vettori del campo.
+
+{% include lab-virtuali/campo-uniforme-lab.html %}
+
+Per il campo elettrico c'è un modo semplice per ottenere la stessa situazione: due lastre metalliche piane, parallele e vicine fra loro, cariche con segni opposti. Fra le lastre, lontano dai bordi, il campo è uniforme, e le linee di campo sono segmenti paralleli ed equidistanti, che vanno dalla lastra positiva a quella negativa.
+
+{% include box-imp.html testo="Il campo uniforme" %}
+Un campo è **uniforme** se ha lo stesso modulo, la stessa direzione e lo stesso verso in ogni punto: le sue linee di campo sono parallele ed equidistanti.
+- Il campo gravitazionale è (quasi) uniforme vicino alla superficie di un pianeta, in una regione piccola rispetto al suo raggio.
+- Il campo elettrico è (quasi) uniforme fra due lastre piane parallele cariche con segni opposti, lontano dai bordi: va dalla lastra positiva a quella negativa.
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+{% capture _qUnif %}[
+{"t":"In un campo uniforme le linee di campo sono parallele ed equidistanti.","ok":true,"s":"Sì: stessa direzione ovunque vuol dire linee parallele, stessa intensità vuol dire linee ugualmente fitte."},
+{"t":"Fra due lastre cariche, il campo elettrico va dalla lastra negativa a quella positiva.","ok":false,"s":"No: come sempre, le linee di campo escono dalle cariche positive ed entrano in quelle negative."},
+{"t":"Il campo gravitazionale della Terra è uniforme anche se lo guardiamo dallo spazio, su tutto il pianeta.","ok":false,"s":"No: su tutto il pianeta il campo punta sempre verso il centro, quindi cambia direzione da un punto all'altro, e diminuisce allontanandosi. È uniforme solo in una regione piccola rispetto al raggio terrestre."}
+]{% endcapture %}
+{% include quiz.html domande=_qUnif id="q-campo-uniforme" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Fra due lastre cariche con segni opposti, dove il campo elettrico è più intenso?
+{% capture _oUnif %}[
+{"v":"a","t":"vicino alla lastra positiva"},
+{"v":"b","t":"vicino alla lastra negativa"},
+{"v":"c","t":"a metà strada fra le lastre"},
+{"v":"d","t":"è uguale in tutti i punti (lontano dai bordi)"}
+]{% endcapture %}
+{% include mcq.html id="mcq-campo-uniforme-dove" opts=_oUnif ok="d" s="Fra le lastre il campo è uniforme: stesso modulo, stessa direzione e stesso verso in ogni punto, a qualunque distanza dalle lastre. Cambia solo vicino ai bordi, dove le linee si incurvano." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
+
 
 
 # L'energia elettrica
@@ -1816,14 +1856,10 @@ La differenza con la gravità sta nel segno. Le masse sono tutte positive, e il 
 - **Verso:** se $q$ è positiva, $\vec F$ ha lo stesso verso di $\vec E$; se $q$ è negativa, ha verso opposto.
 {% include box-end.html %}
 
-Un caso molto importante è quello di due lastre piane, vicine fra loro, cariche con segni opposti. Fra le lastre il campo è (quasi) **uniforme**: ha lo stesso modulo, la stessa direzione e lo stesso verso in ogni punto, e le linee di campo sono segmenti paralleli ed equidistanti che vanno dalla lastra positiva a quella negativa. È l'analogo elettrico del campo gravitazionale in una stanza: lì $\vec g$ vale $9{,}8\ \text{m/s}^2$ e punta verso il basso dappertutto. In un campo uniforme la forza su una carica è la stessa ovunque la si metta.
-
-{% include box-note.html testo="La goccia d'olio di Millikan" %}
-Nel 1909 il fisico americano Robert Millikan spruzzò minuscole goccioline d'olio fra due lastre orizzontali cariche. Le goccioline, strofinandosi nello spruzzatore, si caricavano. Regolando il campo fra le lastre, Millikan riusciva a tenerne una ferma a mezz'aria: la forza elettrica verso l'alto equilibrava esattamente il peso, cioè $\lvert q\rvert\,E = m\,g$. Conoscendo $E$, $m$ e $g$ poteva così ricavare la carica della goccia. Ripetendo la misura su moltissime gocce, trovò che la carica era sempre un multiplo intero di uno stesso valore, $1{,}6\times10^{-19}\ \text C$: la carica dell'elettrone.
-{% include box-end.html %}
+In un campo uniforme, come quello fra due lastre, anche la forza su una carica è la stessa in ogni punto: proprio come il peso di un oggetto, che è lo stesso in ogni punto dell'aula.
 
 {% include box-ex.html testo="Verifica Subito!" %}
-Quando serve, usa $e = 1{,}6\times10^{-19}\ \text C$ e $g = 9{,}8\ \text{m/s}^2$.
+Quando serve, usa $e = 1{,}6\times10^{-19}\ \text C$.
 
 {% include scorri.html %}
 {% include scorri-slide.html %}
@@ -1856,15 +1892,6 @@ Un protone si trova fra due lastre cariche, dove il campo vale $E = 1000\ \text{
 {% include fill-multi.html testo="$F =$ [1,6|1.6] $\times10^{-16}$ N" s="La carica del protone è $e = 1{,}6\times10^{-19}\ \text C$, quindi $F = e\,E = 1{,}6\times10^{-19}\cdot 1000\ \text N = 1{,}6\times10^{-16}\ \text N$." %}
 <div style="clear:both"></div>
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html %}
-{% include calc-margin.html id="calcEl20" %}
-Come Millikan, teniamo ferma a mezz'aria una goccia d'olio di massa $m = 4{,}9\times10^{-15}\ \text{kg}$, carica negativamente, fra due lastre orizzontali in cui il campo vale $E = 1{,}0\times10^{5}\ \text{N/C}$.
-
-{% include fill.html prima="Perché la goccia stia ferma, la lastra positiva deve stare" tipo="drop" opts="in alto|in basso" ok="in alto" dopo="." s="La forza elettrica deve puntare verso l'alto per equilibrare il peso. La goccia è negativa, quindi il campo deve puntare verso il basso: dalla lastra positiva, in alto, a quella negativa, in basso." %}
-
-{% include fill-multi.html testo="Il peso della goccia è $mg =$ [4,8|4.8] $\times10^{-14}$ N, la sua carica in valore assoluto è $|q| =$ [4,8|4.8] $\times10^{-19}$ C, cioè [3] volte la carica dell'elettrone." s="$mg = 4{,}9\times10^{-15}\cdot 9{,}8\ \text N \approx 4{,}8\times10^{-14}\ \text N$. Da $|q|\,E = mg$: $|q| = \dfrac{mg}{E} = \dfrac{4{,}8\times10^{-14}}{1{,}0\times10^{5}}\ \text C = 4{,}8\times10^{-19}\ \text C$, e $\dfrac{4{,}8\times10^{-19}}{1{,}6\times10^{-19}} = 3$: la goccia ha 3 elettroni in eccesso." %}
-<div style="clear:both"></div>
-{% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
 
@@ -1893,15 +1920,6 @@ A differenza della gravità, l'accelerazione **dipende** dalla particella: dalla
 | **Verso** | sempre quello di $\vec g$ | quello di $\vec E$ se $q > 0$, opposto se $q < 0$ |
 
 Per esempio, un protone e un elettrone hanno cariche con lo stesso valore assoluto, ma la massa dell'elettrone ($9{,}1\times10^{-31}\ \text{kg}$) è circa $1800$ volte più piccola di quella del protone ($1{,}67\times10^{-27}\ \text{kg}$). Nello stesso campo, l'elettrone subisce una forza uguale in modulo e opposta in verso, ma accelera circa $1800$ volte di più.
-
-{% capture _rParab %}Il campo fra le lastre è uniforme, quindi la forza sul protone è costante, sempre verticale. In orizzontale non c'è nessuna forza, e il protone continua ad andare avanti con la stessa velocità; in verticale accelera in modo uniforme. È esattamente quello che succede a un sasso lanciato orizzontalmente, con il peso al posto della forza elettrica: la traiettoria è un arco di parabola.{% endcapture %}
-{% include risposta-aperta.html id="ra-prevedi-parabola" tipo="prevedi"
-   domanda="Prima di usare il simulatore: un protone viene lanciato orizzontalmente fra due lastre orizzontali cariche. Che traiettoria seguirà? A quale moto che conosci già assomiglia?"
-   risposta=_rParab %}
-
-Nel simulatore puoi scegliere la particella, scambiare i segni delle lastre e decidere se lasciarla andare da ferma o lanciarla orizzontalmente.
-
-{% include lab-virtuali/moto-carica-campo-lab.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include scorri.html %}
@@ -1939,6 +1957,12 @@ Una pallina di polistirolo di massa $2\ \text g$, con carica $q = -4\times10^{-7
 <div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% capture _rParab %}Il campo fra le lastre è uniforme, quindi la forza sul protone è costante e sempre verticale. In orizzontale non c'è nessuna forza, e il protone continua ad andare avanti con la stessa velocità; in verticale accelera in modo uniforme. È esattamente quello che succede a un sasso lanciato orizzontalmente, con la forza elettrica al posto del peso: la traiettoria è un arco di parabola.{% endcapture %}
+{% include risposta-aperta.html id="ra-prevedi-parabola" tipo="spiega"
+   domanda="Un protone viene lanciato orizzontalmente fra due lastre orizzontali cariche. Che traiettoria seguirà? A quale moto che conosci già assomiglia?"
+   risposta=_rParab %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
 Una particella alfa (un nucleo di elio) ha una carica doppia di quella del protone e una massa circa quattro volte più grande. Nello stesso campo elettrico, la sua accelerazione rispetto a quella del protone è
 {% capture _oAlfa %}[
 {"v":"a","t":"il doppio"},
@@ -1951,36 +1975,118 @@ Una particella alfa (un nucleo di elio) ha una carica doppia di quella del proto
 {% include scorri-end.html %}
 {% include box-end.html %}
 
-### Il moto dal punto di vista dell'energia
+### L'esperimento di Millikan
 
-{% include box-ricorda.html testo="La conservazione dell'energia meccanica" %}
-Se agiscono solo forze conservative, come la forza peso, l'energia meccanica si conserva:
+Che la carica elettrica fosse portata da particelle minuscole, gli elettroni, all'inizio del Novecento era ormai chiaro. Ma quanto vale la carica di un elettrone? Nel 1897 Joseph John Thomson era riuscito a misurare il rapporto $q/m$ fra la sua carica e la sua massa, proprio il rapporto che compare in $\vec a = \dfrac{q}{m}\,\vec E$, ma non la carica da sola. Il fisico americano Robert Millikan, fra il 1909 e il 1913, trovò il modo di misurarla. Proviamo a seguire il ragionamento.
 
-$$K + U = \text{costante},\qquad\text{cioè}\qquad \Delta K = -\Delta U.$$
+Il simulatore riproduce il suo esperimento: una goccia d'olio carica negativamente si trova fra due lastre orizzontali, e il campo fra le lastre si può regolare. Ti servirà nel problema qui sotto.
 
-Un sasso lasciato cadere scende, la sua energia potenziale diminuisce e diventa energia cinetica. Poiché $U = m\,V$ e le masse sono sempre positive, una massa lasciata libera va sempre verso il potenziale gravitazionale più basso, cioè verso la Terra. Lo trovi nel capitolo sull'[energia]({{ '/corsi/meccanica/06_Energia/' | relative_url }}#i-sistemi-isolati-e-la-conservazione-dellenergia-meccanica).
+{% include lab-virtuali/millikan-lab.html %}
+
+{% include box-ex.html testo="Il problema di Millikan" %}
+Usa $g = 9{,}8\ \text{m/s}^2$.
+
+{% include scorri.html %}
+{% include scorri-slide.html %}
+La prima idea che viene in mente: mettere un elettrone fra due lastre, dove il campo $E$ è uniforme e lo possiamo regolare noi, e usare $q\,E = m\,a$. Per ricavare $q$, che cosa dovremmo misurare?
+{% capture _oMil1 %}[
+{"v":"a","t":"solo il campo $E$"},
+{"v":"b","t":"l'accelerazione $a$ e la massa $m$ dell'elettrone ($E$ lo regoliamo noi)"},
+{"v":"c","t":"solo la velocità dell'elettrone"},
+{"v":"d","t":"la distanza fra le lastre"}
+]{% endcapture %}
+{% include mcq.html id="mcq-millikan-idea" opts=_oMil1 ok="b" s="Da $q\,E = m\,a$ si ricava $q = \dfrac{m\,a}{E}$: conoscendo $E$, servono la massa e l'accelerazione dell'elettrone." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Questa strada, però, non porta da nessuna parte. Perché?
+{% capture _oMil2 %}[
+{"v":"a","t":"perché in un campo uniforme gli elettroni non accelerano"},
+{"v":"b","t":"perché un elettrone non si può vedere, e la sua massa nessuno la conosceva: si conosceva solo il rapporto $q/m$"},
+{"v":"c","t":"perché la formula $q\\,E = m\\,a$ vale solo per i protoni"},
+{"v":"d","t":"perché il campo fra le lastre non si può regolare"}
+]{% endcapture %}
+{% include mcq.html id="mcq-millikan-problema" opts=_oMil2 ok="b" s="Un singolo elettrone è troppo piccolo per essere visto, e la sua accelerazione è enorme. Soprattutto, misurando come si muove un elettrone in un campo si ottiene sempre e solo il rapporto $q/m$, quello che aveva già trovato Thomson: per separare $q$ da $m$ serve un'altra idea." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+L'idea di Millikan fu di attaccare gli elettroni a qualcosa di abbastanza grande da essere visto al microscopio, e di cui si potesse misurare la massa: minuscole goccioline d'olio. Spruzzate da un nebulizzatore, le goccioline si caricano per strofinio, catturando qualche elettrone in più. Ora però sulla goccia agisce anche il peso. Regolando il campo, Millikan riusciva a tenere una goccia ferma a mezz'aria.
+
+{% include fill.html prima="Se la goccia è ferma, la sua accelerazione è" tipo="drop" opts="zero|uguale a g|uguale a qE/m" ok="zero" dopo="," s="Ferma e che resta ferma: la velocità non cambia, quindi $a = 0$." %}
+
+{% include fill.html prima="quindi la forza elettrica e il peso" tipo="drop" opts="hanno lo stesso modulo e verso opposto|hanno lo stesso verso|sono entrambi zero" ok="hanno lo stesso modulo e verso opposto" dopo="." s="Se l'accelerazione è zero, la forza totale è zero: la forza elettrica verso l'alto equilibra il peso verso il basso, $\lvert q\rvert\,E = m\,g$, e quindi $\lvert q\rvert = \dfrac{m\,g}{E}$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl20" %}
+Nel simulatore, scegli la goccia 1 e regola il campo finché la goccia non resta ferma. Poi calcola la sua carica, in valore assoluto.
+
+{% include fill-multi.html testo="La goccia 1 sta ferma con $E =$ [100] kN/C; la sua carica è $\lvert q\rvert =$ [4,8|4.8] $\times10^{-19}$ C" s="Attenzione all'unità di misura: $100\ \text{kN/C} = 1{,}0\times10^{5}\ \text{N/C}$. Allora $\lvert q\rvert = \dfrac{m\,g}{E} = \dfrac{4{,}9\times10^{-15}\cdot 9{,}8}{1{,}0\times10^{5}}\ \text C \approx 4{,}8\times10^{-19}\ \text C$." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcEl26" %}
+Fai lo stesso con le gocce 2 e 3.
+
+{% include fill-multi.html testo="Goccia 2: $E =$ [150] kN/C, $\lvert q\rvert =$ [3,2|3.2] $\times10^{-19}$ C. Goccia 3: $E =$ [120] kN/C, $\lvert q\rvert =$ [8,0|8|8.0] $\times10^{-19}$ C." s="Goccia 2: $\lvert q\rvert = \dfrac{4{,}9\times10^{-15}\cdot 9{,}8}{1{,}5\times10^{5}}\ \text C \approx 3{,}2\times10^{-19}\ \text C$. Goccia 3: $\lvert q\rvert = \dfrac{9{,}8\times10^{-15}\cdot 9{,}8}{1{,}2\times10^{5}}\ \text C \approx 8{,}0\times10^{-19}\ \text C$. Le gocce 1 e 2 hanno la stessa massa ma cariche diverse: hanno catturato un numero diverso di elettroni." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Le cariche delle tre gocce sono $4{,}8\times10^{-19}\ \text C$, $3{,}2\times10^{-19}\ \text C$ e $8{,}0\times10^{-19}\ \text C$. Che cosa hanno in comune?
+{% capture _oMil3 %}[
+{"v":"a","t":"sono tutte multipli interi di $1{,}6\\times10^{-19}\\ \\text C$"},
+{"v":"b","t":"sono più grandi per le gocce più pesanti"},
+{"v":"c","t":"sono tutte uguali, a meno degli errori di misura"},
+{"v":"d","t":"non hanno niente in comune"}
+]{% endcapture %}
+{% include mcq.html id="mcq-millikan-multipli" opts=_oMil3 ok="a" s="$4{,}8 = 3\times1{,}6$, $3{,}2 = 2\times1{,}6$, $8{,}0 = 5\times1{,}6$: le gocce hanno catturato $3$, $2$ e $5$ elettroni. Millikan misurò centinaia di gocce, e trovò sempre multipli interi dello stesso valore: la carica non si può dividere all'infinito, e il pezzetto più piccolo è quello di un elettrone. La carica dell'elettrone è quindi $-1{,}6\times10^{-19}\ \text C$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+E il protone? Un atomo di idrogeno è formato da un protone e un elettrone, ed è neutro. Quanto vale allora la carica del protone?
+{% capture _oMil4 %}[
+{"v":"a","t":"$+1{,}6\\times10^{-19}\\ \\text C$"},
+{"v":"b","t":"$-1{,}6\\times10^{-19}\\ \\text C$"},
+{"v":"c","t":"circa $1800$ volte quella dell'elettrone, perché il protone ha una massa circa $1800$ volte più grande"},
+{"v":"d","t":"zero"}
+]{% endcapture %}
+{% include mcq.html id="mcq-millikan-protone" opts=_oMil4 ok="a" s="Perché l'atomo sia neutro, la carica del protone deve annullare esattamente quella dell'elettrone: $+1{,}6\times10^{-19}\ \text C$. La massa non c'entra: carica e massa sono due proprietà diverse. Anzi, una volta nota la carica dell'elettrone, dal rapporto $q/m$ di Thomson si ricavò anche la sua massa: $9{,}1\times10^{-31}\ \text{kg}$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
-Anche la forza elettrica è conservativa: è per questo che abbiamo potuto definire l'energia potenziale elettrica. Una carica che si muove liberamente in un campo elettrico conserva quindi la sua energia meccanica, e una carica lasciata ferma si mette in moto nel verso in cui la sua energia potenziale $U = q\,V$ diminuisce, come una pallina su una discesa.
+Per queste misure (e per i suoi studi sull'effetto fotoelettrico) Millikan ricevette nel 1923 il premio Nobel per la Fisica.
+
+{% include spoiler.html testo="Lo scandalo dietro l'esperimento di Millikan: le gocce scartate" %}
+Nell'articolo del 1913, quello con i risultati definitivi, Millikan presentò le misure di 58 gocce, e scrisse che non si trattava di gocce scelte, ma di *tutte* quelle studiate in 60 giorni consecutivi. Negli anni Settanta lo storico della scienza Gerald Holton esaminò i suoi quaderni di laboratorio, e scoprì che non era vero: Millikan aveva studiato molte più gocce, e ne aveva scartate parecchie, a volte con commenti come «bellissimo, pubblicare» accanto a quelle che tornavano e «qualcosa non va» accanto a quelle che non tornavano.
+
+Era in corso una disputa con il fisico austriaco Felix Ehrenhaft, che sosteneva di aver misurato cariche più piccole di quella dell'elettrone, e dichiarare di aver usato tutte le gocce rendeva i risultati di Millikan più convincenti. Le analisi successive hanno mostrato che i numeri non erano inventati e che, rifacendo i conti anche con le gocce scartate, il valore della carica dell'elettrone sarebbe cambiato pochissimo: Millikan aveva ragione. Ma aveva scelto i dati che gli davano ragione, e aveva scritto il falso su come li aveva scelti.
+
+C'è anche un'altra ombra: buona parte del lavoro in laboratorio, compresa l'idea di usare l'olio al posto dell'acqua, che evaporava troppo in fretta, si deve al suo studente Harvey Fletcher, che però non firmò l'articolo.
+{% include spoiler-end.html %}
+
+### Il moto dal punto di vista dell'energia
+
+{% include box-ricorda.html testo="Energia cinetica ed energia meccanica" %}
+Un corpo di massa $m$ che si muove con velocità $v$ possiede un'**energia cinetica**, l'energia del movimento:
+
+$$K = \frac12\,m\,v^2.$$
+
+L'**energia meccanica** è la somma dell'energia cinetica e dell'energia potenziale: $K + U$. Se agiscono solo forze come il peso (senza attriti), l'energia meccanica si conserva: l'energia potenziale si trasforma in energia cinetica, e viceversa, ma la somma resta la stessa,
+
+$$K_i + U_i = K_f + U_f.$$
+
+Un sasso lasciato cadere scende: la sua energia potenziale diminuisce e si trasforma in energia cinetica. E poiché $U = m\,V$ e le masse sono sempre positive, una massa lasciata libera va sempre verso il potenziale gravitazionale più basso, cioè verso la Terra. Lo trovi nel capitolo sull'[energia]({{ '/corsi/meccanica/06_Energia/' | relative_url }}#i-sistemi-isolati-e-la-conservazione-dellenergia-meccanica).
+{% include box-end.html %}
+
+Anche per la forza elettrica, come per il peso, abbiamo potuto definire un'energia potenziale. Una carica che si muove liberamente in un campo elettrico conserva quindi la sua energia meccanica: la sua energia potenziale elettrica si trasforma in energia cinetica. Una carica lasciata ferma si mette in moto nel verso in cui la sua energia potenziale $U = q\,V$ diminuisce, come una pallina su uno scivolo.
 
 Qui però entra di nuovo in gioco il segno. Per una carica positiva, $U = q\,V$ diminuisce quando diminuisce $V$: la carica va verso il potenziale più basso, come le masse. Per una carica negativa, $U = q\,V$ diminuisce quando $V$ **aumenta**: la carica va verso il potenziale più alto.
+
+Nel simulatore puoi scegliere quale lastra è positiva e il segno della carica. Fra le lastre sono tracciate le linee equipotenziali, con il loro potenziale; sotto, il grafico del potenziale $V$ e quello dell'energia potenziale $U = q\,V$ della carica.
 
 {% include lab-virtuali/rotola-potenziale-lab.html %}
 
 {% include box-imp.html testo="Il moto di una carica dal punto di vista dell'energia" %}
-- **Conservazione:** $K + U = $ costante, cioè $\Delta K = -\Delta U$.
-- **Energia e potenziale:** $U = q\,V$, quindi $\Delta U = q\,\Delta V$ e $\Delta K = -q\,\Delta V$, con $\Delta V = V_{finale} - V_{iniziale}$.
+- **Conservazione:** l'energia meccanica $K + U$ resta costante, quindi l'energia potenziale elettrica che la carica perde si trasforma in energia cinetica.
+- **Energia e potenziale:** una carica $q$ in un punto a potenziale $V$ ha energia potenziale $U = q\,V$.
 - **Dove va una carica lasciata libera:** sempre verso l'energia potenziale più bassa. Una carica **positiva** va dal potenziale più alto a quello più basso; una carica **negativa** va dal potenziale più basso a quello più alto.
-{% include box-end.html %}
-
-#### La differenza di potenziale
-
-Per il moto di una carica non conta il valore del potenziale in un punto, ma la **differenza di potenziale** $\Delta V$ fra il punto di partenza e quello di arrivo, che si chiama anche **tensione** e si misura in volt. Moltiplicata per la carica, dice quanta energia viene scambiata: $\lvert\Delta U\rvert = \lvert q\rvert\,\lvert\Delta V\rvert$.
-
-È il numero scritto su ogni pila. Fra i due poli di una pila stilo c'è una differenza di potenziale di $1{,}5\ \text V$: ogni coulomb di carica che va da un polo all'altro, attraverso la lampadina di una torcia, scambia $1{,}5\ \text J$ di energia. In una pila da $9\ \text V$ ogni coulomb scambia $9\ \text J$, fra i due fori di una presa di casa $230\ \text J$. Per questo una pila si può toccare senza problemi e una presa no.
-
-{% include box-note.html testo="Il tubo catodico" %}
-Nei vecchi televisori (quelli profondi, non piatti) gli elettroni uscivano da un filamento caldo e venivano accelerati da una differenza di potenziale di circa $20\,000\ \text V$, verso il potenziale più alto. Poi passavano fra lastre (e bobine) che li deviavano, esattamente come nel simulatore, e colpivano lo schermo in un punto diverso a seconda della deviazione, facendolo illuminare. Lo stesso principio, con differenze di potenziale enormemente più grandi, si usa negli acceleratori di particelle, come quelli del CERN di Ginevra.
 {% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -1989,7 +2095,7 @@ Nei vecchi televisori (quelli profondi, non piatti) gli elettroni uscivano da un
 {% capture _qEnMoto %}[
 {"t":"Una carica positiva lasciata libera si sposta verso i punti a potenziale più basso.","ok":true,"s":"Sì: per $q > 0$, $U = q\\,V$ diminuisce quando diminuisce $V$."},
 {"t":"Una carica negativa lasciata libera si sposta verso i punti a potenziale più basso.","ok":false,"s":"No: per $q < 0$, $U = q\\,V$ diminuisce quando $V$ aumenta, quindi la carica va verso il potenziale più alto."},
-{"t":"Quando una carica si muove liberamente in un campo elettrico, la sua energia potenziale diminuisce e la sua energia cinetica aumenta.","ok":true,"s":"Sì: $\\Delta K = -\\Delta U$. È lo stesso che succede a un sasso che cade."},
+{"t":"Quando una carica si muove liberamente in un campo elettrico, la sua energia potenziale diminuisce e la sua energia cinetica aumenta.","ok":true,"s":"Sì: l'energia potenziale persa si trasforma in energia cinetica. È lo stesso che succede a un sasso che cade."},
 {"t":"Una massa lasciata libera in un campo gravitazionale va sempre verso il potenziale gravitazionale più basso.","ok":true,"s":"Sì: le masse sono sempre positive, quindi in $U = m\\,V$ l'energia potenziale diminuisce sempre quando diminuisce il potenziale."}
 ]{% endcapture %}
 {% include quiz.html domande=_qEnMoto id="q-energia-moto" senza_esempi="true" %}
@@ -2001,10 +2107,46 @@ Un elettrone, inizialmente fermo, si trova fra il punto $A$, a potenziale $100\ 
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 {% include calc-margin.html id="calcEl23" %}
-Una carica di $2\ \text C$ passa da un polo all'altro di una pila da $9\ \text V$. Quanta energia scambia?
+Una carica $q = +2\times10^{-6}\ \text C$ parte da ferma dal punto $A$, dove il potenziale vale $500\ \text V$, e arriva nel punto $B$, dove vale $200\ \text V$.
 
-{% include fill-multi.html testo="$|\Delta U| =$ [18] J" s="$|\Delta U| = |q|\,|\Delta V| = 2\ \text C\cdot 9\ \text V = 18\ \text J$: $9\ \text J$ per ogni coulomb." %}
+{% include fill-multi.html testo="$U_A =$ [10] $\times10^{-4}$ J, $U_B =$ [4] $\times10^{-4}$ J, energia cinetica in $B$: $K_B =$ [6] $\times10^{-4}$ J" s="$U_A = q\,V_A = 2\times10^{-6}\cdot 500\ \text J = 10\times10^{-4}\ \text J$ e $U_B = q\,V_B = 2\times10^{-6}\cdot 200\ \text J = 4\times10^{-4}\ \text J$. La carica parte ferma, quindi $K_A = 0$, e dalla conservazione $K_A + U_A = K_B + U_B$: $K_B = U_A - U_B = 6\times10^{-4}\ \text J$. L'energia potenziale persa si è trasformata in energia cinetica." %}
 <div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
+### La differenza di potenziale
+
+Abbiamo visto che il moto di una carica dipende da come cambia il potenziale fra il punto di partenza e quello di arrivo. La <definizione>differenza di potenziale</definizione> fra due punti, che si chiama anche **tensione**, è il potenziale del punto di arrivo meno quello del punto di partenza:
+
+$$\Delta V = V_{arrivo} - V_{partenza}.$$
+
+Come ogni potenziale, si misura in volt. Nella figura, una carica va dal punto $A$, dove il potenziale vale $600\ \text V$, al punto $B$, dove vale $200\ \text V$:
+
+{% include figure/figura-differenza-potenziale.html %}
+
+Da $U = q\,V$ segue che, quando la carica si sposta, la sua energia potenziale cambia di
+
+$$\Delta U = q\,\Delta V.$$
+
+Se la carica parte da ferma, l'energia potenziale che perde si trasforma tutta in energia cinetica: arriva con $K = \lvert q\rvert\,\lvert\Delta V\rvert$. Più grande è la differenza di potenziale, più energia acquista ogni carica: per questo, per accelerare le particelle, si usano differenze di potenziale molto grandi.
+
+{% include box-imp.html testo="La differenza di potenziale" %}
+- **Definizione:** $\Delta V = V_{arrivo} - V_{partenza}$, in volt. Si chiama anche tensione.
+- **Energia:** quando una carica $q$ si sposta fra i due punti, la sua energia potenziale cambia di $\Delta U = q\,\Delta V$. Se parte da ferma, arriva con energia cinetica $K = \lvert q\rvert\,\lvert\Delta V\rvert$.
+- **Moto:** una carica lasciata libera si muove solo se c'è una differenza di potenziale; senza differenza di potenziale non ci sono variazioni di energia potenziale, e non c'è niente che la metta in moto.
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+Quando serve, usa $e = 1{,}6\times10^{-19}\ \text C$.
+
+{% include scorri.html %}
+{% include scorri-slide.html %}
+Un protone va da un punto a potenziale $50\ \text V$ a un punto a potenziale $350\ \text V$.
+
+{% include fill.html prima="La differenza di potenziale è ΔV =" tipo="drop" opts="+300 V|−300 V|400 V" ok="+300 V" dopo="," s="$\Delta V = V_{arrivo} - V_{partenza} = 350\ \text V - 50\ \text V = +300\ \text V$." %}
+
+{% include fill.html prima="e la sua energia potenziale" tipo="drop" opts="aumenta|diminuisce|resta la stessa" ok="aumenta" dopo="." s="$\Delta U = q\,\Delta V$ con $q > 0$ e $\Delta V > 0$: l'energia potenziale aumenta. Un protone lasciato libero non ci andrebbe da solo: bisogna spingerlo, come per portare un sasso in cima a una salita." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Gli uccelli si posano tranquillamente sui fili dell'alta tensione, che hanno un potenziale di migliaia di volt rispetto al terreno, e non prendono la scossa.
@@ -2013,17 +2155,37 @@ Gli uccelli si posano tranquillamente sui fili dell'alta tensione, che hanno un 
    domanda="Perché gli uccelli posati sul filo non prendono la scossa? Che cosa succederebbe se l'uccello toccasse insieme il filo e il palo?" risposta=_rUccelli %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-{% include calc-margin.html id="calcEl24" %}
-Una carica $q = +2\times10^{-6}\ \text C$ parte da ferma dal punto $A$, dove il potenziale vale $500\ \text V$, e arriva nel punto $B$, dove vale $200\ \text V$.
+{% include figura.html id="tubo-catodico"
+   src="/corsi/immagini/tubo-catodico.webp"
+   didascalia="Lo schema di un tubo catodico (cathode ray tube). Da sinistra: il filamento che scalda il catodo, l'anodo che accelera gli elettroni, le piastre che deviano il fascio in orizzontale e in verticale, lo schermo fluorescente."
+   larghezza="420px" %}
 
-{% include fill-multi.html testo="$\Delta V =$ [-300|−300] V, $\Delta U =$ [-6|−6] $\times10^{-4}$ J, energia cinetica in $B$: $K_B =$ [6] $\times10^{-4}$ J" s="$\Delta V = V_B - V_A = 200\ \text V - 500\ \text V = -300\ \text V$. $\Delta U = q\,\Delta V = 2\times10^{-6}\cdot(-300)\ \text J = -6\times10^{-4}\ \text J$. L'energia potenziale persa diventa cinetica: $K_B = 0 - \Delta U = 6\times10^{-4}\ \text J$." %}
+**Un'applicazione: il tubo catodico.** Nei vecchi televisori, quelli profondi e non piatti, un filamento caldo liberava elettroni dal catodo. Gli elettroni venivano accelerati verso l'anodo da una differenza di potenziale di circa $20\,000\ \text V$, e poi passavano fra due coppie di piastre: il campo uniforme fra le piastre li deviava in alto o in basso, a destra o a sinistra. Il fascio colpiva così lo schermo nel punto voluto, facendolo illuminare.
+
+{% include fill.html prima="Per essere accelerati, gli elettroni vanno verso un potenziale" tipo="drop" opts="più alto|più basso" ok="più alto" dopo="." s="Gli elettroni sono negativi: la loro energia potenziale $U = q\,V$ diminuisce andando verso il potenziale più alto, e si trasforma in energia cinetica. L'anodo è quindi a un potenziale più alto del catodo." %}
+
+{% include fill.html prima="Per deviare il fascio verso l'alto, la piastra di deflessione positiva deve essere quella" tipo="drop" opts="in alto|in basso" ok="in alto" dopo="." s="Gli elettroni sono attratti dalla piastra positiva: la forza $q\,\vec E$ ha verso opposto al campo, che va dalla piastra positiva (in alto) a quella negativa (in basso)." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include figura.html id="cern-cms"
+   src="/corsi/immagini/cern.webp"
+   didascalia="Il rivelatore CMS del CERN di Ginevra, alto 15 metri: osserva le particelle prodotte negli scontri fra i protoni accelerati da LHC."
+   larghezza="420px" %}
+
+**Un'applicazione: gli acceleratori di particelle.** Al CERN di Ginevra, nell'acceleratore LHC, i protoni girano in un anello lungo 27 km. A ogni giro attraversano delle zone in cui una differenza di potenziale li accelera, e girando milioni di volte accumulano un'energia che corrisponde a una differenza di potenziale di quasi $7000$ miliardi di volt. Poi vengono fatti scontrare, e dall'energia dello scontro nascono nuove particelle, che rivelatori come CMS osservano.
+
+{% include calc-margin.html id="calcEl24" %}
+Quanta energia cinetica acquista un protone, partito da fermo, attraversando una differenza di potenziale di un milione di volt?
+
+{% include fill-multi.html testo="$K =$ [1,6|1.6] $\times10^{-13}$ J" s="$K = e\,\lvert\Delta V\rvert = 1{,}6\times10^{-19}\ \text C\cdot 10^{6}\ \text V = 1{,}6\times10^{-13}\ \text J$." %}
 <div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 {% include calc-margin.html id="calcEl25" %}
-Un protone, inizialmente fermo, viene accelerato da una differenza di potenziale di $1000\ \text V$. Con quale velocità arriva? Usa $e = 1{,}6\times10^{-19}\ \text C$ e $m_p = 1{,}67\times10^{-27}\ \text{kg}$.
+Un protone, inizialmente fermo, viene accelerato da una differenza di potenziale di $1000\ \text V$. Con quale velocità arriva? Usa $m_p = 1{,}67\times10^{-27}\ \text{kg}$.
 
-{% include fill-multi.html testo="$K =$ [1,6|1.6] $\times10^{-16}$ J, $v \approx$ [4,4|4.4|4,38|4.38] $\times10^{5}$ m/s" s="L'energia potenziale persa diventa cinetica: $K = e\,|\Delta V| = 1{,}6\times10^{-19}\cdot 1000\ \text J = 1{,}6\times10^{-16}\ \text J$. Da $K = \dfrac12 m v^2$: $v = \sqrt{\dfrac{2K}{m_p}} = \sqrt{\dfrac{3{,}2\times10^{-16}}{1{,}67\times10^{-27}}}\ \text{m/s} \approx 4{,}4\times10^{5}\ \text{m/s}$: più di mille volte la velocità del suono." %}
+{% include fill-multi.html testo="$K =$ [1,6|1.6] $\times10^{-16}$ J, $v \approx$ [4,4|4.4|4,38|4.38] $\times10^{5}$ m/s" s="L'energia potenziale persa si trasforma in energia cinetica: $K = e\,\lvert\Delta V\rvert = 1{,}6\times10^{-19}\cdot 1000\ \text J = 1{,}6\times10^{-16}\ \text J$. Da $K = \dfrac12 m v^2$: $v = \sqrt{\dfrac{2K}{m_p}} = \sqrt{\dfrac{3{,}2\times10^{-16}}{1{,}67\times10^{-27}}}\ \text{m/s} \approx 4{,}4\times10^{5}\ \text{m/s}$: più di mille volte la velocità del suono." %}
 <div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
