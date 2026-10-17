@@ -328,13 +328,10 @@ Nella simulazione seguente John Travolta strofina il piede sul tappeto, e così 
 {% include scorri-slide.html titolo="Lo scotch che fa i raggi X" %}
 Una curiosità vera: nel 2008 alcuni ricercatori dell'Università della California hanno srotolato del nastro adesivo dentro una camera a vuoto, e hanno scoperto che lo strappo emette lampi di luce e perfino raggi X, abbastanza intensi da fare una radiografia di un dito! Le cariche separate dallo strappo sono così concentrate che, ricombinandosi, accelerano fortissimo gli elettroni. Nell'aria non succede: l'aria scarica le cariche prima che diventino così intense.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Le gomme di aerei e autocisterne" %}
-Muovendosi, un aereo si carica per strofinio con l'aria, e un'autocisterna con la strada e con il carburante che sciaborda dentro di lei. Per evitare scintille pericolose, le gomme di aerei e camion contengono materiali conduttori (per esempio polvere di carbonio), che lasciano scendere a terra la carica appena si tocca il suolo.
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Gli imballaggi antistatici" %}
+{% include scorri-slide.html img="/corsi/immagini/imballaggi-antistatici.webp" alt="Una scheda elettronica dentro una busta antistatica grigio argentata" titolo="Gli imballaggi antistatici" %}
 I componenti elettronici (schede, memorie, processori) possono essere danneggiati da una piccola scintilla, che non sentiremmo nemmeno. Per questo vengono spediti in buste di plastica speciale, spesso grigio argentate o rosa, che non si caricano per strofinio e non lasciano accumulare carica sul componente.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Gli ammorbidenti" %}
+{% include scorri-slide.html img="/corsi/immagini/panni-lavatrice-elettrostatica.webp" alt="Una mano tira fuori dei jeans dal cestello della lavatrice" titolo="Gli ammorbidenti" %}
 I vestiti sintetici, strofinandosi fra loro nell'asciugatrice o addosso, si caricano: si appiccicano al corpo e fanno piccole scintille. Gli ammorbidenti lasciano sulle fibre un sottilissimo strato di sostanze che trattengono un po' di umidità: l'umidità aiuta le cariche a disperdersi, e i vestiti restano quasi neutri.
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
@@ -366,6 +363,11 @@ Strofinando un palloncino su un maglione, il palloncino acquista $5\times10^{11}
 {% include mcq.html id="mcq-strofinio-maglione" opts=_oStrof ok="b" s="Il maglione ha perso proprio i $5\times10^{11}$ elettroni acquistati dal palloncino, quindi è carico positivamente: $Q=5\times10^{11}\times1{,}6\times10^{-19}\ \text C=+8\times10^{-8}\ \text C$. Il palloncino ha la carica opposta, $-8\times10^{-8}\ \text C$." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+{% include figura.html id="scotch-respingono"
+   src="/corsi/gif/scotch-respingono.mp4"
+   didascalia="Due strisce di nastro adesivo, appena staccate dal tavolo, si respingono."
+   larghezza="420px" %}
+
 Attacca sul tavolo due strisce di nastro adesivo lunghe una decina di centimetri, poi staccale con uno strappo deciso e avvicinale tenendole sospese: si respingono. Perché?
 {% capture _oScotch1 %}[
 {"v":"a","t":"Perché staccandole dal tavolo si caricano per strofinio, entrambe con carica dello stesso segno"},
@@ -384,17 +386,6 @@ Ora attacca una striscia sopra l'altra, e staccale di colpo l'una dall'altra: qu
 {"v":"d","t":"Perché la colla di una striscia è rimasta attaccata all'altra"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-scotch-2" opts=_oScotch2 ok="b" s="Strappando una striscia dall'altra, gli elettroni passano da una striscia all'altra, proprio come fra il palloncino e il maglione: una resta con elettroni in più (negativa), l'altra con elettroni in meno (positiva). Cariche di segno opposto si attraggono." %}
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html %}
-{% include figura.html id="nastro-antistatico"
-   src="/corsi/immagini/nastro-antistatico.jpeg"
-   didascalia="Un nastro antistatico: è fissato alla carrozzeria dell'auto e tocca l'asfalto."
-   larghezza="260px" %}
-
-Capita spesso di scendere dall'auto, toccare la portiera e prendere la scossa. Per evitarlo si vendono dei nastri antistatici come quello della figura: una striscia che contiene un materiale conduttore (a volte è proprio una catenella di metallo), fissata sotto la carrozzeria in modo da strisciare sull'asfalto.
-{% capture _rNastro %}Mentre l'auto viaggia, la carrozzeria si carica per strofinio con l'aria, e anche noi ci carichiamo strofinandoci sul sedile. Le gomme sono isolanti, quindi la carica non riesce a scendere a terra e resta sull'auto. Quando scendiamo e tocchiamo la portiera, il nostro corpo, che è un conduttore e poggia per terra, offre alla carica una strada verso la Terra: le cariche ci attraversano tutte insieme, e sentiamo la scossa. Il nastro antistatico collega sempre la carrozzeria al terreno con un conduttore, quindi la carica si scarica a poco a poco mentre si viaggia, e non resta niente da scaricare attraverso di noi.{% endcapture %}
-{% include risposta-aperta.html id="ra-nastro-antistatico" tipo="spiega"
-   domanda="Perché la scossa ci arriva proprio quando tocchiamo la portiera? E perché il nastro antistatico la evita?" risposta=_rNastro %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Ti sarà capitato: ti alzi da una poltrona (o da un divano) di velluto, tocchi la maniglia di una porta e prendi la scossa.
@@ -427,16 +418,21 @@ Inoltre, quanta carica finisce su ciascun corpo dipende dalla sua forma e dalle 
 
 {% include box-note.html testo="L'elettrizzazione per contatto, dall'esperimento alla tecnologia" %}
 {% include scorri.html %}
-{% include scorri-slide.html titolo="La verniciatura elettrostatica" %}
-Le carrozzerie delle automobili si verniciano con uno spruzzo di goccioline di vernice cariche, che si caricano uscendo dall'ugello. La carrozzeria è collegata a terra, e le goccioline vengono attirate su di lei: si distribuiscono in modo uniforme e arrivano anche sui lati nascosti, che lo spruzzo non vede direttamente. In più, si spreca molta meno vernice.
+{% include scorri-slide.html img="/corsi/immagini/messa-a-terra.webp" alt="Un dispersore di rame piantato nel terreno, collegato con un cavo giallo e verde al quadro elettrico di una casa" titolo="La messa a terra" %}
+Nelle prese di casa, oltre ai due fori per la corrente, c'è un terzo contatto, collegato al filo giallo e verde. Questo filo arriva fino a un palo di metallo piantato nel terreno, come quello della foto: è la **messa a terra**. Collega l'involucro metallico degli elettrodomestici alla Terra. Se per un guasto l'involucro si caricasse, sarebbe come mettere a contatto un piccolo conduttore con uno enorme: quasi tutta la carica passerebbe subito alla Terra, invece di passare attraverso chi lo tocca.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Stampanti laser e fotocopiatrici" %}
-Dentro una stampante laser c'è un cilindro che viene caricato, e un raggio laser lo scarica nei punti che devono restare bianchi. Le particelle di toner, una polvere nera finissima, si caricano strofinandosi e toccando altre particelle, e si attaccano al cilindro solo dove è rimasto carico, cioè dove ci sono le lettere. Poi il toner passa sul foglio e viene fissato dal calore: per questo i fogli escono dalla stampante tiepidi.
+{% include scorri-slide.html img="/corsi/immagini/parafulimne.webp" alt="Un fulmine si abbatte sui grattacieli di una città, di notte" titolo="Il parafulmine" %}
+Il parafulmine è un'asta di metallo appuntita, in cima all'edificio, collegata al terreno con un grosso cavo. Durante un temporale il fulmine tende a scaricarsi proprio sulla sua punta. La carica del fulmine scende allora lungo il cavo fino alla Terra, che, essendo un conduttore enorme, la riceve tutta, lungo un percorso sicuro, invece di passare attraverso i muri dell'edificio.
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html img="/corsi/immagini/braccialetto-antistatico.webp" alt="Un braccialetto antistatico al polso, con il cavo a spirale e la pinza per collegarlo a terra" titolo="Il braccialetto antistatico" %}
+Chi monta o ripara i computer indossa un braccialetto antistatico come quello della foto, collegato a terra con il cavo e la pinza. Il corpo, attraverso il braccialetto, resta sempre a contatto con la Terra: ogni carica che si accumulasse muovendosi passa subito al terreno, e non può scaricarsi con una scintilla sui componenti elettronici, che ne verrebbero danneggiati.
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qCont %}[
 {"t":"Dopo il contatto, i due conduttori hanno cariche di segno opposto.","ok":false,"s":"No: alla fine sono carichi con lo stesso segno, quello del corpo che era carico all'inizio."},
 {"t":"Toccando una sfera metallica neutra con una sfera metallica carica negativamente, alcuni elettroni passano dalla sfera carica a quella neutra.","ok":true,"s":"Sì: gli elettroni in eccesso si respingono e una parte di essi si sposta sulla sfera neutra."},
@@ -444,7 +440,8 @@ Dentro una stampante laser c'è un cilindro che viene caricato, e un raggio lase
 {"t":"La carica totale delle due sfere, dopo il contatto, è uguale a quella che avevano prima del contatto.","ok":true,"s":"Sì: la carica non si crea e non si distrugge, passa soltanto da un corpo all'altro."}
 ]{% endcapture %}
 {% include quiz.html domande=_qCont id="q-contatto" senza_esempi="true" %}
-
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
 Due sfere metalliche identiche hanno cariche $+8\times10^{-9}\ \text C$ e $-2\times10^{-9}\ \text C$. Vengono messe a contatto e poi separate. Quale carica ha ciascuna sfera alla fine?
 {% capture _oCont %}[
 {"v":"a","t":"$+3\\times10^{-9}\\ \\text C$ ciascuna"},
@@ -453,6 +450,38 @@ Due sfere metalliche identiche hanno cariche $+8\times10^{-9}\ \text C$ e $-2\ti
 {"v":"d","t":"le stesse di prima: $+8\\times10^{-9}\\ \\text C$ e $-2\\times10^{-9}\\ \\text C$"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-contatto-sfere" opts=_oCont ok="a" s="La carica totale si conserva: $+8\times10^{-9}\ \text C-2\times10^{-9}\ \text C=+6\times10^{-9}\ \text C$. Poiché le sfere sono identiche, se la dividono a metà: $+3\times10^{-9}\ \text C$ ciascuna." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include figura.html id="nastro-antistatico"
+   src="/corsi/immagini/nastro-antistatico.jpeg"
+   didascalia="Un nastro antistatico: è fissato alla carrozzeria dell'auto e tocca l'asfalto."
+   larghezza="260px" %}
+
+**Un'applicazione: il nastro antistatico.** Capita spesso di scendere dall'auto, toccare la portiera e prendere la scossa. Per evitarlo si vendono dei nastri antistatici come quello della figura: una striscia che contiene un materiale conduttore (a volte è proprio una catenella di metallo), fissata sotto la carrozzeria in modo da strisciare sull'asfalto.
+{% capture _rNastro %}Mentre l'auto viaggia, la carrozzeria si carica per strofinio con l'aria, e anche noi ci carichiamo strofinandoci sul sedile. Le gomme sono isolanti, quindi la carica non riesce a scendere a terra e resta sull'auto. Quando scendiamo e tocchiamo la portiera, il nostro corpo, che è un conduttore e poggia per terra, offre alla carica una strada verso la Terra: le cariche ci attraversano tutte insieme, e sentiamo la scossa. Il nastro antistatico collega sempre la carrozzeria al terreno con un conduttore, quindi la carica si scarica a poco a poco mentre si viaggia, e non resta niente da scaricare attraverso di noi.{% endcapture %}
+{% include risposta-aperta.html id="ra-nastro-antistatico" tipo="spiega"
+   domanda="Perché la scossa ci arriva proprio quando tocchiamo la portiera? E perché il nastro antistatico la evita?" risposta=_rNastro %}
+
+Per lo stesso motivo, prima di scaricare il carburante, le autocisterne vengono collegate al terreno con un cavo: la carica accumulata durante il viaggio passa alla Terra, senza scintille vicino ai vapori di benzina.
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include figura.html id="gomme-aereo"
+   src="/corsi/immagini/gomme-aereo.jpeg"
+   didascalia="Le gomme del carrello di un aereo."
+   larghezza="320px" %}
+
+**Un'applicazione: le gomme degli aerei.** Muovendosi, un aereo si carica per strofinio con l'aria. Per questo le sue gomme contengono materiali conduttori (per esempio polvere di carbonio): appena le ruote toccano la pista, l'aereo si scarica quasi completamente. Lo stesso accade alle autocisterne, che si caricano con la strada e con il carburante che sciaborda.
+
+Perché, al contatto, quasi tutta la carica dell'aereo passa al terreno?
+{% capture _oGomme %}[
+{"v":"a","t":"Perché nel contatto la carica si divide sempre a metà, e l'altra metà resta sull'aereo"},
+{"v":"b","t":"Perché la Terra è un conduttore enormemente più grande dell'aereo: nel contatto ne prende di più il corpo più grande, quindi la Terra si prende quasi tutta la carica"},
+{"v":"c","t":"Perché la pista è carica con segno opposto a quello dell'aereo"},
+{"v":"d","t":"Perché le gomme sono isolanti"}
+]{% endcapture %}
+{% include mcq.html id="mcq-gomme-aereo" opts=_oGomme ok="b" s="È un'elettrizzazione per contatto fra l'aereo e la Terra, entrambi conduttori. La carica si divide fra i due corpi, e ne prende di più quello più grande: la Terra è così grande che si prende praticamente tutta la carica, e l'aereo resta quasi neutro. (La metà vale solo per due conduttori identici; e le gomme, qui, sono fatte apposta per condurre.)" %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 ### La Polarizzazione e l'Elettrizzazione per induzione
@@ -472,25 +501,40 @@ La polarizzazione è la ridistribuzione delle cariche all'interno di un condutto
 {% include box-note.html testo="La polarizzazione, dall'esperimento alla tecnologia" %}
 {% include scorri.html %}
 {% include scorri-slide.html titolo="Il pettine che piega l'acqua" %}
-Apri il rubinetto in modo che esca un filo d'acqua sottile e continuo. Pettinati i capelli asciutti con un pettine di plastica e avvicinalo al filo d'acqua, senza toccarlo: l'acqua si piega verso il pettine! Le molecole d'acqua sono neutre, ma il pettine carico le polarizza, e la parte più vicina, di segno opposto, viene attratta più di quanto venga respinta quella più lontana.
+{% include video.html id="DHyj1sooKaA" %}
+Apri il rubinetto in modo che esca un filo d'acqua sottile e continuo. Pettinati i capelli asciutti con un pettine di plastica, che così si carica per strofinio, e avvicinalo al filo d'acqua, senza toccarlo: l'acqua si piega verso il pettine! Nel video, al posto del pettine, c'è una bacchetta strofinata. Le molecole d'acqua sono neutre, ma il pettine carico le polarizza, e la parte più vicina, di segno opposto, viene attratta più di quanto venga respinta quella più lontana.
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="La lattina che insegue il palloncino" %}
+{% include figura.html id="palloncino-lattina"
+   src="/corsi/video/palloncino-attira-lattina.mp4"
+   didascalia="Il palloncino strofinato attira la lattina, che rotola verso di lui."
+   larghezza="420px" %}
+
 Appoggia una lattina vuota di metallo su un tavolo, sdraiata. Avvicinale un palloncino strofinato sui capelli: la lattina comincia a rotolare verso il palloncino, e se lo sposti la lattina lo segue. La lattina è un conduttore: il palloncino la polarizza, e la attira.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="I pezzettini di carta che saltano" %}
-Strappa dei pezzettini di carta, piccolissimi, e avvicina una penna di plastica strofinata: i pezzettini saltano su e si attaccano alla penna. Qualcuno, dopo un po', schizza via: toccando la penna si è caricato con lo stesso segno, ed è stato respinto.
+{% include scorri-slide.html titolo="Gli omini di carta che ballano" %}
+{% include figura.html id="bottiglia-omini"
+   src="/corsi/video/polarizzazione-bottiglia-carta.mp4"
+   didascalia="Una bottiglia di plastica strofinata fa ballare degli omini di carta."
+   larghezza="240px" %}
+
+Ritaglia da un foglio sottile degli omini di carta, piccoli e leggeri. Strofina una bottiglia di plastica (sui capelli o su un panno di lana) e tienila sopra gli omini, senza toccarli: si alzano in piedi e cominciano a ballare! La bottiglia carica polarizza la carta, e gli omini vengono attirati verso di lei. Quando uno tocca la bottiglia, si carica con il suo stesso segno, e viene respinto: ricade, si scarica sul tavolo e viene attirato di nuovo. Con dei pezzettini di carta e una penna strofinata succede la stessa cosa: i pezzettini saltano su, e qualcuno, dopo aver toccato la penna, schizza via.
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="Il pendolino elettrico" %}
+{% include video.html id="tHXVk1he7Qw" %}
 Appendi a un filo di cotone una pallina di carta stagnola e avvicinale una penna di plastica strofinata: la pallina viene attratta, tocca la penna e subito dopo viene respinta, come se avesse cambiato idea. Qui si vedono, uno dopo l'altro, due fenomeni che conosci: prima la penna polarizza la pallina e la attira; poi, al contatto, le cede un po' della sua carica (elettrizzazione per contatto): ora le due hanno carica dello stesso segno, e si respingono.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="I filtri elettrostatici" %}
-Nei camini delle fabbriche e in molti purificatori d'aria, i fumi passano accanto a lastre o fili carichi. Le particelle di polvere e di fuliggine, anche se sono neutre, vengono polarizzate e attirate, e restano attaccate ai filtri invece di finire nell'aria che respiriamo.
+{% include scorri-slide.html titolo="La verniciatura elettrostatica" %}
+Le carrozzerie delle automobili si verniciano con uno spruzzo di goccioline di vernice cariche, che si caricano uscendo dall'ugello. La carrozzeria, che è un conduttore, viene polarizzata dalle goccioline cariche (ed è anche collegata a terra), e così le attira: si distribuiscono in modo uniforme e arrivano anche sui lati nascosti, che lo spruzzo non vede direttamente. In più, si spreca molta meno vernice.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Il panno cattura-polvere e la pellicola" %}
-I panni cattura-polvere di tessuto sintetico si caricano strofinando le superfici, e attirano la polvere polarizzandola. Anche la pellicola trasparente per alimenti si carica quando la srotoliamo, e si attacca alle ciotole, anche di vetro, polarizzandole.
+{% include scorri-slide.html img="/corsi/immagini/filtro.elettrostatico.webp" alt="Schema di un filtro elettrostatico: l'aria passa fra fili carichi negativamente e lastre cariche positivamente, sulle quali restano attaccate le particelle" titolo="I filtri elettrostatici" %}
+Nei camini delle fabbriche e in molti purificatori d'aria, i fumi passano fra fili e lastre carichi, come nello schema. Le particelle di polvere e di fuliggine vengono attirate dalle lastre: quelle neutre perché vengono polarizzate, e molte altre perché, passando vicino ai fili, si caricano esse stesse. Così restano attaccate alle lastre, invece di finire nell'aria che respiriamo.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Il touchscreen" %}
-Lo schermo dello smartphone è un touchscreen capacitivo: sotto il vetro c'è una griglia di elettrodi carichi, trasparenti. Il dito è un conduttore: avvicinandosi, modifica la distribuzione delle cariche negli elettrodi più vicini, e il telefono capisce dove lo stai toccando. Per questo un normale guanto, che è un isolante, non funziona sul touchscreen, mentre funzionano i guanti con le punte delle dita conduttive.
+{% include scorri-slide.html img="/corsi/immagini/panno-cattura-polvere.webp" alt="Panno cattura-polvere" titolo="Il panno cattura-polvere" %}
+I panni cattura-polvere di tessuto sintetico si caricano strofinando le superfici, e attirano la polvere polarizzandola: i granelli di polvere restano attaccati al panno invece di sollevarsi in aria.
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html img="/corsi/immagini/pellicola.webp" alt="Pellicola trasparente per alimenti" titolo="La pellicola per alimenti" %}
+Anche la pellicola trasparente per alimenti si carica quando la srotoliamo: per questo si attacca alle ciotole, anche a quelle di vetro, che vengono polarizzate dalla pellicola carica. (E per lo stesso motivo, a volte, si attacca anche alle mani e si appallottola!)
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
@@ -505,21 +549,17 @@ Il segno della carica che resta dipende dal corpo carico che abbiamo avvicinato:
 - se il corpo è **negativo**, respinge gli elettroni del conduttore, e alcuni di essi <u>scendono nel terreno</u>: il conduttore resta con meno elettroni che protoni, cioè carico **positivamente**;
 - se il corpo è **positivo**, attira elettroni, e alcuni di essi <u>salgono dal terreno</u> verso il conduttore: il conduttore resta con più elettroni che protoni, cioè carico **negativamente**.
 
-In entrambi i casi, il conduttore si carica con il segno <u>opposto</u> a quello del corpo che abbiamo avvicinato.
+In entrambi i casi, il conduttore si carica con il segno **opposto** a quello del corpo che abbiamo avvicinato.
 
 {% include box-note.html testo="L'elettrizzazione per induzione, dall'esperimento alla tecnologia" %}
 {% include scorri.html %}
 {% include scorri-slide.html titolo="L'elettroforo di Volta" %}
+{% include video.html id="IyuFKc3eF5w" %}
 Nel 1775 [Alessandro Volta](https://it.wikipedia.org/wiki/Alessandro_Volta) inventò l'<definizione>elettroforo</definizione>, uno strumento per produrre carica a volontà, che puoi costruire anche tu: ti servono un vassoio di plastica (o di polistirolo), una teglia di alluminio e un bicchiere di plastica incollato al centro della teglia, come manico isolante. Strofina il vassoio con la lana, appoggiaci sopra la teglia tenendola per il manico, tocca la teglia con un dito, poi solleva la teglia: ora è carica, e avvicinandole un dito scocca una piccola scintilla. La teglia si è caricata per induzione: il vassoio carico ha polarizzato la teglia, e il dito ha fatto da collegamento a terra. Puoi ripetere l'operazione tantissime volte, senza strofinare di nuovo il vassoio.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="La messa a terra" %}
-Nelle prese di casa, oltre ai due fori per la corrente, c'è un terzo contatto, collegato al filo giallo e verde: è la **messa a terra**. Collega l'involucro metallico degli elettrodomestici al terreno, così che se per un guasto l'involucro si caricasse, la carica scenderebbe subito a terra invece di passare attraverso chi lo tocca.
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Il parafulmine" %}
-Durante un temporale, la base delle nuvole è carica e induce sul terreno sotto di lei una carica di segno opposto. Il parafulmine è un'asta di metallo, appuntita e collegata a terra con un grosso cavo: la carica indotta si concentra sulla sua punta, e il fulmine sceglie di scaricarsi proprio lì, lungo un percorso sicuro, invece che sull'edificio.
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Le autocisterne e i braccialetti antistatici" %}
-Prima di scaricare il carburante, l'autocisterna viene collegata a terra con un cavo, per scaricare ogni carica accumulata durante il viaggio senza scintille. Per lo stesso motivo, chi monta o ripara i computer indossa un braccialetto antistatico, collegato a terra con un filo: il suo corpo non accumula carica, e non danneggia i componenti elettronici con una scintilla.
+{% include scorri-slide.html titolo="Il pozzo di Faraday" %}
+{% include video.html id="sXwPTpwix90" %}
+Un esperimento ideato da [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday): un recipiente di metallo (un "pozzo") è collegato a un elettroscopio. Se si cala dentro il recipiente una sferetta carica, appesa a un filo isolante, le foglioline si aprono anche se la sferetta non tocca nulla: per induzione, sulla superficie esterna del recipiente compare carica dello stesso segno della sferetta, che arriva fino alle foglioline. Faraday notò che l'apertura delle foglioline non dipende da dove si trova la sferetta dentro il pozzo, e che non cambia nemmeno quando la sferetta tocca il fondo: in quel momento tutta la sua carica passa al recipiente, e infatti, tirandola fuori, la sferetta è completamente scarica.
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
@@ -676,6 +716,10 @@ Coulomb dedusse così che il modulo della forza elettrica fra due cariche è **d
 dove $k$ è detta <definizione>costante di Coulomb</definizione> e $r$ è la distanza fra i centri delle due cariche.
 {% include margin-note-end.html %}
 
+Confrontala con la legge di gravitazione universale: la legge di Coulomb si ottiene sostituendo un simbolo alla volta.
+
+{% include lab-virtuali/analogia-formule-lab.html id="an-forza" tipo="forza" %}
+
 {% include margin-note.html testo="Perché c'è il valore assoluto?"%}
 Il valore assoluto serve ad **assicurare che il modulo sia sempre positivo**. Infatti ricordiamo che, mentre le cariche possono essere sia positive sia negative, <u>il modulo di un vettore è sempre positivo</u>. 
 {% include margin-note-end.html %}
@@ -754,7 +798,7 @@ In altri materiali la costante è più piccola. Ecco alcuni valori approssimati,
 | alcol (etanolo) | $k_{\text{alcol}} \approx 3{,}6\times10^{8}\ \text N\cdot\text m^2/\text C^2$ | circa 25 volte più piccola |
 | acqua | $k_{\text H_2\text O} \approx 1{,}1\times10^{8}\ \text N\cdot\text m^2/\text C^2$ | circa 80 volte più piccola |
 
-A differenza di $G$, il valore di $k$ è enorme: è proprio per questo che la forza elettrica è **molto più intensa** della forza gravitazionale a parità di distanza — così intensa che due cariche di appena $1\ \text{C}$ poste a $1\ \text{m}$ di distanza si respingerebbero con una forza di quasi $9$ miliardi di Newton, pari al peso di centinaia di migliaia di automobili.
+A differenza di $G$, il valore di $k$ è enorme: è proprio per questo che la forza elettrica è miliardi di miliardi di miliardi di miliardi di volte più forte della forza gravitazionale, a parità di distanza.
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="La Legge di Coulomb" %}
@@ -1116,6 +1160,16 @@ Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 {% include quiz.html domande=_qCampoE id="q-campo-e" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+Nella formula $E = k\,\dfrac{\lvert Q\rvert}{r^2}$, che cosa sono $Q$ e $r$?
+{% capture _oSimbE %}[
+{"v":"a","t":"$Q$ è la carica che genera il campo, e $r$ è la distanza fra il centro di $Q$ e il punto in cui calcoliamo il campo"},
+{"v":"b","t":"$Q$ è la carica di prova, e $r$ è la distanza fra la carica di prova e la carica che genera il campo"},
+{"v":"c","t":"$Q$ è la carica che genera il campo, e $r$ è il suo raggio"},
+{"v":"d","t":"$Q$ è la carica totale di tutte le cariche presenti, e $r$ è la distanza media fra loro"}
+]{% endcapture %}
+{% include mcq.html id="mcq-simboli-campo" opts=_oSimbE ok="a" s="Il campo è una proprietà della carica $Q$ che lo genera: nella formula la carica di prova non c'è nemmeno. La distanza $r$ si misura dal centro di $Q$ fino al punto in cui vogliamo conoscere il campo (dove, eventualmente, metteremo una carica di prova)." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
 Una carica $Q = +2\times10^{-6}\ \text C$ è nel vuoto. Quanto vale il campo elettrico a $3\ \text m$ dal suo centro?
 
 {% include fill-multi.html testo="$E =$ [2000|2 000] N/C" s="$E = k\dfrac{\lvert Q\rvert}{r^2} = 9\times10^{9}\cdot\dfrac{2\times10^{-6}}{3^2}\ \text{N/C} = \dfrac{18\times10^{3}}{9}\ \text{N/C} = 2000\ \text{N/C}$." %}
@@ -1124,6 +1178,16 @@ Una carica $Q = +2\times10^{-6}\ \text C$ è nel vuoto. Quanto vale il campo ele
 In un punto il campo elettrico vale $2000\ \text{N/C}$. Quanto vale la forza su una carica $q = 3\times10^{-6}\ \text C$ posta in quel punto?
 
 {% include fill-multi.html testo="$F =$ [6] $\times10^{-3}\ \text N$" s="Da $E = F/q$ si ricava $F = q\,E = 3\times10^{-6}\ \text C\cdot 2000\ \text{N/C} = 6\times10^{-3}\ \text N$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un elettrone si trova vicino a una sferetta metallica carica. Vogliamo calcolare la forza che agisce sull'elettrone con la formula $F = \lvert q\rvert\,E$. Che cosa sono, qui, $q$ ed $E$?
+{% capture _oSimbF %}[
+{"v":"a","t":"$q$ è la carica della sferetta, ed $E$ è il campo generato dall'elettrone"},
+{"v":"b","t":"$q$ è la carica dell'elettrone, ed $E$ è il campo generato dall'elettrone stesso"},
+{"v":"c","t":"$q$ è la carica dell'elettrone, ed $E$ è il campo generato dalla sferetta nel punto in cui si trova l'elettrone"},
+{"v":"d","t":"$q$ è la carica della sferetta, ed $E$ è il campo generato dalla sferetta"}
+]{% endcapture %}
+{% include mcq.html id="mcq-simboli-forza" opts=_oSimbF ok="c" s="In $F = \lvert q\rvert E$, $q$ è la carica <em>su cui</em> agisce la forza (qui l'elettrone), ed $E$ è il campo generato dalle <em>altre</em> cariche (qui la sferetta), nel punto in cui si trova $q$. Il campo che una carica genera non agisce mai su sé stessa." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Isola le altre grandezze nella formula del campo elettrico. Per ciascuna, cerca la sequenza più breve di mosse.
@@ -1276,10 +1340,28 @@ Al centro della lampada c'è una sfera metallica, collegata a un generatore che 
    domanda="Perché i filamenti luminosi hanno quella forma? E perché cambiano, e si concentrano verso il dito, quando si tocca il vetro?" risposta=_rPlasma %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-Torna ancora una volta all'[animazione all'inizio del capitolo](#fig-bimbi-capelli). I capelli dei bambini non si sollevano a caso: si dispongono a raggiera, come i raggi del Sole.
-{% capture _rBimbiLinee %}I bambini sono carichi, e i capelli hanno tutti carica dello stesso segno. Ogni capello è leggero e libero di muoversi, quindi si dispone nella direzione in cui lo spinge la forza elettrica, cioè lungo le linee del campo. Attorno a un corpo carico più o meno tondo, come una testa, le linee di campo sono radiali, come quelle di una singola carica: per questo i capelli si dispongono a raggiera.{% endcapture %}
-{% include risposta-aperta.html id="ra-bimbi-linee" tipo="spiega"
-   domanda="Perché i capelli si dispongono proprio a raggiera? Che cosa c'entrano le linee di campo?" risposta=_rBimbiLinee %}
+{% include figura.html id="capelli-linee-di-campo"
+   src="/corsi/immagini/capelli-linee-di-campo.jpeg"
+   didascalia="I capelli di questa ragazza si sono sollevati e allargati in tutte le direzioni."
+   larghezza="360px" %}
+
+La ragazza ha in mano una spazzola. Che ruolo ha avuto la spazzola nel far sollevare i suoi capelli?
+{% capture _oSpazzola %}[
+{"v":"a","t":"Spazzolandoli, li ha caricati per strofinio: tutti i capelli hanno ora carica dello stesso segno"},
+{"v":"b","t":"Spazzolandoli, li ha caricati per strofinio: metà dei capelli è positiva e metà negativa"},
+{"v":"c","t":"Nessuno: la spazzola è un isolante, quindi non può caricare i capelli"},
+{"v":"d","t":"La spazzola è carica e attira i capelli verso di sé"}
+]{% endcapture %}
+{% include mcq.html id="mcq-capelli-spazzola" opts=_oSpazzola ok="a" s="Spazzolandosi, le setole si strofinano contro i capelli, e degli elettroni passano dai capelli alla spazzola, o al contrario, a seconda dei materiali: è un'elettrizzazione per strofinio. I capelli sono stati strofinati tutti allo stesso modo, quindi si caricano tutti con lo stesso segno, mentre la spazzola si carica con il segno opposto. Proprio perché è un isolante, la spazzola si carica facilmente per strofinio. E i capelli non vanno verso la spazzola, ma in tutte le direzioni." %}
+
+Perché i suoi capelli si dispongono proprio in questo modo, a raggiera attorno alla testa?
+{% capture _oRaggiera %}[
+{"v":"a","t":"Perché i capelli carichi si respingono, e ognuno si dispone lungo le linee di campo, che attorno alla testa carica sono radiali"},
+{"v":"b","t":"Perché i capelli carichi si attraggono a vicenda"},
+{"v":"c","t":"Perché la forza peso sui capelli carichi diventa più piccola"},
+{"v":"d","t":"Perché ogni capello è attratto dalla spazzola"}
+]{% endcapture %}
+{% include mcq.html id="mcq-capelli-raggiera" opts=_oRaggiera ok="a" s="I capelli hanno tutti carica dello stesso segno, quindi si respingono e si allontanano il più possibile l'uno dall'altro. Ogni capello, leggero e libero di muoversi, si dispone nella direzione della forza elettrica, cioè lungo le linee di campo: attorno a un corpo carico più o meno tondo, come una testa, le linee sono radiali, come quelle di una singola carica. Succede lo stesso ai bambini dell'animazione all'inizio del capitolo." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Le linee di campo si possono anche rendere visibili. In un piattino si versa un po' di olio e sulla sua superficie si sparge della semolina. Poi si immerge nell'olio un ago collegato a qualcosa di carico. Guarda come si dispongono i granelli.
@@ -1311,6 +1393,8 @@ Per la gravità, dopo forze e campi, eravamo passati al linguaggio dell'energia:
 {% include margin-note.html testo="Dalla gravità alle cariche" %}
 Anche la forza elettrica è una forza centrale, quindi anche per due cariche si può definire un'energia potenziale: l'<definizione>energia potenziale elettrica</definizione>. Il ragionamento è lo stesso della gravità, con $k$ al posto di $G$ e le cariche al posto delle masse:
 
+{% include lab-virtuali/analogia-formule-lab.html id="an-energia" tipo="energia" %}
+
 $$U = k\,\frac{Q\cdot q}{r}.$$
 
 Nella formula le cariche vanno scritte **con il loro segno**, senza valore assoluto. E manca il segno meno che c'era nella formula gravitazionale: ora a decidere il segno di $U$ sono le cariche stesse.
@@ -1321,6 +1405,22 @@ Nella formula le cariche vanno scritte **con il loro segno**, senza valore assol
 - Se le due cariche hanno **lo stesso segno**, si respingono: il prodotto $Q\cdot q$ è positivo, e $U$ è **positiva**. Le due cariche sono come una molla compressa: se le lasciamo libere si allontanano, e l'energia immagazzinata diventa energia cinetica.
 
 In entrambi i casi $U$ vale zero quando le cariche sono infinitamente lontane. Nella formula gravitazionale il segno meno serviva proprio a dire "le masse si attraggono sempre"; per le cariche, che possono anche respingersi, questo lavoro lo fanno i segni di $Q$ e di $q$.
+{% include margin-note-end.html %}
+
+Come per la gravità, l'energia immagazzinata si può immaginare con una molla che collega le due cariche. Con le cariche di segno opposto la molla viene **allungata** quando le allontaniamo; con le cariche dello stesso segno viene **compressa** quando le avviciniamo. In entrambi i casi, lasciata andare, la molla restituisce l'energia immagazzinata come energia cinetica.
+
+{% include lab-virtuali/molla-cariche-lab.html %}
+
+{% include margin-note.html testo="Un'espressione equivalente per U" %}
+Per la gravità avevamo scritto $U = -mgr$, usando direttamente il campo $g$. Possiamo fare lo stesso con il campo elettrico. Se la carica $Q$ è positiva, il modulo del campo che genera nel punto in cui si trova $q$ è $E = k\,\dfrac{Q}{r^2}$, quindi
+
+{% include lab-virtuali/u-qer-lab.html id="uqer" %}
+
+$$
+U = q\,E\,r = k\,\frac{Q\cdot q}{r}.
+$$
+
+Qui $E$ è il campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$, e $q$ va scritta con il suo segno. Se invece $Q$ è negativa, il modulo del campo è $E = k\,\dfrac{\lvert Q\rvert}{r^2}$, e compare un segno meno: $U = -q\,E\,r$. È lo stesso segno meno della gravità, $U = -mgr$: le masse si comportano sempre come una carica $Q$ negativa che attira una carica $q$ positiva.
 {% include margin-note-end.html %}
 
 {% include box-warn.html testo="Nell'energia potenziale niente valore assoluto" %}
@@ -1343,7 +1443,7 @@ $$[U]=[k]\cdot\frac{[Q]\cdot[q]}{[r]}=\frac{\text N\cdot\text m^2}{\text C^2}\cd
 
 {% include box-imp.html testo="Energia potenziale elettrica" %}
 - **Che cos'è:** l'energia immagazzinata da due cariche $Q$ e $q$ a distanza $r$, a causa della forza elettrica fra loro.
-- **Formula:** $U = k\,\dfrac{Q\cdot q}{r}$, con le cariche scritte con il loro segno.
+- **Formula:** $U = k\,\dfrac{Q\cdot q}{r}$, con le cariche scritte con il loro segno. In modo equivalente, $U = q\,E\,r$ se $Q$ è positiva ($U = -q\,E\,r$ se $Q$ è negativa), dove $E$ è il modulo del campo generato da $Q$ nel punto in cui si trova $q$.
 - **Segno:** negativa se le cariche si attraggono, positiva se si respingono; zero a distanza infinita.
 - **Unità di misura:** joule (J).
 {% include box-end.html %}
@@ -1387,6 +1487,16 @@ E se la carica $q$ fosse $-3\times10^{-6}\ \text C$, sempre a $3\ \text m$ da $Q
 {"v":"d","t":"$U = -6\\times10^{-3}\\ \\text J$"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-energia-segno" opts=_oUseg ok="b" s="Il prodotto $Q\cdot q$ cambia segno, quindi anche $U$: $U = -18\times10^{-3}\ \text J$. Ora le cariche si attraggono, e sono legate." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una carica positiva $Q$ è fissa; a distanza $r$ da lei si trova una carica $q$. Per calcolare l'energia potenziale usiamo la formula $U = q\,E\,r$. Che cos'è, qui, $E$?
+{% capture _oSimbU %}[
+{"v":"a","t":"il campo generato dalla carica $q$ stessa"},
+{"v":"b","t":"il campo generato da $Q$ nel punto in cui si trova $q$"},
+{"v":"c","t":"la somma dei campi generati da $Q$ e da $q$"},
+{"v":"d","t":"l'energia di ogni coulomb di carica"}
+]{% endcapture %}
+{% include mcq.html id="mcq-simboli-energia" opts=_oSimbU ok="b" s="Come in $F = qE$, $E$ è il campo generato dall'altra carica, $Q$, nel punto in cui si trova $q$. In effetti, sostituendo $E = k\dfrac{Q}{r^2}$, si ottiene $U = q\cdot k\dfrac{Q}{r^2}\cdot r = k\dfrac{Q\cdot q}{r}$. Una carica non entra mai nella formula con il proprio campo." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Due cariche hanno energia potenziale $U$. Se la distanza fra loro triplica, la nuova energia potenziale è
@@ -1450,7 +1560,23 @@ Come per la gravità, cerchiamo una grandezza che descriva una proprietà della 
 
 $$V = \frac{U}{q} = k\,\frac{Q}{r}.$$
 
+La stessa formula si ottiene, per analogia, da quella del potenziale gravitazionale:
+
+{% include lab-virtuali/analogia-formule-lab.html id="an-potenziale" tipo="potenziale" %}
+
 Il potenziale non dipende dalla carica di prova, ma solo dalla carica $Q$ che lo genera (con il suo segno) e dalla distanza $r$ dal suo centro. Vicino a una carica positiva il potenziale è positivo, vicino a una carica negativa è negativo.
+{% include margin-note-end.html %}
+
+{% include margin-note.html testo="Un'espressione equivalente per V" %}
+Come per l'energia potenziale, anche il potenziale si può scrivere con il campo. Se $Q$ è positiva, con $E = k\,\dfrac{Q}{r^2}$:
+
+{% include lab-virtuali/u-qer-lab.html id="ver" v="true" %}
+
+$$
+V = E\,r = k\,\frac{Q}{r}.
+$$
+
+Se $Q$ è negativa, con $E = k\,\dfrac{\lvert Q\rvert}{r^2}$, si ha $V = -E\,r$: il potenziale è negativo. Per la gravità era $V = -gr$, sempre con il segno meno, perché la massa si comporta sempre come una carica negativa.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Il volt" %}
@@ -1471,7 +1597,7 @@ $$1\ \text V = 1\ \frac{\text J}{\text C}.$$
 
 {% include box-imp.html testo="Potenziale elettrico" %}
 - **Che cos'è:** l'energia potenziale elettrica "per unità di carica di prova". Non dipende da $q$, proprio come il campo $\vec E$.
-- **Formula:** $V = \dfrac{U}{q} = k\,\dfrac{Q}{r}$, con $Q$ scritta con il suo segno.
+- **Formula:** $V = \dfrac{U}{q} = k\,\dfrac{Q}{r}$, con $Q$ scritta con il suo segno. In modo equivalente, $V = E\,r$ se $Q$ è positiva ($V = -E\,r$ se $Q$ è negativa), dove $E$ è il modulo del campo generato da $Q$ a distanza $r$.
 - **Unità di misura:** volt (V): $1\ \text V = 1\ \text J/\text C$.
 - **Legame con l'energia:** una carica $q$ in un punto in cui il potenziale vale $V$ ha energia potenziale $U = q\,V$.
 {% include box-end.html %}
@@ -1506,6 +1632,16 @@ Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 {% include quiz.html domande=_qPotEl id="q-potenziale-el" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+Nella formula $V = k\,\dfrac{Q}{r}$, che cosa sono $Q$ e $r$?
+{% capture _oSimbV %}[
+{"v":"a","t":"$Q$ è la carica di prova, $r$ la sua distanza dalla carica che genera il potenziale"},
+{"v":"b","t":"$Q$ è la carica che genera il potenziale, con il suo segno, e $r$ è la distanza fra il suo centro e il punto in cui calcoliamo il potenziale"},
+{"v":"c","t":"$Q$ è il valore assoluto della carica che genera il potenziale, e $r$ è il suo raggio"},
+{"v":"d","t":"$Q$ è la carica totale presente nello spazio, e $r$ la distanza dal punto più vicino"}
+]{% endcapture %}
+{% include mcq.html id="mcq-simboli-potenziale" opts=_oSimbV ok="b" s="Come il campo, il potenziale è una proprietà della carica $Q$ che lo genera: la carica di prova non compare. Qui però $Q$ va scritta con il suo segno (niente valore assoluto), e $r$ è la distanza dal centro di $Q$ al punto." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
 Una carica $Q = +2\times10^{-6}\ \text C$ è nel vuoto. Quanto vale il potenziale elettrico a $3\ \text m$ dal suo centro?
 
 {% include fill-multi.html testo="$V =$ [6000|6 000] V" s="$V = k\dfrac{Q}{r} = 9\times10^{9}\cdot\dfrac{2\times10^{-6}}{3}\ \text V = 6000\ \text V$." %}
@@ -1514,6 +1650,16 @@ Una carica $Q = +2\times10^{-6}\ \text C$ è nel vuoto. Quanto vale il potenzial
 Nel punto dell'esercizio precedente, dove il potenziale vale $6000\ \text V$, mettiamo una carica $q = +3\times10^{-6}\ \text C$. Quanto vale la sua energia potenziale?
 
 {% include fill-multi.html testo="$U =$ [18] $\times10^{-3}\ \text J$" s="$U = q\,V = 3\times10^{-6}\ \text C\cdot 6000\ \text V = 18\times10^{-3}\ \text J$: lo stesso risultato che si ottiene con la formula $U = k\dfrac{Q\cdot q}{r}$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una minuscola goccia d'olio carica galleggia fra due lastre metalliche cariche. Per calcolare la sua energia potenziale usiamo $U = q\,V$. Che cos'è, qui, $V$?
+{% capture _oSimbUV %}[
+{"v":"a","t":"il potenziale generato dalla goccia stessa, sulla sua superficie"},
+{"v":"b","t":"il potenziale generato dalle lastre nel punto in cui si trova la goccia"},
+{"v":"c","t":"l'energia potenziale della goccia divisa per la sua massa"},
+{"v":"d","t":"la carica della goccia moltiplicata per la distanza dalle lastre"}
+]{% endcapture %}
+{% include mcq.html id="mcq-simboli-qV" opts=_oSimbUV ok="b" s="$q$ è la carica della goccia, e $V$ è il potenziale generato dalle <em>altre</em> cariche (quelle delle lastre) nel punto in cui si trova la goccia. Come per il campo, il potenziale che una carica genera non entra mai nel calcolo della sua stessa energia." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Se in quel punto mettiamo invece una carica $q = -3\times10^{-6}\ \text C$, che cosa cambia?
