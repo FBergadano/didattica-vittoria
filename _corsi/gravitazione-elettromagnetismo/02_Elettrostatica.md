@@ -325,6 +325,14 @@ Nella simulazione seguente John Travolta strofina il piede sul tappeto, e così 
 
 {% include box-note.html testo="L'elettrizzazione per strofinio, dall'esperimento alla tecnologia" %}
 {% include scorri.html %}
+{% include scorri-slide.html titolo="Lo scotch che si respinge" %}
+{% include figura.html id="scotch-respingono"
+   src="/corsi/gif/scotch-respingono.mp4"
+   didascalia="Due strisce di nastro adesivo, appena staccate dal tavolo, si respingono."
+   larghezza="420px" %}
+
+Attacca sul tavolo due strisce di nastro adesivo lunghe una decina di centimetri, poi staccale con uno strappo deciso e avvicinale tenendole sospese: si respingono. Ora attacca una striscia sopra l'altra e staccale di colpo l'una dall'altra: questa volta si attraggono! Perché? Prova a spiegarlo tu, poi controlla con il Verifica Subito qui sotto.
+{% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="Lo scotch che fa i raggi X" %}
 Una curiosità vera: nel 2008 alcuni ricercatori dell'Università della California hanno srotolato del nastro adesivo dentro una camera a vuoto, e hanno scoperto che lo strappo emette lampi di luce e perfino raggi X, abbastanza intensi da fare una radiografia di un dito! Le cariche separate dallo strappo sono così concentrate che, ricombinandosi, accelerano fortissimo gli elettroni. Nell'aria non succede: l'aria scarica le cariche prima che diventino così intense.
 {% include scorri-slide-end.html %}
@@ -363,12 +371,7 @@ Strofinando un palloncino su un maglione, il palloncino acquista $5\times10^{11}
 {% include mcq.html id="mcq-strofinio-maglione" opts=_oStrof ok="b" s="Il maglione ha perso proprio i $5\times10^{11}$ elettroni acquistati dal palloncino, quindi è carico positivamente: $Q=5\times10^{11}\times1{,}6\times10^{-19}\ \text C=+8\times10^{-8}\ \text C$. Il palloncino ha la carica opposta, $-8\times10^{-8}\ \text C$." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-{% include figura.html id="scotch-respingono"
-   src="/corsi/gif/scotch-respingono.mp4"
-   didascalia="Due strisce di nastro adesivo, appena staccate dal tavolo, si respingono."
-   larghezza="420px" %}
-
-Attacca sul tavolo due strisce di nastro adesivo lunghe una decina di centimetri, poi staccale con uno strappo deciso e avvicinale tenendole sospese: si respingono. Perché?
+Torna all'esperimento dello scotch (il primo del riquadro qui sopra). Due strisce di nastro adesivo, staccate dal tavolo con uno strappo deciso, si respingono. Perché?
 {% capture _oScotch1 %}[
 {"v":"a","t":"Perché staccandole dal tavolo si caricano per strofinio, entrambe con carica dello stesso segno"},
 {"v":"b","t":"Perché staccandole dal tavolo una si carica positivamente e l'altra negativamente"},
