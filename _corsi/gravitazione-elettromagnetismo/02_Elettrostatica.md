@@ -1499,7 +1499,7 @@ Il campo gravitazionale di un pianeta punta verso il suo centro, e diventa più 
 Per il campo elettrico c'è un modo semplice per ottenere la stessa situazione: due lastre metalliche piane, parallele e vicine fra loro, cariche con segni opposti. Fra le lastre, lontano dai bordi, il campo è uniforme, e le linee di campo sono segmenti paralleli ed equidistanti, che vanno dalla lastra positiva a quella negativa. Solo vicino ai bordi le linee si incurvano un po'.
 {% include margin-note-end.html %}
 
-{% include figure/figura-campo-lastre.html %}
+{% include lab-virtuali/lastre-3d-lab.html %}
 
 
 Lo vedi nel simulatore: avvicinati alla superficie del pianeta, e guarda come cambiano i vettori del campo. Intanto, a destra, guarda che cosa succede al campo elettrico di una carica positiva e di una negativa quando ciascuna si allarga in una lastra piana.
@@ -1557,7 +1557,13 @@ Anche la forza elettrica è una forza centrale, quindi anche per due cariche si 
 
 {% include lab-virtuali/analogia-formule-lab.html id="an-energia" tipo="energia" %}
 
-$$U = k\,\frac{Q\cdot q}{r}.$$
+{% include eq-annotated.html
+   id="uel1"
+   formula="U = k\dfrac{Q\cdot q}{\,r\,}"
+   frammenti="U|k|Q\cdot q|\,r\,"
+   etichette="energia potenziale elettrica (J)|costante di Coulomb|prodotto delle cariche, ciascuna con il suo segno|distanza fra i centri delle cariche"
+   posizioni="alto|basso|alto|basso"
+%}
 
 Nella formula le cariche vanno scritte **con il loro segno**, senza valore assoluto. E manca il segno meno che c'era nella formula gravitazionale: ora a decidere il segno di $U$ sono le cariche stesse.
 {% include margin-note-end.html %}
@@ -1579,17 +1585,25 @@ Come per la gravità, l'energia immagazzinata si può immaginare con una molla c
 {% include margin-note.html testo="Un'espressione equivalente per U" %}
 Per la gravità avevamo scritto $U = -mgr$, usando direttamente il campo $g$. Possiamo fare lo stesso con il campo elettrico generato da $Q$ nel punto in cui si trova $q$, a patto di scriverlo **con un segno**:
 
-$$
-E = k\,\frac{Q}{r^2},
-$$
+{% include eq-annotated.html
+   id="esegno"
+   formula="E = k\dfrac{Q}{r^2}"
+   frammenti="E|Q|r^2"
+   etichette="campo generato da $Q$, con il segno: positivo se punta lontano da $Q$|carica che genera il campo, con il suo segno|quadrato della distanza dal centro di $Q$"
+   posizioni="alto|alto|basso"
+%}
 
 con $Q$ scritta con il suo segno. Così $E$ è **positivo** se il campo punta **lontano** da $Q$ (cioè se $Q$ è positiva) e **negativo** se punta **verso** $Q$ (se $Q$ è negativa); il suo valore assoluto è il modulo del campo. Con questa convenzione una sola formula vale in tutti i casi:
 
 {% include lab-virtuali/u-qer-lab.html id="uqer" %}
 
-$$
-U = q\,E\,r = k\,\frac{Q\cdot q}{r}.
-$$
+{% include eq-annotated.html
+   id="uqer1"
+   formula="U = q\,E\,r = k\dfrac{Q\cdot q}{\,r\,}"
+   frammenti="E|Q\cdot q"
+   etichette="campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$, con il segno|prodotto delle cariche, con il loro segno"
+   posizioni="alto|basso"
+%}
 
 Qui $E$ è il campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$, e anche $q$ va scritta con il suo segno. 
 {% include margin-note-end.html %}
@@ -1695,7 +1709,13 @@ Teniamo ferme, vicine fra loro, due sferette con carica positiva, poi le lasciam
 {% include box-imp.html testo="Il principio di sovrapposizione degli effetti per l'energia potenziale elettrica" %}
 In presenza di più cariche, ognuna contribuisce all'energia potenziale di $q$ <u markdown="span">esattamente come se le altre non ci fossero</u>. L'energia potenziale totale è la somma algebrica di tutti i contributi:
 
-$$U_{tot} = U_1+U_2 + \cdots$$
+{% include eq-annotated.html
+   id="utot"
+   formula="U_{tot} = U_1+U_2 + \cdots"
+   frammenti="U_{tot}|U_1|U_2"
+   etichette="energia potenziale totale di $q$|contributo della prima carica|contributo della seconda carica"
+   posizioni="alto|basso|alto"
+%}
 {% include box-end.html %}
 
 Attenzione ai segni: qui alcuni contributi possono essere positivi e altri negativi. Prova con il simulatore: sposta le cariche e la carica $q$, cambiane valore e segno, aggiungi o togli cariche.
@@ -1733,7 +1753,13 @@ Come per la gravità, cerchiamo una grandezza che descriva una proprietà della 
 
 {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-pot-e" da="U" a="V" cost="k" sorg="Q" espl="q" %}
 
-$$V = \frac{U}{q} = k\,\frac{Q}{r}.$$
+{% include eq-annotated.html
+   id="vel1"
+   formula="V = \dfrac{U}{q} = k\dfrac{Q}{\,r\,}"
+   frammenti="V|U|q|Q"
+   etichette="potenziale elettrico (V)|energia potenziale della carica di prova|carica di prova|carica che genera il potenziale, con il suo segno"
+   posizioni="alto|alto|basso|basso"
+%}
 
 La stessa formula si ottiene, per analogia, da quella del potenziale gravitazionale:
 
@@ -1747,9 +1773,13 @@ Come per l'energia potenziale, anche il potenziale si può scrivere con il campo
 
 {% include lab-virtuali/u-qer-lab.html id="ver" v="true" %}
 
-$$
-V = E\,r = k\,\frac{Q}{r}.
-$$
+{% include eq-annotated.html
+   id="ver1"
+   formula="V = E\,r = k\dfrac{Q}{\,r\,}"
+   frammenti="E|Q"
+   etichette="campo generato da $Q$, con il segno|carica che genera il potenziale, con il suo segno"
+   posizioni="alto|basso"
+%}
 
 Vicino a una carica negativa $E$ è negativo, e quindi lo è anche il potenziale. 
 {% include margin-note-end.html %}
@@ -1865,7 +1895,13 @@ A quale distanza da una carica $Q = +4\times10^{-9}\ \text C$ il potenziale vale
 {% include box-imp.html testo="Il principio di sovrapposizione degli effetti per il potenziale elettrico" %}
 In presenza di più cariche, ciascuna genera un potenziale <u markdown="span">esattamente come se le altre non ci fossero</u>. Il potenziale totale è la somma algebrica dei contributi, ciascuno con il suo segno:
 
-$$V_{tot} = V_1+V_2 + \cdots$$
+{% include eq-annotated.html
+   id="vtot"
+   formula="V_{tot} = V_1+V_2 + \cdots"
+   frammenti="V_{tot}|V_1|V_2"
+   etichette="potenziale totale nel punto|potenziale generato dalla prima carica|potenziale generato dalla seconda carica"
+   posizioni="alto|basso|alto"
+%}
 {% include box-end.html %}
 
 Prova con il simulatore: sposta le cariche e il punto $P$, cambiane valore e segno, aggiungine o toglile. Riesci a trovare un punto in cui il potenziale totale è zero?
@@ -1947,7 +1983,13 @@ dove $\vec g$ è il campo in cui la massa si trova (per esempio quello generato 
 {% include margin-note.html testo="Dal campo alla forza" %}
 Per le cariche vale lo stesso, ed è la definizione del campo elettrico letta al contrario: da $\vec E = \vec F/q$ si ricava che una carica $q$, in un punto in cui il campo vale $\vec E$, subisce la forza
 
-$$\vec F = q\,\vec E.$$
+{% include eq-annotated.html
+   id="fqe1"
+   formula="\vec F = q\,\vec E"
+   frammenti="\vec F|q|\vec E"
+   etichette="forza sulla carica $q$|carica che subisce la forza, con il suo segno|campo generato dalle altre cariche nel punto in cui si trova $q$"
+   posizioni="alto|basso|alto"
+%}
 {% include margin-note-end.html %}
 
 
@@ -2011,7 +2053,13 @@ Per il secondo principio della dinamica, una carica di massa $m$ soggetta alla f
 
 {% include lab-virtuali/a-qe-m-lab.html %}
 
-$$\vec a = \frac{q}{m}\,\vec E.$$
+{% include eq-annotated.html
+   id="aqem"
+   formula="\vec a = \dfrac{q}{m}\,\vec E"
+   frammenti="\vec a|q|m|\vec E"
+   etichette="accelerazione della particella|sua carica, con il segno|sua massa|campo generato dalle altre cariche"
+   posizioni="alto|alto|basso|basso"
+%}
 
 {% include margin-note-end.html %}
 
@@ -2188,11 +2236,23 @@ C'è anche un'altra ombra: buona parte del lavoro in laboratorio, compresa l'ide
 {% include box-ricorda.html testo="Energia cinetica ed energia meccanica" %}
 Un corpo di massa $m$ che si muove con velocità $v$ possiede un'**energia cinetica**, l'energia del movimento:
 
-$$K = \frac12\,m\,v^2.$$
+{% include eq-annotated.html
+   id="kcin"
+   formula="K = \dfrac12\,m\,v^2"
+   frammenti="K|m|v^2"
+   etichette="energia cinetica (J)|massa del corpo|quadrato della sua velocità"
+   posizioni="alto|basso|alto"
+%}
 
 L'**energia meccanica** è la somma dell'energia cinetica e dell'energia potenziale: $K + U$. Se agiscono solo forze come il peso (senza attriti), l'energia meccanica si conserva: l'energia potenziale si trasforma in energia cinetica, e viceversa, ma la somma resta la stessa,
 
-$$K_i + U_i = K_f + U_f.$$
+{% include eq-annotated.html
+   id="consmecc"
+   formula="K_i + U_i = K_f + U_f"
+   frammenti="K_i + U_i|K_f + U_f"
+   etichette="energia meccanica all'inizio|energia meccanica alla fine"
+   posizioni="alto|alto"
+%}
 
 Un sasso lasciato cadere scende: la sua energia potenziale diminuisce e si trasforma in energia cinetica. E poiché $U = m\,V$ e le masse sono sempre positive, una massa lasciata libera va sempre verso il potenziale gravitazionale più basso, cioè verso la Terra. Lo trovi nel capitolo sull'[energia]({{ '/corsi/meccanica/06_Energia/' | relative_url }}#i-sistemi-isolati-e-la-conservazione-dellenergia-meccanica).
 {% include box-end.html %}
@@ -2248,7 +2308,13 @@ Una carica $q = +2\times10^{-6}\ \text C$ parte da ferma dal punto $A$, dove il 
 {% include margin-note.html testo="Che cos'è la differenza di potenziale" %}
 Abbiamo visto che il moto di una carica dipende da come cambia il potenziale fra il punto di partenza e quello di arrivo. La <definizione>differenza di potenziale</definizione> fra due punti, che si chiama anche <definizione>tensione</definizione>, è il potenziale del punto di arrivo meno quello del punto di partenza:
 
-$$\Delta V = V_{arrivo} - V_{partenza}.$$
+{% include eq-annotated.html
+   id="deltav"
+   formula="\Delta V = V_{arrivo} - V_{partenza}"
+   frammenti="\Delta V|V_{arrivo}|V_{partenza}"
+   etichette="differenza di potenziale (V)|potenziale del punto di arrivo|potenziale del punto di partenza"
+   posizioni="alto|basso|alto"
+%}
 
 Come ogni potenziale, si misura in volt. Nella figura, una carica va dal punto $A$, dove il potenziale vale $600\ \text V$, al punto $B$, dove vale $200\ \text V$:
 
@@ -2259,7 +2325,13 @@ Come ogni potenziale, si misura in volt. Nella figura, una carica va dal punto $
 {% include margin-note.html testo="Differenza di potenziale ed energia" %}
 Da $U = q\,V$ segue che, quando la carica si sposta, la sua energia potenziale cambia di
 
-$$\Delta U = q\,\Delta V.$$
+{% include eq-annotated.html
+   id="deltau"
+   formula="\Delta U = q\,\Delta V"
+   frammenti="\Delta U|q|\Delta V"
+   etichette="variazione dell'energia potenziale (J)|carica che si sposta, con il suo segno|differenza di potenziale fra arrivo e partenza"
+   posizioni="alto|basso|alto"
+%}
 
 Se la carica parte da ferma, l'energia potenziale che perde si trasforma tutta in energia cinetica: arriva con $K = \lvert q\rvert\,\lvert\Delta V\rvert$. Più grande è la differenza di potenziale, più energia acquista ogni carica: per questo, per accelerare le particelle, si usano differenze di potenziale molto grandi.
 {% include margin-note-end.html %}

@@ -1,0 +1,112 @@
+{% comment %}
+Figura tridimensionale e orientabile: due lastre quadrate parallele, cariche
+con segni opposti (positiva sopra, negativa sotto), e le linee del campo
+elettrico fra di esse. Al centro le linee sono parallele ed equidistanti (il
+campo è uniforme); quelle vicino ai bordi si incurvano verso l'esterno. Ogni
+linea ha una freccia a metà, dalla lastra positiva a quella negativa.
+Lo studente trascina la figura (mouse o dito) per ruotarla e guardarla da
+ogni lato. Il pulsante "Vista frontale" porta le lastre di taglio: la figura
+diventa piana, come si disegna sul quaderno; l'altro riporta la vista iniziale.
+In stampa, al posto della figura interattiva compare la figura piana
+figure/figura-campo-lastre.html.
+Nessun parametro.
+{% endcomment %}
+<div class="l3d-widget" id="l3dLab">
+<canvas class="l3d-canvas" aria-label="Due lastre cariche e le linee del campo elettrico uniforme fra di esse, in tre dimensioni: trascina per ruotare"></canvas>
+<div class="l3d-ctrl"><span>Trascina la figura per ruotarla</span><button class="l3d-front">Vista frontale</button><button class="l3d-reset">↺ Vista iniziale</button></div>
+</div>
+<div class="l3d-stampa">{% include figure/figura-campo-lastre.html %}</div>
+<style>
+.l3d-widget { margin: 1.4rem auto; max-width: 560px; text-align: center; }
+.l3d-canvas { width: 100%; height: auto; display: block; border-radius: 8px; cursor: grab; touch-action: none; background: #f8fafc; }
+.l3d-canvas:active { cursor: grabbing; }
+.l3d-ctrl { display: flex; gap: .5rem 1rem; justify-content: center; align-items: center; flex-wrap: wrap; margin: .4rem 0; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .82rem; color: #64748b; font-style: italic; }
+.l3d-ctrl button { padding: .25rem .7rem; border-radius: 999px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .82rem; color: #334155; font-family: inherit; font-style: normal; }
+.l3d-stampa { display: none; }
+@media print { .l3d-widget { display: none; } .l3d-stampa { display: block; } }
+</style>
+<script>
+(function(){
+  var root = document.getElementById('l3dLab'); if (!root) return;
+  var cv = root.querySelector('canvas'), ctx = cv.getContext('2d');
+  var W = 560, H = 400, S = 2; cv.width = W * S; cv.height = H * S;
+  var A = 1, Y = 0.42;                 // semilato delle lastre e semidistanza fra le lastre
+  var YAW0 = -0.6, PITCH0 = 0.42, yaw = YAW0, pitch = PITCH0, persp = 1;   // persp = 0: niente prospettiva (vista frontale)
+  var ROSSO = '#9f1239', BLU = '#1e3a8a', CIANO = '#0891b2';
+  // linee di campo: una griglia 6×6 di punti sulla lastra positiva; ogni linea scende fino a quella
+  // negativa, e quelle vicino ai bordi si incurvano verso l'esterno (di più quanto più sono vicine al bordo)
+  var LINES = [], G = [-0.9, -0.54, -0.18, 0.18, 0.54, 0.9];
+  function bow(c){ var s = Math.max(0, Math.abs(c) - 0.6) / 0.3; return Math.sign(c) * 0.13 * s * s; }
+  G.forEach(function(u){ G.forEach(function(v){
+    var pts = [];
+    for (var k = 0; k <= 24; k++) {
+      var t = k / 24, b = Math.sin(Math.PI * t);
+      pts.push([u + bow(u) * b, Y - 2 * Y * t, v + bow(v) * b]);
+    }
+    LINES.push(pts);
+  }); });
+  function proj(p){
+    var cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var x = p[0] * cy - p[2] * sy, z = p[0] * sy + p[2] * cy;           // rotazione attorno all'asse verticale
+    var y = p[1] * cp - z * sp, z2 = p[1] * sp + z * cp;                // rotazione attorno all'asse orizzontale
+    var f = 5 / (5 + z2 * persp), sc = 150;
+    return [W / 2 + x * sc * f, H / 2 - y * sc * f, z2];
+  }
+  function plate(y, pos, alpha){
+    var c = [[-A, y, -A], [A, y, -A], [A, y, A], [-A, y, A]].map(proj);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = pos ? '#fecdd3' : '#bfdbfe';
+    ctx.beginPath(); ctx.moveTo(c[0][0], c[0][1]); for (var i = 1; i < 4; i++) ctx.lineTo(c[i][0], c[i][1]); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha = 1; ctx.strokeStyle = pos ? ROSSO : BLU; ctx.lineWidth = 1.4; ctx.stroke();
+    // i segni + e − sulla lastra
+    ctx.fillStyle = pos ? ROSSO : BLU; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    [-0.72, -0.24, 0.24, 0.72].forEach(function(u){ [-0.72, -0.24, 0.24, 0.72].forEach(function(v){
+      var q = proj([u, y, v]); ctx.globalAlpha = 0.85; ctx.fillText(pos ? '+' : '−', q[0], q[1]); }); });
+    ctx.globalAlpha = 1; ctx.textBaseline = 'alphabetic';
+  }
+  function line(pts){
+    var P = pts.map(proj);
+    ctx.strokeStyle = CIANO; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(P[0][0], P[0][1]);
+    for (var i = 1; i < P.length; i++) ctx.lineTo(P[i][0], P[i][1]); ctx.stroke();
+    var a = P[11], b = P[13], ang = Math.atan2(b[1] - a[1], b[0] - a[0]);   // freccia a metà
+    ctx.fillStyle = CIANO; ctx.beginPath(); ctx.moveTo(b[0], b[1]);
+    ctx.lineTo(b[0] - 9 * Math.cos(ang - .42), b[1] - 9 * Math.sin(ang - .42)); ctx.lineTo(b[0] - 9 * Math.cos(ang + .42), b[1] - 9 * Math.sin(ang + .42)); ctx.closePath(); ctx.fill();
+  }
+  function draw(){
+    ctx.setTransform(S, 0, 0, S, 0, 0); ctx.clearRect(0, 0, W, H);
+    // si disegna prima la lastra più lontana, poi le linee, poi quella più vicina (semitrasparente)
+    var zTop = proj([0, Y, 0])[2], zBot = proj([0, -Y, 0])[2];
+    var far = zTop > zBot ? [Y, true] : [-Y, false], near = zTop > zBot ? [-Y, false] : [Y, true];
+    plate(far[0], far[1], 0.9);
+    LINES.slice().sort(function(p, q){ return proj(q[12])[2] - proj(p[12])[2]; }).forEach(line);
+    plate(near[0], near[1], 0.55);
+    var e = proj([A + 0.25, 0, -A]); ctx.fillStyle = CIANO; ctx.font = 'italic bold 18px Georgia, serif'; ctx.textAlign = 'left'; ctx.fillText('E', e[0], e[1]);
+  }
+  // trascinamento
+  var drag = null;
+  cv.addEventListener('pointerdown', function(ev){ if (anim) { cancelAnimationFrame(anim); anim = null; } persp = 1; drag = [ev.clientX, ev.clientY, yaw, pitch]; cv.setPointerCapture(ev.pointerId); });
+  cv.addEventListener('pointermove', function(ev){
+    if (!drag) return;
+    yaw = drag[2] + (ev.clientX - drag[0]) * 0.01;
+    pitch = Math.max(-1.5, Math.min(1.5, drag[3] + (ev.clientY - drag[1]) * 0.01));
+    draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function(t){ cv.addEventListener(t, function(){ drag = null; }); });
+  // passaggio graduale a una vista
+  var anim = null;
+  function goTo(y1, p1, q1){
+    if (anim) cancelAnimationFrame(anim);
+    var y0 = yaw, p0 = pitch, q0 = persp, t0 = null;
+    function step(t){
+      if (t0 === null) t0 = t; var u = Math.min(1, (t - t0) / 700), e = u * u * (3 - 2 * u);
+      yaw = y0 + (y1 - y0) * e; pitch = p0 + (p1 - p0) * e; persp = q0 + (q1 - q0) * e; draw();
+      anim = u < 1 ? requestAnimationFrame(step) : null;
+    }
+    anim = requestAnimationFrame(step);
+  }
+  // vista frontale: le lastre si vedono di taglio e tutto diventa un disegno piano, da copiare sul quaderno
+  root.querySelector('.l3d-front').addEventListener('click', function(){ goTo(0, 0, 0); });
+  root.querySelector('.l3d-reset').addEventListener('click', function(){ goTo(YAW0, PITCH0, 1); });
+  draw();
+})();
+</script>
