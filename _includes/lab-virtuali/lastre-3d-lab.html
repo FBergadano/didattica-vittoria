@@ -30,8 +30,8 @@ Nessun parametro.
   var root = document.getElementById('l3dLab'); if (!root) return;
   var cv = root.querySelector('canvas'), ctx = cv.getContext('2d');
   var W = 560, H = 400, S = 2; cv.width = W * S; cv.height = H * S;
-  var A = 1, Y = 0.42;                 // semilato delle lastre e semidistanza fra le lastre
-  var YAW0 = -0.6, PITCH0 = 0.42, yaw = YAW0, pitch = PITCH0, persp = 1;   // persp = 0: niente prospettiva (vista frontale)
+  var A = 1, Y = 0.42, TH = 0.07;      // semilato delle lastre, semidistanza fra le lastre, spessore
+  var YAW0 = -0.38, PITCH0 = 0.3, yaw = YAW0, pitch = PITCH0, persp = 1;   // persp = 0: niente prospettiva (vista frontale)
   var ROSSO = '#9f1239', BLU = '#1e3a8a', CIANO = '#0891b2';
   // linee di campo: una griglia 6×6 di punti sulla lastra positiva; ogni linea scende fino a quella
   // negativa, e quelle vicino ai bordi si incurvano verso l'esterno (di più quanto più sono vicine al bordo)
@@ -48,21 +48,40 @@ Nessun parametro.
   function proj(p){
     var cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
     var x = p[0] * cy - p[2] * sy, z = p[0] * sy + p[2] * cy;           // rotazione attorno all'asse verticale
-    var y = p[1] * cp - z * sp, z2 = p[1] * sp + z * cp;                // rotazione attorno all'asse orizzontale
+    // rotazione attorno all'asse orizzontale: con pitch > 0 si guarda dall'alto (la parte di sopra si avvicina,
+    // i punti lontani salgono sullo schermo). z2 è la distanza dall'osservatore: più grande = più lontano
+    var y = p[1] * cp + z * sp, z2 = -p[1] * sp + z * cp;
     var f = 5 / (5 + z2 * persp), sc = 150;
     return [W / 2 + x * sc * f, H / 2 - y * sc * f, z2];
   }
-  function plate(y, pos, alpha){
-    var c = [[-A, y, -A], [A, y, -A], [A, y, A], [-A, y, A]].map(proj);
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle = pos ? '#fecdd3' : '#bfdbfe';
-    ctx.beginPath(); ctx.moveTo(c[0][0], c[0][1]); for (var i = 1; i < 4; i++) ctx.lineTo(c[i][0], c[i][1]); ctx.closePath(); ctx.fill();
-    ctx.globalAlpha = 1; ctx.strokeStyle = pos ? ROSSO : BLU; ctx.lineWidth = 1.4; ctx.stroke();
-    // i segni + e − sulla lastra
-    ctx.fillStyle = pos ? ROSSO : BLU; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    [-0.72, -0.24, 0.24, 0.72].forEach(function(u){ [-0.72, -0.24, 0.24, 0.72].forEach(function(v){
-      var q = proj([u, y, v]); ctx.globalAlpha = 0.85; ctx.fillText(pos ? '+' : '−', q[0], q[1]); }); });
-    ctx.globalAlpha = 1; ctx.textBaseline = 'alphabetic';
+  // una lastra è una scatola sottile (spessore TH): la faccia interna è a y = ±Y, quella esterna a y = ±(Y + TH)
+  function plate(pos){
+    var y0 = pos ? Y : -Y - TH, y1 = pos ? Y + TH : -Y;
+    function v(x, y, z){ return proj([x, y, z]); }
+    var F = [
+      { p: [[-A, y1, -A], [A, y1, -A], [A, y1, A], [-A, y1, A]], h: true },    // faccia di sopra
+      { p: [[-A, y0, -A], [A, y0, -A], [A, y0, A], [-A, y0, A]], h: true },    // faccia di sotto
+      { p: [[-A, y0, -A], [A, y0, -A], [A, y1, -A], [-A, y1, -A]] },
+      { p: [[-A, y0, A], [A, y0, A], [A, y1, A], [-A, y1, A]] },
+      { p: [[-A, y0, -A], [-A, y0, A], [-A, y1, A], [-A, y1, -A]] },
+      { p: [[A, y0, -A], [A, y0, A], [A, y1, A], [A, y1, -A]] }
+    ];
+    F.forEach(function(f){ f.q = f.p.map(function(a){ return v(a[0], a[1], a[2]); }); f.z = (f.q[0][2] + f.q[1][2] + f.q[2][2] + f.q[3][2]) / 4; });
+    F.sort(function(a, b){ return b.z - a.z; });                      // prima le facce più lontane
+    F.forEach(function(f){
+      ctx.fillStyle = f.h ? (pos ? '#fecdd3' : '#bfdbfe') : (pos ? '#fb7185' : '#60a5fa');
+      ctx.strokeStyle = pos ? ROSSO : BLU; ctx.lineWidth = 1.1;
+      ctx.beginPath(); ctx.moveTo(f.q[0][0], f.q[0][1]); for (var i = 1; i < 4; i++) ctx.lineTo(f.q[i][0], f.q[i][1]); ctx.closePath(); ctx.fill(); ctx.stroke();
+    });
+    // i segni + e − sulla faccia orizzontale rivolta verso chi guarda (se non la si vede di taglio)
+    var top = F.filter(function(f){ return f.h; }).sort(function(a, b){ return a.z - b.z; })[0];
+    var yy = top.p[0][1], c = top.q, area = Math.abs((c[1][0] - c[0][0]) * (c[3][1] - c[0][1]) - (c[3][0] - c[0][0]) * (c[1][1] - c[0][1]));
+    if (area > 3000) {
+      ctx.fillStyle = pos ? ROSSO : BLU; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      [-0.72, -0.24, 0.24, 0.72].forEach(function(u){ [-0.72, -0.24, 0.24, 0.72].forEach(function(w){
+        var q = v(u, yy, w); ctx.fillText(pos ? '+' : '−', q[0], q[1]); }); });
+      ctx.textBaseline = 'alphabetic';
+    }
   }
   function line(pts){
     var P = pts.map(proj);
@@ -74,12 +93,11 @@ Nessun parametro.
   }
   function draw(){
     ctx.setTransform(S, 0, 0, S, 0, 0); ctx.clearRect(0, 0, W, H);
-    // si disegna prima la lastra più lontana, poi le linee, poi quella più vicina (semitrasparente)
+    // si disegna prima la lastra più lontana, poi le linee, poi quella più vicina
     var zTop = proj([0, Y, 0])[2], zBot = proj([0, -Y, 0])[2];
-    var far = zTop > zBot ? [Y, true] : [-Y, false], near = zTop > zBot ? [-Y, false] : [Y, true];
-    plate(far[0], far[1], 0.9);
+    plate(zTop > zBot);                                                 // la lastra più lontana
     LINES.slice().sort(function(p, q){ return proj(q[12])[2] - proj(p[12])[2]; }).forEach(line);
-    plate(near[0], near[1], 0.55);
+    plate(zTop <= zBot);                                                // la lastra più vicina
     var e = proj([A + 0.25, 0, -A]); ctx.fillStyle = CIANO; ctx.font = 'italic bold 18px Georgia, serif'; ctx.textAlign = 'left'; ctx.fillText('E', e[0], e[1]);
   }
   // trascinamento

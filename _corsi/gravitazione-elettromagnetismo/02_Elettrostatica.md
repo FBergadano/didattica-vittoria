@@ -1106,7 +1106,7 @@ $$\vec F_{tot} = \vec F_1 + \vec F_2 + \dots$$
 {% include box-end.html %}
 
 {% include margin-note.html testo="Le forze si sommano come vettori" %}
-Poiché le forze sono vettori, per sommarle non basta sommarne i moduli: vanno sommate **come vettori**, con la stessa regola del parallelogramma già vista per la somma di due vettori qualsiasi. L'unica accortezza in più, rispetto al caso gravitazionale, è che ogni singola forza può essere sia repulsiva sia attrattiva, a seconda del segno delle cariche coinvolte. Nel simulatore seguente puoi spostare le cariche e cambiarne valore e segno: guarda come cambiano le due forze su $q$, e la loro somma.
+Poiché le forze sono vettori, <u markdown="span">per sommarle non basta sommarne i moduli: vanno sommate **come vettori**</u>, con la stessa regola del parallelogramma già vista per la somma di due vettori qualsiasi. L'unica accortezza in più, rispetto al caso gravitazionale, è che ogni singola forza può essere sia repulsiva sia attrattiva, a seconda del segno delle cariche coinvolte. Nel simulatore seguente puoi spostare le cariche e cambiarne valore e segno: guarda come cambiano le due forze su $q$, e la loro somma.
 {% include margin-note-end.html %}
 
 
@@ -1164,7 +1164,7 @@ Anche una carica modifica lo spazio attorno a sé. C'è però una differenza: le
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="Il campo elettrico" %}
-La modificazione dello spazio prodotta da una carica si chiama <definizione>campo elettrico</definizione> e si indica con $\vec E$. È una grandezza **vettoriale**: associa a ogni punto dello spazio un vettore, che dice con quale intensità, in quale direzione e in quale verso viene spinta una carica posta in quel punto.
+La modificazione dello spazio prodotta da una carica si chiama <definizione>campo elettrico</definizione> e si indica con $\vec E$. È una grandezza **vettoriale**: <u>associa a ogni punto dello spazio un vettore</u>, che dice con quale intensità, in quale direzione e in quale verso viene spinta una carica posta in quel punto.
 {% include box-end.html %}
 
 ## Il vettore campo elettrico
@@ -1206,7 +1206,7 @@ o, in modo del tutto equivalente,
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="La carica di prova" %}
-La carica $q$ che usiamo per "sentire" il campo si chiama <definizione>carica di prova</definizione>: ha lo stesso ruolo della massa esploratrice. Per convenzione si sceglie **positiva** e molto **piccola**: piccola, perché con la sua forza non deve spostare le cariche che generano il campo che vogliamo misurare. E, come per la massa esploratrice, il campo **non dipende** da $q$: se raddoppia la carica di prova, raddoppia anche la forza, e il loro rapporto resta lo stesso.
+La carica $q$ che usiamo per "sentire" il campo si chiama <definizione>carica di prova</definizione>: ha lo stesso ruolo della massa esploratrice. Per convenzione si sceglie **positiva** e molto **piccola**: piccola, perché con la sua forza non deve spostare le cariche che generano il campo che vogliamo misurare. E, come per la massa esploratrice, <u markdown="span">il campo **non dipende** da $q$</u>: se raddoppia la carica di prova, raddoppia anche la forza, e il loro rapporto resta lo stesso.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="L'unità di misura del campo elettrico è il N/C" %}
@@ -1306,7 +1306,7 @@ Isola le altre grandezze nella formula del campo elettrico. Per ciascuna, cerca 
 ### Direzione e verso del vettore campo elettrico
 
 {% include margin-note.html testo="Il verso del campo elettrico" %}
-Per il campo gravitazionale avevamo scelto che $\vec g$ avesse il verso della forza sulla massa esploratrice. Allo stesso modo, si sceglie che $\vec E$ abbia la direzione e il verso della forza che agirebbe sulla carica di prova, che è **positiva**. Quindi il campo generato da una carica positiva si allontana da essa, mentre quello generato da una carica negativa punta verso di essa:
+Per il campo gravitazionale avevamo scelto che $\vec g$ avesse il verso della forza sulla massa esploratrice. Allo stesso modo, si sceglie che <u markdown="span">$\vec E$ abbia la direzione e il verso della forza che agirebbe sulla carica di prova, che è **positiva**</u>. Quindi il campo generato da una carica positiva si allontana da essa, mentre quello generato da una carica negativa punta verso di essa:
 
 {% include figure/figura-vettore-campo-e.html %}
 {% include margin-note-end.html %}
@@ -1321,7 +1321,7 @@ Il campo generato da una carica **positiva** punta **lontano** da essa; quello g
 {% include box-end.html %}
 
 {% include box-warn.html testo="Su una carica negativa, la forza è opposta al campo" %}
-Qui c'è una differenza importante rispetto alla gravità. La massa è sempre positiva, quindi $\vec F = m\,\vec g$ ha sempre lo stesso verso di $\vec g$. La carica, invece, può essere negativa: se in un punto mettiamo una carica negativa, per esempio un elettrone, la forza $\vec F = q\,\vec E$ ha **verso opposto** al campo. Il campo ci dice in che verso verrebbe spinta una carica positiva; una carica negativa va nel verso contrario.
+Qui c'è una differenza importante rispetto alla gravità. La massa è sempre positiva, quindi $\vec F = m\,\vec g$ ha sempre lo stesso verso di $\vec g$. La carica, invece, può essere negativa: se in un punto mettiamo una carica negativa, per esempio un elettrone, <u markdown="span">la forza $\vec F = q\,\vec E$ ha **verso opposto** al campo</u>. Il campo ci dice in che verso verrebbe spinta una carica positiva; una carica negativa va nel verso contrario.
 {% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -1413,7 +1413,7 @@ E se le due cariche sono opposte, $+Q$ e $-Q$? Quanto vale il campo nel punto a 
 ## Le linee di campo
 
 {% include margin-note.html testo="Le linee del campo elettrico" %}
-Le linee del campo elettrico si definiscono esattamente come quelle del campo gravitazionale: in ogni punto sono tangenti al vettore $\vec E$, e la loro densità misura l'intensità del campo. Anche qui, però, cambia qualcosa.
+Le linee del campo elettrico si definiscono esattamente come quelle del campo gravitazionale: <u markdown="span">in ogni punto sono tangenti al vettore $\vec E$, e la loro densità misura l'intensità del campo</u>. Anche qui, però, cambia qualcosa.
 {% include margin-note-end.html %}
 
 
@@ -1496,7 +1496,7 @@ Il campo gravitazionale di un pianeta punta verso il suo centro, e diventa più 
 
 
 {% include margin-note.html testo="Il campo fra due lastre è uniforme" %}
-Per il campo elettrico c'è un modo semplice per ottenere la stessa situazione: due lastre metalliche piane, parallele e vicine fra loro, cariche con segni opposti. Fra le lastre, lontano dai bordi, il campo è uniforme, e le linee di campo sono segmenti paralleli ed equidistanti, che vanno dalla lastra positiva a quella negativa. Solo vicino ai bordi le linee si incurvano un po'.
+Per il campo elettrico c'è un modo semplice per ottenere la stessa situazione: due lastre metalliche piane, parallele e vicine fra loro, cariche con segni opposti. Fra le lastre, <u>lontano dai bordi, il campo è uniforme</u>, e le linee di campo sono segmenti paralleli ed equidistanti, che vanno dalla lastra positiva a quella negativa. Solo vicino ai bordi le linee si incurvano un po'.
 {% include margin-note-end.html %}
 
 {% include lab-virtuali/lastre-3d-lab.html %}
@@ -1565,7 +1565,7 @@ Anche la forza elettrica è una forza centrale, quindi anche per due cariche si 
    posizioni="alto|basso|alto|basso"
 %}
 
-Nella formula le cariche vanno scritte **con il loro segno**, senza valore assoluto. E manca il segno meno che c'era nella formula gravitazionale: ora a decidere il segno di $U$ sono le cariche stesse.
+Nella formula <u markdown="span">le cariche vanno scritte **con il loro segno**, senza valore assoluto</u>. E manca il segno meno che c'era nella formula gravitazionale: ora a decidere il segno di $U$ sono le cariche stesse.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Il segno di U" %}
@@ -1605,7 +1605,7 @@ con $Q$ scritta con il suo segno. Così $E$ è **positivo** se il campo punta **
    posizioni="alto|basso"
 %}
 
-Qui $E$ è il campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$, e anche $q$ va scritta con il suo segno. 
+Qui <u markdown="span">$E$ è il campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$</u>, e anche $q$ va scritta con il suo segno. 
 {% include margin-note-end.html %}
 
 {% include box-warn.html testo="Nell'energia potenziale niente valore assoluto" %}
@@ -1758,14 +1758,14 @@ Come per la gravità, cerchiamo una grandezza che descriva una proprietà della 
    formula="V = \dfrac{U}{q} = k\dfrac{Q}{\,r\,}"
    frammenti="V|U|q|Q"
    etichette="potenziale elettrico (V)|energia potenziale della carica di prova|carica di prova|carica che genera il potenziale, con il suo segno"
-   posizioni="alto|alto|basso|basso"
+   posizioni="alto|alto|basso|alto"
 %}
 
 La stessa formula si ottiene, per analogia, da quella del potenziale gravitazionale:
 
 {% include lab-virtuali/analogia-formule-lab.html id="an-potenziale" tipo="potenziale" %}
 
-Il potenziale non dipende dalla carica di prova, ma solo dalla carica $Q$ che lo genera (con il suo segno) e dalla distanza $r$ dal suo centro. Vicino a una carica positiva il potenziale è positivo, vicino a una carica negativa è negativo.
+<u markdown="span">Il potenziale non dipende dalla carica di prova</u>, ma solo dalla carica $Q$ che lo genera (con il suo segno) e dalla distanza $r$ dal suo centro. Vicino a una carica positiva il potenziale è positivo, vicino a una carica negativa è negativo.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Un'espressione equivalente per V" %}
@@ -1935,7 +1935,7 @@ Due cariche opposte, $+Q$ e $-Q$, sono a una certa distanza fra loro. Quanto val
 ## Le superfici equipotenziali
 
 {% include margin-note.html testo="Le superfici equipotenziali" %}
-Come per la gravità, il potenziale si rappresenta con le <definizione>superfici equipotenziali</definizione>: l'insieme dei punti in cui il potenziale ha lo stesso valore. Valgono le stesse proprietà: sono in ogni punto **perpendicolari** alle linee di campo, e per una singola carica sono **sfere** concentriche alla carica (sul foglio, circonferenze), perché $V = k\,Q/r$ dipende solo dalla distanza.
+Come per la gravità, il potenziale si rappresenta con le <definizione>superfici equipotenziali</definizione>: l'insieme dei punti in cui il potenziale ha lo stesso valore. Valgono le stesse proprietà: <u markdown="span">sono in ogni punto **perpendicolari** alle linee di campo</u>, e per una singola carica sono **sfere** concentriche alla carica (sul foglio, circonferenze), perché $V = k\,Q/r$ dipende solo dalla distanza.
 {% include margin-note-end.html %}
 
 
@@ -1977,7 +1977,7 @@ Una massa $m$ immersa in un campo gravitazionale $\vec g$ è soggetta alla forza
 
 $$\vec F = m\,\vec g,$$
 
-dove $\vec g$ è il campo in cui la massa si trova (per esempio quello generato dalla Terra), e non quello che la massa stessa genera.
+dove <u markdown="span">$\vec g$ è il campo in cui la massa si trova</u> (per esempio quello generato dalla Terra), e non quello che la massa stessa genera.
 {% include box-end.html %}
 
 {% include margin-note.html testo="Dal campo alla forza" %}
@@ -1994,7 +1994,7 @@ Per le cariche vale lo stesso, ed è la definizione del campo elettrico letta al
 
 
 {% include margin-note.html testo="Il segno della carica decide il verso" %}
-La differenza con la gravità sta nel segno. Le masse sono tutte positive, e il peso ha sempre lo stesso verso di $\vec g$. Le cariche invece possono essere negative: un protone viene spinto nel verso del campo, un elettrone nel verso opposto.
+La differenza con la gravità sta nel segno. Le masse sono tutte positive, e il peso ha sempre lo stesso verso di $\vec g$. Le cariche invece possono essere negative: <u>un protone viene spinto nel verso del campo, un elettrone nel verso opposto</u>.
 {% include margin-note-end.html %}
 
 
@@ -2065,7 +2065,7 @@ Per il secondo principio della dinamica, una carica di massa $m$ soggetta alla f
 
 
 {% include margin-note.html testo="Perché qui la massa non si semplifica" %}
-Nella gravità, la massa compariva sia nella forza ($\vec F = m\,\vec g$) sia nel secondo principio ($\vec F = m\,\vec a$), e si semplificava: tutti i corpi cadono con la stessa accelerazione $\vec a = \vec g$, il martello come la piuma. Qui invece la forza dipende dalla carica e l'inerzia dalla massa, che sono due proprietà diverse: non si semplifica niente, e l'accelerazione dipende dal rapporto $q/m$.
+Nella gravità, la massa compariva sia nella forza ($\vec F = m\,\vec g$) sia nel secondo principio ($\vec F = m\,\vec a$), e si semplificava: tutti i corpi cadono con la stessa accelerazione $\vec a = \vec g$, il martello come la piuma. Qui invece la forza dipende dalla carica e l'inerzia dalla massa, che sono due proprietà diverse: non si semplifica niente, e <u markdown="span">l'accelerazione dipende dal rapporto $q/m$</u>.
 {% include margin-note-end.html %}
 
 
@@ -2258,12 +2258,12 @@ Un sasso lasciato cadere scende: la sua energia potenziale diminuisce e si trasf
 {% include box-end.html %}
 
 {% include margin-note.html testo="L'energia potenziale diventa energia cinetica" %}
-Anche per la forza elettrica, come per il peso, abbiamo potuto definire un'energia potenziale. Una carica che si muove liberamente in un campo elettrico conserva quindi la sua energia meccanica: la sua energia potenziale elettrica si trasforma in energia cinetica. Una carica lasciata ferma si mette in moto nel verso in cui la sua energia potenziale $U = q\,V$ diminuisce, come una pallina su uno scivolo.
+Anche per la forza elettrica, come per il peso, abbiamo potuto definire un'energia potenziale. Una carica che si muove liberamente in un campo elettrico conserva quindi la sua energia meccanica: la sua energia potenziale elettrica si trasforma in energia cinetica. <u markdown="span">Una carica lasciata ferma si mette in moto nel verso in cui la sua energia potenziale $U = q\,V$ diminuisce</u>, come una pallina su uno scivolo.
 {% include margin-note-end.html %}
 
 
 {% include margin-note.html testo="Positive e negative vanno in versi opposti" %}
-Qui però entra di nuovo in gioco il segno. Per una carica positiva, $U = q\,V$ diminuisce quando diminuisce $V$: la carica va verso il potenziale più basso, come le masse. Per una carica negativa, $U = q\,V$ diminuisce quando $V$ **aumenta**: la carica va verso il potenziale più alto.
+Qui però entra di nuovo in gioco il segno. Per una carica positiva, $U = q\,V$ diminuisce quando diminuisce $V$: <u>la carica va verso il potenziale più basso</u>, come le masse. Per una carica negativa, $U = q\,V$ diminuisce quando $V$ **aumenta**: <u>la carica va verso il potenziale più alto</u>.
 {% include margin-note-end.html %}
 
 
@@ -2306,7 +2306,7 @@ Una carica $q = +2\times10^{-6}\ \text C$ parte da ferma dal punto $A$, dove il 
 ### La differenza di potenziale
 
 {% include margin-note.html testo="Che cos'è la differenza di potenziale" %}
-Abbiamo visto che il moto di una carica dipende da come cambia il potenziale fra il punto di partenza e quello di arrivo. La <definizione>differenza di potenziale</definizione> fra due punti, che si chiama anche <definizione>tensione</definizione>, è il potenziale del punto di arrivo meno quello del punto di partenza:
+Abbiamo visto che il moto di una carica dipende da come cambia il potenziale fra il punto di partenza e quello di arrivo. La <definizione>differenza di potenziale</definizione> fra due punti, che si chiama anche <definizione>tensione</definizione>, è <u>il potenziale del punto di arrivo meno quello del punto di partenza</u>:
 
 {% include eq-annotated.html
    id="deltav"
@@ -2333,7 +2333,7 @@ Da $U = q\,V$ segue che, quando la carica si sposta, la sua energia potenziale c
    posizioni="alto|basso|alto"
 %}
 
-Se la carica parte da ferma, l'energia potenziale che perde si trasforma tutta in energia cinetica: arriva con $K = \lvert q\rvert\,\lvert\Delta V\rvert$. Più grande è la differenza di potenziale, più energia acquista ogni carica: per questo, per accelerare le particelle, si usano differenze di potenziale molto grandi.
+Se la carica parte da ferma, <u>l'energia potenziale che perde si trasforma tutta in energia cinetica</u>: arriva con $K = \lvert q\rvert\,\lvert\Delta V\rvert$. Più grande è la differenza di potenziale, più energia acquista ogni carica: per questo, per accelerare le particelle, si usano differenze di potenziale molto grandi.
 {% include margin-note-end.html %}
 
 

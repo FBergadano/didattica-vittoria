@@ -2136,3 +2136,31 @@ cit em, cit i { font-style: normal; }
   font-style: italic;
   margin: 1.6rem 0;
 }
+
+// ── Testo a fronte: originale e traduzione affiancati ────────
+// <div class="testo-fronte"> con due <div class="tf-col"> e un <p class="tf-fonte">;
+// sotto i 700px le colonne vanno una sotto l'altra (prima l'originale).
+.testo-fronte {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .4rem 1.6rem;
+  margin: 1.6rem 0;
+  font-style: italic;
+  .tf-col p { margin: 0 0 .7rem; text-align: left; hyphens: auto; }
+  .tf-orig { color: #475569; }
+  .tf-trad { border-left: 1px solid #cbd5e1; padding-left: 1.6rem; }
+  .tf-lingua {
+    display: block;
+    font-style: normal;
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--accent, #64748b);
+    margin-bottom: .35rem;
+  }
+  .tf-fonte { grid-column: 1 / -1; text-align: right; font-style: normal; font-size: .87rem; margin: 0; }
+}
+@media (max-width: 700px) {
+  .testo-fronte { grid-template-columns: 1fr; }
+  .testo-fronte .tf-trad { border-left: none; padding-left: 0; border-top: 1px solid #cbd5e1; padding-top: .7rem; }
+}

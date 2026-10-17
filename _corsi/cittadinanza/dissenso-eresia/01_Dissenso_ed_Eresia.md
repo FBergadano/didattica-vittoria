@@ -33,6 +33,55 @@ E allora proveremo a parlare anche di questo: dell'immensa gioia e dell'immenso 
 
 # Olympe de Gouges: l'Eresia del nascere liberi
 
+## Le Rivoluzioni del '700
+
+La Rivoluzione Americana fu il processo politico e militare, avvenuto tra il 1765 e il 1783, che portò le Tredici Colonie Britanniche del Nord America a ribellarsi all'Inghilterra e dare vita agli Stati Uniti d'America. Ma fu anche molto di più che questo.  
+Quando i coloni nord-americani dovettero dichiarare la propria indipendenza, fondarono il loro diritto su un concetto che non era mai stato affermato in precedenza da uno Stato: ***tutti gli uomini nascono liberi***.
+
+<div class="testo-fronte">
+<div class="tf-col tf-orig" lang="en"><span class="tf-lingua">Originale (inglese)</span>
+<p>When in the Course of human events, it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth, the separate and equal station to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.</p>
+<p>We hold these truths to be self-evident, that all Men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness — That to secure these Rights, Governments are instituted among Men, deriving their just Powers from the Consent of the Governed, that whenever any Form of Government becomes destructive of these Ends, it is the Right of the People to alter or to abolish it, and to institute new Government, laying its Foundation on such Principles, and organizing its Powers in such Form, as to them shall seem most likely to effect their Safety and Happiness.</p>
+</div>
+<div class="tf-col tf-trad"><span class="tf-lingua">Traduzione</span>
+<p>Quando nel corso degli eventi umani diventa necessario per un popolo sciogliere i legami politici che lo hanno unito a un altro, e assumere tra le potenze della terra quel posto separato ed eguale a cui le Leggi della Natura e del Dio della Natura gli danno diritto, un giusto rispetto per le opinioni dell'umanità richiede che esso dichiari le cause che lo spingono alla separazione.</p>
+<p>Noi riteniamo che queste verità siano di per sé evidenti: che tutti gli uomini sono creati eguali, che sono dotati dal loro Creatore di alcuni Diritti inalienabili, che fra questi vi sono la Vita, la Libertà e la ricerca della Felicità. Che per garantire questi diritti sono istituiti tra gli uomini i Governi, che derivano i loro giusti poteri dal consenso dei governati; che ogni qualvolta una qualsiasi forma di Governo tende a distruggere questi fini, il popolo ha il diritto di mutarla o abolirla e di istituire un nuovo Governo, fondandolo su quei principi e organizzandone i poteri nella forma che sembri al popolo più adatta a garantire la sua Sicurezza e la sua Felicità.</p>
+</div>
+<p class="tf-fonte">— Declaration of Independence (Dichiarazione d'Indipendenza degli Stati Uniti), 1776</p>
+</div>
+
+È interessante che la prima dichiarazione sui diritti universali dell'uomo nasca da una rivoluzione, cioè da un sentirsi diversi: dal **dissenso**. 
+
+Per la prima volta nella Storia, una frase (quella che avete letto sopra) risuonò in tutto il mondo. La sua eco arrivò in Francia e scatenò una nuova rivoluzione: la Rivoluzione Francese (1789-1799). Anche in questa rivoluzione, si afferma qualcosa di universale:
+
+<div class="testo-fronte">
+<div class="tf-col tf-orig" lang="fr"><span class="tf-lingua">Originale (francese)</span>
+<p>Les Représentants du Peuple Français, constitués en Assemblée Nationale, considérant que l'ignorance, l'oubli ou le mépris des droits de l'homme sont les seules causes des malheurs publics et de la corruption des Gouvernements, ont résolu d'exposer, dans une Déclaration solennelle, les droits naturels, inaliénables et sacrés de l'homme, afin que cette Déclaration, constamment présente à tous les Membres du corps social, leur rappelle sans cesse leurs droits et leurs devoirs ; afin que les actes du pouvoir législatif, et ceux du pouvoir exécutif, pouvant être à chaque instant comparés avec le but de toute institution politique, en soient plus respectés ; afin que les réclamations des citoyens, fondées désormais sur des principes simples et incontestables, tournent toujours au maintien de la Constitution et au bonheur de tous.</p>
+</div>
+<div class="tf-col tf-trad"><span class="tf-lingua">Traduzione</span>
+<p>I Rappresentanti del Popolo Francese, costituiti in Assemblea Nazionale, considerato che l'ignoranza, la dimenticanza o il disprezzo dei diritti dell'uomo sono le uniche cause delle sventure pubbliche e della corruzione dei governi, hanno stabilito di esporre, in una solenne Dichiarazione, i diritti naturali, inalienabili e sacri dell'uomo, affinché questa Dichiarazione, costantemente presente a tutti i membri del corpo sociale rammenti loro continuamente i loro diritti e i loro doveri; affinché gli atti del Potere legislativo e quelli del Potere esecutivo, potendo essere in ogni momento paragonati con il fine di ogni istituzione politica, siano più rispettati; affinché i reclami dei cittadini, fondati d'ora innanzi su principi semplici e incontestabili, si rivolgano sempre alla conservazione della Costituzione e alla felicità di tutti.</p>
+</div>
+<p class="tf-fonte">— Preambolo alla Dichiarazione dei Diritti dell'Uomo e del Cittadino, 1789</p>
+</div>
+
+E con queste meravigliose parole seguono, nel loro primo articolo:
+
+<div class="testo-fronte">
+<div class="tf-col tf-orig" lang="fr"><span class="tf-lingua">Originale (francese)</span>
+<p>Les hommes naissent et demeurent libres et égaux en droits. Les distinctions sociales ne peuvent être fondées que sur l'utilité commune.</p>
+</div>
+<div class="tf-col tf-trad"><span class="tf-lingua">Traduzione</span>
+<p>Gli uomini nascono e rimangono liberi ed eguali nei diritti. Le distinzioni sociali non possono essere fondate che sull'utilità comune.</p>
+</div>
+<p class="tf-fonte">— Dichiarazione dei Diritti dell'Uomo e del Cittadino, 1789, articolo 1</p>
+</div>
+
+In queste parole sta un sentimento meraviglioso: il concetto che ogni uomo sia indissolubilmente legato alla sua umanità; che niente e nessuno possa portare via a nessun uomo la dignità di essere umano. Ed essere umani implica essere liberi.  
+
+È un sentimento meraviglioso, come dicevo. Peccato solo che, quando in questa dichiarazione si dice la parola “uomo” si intenda veramente solo l'essere maschile. La donna è ancora esclusa da questo sentimento.
+
+## Olympe de Gouges
+
 Marie Gouze ha 41 anni quando a Parigi scoppia la Rivoluzione Francese. Viene dalla campagna, la sua prima lingua è il dialetto, eppure scrive commedie, tragedie, romanzi, trattati di politica e una [Dichiarazione dei diritti della Donna e della Cittadina](https://it.wikipedia.org/wiki/Dichiarazione_dei_diritti_della_donna_e_della_cittadina). È una donna straordinaria. Se “eresia” significa “scegliere” allora lei è l'eretica per eccellenza — sceglie tutto: si cambia il nome in Olympe, per onorare sua madre; e cambia anche il cognome. E quello che non sceglie lo odia — ad esempio, suo marito:
 
 <cit>«Ero sposata con un uomo che non amavo e che non era né ricco né ben nato. Sono stata sacrificata senza una ragione che potesse compensare la ripugnanza che provavo per quest'uomo.»</cit>
