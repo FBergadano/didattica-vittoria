@@ -82,7 +82,7 @@ In queste parole sta un sentimento meraviglioso: il concetto che ogni uomo sia i
 
 ## Olympe de Gouges
 
-Marie Gouze ha 41 anni quando a Parigi scoppia la Rivoluzione Francese. Viene dalla campagna, la sua prima lingua è il dialetto, eppure scrive commedie, tragedie, romanzi, trattati di politica e una [Dichiarazione dei diritti della Donna e della Cittadina](https://it.wikipedia.org/wiki/Dichiarazione_dei_diritti_della_donna_e_della_cittadina). È una donna straordinaria. Se “eresia” significa “scegliere” allora lei è l'eretica per eccellenza — sceglie tutto: si cambia il nome in Olympe, per onorare sua madre; e cambia anche il cognome. E quello che non sceglie lo odia — ad esempio, suo marito:
+Marie Gouze ha 41 anni quando a Parigi scoppia la Rivoluzione Francese. Viene dalla campagna, la sua prima lingua è il dialetto. Eppure è una donna coltissima: scrive commedie, tragedie, romanzi, trattati di politica e perfino una [Dichiarazione dei diritti della Donna e della Cittadina](https://it.wikipedia.org/wiki/Dichiarazione_dei_diritti_della_donna_e_della_cittadina). È una donna straordinaria. Se “eresia” significa “scegliere” allora lei è l'eretica per eccellenza — sceglie tutto: si cambia il nome in Olympe (per onorare sua madre) e cambia anche il cognome. E quello che non sceglie lo odia — ad esempio, suo marito:
 
 <cit>«Ero sposata con un uomo che non amavo e che non era né ricco né ben nato. Sono stata sacrificata senza una ragione che potesse compensare la ripugnanza che provavo per quest'uomo.»</cit>
 
@@ -96,7 +96,7 @@ Il suo interesse per la condizione umana è universale, e attento a ogni minoran
 
 <cit>«La Donna <u>nasce libera</u> e ha gli stessi diritti dell'Uomo. Le distinzioni sociali non possono essere fondate che sull'interesse comune.»</cit>
 
-Fa del diritto della Donna, e di ogni gruppo di esseri umani, alla non-oppressione il suo stesso principio costituzionale (è letteralmente l'articolo 2)[^articoli]. Nella postfazione a questa dichiarazione, tiene un discorso meraviglioso:
+Fa del diritto della Donna --- e di ogni gruppo di esseri umani --- alla non-oppressione, il suo stesso principio costituzionale (è letteralmente l'articolo 2)[^articoli]. Nella postfazione a questa dichiarazione, tiene un discorso meraviglioso:
 
 [^articoli]: Gli articoli sono meravigliosi, li potete leggere aprendo il [link indicato sopra](https://it.wikipedia.org/wiki/Dichiarazione_dei_diritti_della_donna_e_della_cittadina).
 
@@ -111,11 +111,12 @@ Il risultato di tutto questo fu inevitabile: venne ghigliottinata. Nel 1793, le 
 
 <cit>«Le donne avranno pur diritto di salire alla tribuna, se hanno quello di salire al patibolo.»</cit>
 
-[Matthias Martelli](https://it.wikipedia.org/wiki/Matthias_Martelli), in uno spettacolo teatrale bellissimo, dice
+L'attore teatrale [Matthias Martelli](https://it.wikipedia.org/wiki/Matthias_Martelli), in uno spettacolo bellissimo su Olympe de Gouges, dice
 
 <cit autore="Matthias Martelli, Eretici, il fuoco degli spiriti liberi">Ho l'impressione che questa testa rotoli ancora.</cit>
 
-E Olympe lo sapeva che non era stato inutile. La notte prima di morire, scrisse al figlio queste parole
+Ma Olympe lo sapeva che non era stato inutile. Che lei aveva avviato qualcosa, che ciò per cui aveva lottato non sarebbe finito con lei. Come se la sua testa, nel rotolare, avesse colpito la tessera di un domino, ora avviato per sempre.  
+Così, la notte prima di morire, scrisse al figlio queste parole
 
 <cit>«Addio, figlio, domani la mia testa sarà tagliata. Credono di tagliare l'erbaccia ma è troppo tardi: qualcosa è in marcia e nulla può arrestarlo.»</cit>
 
@@ -137,7 +138,8 @@ La sua immaginazione esplode: nel gioco e davanti allo specchio, Fernandinho è 
 
 <cit>«Due mezze noci di cocco furono il mio primo seno. Davanti allo specchio grande, mia mamma mi sorprese e botte. Mi coprivo con la mano per vedermi come Aparecida anche tra le gambe. La mia fantasia: pancia tonda e fessura di bambina.»</cit>
 
-Cominciano le derisioni, gli insulti, le violenze. Fernandinho è chiamato “veado” (uomodonna). E dietro gli insulti si celano le perversioni. A 7 anni subisce il primo stupro. E poi di nuovo a 8, più violento. E poi ancora più violento a 11. Fernandinho, per tutti e per se stesso, non è nient'altro che un veado.
+Fu questo sentirsi diverso, questo dis-senso, a condannarlo a un'infanzia e a una vita di violenza.  
+Cominciano le derisioni, gli insulti. Fernandinho è chiamato “veado” (uomodonna). E dietro gli insulti si celano le perversioni. A 7 anni subisce il primo stupro. E poi di nuovo a 8, più violento. E poi ancora più violento a 11. Fernandinho, per tutti e per se stesso, non è nient'altro che un veado.
 
 <cit>«Mi piaceva essere femmina con le bambine, coi cugini. Non capivo la diffamazione. Veado — parola al vetriolo, intuivo l'offesa. Chiaramente, ma non sapevo che dentro quel suono c'era tutto il mio destino.»</cit>
 
@@ -149,7 +151,7 @@ Fernando non nega. I ragazzini gli danno appuntamento nel bosco, lui va. E sono 
 
 <cit>«Ero solo. Non so dire cosa cercassi dentro quelle teste dure, teste deboli. Nei loro sudori acri, appiccicosi, nei loro modi violenti, maneschi. Ma attraversai così i miei quattordici, quindici e sedici anni. Centinaia di incontri, appuntamenti. Tre volte a settimana, due José per ogni volta. È un conteggio per difetto. Ventiquattro appuntamenti al mese. Duecentosessanta appuntamenti all'anno, per quattro anni: mille e cento volte.»</cit>
 
-Ruba alla madre gonna e tacchi alti e nel buio cerca la sua libertà.[^gonna]
+Questa è la specialità di Fernando: con un coraggio immenso, trasforma il suo *sentirsi diverso* in una **scelta**. Trasforma cioè il suo **dissenso** in un'**eresia**. E allora ruba alla madre gonna e tacchi alti e nel buio cerca la sua libertà.[^gonna]
 
 [^gonna]: «Col buio della sera, nel giardinetto che avevo eletto a nascondiglio tiro fuori i miei travestimenti. Sfilo i pantaloni, infilo mutandine femminili. È la mia nuova libertà, un brivido. Una necessità. […] Un inganno, la mia fantasia. Poi, lunga fino alle ginocchia, indosso una gonna a pieghe blu che accoppio ad una camicetta beige con colletto e merlettini. Un trucco leggero, discreto, completa la preparazione. Sono pronta per la mia passeggiata cittadina. Incerta, su due scarpette femminili, esco dal giardino e affido la mia onorabilità a due libri stretti al petto. Io, una studentessa.»
 
@@ -157,7 +159,7 @@ Poi conosce un uomo e comincia una relazione. Quando la famiglia lo viene a sape
 
 <cit>«Era l'otto maggio millenovecentottantadue, e tutto mi precipitò addosso. Fu per la vergogna di essere scoperto, per il coraggio che non avevo. Per Álvaro che incombeva, perché ognuno mi voleva come io non ero. Perché alla mia gonna non potevo rinunciare. Per tutto questo e per tante altre cose ancora quella sera vidi solo una possibilità, la fuga. L'altra, il suicidio, allora mi pareva troppo rumorosa.»</cit>
 
-E allora scappa, e comincia a fare il lavoro che farà per tutta la vita: la prostituta[^strada]. Ha 18 anni. Fernando cambia sesso, in una vertigine di ormoni e silicone, e diventa Fernanda[^ormoni]. O, meglio, “Princesa”.
+E allora scappa. Si ritrova solo, senza soldi, senza casa e senza cibo. E comincia a fare il lavoro che farà per tutta la vita: la prostituta[^strada]. Ha 18 anni. Fernando cambia sesso, in una vertigine di ormoni e silicone, e diventa Fernanda[^ormoni]. O, come la chiamano i suoi clienti, “Princesa”.
 
 [^strada]: «Quella sera furono in quattro. Prestazioni differenti. Qualche soldino, niente male. Ma non era solo il denaro a tenermi lì alle tre del mattino. Io faccio la puttana, ecco il punto. Batto il marciapiede con altre venti o trenta transessuali. Sono desiderata. Mi esibisco al femminile. Fernanda, ed è spettacolo.»
 
@@ -176,7 +178,7 @@ finché il mio corpo mi rassomigli
 sui lungomare di Bahia.
 </cit>
 
-{% include video.html id="H3CLEi32YD0" didascalia="Fabrizio De André, Princesa." %}
+
 
 È terribile leggere la quantità di violenza e dolore che ha subito questa donna. La strada brasiliana è crudele e violenta. A San Paolo legge uno slogan, dipinto sotto un ponte: «ripulisci la città: uccidi un trans al giorno». Sono tante le sue colleghe uccise, molte dalla polizia. Lei stessa viene assalita molte volte. Ancora di più sono le vittime di AIDS. Alla fine si convince a partire: andrà in Europa, «là dicono che la polizia non uccide». Ma qui vive un'ulteriore emarginazione: l'immigrazione. Dalla Spagna all'Italia, giunge infine a Roma. Sono anni di lavoro, e comincia a fare uso di droghe pesanti.
 
@@ -190,13 +192,15 @@ A Roma decide di tornare in Brasile, da sua madre. Non la vede da quella volta i
 
     Mi madre veniva, io scappavo. Il giorno dopo, sul pullman per Salvador guadagnavo distanza a sud del Sítio. Mille chilometri potevano bastare. Guardavo indietro e scappavo. Di nuovo, nuovamente. Avanti non vedevo, non sapevo. Avanti lo sa solo Dio.»
 
-Ma, una notte, viene derubata di tutti i suoi averi: non può più partire, non può più cambiare. Esplode di rabbia, Fernanda, e pugnala chi l'ha derubata. Molte volte, in molti punti. Dopodiché scende in strada, ferma un poliziotto e confessa l'omicidio.
+Ma, una notte, viene derubata di tutti i suoi averi: non può più partire, non può più cambiare. Esplode di rabbia, Fernanda, e pugnala chi l'ha derubata. Molte volte, in molti punti. Dopodiché scende in strada, ferma un poliziotto e confessa il suo tentativo di omicidio (la vittima riuscirà a salvarsi).
 
-Viene incarcerata a Rebibbia, dove scrive la sua autobiografia. Si chiude così, il suo libro,
+Viene incarcerata a Rebibbia, a Roma, per tentato omicidio, dove scrive la sua autobiografia. Si chiude così, il suo libro,
 
 <cit>«Senza sforzo, nelle braccia del demonio, in Europa, ci si arriva a bassa voce, silenziosamente. Qui da voi, non si muore fragorosamente. Sparati o di coltello, tra urla e sforbiciate. Qui si sparisce zitti zitti in sottovoce. Silenziosamente. Sole e disperate. Di aids e di eroina. Oppure dentro una cella, impiccate a un lavandino. Come Celma, che vorrei ricordare. Dormiva nella cella a fianco, dentro quest'altro inferno dove ora vivo e che ho deciso di non raccontare.»</cit>
 
 Fernanda viene scarcerata e assunta come segretaria nella casa editrice che aveva pubblicato il suo libro. Ma lascia l'incarico dopo pochi giorni, per tornare sulla strada. Viene espulsa dall'Italia e rimpatriata in Brasile. Torna in Italia solo occasionalmente: l'ultima volta, a maggio del 2000, quando si suicida, a Jesi, nelle Marche.
+
+{% include video.html id="H3CLEi32YD0" didascalia="Fabrizio De André, Princesa." %}
 
 # Socrate: l'Eresia della ricerca
 
@@ -591,7 +595,7 @@ Ora vorrei che immaginassi di riportare Galileo di fronte ai cardinali dell'Inqu
 
 <p class="domanda-centrale">La verità vale la vita di un uomo?</p>
 
-Assumi una posizione; scegli. No, non vale astenersi.
+Assumi una posizione; scegli. Non vale astenersi.
 
 {% include riflessione.html id="rif-verita" etichetta="⚖️ La tua scelta"
    domanda="Abiurare o non abiurare? La verità vale la vita di un uomo? Scegli, e spiega perché." %}
@@ -602,4 +606,4 @@ Manca ancora la storia di un eretico. È un eretico che forse funziona un po' al
 
 Questo eretico sei tu, naturalmente. Inevitabilmente, incancellabilmente, eternamente, tu hai un modo di sentire il mondo e di stare dentro il mondo che è *diverso*, che è *nuovo*. Prima che tu nascessi, questo modo di *esserci* non esisteva. Tu hai un dissenso. E, come forse ormai ti è chiaro, non è che questo sia un premio. È una garanzia certa di essere incompresi dal mondo, di non essere capiti e non essere accolti. Se vuoi, è una specie di condanna. Eppure, contemporaneamente, è una piccola (e forse inutile) promessa di splendore.
 
-Quale sia esattamente il tuo dissenso, credo, tu non lo sai. E forse non lo capirai mai. Lo scoprirai brano a brano, a piccoli pezzi, un po' a tentoni. Come tutti, come me che sto scrivendo queste parole, ad esempio: tirando un po' ad indovinare. E forse ti capiterà di scoprirne solo una parte. Quanto grande sarà questa parte, è una tua scelta. È la tua eresia, la tua scelta: dissentire. E dal dissenso lasciar fiorire un'eresia, e una nuova voglia di dissentire, e poi ancora. In un ciclo infinito che è aver voglia di portare una voce nuova. La tua.
+Quale sia esattamente il tuo dissenso, credo, tu non lo sai. E forse non lo capirai mai. Lo scoprirai brano a brano, a piccoli pezzi, un po' a tentoni. Come tutti, come me che sto scrivendo queste parole, ad esempio: tirando un po' ad indovinare. E forse ti capiterà di scoprirne solo una parte. Quanto grande sarà questa parte, è una tua scelta. È la tua eresia, la tua scelta: dissentire. E dal dissenso lasciar fiorire un'eresia, e una nuova voglia di dissentire, e poi ancora. In un ciclo infinito che è aver voglia di portare una voce nuova: la tua.
