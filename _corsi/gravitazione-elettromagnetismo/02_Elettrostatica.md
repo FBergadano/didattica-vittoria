@@ -1582,32 +1582,6 @@ Come per la gravità, l'energia immagazzinata si può immaginare con una molla c
 
 {% include lab-virtuali/molla-cariche-lab.html %}
 
-{% include margin-note.html testo="Un'espressione equivalente per U" %}
-Per la gravità avevamo scritto $U = -mgr$, usando direttamente il campo $g$. Possiamo fare lo stesso con il campo elettrico generato da $Q$ nel punto in cui si trova $q$, a patto di scriverlo **con un segno**:
-
-{% include eq-annotated.html
-   id="esegno"
-   formula="E = k\dfrac{Q}{r^2}"
-   frammenti="E|Q|r^2"
-   etichette="campo generato da $Q$, con il segno: positivo se punta lontano da $Q$|carica che genera il campo, con il suo segno|quadrato della distanza dal centro di $Q$"
-   posizioni="alto|alto|basso"
-%}
-
-con $Q$ scritta con il suo segno. Così $E$ è **positivo** se il campo punta **lontano** da $Q$ (cioè se $Q$ è positiva) e **negativo** se punta **verso** $Q$ (se $Q$ è negativa); il suo valore assoluto è il modulo del campo. Con questa convenzione una sola formula vale in tutti i casi:
-
-{% include lab-virtuali/u-qer-lab.html id="uqer" %}
-
-{% include eq-annotated.html
-   id="uqer1"
-   formula="U = q\,E\,r = k\dfrac{Q\cdot q}{\,r\,}"
-   frammenti="E|Q\cdot q"
-   etichette="campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$, con il segno|prodotto delle cariche, con il loro segno"
-   posizioni="alto|basso"
-%}
-
-Qui <u markdown="span">$E$ è il campo generato da $Q$ (non da $q$!) nel punto in cui si trova $q$</u>, e anche $q$ va scritta con il suo segno. 
-{% include margin-note-end.html %}
-
 {% include box-warn.html testo="Nell'energia potenziale niente valore assoluto" %}
 Nella legge di Coulomb, $F = k\,\dfrac{\lvert Q\cdot q\rvert}{r^2}$, c'è il valore assoluto, perché un modulo è sempre positivo. Nell'energia potenziale, invece, le cariche si scrivono **con il loro segno**: il segno di $U$ ci dice se le cariche si attraggono ($U<0$) o si respingono ($U>0$).
 {% include box-end.html %}
@@ -1628,7 +1602,7 @@ $$[U]=[k]\cdot\frac{[Q]\cdot[q]}{[r]}=\frac{\text N\cdot\text m^2}{\text C^2}\cd
 
 {% include box-imp.html testo="Energia potenziale elettrica" %}
 - **L'energia potenziale elettrica** è l'energia immagazzinata da due cariche $Q$ e $q$ a distanza $r$, a causa della forza elettrica fra loro.
-- **Formula:** $U = k\,\dfrac{Q\cdot q}{r}$, con le cariche scritte con il loro segno. In modo equivalente, $U = q\,E\,r$, dove $E = k\,Q/r^2$ è il campo generato da $Q$ nel punto in cui si trova $q$, scritto con il segno di $Q$ (positivo se punta lontano da $Q$, negativo se punta verso $Q).$
+- **Formula:** $U = k\,\dfrac{Q\cdot q}{r}$, con le cariche scritte con il loro segno.
 - **Segno:** negativa se le cariche si attraggono, positiva se si respingono; zero a distanza infinita.
 - **Unità di misura:** joule (J).
 {% include box-end.html %}
@@ -1676,14 +1650,14 @@ E se la carica $q$ fosse $-3\times10^{-6}\ \text C$, sempre a $3\ \text m$ da $Q
 {% include mcq.html id="mcq-energia-segno" opts=_oUseg ok="b" s="Il prodotto $Q\cdot q$ cambia segno, quindi anche $U$: $U = -18\times10^{-3}\ \text J$. Ora le cariche si attraggono, e sono legate." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-Una carica positiva $Q$ è fissa; a distanza $r$ da lei si trova una carica $q$. Per calcolare l'energia potenziale usiamo la formula $U = q\,E\,r$. Che cos'è, qui, $E$?
+Nell'atomo di idrogeno, un elettrone si trova a distanza $r$ da un protone. Per calcolare la loro energia potenziale con $U = k\,\dfrac{Q\cdot q}{r}$, come si scrivono le due cariche?
 {% capture _oSimbU %}[
-{"v":"a","t":"il campo generato dalla carica $q$ stessa"},
-{"v":"b","t":"il campo generato da $Q$ nel punto in cui si trova $q$"},
-{"v":"c","t":"la somma dei campi generati da $Q$ e da $q$"},
-{"v":"d","t":"l'energia di ogni coulomb di carica"}
+{"v":"a","t":"tutte e due positive, $+e$ e $+e$: nelle formule si usa sempre il valore assoluto"},
+{"v":"b","t":"$+e$ per il protone e $-e$ per l'elettrone, quindi $U$ è negativa"},
+{"v":"c","t":"tutte e due negative, perché si attraggono"},
+{"v":"d","t":"non importa, perché $U$ si misura in joule e i joule sono sempre positivi"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-simboli-energia" opts=_oSimbU ok="b" s="Come in $F = qE$, $E$ è il campo generato dall'altra carica, $Q$, nel punto in cui si trova $q$. In effetti, sostituendo $E = k\dfrac{Q}{r^2}$, si ottiene $U = q\cdot k\dfrac{Q}{r^2}\cdot r = k\dfrac{Q\cdot q}{r}$. Una carica non entra mai nella formula con il proprio campo." %}
+{% include mcq.html id="mcq-simboli-energia" opts=_oSimbU ok="b" s="Nell'energia potenziale le cariche vanno scritte con il loro segno, senza valore assoluto: $Q\cdot q = (+e)\cdot(-e) < 0$, e quindi $U < 0$. È proprio il segno di $U$ a dirci che protone ed elettrone si attraggono, cioè sono legati. Il valore assoluto serve solo nella legge di Coulomb, dove si calcola un modulo." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Due cariche hanno energia potenziale $U$. Se la distanza fra loro triplica, la nuova energia potenziale è
@@ -1768,22 +1742,6 @@ La stessa formula si ottiene, per analogia, da quella del potenziale gravitazion
 <u markdown="span">Il potenziale non dipende dalla carica di prova</u>, ma solo dalla carica $Q$ che lo genera (con il suo segno) e dalla distanza $r$ dal suo centro. Vicino a una carica positiva il potenziale è positivo, vicino a una carica negativa è negativo.
 {% include margin-note-end.html %}
 
-{% include margin-note.html testo="Un'espressione equivalente per V" %}
-Come per l'energia potenziale, anche il potenziale si può scrivere con il campo $E = k\,Q/r^2$, scritto con il segno di $Q$ (positivo se il campo punta lontano da $Q$, negativo se punta verso $Q$):
-
-{% include lab-virtuali/u-qer-lab.html id="ver" v="true" %}
-
-{% include eq-annotated.html
-   id="ver1"
-   formula="V = E\,r = k\dfrac{Q}{\,r\,}"
-   frammenti="E|Q"
-   etichette="campo generato da $Q$, con il segno|carica che genera il potenziale, con il suo segno"
-   posizioni="alto|basso"
-%}
-
-Vicino a una carica negativa $E$ è negativo, e quindi lo è anche il potenziale. 
-{% include margin-note-end.html %}
-
 {% include margin-note.html testo="Il volt" %}
 Il potenziale è un'energia divisa per una carica, quindi si misura in J/C.
 
@@ -1802,7 +1760,7 @@ $$1\ \text V = 1\ \frac{\text J}{\text C}.$$
 
 {% include box-imp.html testo="Potenziale elettrico" %}
 - **Il potenziale elettrico** è l'energia potenziale elettrica "per unità di carica di prova". Non dipende da $q$, proprio come il campo $\vec E$.
-- **Formula:** $V = \dfrac{U}{q} = k\,\dfrac{Q}{r}$, con $Q$ scritta con il suo segno. In modo equivalente, $V = E\,r$, dove $E = k\,Q/r^2$ è il campo generato da $Q$ a distanza $r$, scritto con il segno di $Q$.
+- **Formula:** $V = \dfrac{U}{q} = k\,\dfrac{Q}{r}$, con $Q$ scritta con il suo segno.
 - **Unità di misura:** volt (V): $1\ \text V = 1\ \text J/\text C$.
 - **Legame con l'energia:** una carica $q$ in un punto in cui il potenziale vale $V$ ha energia potenziale $U = q\,V$.
 {% include box-end.html %}
@@ -2636,15 +2594,15 @@ Quanto vale il campo elettrico a $2\ \text m$ da una carica $Q = +8\times10^{-6}
 {% include ex-end.html %}
 
 {% include ex.html diff=2 %}
-Il campo elettrico si misura in N/C. Usando la formula $V = E\,r$, però, se ne può trovare un'altra unità di misura, equivalente. Costruiscile tutte e due.
+Ricava l'unità di misura del campo elettrico in due modi diversi: dalla definizione $E = F/q$, e dalla formula del modulo $E = k\,\dfrac{\lvert Q\rvert}{r^2}$, sapendo che $k$ si misura in $\text N\cdot\text m^2/\text C^2$.
 
 {% capture _u %}[
 {"p":"Unità di E, ricavata da E = F/q","c":"N/C"},
-{"p":"Unità di E, ricavata da V = E·r","c":"V/m"}
+{"p":"Unità di E, ricavata da E = k·|Q|/r² (k in N·m²/C²)","c":"N/C"}
 ]{% endcapture %}
 {% include unitbuild.html id="rie-ub-campo" domande=_u palette="N|C|V|m|J|·|/" soggetto="E" %}
 {% include ex-sol.html %}
-Da $E = F/q$ l'unità è N/C; da $V = E\,r$ si ricava $E = V/r$, cioè V/m. Sono la stessa unità: $1\ \text{V/m} = 1\ \dfrac{\text{J/C}}{\text m} = 1\ \dfrac{\text{N}\cdot\text m}{\text C\cdot\text m} = 1\ \text{N/C}$. Nei laboratori si usa quasi sempre V/m.
+Da $E = F/q$ l'unità è N/C. Dalla formula del modulo: $\dfrac{\text N\cdot\text m^2}{\text C^2}\cdot\dfrac{\text C}{\text m^2} = \dfrac{\text N}{\text C}$: le due strade danno, come deve essere, la stessa unità.
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
