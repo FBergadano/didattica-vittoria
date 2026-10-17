@@ -1615,7 +1615,7 @@ $$[U]=[k]\cdot\frac{[Q]\cdot[q]}{[r]}=\frac{\text N\cdot\text m^2}{\text C^2}\cd
 
 {% include box-imp.html testo="Energia potenziale elettrica" %}
 - **L'energia potenziale elettrica** è l'energia immagazzinata da due cariche $Q$ e $q$ a distanza $r$, a causa della forza elettrica fra loro.
-- **Formula:** $U = k\,\dfrac{Q\cdot q}{r}$, con le cariche scritte con il loro segno. In modo equivalente, $U = q\,E\,r$, dove $E = k\,Q/r^2$ è il campo generato da $Q$ nel punto in cui si trova $q$, scritto con il segno di $Q$ (positivo se punta lontano da $Q$, negativo se punta verso $Q$).
+- **Formula:** $U = k\,\dfrac{Q\cdot q}{r}$, con le cariche scritte con il loro segno. In modo equivalente, $U = q\,E\,r$, dove $E = k\,Q/r^2$ è il campo generato da $Q$ nel punto in cui si trova $q$, scritto con il segno di $Q$ (positivo se punta lontano da $Q$, negativo se punta verso $Q).$
 - **Segno:** negativa se le cariche si attraggono, positiva se si respingono; zero a distanza infinita.
 - **Unità di misura:** joule (J).
 {% include box-end.html %}
@@ -2013,6 +2013,7 @@ Per il secondo principio della dinamica, una carica di massa $m$ soggetta alla f
 {% include lab-virtuali/a-qe-m-lab.html %}
 
 $$\vec a = \frac{q}{m}\,\vec E.$$
+
 {% include margin-note-end.html %}
 
 
