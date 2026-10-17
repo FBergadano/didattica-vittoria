@@ -1,109 +1,138 @@
 {% comment %}
-Animazione a pulsante, a più stadi: mostra come rendere permanente la carica
-indotta per polarizzazione — si avvicina il bastoncino carico, si collega la
-messa a terra, si scollega, si allontana il bastoncino: il conduttore resta
-carico positivamente in modo permanente. Nessun parametro.
+Animazione-quesito: elettrizzazione per induzione di una sfera conduttrice.
+Lo studente sceglie la carica della bacchetta (da −6 a +6, lo 0 si salta); poi
+a ogni passo una domanda chiede di prevedere che cosa succederà: si avvicina la
+bacchetta (la sfera si polarizza), si collega la sfera a terra, si chiede la
+carica della sfera (nascosta con «?» finché non è stata chiesta), si stacca il
+filo e si allontana la bacchetta; l'ultima domanda chiede che cosa sarebbe
+successo staccando il filo dopo. Con la bacchetta negativa alcuni elettroni
+scendono a terra e la sfera resta positiva; con quella positiva alcuni
+elettroni salgono dalla terra e la sfera resta negativa: il segno è sempre
+opposto a quello della bacchetta, e quanti elettroni si spostano dipende da
+quanto è carica la bacchetta. Si muovono solo gli elettroni.
+Usa elettro-sfere-engine.html (scene, stepper, flow). Nessun parametro.
 {% endcomment %}
-<div class="indg-widget indg-stage-0" id="indgWidget">
-<svg viewBox="0 0 420 230" style="max-width:400px;width:100%;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: come rendere permanente la carica indotta per induzione, collegando e scollegando la messa a terra">
-<defs>
-  <linearGradient id="indgRodG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
-  <radialGradient id="indgMetalG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#94a3b8"/></radialGradient>
-</defs>
-
-<g id="indgRod" transform="translate(45,95)">
-  <rect x="0" y="-45" width="26" height="90" rx="8" fill="url(#indgRodG)"/>
-  <text x="13" y="-55" text-anchor="middle" font-size="12" fill="#1e3a8a" font-weight="700">bastoncino (−)</text>
-  <text x="13" y="-18" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
-  <text x="13" y="8" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
-  <text x="13" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
-</g>
-
-<g transform="translate(300,95)">
-  <circle r="40" fill="url(#indgMetalG)" stroke="#94a3b8" stroke-width="1.5"/>
-  <text class="indg-sym indg-p1" x="20" y="4" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
-  <text class="indg-sym indg-n1" x="10" y="21.3" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="indg-sym indg-p2" x="-10" y="21.3" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
-  <text class="indg-sym indg-n2" x="-20" y="4" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="indg-sym indg-p3" x="-10" y="-13.3" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
-  <text class="indg-sym indg-n3" x="10" y="-13.3" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
-</g>
-
-<g class="indg-ground" transform="translate(300,135)">
-  <line class="indg-wire" x1="0" y1="0" x2="0" y2="52"/>
-  <circle class="indg-plug" cx="0" cy="0" r="3.5"/>
-  <g transform="translate(0,52)">
-    <line class="indg-gline" x1="-17" y1="0" x2="17" y2="0"/>
-    <line class="indg-gline" x1="-10" y1="7" x2="10" y2="7"/>
-    <line class="indg-gline" x1="-4" y1="14" x2="4" y2="14"/>
-  </g>
-  <text x="24" y="60" font-size="11" fill="#6b7280" text-anchor="start">terra</text>
-</g>
-</svg>
-<button class="indg-btn" id="indgBtn">Avvicina il bastoncino ▶</button>
-<p class="indg-caption">Il conduttore è neutro: cariche positive e negative sono distribuite uniformemente.</p>
+{% include lab-virtuali/elettro-sfere-engine.html %}
+<div class="elx-widget" id="elxInduz">
+<div class="elx-par"></div>
+<canvas class="elx-canvas" aria-label="Animazione: elettrizzazione per induzione di una sfera metallica collegata a terra"></canvas>
+<p class="elx-caption"></p>
+<div class="elx-q" hidden></div>
+<div class="elx-ctrl">
+  <button class="elx-btn elx-main">Avanti ▶</button>
+  <button class="elx-btn elx-reset">↺ Ricomincia</button>
 </div>
-
-<style>
-.indg-widget { margin: 1.6rem auto; max-width: 400px; text-align: center; }
-#indgRod, .indg-sym { transition: transform .9s ease, opacity .7s ease; }
-.indg-wire, .indg-gline { stroke:#94a3b8; stroke-width:3; stroke-dasharray:4 4; opacity:.55; transition: all .5s ease; }
-.indg-plug { fill:#94a3b8; transition: fill .5s ease; }
-.indg-stage-2 .indg-wire, .indg-stage-2 .indg-gline { stroke:#16a34a; stroke-dasharray:none; opacity:1; }
-.indg-stage-2 .indg-plug { fill:#16a34a; }
-
-.indg-stage-1 #indgRod, .indg-stage-2 #indgRod, .indg-stage-3 #indgRod { transform: translate(209px,95px); }
-.indg-stage-0 #indgRod, .indg-stage-4 #indgRod { transform: translate(45px,95px); }
-
-.indg-stage-1 .indg-p1, .indg-stage-2 .indg-p1, .indg-stage-3 .indg-p1 { transform: translate(-46px,-14px); }
-.indg-stage-1 .indg-p2, .indg-stage-2 .indg-p2, .indg-stage-3 .indg-p2 { transform: translate(-16px,-3.3px); }
-.indg-stage-1 .indg-p3, .indg-stage-2 .indg-p3, .indg-stage-3 .indg-p3 { transform: translate(-22px,17.3px); }
-.indg-stage-1 .indg-n1 { transform: translate(16px,-31.3px); }
-.indg-stage-1 .indg-n2 { transform: translate(46px,14px); }
-.indg-stage-1 .indg-n3 { transform: translate(22px,17.3px); }
-
-.indg-stage-2 .indg-n1, .indg-stage-3 .indg-n1, .indg-stage-4 .indg-n1 { transform: translate(10px,45px); opacity:0; }
-.indg-stage-2 .indg-n2, .indg-stage-3 .indg-n2, .indg-stage-4 .indg-n2 { transform: translate(35px,55px); opacity:0; }
-.indg-stage-2 .indg-n3, .indg-stage-3 .indg-n3, .indg-stage-4 .indg-n3 { transform: translate(18px,60px); opacity:0; }
-
-.indg-stage-4 .indg-p1 { transform: translate(-20px,-27px); }
-.indg-stage-4 .indg-p2 { transform: translate(-10px,-9.8px); }
-.indg-stage-4 .indg-p3 { transform: translate(30px,24.8px); }
-
-.indg-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .88rem; margin-top: .4rem; }
-.indg-btn:hover { background: #e2e8f0; }
-.indg-caption { min-height: 3em; font-size: .85rem; font-style: italic; color: #6b7280; margin-top: .5rem; max-width: 380px; margin-left: auto; margin-right: auto; }
-@media print { .indg-widget { display: none; } }
-</style>
-
+</div>
 <script>
 (function(){
-  var root = document.getElementById('indgWidget');
-  if(!root) return;
-  var btn = root.querySelector('.indg-btn');
-  var caption = root.querySelector('.indg-caption');
-  var stage = 0;
-  var STAGES = [
-    { label: 'Avvicina il bastoncino ▶',
-      caption: 'Il conduttore è neutro: cariche positive e negative sono distribuite uniformemente.' },
-    { label: 'Collega la messa a terra ▶',
-      caption: 'Il bastoncino carico negativamente polarizza il conduttore: le cariche positive si avvicinano, le negative si allontanano. Il conduttore resta comunque neutro nel complesso.' },
-    { label: 'Scollega la messa a terra ▶',
-      caption: 'Collegando un filo a terra, le cariche negative — respinte dal bastoncino — fluiscono via: il conduttore comincia a perdere elettroni.' },
-    { label: 'Allontana il bastoncino ▶',
-      caption: 'Scollegata la terra mentre il bastoncino è ancora vicino, gli elettroni persi non possono più tornare indietro: il conduttore ha ora un eccesso permanente di carica positiva.' },
-    { label: '↺ Ricomincia da capo',
-      caption: 'Allontanato il bastoncino, le cariche positive rimaste si distribuiscono uniformemente su tutto il conduttore: è rimasto carico positivamente, in modo permanente!' }
-  ];
-  function render(){
-    root.className = 'indg-widget indg-stage-' + stage;
-    btn.textContent = STAGES[stage].label;
-    caption.textContent = STAGES[stage].caption;
-  }
-  btn.addEventListener('click', function(){
-    stage = (stage + 1) % STAGES.length;
-    render();
+  var root = document.getElementById('elxInduz'); if (!root || !window.ElettroLab) return;
+  var cv = root.querySelector('canvas'), cap = root.querySelector('.elx-caption');
+  var L = ElettroLab, F = L.fmtQ;
+  var W = 460, H = 250, R = 52, SX = 290, SY = 82, GY = 228, FAR = 150, NEAR = SX - R - 12;
+  var sc, q = -3;
+  var st = L.stepper(root.querySelector('.elx-par'), 'carica della bacchetta', -6, 6, q, F, function(v){
+    if (v === 0) { v = q < 0 ? 1 : -1; st.set(v); }
+    q = v; init();
   });
-  render();
+  function N(){ return Math.abs(q); }
+  function neg(){ return q < 0; }
+  function away(){ return neg() ? 0 : Math.PI; }
+  function wait(done, ms){ var my = sc; setTimeout(function(){ if (my === sc) done(); }, ms); }
+  function el(n){ return n === 1 ? 'un elettrone' : n + ' elettroni'; }
+
+  var steps = [
+    { // 1. polarizzazione
+      q: function(){
+        return { t: 'Avviciniamo la bacchetta (carica ' + F(q) + ') alla sfera, senza toccarla. Che cosa fanno gli elettroni della sfera?',
+          opts: [
+            { t: 'Si spostano sul lato vicino alla bacchetta', ok: !neg() },
+            { t: 'Si spostano sul lato lontano dalla bacchetta', ok: neg() },
+            { t: 'Restano dove sono, perché la bacchetta non tocca la sfera', ok: false },
+            { t: 'Passano sulla bacchetta', ok: false } ],
+          s: (neg() ? 'La bacchetta negativa respinge gli elettroni, che si spostano sul lato lontano.'
+                    : 'La bacchetta positiva attira gli elettroni, che si spostano sul lato vicino.')
+            + ' La sfera si polarizza, ma resta neutra: nessun elettrone è entrato o uscito.' };
+      },
+      act: function(done){ sc.rod.tx = NEAR; sc.layout('S', away(), false, N() / 6); cap.textContent = 'La sfera è polarizzata.'; wait(done, 1400); } },
+    { // 2. collegamento a terra
+      q: function(){
+        return { t: 'Ora, con la bacchetta sempre vicina, colleghiamo la sfera a terra con un filo metallico. Che cosa succede?',
+          opts: [
+            { t: 'Alcuni elettroni scendono dalla sfera nel terreno', ok: neg() },
+            { t: 'Alcuni elettroni salgono dal terreno nella sfera', ok: !neg() },
+            { t: 'Alcuni protoni scendono dalla sfera nel terreno', ok: false },
+            { t: 'Non succede nulla', ok: false } ],
+          s: neg() ? 'Gli elettroni respinti dalla bacchetta trovano nel filo una via per allontanarsi ancora di più, e alcuni scendono nel terreno. I protoni, come sempre, restano fermi.'
+                   : 'La bacchetta positiva attira elettroni: attraverso il filo ne arrivano alcuni dal terreno, che ne contiene moltissimi. I protoni, come sempre, restano fermi.' };
+      },
+      act: function(done){
+        var my = sc, n = N();
+        sc.hide = { S: true }; sc.ground.on = true;
+        var gp = sc.groundPath(), ax = gp[0][0] - SX, ay = gp[0][1] - SY;
+        if (neg()) {
+          // gli elettroni più vicini al punto in cui è attaccato il filo scendono a terra
+          var out = sc.of('S').sort(function(p, r){ return Math.hypot(p.rx - ax, p.ry - ay) - Math.hypot(r.rx - ax, r.ry - ay); }).slice(0, n);
+          out.forEach(function(e, i){ setTimeout(function(){ if (my !== sc) return; sc.send(e, gp, null, true); sc.layout('S', away()); }, 250 + i * 300); });
+        } else {
+          // dal terreno salgono elettroni lungo il filo ed entrano nella sfera
+          var back = [gp[1], gp[0], [SX + ax * .5, SY + ay * .5]];
+          for (var i = 0; i < n; i++) (function(i){ setTimeout(function(){ if (my !== sc) return; sc.spawn(gp[2][0], gp[2][1], back, 'S'); }, 250 + i * 300); })(i);
+        }
+        cap.textContent = neg() ? 'Alcuni elettroni scendono a terra…' : 'Alcuni elettroni salgono dalla terra…';
+        wait(function(){ cap.textContent = (neg() ? 'Sono scesi a terra ' : 'Sono saliti dalla terra ') + el(n) + '.'; done(); }, 250 + n * 300 + 1100);
+      } },
+    { // 3. carica della sfera
+      q: function(){
+        var fin = neg() ? N() : -N(), seen = {}, opts = [];
+        [fin, -fin, 0, fin + (fin > 0 ? 1 : -1)].forEach(function(v, i){ if (!seen[v]) { seen[v] = 1; opts.push({ t: F(v), ok: i === 0 }); } });
+        return { t: 'Qual è adesso la carica della sfera?', opts: opts,
+          s: neg() ? 'La sfera ha perso ' + el(N()) + ', mentre i suoi protoni sono rimasti tutti: ha ' + N() + ' elettroni in meno dei protoni, quindi la sua carica è ' + F(fin) + '.'
+                   : 'La sfera ha ricevuto ' + el(N()) + ' in più, mentre i protoni sono sempre gli stessi: ha ' + N() + ' elettroni in più dei protoni, quindi la sua carica è ' + F(fin) + '.' };
+      },
+      act: function(done){ sc.hide = {}; done(); } },
+    { // 4. si stacca il filo e si allontana la bacchetta
+      q: function(){
+        return { t: 'Stacchiamo il filo da terra e poi allontaniamo la bacchetta. Che carica avrà la sfera alla fine?',
+          opts: [
+            { t: 'La stessa di adesso, ' + F(neg() ? N() : -N()), ok: true },
+            { t: 'Torna neutra', ok: false },
+            { t: 'Diventa carica con lo stesso segno della bacchetta', ok: false } ],
+          s: (neg() ? 'Staccato il filo, gli elettroni scesi nel terreno non possono più tornare'
+                    : 'Staccato il filo, gli elettroni saliti dal terreno non possono più andarsene')
+            + ': quando la bacchetta si allontana si ridistribuiscono su tutta la sfera, che resta carica. Il segno è opposto a quello della bacchetta: è l’elettrizzazione per induzione.' };
+      },
+      act: function(done){
+        var my = sc; sc.ground.on = false; cap.textContent = 'Il filo è staccato…';
+        setTimeout(function(){ if (my !== sc) return; sc.rod.tx = FAR; sc.layout('S', null); cap.textContent = 'La bacchetta è lontana, la sfera resta carica.'; }, 900);
+        wait(done, 2200);
+      } },
+    { // 5. e se si fosse staccato il filo dopo?
+      q: function(){
+        return { t: 'E se avessimo allontanato la bacchetta prima di staccare il filo da terra?',
+          opts: [
+            { t: 'La sfera sarebbe tornata neutra', ok: true },
+            { t: 'La sfera sarebbe rimasta carica come adesso', ok: false },
+            { t: 'La sfera si sarebbe caricata con lo stesso segno della bacchetta', ok: false } ],
+          s: neg() ? 'Senza la bacchetta, nulla avrebbe più respinto gli elettroni: con il filo ancora collegato, quelli scesi nel terreno sarebbero risaliti e la sfera sarebbe tornata neutra. Per questo il filo va staccato prima di allontanare la bacchetta.'
+                   : 'Senza la bacchetta, nulla avrebbe più attirato gli elettroni in più: con il filo ancora collegato, sarebbero tornati nel terreno e la sfera sarebbe tornata neutra. Per questo il filo va staccato prima di allontanare la bacchetta.' };
+      } }
+  ];
+  var fl = L.flow(root, steps, { id: 'induzione', onStart: function(){ st.enable(false); },
+    onEnd: function(){ st.enable(true); cap.textContent = 'Cambia la carica della bacchetta, anche di segno, e ricomincia.'; } });
+
+  function init(){
+    if (sc) sc.dead = true;
+    var c2 = cv.cloneNode(true); cv.parentNode.replaceChild(c2, cv); cv = c2;
+    sc = L.scene(cv, W, H);
+    sc.sphere('S', SX, SY, R, 10, 'sfera metallica');
+    sc.addElectrons('S', 10);
+    sc.rod = { x: FAR, tx: FAR, y: SY, n: N(), sign: neg() ? -1 : 1, visible: true };
+    sc.ground = { sphere: 'S', y: GY, on: false };
+    st.enable(true);
+    cap.textContent = 'La sfera è neutra: ha tanti elettroni quanti protoni.';
+    fl.start();
+  }
+  root.querySelector('.elx-reset').addEventListener('click', init);
+  init();
 })();
 </script>

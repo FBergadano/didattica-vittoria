@@ -287,7 +287,9 @@ Esempio:
     tokens.sort(function(a,b){ return b.tok.length-a.tok.length; });
     tokens.forEach(function(t){
       var esc=t.tok.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-      var re=new RegExp('\\b'+esc+'\\b','g');
+      // confine di parola solo dove il simbolo comincia/finisce con una lettera o cifra
+      // (un simbolo come \lvert q_1\rvert comincia con "\" e non avrebbe mai un \b davanti)
+      var re=new RegExp((/^\w/.test(t.tok)?'\\b':'')+esc+(/\w$/.test(t.tok)?'\\b':''),'g');
       sub=sub.replace(re, fmtLatex(t.val));
     });
     var latex2='$'+YLABEL+' = '+sub+'$';

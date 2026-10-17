@@ -1,123 +1,212 @@
 {% comment %}
-Animazione a pulsante sulla schermatura (screening) della forza elettrica.
-Due cariche di segno opposto si attraggono; le frecce rappresentano la forza
-su ciascuna. Premendo il pulsante lo spazio si riempie di molecole polari
-(tipo acqua), che prima si agitano a caso e poi si orientano lungo il campo:
-attorno a ogni carica si forma uno strato di estremità di segno opposto e la
-forza diminuisce. Nessun parametro.
+Animazione sulla schermatura della forza elettrica in un materiale.
+Due cariche (segni scelti dallo studente) stanno ferme; premendo il pulsante lo
+spazio si riempie di un "mare" di particelle cariche tutte dello stesso segno
+(anche questo scelto dallo studente), libere di muoversi; il resto del
+materiale, fermo, ha la carica opposta (puntini chiari fermi, tanti quante le
+particelle mobili), così che nel
+complesso il materiale è neutro. Le particelle si agitano e sono attratte o
+respinte dalle due cariche: attorno a quella di segno opposto si affollano,
+attorno a quella dello stesso segno lasciano un alone vuoto (dove prevale la
+carica del resto del materiale). In entrambi i casi la carica, vista da
+lontano, risulta in gran parte coperta: sotto ogni carica compare la "carica
+nel cerchio" tratteggiato (la carica, più le particelle mobili, più le cariche
+ferme che stanno nel cerchio, contate una per una) e le frecce della
+forza si accorciano. Modello semplificato: la forza di ciascuna carica su una
+particella è calcolata con la carica totale contenuta entro la distanza della
+particella (carica + particelle mobili − resto del materiale), così la nuvola
+si ferma quando ha coperto la carica. Nessun parametro.
 {% endcomment %}
 <div class="scr-widget" id="scrWidget">
-<canvas id="scrCanvas" width="840" height="440" aria-label="Animazione: le molecole polari di un materiale si orientano attorno a due cariche e ne riducono la forza di attrazione"></canvas>
-<button class="scr-btn" id="scrBtn">Riempi lo spazio di acqua ▶</button>
-<p class="scr-caption" id="scrCaption">Nel vuoto: le due cariche si attraggono con tutta la forza prevista dalla legge di Coulomb.</p>
+<div class="scr-ctrl">
+  <button class="scr-sbtn" data-k="0">Q₁: <b>+</b></button>
+  <button class="scr-sbtn" data-k="1">Q₂: <b>−</b></button>
+  <button class="scr-sbtn" data-k="2">particelle libere: <b>−</b></button>
+</div>
+<canvas id="scrCanvas" aria-label="Animazione: due cariche immerse in un materiale con particelle cariche libere di muoversi, che le coprono e ne riducono la forza"></canvas>
+<button class="scr-btn" id="scrBtn">Riempi lo spazio con il materiale ▶</button>
+<p class="scr-force" id="scrForce"></p>
+<p class="scr-caption" id="scrCaption"></p>
 </div>
 
 <style>
-.scr-widget { margin: 1.6rem auto; max-width: 440px; text-align: center; }
-#scrCanvas { width: 100%; height: auto; display: block; margin: 0 auto; }
-.scr-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .88rem; margin-top: .4rem; }
-.scr-btn:hover { background: #e2e8f0; }
-.scr-caption { min-height: 3.6em; font-size: .85rem; font-style: italic; color: #6b7280; margin-top: .5rem; max-width: 420px; margin-left: auto; margin-right: auto; }
+.scr-widget { margin: 1.6rem auto; max-width: 520px; text-align: center; }
+#scrCanvas { width: 100%; height: auto; display: block; margin: .3rem auto 0; border-radius: 8px; }
+.scr-ctrl { display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap; }
+.scr-sbtn { padding: .25rem .65rem; border-radius: 999px; cursor: pointer; border: 1px solid #94a3b8; background: #f8fafc; font-size: .82rem; font-family: "Atkinson Hyperlegible", sans-serif; color: #334155; }
+.scr-sbtn b { display: inline-block; min-width: .8em; }
+.scr-sbtn:hover { background: #e2e8f0; }
+.scr-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid var(--accent, #0f766e); background: var(--accent, #0f766e); color: #fff; font-size: .88rem; margin-top: .45rem; }
+.scr-btn:hover { filter: brightness(1.08); }
+.scr-widget p.scr-force { text-align: center; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .86rem; color: #0f172a; margin: .45rem 0 0; min-height: 1.3em; }
+.scr-widget p.scr-caption { text-align: center; min-height: 4.2em; font-size: .85rem; font-style: italic; color: #6b7280; margin: .3rem auto 0; max-width: 480px; }
 @media print { .scr-widget { display: none; } }
 </style>
 
 <script>
 (function(){
-  var cv = document.getElementById('scrCanvas');
-  if(!cv) return;
-  var ctx = cv.getContext('2d');
-  var btn = document.getElementById('scrBtn');
-  var cap = document.getElementById('scrCaption');
-  var W = 420, H = 220, S = 2;            // coordinate logiche, canvas a doppia risoluzione
-  var P = {x: 120, y: 110}, N = {x: 300, y: 110};   // carica positiva e negativa
-  var RED = '#be123c', BLUE = '#1d4ed8';
+  var cv = document.getElementById('scrCanvas'); if (!cv) return;
+  var W = 600, H = 320, S = 2, ctx = cv.getContext('2d');
+  cv.width = W * S; cv.height = H * S;
+  var btn = document.getElementById('scrBtn'), cap = document.getElementById('scrCaption'), fEl = document.getElementById('scrForce');
+  var Q = [{ x: 190, y: 160, s: 1 }, { x: 410, y: 160, s: -1 }], QM = 10, R = 17;   // le due cariche (10 unità ciascuna)
+  var sP = -1, N = 120, n0 = N / (W * H), RS = 66, RMAX = 160;                     // particelle mobili, densità, raggio "visto da lontano"
+  // le cariche ferme del resto del materiale: tante quante le particelle mobili, con il segno opposto,
+  // distribuite in modo uniforme (griglia 15 × 8, un po' sfalsata), così che il materiale sia neutro
+  var fixed = [];
+  for (var gi = 0; gi < 15; gi++) for (var gj = 0; gj < 8; gj++) { var hx = (gi + .5) * W / 15 + (gj % 2 ? 10 : -10), hy = (gj + .5) * H / 8; fixed.push({ hx: hx, hy: hy, x: hx, y: hy }); }
+  // agitazione termica e intensità dell'attrazione delle particelle libere
+  var TEMP = 3.4, COEF = 330;
+  // ALPHA: nel calcolo della forza sulle particelle, la carica della nuvola conta ALPHA volte. Così le
+  // particelle smettono di arrivare quando la nuvola ha coperto circa 1/ALPHA della carica: con ALPHA = 2,
+  // ogni carica vista da lontano si dimezza e la forza fra le due scende a circa un quarto (non a zero)
+  var ALPHA = 2;
+  var ps = [], mat = false, fade = 0, qeff = [QM, -QM], visible = true;
 
-  // molecole su una griglia irregolare, lontano dalle cariche
-  var mols = [];
-  for(var gx = 18; gx < W; gx += 26){
-    for(var gy = 16; gy < H; gy += 26){
-      var x = gx + (Math.random() - .5) * 10, y = gy + (Math.random() - .5) * 10;
-      if(Math.hypot(x - P.x, y - P.y) < 26 || Math.hypot(x - N.x, y - N.y) < 26) continue;
-      if(Math.abs(y - P.y) < 26 && x > P.x && x < N.x) continue;   // lascia libero lo spazio delle frecce
-      mols.push({x: x, y: y, a0: Math.random() * 6.283, w: .6 + Math.random() * 1.4, ph: Math.random() * 6.283});
+  function seed(){
+    ps = [];
+    while (ps.length < N) {
+      var x = 8 + Math.random() * (W - 16), y = 8 + Math.random() * (H - 16);
+      if (Q.every(function(q){ return Math.hypot(x - q.x, y - q.y) > R + 8; })) ps.push({ x: x, y: y });
     }
   }
+  // carica contenuta entro il raggio r attorno alla carica j: carica + particelle mobili − resto del materiale
+  function enc(j, nIn, r){ return Q[j].s * QM + ALPHA * (sP * nIn - sP * n0 * Math.PI * r * r); }
 
-  // direzione del campo delle due cariche nel punto (x,y)
-  function field(x, y){
-    var ex = 0, ey = 0;
-    [[P, 1], [N, -1]].forEach(function(c){
-      var dx = x - c[0].x, dy = y - c[0].y, r2 = dx*dx + dy*dy, r = Math.sqrt(r2);
-      ex += c[1] * dx / (r2 * r); ey += c[1] * dy / (r2 * r);
+  function stepFixed(){
+    fixed.forEach(function(p){
+      var dx = 0, dy = 0;
+      Q.forEach(function(q){
+        var rx = p.hx - q.x, ry = p.hy - q.y, r = Math.max(Math.hypot(rx, ry), R + 4);
+        var f = 900 * (-sP) * q.s / (r * r);           // > 0: respinta dalla carica, < 0: attratta
+        dx += f * rx / r; dy += f * ry / r;
+      });
+      var m = Math.hypot(dx, dy); if (m > 5) { dx *= 5 / m; dy *= 5 / m; }   // si spostano al massimo di 5 px
+      var tx = p.hx + dx + (Math.random() - .5) * 2.2, ty = p.hy + dy + (Math.random() - .5) * 2.2;
+      p.x += (tx - p.x) * .35; p.y += (ty - p.y) * .35;
     });
-    return Math.atan2(ey, ex);
   }
-  mols.forEach(function(m){ m.target = field(m.x, m.y); });
-
-  var fill = 0, align = 0, on = false, last = null;
-
-  function arrow(x, dir, len, col){
-    var y = P.y, x2 = x + dir * len;
-    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 3.5;
-    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x2 - dir * 7, y); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(x2, y); ctx.lineTo(x2 - dir * 10, y - 6); ctx.lineTo(x2 - dir * 10, y + 6); ctx.closePath(); ctx.fill();
-  }
-
-  function charge(c, col, sign){
-    var g = ctx.createRadialGradient(c.x - 5, c.y - 5, 2, c.x, c.y, 16);
-    g.addColorStop(0, '#ffffff'); g.addColorStop(1, col);
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, 16, 0, 6.283); ctx.fill();
-    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(sign, c.x, c.y + 1);
-  }
-
-  function molecule(m, t){
-    // angolo: agitazione casuale che, man mano che align cresce, cede il posto all'allineamento
-    var ra = m.a0 + Math.sin(t * m.w + m.ph) * 1.6;
-    var wob = Math.sin(t * 3 * m.w + m.ph) * .25;
-    var vx = (1 - align) * Math.cos(ra) + align * Math.cos(m.target + wob);
-    var vy = (1 - align) * Math.sin(ra) + align * Math.sin(m.target + wob);
-    var a = Math.atan2(vy, vx);
-    ctx.save(); ctx.translate(m.x, m.y); ctx.rotate(a); ctx.globalAlpha = fill;
-    ctx.fillStyle = RED;  ctx.beginPath(); ctx.ellipse(4, 0, 6, 4.2, 0, 0, 6.283); ctx.fill();   // estremità positiva
-    ctx.fillStyle = BLUE; ctx.beginPath(); ctx.ellipse(-4, 0, 6, 4.2, 0, 0, 6.283); ctx.fill();  // estremità negativa
-    ctx.restore();
-  }
-
-  function draw(ts){
-    var t = ts / 1000, dt = last === null ? 0 : Math.min(t - last, .05); last = t;
-    // prima compare il materiale, poi le molecole si orientano
-    if(on){ fill = Math.min(1, fill + dt * 1.2); if(fill > .6) align = Math.min(1, align + dt * .45); }
-    else  { align = Math.max(0, align - dt * 1.2); if(align < .3) fill = Math.max(0, fill - dt * 1.5); }
-
-    ctx.setTransform(S, 0, 0, S, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-    if(fill > 0){
-      ctx.globalAlpha = .12 * fill; ctx.fillStyle = '#38bdf8';
-      ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1;
-      mols.forEach(function(m){ molecule(m, t); });
-      ctx.globalAlpha = 1;
+  function step(){
+    if (!ps.length) return;
+    stepFixed();
+    var i, j;
+    var mv = ps.map(function(){ return [0, 0]; });
+    for (j = 0; j < 2; j++) {
+      var q = Q[j], d = ps.map(function(p, k){ return { k: k, r: Math.hypot(p.x - q.x, p.y - q.y) }; });
+      d.sort(function(a, b){ return a.r - b.r; });
+      d.forEach(function(e, rank){
+        if (e.r > RMAX) return;
+        var p = ps[e.k], Qe = enc(j, rank, e.r), f = COEF * sP * Qe / (e.r * e.r);  // f > 0: verso l'esterno
+        f = Math.max(-2.4, Math.min(2.4, f));
+        mv[e.k][0] += f * (p.x - q.x) / e.r; mv[e.k][1] += f * (p.y - q.y) / e.r;
+      });
     }
-    var len = 62 * (1 - .72 * align);
-    arrow(P.x + 18, 1, len, '#16a34a');
-    arrow(N.x - 18, -1, len, '#16a34a');
-    charge(P, RED, '+'); charge(N, BLUE, '−');
-    ctx.fillStyle = '#16a34a'; ctx.font = 'italic bold 15px serif'; ctx.textAlign = 'center';
-    ctx.fillText('F', P.x + 18 + len / 2, P.y - 14);
-    ctx.fillText('F', N.x - 18 - len / 2, N.y - 14);
-    requestAnimationFrame(draw);
+    // le particelle si respingono a breve distanza (non si ammucchiano una sull'altra)
+    for (i = 0; i < N; i++) for (j = i + 1; j < N; j++) {
+      var dx = ps[j].x - ps[i].x, dy = ps[j].y - ps[i].y, dd = Math.hypot(dx, dy);
+      if (dd < 12 && dd > 0.01) { var pu = (12 - dd) * .22 / dd; mv[i][0] -= dx * pu; mv[i][1] -= dy * pu; mv[j][0] += dx * pu; mv[j][1] += dy * pu; }
+    }
+    ps.forEach(function(p, k){
+      p.x += mv[k][0] + (Math.random() - .5) * TEMP; p.y += mv[k][1] + (Math.random() - .5) * TEMP;   // agitazione termica
+      p.x = Math.max(6, Math.min(W - 6, p.x)); p.y = Math.max(6, Math.min(H - 6, p.y));
+      Q.forEach(function(q){ var r = Math.hypot(p.x - q.x, p.y - q.y); if (r < R + 5) { var t = (R + 5) / Math.max(r, .01); p.x = q.x + (p.x - q.x) * t; p.y = q.y + (p.y - q.y) * t; } });
+    });
+    // carica vista da lontano (dentro il cerchio tratteggiato), con una media nel tempo
+    for (j = 0; j < 2; j++) {
+      // nel cerchio: la carica Q, le particelle mobili e le cariche ferme del materiale, contate una per una
+      var nIn = ps.filter(function(p){ return Math.hypot(p.x - Q[j].x, p.y - Q[j].y) < RS; }).length;
+      var fIn = fixed.filter(function(p){ return Math.hypot(p.x - Q[j].x, p.y - Q[j].y) < RS; }).length;
+      qeff[j] += (Q[j].s * QM + sP * nIn - sP * fIn - qeff[j]) * .015;
+    }
   }
-  requestAnimationFrame(draw);
+
+  function ball(x, y, r, sign, big){
+    var pos = sign > 0, g = ctx.createRadialGradient(x - r * .35, y - r * .4, .5, x, y, r);
+    g.addColorStop(0, pos ? '#fff1f2' : '#eff6ff'); g.addColorStop(1, pos ? (big ? '#fda4af' : '#fb7185') : (big ? '#93c5fd' : '#60a5fa'));
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
+    if (big) { ctx.strokeStyle = pos ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.4; ctx.stroke(); }
+    ctx.fillStyle = pos ? '#881337' : '#1e3a8a'; ctx.font = 'bold ' + Math.round(r * 1.3) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(pos ? '+' : '−', x, y + .5); ctx.textBaseline = 'alphabetic';
+  }
+  function arrow(x0, y0, x1, y1, col){
+    var a = Math.atan2(y1 - y0, x1 - x0), L = Math.hypot(x1 - x0, y1 - y0);
+    if (L < 4) return;
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 3.4;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - 9 * Math.cos(a), y1 - 9 * Math.sin(a)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 - 12 * Math.cos(a - .42), y1 - 12 * Math.sin(a - .42)); ctx.lineTo(x1 - 12 * Math.cos(a + .42), y1 - 12 * Math.sin(a + .42)); ctx.closePath(); ctx.fill();
+  }
+  function fmt(x){ var v = Math.round(x * 10) / 10; return (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(1).replace('.', ','); }
+  function ratio(){ return mat ? (qeff[0] * qeff[1]) / (Q[0].s * Q[1].s * QM * QM) : 1; }
+
+  function draw(){
+    ctx.setTransform(S, 0, 0, S, 0, 0); ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, W, H);
+    if (fade > 0) {
+      // il resto del materiale (fermo) ha la carica opposta a quella delle particelle libere
+      ctx.globalAlpha = fade * .55;
+      fixed.forEach(function(p){ if (Q.every(function(q){ return Math.hypot(p.x - q.x, p.y - q.y) > R + 2; })) ball(p.x, p.y, 3.6, -sP, false); });
+      ctx.globalAlpha = fade;
+      ctx.fillStyle = '#64748b'; ctx.font = 'italic 12px Georgia, serif'; ctx.textAlign = 'left';
+      ctx.fillText('puntini chiari: le cariche ferme del materiale (' + (sP < 0 ? 'positive' : 'negative') + ')', 10, H - 8);
+      ps.forEach(function(p){ ball(p.x, p.y, 5, sP, false); });
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = 'rgba(71,85,105,.55)'; ctx.lineWidth = 1.2;
+      Q.forEach(function(q){ ctx.beginPath(); ctx.arc(q.x, q.y, RS, 0, 6.283); ctx.stroke(); });
+      ctx.setLineDash([]); ctx.globalAlpha = 1;
+    }
+    // forza: le frecce si accorciano in proporzione alla forza rispetto al vuoto
+    var r = ratio(), same = Q[0].s * Q[1].s > 0, L = 78 * Math.max(0, Math.min(1, Math.abs(r)));
+    var rep = r >= 0 ? same : !same, dir = rep ? -1 : 1;
+    arrow(Q[0].x + dir * (R + 3), Q[0].y, Q[0].x + dir * (R + 3 + L), Q[0].y, '#16a34a');
+    arrow(Q[1].x - dir * (R + 3), Q[1].y, Q[1].x - dir * (R + 3 + L), Q[1].y, '#16a34a');
+    Q.forEach(function(q, j){
+      ball(q.x, q.y, R, q.s, true);
+      ctx.fillStyle = '#334155'; ctx.font = 'italic bold 14px Georgia, serif'; ctx.textAlign = 'center';
+      ctx.fillText('Q' + (j ? '₂' : '₁'), q.x, q.y - R - 8);
+      ctx.font = '12px "Atkinson Hyperlegible", sans-serif'; ctx.fillStyle = '#0f172a';
+      var t = mat ? 'carica nel cerchio: ' + fmt(qeff[j]) : 'carica: ' + fmt(q.s * QM);
+      var w = ctx.measureText(t).width + 12;
+      ctx.fillStyle = 'rgba(255,255,255,.88)'; ctx.fillRect(q.x - w / 2, q.y + RS + 6, w, 18);
+      ctx.fillStyle = '#0f172a'; ctx.fillText(t, q.x, q.y + RS + 19);
+    });
+    fEl.textContent = mat ? 'Forza fra le due cariche: circa ' + Math.round(100 * Math.max(0, r)) + '% di quella nel vuoto' : 'Forza fra le due cariche: 100% (vuoto)';
+  }
+  function caption(){
+    var same = Q[0].s * Q[1].s > 0, verbo = same ? 'si respingono' : 'si attraggono';
+    if (!mat) { cap.textContent = 'Nel vuoto le due cariche ' + verbo + ' con tutta la forza prevista dalla legge di Coulomb. Scegli i segni, poi riempi lo spazio con il materiale.'; return; }
+    var segP = sP < 0 ? 'negative' : 'positive', att = [], resp = [];
+    Q.forEach(function(q, j){ (q.s * sP < 0 ? att : resp).push('Q' + (j ? '₂' : '₁')); });
+    var t = 'Le particelle ' + segP + ' sono libere di muoversi. ';
+    if (att.length) t += 'Attorno a ' + att.join(' e ') + ' si affollano, e ne coprono la carica. ';
+    if (resp.length) t += (att.length ? 'Da ' : 'Da ') + resp.join(' e ') + ' sono respinte: attorno resta una zona senza particelle, dove prevale la carica opposta del resto del materiale, che copre ' + (resp.length > 1 ? 'le cariche' : 'la carica') + '. ';
+    t += 'Viste da lontano, le cariche sembrano molto più piccole: la forza diminuisce.';
+    cap.textContent = t;
+  }
+  function frame(){
+    if (visible) {
+      if (mat && fade < 1) fade = Math.min(1, fade + .04);
+      if (!mat && fade > 0) { fade = Math.max(0, fade - .06); if (fade === 0) ps = []; }
+      if (mat) step();
+      draw();
+    }
+    requestAnimationFrame(frame);
+  }
+  if (window.IntersectionObserver) new IntersectionObserver(function(e){ visible = e[0].isIntersecting; }).observe(cv);
 
   btn.addEventListener('click', function(){
-    on = !on;
-    if(on){
-      btn.textContent = '◀ Torna al vuoto';
-      cap.textContent = 'Le molecole d’acqua hanno un’estremità positiva (rossa) e una negativa (blu). Si orientano: attorno alla carica + si raccolgono le estremità negative, attorno alla carica − quelle positive. Le cariche risultano in parte «coperte» e la forza diminuisce.';
-    } else {
-      btn.textContent = 'Riempi lo spazio di acqua ▶';
-      cap.textContent = 'Nel vuoto: le due cariche si attraggono con tutta la forza prevista dalla legge di Coulomb.';
-    }
+    mat = !mat;
+    if (mat) { seed(); qeff = [Q[0].s * QM, Q[1].s * QM]; }
+    btn.textContent = mat ? '◀ Torna al vuoto' : 'Riempi lo spazio con il materiale ▶';
+    caption();
   });
+  document.querySelectorAll('#scrWidget .scr-sbtn').forEach(function(b){
+    b.addEventListener('click', function(){
+      var k = +b.dataset.k;
+      if (k < 2) Q[k].s = -Q[k].s; else { sP = -sP; if (mat) { seed(); } }
+      b.querySelector('b').textContent = (k < 2 ? Q[k].s : sP) > 0 ? '+' : '−';
+      if (mat) qeff = [Q[0].s * QM, Q[1].s * QM];
+      caption();
+    });
+  });
+  caption(); requestAnimationFrame(frame);
 })();
 </script>

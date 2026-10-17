@@ -1,78 +1,145 @@
 {% comment %}
-Animazione: elettrizzazione per contatto tra due conduttori. Nessun
-parametro.
+Animazione-quesito: elettrizzazione per contatto fra due sfere conduttrici.
+Prima di cominciare lo studente sceglie la carica iniziale (da −6 a +6, in
+unità di carica elementare) e la grandezza (piccola, media, grande) di ciascuna
+sfera. A ogni passo una domanda chiede di prevedere che cosa succederà (in che
+verso passano gli elettroni, che carica ha una sfera, che cosa succede
+separandole...); dopo la risposta l'animazione mostra il fenomeno. Al contatto
+la carica totale si divide in proporzione ai raggi (a raggi uguali, a metà; un
+elettrone non si divide, quindi si arrotonda). Ioni positivi fermi, si muovono
+solo gli elettroni; le cariche delle sfere restano nascoste («?») finché non
+sono state chieste. Usa elettro-sfere-engine.html (scene, stepper, flow).
+Nessun parametro.
 {% endcomment %}
-<div class="cw-widget" id="cwWidget">
-<svg viewBox="0 0 400 170" style="max-width:380px;width:100%;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: elettrizzazione per contatto fra due sfere conduttrici">
-<defs>
-  <radialGradient id="cwMetalG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#94a3b8"/></radialGradient>
-</defs>
-<g class="cw-sphere cw-sphereA" transform="translate(110,85)">
-  <circle r="34" fill="url(#cwMetalG)" stroke="#94a3b8" stroke-width="1.5"/>
-  <text class="cw-sym" x="-12" y="-8" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="cw-sym" x="10" y="-11" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="cw-sym" x="-14" y="12" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="cw-sym" x="10" y="14" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="cw-sym cw-transferable" x="0" y="-22" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="cw-sym cw-transferable" x="0" y="24" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
-</g>
-<g class="cw-sphere cw-sphereB" transform="translate(290,85)">
-  <circle r="34" fill="url(#cwMetalG)" stroke="#94a3b8" stroke-width="1.5"/>
-  <text class="cw-sym cw-transferred" x="0" y="-22" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="cw-sym cw-transferred" x="0" y="24" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">–</text>
-</g>
-</svg>
-<div class="cw-actions">
-  <button class="cw-btn cw-play">Avvicina i corpi ▶</button>
-  <button class="cw-btn cw-reset" style="display:none">↺ Ricomincia</button>
+{% include lab-virtuali/elettro-sfere-engine.html %}
+<div class="elx-widget" id="elxContatto">
+<div class="elx-par" style="flex-direction:column;gap:.15rem"></div>
+<canvas class="elx-canvas" aria-label="Animazione: elettrizzazione per contatto fra due sfere metalliche"></canvas>
+<p class="elx-caption"></p>
+<div class="elx-q" hidden></div>
+<div class="elx-ctrl">
+  <button class="elx-btn elx-main">Avanti ▶</button>
+  <button class="elx-btn elx-reset">↺ Ricomincia</button>
 </div>
-<p class="cw-caption"></p>
 </div>
-
-<style>
-.cw-widget { margin: 1.6rem auto; max-width: 380px; text-align: center; }
-.cw-sphere { transition: transform 1s ease; }
-.cw-touching .cw-sphereA { transform: translate(166px,85px); }
-.cw-touching .cw-sphereB { transform: translate(234px,85px); }
-.cw-sym { transition: opacity .5s ease; opacity: 1; }
-.cw-transferred { opacity: 0; }
-.cw-charge-moved .cw-transferable { opacity: 0; }
-.cw-charge-moved .cw-transferred { opacity: 1; }
-.cw-actions { margin-top: .6rem; }
-.cw-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .88rem; }
-.cw-btn:hover { background: #e2e8f0; }
-.cw-caption { min-height: 1.4em; font-size: .85rem; font-style: italic; color: #6b7280; margin-top: .5rem; }
-@media print { .cw-widget { display: none; } }
-</style>
-
 <script>
 (function(){
-  var root = document.getElementById('cwWidget');
-  if(!root) return;
-  var playBtn = root.querySelector('.cw-play');
-  var resetBtn = root.querySelector('.cw-reset');
-  var caption = root.querySelector('.cw-caption');
-  playBtn.addEventListener('click', function(){
-    playBtn.disabled = true;
-    root.classList.add('cw-touching');
-    setTimeout(function(){
-      root.classList.add('cw-charge-moved');
-      caption.textContent = 'Le cariche si ridistribuiscono al contatto…';
-    }, 1000);
-    setTimeout(function(){
-      root.classList.remove('cw-touching');
-    }, 1700);
-    setTimeout(function(){
-      caption.textContent = 'Ora entrambi i corpi sono carichi negativamente.';
-      playBtn.style.display = 'none';
-      resetBtn.style.display = 'inline-block';
-    }, 2700);
-  });
-  resetBtn.addEventListener('click', function(){
-    root.classList.remove('cw-touching','cw-charge-moved');
-    caption.textContent = '';
-    playBtn.style.display = 'inline-block'; playBtn.disabled = false;
-    resetBtn.style.display = 'none';
-  });
+  var root = document.getElementById('elxContatto'); if (!root || !window.ElettroLab) return;
+  var cv = root.querySelector('canvas'), cap = root.querySelector('.elx-caption');
+  var par = root.querySelector('.elx-par'), L = ElettroLab, F = L.fmtQ;
+  var W = 460, H = 200, Y = 72, XA = 105, XB = 355, sc;
+  var RAD = [30, 42, 54], ION = [7, 9, 12], NOMI = ['piccola', 'media', 'grande'];
+  var cfg = { qA: -4, qB: 0, gA: 1, gB: 1 }, r = {};
+
+  // controlli: carica e grandezza delle due sfere
+  function riga(nome){ var d = document.createElement('div'); d.className = 'elx-par'; d.style.margin = '0';
+    var t = document.createElement('strong'); t.textContent = nome; t.style.color = '#334155'; d.appendChild(t); par.appendChild(d); return d; }
+  var rA = riga('Sfera A'), rB = riga('Sfera B');
+  var stA = L.stepper(rA, 'carica', -6, 6, cfg.qA, F, function(v){ cfg.qA = v; init(); });
+  var gA = L.stepper(rA, 'grandezza', 0, 2, cfg.gA, function(v){ return NOMI[v]; }, function(v){ cfg.gA = v; init(); });
+  var stB = L.stepper(rB, 'carica', -6, 6, cfg.qB, F, function(v){ cfg.qB = v; init(); });
+  var gB = L.stepper(rB, 'grandezza', 0, 2, cfg.gB, function(v){ return NOMI[v]; }, function(v){ cfg.gB = v; init(); });
+  function lock(on){ [stA, gA, stB, gB].forEach(function(c){ c.enable(!on); }); }
+
+  function desc(q){ return q < 0 ? 'ha ' + (-q) + (q === -1 ? ' elettrone' : ' elettroni') + ' in più dei suoi protoni (carica negativa)'
+                   : q > 0 ? 'ha ' + q + (q === 1 ? ' elettrone' : ' elettroni') + ' in meno dei suoi protoni (carica positiva)'
+                   : 'è neutra'; }
+  function el(n){ return n === 1 ? 'un elettrone' : n + ' elettroni'; }
+
+  var steps = [
+    { // 1. in che verso passano gli elettroni?
+      q: function(){
+        var verso = r.n === 0 ? 'nessuno' : r.from;
+        return { t: 'Avviciniamo le sfere finché si toccano. Che cosa succede?',
+          opts: [
+            { t: 'Alcuni elettroni passano dalla sfera A alla sfera B', ok: verso === 'A' },
+            { t: 'Alcuni elettroni passano dalla sfera B alla sfera A', ok: verso === 'B' },
+            { t: 'Alcuni protoni passano da una sfera all’altra', ok: false },
+            { t: 'Non passa nessuna carica', ok: verso === 'nessuno' } ],
+          s: (r.n === 0
+              ? 'La carica è già divisa fra le due sfere come vorrebbe essere, in proporzione alla loro grandezza: gli elettroni non hanno motivo di spostarsi.'
+              : 'Gli elettroni si spostano finché la carica totale non si è distribuita su entrambe le sfere, in proporzione alla loro grandezza: qui passano dalla sfera ' + r.from + ' alla sfera ' + r.to + '.')
+            + ' I protoni, invece, non si spostano mai: sono legati nei nuclei degli atomi.' };
+      },
+      act: function(done){
+        var my = sc, A = sc.spheres.A, B = sc.spheres.B;
+        sc.hide = { A: true, B: true };
+        A.tx = W / 2 - A.R; B.tx = W / 2 + B.R;
+        cap.textContent = 'Le due sfere si toccano…';
+        setTimeout(function(){
+          if (my !== sc) return;
+          // passano gli elettroni più vicini al punto di contatto
+          var dir = r.from === 'A' ? 1 : -1, D = sc.spheres[r.to];
+          var mov = r.n ? sc.of(r.from).sort(function(p, q){ return dir * (q.rx - p.rx); }).slice(0, r.n) : [];
+          mov.forEach(function(e, i){
+            var dy = (i % 2 ? 1 : -1) * (4 + 5 * Math.floor(i / 2));
+            setTimeout(function(){ if (my !== sc) return;
+              sc.send(e, [[W / 2, Y + dy * .5], [W / 2 + dir * (D.R + 8), Y + dy]], r.to); sc.layout(r.from); }, i * 160);
+          });
+          setTimeout(function(){
+            if (my !== sc) return;
+            cap.textContent = r.n ? (r.n === 1 ? 'È passato un elettrone' : 'Sono passati ' + r.n + ' elettroni') + ' dalla sfera ' + r.from + ' alla sfera ' + r.to + '.' : 'Nessun elettrone è passato.';
+            done();
+          }, 1400 + r.n * 160);
+        }, 1100);
+      } },
+    { // 2. che carica ha adesso la sfera A?
+      q: function(){
+        var ok = r.qA2, other = r.uguali && r.Q % 2 ? r.Q - r.qA2 : null, seen = {}, opts = [{ t: F(ok), ok: true }];
+        seen[ok] = 1; if (other !== null) seen[other] = 1;
+        [cfg.qA, r.uguali ? null : Math.trunc(r.Q / 2), r.Q, 0, -ok, ok + 1, ok - 1].forEach(function(v){
+          if (v === null || seen[v] || opts.length >= 4) return; seen[v] = 1; opts.push({ t: F(v), ok: false }); });
+        var s = 'Prima del contatto la carica totale era ' + F(cfg.qA) + ' ' + (cfg.qB < 0 ? '− ' + (-cfg.qB) : '+ ' + cfg.qB) + ' = ' + F(r.Q) + ', e la carica si conserva. ';
+        if (r.Q === 0) s += 'Quindi alla fine le due sfere sono entrambe neutre.';
+        else if (r.uguali) s += 'Le sfere sono identiche, quindi se la dividono a metà' + (r.Q % 2 ? '; ma un elettrone non si può dividere, perciò una sfera ne ha uno in più dell’altra' : '') + ': A ha ' + F(r.qA2) + ', B ha ' + F(r.qB2) + '.';
+        else s += 'Le sfere hanno grandezze diverse: la più grande ne prende di più, circa in proporzione ai raggi. A ha ' + F(r.qA2) + ', B ha ' + F(r.qB2) + '.';
+        return { t: 'Le sfere si toccano ancora. Quale carica ha adesso la sfera A?', opts: opts, s: s };
+      },
+      act: function(done){ sc.hide = {}; done(); } },
+    { // 3. separandole?
+      q: function(){
+        return { t: 'Ora separiamo le sfere. Che cosa succede alla loro carica?',
+          opts: [
+            { t: 'Ognuna tiene la carica che ha adesso', ok: true },
+            { t: 'Gli elettroni tornano sulla sfera da cui erano partiti', ok: false },
+            { t: 'Le sfere tornano entrambe neutre', ok: false } ].slice(0, r.Q === 0 ? 2 : 3), // con carica totale 0 sono già neutre
+          s: 'Una volta separate, gli elettroni non hanno più una strada per passare da una sfera all’altra: ognuna resta con la sua carica. La carica totale è ancora ' + F(r.Q) + '.' };
+      },
+      act: function(done){
+        var my = sc; sc.spheres.A.tx = XA; sc.spheres.B.tx = XB;
+        cap.textContent = 'Prima: ' + F(cfg.qA) + ' su A e ' + F(cfg.qB) + ' su B. Dopo: ' + F(r.qA2) + ' su A e ' + F(r.qB2) + ' su B. Totale: ' + F(r.Q) + ' prima e dopo.';
+        setTimeout(function(){ if (my === sc) done(); }, 1300);
+      } },
+    { // 4. e se le rimettessimo a contatto?
+      q: function(){
+        return { t: 'Se rimettessimo a contatto le due sfere, passerebbero di nuovo elettroni?',
+          opts: [
+            { t: 'No: la carica è già divisa fra le due sfere nel modo in cui si sistema al contatto', ok: true },
+            { t: 'Sì: passerebbero finché le due sfere non diventano neutre', ok: false },
+            { t: 'Sì: gli elettroni tornerebbero sulla sfera da cui erano partiti', ok: false } ],
+          s: 'Al primo contatto gli elettroni si sono già sistemati nel modo «giusto» per due sfere che si toccano. Toccandosi di nuovo si ritroverebbero nella stessa situazione, quindi nessun elettrone passerebbe.' };
+      } }
+  ];
+  var fl = L.flow(root, steps, { id: 'contatto', onStart: function(){ lock(true); },
+    onEnd: function(){ cap.textContent += ' Cambia cariche e grandezze e ricomincia.'; } });
+
+  function init(){
+    if (sc) sc.dead = true;
+    var c2 = cv.cloneNode(true); cv.parentNode.replaceChild(c2, cv); cv = c2; // nuova scena pulita
+    sc = L.scene(cv, W, H);
+    sc.sphere('A', XA, Y, RAD[cfg.gA], ION[cfg.gA], 'sfera A');
+    sc.sphere('B', XB, Y, RAD[cfg.gB], ION[cfg.gB], 'sfera B');
+    sc.addElectrons('A', ION[cfg.gA] - cfg.qA); sc.addElectrons('B', ION[cfg.gB] - cfg.qB);
+    // come si dividerà la carica: in proporzione ai raggi (un elettrone non si spezza: si arrotonda)
+    var RA = RAD[cfg.gA], RB = RAD[cfg.gB];
+    r.Q = cfg.qA + cfg.qB; r.uguali = RA === RB;
+    r.qA2 = Math.round(r.Q * RA / (RA + RB)); r.qB2 = r.Q - r.qA2;
+    r.n = Math.abs(r.qA2 - cfg.qA); r.from = r.qA2 > cfg.qA ? 'A' : 'B'; r.to = r.from === 'A' ? 'B' : 'A';
+    lock(false);
+    cap.textContent = 'La sfera A ' + desc(cfg.qA) + '; la sfera B ' + desc(cfg.qB) + '.';
+    fl.start();
+  }
+  root.querySelector('.elx-reset').addEventListener('click', init);
+  init();
 })();
 </script>

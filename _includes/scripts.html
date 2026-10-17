@@ -277,4 +277,80 @@ function toggleFont() {
 window.addEventListener('beforeprint', function() {
   document.querySelectorAll('img[loading="lazy"]').forEach(function(img) { img.loading = 'eager'; });
 });
+// ── Fuochi d'artificio per un esercizio della teoria fatto tutto giusto ──
+// Ogni parte di un esercizio numerato (data-es) che ha una risposta giusta o
+// sbagliata (domanda a scelta multipla, vero/falso, completamento, isola,
+// unità di misura, trascina…) comunica il suo esito con _lvSave/_lvEsito o
+// con l'evento iex:correct. Qui si ricorda, per ciascuna parte, il primo esito
+// e l'ultimo (in questa visita della pagina): quando tutte le parti
+// dell'esercizio sono giuste, e giuste al primo colpo, partono i fuochi.
+// Le risposte rimesse a posto all'apertura della pagina non contano.
+(function() {
+  var UNIT = '.qgf-widget, .iex-choices, .fillm-wrap, .fill-wrap, .tf-item, .invx-widget, .uderive-widget, .sort-widget, .match-widget, .vdrag-widget';
+  var last = null, lastT = 0, rec = new WeakMap(), lastFire = 0;
+  ['pointerdown', 'keydown', 'input', 'change', 'click'].forEach(function(t) {
+    document.addEventListener(t, function(e) { if (e.isTrusted && e.target && e.target.nodeType === 1) { last = e.target; lastT = Date.now(); } }, true);
+  });
+  function esitoDi(ns, d) {
+    if (!d || typeof d !== 'object') return null;
+    if (typeof d.right === 'boolean') return d.right ? 1 : 0;
+    if (typeof d.found === 'boolean') return d.found ? 1 : 0;
+    if (typeof d.ok === 'boolean') return d.ok ? 1 : 0;
+    if (Array.isArray(d.ok) && d.ok.length) return d.ok.filter(Boolean).length / d.ok.length;
+    if (ns === 'quiz' && Array.isArray(d.results) && d.results.length) return d.results.filter(Boolean).length / d.results.length;
+    if (ns === 'uderive') return 1;
+    return null;
+  }
+  // fuochi d'artificio (condivisi: anche il quiz vero/falso li usa), mai due volte di fila
+  window._lvFuochi = function() {
+    if (Date.now() - lastFire < 2500) return; lastFire = Date.now();
+    var canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight; document.body.appendChild(canvas);
+    var ctx = canvas.getContext('2d'), cols = ['#fbbf24', '#ef4444', '#0891b2', '#22d3ee', '#10b981', '#f472b6', '#fff', '#fde68a'];
+    var bursts = [], cnt = 0, max = 7;
+    function burst() {
+      var cx = innerWidth * (.15 + Math.random() * .7), cy = innerHeight * (.08 + Math.random() * .5), col = cols[Math.floor(Math.random() * cols.length)], ps = [];
+      for (var k = 0; k < 110; k++) { var a = Math.random() * Math.PI * 2, sp = Math.random() * 7 + 2; ps.push({ x: cx, y: cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, r: Math.random() * 3 + 1, col: col, a: 1 }); }
+      bursts.push(ps);
+    }
+    burst();
+    var t = setInterval(function() { cnt++; if (cnt < max) burst(); else clearInterval(t); }, 300);
+    (function frame() {
+      ctx.fillStyle = 'rgba(0,0,0,0.13)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      var alive = false;
+      bursts.forEach(function(ps) { ps.forEach(function(p) {
+        p.x += p.vx; p.y += p.vy; p.vy += .07; p.a -= .017; if (p.a <= 0) return; alive = true;
+        ctx.beginPath(); ctx.globalAlpha = p.a; ctx.fillStyle = p.col; ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+      }); });
+      ctx.globalAlpha = 1;
+      if (alive || cnt < max) requestAnimationFrame(frame); else canvas.remove();
+    })();
+  };
+  function segna(unit, ok) {
+    if (!unit || ok === null || ok === undefined) return;
+    var r = rec.get(unit); if (!r) { r = { first: ok }; rec.set(unit, r); } r.last = ok;
+    var box = unit.closest('[data-es]'); if (!box || box.dataset.fuochi) return;
+    var units = [].slice.call(box.querySelectorAll(UNIT)).filter(function(u) { return !u.parentElement.closest(UNIT); });
+    var tutte = units.length && units.every(function(u) { var x = rec.get(u); return x && x.first === 1 && x.last === 1; });
+    if (tutte) { box.dataset.fuochi = '1'; setTimeout(window._lvFuochi, 600); }
+  }
+  function unitaDi(el) { return el && el.closest ? el.closest(UNIT) : null; }
+  function dalVivo() { return Date.now() - lastT < 6000; }
+  var origSave = window._lvSave, origEsito = window._lvEsito;
+  if (origSave) window._lvSave = function(ns, id, data) {
+    var r = origSave.apply(this, arguments);
+    try { if (dalVivo()) segna(unitaDi(last), esitoDi(ns, data)); } catch (e) {}
+    return r;
+  };
+  window._lvEsito = function(ns, id, giusto) {
+    if (origEsito) origEsito.apply(this, arguments);
+    try { if (dalVivo()) segna(unitaDi(last), giusto ? 1 : 0); } catch (e) {}
+  };
+  document.addEventListener('iex:correct', function(e) {
+    if (!dalVivo()) return;
+    var u = unitaDi(e.target) || (e.target.querySelector && e.target.querySelector(UNIT));
+    if (u) segna(u, 1);
+  });
+})();
 </script>

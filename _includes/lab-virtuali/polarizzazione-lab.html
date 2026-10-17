@@ -1,71 +1,96 @@
 {% comment %}
-Animazione a pulsante: un bastoncino carico si avvicina a un conduttore
-neutro, che si polarizza (le cariche di segno opposto si spostano verso il
-bastoncino, quelle di segno uguale si allontanano), pur restando neutro nel
-complesso. Nessun parametro.
+Animazione-quesito: una bacchetta carica si avvicina a una sfera conduttrice
+neutra. Lo studente sceglie la carica della bacchetta (da −6 a +6, lo 0 si
+salta). Tre domande accompagnano i passi: dove vanno gli elettroni quando la
+bacchetta si avvicina, qual è la carica totale della sfera polarizzata (nascosta
+con «?» finché non è stata chiesta), che cosa succede allontanando la
+bacchetta. Con la bacchetta negativa gli elettroni vanno sul lato lontano, con
+quella positiva sul lato vicino; più la bacchetta è carica, più si spostano.
+Alla fine il pulsante avvicina/allontana la bacchetta liberamente.
+Usa elettro-sfere-engine.html (scene, stepper, flow). Nessun parametro.
 {% endcomment %}
-<div class="ind-widget" id="indWidget">
-<svg viewBox="0 0 420 190" style="max-width:400px;width:100%;height:auto;display:block;margin:0 auto;" role="img" aria-label="Animazione: elettrizzazione per induzione, un bastoncino carico polarizza un conduttore vicino">
-<defs>
-  <linearGradient id="indRodG" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#93c5fd"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient>
-  <radialGradient id="indMetalG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#f8fafc"/><stop offset="55%" stop-color="#cbd5e1"/><stop offset="100%" stop-color="#94a3b8"/></radialGradient>
-</defs>
-
-<g id="indRod" transform="translate(45,95)">
-  <rect x="0" y="-45" width="26" height="90" rx="8" fill="url(#indRodG)"/>
-  <text x="13" y="-55" text-anchor="middle" font-size="12" fill="#1e3a8a" font-weight="700">bastoncino (−)</text>
-  <text x="13" y="-18" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
-  <text x="13" y="8" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
-  <text x="13" y="34" text-anchor="middle" font-size="14" font-weight="700" fill="#eff6ff">–</text>
-</g>
-
-<g transform="translate(300,95)">
-  <circle r="40" fill="url(#indMetalG)" stroke="#94a3b8" stroke-width="1.5"/>
-  <text class="ind-sym ind-p1" x="20" y="4" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
-  <text class="ind-sym ind-n1" x="10" y="21.3" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="ind-sym ind-p2" x="-10" y="21.3" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
-  <text class="ind-sym ind-n2" x="-20" y="4" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
-  <text class="ind-sym ind-p3" x="-10" y="-13.3" text-anchor="middle" font-size="16" font-weight="700" fill="#9f1239">+</text>
-  <text class="ind-sym ind-n3" x="10" y="-13.3" text-anchor="middle" font-size="16" font-weight="700" fill="#1e3a8a">–</text>
-</g>
-</svg>
-<button class="ind-btn" id="indBtn">Avvicina il bastoncino ▶</button>
-<p class="ind-caption">Il conduttore è neutro: cariche positive e negative sono distribuite uniformemente.</p>
+{% include lab-virtuali/elettro-sfere-engine.html %}
+<div class="elx-widget" id="elxPolar">
+<div class="elx-par"></div>
+<canvas class="elx-canvas" aria-label="Animazione: una bacchetta carica polarizza una sfera conduttrice neutra"></canvas>
+<p class="elx-caption"></p>
+<div class="elx-q" hidden></div>
+<div class="elx-ctrl">
+  <button class="elx-btn elx-main">Avanti ▶</button>
+  <button class="elx-btn elx-reset">↺ Ricomincia</button>
 </div>
-
-<style>
-.ind-widget { margin: 1.6rem auto; max-width: 400px; text-align: center; }
-#indRod, .ind-sym { transition: transform .9s ease; }
-.ind-active #indRod { transform: translate(209px,95px); }
-.ind-active .ind-p1 { transform: translate(-46px,-14px); }
-.ind-active .ind-p2 { transform: translate(-16px,-3.3px); }
-.ind-active .ind-p3 { transform: translate(-22px,17.3px); }
-.ind-active .ind-n1 { transform: translate(16px,-31.3px); }
-.ind-active .ind-n2 { transform: translate(46px,14px); }
-.ind-active .ind-n3 { transform: translate(22px,17.3px); }
-.ind-btn { padding: .5rem 1rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .88rem; margin-top: .4rem; }
-.ind-btn:hover { background: #e2e8f0; }
-.ind-caption { min-height: 2.4em; font-size: .85rem; font-style: italic; color: #6b7280; margin-top: .5rem; max-width: 380px; margin-left: auto; margin-right: auto; }
-@media print { .ind-widget { display: none; } }
-</style>
-
+</div>
 <script>
 (function(){
-  var root = document.getElementById('indWidget');
-  if(!root) return;
-  var btn = root.querySelector('.ind-btn');
-  var caption = root.querySelector('.ind-caption');
-  var active = false;
-  btn.addEventListener('click', function(){
-    active = !active;
-    root.classList.toggle('ind-active', active);
-    if(active){
-      btn.textContent = '◀ Allontana il bastoncino';
-      caption.textContent = 'Il bastoncino carico negativamente respinge le cariche negative e attira quelle positive: il conduttore si polarizza, ma resta neutro nel complesso.';
-    } else {
-      btn.textContent = 'Avvicina il bastoncino ▶';
-      caption.textContent = 'Il conduttore è neutro: cariche positive e negative sono distribuite uniformemente.';
-    }
+  var root = document.getElementById('elxPolar'); if (!root || !window.ElettroLab) return;
+  var cv = root.querySelector('canvas'), main = root.querySelector('.elx-main'), cap = root.querySelector('.elx-caption');
+  var L = ElettroLab, W = 460, H = 200, R = 52, SX = 310, SY = 82;
+  var FAR = 150, NEAR = SX - R - 12, near = false, libero = false, q = -4, sc;
+
+  // carica della bacchetta: da −6 a +6 (lo 0 si salta: una bacchetta neutra non polarizza)
+  var st = L.stepper(root.querySelector('.elx-par'), 'carica della bacchetta', -6, 6, q, L.fmtQ, function(v){
+    if (v === 0) { v = q < 0 ? 1 : -1; st.set(v); }
+    q = v;
+    if (libero) { sc.rod.sign = q < 0 ? -1 : 1; sc.rod.n = Math.abs(q); place(); } else init();
   });
+  function place(){
+    sc.rod.tx = near ? NEAR : FAR;
+    sc.layout('S', near ? (q < 0 ? 0 : Math.PI) : null, false, Math.abs(q) / 6);
+  }
+  function wait(done, ms){ var my = sc; setTimeout(function(){ if (my === sc) done(); }, ms); }
+
+  var steps = [
+    { q: function(){ var neg = q < 0;
+        return { t: 'Avviciniamo la bacchetta (carica ' + L.fmtQ(q) + ') alla sfera, senza toccarla. Che cosa fanno gli elettroni della sfera?',
+          opts: [
+            { t: 'Si spostano sul lato vicino alla bacchetta', ok: !neg },
+            { t: 'Si spostano sul lato lontano dalla bacchetta', ok: neg },
+            { t: 'Restano dove sono, perché la bacchetta non tocca la sfera', ok: false },
+            { t: 'Passano sulla bacchetta', ok: false } ],
+          s: (neg ? 'Cariche dello stesso segno si respingono: la bacchetta negativa spinge gli elettroni sul lato lontano.'
+                  : 'Cariche di segno opposto si attirano: la bacchetta positiva tira gli elettroni sul lato vicino.')
+            + ' Non serve toccare: la forza elettrica agisce anche a distanza. Ma senza contatto nessun elettrone può passare sulla bacchetta.' }; },
+      act: function(done){ near = true; sc.hide = { S: true }; place();
+        cap.textContent = q < 0 ? 'Il lato vicino alla bacchetta è rimasto con più protoni che elettroni: è positivo. Il lato lontano è negativo.'
+                                : 'Il lato vicino alla bacchetta ha più elettroni che protoni: è negativo. Il lato lontano è positivo.';
+        wait(done, 1400); } },
+    { q: function(){
+        return { t: 'Qual è adesso la carica totale della sfera?',
+          opts: [
+            { t: '0: la sfera è ancora neutra', ok: true },
+            { t: 'Ha lo stesso segno della bacchetta', ok: false },
+            { t: 'Ha il segno opposto a quello della bacchetta', ok: false } ],
+          s: 'Gli elettroni si sono solo spostati da una parte all’altra della sfera: nessuno è entrato o uscito. Un lato è positivo e l’altro negativo, ma nel complesso la carica è 0. Questa separazione delle cariche è la polarizzazione.' }; },
+      act: function(done){ sc.hide = {}; done(); } },
+    { q: function(){
+        return { t: 'Ora allontaniamo la bacchetta. Che cosa succede?',
+          opts: [
+            { t: 'Gli elettroni tornano a distribuirsi in modo uniforme', ok: true },
+            { t: 'Gli elettroni restano dove sono', ok: false },
+            { t: 'La sfera resta carica', ok: false } ],
+          s: 'Senza la bacchetta, nulla tiene gli elettroni da una parte: si respingono fra loro e tornano a distribuirsi su tutta la sfera. La polarizzazione scompare, e la sfera è neutra come prima.' }; },
+      act: function(done){ near = false; place(); cap.textContent = 'La sfera è tornata come all’inizio.'; wait(done, 1200); } }
+  ];
+  var fl = L.flow(root, steps, { id: 'polarizzazione', onStart: function(){ st.enable(false); },
+    onEnd: function(){
+      // gioco libero: si avvicina e si allontana la bacchetta, cambiando la carica quando si vuole
+      libero = true; st.enable(true); main.hidden = false; main.disabled = false; main.textContent = 'Avvicina la bacchetta ▶';
+      cap.textContent = 'Ora prova da solo: cambia la carica della bacchetta e guarda quanto si spostano gli elettroni.';
+      main.onclick = function(){ near = !near; place(); main.textContent = near ? '◀ Allontana la bacchetta' : 'Avvicina la bacchetta ▶'; };
+    } });
+
+  function init(){
+    if (sc) sc.dead = true;
+    var c2 = cv.cloneNode(true); cv.parentNode.replaceChild(c2, cv); cv = c2;
+    sc = L.scene(cv, W, H);
+    sc.sphere('S', SX, SY, R, 10, 'sfera metallica');
+    sc.addElectrons('S', 10);
+    sc.rod = { x: FAR, tx: FAR, y: SY, n: Math.abs(q), sign: q < 0 ? -1 : 1, visible: true };
+    near = false; libero = false; st.enable(true);
+    cap.textContent = 'La sfera è neutra: ha tanti elettroni quanti protoni, distribuiti in modo uniforme.';
+    fl.start();
+  }
+  root.querySelector('.elx-reset').addEventListener('click', init);
+  init();
 })();
 </script>

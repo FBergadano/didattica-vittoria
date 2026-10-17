@@ -36,34 +36,49 @@ Esempio:
 
   function typeset(el){ if(window.MathJax&&MathJax.typesetPromise) MathJax.typesetPromise([el]); }
 
-  function render(chosen){
-    var btns=root.querySelectorAll('.iex-choice-btn');
-    btns.forEach(function(b){
+  // risposta giusta: si blocca tutto e compare la spiegazione
+  function renderOk(){
+    root.querySelectorAll('.iex-choice-btn').forEach(function(b){
       b.disabled=true;
-      b.classList.remove('correct','wrong');
+      b.classList.remove('wrong');
       if(b.dataset.v===OK) b.classList.add('correct');
-      else if(b.dataset.v===chosen) b.classList.add('wrong');
     });
-    var isOk=(chosen===OK);
     fb.style.display='block';
-    fb.className='iex-fb '+(isOk?'ok':'err');
-    fb.innerHTML=(isOk?'&#10003; Esatto!':'Non &egrave; corretto.')+(SOL?' '+SOL:'');
+    fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto!'+(SOL?' '+SOL:'');
     typeset(fb);
-    return isOk;
+  }
+  // risposta sbagliata: si segna (e si disattiva) solo quella scelta, e si può riprovare
+  function markWrong(v){
+    var b=root.querySelector('.iex-choice-btn[data-v="'+v+'"]');
+    if(b){ b.classList.add('wrong'); b.disabled=true; }
+    fb.style.display='block';
+    fb.className='iex-fb err';
+    fb.innerHTML='Non &egrave; corretto: riprova.';
   }
 
+  var wrong=[];
   root.querySelectorAll('.iex-choice-btn').forEach(function(b){
     b.addEventListener('click',function(){
       if(b.disabled) return;
-      var chosen=b.dataset.v;
-      var isOk=render(chosen);
-      if(isOk){ _shoot(b); root.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true})); }
-      _lvSave('mcq',ID,{chosen:chosen,ok:isOk});
+      var chosen=b.dataset.v, isOk=(chosen===OK);
+      if(isOk){
+        renderOk(); _shoot(b); root.dataset.ok='1';
+        root.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
+      } else {
+        if(wrong.indexOf(chosen)<0) wrong.push(chosen);
+        markWrong(chosen);
+      }
+      _lvSave('mcq',ID,{chosen:chosen,ok:isOk,wrong:wrong});
     });
   });
 
   typeset(root);
   var saved=_lvLoad('mcq',ID);
-  if(saved && saved.chosen){ if(render(saved.chosen)) root.dataset.ok='1'; }
+  if(saved){
+    (saved.wrong||[]).forEach(function(v){ wrong.push(v); markWrong(v); });
+    if(saved.ok){ renderOk(); root.dataset.ok='1'; }
+    else if(saved.chosen&&saved.chosen!==OK&&wrong.indexOf(saved.chosen)<0){ wrong.push(saved.chosen); markWrong(saved.chosen); }
+  }
 })();
 </script>

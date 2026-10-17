@@ -33,7 +33,11 @@
 <!-- MathJax -->
 <script>
   window.MathJax = {
+    // \cssId (eq-annotated), \cancel e \color si caricano subito: se arrivassero "su richiesta",
+    // una formula composta prima del loro arrivo mostrerebbe il comando come testo
+    loader: { load: ['[tex]/html', '[tex]/cancel', '[tex]/color'] },
     tex: {
+      packages: { '[+]': ['html', 'cancel', 'color'] },
       inlineMath: [['$','$'], ['\\(','\\)']],
       displayMath: [['$$','$$'], ['\\[','\\]']],
       tags: 'ams'

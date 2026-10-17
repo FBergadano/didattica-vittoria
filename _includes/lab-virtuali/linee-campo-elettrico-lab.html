@@ -1,0 +1,256 @@
+{% comment %}
+Simulatore delle linee del campo elettrico. Pulsanti per le disposizioni
+(una carica positiva, una negativa, due cariche opposte, due cariche uguali);
+le cariche si trascinano con il mouse/dito e un clic (senza trascinare) ne
+cambia il segno. Le linee vengono ricalcolate a ogni modifica: partono dalle
+cariche positive e finiscono su quelle negative (o vanno all'infinito), con
+una freccetta che ne indica il verso; il loro numero è proporzionale alla
+carica, così la densità delle linee mostra l'intensità del campo.
+Cliccando in un punto vuoto (come nell'animazione Terra-Luna) compaiono in quel
+punto i vettori campo generati da ciascuna carica (E₁ rosso, E₂ viola), la loro
+somma E_tot (verde) con la regola del parallelogramma e la retta tangente alla
+linea di campo che passa di lì: si vede che E_tot è tangente alla linea. Le
+frecce sono in scala fra loro.
+Sotto la figura, i pulsanti −/+ cambiano il valore di ciascuna carica (da −3 a
++3 unità): il numero di linee che esce da una carica (o vi entra) è
+proporzionale al suo valore. Le linee partono a intervalli uguali attorno a
+ogni carica, simmetriche rispetto alla retta che congiunge i due centri.
+Calcolo: si segue punto per punto la direzione del campo totale (somma dei
+campi delle singole cariche).
+Parametri (facoltativi; il simulatore si può includere più volte nella pagina):
+  id   — ID univoco (default "lceWidget")
+  equi — "true" per disegnare anche le superfici equipotenziali (linee arancioni):
+         curve lungo cui il potenziale V = k·ΣQ/r è costante, calcolate su una
+         griglia (marching squares) per alcuni valori di V positivi e negativi
+{% endcomment %}
+{% assign _lid = include.id | default: "lceWidget" %}
+<div class="lce-widget" id="{{ _lid }}">
+<div class="lce-ctrl">
+  <button data-p="pos">una carica +</button>
+  <button data-p="neg">una carica −</button>
+  <button data-p="dip">+ e −</button>
+  <button data-p="ug">+ e +</button>
+</div>
+<canvas class="lce-canvas" aria-label="Linee del campo elettrico generate da una o due cariche, che si possono spostare e cambiare di segno"></canvas>
+<div class="lce-val"></div>
+<p class="lce-hint">Trascina le cariche per spostarle; clicca su una carica per cambiarne il segno. {% if include.equi == "true" %}Le linee arancioni sono le superfici equipotenziali. Clicca in un punto vuoto per vedere il potenziale generato lì da ciascuna carica e il potenziale totale (ogni unità di carica vale $1\times10^{-6}\ \text C$, e tutta la figura è larga circa $5{,}6\ \text m$).{% else %}Clicca in un punto vuoto per vedere i vettori campo in quel punto: il campo di ciascuna carica, la loro somma e la retta tangente alla linea di campo.{% endif %}</p>
+</div>
+<style>
+.lce-widget { margin: 1.4rem auto; max-width: 560px; text-align: center; }
+.lce-ctrl { display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap; margin-bottom: .35rem; }
+.lce-ctrl button { padding: .28rem .7rem; border-radius: 999px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .84rem; font-family: "Atkinson Hyperlegible", sans-serif; color: #334155; }
+.lce-ctrl button.on { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+.lce-canvas { width: 100%; height: auto; display: block; border-radius: 8px; touch-action: none; cursor: crosshair; }
+.lce-val { display: flex; gap: .3rem 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: .35rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .86rem; color: #334155; }
+.lce-val span { display: inline-flex; align-items: center; gap: .3rem; }
+.lce-val i { font-family: Georgia, serif; font-weight: 600; }
+.lce-val b { display: inline-block; min-width: 2em; text-align: center; }
+.lce-val button { width: 1.7em; height: 1.7em; padding: 0; border-radius: 50%; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .9rem; line-height: 1; }
+.lce-val button:disabled { opacity: .35; cursor: default; }
+.lce-widget p.lce-hint { text-align: center; font-size: .82rem; font-style: italic; color: #64748b; margin: .3rem 0 0; }
+@media print { .lce-widget { display: none; } }
+</style>
+<script>
+(function(){
+  var root = document.getElementById('{{ _lid }}'); if (!root) return;
+  var cv = root.querySelector('canvas'), EQUI = {% if include.equi == "true" %}true{% else %}false{% endif %};
+  var W = 560, H = 340, S = 2, ctx = cv.getContext('2d'), R = 16, NL = 8;   // NL: linee per ogni unità di carica
+  cv.width = W * S; cv.height = H * S;
+  var Q = [], drag = null, probe = null;   // probe: punto scelto dallo studente in cui si disegnano i vettori campo
+  var PRESET = {
+    pos: [{ x: 280, y: 170, v: 2 }],
+    neg: [{ x: 280, y: 170, v: -2 }],
+    dip: [{ x: 190, y: 170, v: 2 }, { x: 370, y: 170, v: -2 }],
+    ug:  [{ x: 190, y: 170, v: 2 }, { x: 370, y: 170, v: 2 }]
+  };
+  function field(x, y){
+    var ex = 0, ey = 0;
+    Q.forEach(function(q){ var dx = x - q.x, dy = y - q.y, r2 = dx * dx + dy * dy, r = Math.sqrt(r2); ex += q.v * dx / (r2 * r); ey += q.v * dy / (r2 * r); });
+    return [ex, ey];
+  }
+  // segue la linea di campo a partire da (x, y); dir = +1 nel verso del campo, −1 al contrario
+  function trace(x, y, dir){
+    var pts = [[x, y]], h = 2.5;
+    for (var i = 0; i < 900; i++) {
+      var e = field(x, y), m = Math.hypot(e[0], e[1]); if (m === 0) break;
+      var mx = x + dir * h * .5 * e[0] / m, my = y + dir * h * .5 * e[1] / m;     // metodo del punto medio
+      var e2 = field(mx, my), m2 = Math.hypot(e2[0], e2[1]); if (m2 === 0) break;
+      x += dir * h * e2[0] / m2; y += dir * h * e2[1] / m2; pts.push([x, y]);
+      var end = null;
+      Q.forEach(function(q){ if (Math.hypot(x - q.x, y - q.y) < R * .8) end = q; });
+      if (end) return { pts: pts, end: end };
+      if (x < -60 || x > W + 60 || y < -60 || y > H + 60) break;
+    }
+    return { pts: pts, end: null };
+  }
+  function lines(){
+    var L = [];
+    Q.forEach(function(q){
+      // le linee partono a intervalli uguali, simmetriche rispetto alla retta che congiunge i centri
+      var o = Q.filter(function(p){ return p !== q; })[0], a0 = o ? Math.atan2(o.y - q.y, o.x - q.x) : 0, n = NL * Math.abs(q.v);
+      for (var k = 0; k < n; k++) {
+        var a = a0 + 2 * Math.PI * (k + .5) / n, x0 = q.x + R * 1.05 * Math.cos(a), y0 = q.y + R * 1.05 * Math.sin(a);
+        if (q.v > 0) L.push(trace(x0, y0, 1).pts);
+        else { var t = trace(x0, y0, -1); if (!t.end || t.end.v < 0) L.push(t.pts.reverse()); } // le linee che arrivano da una positiva sono già disegnate
+      }
+    });
+    return L;
+  }
+  function ball(q){
+    var pos = q.v > 0, g = ctx.createRadialGradient(q.x - R * .35, q.y - R * .4, 1, q.x, q.y, R);
+    g.addColorStop(0, pos ? '#fff1f2' : '#eff6ff'); g.addColorStop(1, pos ? '#fda4af' : '#93c5fd');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, R, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = pos ? '#9f1239' : '#1e3a8a'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = pos ? '#9f1239' : '#1e3a8a'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText((pos ? '+' : '−') + Math.abs(q.v), q.x, q.y + 1); ctx.textBaseline = 'alphabetic';
+    if (Q.length > 1) { ctx.font = 'italic bold 14px Georgia, serif'; ctx.fillText('Q' + (Q.indexOf(q) ? '₂' : '₁'), q.x, q.y - R - 8); }
+  }
+  function pot(x, y){ var v = 0; Q.forEach(function(q){ v += q.v / Math.max(Math.hypot(x - q.x, y - q.y), 1); }); return v; }
+  // superfici equipotenziali (sul foglio, linee): per ogni livello, dove il potenziale attraversa quel valore
+  function equipotenziali(){
+    var G = 5, nx = Math.ceil(W / G) + 1, ny = Math.ceil(H / G) + 1, V = [], i, j;
+    for (j = 0; j < ny; j++) { V.push([]); for (i = 0; i < nx; i++) V[j].push(pot(i * G, j * G)); }
+    var base = [0.006, 0.012, 0.022, 0.04, 0.07], lev = [];
+    base.forEach(function(b){ lev.push(b, -b); });
+    if (Q.some(function(q){ return q.v > 0; }) && Q.some(function(q){ return q.v < 0; })) lev.push(0);
+    ctx.strokeStyle = '#ea580c'; ctx.lineWidth = 1.2; ctx.beginPath();
+    for (j = 0; j < ny - 1; j++) for (i = 0; i < nx - 1; i++) {
+      var x = i * G, y = j * G;
+      if (Q.some(function(q){ return Math.hypot(x + G / 2 - q.x, y + G / 2 - q.y) < R + 2; })) continue;
+      var c = [V[j][i], V[j][i + 1], V[j + 1][i + 1], V[j + 1][i]], P = [[x, y], [x + G, y], [x + G, y + G], [x, y + G]];
+      lev.forEach(function(L){
+        var pts = [];
+        for (var e = 0; e < 4; e++) {
+          var a = c[e] - L, b = c[(e + 1) % 4] - L;
+          if ((a < 0) !== (b < 0)) { var t = a / (a - b), p0 = P[e], p1 = P[(e + 1) % 4]; pts.push([p0[0] + t * (p1[0] - p0[0]), p0[1] + t * (p1[1] - p0[1])]); }
+        }
+        for (var k = 0; k + 1 < pts.length; k += 2) { ctx.moveTo(pts[k][0], pts[k][1]); ctx.lineTo(pts[k + 1][0], pts[k + 1][1]); }
+      });
+    }
+    ctx.stroke();
+  }
+  function draw(){
+    ctx.setTransform(S, 0, 0, S, 0, 0); ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, W, H);
+    if (EQUI) equipotenziali();
+    ctx.strokeStyle = '#0891b2'; ctx.fillStyle = '#0891b2'; ctx.lineWidth = 1.4;
+    lines().forEach(function(p){
+      if (p.length < 3) return;
+      ctx.beginPath(); ctx.moveTo(p[0][0], p[0][1]); p.forEach(function(q){ ctx.lineTo(q[0], q[1]); }); ctx.stroke();
+      // freccetta a metà della parte visibile della linea
+      var vis = p.filter(function(q){ return q[0] > 0 && q[0] < W && q[1] > 0 && q[1] < H; });
+      var i = p.indexOf(vis[Math.floor(vis.length * .45)]); if (i < 1 || i >= p.length - 1) return;
+      var a = Math.atan2(p[i + 1][1] - p[i - 1][1], p[i + 1][0] - p[i - 1][0]), x = p[i][0], y = p[i][1];
+      ctx.beginPath(); ctx.moveTo(x + 6 * Math.cos(a), y + 6 * Math.sin(a));
+      ctx.lineTo(x - 5 * Math.cos(a - .5), y - 5 * Math.sin(a - .5)); ctx.lineTo(x - 5 * Math.cos(a + .5), y - 5 * Math.sin(a + .5)); ctx.closePath(); ctx.fill();
+    });
+    Q.forEach(ball);
+    if (probe) { if (EQUI) potenziali(probe[0], probe[1]); else vettori(probe[0], probe[1]); }
+  }
+  function freccia(x0, y0, x1, y1, col, w){
+    var a = Math.atan2(y1 - y0, x1 - x0); if (Math.hypot(x1 - x0, y1 - y0) < 4) return;
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = w;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - 8 * Math.cos(a), y1 - 8 * Math.sin(a)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 - 11 * Math.cos(a - .42), y1 - 11 * Math.sin(a - .42)); ctx.lineTo(x1 - 11 * Math.cos(a + .42), y1 - 11 * Math.sin(a + .42)); ctx.closePath(); ctx.fill();
+  }
+  function etichetta(t, x, y, x0, y0, col){
+    ctx.font = 'italic bold 15px Georgia, serif'; ctx.textAlign = x >= x0 ? 'left' : 'right'; ctx.textBaseline = 'middle';
+    var tx = x + (x >= x0 ? 7 : -7), ty = y + (y >= y0 ? 9 : -9), w = ctx.measureText(t).width;
+    ctx.fillStyle = 'rgba(248,250,252,.85)'; ctx.fillRect(x >= x0 ? tx - 2 : tx - w - 2, ty - 9, w + 4, 18);
+    ctx.fillStyle = col; ctx.fillText(t, tx, ty);
+    // freccetta del vettore sopra la lettera
+    var xa = x >= x0 ? tx : tx - w; ctx.strokeStyle = col; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(xa, ty - 11); ctx.lineTo(xa + 9, ty - 11); ctx.lineTo(xa + 6.5, ty - 13); ctx.moveTo(xa + 9, ty - 11); ctx.lineTo(xa + 6.5, ty - 9); ctx.stroke();
+    ctx.textBaseline = 'alphabetic';
+  }
+  // con le superfici equipotenziali, un clic mostra i potenziali nel punto (come nella figura Terra-Luna):
+  // V di ciascuna carica, con il suo segno, e la loro somma. Scala: 1 unità di carica = 1×10⁻⁶ C, 100 px = 1 m
+  function potenziali(x, y){
+    var vs = Q.map(function(q){ return 8.99e9 * q.v * 1e-6 / (Math.hypot(x - q.x, y - q.y) / 100); });
+    var tot = vs.reduce(function(a, b){ return a + b; }, 0);
+    function kv(v){ var t = (Math.abs(v) / 1000).toFixed(1).replace('.', ','); return (v > 0 ? '+' : v < 0 ? '−' : '') + t + ' kV'; }
+    var rows = vs.map(function(v, i){ return ['V' + (Q.length > 1 ? (i ? '₂' : '₁') : '') + ' = ' + kv(v), i ? '#7c3aed' : '#dc2626']; });
+    if (Q.length > 1) rows.push(['Vₜₒₜ = ' + kv(tot), '#0f172a']);
+    ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.arc(x, y, 4, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.3; ctx.stroke();
+    ctx.font = 'bold 14px "Atkinson Hyperlegible", sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    var bw = Math.max.apply(null, rows.map(function(r){ return ctx.measureText(r[0]).width; })) + 20, bh = rows.length * 22 + (Q.length > 1 ? 10 : 6);
+    var bx = x + 12, by = y - bh - 12;
+    if (bx + bw > W - 4) bx = x - bw - 12; if (by < 4) by = y + 12;
+    bx = Math.max(4, Math.min(W - bw - 4, bx)); by = Math.max(4, Math.min(H - bh - 4, by));
+    ctx.fillStyle = '#fff'; ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(bx, by, bw, bh, 8); else ctx.rect(bx, by, bw, bh); ctx.fill(); ctx.stroke();
+    rows.forEach(function(r, i){
+      var yy = by + 14 + i * 22 + (Q.length > 1 && i === rows.length - 1 ? 6 : 0);
+      if (Q.length > 1 && i === rows.length - 1) { ctx.strokeStyle = '#e5e7eb'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx + 8, yy - 13); ctx.lineTo(bx + bw - 8, yy - 13); ctx.stroke(); }
+      ctx.fillStyle = r[1]; ctx.fillText(r[0], bx + 10, yy);
+    });
+    ctx.textBaseline = 'alphabetic';
+  }
+  // vettori campo nel punto (x, y): uno per carica, la somma (regola del parallelogramma) e la tangente
+  function vettori(x, y){
+    var es = Q.map(function(q){ var dx = x - q.x, dy = y - q.y, r = Math.hypot(dx, dy); return [q.v * dx / (r * r * r), q.v * dy / (r * r * r)]; });
+    var tx = 0, ty = 0; es.forEach(function(e){ tx += e[0]; ty += e[1]; });
+    var mt = Math.hypot(tx, ty), mx = mt; es.forEach(function(e){ mx = Math.max(mx, Math.hypot(e[0], e[1])); });
+    var K = mx > 0 ? 68 / mx : 0;   // la freccia più lunga è di 68 px: le frecce restano in scala fra loro
+    if (mt > 0) {
+      var ux = tx / mt, uy = ty / mt;
+      ctx.setLineDash([6, 5]); ctx.strokeStyle = 'rgba(15,23,42,.55)'; ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.moveTo(x - ux * 900, y - uy * 900); ctx.lineTo(x + ux * 900, y + uy * 900); ctx.stroke(); ctx.setLineDash([]);
+    }
+    var cols = ['#dc2626', '#7c3aed'], tips = es.map(function(e){ return [x + e[0] * K, y + e[1] * K]; });
+    if (es.length === 2) {
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.3;
+      tips.forEach(function(p, k){ var o = tips[1 - k]; ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(p[0] + o[0] - x, p[1] + o[1] - y); ctx.stroke(); });
+      ctx.setLineDash([]);
+    }
+    tips.forEach(function(p, k){ freccia(x, y, p[0], p[1], cols[k], 3); });
+    if (es.length === 2) freccia(x, y, x + tx * K, y + ty * K, '#16a34a', 3.6);
+    ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.arc(x, y, 4, 0, 6.283); ctx.fill();
+    if (es.length === 2) {
+      tips.forEach(function(p, k){ etichetta('E' + (k ? '₂' : '₁'), p[0], p[1], x, y, cols[k]); });
+      etichetta('Eₜₒₜ', x + tx * K, y + ty * K, x, y, '#16a34a');
+    } else etichetta('E', tips[0][0], tips[0][1], x, y, cols[0]);
+  }
+  function preset(n){
+    Q = PRESET[n].map(function(q){ return { x: q.x, y: q.y, v: q.v }; });
+    root.querySelectorAll('.lce-ctrl button').forEach(function(b){ b.classList.toggle('on', b.dataset.p === n); });
+    valori(); draw();
+  }
+  // controlli del valore di ciascuna carica (da −3 a +3, lo zero si salta)
+  var box = root.querySelector('.lce-val');
+  function valori(){
+    box.innerHTML = '';
+    Q.forEach(function(q, i){
+      var sp = document.createElement('span'), m = document.createElement('button'), p = document.createElement('button'), b = document.createElement('b'), n = document.createElement('i');
+      n.textContent = Q.length > 1 ? 'Q' + (i ? '₂' : '₁') + ' =' : 'Q ='; m.textContent = '−'; p.textContent = '+'; m.type = p.type = 'button';
+      b.textContent = (q.v > 0 ? '+' : '−') + Math.abs(q.v); m.disabled = q.v <= -3; p.disabled = q.v >= 3;
+      function cambia(d){ q.v += d; if (q.v === 0) q.v += d; q.v = Math.max(-3, Math.min(3, q.v)); spegni(); valori(); draw(); }
+      m.onclick = function(){ cambia(-1); }; p.onclick = function(){ cambia(1); };
+      sp.appendChild(n); sp.appendChild(m); sp.appendChild(b); sp.appendChild(p); box.appendChild(sp);
+    });
+  }
+  function spegni(){ root.querySelectorAll('.lce-ctrl button').forEach(function(b){ b.classList.remove('on'); }); }
+  function pt(e){ var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * W / r.width, (e.clientY - r.top) * H / r.height]; }
+  cv.addEventListener('pointerdown', function(e){
+    var p = pt(e), hit = null;
+    Q.forEach(function(q){ if (Math.hypot(p[0] - q.x, p[1] - q.y) < R + 6) hit = q; });
+    if (!hit) {
+      // clic in un punto vuoto: lì si disegnano i vettori campo (non troppo vicino a una carica)
+      if (Q.every(function(q){ return Math.hypot(p[0] - q.x, p[1] - q.y) > R + 10; })) { probe = p; draw(); }
+      return;
+    }
+    e.preventDefault(); drag = { q: hit, p0: p, moved: false }; cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener('pointermove', function(e){
+    if (!drag) return; var p = pt(e);
+    if (Math.hypot(p[0] - drag.p0[0], p[1] - drag.p0[1]) > 4) drag.moved = true;
+    if (!drag.moved) return;
+    var x = Math.max(R, Math.min(W - R, p[0])), y = Math.max(R, Math.min(H - R, p[1]));
+    if (Q.every(function(q){ return q === drag.q || Math.hypot(x - q.x, y - q.y) > 2 * R + 4; }) && !(probe && Math.hypot(x - probe[0], y - probe[1]) < R + 10)) { drag.q.x = x; drag.q.y = y; draw(); }
+  });
+  function up(){ if (!drag) return; if (!drag.moved) { drag.q.v = -drag.q.v; spegni(); valori(); draw(); } drag = null; }
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  root.querySelectorAll('.lce-ctrl button').forEach(function(b){ b.addEventListener('click', function(){ preset(b.dataset.p); }); });
+  preset('dip');
+})();
+</script>

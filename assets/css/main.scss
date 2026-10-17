@@ -569,10 +569,12 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
 }
 
 // ── Esempi scorrevoli (scorri.html) ───────────────────────────
-.scorri { margin: .4rem 0 .2rem; }
+.scorri { margin: .4rem 0 .2rem; display: flex; flex-direction: column; }
+// la fila di slide prende l'altezza della slide che si sta guardando (la imposta scorri-end.html)
 .scorri-track {
-  display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory;
-  scroll-behavior: smooth; scrollbar-width: none;
+  display: flex; gap: 1rem; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory;
+  scroll-behavior: smooth; scrollbar-width: none; align-items: flex-start;
+  transition: height .3s ease;
   &::-webkit-scrollbar { display: none; }
 }
 .scorri-slide {
@@ -582,7 +584,8 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
 }
 .scorri-text { width: 100%; margin-top: .5rem; p { margin: .3rem 0; } }
 .scorri-nav {
-  display: flex; justify-content: center; align-items: center; gap: .6rem; margin-top: .4rem;
+  order: -1;   // i pulsanti stanno in cima, sopra le slide
+  display: flex; justify-content: center; align-items: center; gap: .6rem; margin: 0 0 .7rem;
   .scorri-prev, .scorri-next {
     width: 2rem; height: 2rem; border-radius: 50%; border: 1px solid #cbd5e1; background: #fff;
     cursor: pointer; font-size: 1.2rem; line-height: 1; color: #334155;
@@ -2004,12 +2007,17 @@ cit em, cit i { font-style: normal; }
   font-size: .95em; letter-spacing: 0; line-height: 1;
 }
 .iex-lbl { font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#0e7490; margin:0 0 .8rem; }
-.iex-topnav { display:flex; align-items:center; gap:.6rem; margin-bottom:1.1rem; flex-wrap:wrap; }
-.iex-navbtn { background:#cffafe; color:#0e7490; border:1px solid #67e8f9; border-radius:5px; padding:.22rem .7rem; cursor:pointer; font-size:.85rem; }
-.iex-navbtn:hover:not(:disabled) { background:#a5f3fc; }
+.iex-topnav { display:flex; align-items:center; justify-content:center; gap:.6rem; margin-bottom:1.1rem; flex-wrap:wrap; }
+// stessi pulsanti tondi ‹ › delle slide (scorri.html): il testo "← Prec." / "Succ. →" scritto
+// nei singoli esercizi viene nascosto e sostituito dalla freccia
+.iex-navbtn { width:2rem; height:2rem; border-radius:50%; border:1px solid #cbd5e1; background:#fff; cursor:pointer; padding:0; font-size:0; line-height:1; color:#334155; display:inline-flex; align-items:center; justify-content:center; }
+.iex-navbtn::before { font-size:1.2rem; }
+.iex-navbtn[id$="prev"]::before { content:"‹"; }
+.iex-navbtn[id$="next"]::before { content:"›"; }
+.iex-navbtn:hover:not(:disabled) { border-color:#0e7490; color:#0e7490; }
 .iex-navbtn:disabled { opacity:.35; cursor:default; }
-.iex-dots { display:flex; gap:.3rem; align-items:center; }
-.iex-dot { width:11px; height:11px; border-radius:50%; background:#a5f3fc; cursor:pointer; transition:background .18s; }
+.iex-dots { display:inline-flex; gap:.4rem; align-items:center; }
+.iex-dot { width:9px; height:9px; border-radius:50%; background:#cbd5e1; cursor:pointer; transition:background .18s; }
 .iex-dot.cur { background:#0e7490; }
 .iex-dot.ok { background:#0f766e; }
 .iex-qt { margin:0 0 .6rem; font-size:.95rem; line-height:1.55; }
@@ -2096,3 +2104,7 @@ cit em, cit i { font-style: normal; }
   .ra-ctrl, .ra-ans { display: none !important; }
   .ra-area { border: 1px dashed #999; min-height: 6rem; }
 }
+
+// Quando si arriva a una simulazione da un link interno (es. "rivedi l'esperimento"),
+// la barra in alto non deve coprirla.
+.phet-wrap { scroll-margin-top: calc(#{$topbar-height} + 24px); }

@@ -190,7 +190,7 @@ Quale di queste due misure è più precisa?
 {"v":"b","t":"La massa di una moneta: $(7{,}5 \\pm 0{,}1)\\ \\text g$"},
 {"v":"c","t":"Sono ugualmente precise"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-auto-moneta" opts=_o ok="a" s="Bisogna confrontare gli errori relativi, non le incertezze: per l'automobile $10/1200 \\approx 0{,}8\\%$, per la moneta $0{,}1/7{,}5 \\approx 1{,}3\\%$. Dieci chili sembrano tanti, ma rispetto a una tonnellata sono pochi." %}
+{% include mcq.html id="mcq-auto-moneta" opts=_o ok="a" s="Bisogna confrontare gli errori relativi, non le incertezze: per l'automobile $10/1200 \approx 0{,}8\%$, per la moneta $0{,}1/7{,}5 \approx 1{,}3\%$. Dieci chili sembrano tanti, ma rispetto a una tonnellata sono pochi." %}
 {% include box-end.html %}
 
 ### Propagazione degli errori

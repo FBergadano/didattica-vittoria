@@ -1,0 +1,30 @@
+{% comment %}
+Lista di materiali da spuntare (la spunta resta salvata nel browser).
+Parametri:
+  id    — ID univoco (obbligatorio)
+  voci  — le voci, separate da "|" (HTML ammesso)
+Esempio:
+  {% include lista-materiali.html id="mat-elettroscopio" voci="un barattolo di vetro|della carta stagnola" %}
+{% endcomment %}
+{% assign _voci = include.voci | split: "|" %}
+<ul class="lista-mat" id="{{ include.id }}">
+{% for v in _voci %}<li><label><input type="checkbox" data-k="{{ forloop.index0 }}"> <span>{{ v }}</span></label></li>
+{% endfor %}</ul>
+<style>
+.lista-mat { list-style: none; padding-left: .2rem; margin: .6rem 0 1rem; }
+.lista-mat li { margin: .3rem 0; }
+.lista-mat label { cursor: pointer; display: inline-flex; gap: .5rem; align-items: baseline; }
+.lista-mat input { transform: scale(1.15); accent-color: var(--accent, #0f766e); }
+.lista-mat input:checked + span { color: #6b7280; text-decoration: line-through; }
+@media print { .lista-mat input { display: none; } .lista-mat li::before { content: "☐ "; } }
+</style>
+<script>
+(function(){
+  var ul = document.getElementById('{{ include.id }}'); if (!ul) return;
+  var st = (window._lvLoad && _lvLoad('field', 'mat-{{ include.id }}')) || {};
+  ul.querySelectorAll('input').forEach(function(c){
+    c.checked = !!st[c.dataset.k];
+    c.addEventListener('change', function(){ st[c.dataset.k] = c.checked; if (window._lvSave) _lvSave('field', 'mat-{{ include.id }}', st); });
+  });
+})();
+</script>

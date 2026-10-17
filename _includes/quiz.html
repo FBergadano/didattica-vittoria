@@ -185,10 +185,17 @@ function confetti(){
     if(alive)requestAnimationFrame(frame);else canvas.style.display='none';
   })();
 }
+// I fuochi d'artificio hanno un canvas tutto loro: se usassero quello dei coriandoli
+// (che magari stanno ancora cadendo dall'ultima risposta giusta), i coriandoli,
+// finendo, nasconderebbero il canvas e i fuochi non si vedrebbero.
 function fireworks(){
-  var canvas=getCanvas(),ctx=canvas.getContext('2d');
+  if(window._lvFuochi)return _lvFuochi(); // condivisi con gli esercizi tutti giusti (scripts.html)
+  var canvas=document.createElement('canvas');
+  canvas.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;';
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;document.body.appendChild(canvas);
+  var ctx=canvas.getContext('2d');
   var cols=['#fbbf24','#ef4444','#0891b2','#22d3ee','#10b981','#f472b6','#fff','#fde68a'];
-  var bursts=[],cnt=0,max=16,done=false;
+  var bursts=[],cnt=0,max=7,done=false;
   function newBurst(){
     var cx=window.innerWidth*(0.15+Math.random()*.7),cy=window.innerHeight*(0.08+Math.random()*.5);
     var col=cols[Math.floor(Math.random()*cols.length)],ps=[];
@@ -199,19 +206,19 @@ function fireworks(){
     bursts.push(ps);
   }
   newBurst();
-  var t=setInterval(function(){cnt++;if(cnt<max)newBurst();else clearInterval(t);},400);
+  var t=setInterval(function(){cnt++;if(cnt<max)newBurst();else clearInterval(t);},300);
   (function frame(){
     if(done)return;
     ctx.fillStyle='rgba(0,0,0,0.13)';ctx.fillRect(0,0,canvas.width,canvas.height);
     var alive=false;
     bursts.forEach(function(ps){ps.forEach(function(p){
-      p.x+=p.vx;p.y+=p.vy;p.vy+=0.07;p.a-=0.012;
+      p.x+=p.vx;p.y+=p.vy;p.vy+=0.07;p.a-=0.017;
       if(p.a<=0)return;alive=true;
       ctx.beginPath();ctx.globalAlpha=p.a;ctx.fillStyle=p.col;ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
     });});
     ctx.globalAlpha=1;
     if(alive||cnt<max)requestAnimationFrame(frame);
-    else{done=true;canvas.style.display='none';}
+    else{done=true;canvas.remove();}
   })();
 }
 

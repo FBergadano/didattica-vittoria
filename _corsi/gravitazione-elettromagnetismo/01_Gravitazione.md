@@ -202,13 +202,15 @@ $$\vec F_{tot} = \vec F_1 + \vec F_2 + \dots$$
 
 Poiché le forze sono vettori, per sommarle non basta sommarne i moduli: vanno sommate **come vettori**, con la stessa regola del parallelogramma già vista per la somma di due vettori qualsiasi.
 
-{% include figure/figura-somma-forze.html %}
-
-Nell'animazione sopra, i moduli di $\vec F_1$ e $\vec F_2$ si ottengono con la legge di Newton:
+I moduli di $\vec F_1$ e $\vec F_2$ si ottengono con la legge di gravitazione universale, ciascuno con la propria distanza:
 
 $$
-F_1 = G \frac{M_1 \cdot m}{r^2}, \qquad\qquad F_2 = G \frac{M_2\cdot m}{r^2} 
+F_1 = G \frac{M_1 \cdot m}{r_1^2}, \qquad\qquad F_2 = G \frac{M_2\cdot m}{r_2^2} 
 $$
+
+Nel simulatore seguente puoi spostare le masse e cambiarne i valori: guarda come cambiano le due forze su $m$, e la loro somma.
+
+{% include lab-virtuali/sovrapposizione-lab.html id="sov-forza-grav" tipo="forza" fisica="grav" %}
 
 Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta in un contesto concreto — con quattro scenari diversi.
 
@@ -406,7 +408,9 @@ $$\vec g_{tot} = \vec g_1 + \vec g_2 + \cdots.$$
 
 {% include box-end.html %}
 
-{% include figure/figura-somma-campi.html %}
+Prova a sommare i campi con il simulatore: sposta le masse e il punto $P$, e cambia i valori delle masse.
+
+{% include lab-virtuali/sovrapposizione-lab.html id="sov-campo-grav" tipo="campo" fisica="grav" %}
 
 
 ## Le linee di campo
@@ -584,12 +588,9 @@ $$U_{tot} = U_1+U_2 + \cdots$$
 {% include box-end.html %}
 
 Mentre la forza e il campo sono vettori e perciò richiedevano una somma vettoriale, l'energia potenziale è **scalare**, pertanto <u markdown="span">la somma delle energie potenziali è una normale somma algebrica</u>.  
-{% include margin-note.html testo="Un esempio numerico" %}
-Ad esempio,
+Prova con il simulatore: sposta le masse e la massa $m$, cambiane i valori, aggiungi o togli masse. I conti si aggiornano da soli.
 
-{% include figure/figura-sovrapposizione-energia-potenziale.html %}
-
-{% include margin-note-end.html %}
+{% include lab-virtuali/sovrapposizione-lab.html id="sov-energia-grav" tipo="energia" fisica="grav" aggiungi="true" %}
 
 ## Potenziale gravitazionale
 
@@ -673,11 +674,9 @@ $$V_{tot} = V_1+V_2 + \cdots$$
 {% include box-end.html %}
 
 Come per l'energia potenziale, anche qui la somma è puramente algebrica, senza bisogno di alcuna regola del parallelogramma.  
-{% include margin-note.html testo="Un esempio per chiarire" %}
-Riprendendo lo stesso esempio di prima:
+Prova con il simulatore: sposta le masse e il punto $P$, cambia i valori delle masse, aggiungine o toglile.
 
-{% include figure/figura-sovrapposizione-potenziale.html %}
-{% include margin-note-end.html %}
+{% include lab-virtuali/sovrapposizione-lab.html id="sov-potenziale-grav" tipo="potenziale" fisica="grav" aggiungi="true" %}
 
 
 

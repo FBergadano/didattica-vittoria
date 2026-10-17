@@ -1,0 +1,34 @@
+{% comment %}
+Riquadro "Laboratorio a casa": rimanda a una scheda con un esperimento da fare
+a casa. Foto piccola a sinistra, testo e pulsante a destra.
+Parametri:
+  titolo — nome dell'esperimento (obbligatorio)
+  testo  — una o due righe di presentazione (HTML ammesso)
+  link   — indirizzo della scheda, dalla root del sito (es. "/corsi/.../elettroscopio-fai-da-te/")
+  img    — foto (opzionale)
+Esempio:
+  {% include box-lab.html titolo="Elettroscopio a foglie fai da te"
+     testo="Costruiscine uno con materiali da cucina." link="/corsi/..." img="/corsi/immagini/....webp" %}
+{% endcomment %}
+<aside class="lab-casa" id="lab-casa">
+  {% if include.img %}<a href="{{ include.link | relative_url }}" class="lab-casa-img"><img src="{{ include.img | relative_url }}" alt="{{ include.titolo }}" loading="lazy"></a>{% endif %}
+  <div class="lab-casa-txt">
+    <p class="lab-casa-lbl">🔧 Laboratorio a casa</p>
+    <p class="lab-casa-tit">{{ include.titolo }}</p>
+    <p class="lab-casa-desc">{{ include.testo }}</p>
+    <a class="lab-casa-btn" href="{{ include.link | relative_url }}">Vai alla scheda →</a>
+  </div>
+</aside>
+<style>
+.lab-casa { display: flex; gap: 1rem; align-items: center; margin: 1.6rem 0; padding: .9rem 1rem; border: 1px solid #fcd34d; border-left: 5px solid #d97706; border-radius: 10px; background: #fffbeb; }
+.lab-casa-img img { width: 110px; height: 130px; object-fit: cover; border-radius: 8px; display: block; }
+.lab-casa-txt { flex: 1; min-width: 0; }
+.lab-casa p { margin: 0; }
+.lab-casa .lab-casa-lbl { font-family: "Atkinson Hyperlegible", sans-serif; font-size: .72rem; letter-spacing: .07em; text-transform: uppercase; font-weight: 700; color: #b45309; }
+.lab-casa .lab-casa-tit { font-size: 1.12rem; font-weight: 600; color: #1f2937; margin: .1rem 0 .25rem; }
+.lab-casa .lab-casa-desc { font-size: .92rem; color: #4b5563; line-height: 1.45; }
+.lab-casa-btn { display: inline-block; margin-top: .5rem; padding: .35rem .9rem; border-radius: 6px; background: #d97706; color: #fff !important; text-decoration: none !important; font-size: .9rem; font-family: "Atkinson Hyperlegible", sans-serif; }
+.lab-casa-btn:hover { background: #b45309; }
+@media (max-width: 480px) { .lab-casa { flex-direction: column; align-items: flex-start; } .lab-casa-img img { width: 100%; height: 160px; } }
+@media print { .lab-casa-btn { display: none; } }
+</style>

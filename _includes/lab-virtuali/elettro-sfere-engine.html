@@ -1,0 +1,267 @@
+{% comment %}
+Motore condiviso per le animazioni di elettrostatica con sfere conduttrici
+(elettrizzazione per contatto, polarizzazione, elettrizzazione per induzione).
+Disegna su canvas sfere metalliche con ioni positivi fissi (+) ed elettroni (−)
+che si spostano dolcemente verso nuove posizioni; una bacchetta isolante
+carica; un collegamento a terra. Sotto ogni sfera compare la sua carica totale.
+Solo gli elettroni si muovono: i protoni restano fermi.
+Si include una volta sola: le singole animazioni lo includono e poi chiamano
+window.ElettroLab.scene(...). Nessun parametro.
+{% endcomment %}
+<script>
+window.ElettroLab = window.ElettroLab || (function(){
+  var GA = Math.PI * (3 - Math.sqrt(5)); // angolo aureo: distribuzione "a girasole" uniforme
+  function sunflower(n, R, phase){
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var r = R * Math.sqrt((i + .5) / n), a = i * GA + (phase || 0);
+      out.push([r * Math.cos(a), r * Math.sin(a)]);
+    }
+    return out;
+  }
+  function rr(ctx, x, y, w, h, r){ ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+
+  function scene(canvas, W, H){
+    var ctx = canvas.getContext('2d'), S = 2;
+    canvas.width = W * S; canvas.height = H * S;
+    var sc = { spheres: {}, list: [], electrons: [], rod: null, ground: null, t: 0, hide: {} }; // hide[id]: carica mostrata come «?»
+
+    sc.sphere = function(id, x, y, R, ions, label){
+      var s = { id: id, x: x, y: y, tx: x, ty: y, R: R, label: label || '',
+        ions: sunflower(ions, R * .74, 1.1) };
+      sc.spheres[id] = s; sc.list.push(s); return s;
+    };
+    sc.addElectrons = function(id, n){
+      var s = sc.spheres[id];
+      for (var i = 0; i < n; i++) sc.electrons.push({ s: id, x: s.x, y: s.y, rx: 0, ry: 0, path: null, a: 1, gone: false, ph: Math.random() * 6.3 });
+      sc.layout(id, null, true);
+    };
+    sc.of = function(id){ return sc.electrons.filter(function(e){ return e.s === id && !e.gone && !e.path; }); };
+    sc.charge = function(id){ return sc.spheres[id].ions.length - sc.electrons.filter(function(e){ return e.s === id && !e.gone; }).length; };
+
+    // posizioni di riposo degli elettroni di una sfera.
+    // away: direzione (angolo) verso cui gli elettroni vengono spinti, oppure null.
+    // str (0–1): quanto è forte lo spostamento (dipende dalla carica della bacchetta); se manca resta quello di prima.
+    sc.layout = function(id, away, instant, str){
+      var s = sc.spheres[id], el = sc.of(id), n = el.length, ni = s.ions.length, pts;
+      s.away = away; if (str !== undefined) s.str = str; str = s.str === undefined ? 1 : s.str;
+      if (away === null || away === undefined) {
+        var base = Math.min(n, ni), extra = n - base;
+        pts = sunflower(base, s.R * .7, 0.3);
+        for (var k = 0; k < extra; k++) { var a = -Math.PI / 2 + 2 * Math.PI * k / extra; pts.push([s.R * .83 * Math.cos(a), s.R * .83 * Math.sin(a)]); }
+      } else {
+        // gli elettroni si ammassano sul lato opposto: girasole in un disco più piccolo spostato
+        var off = s.R * .43 * str, cx = off * Math.cos(away), cy = off * Math.sin(away);
+        pts = sunflower(n, s.R * (.7 - .23 * str), 0.3).map(function(p){ return [cx + p[0], cy + p[1]]; });
+      }
+      el.forEach(function(e, i){ e.rx = pts[i][0]; e.ry = pts[i][1]; if (instant) { e.x = s.x + e.rx; e.y = s.y + e.ry; e.ox = e.rx; e.oy = e.ry; } });
+    };
+    // fa comparire un elettrone in (x,y) che segue il percorso pts ed entra nella sfera "to"
+    sc.spawn = function(x, y, pts, to){ var e = { s: null, x: x, y: y, rx: 0, ry: 0, path: pts.slice(), to: to, vanish: false, a: 1, gone: false, ph: Math.random() * 6.3 }; sc.electrons.push(e); return e; };
+    // sposta un elettrone lungo una serie di punti (coordinate assolute); poi entra nella sfera "to"
+    sc.send = function(e, pts, to, vanish){ e.path = pts.slice(); e.to = to; e.vanish = !!vanish; };
+
+    function stepE(e, dt){
+      var tx, ty, k = Math.min(1, dt * 5);
+      if (e.path) {
+        var p = e.path[0]; tx = p[0]; ty = p[1];
+        var dx = tx - e.x, dy = ty - e.y, d = Math.hypot(dx, dy), v = 90 * dt;
+        if (d <= v) { e.x = tx; e.y = ty; e.path.shift(); if (!e.path.length) { e.path = null; if (e.vanish) e.gone = true; else { e.s = e.to; e.ox = e.x - sc.spheres[e.to].x; e.oy = e.y - sc.spheres[e.to].y; sc.layout(e.to, sc.spheres[e.to].away); } } }
+        else { e.x += dx / d * v; e.y += dy / d * v; }
+        return;
+      }
+      if (e.gone) return;
+      // l'elettrone si muove insieme alla sua sfera (niente "inerzia" quando la sfera si sposta);
+      // si sposta rispetto alla sfera solo quando cambia la sua posizione di riposo
+      var s = sc.spheres[e.s];
+      if (e.ox === undefined) { e.ox = e.x - s.x; e.oy = e.y - s.y; }
+      e.ox += (e.rx - e.ox) * k; e.oy += (e.ry - e.oy) * k;
+      e.x = s.x + e.ox; e.y = s.y + e.oy;
+    }
+
+    function ball(x, y, r, c0, c1, sym, col){
+      var g = ctx.createRadialGradient(x - r * .35, y - r * .4, .5, x, y, r); g.addColorStop(0, c0); g.addColorStop(1, c1);
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
+      ctx.fillStyle = col; ctx.font = 'bold ' + Math.round(r * 1.5) + 'px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(sym, x, y + .5); ctx.textBaseline = 'alphabetic';
+    }
+    function drawSphere(s){
+      // ombra sul piano
+      ctx.fillStyle = 'rgba(15,23,42,.10)'; ctx.beginPath(); ctx.ellipse(s.x, s.y + s.R + 6, s.R * .85, 5, 0, 0, 6.283); ctx.fill();
+      var g = ctx.createRadialGradient(s.x - s.R * .4, s.y - s.R * .45, s.R * .1, s.x, s.y, s.R);
+      g.addColorStop(0, '#ffffff'); g.addColorStop(.45, '#dbe3ec'); g.addColorStop(1, '#8a9bb0');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(s.x, s.y, s.R, 0, 6.283); ctx.fill();
+      ctx.strokeStyle = '#7b8ca3'; ctx.lineWidth = 1.2; ctx.stroke();
+      s.ions.forEach(function(p){ ball(s.x + p[0], s.y + p[1], 4.2, '#fff1f2', '#fb7185', '+', '#881337'); });
+    }
+    function badge(s){
+      var q = sc.charge(s.id), txt = 'carica: ' + (sc.hide[s.id] ? '?' : q > 0 ? '+' + q : q < 0 ? '−' + (-q) : '0');
+      var col = sc.hide[s.id] ? ['#fefce8', '#a16207'] : q > 0 ? ['#fff1f2', '#be123c'] : q < 0 ? ['#eff6ff', '#1d4ed8'] : ['#f1f5f9', '#475569'];
+      ctx.font = 'bold 12px "Atkinson Hyperlegible", sans-serif'; var w = ctx.measureText(txt).width + 18;
+      var y = s.y + s.R + 18;
+      ctx.fillStyle = col[0]; rr(ctx, s.x - w / 2, y, w, 20, 10); ctx.fill(); ctx.strokeStyle = col[1]; ctx.lineWidth = 1; ctx.stroke();
+      ctx.fillStyle = col[1]; ctx.textAlign = 'center'; ctx.fillText(txt, s.x, y + 14);
+      if (s.label) { ctx.fillStyle = '#6b7280'; ctx.font = 'italic 11px Georgia, serif'; ctx.fillText(s.label, s.x, y + 36); }
+    }
+    function drawRod(r){
+      if (!r.visible) return;
+      ctx.save(); ctx.translate(r.x, r.y);
+      // ombra
+      ctx.fillStyle = 'rgba(15,23,42,.10)'; ctx.beginPath(); ctx.ellipse(-60, 22, 60, 4, 0, 0, 6.283); ctx.fill();
+      // bacchetta di plastica (gialla, lucida): dalla punta (x = 0) verso sinistra
+      var g = ctx.createLinearGradient(0, -8, 0, 8); g.addColorStop(0, '#fde68a'); g.addColorStop(.45, '#fbbf24'); g.addColorStop(1, '#b45309');
+      ctx.fillStyle = g; rr(ctx, -120, -8, 120, 16, 8); ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.5)'; rr(ctx, -114, -5, 108, 3.5, 1.7); ctx.fill();
+      // cariche sulla parte strofinata, vicino alla punta
+      for (var i = 0; i < r.n; i++) { var x = -11 - i * 14;
+        if (r.sign < 0) ball(x, 0, 4.6, '#eff6ff', '#3b82f6', '−', '#ffffff'); else ball(x, 0, 4.6, '#fff1f2', '#e11d48', '+', '#ffffff'); }
+      ctx.restore();
+      ctx.fillStyle = '#6b7280'; ctx.font = 'italic 11px Georgia, serif'; ctx.textAlign = 'center';
+      ctx.fillText('bacchetta carica (' + (r.sign < 0 ? '−' : '+') + ')', r.x - 60, r.y + 38);
+    }
+    // percorso del filo di terra: dalla superficie della sfera (in basso a destra), di lato, poi giù
+    sc.groundPath = function(){
+      var gr = sc.ground, s = sc.spheres[gr.sphere], a = .7;
+      var p0 = [s.x + s.R * Math.cos(a), s.y + s.R * Math.sin(a)], xr = s.x + s.R + 24;
+      return [p0, [xr, p0[1]], [xr, gr.y]];
+    };
+    function drawGround(gr){
+      if (!gr) return;
+      var p = sc.groundPath();
+      ctx.strokeStyle = gr.on ? '#16a34a' : 'rgba(100,116,139,.55)'; ctx.lineWidth = gr.on ? 3 : 2;
+      ctx.setLineDash(gr.on ? [] : [5, 5]); ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(p[0][0], p[0][1]); ctx.lineTo(p[1][0], p[1][1]); ctx.lineTo(p[2][0], p[2][1]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = gr.on ? '#16a34a' : '#94a3b8'; ctx.beginPath(); ctx.arc(p[0][0], p[0][1], 3, 0, 6.283); ctx.fill();
+      var x = p[2][0], y1 = p[2][1];
+      ctx.strokeStyle = gr.on ? '#16a34a' : '#94a3b8'; ctx.lineWidth = 2.5;
+      [[16, 0], [10, 6], [4, 12]].forEach(function(l){ ctx.beginPath(); ctx.moveTo(x - l[0], y1 + l[1]); ctx.lineTo(x + l[0], y1 + l[1]); ctx.stroke(); });
+      ctx.fillStyle = '#6b7280'; ctx.font = 'italic 11px Georgia, serif'; ctx.textAlign = 'left'; ctx.fillText('terra', x + 22, y1 + 10);
+    }
+
+    var last = null, visible = true;
+    if (window.IntersectionObserver) new IntersectionObserver(function(en){ visible = en[0].isIntersecting; last = null; }).observe(canvas);
+    function frame(t){
+      if (sc.dead) return; // scena sostituita (Ricomincia)
+      if (visible) {
+        var dt = last === null ? 0 : Math.min((t - last) / 1000, .05); last = t; sc.t += dt;
+        sc.list.forEach(function(s){ var k = Math.min(1, dt * 3.2); s.x += (s.tx - s.x) * k; s.y += (s.ty - s.y) * k; });
+        if (sc.rod) { var k2 = Math.min(1, dt * 3); sc.rod.x += (sc.rod.tx - sc.rod.x) * k2; }
+        sc.electrons.forEach(function(e){ stepE(e, dt); });
+        ctx.setTransform(S, 0, 0, S, 0, 0); ctx.clearRect(0, 0, W, H);
+        drawGround(sc.ground);
+        sc.list.forEach(drawSphere);
+        sc.electrons.forEach(function(e){
+          if (e.gone) return;
+          var w = e.path ? 0 : .8; // piccola vibrazione, solo per dare vita
+          ball(e.x + w * Math.sin(sc.t * 2.1 + e.ph), e.y + w * Math.cos(sc.t * 1.7 + e.ph), 4.4, '#ffffff', '#93c5fd', '−', '#1e3a8a');
+        });
+        if (sc.rod) drawRod(sc.rod);
+        sc.list.forEach(badge);
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+    return sc;
+  }
+  // contatore  etichetta [−] valore [+]  dentro un contenitore .elx-par
+  function stepper(box, label, min, max, val, fmt, onChange){
+    var sp = document.createElement('span'), m = document.createElement('button'), p = document.createElement('button'), b = document.createElement('b');
+    m.type = p.type = 'button'; m.textContent = '−'; p.textContent = '+';
+    m.setAttribute('aria-label', label + ': diminuisci'); p.setAttribute('aria-label', label + ': aumenta');
+    sp.appendChild(document.createTextNode(label + ' ')); sp.appendChild(m); sp.appendChild(b); sp.appendChild(p); box.appendChild(sp);
+    var api = { value: val, set: function(v){ api.value = v; b.textContent = fmt ? fmt(v) : v; m.disabled = v <= min; p.disabled = v >= max; },
+      enable: function(on){ m.disabled = !on || api.value <= min; p.disabled = !on || api.value >= max; } };
+    m.addEventListener('click', function(){ api.set(api.value - 1); onChange(api.value); });
+    p.addEventListener('click', function(){ api.set(api.value + 1); onChange(api.value); });
+    api.set(val); return api;
+  }
+  function fmtQ(q){ return q > 0 ? '+' + q : q < 0 ? '−' + (-q) : '0'; }
+  function shuffle(a){ for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  // Animazione-quesito: una serie di passi. Ogni passo può avere una domanda
+  // (q() → { t: testo, opts: [{ t, ok }], s: spiegazione }, opts mescolate) e un'azione
+  // act(done) che fa succedere la cosa sullo schermo e chiama done() quando ha finito.
+  // Lo studente risponde → vede se ha indovinato e perché → l'azione parte → «Avanti ▶».
+  // Un passo senza domanda mostra il pulsante st.label che fa partire l'azione.
+  // cfg: { id, onStart (prima risposta), onEnd }
+  function flow(root, steps, cfg){
+    var qb = root.querySelector('.elx-q'), main = root.querySelector('.elx-main'), run = 0;
+    function go(i){
+      var my = run;
+      main.onclick = null;
+      if (i >= steps.length) { main.hidden = true; if (cfg.onEnd) cfg.onEnd(); return; }
+      var st = steps[i], q = st.q ? st.q() : null;
+      function after(){
+        if (my !== run) return;
+        if (i + 1 >= steps.length) { go(i + 1); return; }
+        main.hidden = false; main.disabled = false; main.textContent = 'Avanti ▶';
+        main.onclick = function(){ go(i + 1); };
+      }
+      function act(){ if (st.act) st.act(after); else after(); }
+      if (!q) {
+        qb.hidden = true; main.hidden = false; main.disabled = false; main.textContent = st.label;
+        main.onclick = function(){ main.onclick = null; main.disabled = true; if (i === 0 && cfg.onStart) cfg.onStart(); act(); };
+        return;
+      }
+      main.hidden = true; qb.hidden = false; qb.innerHTML = '';
+      var k = 0; for (var j = 0; j <= i; j++) if (steps[j].q && (j < i ? steps[j].asked : true)) k++;
+      st.asked = true;
+      var h = document.createElement('p'); h.className = 'elx-qh'; h.textContent = 'Domanda ' + k; qb.appendChild(h);
+      var t = document.createElement('p'); t.className = 'elx-qt'; t.textContent = q.t; qb.appendChild(t);
+      var box = document.createElement('div'); box.className = 'elx-opts'; qb.appendChild(box);
+      var fb = document.createElement('p'); fb.className = 'elx-fb'; fb.hidden = true;
+      var btns = shuffle(q.opts.slice()).map(function(o){
+        var b = document.createElement('button'); b.type = 'button'; b.textContent = o.t; box.appendChild(b);
+        b.onclick = function(){
+          if (my !== run) return;
+          btns.forEach(function(x){ x.b.disabled = true; if (x.o.ok) x.b.classList.add('ok'); });
+          if (!o.ok) b.classList.add('no');
+          fb.hidden = false; fb.className = 'elx-fb ' + (o.ok ? 'ok' : 'no');
+          fb.innerHTML = '<b>' + (o.ok ? '✓ Esatto.' : '✗ No.') + '</b> '; fb.appendChild(document.createTextNode(q.s));
+          if (window._lvEsito) window._lvEsito('elx', cfg.id + '-' + i, o.ok);
+          if (i === 0 && cfg.onStart) cfg.onStart();
+          act();
+        };
+        return { b: b, o: o };
+      });
+      qb.appendChild(fb);
+    }
+    return { start: function(){ run++; steps.forEach(function(st){ st.asked = false; }); go(0); } };
+  }
+  return { scene: scene, stepper: stepper, fmtQ: fmtQ, flow: flow, shuffle: shuffle };
+})();
+</script>
+<style>
+.elx-widget { margin: 1.6rem auto; max-width: 470px; text-align: center; }
+.elx-canvas { width: 100%; height: auto; display: block; margin: 0 auto; }
+.elx-ctrl { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin-top: .3rem; }
+.elx-btn { padding: .45rem .9rem; border-radius: 6px; cursor: pointer; border: 1px solid #94a3b8; background: #f1f5f9; font-size: .86rem; }
+.elx-btn:hover:not(:disabled) { background: #e2e8f0; }
+.elx-btn:disabled { opacity: .5; cursor: default; }
+.elx-btn.elx-main { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+.elx-btn.elx-main:hover:not(:disabled) { filter: brightness(1.08); background: var(--accent, #0f766e); }
+.elx-step { text-align: center; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .74rem; color: #64748b; margin: .2rem 0 0; letter-spacing: .04em; }
+.elx-caption { text-align: center; min-height: 3em; font-size: .86rem; font-style: italic; color: #4b5563; margin: .4rem auto 0; max-width: 440px; }
+.elx-widget p.elx-step, .elx-widget p.elx-caption { text-align: center; }
+.elx-par { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; justify-content: center; margin: .2rem 0 .5rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .8rem; color: #475569; }
+.elx-par > span { display: inline-flex; align-items: center; gap: .3rem; }
+.elx-par b { display: inline-block; min-width: 4.6em; text-align: center; color: #1e293b; }
+.elx-par button { width: 1.7em; height: 1.7em; padding: 0; border-radius: 50%; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .9rem; line-height: 1; }
+.elx-par button:hover:not(:disabled) { background: #e2e8f0; }
+.elx-par button:disabled { opacity: .4; cursor: default; }
+.elx-par select { font: inherit; padding: .1rem .2rem; border-radius: 4px; border: 1px solid #94a3b8; background: #f8fafc; }
+.elx-par select:disabled { opacity: .5; }
+.elx-q { text-align: left; margin: .5rem auto .2rem; max-width: 440px; padding: .6rem .8rem .7rem; border: 1px solid #cbd5e1; border-left: 4px solid var(--accent, #0f766e); border-radius: 6px; background: #f8fafc; }
+.elx-widget .elx-q p { margin: 0; text-align: left; }
+.elx-q .elx-qh { font-family: "Atkinson Hyperlegible", sans-serif; font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent, #0f766e); }
+.elx-q .elx-qt { font-size: .92rem; margin: .15rem 0 .45rem; color: #1e293b; }
+.elx-opts { display: flex; flex-direction: column; gap: .3rem; }
+.elx-opts button { text-align: left; padding: .38rem .7rem; border-radius: 5px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; font-size: .86rem; color: #1e293b; }
+.elx-opts button:hover:not(:disabled) { background: #f1f5f9; border-color: #94a3b8; }
+.elx-opts button:disabled { cursor: default; opacity: .6; }
+.elx-opts button.ok { opacity: 1; border-color: #16a34a; background: #f0fdf4; }
+.elx-opts button.no { opacity: 1; border-color: #dc2626; background: #fef2f2; }
+.elx-widget .elx-q p.elx-fb { margin-top: .5rem; font-size: .85rem; color: #334155; }
+.elx-fb.ok b { color: #15803d; } .elx-fb.no b { color: #b91c1c; }
+@media print { .elx-widget { display: none; } }
+</style>

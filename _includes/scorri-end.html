@@ -8,8 +8,14 @@
   function mark(){var best=1e9;slides.forEach(function(sl,k){var d=Math.abs(sl.getBoundingClientRect().left-track.getBoundingClientRect().left);if(d<best){best=d;cur=k;}});dots.querySelectorAll('.scorri-dot').forEach(function(d,k){d.classList.toggle('on',k===cur);});}
   root.querySelector('.scorri-prev').addEventListener('click',function(){go(cur-1);});
   root.querySelector('.scorri-next').addEventListener('click',function(){go(cur+1);});
-  track.addEventListener('scroll',function(){window.requestAnimationFrame(mark);});
-  mark();
+  // altezza: quella della slide che si sta guardando (niente spazio vuoto sotto le domande corte);
+  // si aggiorna anche quando la slide cresce, per esempio quando compare una spiegazione
+  function fit(){var h=slides[cur]?slides[cur].offsetHeight:0;if(h)track.style.height=h+'px';}
+  track.addEventListener('scroll',function(){window.requestAnimationFrame(function(){mark();fit();});});
+  if(window.ResizeObserver){var ro=new ResizeObserver(function(){fit();});slides.forEach(function(s){ro.observe(s);});}
+  window.addEventListener('resize',fit);
+  window.addEventListener('beforeprint',function(){track.style.height='';});
+  mark();fit();
 })();
 </script>
 </div>

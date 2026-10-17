@@ -1,0 +1,43 @@
+{% comment %}
+Esercizio guidato ("Verifica Subito!") sull'unità di misura della costante di
+Coulomb k, in due passi che si sbloccano uno dopo l'altro (come
+unita-calore-specifico.html):
+ 1. isolare k nella legge di Coulomb F = k·|q1·q2|/r²  (invert.html);
+ 2. sostituire ogni grandezza con la sua unità di misura:
+    [k] = [F]·[r²] / ([|q1|]·[|q2|]) = N·m²/C²  (unit-derive.html).
+I progressi restano salvati nel browser. Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="uaCoul">
+<p class="iex-lbl">Verifica Subito!</p>
+
+<div id="uaCoul-s1">
+<p class="iex-qt"><strong>1.</strong> Per scoprire l'unità di misura di $k$, prima di tutto isola $k$ nella legge di Coulomb.</p>
+<div class="iex-nested">
+{% include invert.html id="inv-coul-unita" variabili="F|k|Qa|Qb|r" etichette="F|k|\lvert q_1\rvert|\lvert q_2\rvert|r"
+   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="k" %}
+</div>
+</div>
+
+<div id="uaCoul-s2" style="display:none">
+<p class="iex-qt"><strong>2.</strong> Hai trovato $k = \dfrac{F\cdot r^2}{\lvert q_1\rvert\cdot\lvert q_2\rvert}$. Ora sostituisci ogni grandezza con la sua unità di misura. Il valore assoluto non cambia l'unità: $\lvert q_1\rvert$ si misura come $q_1$.</p>
+<div class="iex-nested">
+{% include unit-derive.html id="ud-coul" testo="Trova [k]"
+   variabile="[k]"
+   numeratore_simboli="[F]|[r^2]" numeratore_corrette="N|m²"
+   denominatore_simboli="[\lvert q_1\rvert]|[\lvert q_2\rvert]" denominatore_corrette="C|C"
+   opzioni="N|J|kg|m|m²|C|C²" %}
+</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var s1=document.getElementById('uaCoul-s1'),s2=document.getElementById('uaCoul-s2');
+  function show(el){if(el.style.display==='none'){el.style.display='';if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([el]);}}
+  s1.addEventListener('iex:correct',function(){show(s2);});
+  // ripristino: se i passi erano già stati risolti in una visita precedente
+  var res=s1.querySelector('.invx-result');
+  if(res&&res.style.display==='block')show(s2);
+})();
+</script>

@@ -1,0 +1,329 @@
+{% comment %}
+Simulatore del principio di sovrapposizione degli effetti. Su una griglia (un
+quadretto = 1 m) ci sono alcune masse (o cariche) che generano l'effetto, e un
+oggetto di prova: la massa m (o la carica q) su cui si calcola la forza o
+l'energia potenziale, oppure il punto P in cui si calcola il campo o il
+potenziale. Lo studente trascina tutto dove vuole (le posizioni si agganciano
+ai nodi della griglia) e cambia i valori con i pulsanti −/+. Sotto, i conti si
+aggiornano da soli (distanze, formula e risultato di ciascun contributo, somma).
+Forza e campo sono vettori: si disegnano solo le frecce (in scala fra loro), il
+parallelogramma e la somma, senza conti; energia potenziale e potenziale sono
+scalari: si sommano i numeri, e si possono aggiungere o togliere masse/cariche.
+
+Parametri:
+  id       — ID univoco (obbligatorio)
+  tipo     — "forza" | "campo" | "energia" | "potenziale"
+  fisica   — "grav" (masse, default) | "elet" (cariche, in unità di 10⁻⁶ C)
+  aggiungi — "true" per permettere di aggiungere/togliere sorgenti (pensato per energia e potenziale)
+  titolo   — intestazione (default "Prova tu: sposta e cambia i valori")
+
+Esempio:
+  {% include lab-virtuali/sovrapposizione-lab.html id="sov-forza" tipo="forza" fisica="grav" %}
+{% endcomment %}
+<div class="sov-widget" id="{{ include.id }}" data-tipo="{{ include.tipo }}" data-fisica="{{ include.fisica | default: 'grav' }}" data-aggiungi="{{ include.aggiungi }}">
+<p class="sov-lbl">{{ include.titolo | default: "Prova tu: sposta e cambia i valori" }}</p>
+<p class="sov-hint"></p>
+<svg class="sov-svg" viewBox="0 0 452 296" role="img"></svg>
+<div class="sov-ctrl"></div>
+<div class="sov-calc"></div>
+</div>
+<style>
+.sov-widget { margin: 1.2rem auto; max-width: 500px; border: 1px solid #cbd5e1; border-radius: 10px; background: #fff; padding: .55rem .7rem .6rem; }
+.sov-lbl { font-family: "Atkinson Hyperlegible", sans-serif; font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent, #0f766e); font-weight: 700; margin: 0 0 .2rem; }
+.sov-widget p.sov-hint { font-size: .8rem; line-height: 1.35; color: #475569; font-style: italic; margin: 0 0 .2rem; }
+.sov-svg { width: 100%; max-width: 340px; height: auto; display: block; margin: 0 auto; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sov-svg .sov-drag { cursor: grab; }
+.sov-svg .sov-drag:active { cursor: grabbing; }
+.sov-ctrl { display: flex; flex-wrap: wrap; gap: .25rem .7rem; justify-content: center; margin: .25rem 0 .2rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .84rem; color: #334155; }
+.sov-ctrl .sov-row { display: inline-flex; align-items: center; gap: .25rem; }
+.sov-ctrl .sov-name { font-family: Georgia, serif; font-style: italic; font-weight: 600; }
+.sov-ctrl b { display: inline-block; min-width: 3.4em; text-align: center; color: #0f172a; font-weight: 600; }
+.sov-ctrl button { min-width: 1.55em; height: 1.55em; padding: 0 .3em; border-radius: 999px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .85rem; line-height: 1; color: #334155; }
+.sov-ctrl button:hover:not(:disabled) { background: #e2e8f0; }
+.sov-ctrl button:disabled { opacity: .35; cursor: default; }
+.sov-ctrl button.sov-add { border-radius: 6px; padding: .15rem .6rem; height: auto; background: #f0fdfa; border-color: var(--accent, #0f766e); color: var(--accent, #0f766e); }
+.sov-ctrl button.sov-del { border: none; background: none; color: #b91c1c; min-width: 1.2em; }
+.sov-calc { border-top: 1px dashed #cbd5e1; margin-top: .3rem; padding-top: .3rem; font-size: .8rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .1rem 1rem; }
+.sov-vett .sov-svg { max-width: 470px; }
+.sov-vett .sov-calc { display: none; }
+.sov-calc .sov-blk { overflow-x: auto; overflow-y: hidden; }
+.sov-calc .sov-all { grid-column: 1 / -1; overflow-x: auto; overflow-y: hidden; }
+.sov-widget .sov-calc p { margin: .15rem 0; }
+.sov-widget .sov-calc p.sov-note { font-size: .8rem; color: #64748b; font-style: italic; }
+.sov-widget .sov-calc p.sov-tot { margin-top: .45rem; }
+@media print { .sov-widget { display: none; } }
+</style>
+<script>
+window.SovLab = window.SovLab || (function(){
+  var NS = 'http://www.w3.org/2000/svg', CELL = 40, OX = 26, OY = 30, NX = 10, NY = 6;
+  var SUB = ['₀','₁','₂','₃','₄','₅','₆','₇','₈','₉'];
+  var COLS = ['#dc2626', '#7c3aed', '#ea580c', '#db2777', '#0891b2', '#65a30d'];
+  var GRAD = [['#fffbeb','#fde68a','#fbbf24'], ['#f0fdfa','#99f6e4','#5eead4'], ['#fff7ed','#fed7aa','#fb923c'], ['#fdf2f8','#fbcfe8','#f472b6'], ['#ecfeff','#a5f3fc','#22d3ee'], ['#f7fee7','#d9f99d','#a3e635']];
+
+  function el(tag, attrs, parent){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+  // numero in LaTeX con 3 cifre significative e la virgola decimale
+  function fmt(x){
+    if (x === 0) return '0';
+    var e = Math.floor(Math.log10(Math.abs(x)));
+    if (e >= -2 && e <= 3) { var s = String(parseFloat(x.toPrecision(3))); return s.replace('-', '-').replace('.', '{,}'); }
+    var m = x / Math.pow(10, e); if (Math.abs(parseFloat(m.toFixed(2))) >= 10) { m /= 10; e += 1; }
+    return m.toFixed(2).replace('.', '{,}') + '\\times10^{' + e + '}';
+  }
+  function par(x){ return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+
+  function create(root){
+    var tipo = root.dataset.tipo, EL = root.dataset.fisica === 'elet', canAdd = root.dataset.aggiungi === 'true';
+    var VETT = tipo === 'forza' || tipo === 'campo', PROVA = tipo === 'forza' || tipo === 'energia';
+    var C = EL ? 8.99e9 : 6.67e-11, CS = EL ? 'k' : 'G', CL = EL ? '8{,}99\\times10^{9}' : '6{,}67\\times10^{-11}';
+    var SN = EL ? 'Q' : 'M';                     // nome delle sorgenti
+    var TN = PROVA ? (EL ? 'q' : 'm') : 'P';     // nome dell'oggetto di prova
+    var VMIN = EL ? -9 : 1, VMAX = EL ? 9 : 20;  // valori: kg, oppure ×10⁻⁶ C
+    var svg = root.querySelector('svg'), ctrl = root.querySelector('.sov-ctrl'), calc = root.querySelector('.sov-calc');
+    var test, srcs;
+    // disposizioni iniziali (coordinate in metri sulla griglia, y verso il basso)
+    if (VETT) {
+      test = { x: 4, y: 4, v: EL ? 1 : 1 };
+      srcs = [{ x: 1, y: 4, v: EL ? 2 : 2 }, { x: 4, y: 0, v: EL ? -3 : 4 }];
+    } else {
+      test = { x: 4, y: 3, v: 1 };
+      srcs = [{ x: 2, y: 3, v: EL ? 2 : 1 }, { x: 5, y: 3, v: EL ? -1 : 2 }];
+    }
+    var nextId = srcs.length;
+    srcs.forEach(function(s, i){ s.id = i + 1; });
+
+    root.querySelector('.sov-hint').textContent =
+      'Trascina ' + (EL ? 'le cariche' : 'le masse') + ' e ' + (PROVA ? (EL ? 'la carica q' : 'la massa m') : 'il punto P') +
+      ' (un quadretto = 1 m) e cambia i valori: ' + (VETT ? 'guarda come cambiano le frecce e la loro somma.' : 'i conti si aggiornano da soli.');
+    if (VETT) { calc.hidden = true; root.classList.add('sov-vett'); }
+    svg.setAttribute('aria-label', 'Simulatore della sovrapposizione degli effetti');
+
+    // ── controlli
+    function unitTxt(v){ return EL ? (v > 0 ? '+' : '') + v + '×10⁻⁶ C' : v + ' kg'; }
+    function stepV(v, d){ v += d; if (EL && v === 0) v += d; return Math.max(VMIN, Math.min(VMAX, v)); }
+    function buildCtrl(){
+      ctrl.innerHTML = '';
+      function row(name, obj, del){
+        var r = document.createElement('span'); r.className = 'sov-row';
+        var n = document.createElement('span'); n.className = 'sov-name'; n.textContent = name + ' ='; r.appendChild(n);
+        var m = document.createElement('button'), p = document.createElement('button'), b = document.createElement('b');
+        m.type = p.type = 'button'; m.textContent = '−'; p.textContent = '+'; b.textContent = unitTxt(obj.v);
+        m.setAttribute('aria-label', name + ': diminuisci'); p.setAttribute('aria-label', name + ': aumenta');
+        m.disabled = obj.v <= VMIN; p.disabled = obj.v >= VMAX;
+        m.onclick = function(){ obj.v = stepV(obj.v, -1); buildCtrl(); update(true); };
+        p.onclick = function(){ obj.v = stepV(obj.v, 1); buildCtrl(); update(true); };
+        r.appendChild(m); r.appendChild(b); r.appendChild(p);
+        if (del) { var x = document.createElement('button'); x.type = 'button'; x.className = 'sov-del'; x.textContent = '✕'; x.title = 'Togli ' + name;
+          x.onclick = function(){ srcs.splice(srcs.indexOf(obj), 1); buildCtrl(); update(true); }; r.appendChild(x); }
+        ctrl.appendChild(r);
+      }
+      srcs.forEach(function(s){ row(SN + SUB[s.id], s, canAdd && srcs.length > 1); });
+      if (PROVA) row(TN, test, false);
+      if (canAdd && srcs.length < 6) {
+        var a = document.createElement('button'); a.type = 'button'; a.className = 'sov-add';
+        a.textContent = '+ Aggiungi ' + (EL ? 'una carica' : 'una massa');
+        a.onclick = function(){
+          var spot = freeSpot(); if (!spot) return;
+          var used = srcs.map(function(s){ return s.id; }), id = 1; while (used.indexOf(id) >= 0) id++;
+          srcs.push({ x: spot[0], y: spot[1], v: EL ? 1 : 1, id: id }); srcs.sort(function(p, q){ return p.id - q.id; });
+          buildCtrl(); update(true);
+        };
+        ctrl.appendChild(a);
+      }
+    }
+    function occupied(x, y, except){ return [test].concat(srcs).some(function(o){ return o !== except && Math.round(o.x) === x && Math.round(o.y) === y; }); }
+    function freeSpot(){
+      var c = [[8, 1], [1, 1], [8, 5], [1, 5], [6, 0], [2, 0], [9, 3], [0, 3], [6, 6], [2, 6]];
+      for (var i = 0; i < c.length; i++) if (!occupied(c[i][0], c[i][1])) return c[i];
+      for (var x = 0; x <= NX; x++) for (var y = 0; y <= NY; y++) if (!occupied(x, y)) return [x, y];
+      return null;
+    }
+
+    // ── fisica
+    function contrib(s){
+      var dx = s.x - test.x, dy = s.y - test.y, r2 = dx * dx + dy * dy, r = Math.sqrt(r2);
+      var Q = EL ? s.v * 1e-6 : s.v, q = EL ? test.v * 1e-6 : test.v, o = { s: s, dx: dx, dy: dy, r2: r2, r: r };
+      if (VETT) {
+        var mag = tipo === 'forza' ? C * Math.abs(Q * q) / r2 : C * Math.abs(Q) / r2;
+        // verso: gravità sempre attrattiva (verso la sorgente); elettrico: repulsiva se i segni sono uguali
+        var toward = !EL ? 1 : (tipo === 'forza' ? (Q * q > 0 ? -1 : 1) : (Q > 0 ? -1 : 1));
+        o.mag = mag; o.vx = toward * mag * dx / r; o.vy = toward * mag * dy / r; o.rep = toward < 0;
+      } else {
+        o.val = tipo === 'energia' ? (EL ? C * Q * q / r : -C * Q * q / r) : (EL ? C * Q / r : -C * Q / r);
+      }
+      return o;
+    }
+
+    // ── disegno
+    function px(x){ return OX + CELL * x; } function py(y){ return OY + CELL * y; }
+    function draw(){
+      svg.innerHTML = '';
+      var defs = el('defs', {}, svg);
+      COLS.concat(['#16a34a']).forEach(function(c, i){
+        var mk = el('marker', { id: root.id + 'mk' + i, markerWidth: 7, markerHeight: 7, refX: 5.5, refY: 3.5, orient: 'auto' }, defs);
+        el('path', { d: 'M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z', fill: c }, mk);
+      });
+      GRAD.forEach(function(g, i){ var rg = el('radialGradient', { id: root.id + 'g' + i, cx: '35%', cy: '30%', r: '70%' }, defs);
+        [0, 55, 100].forEach(function(o, j){ el('stop', { offset: o + '%', 'stop-color': g[j] }, rg); }); });
+      [['P', '#fff1f2', '#fecdd3', '#fda4af'], ['N', '#eff6ff', '#bfdbfe', '#93c5fd'], ['T', '#f8fafc', '#e2e8f0', '#cbd5e1']].forEach(function(g){
+        var rg = el('radialGradient', { id: root.id + 'g' + g[0], cx: '35%', cy: '30%', r: '70%' }, defs);
+        [0, 55, 100].forEach(function(o, j){ el('stop', { offset: o + '%', 'stop-color': g[j + 1] }, rg); }); });
+      for (var i = 0; i <= NX; i++) el('line', { x1: px(i), y1: py(0), x2: px(i), y2: py(NY), stroke: '#e2e8f0', 'stroke-width': 1 }, svg);
+      for (var j = 0; j <= NY; j++) el('line', { x1: px(0), y1: py(j), x2: px(NX), y2: py(j), stroke: '#e2e8f0', 'stroke-width': 1 }, svg);
+      // scala
+      el('line', { x1: px(NX - 1), y1: py(NY) + 12, x2: px(NX), y2: py(NY) + 12, stroke: '#64748b', 'stroke-width': 2 }, svg);
+      var t = el('text', { x: px(NX - .5), y: py(NY) + 9, 'text-anchor': 'middle', 'font-size': 14, fill: '#64748b' }, svg); t.textContent = '1 m';
+
+      var cs = srcs.map(contrib);
+      if (VETT) {
+        var sx = 0, sy = 0, maxm = 0;
+        cs.forEach(function(c){ sx += c.vx; sy += c.vy; maxm = Math.max(maxm, c.mag); });
+        var tot = Math.hypot(sx, sy); maxm = Math.max(maxm, tot);
+        var K = maxm > 0 ? 125 / maxm : 0, x0 = px(test.x), y0 = py(test.y);
+        var tips = cs.map(function(c){ return [x0 + c.vx * K, y0 + c.vy * K]; }), T = [x0 + sx * K, y0 + sy * K];
+        if (cs.length === 2) tips.forEach(function(p, k){ var o = tips[1 - k];
+          el('line', { x1: p[0], y1: p[1], x2: T[0], y2: T[1], stroke: '#94a3b8', 'stroke-width': 1.4, 'stroke-dasharray': '5 4' }, svg); });
+        var sym = tipo === 'forza' ? 'F' : 'g';
+        cs.forEach(function(c, k){ var col = COLS[(c.s.id - 1) % COLS.length], p = tips[k];
+          if (Math.hypot(p[0] - x0, p[1] - y0) < 3) return;
+          el('line', { x1: x0, y1: y0, x2: p[0], y2: p[1], stroke: col, 'stroke-width': 3, 'marker-end': 'url(#' + root.id + 'mk' + ((c.s.id - 1) % COLS.length) + ')' }, svg);
+          var L = el('text', { x: p[0] + (p[0] >= x0 ? 6 : -6), y: p[1] + (p[1] >= y0 ? 14 : -6), 'text-anchor': p[0] >= x0 ? 'start' : 'end', 'font-size': 17, 'font-style': 'italic', fill: col }, svg);
+          L.textContent = sym + SUB[c.s.id];
+        });
+        if (tot * K > 3) {
+          el('line', { x1: x0, y1: y0, x2: T[0], y2: T[1], stroke: '#16a34a', 'stroke-width': 3.4, 'marker-end': 'url(#' + root.id + 'mk' + COLS.length + ')' }, svg);
+          var LT = el('text', { x: T[0] + (T[0] >= x0 ? 6 : -6), y: T[1] + (T[1] >= y0 ? 14 : -6), 'text-anchor': T[0] >= x0 ? 'start' : 'end', 'font-size': 17, 'font-weight': 700, 'font-style': 'italic', fill: '#16a34a' }, svg);
+          LT.textContent = sym + 'ₜₒₜ';
+        }
+      } else {
+        cs.forEach(function(c){
+          el('line', { x1: px(test.x), y1: py(test.y), x2: px(c.s.x), y2: py(c.s.y), stroke: '#94a3b8', 'stroke-width': 1.3, 'stroke-dasharray': '4 4' }, svg);
+          var L = el('text', { x: (px(test.x) + px(c.s.x)) / 2 + 4, y: (py(test.y) + py(c.s.y)) / 2 - 5, 'font-size': 15, 'font-style': 'italic', fill: '#64748b' }, svg);
+          L.textContent = 'r' + SUB[c.s.id];
+        });
+      }
+      // sorgenti
+      srcs.forEach(function(s){
+        var g = el('g', { 'class': 'sov-drag' }, svg), R, fill, stroke, txt;
+        if (EL) { R = 11 + Math.abs(s.v) * .9; fill = 'url(#' + root.id + 'g' + (s.v > 0 ? 'P' : 'N') + ')'; stroke = s.v > 0 ? '#9f1239' : '#1e3a8a'; txt = s.v > 0 ? '+' : '−'; }
+        else { R = 9 + Math.sqrt(s.v) * 2.3; fill = 'url(#' + root.id + 'g' + ((s.id - 1) % GRAD.length) + ')'; stroke = 'rgba(15,23,42,.35)'; txt = ''; }
+        el('circle', { cx: px(s.x), cy: py(s.y), r: R, fill: fill, stroke: stroke, 'stroke-width': 1.2 }, g);
+        if (txt) { var tt = el('text', { x: px(s.x), y: py(s.y) + 5, 'text-anchor': 'middle', 'font-size': 19, 'font-weight': 700, fill: stroke }, g); tt.textContent = txt; }
+        var nm = el('text', { x: px(s.x), y: py(s.y) - R - 4, 'text-anchor': 'middle', 'font-size': 16, 'font-weight': 600, 'font-style': 'italic', fill: EL ? stroke : '#475569' }, g);
+        nm.textContent = SN + SUB[s.id];
+        el('circle', { cx: px(s.x), cy: py(s.y), r: Math.max(R, 16), fill: 'transparent' }, g);
+        g.addEventListener('pointerdown', function(e){ startDrag(e, s); });
+      });
+      // oggetto di prova
+      var g2 = el('g', { 'class': 'sov-drag' }, svg);
+      if (PROVA) {
+        var fillT = EL ? 'url(#' + root.id + 'g' + (test.v > 0 ? 'P' : 'N') + ')' : 'url(#' + root.id + 'gT)';
+        var stT = EL ? (test.v > 0 ? '#9f1239' : '#1e3a8a') : '#64748b';
+        el('circle', { cx: px(test.x), cy: py(test.y), r: 10, fill: fillT, stroke: stT, 'stroke-width': 1.2 }, g2);
+        var tl = el('text', { x: px(test.x), y: py(test.y) + 4, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 700, 'font-style': EL ? 'normal' : 'italic', fill: stT }, g2);
+        tl.textContent = EL ? (test.v > 0 ? '+' : '−') : 'm';
+        if (EL) { var tn = el('text', { x: px(test.x) - 14, y: py(test.y) - 10, 'text-anchor': 'end', 'font-size': 16, 'font-weight': 600, 'font-style': 'italic', fill: stT }, g2); tn.textContent = 'q'; }
+      } else {
+        el('circle', { cx: px(test.x), cy: py(test.y), r: 5, fill: '#0f172a' }, g2);
+        var pl = el('text', { x: px(test.x) - 9, y: py(test.y) - 8, 'text-anchor': 'end', 'font-size': 17, 'font-weight': 700, 'font-style': 'italic', fill: '#0f172a' }, g2); pl.textContent = 'P';
+      }
+      el('circle', { cx: px(test.x), cy: py(test.y), r: 16, fill: 'transparent' }, g2);
+      g2.addEventListener('pointerdown', function(e){ startDrag(e, test); });
+    }
+
+    // ── trascinamento (si aggancia ai nodi della griglia; non si sovrappongono)
+    var drag = null;
+    function toM(e){ var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; var p = pt.matrixTransform(svg.getScreenCTM().inverse());
+      return [Math.max(0, Math.min(NX, (p.x - OX) / CELL)), Math.max(0, Math.min(NY, (p.y - OY) / CELL))]; }
+    function startDrag(e, obj){ e.preventDefault(); drag = { obj: obj, x0: obj.x, y0: obj.y }; svg.setPointerCapture && svg.setPointerCapture(e.pointerId); }
+    svg.addEventListener('pointermove', function(e){
+      if (!drag) return; e.preventDefault();
+      var m = toM(e), x = Math.round(m[0]), y = Math.round(m[1]);
+      if ((x !== drag.obj.x || y !== drag.obj.y) && !occupied(x, y, drag.obj)) { drag.obj.x = x; drag.obj.y = y; update(false); }
+    });
+    function endDrag(){ if (!drag) return; drag = null; update(true); }
+    svg.addEventListener('pointerup', endDrag); svg.addEventListener('pointercancel', endDrag);
+
+    // ── conti (composti da MathJax fuori schermo e poi mostrati: niente LaTeX grezzo a metà)
+    var tok = 0, calcT = null;
+    function rLatex(c, i, quad){
+      var ax = Math.abs(c.dx), ay = Math.abs(c.dy), n = 'r_{' + i + '}';
+      if (quad) {
+        if (ax === 0 || ay === 0) return n + '^2 = (' + (ax || ay) + '\\ \\text m)^2 = ' + c.r2 + '\\ \\text m^2';
+        return n + '^2 = ' + ax + '^2 + ' + ay + '^2 = ' + c.r2 + '\\ \\text m^2';
+      }
+      if (ax === 0 || ay === 0) return n + ' = ' + (ax || ay) + '\\ \\text m';
+      var r = c.r, exact = Math.abs(r - Math.round(r)) < 1e-9;
+      return n + ' = \\sqrt{' + ax + '^2 + ' + ay + '^2}\\ \\text m ' + (exact ? '= ' + Math.round(r) : '\\approx ' + fmt(r)) + '\\ \\text m';
+    }
+    function qL(v){ return '(' + (v > 0 ? '+' : '') + v + '\\times10^{-6})'; }
+    function lines(){
+      var cs = srcs.map(contrib), L = [], U = tipo === 'forza' ? 'N' : tipo === 'campo' ? (EL ? 'N/C' : 'N/kg') : tipo === 'energia' ? 'J' : (EL ? 'V' : 'J/kg');
+      var t = TN === 'm' ? 'm' : TN === 'q' ? 'q' : '';
+      cs.forEach(function(c){
+        var i = c.s.id, S = SN + '_{' + i + '}', val;
+        L.push(rLatex(c, i, VETT));
+        if (VETT) {
+          var sym = (tipo === 'forza' ? 'F' : 'g') + '_{' + i + '}', num, form;
+          if (EL) {
+            form = tipo === 'forza' ? 'k\\,\\dfrac{\\lvert ' + S + '\\cdot q\\rvert}{r_{' + i + '}^2}' : 'k\\,\\dfrac{\\lvert ' + S + '\\rvert}{r_{' + i + '}^2}';
+            // nel modulo contano solo i valori assoluti delle cariche: niente segni né parentesi (più corto)
+            num = tipo === 'forza' ? '\\dfrac{' + Math.abs(c.s.v) + '\\times10^{-6}\\cdot ' + Math.abs(test.v) + '\\times10^{-6}}{' + c.r2 + '}' : '\\dfrac{' + Math.abs(c.s.v) + '\\times10^{-6}}{' + c.r2 + '}';
+          } else {
+            form = tipo === 'forza' ? 'G\\,\\dfrac{' + S + '\\cdot m}{r_{' + i + '}^2}' : 'G\\,\\dfrac{' + S + '}{r_{' + i + '}^2}';
+            num = tipo === 'forza' ? '\\dfrac{' + c.s.v + '\\cdot ' + test.v + '}{' + c.r2 + '}' : '\\dfrac{' + c.s.v + '}{' + c.r2 + '}';
+          }
+          L.push('\\begin{aligned}' + sym + ' &= ' + form + '\\\\ &= ' + CL + '\\cdot' + num + '\\\\ &= ' + fmt(c.mag) + '\\ \\text{' + U + '}' +
+                 (EL && tipo === 'forza' ? '\\quad\\text{(' + (c.rep ? 'repulsiva' : 'attrattiva') + ')}' : '') + '\\end{aligned}');
+        } else {
+          var sy = (tipo === 'energia' ? 'U' : 'V') + '_{' + i + '}', f2;
+          if (EL) { f2 = tipo === 'energia' ? 'k\\,\\dfrac{' + S + '\\cdot q}{r_{' + i + '}}' : 'k\\,\\dfrac{' + S + '}{r_{' + i + '}}';
+                    L.push(sy + ' = ' + f2 + ' = ' + fmt(c.val) + '\\ \\text{' + U + '}'); }
+          else { f2 = tipo === 'energia' ? '-G\\,\\dfrac{' + S + '\\cdot m}{r_{' + i + '}}' : '-G\\,\\dfrac{' + S + '}{r_{' + i + '}}';
+                 L.push(sy + ' = ' + f2 + ' = ' + fmt(c.val) + '\\ \\text{' + U + '}'); }
+        }
+        L.push('');
+      });
+      var html = '<div class="sov-blk">' + L.map(function(l){ return l ? '<p>$' + l + '$</p>' : '</div><div class="sov-blk">'; }).join('') + '</div>';
+      html = html.replace(/<div class="sov-blk"><\/div>$/, '') + '<div class="sov-all">';
+      if (VETT) {
+        var sym = tipo === 'forza' ? 'F' : 'g', sx = 0, sy2 = 0; cs.forEach(function(c){ sx += c.vx; sy2 += c.vy; });
+        var tot = Math.hypot(sx, sy2), how = '';
+        if (cs.length === 2) {
+          var a = cs[0], b = cs[1], dot = a.vx * b.vx + a.vy * b.vy, cr = a.vx * b.vy - a.vy * b.vx, ma = a.mag, mb = b.mag;
+          if (Math.abs(dot) < 1e-9 * ma * mb) how = sym + '_{tot} &= \\sqrt{' + sym + '_1^2 + ' + sym + '_2^2} \\\\ &= \\sqrt{(' + fmt(ma) + ')^2 + (' + fmt(mb) + ')^2}\\ \\text{' + U + '} \\\\ &= ' + fmt(tot) + '\\ \\text{' + U + '}';
+          else if (Math.abs(cr) < 1e-9 * ma * mb) how = dot > 0 ? sym + '_{tot} = ' + sym + '_1 + ' + sym + '_2 = ' + fmt(tot) + '\\ \\text{' + U + '}'
+                                                         : sym + '_{tot} = \\lvert ' + sym + '_1 - ' + sym + '_2\\rvert = ' + fmt(tot) + '\\ \\text{' + U + '}';
+        }
+        if (how) html += '<p class="sov-tot">$' + (how.indexOf('&') >= 0 ? '\\begin{aligned}' + how + '\\end{aligned}' : how) + '$</p>';
+        else html += '<p class="sov-tot">$' + sym + '_{tot} \\approx ' + fmt(tot) + '\\ \\text{' + U + '}$</p><p class="sov-note">Il modulo di $\\vec ' + sym + '_{tot}$ è la lunghezza della diagonale del parallelogramma: con le frecce perpendicolari o allineate si calcola facilmente, negli altri casi lo calcola il simulatore.</p>';
+        html += '<p class="sov-note">Le frecce sono disegnate in scala fra loro.</p></div>';
+      } else {
+        var sy3 = tipo === 'energia' ? 'U' : 'V', s = 0; cs.forEach(function(c){ s += c.val; });
+        var sum = cs.map(function(c){ return sy3 + '_{' + c.s.id + '}'; }).join(' + ');
+        html += '<p class="sov-tot">$' + sy3 + '_{tot} = ' + sum + ' = ' + fmt(s) + '\\ \\text{' + U + '}$</p></div>';
+      }
+      return html;
+    }
+    function renderCalc(){
+      if (VETT) return; // nella regola del parallelogramma non servono conti: bastano le frecce
+      var my = ++tok, html = lines();
+      var st = document.createElement('div');
+      st.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:0;overflow:hidden;visibility:hidden;';
+      st.innerHTML = html; root.appendChild(st);
+      var fin = function(){ if (st.parentNode) st.parentNode.removeChild(st); if (my !== tok) return; calc.innerHTML = ''; while (st.firstChild) calc.appendChild(st.firstChild); };
+      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([st]).then(fin, fin); else fin();
+    }
+    function update(withCalc){
+      draw();
+      // durante il trascinamento i conti si aggiornano con un piccolo ritardo, per non rifarli a ogni pixel
+      clearTimeout(calcT); calcT = setTimeout(renderCalc, withCalc ? 0 : 180);
+    }
+    if (root.style.position === '') root.style.position = 'relative';
+    buildCtrl(); update(true);
+    // MathJax potrebbe non essere ancora pronto al primo disegno: si rifanno i conti quando lo è
+    if (!(window.MathJax && MathJax.typesetPromise)) { var tries = 0, iv = setInterval(function(){ if ((window.MathJax && MathJax.typesetPromise) || ++tries > 40) { clearInterval(iv); renderCalc(); } }, 250); }
+  }
+  return { create: create };
+})();
+SovLab.create(document.getElementById('{{ include.id }}'));
+</script>

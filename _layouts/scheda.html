@@ -1,0 +1,115 @@
+{% comment %}
+Layout delle schede di laboratorio da fare a casa (es. "Elettroscopio a foglie
+fai da te"). È come il layout dei capitoli, ma non ha numero e non entra nella
+sequenza dei capitoli: la pagina NON deve avere il campo "corso" nel front
+matter (altrimenti comparirebbe nell'elenco dei capitoli del corso).
+Front matter:
+  layout: scheda
+  title: "Titolo della scheda"
+  corso_link: gravitazione-elettromagnetismo     (slug del corso, per il link in alto a sinistra)
+  corso_titolo: "La Gravitazione e l'Elettromagnetismo"
+  materia: fisica
+  torna: /corsi/gravitazione-elettromagnetismo/02_Elettrostatica/#es-elettroscopio   (link "torna al capitolo")
+  torna_titolo: "L'Elettrostatica"
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ page.title }} — Laboratorio a casa — {{ site.title }}</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+<style>
+  :root {
+    {% if page.materia == "matematica" %}
+    --accent:        #0891b2;
+    --accent-light:  #e0f2fe;
+    --accent-border: #7dd3fc;
+    {% elsif page.materia == "cittadinanza" %}
+    --accent:        #7c3aed;
+    --accent-light:  #faf5ff;
+    --accent-border: #d8b4fe;
+    {% else %}
+    --accent:        #0f766e;
+    --accent-light:  #f0fdf4;
+    --accent-border: #86efac;
+    {% endif %}
+  }
+</style>
+
+<script>
+  window.MathJax = {
+    // \cssId (eq-annotated), \cancel e \color si caricano subito: se arrivassero "su richiesta",
+    // una formula composta prima del loro arrivo mostrerebbe il comando come testo
+    loader: { load: ['[tex]/html', '[tex]/cancel', '[tex]/color'] },
+    tex: {
+      packages: { '[+]': ['html', 'cancel', 'color'] },
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      tags: 'ams'
+    },
+    options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+{% include persist.html %}
+{% include consegne-head.html %}
+
+{% seo %}
+</head>
+<body>
+
+{% include topbar.html %}
+
+<div class="read-progress-track" aria-hidden="true"></div>
+<div id="read-progress" class="read-progress" role="progressbar" aria-hidden="true"></div>
+<div id="read-progress-pct" class="read-progress-pct" aria-hidden="true">0%</div>
+
+<div class="page-layout">
+
+  <!-- Sidebar con TOC del capitolo corrente (popolata da JS) -->
+  <aside class="sidebar" aria-label="Indice del capitolo">
+    {% assign corso_url = '/corsi/' | append: page.corso_link | append: '/' %}
+    <a href="{{ corso_url | relative_url }}" class="sidebar-course-name">{{ page.corso_titolo }}</a>
+    <p class="sidebar-course-class">Liceo Vittoria</p>
+    <p class="sidebar-toc-label">In questa scheda</p>
+    <nav>
+      <ul class="sidebar-toc" id="sidebar-toc"></ul>
+    </nav>
+  </aside>
+
+  <!-- Contenuto principale -->
+  <main class="main-content" id="main">
+
+    <header class="chapter-header">
+      <span class="chapter-number">Laboratorio a casa</span>
+      <h1 class="chapter-title">{{ page.title }}</h1>
+      {% if page.subtitle %}<p class="chapter-subtitle">{{ page.subtitle }}</p>{% endif %}
+    </header>
+
+    <div class="chapter-prose">
+      {{ content }}
+    </div>
+
+    <!-- Ritorno al capitolo da cui si arriva -->
+    <nav class="chapter-nav">
+      {% if page.torna %}<a href="{{ page.torna | relative_url }}" class="chapter-nav-prev">Torna al capitolo — {{ page.torna_titolo }}</a>{% endif %}
+    </nav>
+
+  </main>
+
+</div>
+
+{% include footer.html %}
+{% include scripts.html %}
+{% include annotazioni.html %}
+
+{% unless page.consegne_inline %}{% include consegne.html %}{% endunless %}
+</body>
+</html>

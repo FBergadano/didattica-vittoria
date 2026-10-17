@@ -88,10 +88,13 @@ $$ {{ _formula }} $$
       return document.getElementById(l.getAttribute('data-target'));
     });
   }
-  function waitReady(cb, tries) {
-    tries = tries || 0;
-    if (ready()) { cb(); }
-    else if (tries < 300) { requestAnimationFrame(function () { waitReady(cb, tries + 1); }); }
+  // Aspetta che MathJax abbia composto la formula (i \cssId diventano elementi veri): su una
+  // pagina lunga può volerci parecchio, quindi niente limite di tempo (controllo ogni 200 ms)
+  function waitReady(cb) {
+    if (ready()) { cb(); return; }
+    if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+      MathJax.startup.promise.then(function () { if (ready()) cb(); else setTimeout(function () { waitReady(cb); }, 200); });
+    } else setTimeout(function () { waitReady(cb); }, 200);
   }
 
   var GAP = 6; // px: quanto prima del simbolo si ferma la freccia
@@ -122,9 +125,23 @@ $$ {{ _formula }} $$
     });
   }
 
+  var pending = false;
+  function redraw() {
+    if (pending || !ready()) return;
+    pending = true;
+    requestAnimationFrame(function () { pending = false; if (wrap.offsetWidth) drawArrows(); });
+  }
   waitReady(function () {
-    requestAnimationFrame(function () { requestAnimationFrame(drawArrows); });
+    redraw();
+    // le frecce si ridisegnano ogni volta che la formula cambia dimensione o diventa visibile
+    // (font caricati, immagini sopra che cambiano l'impaginazione, nota a margine o spoiler aperti)
+    if (window.ResizeObserver) new ResizeObserver(redraw).observe(wrap);
+    if (window.IntersectionObserver) new IntersectionObserver(function (e) { if (e[0].isIntersecting) redraw(); }).observe(wrap);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
+    window.addEventListener('load', redraw);
+    // per sicurezza: i font di MathJax possono arrivare dopo e spostare un poco i simboli
+    setTimeout(redraw, 1000); setTimeout(redraw, 3000);
   });
-  window.addEventListener('resize', drawArrows);
+  window.addEventListener('resize', redraw);
 })();
 </script>

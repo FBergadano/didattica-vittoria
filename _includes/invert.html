@@ -51,11 +51,18 @@ Esempio:
   <div class="invx-history"></div>
   <div class="invx-footer">
     <span class="invx-counter">Mosse: <b class="invx-count">0</b></span>
+    <span class="invx-speed">Velocità: <button data-sp="2.2">lenta</button><button data-sp="1.4">normale</button><button data-sp="0.8">veloce</button></span>
     <button class="invx-reset">↺ Ricomincia</button>
   </div>
   <div class="invx-result" style="display:none"></div>
 </div>
 
+<style>
+.invx-speed { font-size: .78rem; color: #64748b; display: inline-flex; align-items: center; gap: .25rem; flex-wrap: wrap; }
+.invx-speed button { border: 1px solid #cbd5e1; background: #fff; border-radius: 4px; padding: .1rem .45rem; font-size: .75rem; cursor: pointer; color: #475569; }
+.invx-speed button.on { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+@media print { .invx-speed { display: none; } }
+</style>
 <script>
 (function(){
 var root=document.getElementById('{{ _iid }}');
@@ -63,6 +70,16 @@ var VARS={{ include.variabili | split: "|" | jsonify }};
 var LABELS={ {{ _labelmap_json }} };
 var TARGET='{{ include.obiettivo }}';
 var RANGE=4;
+// velocità delle animazioni: SP moltiplica tutti i tempi (scelta ricordata nel browser, vale per tutti gli "isola")
+var SP=1.4;
+try{var _sp=parseFloat(localStorage.getItem('invx-speed'));if(_sp>0)SP=_sp;}catch(e){}
+function markSpeed(){root.querySelectorAll('.invx-speed button').forEach(function(b){b.classList.toggle('on',parseFloat(b.dataset.sp)===SP);});}
+root.querySelectorAll('.invx-speed button').forEach(function(b){b.addEventListener('click',function(){
+  SP=parseFloat(b.dataset.sp);try{localStorage.setItem('invx-speed',String(SP));}catch(e){}
+  document.querySelectorAll('.invx-widget').forEach(function(w){if(w._invxSpeed)w._invxSpeed(SP);});
+});});
+root._invxSpeed=function(v){SP=v;markSpeed();};
+markSpeed();
 var ALLOW_SQRT={% if include.radice %}true{% else %}false{% endif %};
 var ALLOW_SQUARE={% if include.radice_iniziale %}true{% else %}false{% endif %};
 // Se "negativo" è impostato, l'equazione ha un segno "meno" complessivo fra i
@@ -273,26 +290,41 @@ var left=clone(LEFT0), right=clone(RIGHT0), count=0, done=false, animating=false
 var prevLeft=null, prevRight=null, lastMoveDesc=null;
 function $$(s){return root.querySelector(s);}
 function typeset(el){if(window.MathJax&&MathJax.typesetPromise&&el)MathJax.typesetPromise([el]);}
+// Il LaTeX nuovo viene composto da MathJax in un contenitore invisibile e solo a
+// lavoro finito sostituisce quello vecchio: così non si vede mai il codice grezzo.
+// key: un "canale" (eq, cap, hist): una richiesta più recente sullo stesso canale annulla le precedenti.
+var _tok={};
+function whenTypeset(html,key,done){
+  var my=_tok[key]=(_tok[key]||0)+1;
+  var st=document.createElement('div');
+  st.style.cssText='position:absolute;left:0;top:0;width:100%;height:0;overflow:hidden;visibility:hidden;pointer-events:none;';
+  st.innerHTML=html;root.appendChild(st);
+  var fin=function(){if(st.parentNode)st.parentNode.removeChild(st);if(my===_tok[key])done(st);};
+  if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([st]).then(fin,fin);else fin();
+}
+function adopt(el,st){el.innerHTML='';while(st.firstChild)el.appendChild(st.firstChild);}
 function renderEq(){
   var box=$$('.invx-eq');
-  box.style.transition='none';box.style.transform='none';box.style.opacity=1;
-  box.innerHTML='$$'+eqStr(left,right)+'$$';
-  typeset(box);
+  whenTypeset('$$'+eqStr(left,right)+'$$','eq',function(st){
+    box.style.transition='none';box.style.transform='none';box.style.opacity=1;
+    adopt(box,st);
+  });
 }
 // Mostra una fase dell'equazione (membro unico, già fusa) con una dissolvenza in dissolvenza,
 // a posizione fissa. Usata per il passaggio di cancellazione e per il risultato finale di ogni mossa.
 // 'hold' è il tempo (ms) per cui la fase resta visibile prima di richiamare cb.
 function renderStage(latex,opts,cb){
   opts=opts||{};
-  var hold=opts.hold!=null?opts.hold:700, dur=250;
+  var hold=(opts.hold!=null?opts.hold:700)*SP, dur=250*SP;
   var box=$$('.invx-eq');
-  box.style.transition='none';box.style.transform='none';box.style.opacity=0;
-  box.innerHTML='$$'+latex+'$$';
-  typeset(box);
-  void box.offsetWidth;
-  box.style.transition='opacity '+(dur/1000)+'s ease';
-  box.style.opacity=1;
-  if(cb)setTimeout(cb,dur+hold);
+  whenTypeset('$$'+latex+'$$','eq',function(st){
+    box.style.transition='none';box.style.transform='none';box.style.opacity=0;
+    adopt(box,st);
+    void box.offsetWidth;
+    box.style.transition='opacity '+(dur/1000)+'s ease';
+    box.style.opacity=1;
+    if(cb)setTimeout(cb,dur+hold);
+  });
 }
 // Mostra la comparsa "grezza" del nuovo fattore quando si moltiplica/divide per moveVar,
 // tenendo fermo tutto il resto dell'equazione (i due membri attuali non vengono ri-disegnati):
@@ -301,7 +333,6 @@ function renderStage(latex,opts,cb){
 //    denominatore (lbl) compaiono sotto, senza spostare il numeratore.
 function renderAppear(mvType,lbl,cb){
   var box=$$('.invx-eq');
-  box.style.transition='none';box.style.transform='none';box.style.opacity=1;
   var leftHtml,rightHtml;
   if(mvType==='mul'){
     leftHtml='<span class="invx-add">$'+lbl+'\\cdot$</span><span class="invx-static">$'+toLatex(left)+'$</span>';
@@ -312,28 +343,27 @@ function renderAppear(mvType,lbl,cb){
     rightHtml='<span class="invx-fracside"><span class="invx-static">$'+negPrefix()+toLatex(right)+'$</span>'+
       '<span class="invx-fracline"></span><span class="invx-fracden">$'+lbl+'$</span></span>';
   }
-  box.innerHTML=leftHtml+' <span class="invx-eq-rel">$=$</span> '+rightHtml;
-  typeset(box);
-  void box.offsetWidth;
-  root.querySelectorAll('.invx-add,.invx-fracden').forEach(function(el){el.classList.add('show');});
-  if(cb)setTimeout(cb,750);
+  whenTypeset(leftHtml+' <span class="invx-eq-rel">$=$</span> '+rightHtml,'eq',function(st){
+    box.style.transition='none';box.style.transform='none';box.style.opacity=1;
+    adopt(box,st);
+    void box.offsetWidth;
+    root.querySelectorAll('.invx-add,.invx-fracden').forEach(function(el){el.style.transitionDuration=(0.5*SP)+'s';el.classList.add('show');});
+    if(cb)setTimeout(cb,750*SP);
+  });
 }
 function setCaption(text){
   var cap=$$('.invx-caption');
-  if(!text){cap.textContent='';cap.classList.remove('show');return;}
-  cap.innerHTML=text;
-  typeset(cap);
-  cap.classList.add('show');
+  if(!text){_tok.cap=(_tok.cap||0)+1;cap.textContent='';cap.classList.remove('show');return;}
+  whenTypeset(text,'cap',function(st){adopt(cap,st);cap.classList.add('show');});
 }
 function updateHistory(){
   var hist=$$('.invx-history');
-  if(count===0||done){hist.innerHTML='';return;}
+  if(count===0||done){_tok.hist=(_tok.hist||0)+1;hist.innerHTML='';return;}
   var html='<div class="invx-hist-row">Equazione iniziale: $'+eqStr(LEFT0,RIGHT0)+'$</div>';
   if(count>=2&&prevLeft){
     html+='<div class="invx-hist-row">Ultimo passaggio: $'+eqStr(prevLeft,prevRight)+'$ — '+lastMoveDesc+'</div>';
   }
-  hist.innerHTML=html;
-  typeset(hist);
+  whenTypeset(html,'hist',function(st){adopt(hist,st);});
 }
 function setMovesEnabled(v){
   root.querySelectorAll('.invx-btn').forEach(function(b){b.disabled=!v;});
@@ -440,7 +470,7 @@ root.querySelectorAll('.invx-btn').forEach(function(btn){
         renderStage(cancelLatex,{hold:700},function(){setCaption(null);finalStage();});
       } else if(combineCaption){
         setCaption(combineCaption);
-        setTimeout(function(){setCaption(null);finalStage();},700);
+        setTimeout(function(){setCaption(null);finalStage();},700*SP);
       } else {
         finalStage();
       }

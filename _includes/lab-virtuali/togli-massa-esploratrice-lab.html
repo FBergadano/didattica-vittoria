@@ -14,10 +14,15 @@ Parametri:
   meno — "true" se la formula ha il segno meno (energia potenziale/potenziale)
   esp  — esponente di r al denominatore (es. "2"); vuoto = nessun esponente
   fine — "gr" per continuare (solo per il potenziale): V = −G·M/r = −G·M/r² · r = −g r
+  cost — costante (default "G"; per il campo elettrico "k")
+  sorg — simbolo della sorgente (default "M"; per le cariche "Q")
+  espl — simbolo dell'oggetto esploratore (default "m"; per le cariche "q")
+  abs  — "true" per scrivere il valore assoluto: |Q·q| → |Q| (legge di Coulomb)
 
 Esempi:
   {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-campo" da="F" a="g" esp="2" %}
   {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-pot" da="U" a="V" meno="true" fine="gr" %}
+  {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-campo-e" da="F" a="E" esp="2" cost="k" sorg="Q" espl="q" abs="true" %}
 {% endcomment %}
 {% include lab-virtuali/formula-anim-engine.html %}
 {% assign _tmid = include.id | default: "tm" %}
@@ -26,6 +31,7 @@ Esempi:
 (function(){
 var DA='{{ include.da | default: "F" }}',AA='{{ include.a | default: "g" }}';
 var MENO={% if include.meno == "true" %}true{% else %}false{% endif %},ESP='{{ include.esp }}',FINE='{{ include.fine }}'==='gr';
+var CO='{{ include.cost | default: "G" }}',SO='{{ include.sorg | default: "M" }}',ES='{{ include.espl | default: "m" }}',ABS={% if include.abs == "true" %}true{% else %}false{% endif %};
 FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:FINE?15.5:11.5,still:FINE?13:9,draw:function(A,t){
   var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,Y=64,I={it:true};
   var yb=Y-8,yn=yb-7,yd=yb+21;                  // riga di frazione, numeratore, denominatore
@@ -52,22 +58,23 @@ FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:FINE?15.5:11.5,still:F
   var xl=70+OX;
   A.tok(DA,xl,L(Y,yn,pDv),1-pY,colX,{it:true,size:L(26,22,pDv)});
   bar(xl-13,xl+13,pDv*(1-pY),colX);
-  A.tok('m',xl,yd,pDv*(1-pY),mix(A.OR,colX,p(t,3.0,3.5)),{it:true,size:22});
+  A.tok(ES,xl,yd,pDv*(1-pY),mix(A.OR,colX,p(t,3.0,3.5)),{it:true,size:22});
   A.tok(AA,xl,Y,pY,box>0?ink:mix(A.OR,A.DARK,p(t,6.8,7.2)),I);
   // uguale, meno, G
   var x=104+OX;
   A.tok('=',x,Y,1,ink);
   if(MENO){x+=24;A.tok('−',x,Y,1,ink);}
-  x+=24;A.tok('G',x,Y,1,ink,I);
+  x+=24;A.tok(CO,x,Y,1,ink,I);
   // frazione di destra
   var xf=x+50,colm=mix(A.DARK,A.OR,hm);
-  A.tok('M',L(xf-11,xf,pC),yn,1,ink,{it:true,size:22});
-  A.tok('m',xf+12,yn,mAl,colm,{it:true,size:22});A.slash(xf+12,yn+2,pX,mAl);
-  bar(xf-22,xf+22,1,ink);
+  A.tok(SO,L(xf-11,xf,pC),yn,1,ink,{it:true,size:22});
+  A.tok(ES,xf+12,yn,mAl,colm,{it:true,size:22});A.slash(xf+12,yn+2,pX,mAl);
+  if(ABS){A.tok('|',L(xf-25,xf-12,pC),yn,1,ink,{size:22});A.tok('|',L(xf+25,xf+12,pC),yn,1,ink,{size:22});}
+  bar(xf-(ABS?28:22),xf+(ABS?28:22),1,ink);
   var xr=L(xf,xf-10,pDv);xr=L(xr,xf,pC);
   rk(ESP?xr-4:xr,1,ink);
-  A.tok('m',xf+13,yd,pDv*mAl,A.OR,{it:true,size:22});A.slash(xf+13,yd+2,pX,mAl);
-  var xEnd=xf+32;
+  A.tok(ES,xf+13,yd,pDv*mAl,A.OR,{it:true,size:22});A.slash(xf+13,yd+2,pX,mAl);
+  var xEnd=xf+(ABS?38:32);
   if(FINE){
     // continua: = −G·M/r  →  = −G·M/r² · r  →  = −g r
     var pA=p(t,7.2,7.8),p2=p(t,8.2,8.8),hGr=p(t,9.2,9.7)*(1-p(t,10.6,11.0)),pg=p(t,9.9,10.6);

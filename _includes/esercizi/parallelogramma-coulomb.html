@@ -1,0 +1,308 @@
+{% comment %}
+Esercizio a carosello ("Prova tu!", 3 scenari) sulla regola del parallelogramma
+per la somma di due forze elettriche su una carica q positiva. Scenario 1: due
+cariche positive, entrambe le forze repulsive e perpendicolari. Scenario 2: una
+carica negativa (forza attrattiva, verso di lei) e una positiva (forza
+repulsiva, lontano da lei). Lo studente trascina il pallino verde sul vertice
+del parallelogramma. Scenario 3: tre cariche allineate, le due agli estremi
+fissate e uguali in modulo, quella al centro (a metà strada) in equilibrio; lo
+studente assegna i segni cliccando sulle cariche (all'inizio grigie con «±»):
+è giusto se gli estremi hanno lo stesso segno, qualunque sia il segno al centro
+(lo chiede poi una seconda domanda). Dopo la verifica compaiono le due forze
+sulla carica centrale secondo l'ipotesi scelta, e la carica centrale è davvero
+libera: si muove sotto l'azione delle due forze (con l'ipotesi sbagliata parte
+verso una delle due cariche); dopo la seconda domanda si può trascinarla di
+lato e lasciarla, per vedere l'equilibrio stabile o instabile.
+Stessa grafica di parallelogramma-scenari.html (gravità).
+Nessun parametro.
+{% endcomment %}
+<div class="iex-widget" id="vdragCoul">
+<p class="iex-lbl">Prova tu!</p>
+<div class="iex-topnav">
+<button class="iex-navbtn" id="vdragCoulprev" onclick="vdragCoulnav(-1)" disabled>&larr; Prec.</button>
+<div class="iex-dots" id="vdragCouldots"></div>
+<button class="iex-navbtn" id="vdragCoulnext" onclick="vdragCoulnav(1)">Succ. &rarr;</button>
+</div>
+
+<div class="iex-q" id="vdragCoulrow0">
+<div class="vdrag-widget" id="vdragCoul0">
+<p class="vdrag-hint">Trascina il pallino verde fino al vertice del parallelogramma che rappresenta $\vec F_{tot} = \vec F_1 + \vec F_2$, la forza totale sulla carica $q$.</p>
+<svg id="vdragCoul0-svg" viewBox="0 0 320 320" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Somma vettoriale di due forze elettriche repulsive su una carica positiva">
+<defs>
+  <radialGradient id="vdragCoul0gP" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="55%" stop-color="#fecdd3"/><stop offset="100%" stop-color="#fda4af"/></radialGradient>
+  <radialGradient id="vdragCoul0gN" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#eff6ff"/><stop offset="55%" stop-color="#bfdbfe"/><stop offset="100%" stop-color="#93c5fd"/></radialGradient>
+  <marker id="vdragCoul0ArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  <marker id="vdragCoul0ArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+  <marker id="vdragCoul0ArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
+</defs>
+<line x1="20" y1="20" x2="20" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="20" x2="290" y2="20" stroke="#e2e8f0" stroke-width="1"/><line x1="50" y1="20" x2="50" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="50" x2="290" y2="50" stroke="#e2e8f0" stroke-width="1"/><line x1="80" y1="20" x2="80" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="80" x2="290" y2="80" stroke="#e2e8f0" stroke-width="1"/><line x1="110" y1="20" x2="110" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="110" x2="290" y2="110" stroke="#e2e8f0" stroke-width="1"/><line x1="140" y1="20" x2="140" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="140" x2="290" y2="140" stroke="#e2e8f0" stroke-width="1"/><line x1="170" y1="20" x2="170" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="170" x2="290" y2="170" stroke="#e2e8f0" stroke-width="1"/><line x1="200" y1="20" x2="200" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="200" x2="290" y2="200" stroke="#e2e8f0" stroke-width="1"/><line x1="230" y1="20" x2="230" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="230" x2="290" y2="230" stroke="#e2e8f0" stroke-width="1"/><line x1="260" y1="20" x2="260" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="260" x2="290" y2="260" stroke="#e2e8f0" stroke-width="1"/><line x1="290" y1="20" x2="290" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="290" x2="290" y2="290" stroke="#e2e8f0" stroke-width="1"/>
+<circle cx="50" cy="200" r="18" fill="url(#vdragCoul0gP)" stroke="#9f1239" stroke-width="1.2"/>
+<text x="50" y="205" text-anchor="middle" font-size="15" font-weight="700" fill="#9f1239">+</text>
+<text x="26" y="230" text-anchor="end" font-size="12" font-style="italic" font-weight="600" fill="#9f1239">Q&#8321;</text>
+<circle cx="140" cy="290" r="18" fill="url(#vdragCoul0gP)" stroke="#9f1239" stroke-width="1.2"/>
+<text x="140" y="295" text-anchor="middle" font-size="15" font-weight="700" fill="#9f1239">+</text>
+<text x="114" y="276" text-anchor="end" font-size="12" font-style="italic" font-weight="600" fill="#9f1239">Q&#8322;</text>
+<circle cx="140" cy="200" r="13" fill="url(#vdragCoul0gP)" stroke="#9f1239" stroke-width="1.2"/>
+<text x="140" y="205" text-anchor="middle" font-size="13" font-weight="700" fill="#9f1239">+</text>
+<text x="123" y="224" text-anchor="end" font-size="12" font-style="italic" font-weight="600" fill="#9f1239">q</text>
+<line x1="140" y1="200" x2="230" y2="200" stroke="#dc2626" stroke-width="3" marker-end="url(#vdragCoul0ArrowRed)"/>
+<text x="238" y="204" font-size="13" fill="#dc2626">F&#8321;</text>
+<line x1="140" y1="200" x2="140" y2="110" stroke="#7c3aed" stroke-width="3" marker-end="url(#vdragCoul0ArrowPurple)"/>
+<text x="150" y="100" font-size="13" fill="#7c3aed">F&#8322;</text>
+<line id="vdragCoul0-line" x1="140" y1="200" x2="260" y2="260" stroke="#16a34a" stroke-width="3" marker-end="url(#vdragCoul0ArrowGreen)"/>
+<text id="vdragCoul0-label" x="268" y="254" font-size="13" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
+<circle id="vdragCoul0-handle" cx="260" cy="260" r="11" fill="#16a34a" stroke="#fff" stroke-width="2" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-check" id="vdragCoul0-check">Verifica</button>
+<button class="vdrag-reset" id="vdragCoul0-reset">&#8635; Ricomincia</button>
+</div>
+<div class="vdrag-fb" id="vdragCoul0-fb"></div>
+</div>
+</div>
+
+<div class="iex-q" id="vdragCoulrow1" style="display:none">
+<div class="vdrag-widget" id="vdragCoul1">
+<p class="vdrag-hint">Trascina il pallino verde fino al vertice del parallelogramma che rappresenta $\vec F_{tot} = \vec F_1 + \vec F_2$, la forza totale sulla carica $q$.</p>
+<svg id="vdragCoul1-svg" viewBox="0 0 320 320" width="100%" style="max-width:320px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Somma vettoriale di una forza elettrica attrattiva e di una repulsiva su una carica positiva">
+<defs>
+  <radialGradient id="vdragCoul1gP" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="55%" stop-color="#fecdd3"/><stop offset="100%" stop-color="#fda4af"/></radialGradient>
+  <radialGradient id="vdragCoul1gN" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#eff6ff"/><stop offset="55%" stop-color="#bfdbfe"/><stop offset="100%" stop-color="#93c5fd"/></radialGradient>
+  <marker id="vdragCoul1ArrowRed" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  <marker id="vdragCoul1ArrowPurple" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+  <marker id="vdragCoul1ArrowGreen" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#16a34a"/></marker>
+</defs>
+<line x1="20" y1="20" x2="20" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="20" x2="290" y2="20" stroke="#e2e8f0" stroke-width="1"/><line x1="50" y1="20" x2="50" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="50" x2="290" y2="50" stroke="#e2e8f0" stroke-width="1"/><line x1="80" y1="20" x2="80" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="80" x2="290" y2="80" stroke="#e2e8f0" stroke-width="1"/><line x1="110" y1="20" x2="110" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="110" x2="290" y2="110" stroke="#e2e8f0" stroke-width="1"/><line x1="140" y1="20" x2="140" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="140" x2="290" y2="140" stroke="#e2e8f0" stroke-width="1"/><line x1="170" y1="20" x2="170" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="170" x2="290" y2="170" stroke="#e2e8f0" stroke-width="1"/><line x1="200" y1="20" x2="200" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="200" x2="290" y2="200" stroke="#e2e8f0" stroke-width="1"/><line x1="230" y1="20" x2="230" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="230" x2="290" y2="230" stroke="#e2e8f0" stroke-width="1"/><line x1="260" y1="20" x2="260" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="260" x2="290" y2="260" stroke="#e2e8f0" stroke-width="1"/><line x1="290" y1="20" x2="290" y2="290" stroke="#e2e8f0" stroke-width="1"/><line x1="20" y1="290" x2="290" y2="290" stroke="#e2e8f0" stroke-width="1"/>
+<circle cx="290" cy="260" r="18" fill="url(#vdragCoul1gN)" stroke="#1e3a8a" stroke-width="1.2"/>
+<text x="290" y="265" text-anchor="middle" font-size="15" font-weight="700" fill="#1e3a8a">−</text>
+<text x="266" y="290" text-anchor="end" font-size="12" font-style="italic" font-weight="600" fill="#1e3a8a">Q&#8321;</text>
+<circle cx="50" cy="290" r="18" fill="url(#vdragCoul1gP)" stroke="#9f1239" stroke-width="1.2"/>
+<text x="50" y="295" text-anchor="middle" font-size="15" font-weight="700" fill="#9f1239">+</text>
+<text x="24" y="276" text-anchor="end" font-size="12" font-style="italic" font-weight="600" fill="#9f1239">Q&#8322;</text>
+<circle cx="110" cy="170" r="13" fill="url(#vdragCoul1gP)" stroke="#9f1239" stroke-width="1.2"/>
+<text x="110" y="175" text-anchor="middle" font-size="13" font-weight="700" fill="#9f1239">+</text>
+<text x="93" y="194" text-anchor="end" font-size="12" font-style="italic" font-weight="600" fill="#9f1239">q</text>
+<line x1="110" y1="170" x2="170" y2="200" stroke="#dc2626" stroke-width="3" marker-end="url(#vdragCoul1ArrowRed)"/>
+<text x="178" y="224" font-size="13" fill="#dc2626">F&#8321;</text>
+<line x1="110" y1="170" x2="140" y2="110" stroke="#7c3aed" stroke-width="3" marker-end="url(#vdragCoul1ArrowPurple)"/>
+<text x="148" y="100" font-size="13" fill="#7c3aed">F&#8322;</text>
+<line id="vdragCoul1-line" x1="110" y1="170" x2="260" y2="80" stroke="#16a34a" stroke-width="3" marker-end="url(#vdragCoul1ArrowGreen)"/>
+<text id="vdragCoul1-label" x="268" y="74" font-size="13" font-weight="600" fill="#16a34a">F&#8348;&#8340;&#8348;</text>
+<circle id="vdragCoul1-handle" cx="260" cy="80" r="11" fill="#16a34a" stroke="#fff" stroke-width="2" style="cursor:grab;touch-action:none;"/>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-check" id="vdragCoul1-check">Verifica</button>
+<button class="vdrag-reset" id="vdragCoul1-reset">&#8635; Ricomincia</button>
+</div>
+<div class="vdrag-fb" id="vdragCoul1-fb"></div>
+</div>
+</div>
+
+<div class="iex-q" id="vdragCoulrow2" style="display:none">
+<div class="vdrag-widget veq-widget" id="veqCoul">
+<p class="vdrag-hint">Le due cariche agli estremi sono fissate e non si possono muovere; hanno lo stesso valore (in modulo). La carica al centro, esattamente a metà strada, è libera di muoversi, ma resta ferma: è in equilibrio. Che cosa puoi concludere sui segni delle cariche? Fai un'ipotesi: clicca su ciascuna carica per sceglierne il segno.</p>
+<svg id="veqCoul-svg" viewBox="0 0 320 170" width="100%" style="max-width:360px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Tre cariche allineate: le due agli estremi sono fissate, quella al centro è in equilibrio">
+<defs>
+  <radialGradient id="veqG0" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#94a3b8"/><stop offset="45%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/></radialGradient>
+  <radialGradient id="veqGP" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="55%" stop-color="#fecdd3"/><stop offset="100%" stop-color="#fda4af"/></radialGradient>
+  <radialGradient id="veqGN" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#eff6ff"/><stop offset="55%" stop-color="#bfdbfe"/><stop offset="100%" stop-color="#93c5fd"/></radialGradient>
+  <marker id="veqArR" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#dc2626"/></marker>
+  <marker id="veqArV" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
+</defs>
+<line x1="40" y1="80" x2="280" y2="80" stroke="#cbd5e1" stroke-width="1.3" stroke-dasharray="4 4"/>
+<!-- supporti: le cariche agli estremi sono fissate -->
+<g stroke="#64748b" stroke-width="2"><line x1="50" y1="102" x2="50" y2="132"/><line x1="34" y1="132" x2="66" y2="132"/><line x1="270" y1="102" x2="270" y2="132"/><line x1="254" y1="132" x2="286" y2="132"/></g>
+<g stroke="#94a3b8" stroke-width="1.2">{% for i in (0..3) %}<line x1="{{ i | times: 8 | plus: 36 }}" y1="132" x2="{{ i | times: 8 | plus: 30 }}" y2="139"/><line x1="{{ i | times: 8 | plus: 256 }}" y1="132" x2="{{ i | times: 8 | plus: 250 }}" y2="139"/>{% endfor %}</g>
+<text x="50" y="156" text-anchor="middle" font-size="10.5" font-style="italic" fill="#64748b">fissata</text>
+<text x="270" y="156" text-anchor="middle" font-size="10.5" font-style="italic" fill="#64748b">fissata</text>
+<text x="160" y="132" text-anchor="middle" font-size="10.5" font-style="italic" fill="#64748b">libera, ma ferma</text>
+<g id="veqArrows"></g>
+<g class="veq-q" data-k="0" style="cursor:pointer"><circle cx="50" cy="80" r="22" fill="url(#veqG0)"/><text x="50" y="86" text-anchor="middle" font-size="17" font-weight="700" fill="#f8fafc">±</text><text x="50" y="48" text-anchor="middle" font-size="12" font-weight="600" font-style="italic" fill="#475569">Q₁</text></g>
+<g class="veq-q" data-k="1" style="cursor:pointer"><circle cx="160" cy="80" r="15" fill="url(#veqG0)"/><text x="160" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#f8fafc">±</text><text x="160" y="56" text-anchor="middle" font-size="12" font-weight="600" font-style="italic" fill="#475569">q</text></g>
+<g class="veq-q" data-k="2" style="cursor:pointer"><circle cx="270" cy="80" r="22" fill="url(#veqG0)"/><text x="270" y="86" text-anchor="middle" font-size="17" font-weight="700" fill="#f8fafc">±</text><text x="270" y="48" text-anchor="middle" font-size="12" font-weight="600" font-style="italic" fill="#475569">Q₂</text></g>
+</svg>
+<div class="vdrag-actions">
+<button class="vdrag-check" id="veqCoul-check">Verifica</button>
+<button class="vdrag-reset" id="veqCoul-reset">&#8635; Ricomincia</button>
+</div>
+<div class="vdrag-fb" id="veqCoul-fb"></div>
+<div class="veq-step2" id="veqCoul-s2" hidden>
+<p class="veq-q2">E la carica al centro? Che cosa puoi dire del suo segno?</p>
+<div class="veq-opts">
+<button data-v="a">deve essere positiva</button>
+<button data-v="b">deve essere negativa</button>
+<button data-v="c">deve avere il segno opposto a quello delle cariche agli estremi</button>
+<button data-v="d">può avere qualunque segno</button>
+</div>
+<div class="vdrag-fb" id="veqCoul-fb2"></div>
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var SC=[{T:{x:230,y:110},S:{x:260,y:260}},{T:{x:200,y:140},S:{x:260,y:80}}];
+  SC.forEach(function(sc,k){
+    var ID='vdragCoul'+k, svg=document.getElementById(ID+'-svg'), handle=document.getElementById(ID+'-handle');
+    var line=document.getElementById(ID+'-line'), label=document.getElementById(ID+'-label'), fb=document.getElementById(ID+'-fb');
+    var checkBtn=document.getElementById(ID+'-check'), resetBtn=document.getElementById(ID+'-reset');
+    var UNIT=30, MIN=20, MAX=290, solved=false;
+    function clamp(v){ return Math.max(MIN,Math.min(MAX,v)); }
+    function snap(v){ return Math.round((clamp(v)-MIN)/UNIT)*UNIT+MIN; }
+    function toSvgPoint(cx,cy){ var pt=svg.createSVGPoint(); pt.x=cx; pt.y=cy; return pt.matrixTransform(svg.getScreenCTM().inverse()); }
+    function moveHandle(x,y){ handle.setAttribute('cx',x); handle.setAttribute('cy',y); line.setAttribute('x2',x); line.setAttribute('y2',y); label.setAttribute('x',x+8); label.setAttribute('y',y-6); }
+    function onMove(e){ e.preventDefault(); var p=toSvgPoint(e.clientX,e.clientY); moveHandle(clamp(p.x),clamp(p.y)); }
+    function onUp(){ handle.removeEventListener('pointermove',onMove); handle.removeEventListener('pointerup',onUp);
+      moveHandle(snap(parseFloat(handle.getAttribute('cx'))),snap(parseFloat(handle.getAttribute('cy')))); }
+    handle.addEventListener('pointerdown',function(e){ if(solved)return; e.preventDefault(); handle.setPointerCapture(e.pointerId); fb.style.display='none';
+      handle.addEventListener('pointermove',onMove); handle.addEventListener('pointerup',onUp); });
+    function shootConf(el){
+      var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2, cl=['#16a34a','#0891b2','#7c3aed','#f59e0b','#dc2626','#ec4899'];
+      for(var i=0;i<50;i++){ var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
+        p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
+        document.body.appendChild(p);
+        (function(p,vx,vy,x,y){ var op=1; function step(){ vy+=.28; x+=vx; y+=vy; op-=.016; p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op; if(op>0)requestAnimationFrame(step); else p.remove(); } requestAnimationFrame(step); })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy); }
+    }
+    checkBtn.addEventListener('click',function(){
+      var x=snap(parseFloat(handle.getAttribute('cx'))), y=snap(parseFloat(handle.getAttribute('cy'))), ok=x===sc.T.x&&y===sc.T.y;
+      fb.style.display='block';
+      if(ok){ solved=true; fb.className='vdrag-fb ok';
+        fb.innerHTML='&#10003; Esatto! Quello è il vertice del parallelogramma opposto a $q$: la diagonale da $q$ a quel punto è proprio $\\vec F_{tot}$.';
+        handle.style.cursor='default'; shootConf(checkBtn);
+        document.getElementById('vdragCoulrow'+k).dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));
+      } else { fb.className='vdrag-fb err';
+        fb.innerHTML='Non ancora. Completa il parallelogramma che ha $\\vec F_1$ e $\\vec F_2$ come lati, e trascina il pallino sul suo vertice opposto a $q$.'; }
+      if(window._lvEsito)_lvEsito('vdrag',ID,ok);
+      if(window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+    });
+    resetBtn.addEventListener('click',function(){ solved=false; handle.style.cursor='grab'; moveHandle(sc.S.x,sc.S.y); fb.style.display='none'; });
+  });
+})();
+</script>
+<script>
+(function(){
+  var ID='vdragCoul', N=3, cur=0;
+  var dots=document.getElementById(ID+'dots');
+  for(var j=0;j<N;j++){ var d=document.createElement('span'); d.className='iex-dot'+(j===0?' cur':''); d.title='Scenario '+(j+1); (function(j){ d.onclick=function(){ show(j); }; })(j); dots.appendChild(d); }
+  function show(i){
+    for(var j=0;j<N;j++) document.getElementById(ID+'row'+j).style.display=(j===i?'block':'none');
+    cur=i; document.getElementById(ID+'prev').disabled=(i===0); document.getElementById(ID+'next').disabled=(i===N-1);
+    dots.querySelectorAll('.iex-dot').forEach(function(d,j){ d.className='iex-dot'+(j===i?' cur':''); });
+  }
+  window[ID+'nav']=function(d){ if(cur+d>=0&&cur+d<N) show(cur+d); };
+})();
+</script>
+
+<style>
+.veq-widget .veq-q text { pointer-events: none; }
+.veq-widget p.veq-q2 { font-size: .9rem; margin: .8rem 0 .4rem; text-align: center; }
+.veq-opts { display: flex; flex-direction: column; gap: .3rem; max-width: 420px; margin: 0 auto; }
+.veq-opts button { text-align: left; padding: .35rem .7rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; cursor: pointer; font-size: .86rem; }
+.veq-opts button:hover:not(:disabled) { background: #f1f5f9; }
+.veq-opts button:disabled { cursor: default; }
+.veq-opts button.ok { border-color: #16a34a; background: #f0fdf4; }
+.veq-opts button.no { border-color: #dc2626; background: #fef2f2; }
+</style>
+<script>
+(function(){
+  var root = document.getElementById('veqCoul'); if (!root) return;
+  var S = [0, 0, 0], done = false, esplora = false; // S: 0 = non scelto, +1, −1; esplora: dopo la seconda domanda, cambiando il segno al centro si vedono le forze
+  var gs = root.querySelectorAll('.veq-q'), fb = document.getElementById('veqCoul-fb'), arr = document.getElementById('veqArrows');
+  var s2 = document.getElementById('veqCoul-s2'), fb2 = document.getElementById('veqCoul-fb2'), svg = document.getElementById('veqCoul-svg');
+  var NS = 'http://www.w3.org/2000/svg';
+  // la carica centrale è davvero libera: si muove sotto l'azione delle due forze (Coulomb, lungo la retta)
+  var X1 = 50, X2 = 270, XC = 160, MIN = X1 + 37, MAX = X2 - 37, K = 110;
+  var x = XC, v = 0, moto = false, drag = null, mosso = false;
+  function paint(){
+    gs.forEach(function(g, k){
+      var c = g.querySelector('circle'), t = g.querySelectorAll('text')[0];
+      c.setAttribute('fill', S[k] > 0 ? 'url(#veqGP)' : S[k] < 0 ? 'url(#veqGN)' : 'url(#veqG0)');
+      c.setAttribute('stroke', S[k] > 0 ? '#9f1239' : S[k] < 0 ? '#1e3a8a' : 'none');
+      t.textContent = S[k] > 0 ? '+' : S[k] < 0 ? '−' : '±';
+      t.setAttribute('fill', S[k] > 0 ? '#9f1239' : S[k] < 0 ? '#1e3a8a' : '#f8fafc');
+    });
+    gs[1].setAttribute('transform', 'translate(' + (x - XC) + ',0)');
+  }
+  // forze sulla carica centrale (positive = verso destra): F₁ da Q₁, F₂ da Q₂
+  function forze(){
+    var d1 = x - X1, d2 = X2 - x;
+    return [K * S[0] * S[1] / (d1 * d1), -K * S[2] * S[1] / (d2 * d2)];
+  }
+  function arrows(){
+    arr.innerHTML = '';
+    var F = forze();
+    [[0, 'veqArR', '#dc2626', 'F₁', 72], [1, 'veqArV', '#7c3aed', 'F₂', 88]].forEach(function(a){
+      var f = F[a[0]], dir = f >= 0 ? 1 : -1;
+      var L = Math.min(95, 52 * Math.abs(f) / (K / 12100)); // a metà strada: 52 px
+      if (L < 3) return;
+      var y = a[4], x2 = x + dir * (15 + L);
+      var l = document.createElementNS(NS, 'line'); l.setAttribute('x1', x + dir * 15); l.setAttribute('y1', y); l.setAttribute('x2', x2); l.setAttribute('y2', y);
+      l.setAttribute('stroke', a[2]); l.setAttribute('stroke-width', 3); l.setAttribute('marker-end', 'url(#' + a[1] + ')'); arr.appendChild(l);
+      var t = document.createElementNS(NS, 'text'); t.setAttribute('x', x2 + dir * 4); t.setAttribute('y', y + (a[0] === 0 ? -6 : 16));
+      t.setAttribute('text-anchor', dir > 0 ? 'start' : 'end'); t.setAttribute('font-size', 12); t.setAttribute('font-style', 'italic'); t.setAttribute('fill', a[2]); t.textContent = a[3]; arr.appendChild(t);
+    });
+  }
+  function loop(){
+    if (moto && !drag) {
+      var F = forze(); v += F[0] + F[1]; v *= 0.996; x += v;
+      if (x <= MIN || x >= MAX) { x = Math.max(MIN, Math.min(MAX, x)); v = 0; moto = false; } // va a sbattere contro una delle due cariche
+      paint(); arrows();
+    }
+    requestAnimationFrame(loop);
+  }
+  function rimetti(){ x = XC; v = 0; moto = false; paint(); }
+  gs.forEach(function(g, k){ g.addEventListener('click', function(){
+    if (mosso) { mosso = false; return; }                  // era un trascinamento, non un clic
+    if (done) return; S[k] = S[k] === 0 ? 1 : -S[k]; arr.innerHTML = '';
+    if (!esplora) { fb.style.display = 'none'; rimetti(); } else { rimetti(); arrows(); moto = true; }
+    paint(); }); });
+  // dopo la verifica, la carica centrale si può spostare un po' di lato e lasciare andare
+  function toX(e){ var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()).x; }
+  // il puntatore si "cattura" solo quando si comincia davvero a trascinare: così un semplice clic resta un clic (cambia il segno)
+  gs[1].addEventListener('pointerdown', function(e){ if (!done && !esplora) return; drag = { x0: toX(e), xs: x, id: e.pointerId }; mosso = false; });
+  svg.addEventListener('pointermove', function(e){ if (!drag) return; var dx = toX(e) - drag.x0;
+    if (Math.abs(dx) > 3 && !mosso) { mosso = true; try { svg.setPointerCapture(drag.id); } catch (er) {} }
+    if (!mosso) return;
+    x = Math.max(MIN + 8, Math.min(MAX - 8, drag.xs + dx)); v = 0; paint(); arrows(); });
+  function lascia(){ if (!drag) return; drag = null; if (mosso) { v = 0; moto = true; } }
+  svg.addEventListener('pointerup', lascia); svg.addEventListener('pointercancel', lascia);
+  gs[1].style.touchAction = 'none';
+  document.getElementById('veqCoul-check').addEventListener('click', function(){
+    if (done) return;
+    fb.style.display = 'block';
+    if (!S[0] || !S[1] || !S[2]) { fb.className = 'vdrag-fb err'; fb.textContent = 'Scegli un segno per tutte e tre le cariche (clicca su ciascuna).'; return; }
+    rimetti(); arrows(); moto = true;   // la carica è libera: se le forze non si annullano, si muove
+    var ok = S[0] === S[2];
+    if (window._lvEsito) _lvEsito('vdrag', 'veqCoul', ok);
+    if (ok) {
+      done = true; fb.className = 'vdrag-fb ok';
+      fb.textContent = '✓ Sì: le due cariche agli estremi devono avere lo stesso segno. Così le due forze sulla carica centrale hanno verso opposto e, poiché le cariche agli estremi sono uguali e la carica centrale è a metà strada, anche lo stesso modulo: si annullano, e la carica resta ferma.';
+      s2.hidden = false;
+      document.getElementById('vdragCoulrow2').dispatchEvent(new CustomEvent('iex:correct', { bubbles: true }));
+    } else {
+      fb.className = 'vdrag-fb err';
+      fb.textContent = '✗ Guarda le due forze: con le cariche agli estremi di segno opposto, una spinge la carica centrale e l’altra la tira, ma nello stesso verso. Le forze si sommano, e infatti la carica, libera di muoversi, parte. Cambia ipotesi e riprova.';
+    }
+  });
+  s2.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+    var ok = b.dataset.v === 'd';
+    s2.querySelectorAll('button').forEach(function(x){ x.disabled = true; if (x.dataset.v === 'd') x.classList.add('ok'); });
+    if (!ok) b.classList.add('no');
+    if (window._lvEsito) _lvEsito('vdrag', 'veqCoul-centro', ok);
+    fb2.style.display = 'block'; fb2.className = 'vdrag-fb ' + (ok ? 'ok' : 'err');
+    fb2.textContent = (ok ? '✓ Esatto. ' : '✗ No. ') + 'Prova a cambiare il segno della carica centrale (cliccaci sopra): tutte e due le forze cambiano verso, ma restano opposte fra loro e uguali in modulo, quindi la somma è ancora zero e la carica resta ferma. Dall’equilibrio non si può capire il segno della carica centrale: si capisce solo che le due cariche agli estremi hanno lo stesso segno. Ora prova anche a trascinare la carica centrale un po’ di lato e a lasciarla andare: con un segno torna indietro, con l’altro scappa via. Sono entrambi equilibri, ma solo il primo è stabile.';
+    // dopo la risposta si può cambiare il segno della carica centrale per vederlo
+    done = false; gs[0].style.pointerEvents = gs[2].style.pointerEvents = 'none';
+    esplora = true;
+  }); });
+  document.getElementById('veqCoul-reset').addEventListener('click', function(){
+    S = [0, 0, 0]; done = false; esplora = false; arr.innerHTML = ''; fb.style.display = 'none'; s2.hidden = true; fb2.style.display = 'none';
+    gs[0].style.pointerEvents = gs[2].style.pointerEvents = '';
+    s2.querySelectorAll('button').forEach(function(x){ x.disabled = false; x.classList.remove('ok', 'no'); });
+    rimetti(); paint();
+  });
+  paint(); requestAnimationFrame(loop);
+})();
+</script>

@@ -1,5 +1,5 @@
 {% comment %}
-Esercizio a carosello: isola le grandezze nella legge di Coulomb, una alla volta, usando invert.html. Nessun parametro.
+Esercizio a carosello: isola q₁, q₂ ed r nella legge di Coulomb, una alla volta, usando invert.html (k si isola già nell'esercizio sull'unità di k, unita-coulomb.html). Nessun parametro.
 {% endcomment %}
 <div class="iex-widget" id="invCarCoulomb">
 <p class="iex-lbl">Isola le altre grandezze</p>
@@ -12,28 +12,21 @@ Esercizio a carosello: isola le grandezze nella legge di Coulomb, una alla volta
 
 <div class="iex-q" id="invCarCoulombrow0">
 <div class="iex-nested">
-{% include invert.html id="inv-coulomb-k" variabili="F|k|Qa|Qb|r" etichette="F|k|q_1|q_2|r"
-   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="k" %}
+{% include invert.html id="inv-coulomb-Qa" variabili="F|k|Qa|Qb|r" etichette="F|k|\lvert q_1\rvert|\lvert q_2\rvert|r"
+   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qa" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarCoulombrow1" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-coulomb-Qa" variabili="F|k|Qa|Qb|r" etichette="F|k|q_1|q_2|r"
-   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qa" %}
+{% include invert.html id="inv-coulomb-Qb" variabili="F|k|Qa|Qb|r" etichette="F|k|\lvert q_1\rvert|\lvert q_2\rvert|r"
+   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qb" %}
 </div>
 </div>
 
 <div class="iex-q" id="invCarCoulombrow2" style="display:none">
 <div class="iex-nested">
-{% include invert.html id="inv-coulomb-Qb" variabili="F|k|Qa|Qb|r" etichette="F|k|q_1|q_2|r"
-   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qb" %}
-</div>
-</div>
-
-<div class="iex-q" id="invCarCoulombrow3" style="display:none">
-<div class="iex-nested">
-{% include invert.html id="inv-coulomb-r" variabili="F|k|Qa|Qb|r" etichette="F|k|q_1|q_2|r"
+{% include invert.html id="inv-coulomb-r" variabili="F|k|Qa|Qb|r" etichette="F|k|\lvert q_1\rvert|\lvert q_2\rvert|r"
    sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="r" radice="1" %}
 </div>
 </div>
@@ -68,5 +61,5 @@ window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
   buildDots();
   window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
 };
-setupInvCarousel('invCarCoulomb',4);
+setupInvCarousel('invCarCoulomb',3);
 </script>

@@ -1,8 +1,12 @@
 {% comment %}
-Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del numero di elettroni/protoni in eccesso. Nessun parametro.
+Esercizio a carosello (Verifica Subito!) sulla carica di un corpo: dato il numero di
+protoni ed elettroni si scrive la carica sia come multiplo di e sia in coulomb (e
+viceversa), con la calcolatrice a margine. Un passo a scelta multipla sulla
+quantizzazione della carica. Nessun parametro.
 {% endcomment %}
 <div class="iex-widget" id="iexCarica">
 <p class="iex-lbl">Verifica Subito!</p>
+<p class="iex-hint">Dove serve, usa $e = 1{,}6\times10^{-19}\ \text{C}$ e scrivi la carica in coulomb in notazione scientifica.</p>
 <div class="iex-topnav">
 <button class="iex-navbtn" id="iexCaricaprev" onclick="iexCaricanav(-1)" disabled>&larr; Prec.</button>
 <div class="iex-dots" id="iexCaricadots"></div>
@@ -10,7 +14,10 @@ Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del nu
 </div>
 
 <div class="iex-q" id="iexCaricarow0">
-<p class="iex-qt">Osserva questo corpo. Qual è la sua carica $Q$, espressa come multiplo della carica elementare $e$?</p>
+<div class="calc-flow">
+{% include calc-margin.html id="calcCarica0" %}
+<div class="calc-flow-body">
+<p class="iex-qt">Osserva questo corpo. Qual è la sua carica $Q$, come multiplo della carica elementare $e$ e in coulomb?</p>
 <svg viewBox="0 0 120 120" width="130" height="130" style="display:block;margin:0 auto;">
 <defs>
   <radialGradient id="crgPosG" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="55%" stop-color="#fecdd3"/><stop offset="100%" stop-color="#fda4af"/></radialGradient>
@@ -24,65 +31,88 @@ Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del nu
 <circle cx="28.8" cy="67.1" r="13" fill="url(#crgNegG)"/><text x="28.8" y="71.6" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">–</text>
 <circle cx="35" cy="40" r="13" fill="url(#crgNegG)"/><text x="35" y="44.5" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">–</text>
 </svg>
-<div class="iex-ir" style="justify-content:center;">
-<span>Q =</span>
-<input class="iex-m" id="iexCaricam0" type="text" placeholder="es. -2" style="width:5em" onkeydown="if(event.key==='Enter')iexCaricacheck0()">
-<span>&times; e</span>
+<div class="iex-ir crg-ir">
+<span class="crg-g"><span class="crg-l">come multiplo di $e$:</span><span>$Q=$</span><input class="iex-m" id="crg0n" type="text" placeholder="es. -2" style="width:4em"><span>$\times\,e$</span></span>
+<span class="crg-g"><span class="crg-l">in coulomb:</span><span>$Q=$</span><input class="iex-m" id="crg0c" type="text" placeholder="es. -3,2" style="width:4em"><span>$\times\,10$</span><input class="iex-m crg-exp" id="crg0x" type="text" placeholder="esp."><span>C</span></span>
 <button class="iex-vbtn" onclick="iexCaricacheck0()">Verifica</button>
 </div>
 <div class="iex-fb" id="iexCaricafb0"></div>
 </div>
+<div style="clear:both"></div>
+</div>
+</div>
 
 <div class="iex-q" id="iexCaricarow1" style="display:none">
-<p class="iex-qt">Un corpo possiede 15 protoni e 11 elettroni. Qual è la sua carica $Q$, come multiplo di $e$?</p>
-<div class="iex-ir" style="justify-content:center;">
-<span>Q =</span>
-<input class="iex-m" id="iexCaricam1" type="text" placeholder="es. -2" style="width:5em" onkeydown="if(event.key==='Enter')iexCaricacheck1()">
-<span>&times; e</span>
+<div class="calc-flow">
+{% include calc-margin.html id="calcCarica1" %}
+<div class="calc-flow-body">
+<p class="iex-qt">Un corpo possiede 15 protoni e 11 elettroni. Qual è la sua carica $Q$, come multiplo di $e$ e in coulomb?</p>
+<div class="iex-ir crg-ir">
+<span class="crg-g"><span class="crg-l">come multiplo di $e$:</span><span>$Q=$</span><input class="iex-m" id="crg1n" type="text" placeholder="es. -2" style="width:4em"><span>$\times\,e$</span></span>
+<span class="crg-g"><span class="crg-l">in coulomb:</span><span>$Q=$</span><input class="iex-m" id="crg1c" type="text" placeholder="es. -3,2" style="width:4em"><span>$\times\,10$</span><input class="iex-m crg-exp" id="crg1x" type="text" placeholder="esp."><span>C</span></span>
 <button class="iex-vbtn" onclick="iexCaricacheck1()">Verifica</button>
 </div>
 <div class="iex-fb" id="iexCaricafb1"></div>
+</div>
+<div style="clear:both"></div>
+</div>
 </div>
 
 <div class="iex-q" id="iexCaricarow2" style="display:none">
 <div class="calc-flow">
 {% include calc-margin.html id="calcCarica2" %}
 <div class="calc-flow-body">
-<p class="iex-qt">Un corpo ha 40 protoni ed è carico con $Q = +2{,}403\times10^{-18}\ \text{C}$. Quanti elettroni possiede?</p>
-<div class="iex-ir" style="justify-content:center;">
-<input class="iex-m" id="iexCaricam2" type="text" placeholder="numero di elettroni" onkeydown="if(event.key==='Enter')iexCaricacheck2()">
+<p class="iex-qt">Un corpo possiede 20 protoni e 27 elettroni. Qual è la sua carica $Q$, come multiplo di $e$ e in coulomb?</p>
+<div class="iex-ir crg-ir">
+<span class="crg-g"><span class="crg-l">come multiplo di $e$:</span><span>$Q=$</span><input class="iex-m" id="crg2n" type="text" placeholder="es. -2" style="width:4em"><span>$\times\,e$</span></span>
+<span class="crg-g"><span class="crg-l">in coulomb:</span><span>$Q=$</span><input class="iex-m" id="crg2c" type="text" placeholder="es. -3,2" style="width:4em"><span>$\times\,10$</span><input class="iex-m crg-exp" id="crg2x" type="text" placeholder="esp."><span>C</span></span>
 <button class="iex-vbtn" onclick="iexCaricacheck2()">Verifica</button>
 </div>
 <div class="iex-fb" id="iexCaricafb2"></div>
-<div class="iex-sol" id="iexCaricasol2">Soluzione: $n = Q/e = 2{,}403\times10^{-18}/1{,}602\times10^{-19} = 15$, quindi $n_p - n_e = 15 \Rightarrow n_e = 40-15 = 25$.</div>
 </div>
 <div style="clear:both"></div>
 </div>
 </div>
 
 <div class="iex-q" id="iexCaricarow3" style="display:none">
+<div class="calc-flow">
+{% include calc-margin.html id="calcCarica3" %}
+<div class="calc-flow-body">
+<p class="iex-qt">Un corpo ha 40 protoni ed è carico con $Q = +2{,}4\times10^{-18}\ \text{C}$. Quanto vale la sua carica come multiplo di $e$? Quanti elettroni possiede?</p>
+<div class="iex-ir crg-ir">
+<span class="crg-g"><span class="crg-l">come multiplo di $e$:</span><span>$Q=$</span><input class="iex-m" id="crg3n" type="text" placeholder="es. 5" style="width:4em"><span>$\times\,e$</span></span>
+<span class="crg-g"><span class="crg-l">numero di elettroni:</span><input class="iex-m" id="crg3e" type="text" placeholder="numero" style="width:4.5em"></span>
+<button class="iex-vbtn" onclick="iexCaricacheck3()">Verifica</button>
+</div>
+<div class="iex-fb" id="iexCaricafb3"></div>
+<div class="iex-sol" id="iexCaricasol3">Soluzione: $\dfrac Qe = \dfrac{2{,}4\times10^{-18}\ \text{C}}{1{,}6\times10^{-19}\ \text{C}} = 15$, quindi $Q=+15\,e$. Poiché $n_p - n_e = 15$, gli elettroni sono $n_e = 40-15 = 25$.</div>
+</div>
+<div style="clear:both"></div>
+</div>
+</div>
+
+<div class="iex-q" id="iexCaricarow4" style="display:none">
 <p class="iex-qt">Il professor Rossi ha appena pubblicato un articolo in cui afferma di aver misurato una carica pari a $75{,}5\, e$. Come fai a capire che si tratta sicuramente di un errore?</p>
-<div class="iex-choices" id="iexCaricachoices3">
+<div class="iex-choices" id="iexCaricachoices4">
 <button class="iex-choice-btn" data-v="a">Perché 75,5 è un numero troppo grande per essere una carica reale</button>
 <button class="iex-choice-btn" data-v="b">Perché la carica di un corpo deve sempre essere negativa</button>
 <button class="iex-choice-btn" data-v="c">Perché la carica è quantizzata: deve essere un multiplo <strong>intero</strong> di $e$, e 75,5 non lo è</button>
 <button class="iex-choice-btn" data-v="d">Perché ci vorrebbero più cifre decimali per essere precisi</button>
 </div>
-<div class="iex-fb" id="iexCaricafb3"></div>
+<div class="iex-fb" id="iexCaricafb4"></div>
 </div>
 
-<div class="iex-q" id="iexCaricarow4" style="display:none">
+<div class="iex-q" id="iexCaricarow5" style="display:none">
 <div class="calc-flow">
-{% include calc-margin.html id="calcCarica4" %}
+{% include calc-margin.html id="calcCarica5" %}
 <div class="calc-flow-body">
-<p class="iex-qt">Un corpo ha una carica $Q = -1{,}4418\times10^{-18}\ \text{C}$. Quanto vale $n_p - n_e$ per questo corpo?</p>
-<div class="iex-ir" style="justify-content:center;">
-<span>$n_p-n_e$ =</span>
-<input class="iex-m" id="iexCaricam4" type="text" placeholder="es. -2" style="width:5em" onkeydown="if(event.key==='Enter')iexCaricacheck4()">
-<button class="iex-vbtn" onclick="iexCaricacheck4()">Verifica</button>
+<p class="iex-qt">Un corpo ha una carica $Q = -1{,}44\times10^{-18}\ \text{C}$. Quanto vale $n_p - n_e$, cioè la sua carica come multiplo di $e$?</p>
+<div class="iex-ir crg-ir">
+<span>$n_p-n_e=$</span><input class="iex-m" id="crg5n" type="text" placeholder="es. -2" style="width:4em">
+<button class="iex-vbtn" onclick="iexCaricacheck5()">Verifica</button>
 </div>
-<div class="iex-fb" id="iexCaricafb4"></div>
-<div class="iex-sol" id="iexCaricasol4">Soluzione: $n_p - n_e = Q/e = -1{,}4418\times10^{-18}/1{,}602\times10^{-19} = -9$.</div>
+<div class="iex-fb" id="iexCaricafb5"></div>
+<div class="iex-sol" id="iexCaricasol5">Soluzione: $n_p - n_e = \dfrac Qe = \dfrac{-1{,}44\times10^{-18}\ \text{C}}{1{,}6\times10^{-19}\ \text{C}} = -9$.</div>
 </div>
 <div style="clear:both"></div>
 </div>
@@ -91,19 +121,23 @@ Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del nu
 </div>
 
 <style>
+.crg-ir { flex-direction: column; align-items: center; gap: .45rem; }
+.crg-g { display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap; flex-wrap: nowrap; }
+.crg-l { color: #6b7280; font-style: italic; font-size: .9em; min-width: 9.5em; text-align: right; }
+.crg-exp { width: 3em; font-size: .8em; position: relative; top: -.6em; }
 @media print { #iexCarica { display:none; } }
 </style>
 
 <script>
 (function(){
-  var N=5, cur=0, ok=[false,false,false,false,false];
-  var restoring=false;
-  var inputIds={0:'iexCaricam0',1:'iexCaricam1',2:'iexCaricam2',4:'iexCaricam4'};
-  var mcqChosen=null;
+  var N=6, cur=0, ok=[false,false,false,false,false,false];
+  var restoring=false, mcqChosen=null;
+  var FIELDS=['crg0n','crg0c','crg0x','crg1n','crg1c','crg1x','crg2n','crg2c','crg2x','crg3n','crg3e','crg5n'];
+  var E=1.6e-19;
+  function $(id){ return document.getElementById(id); }
   function saveState(){
-    var vals={};
-    for(var k in inputIds)vals[k]=document.getElementById(inputIds[k]).value;
-    _lvSave('carousel','iexCarica',{ok:ok.slice(),vals:vals,mcq3:mcqChosen});
+    var vals={}; FIELDS.forEach(function(id){ vals[id]=$(id).value; });
+    _lvSave('carousel','iexCarica2',{ok:ok.slice(),vals:vals,mcq:mcqChosen});
   }
   function updateDots(){
     var dots=document.querySelectorAll('#iexCaricadots .iex-dot');
@@ -111,124 +145,100 @@ Esercizio a carosello (Verifica Subito!) sul calcolo della carica netta e del nu
   }
   function show(i){
     document.querySelectorAll('#iexCarica .iex-q').forEach(function(q){q.style.display='none';});
-    document.getElementById('iexCaricarow'+i).style.display='block';
-    cur=i;
-    document.getElementById('iexCaricaprev').disabled=(i===0);
-    document.getElementById('iexCaricanext').disabled=(i===N-1);
+    $('iexCaricarow'+i).style.display='block';
+    cur=i; $('iexCaricaprev').disabled=(i===0); $('iexCaricanext').disabled=(i===N-1);
     updateDots();
   }
-  function buildDots(){
-    var c=document.getElementById('iexCaricadots');
+  (function buildDots(){
+    var c=$('iexCaricadots');
     for(var j=0;j<N;j++){
-      var d=document.createElement('span');
-      d.className='iex-dot'+(j===0?' cur':'');
-      d.title='Domanda '+(j+1);
-      (function(j){ d.onclick=function(){ show(j); }; })(j);
-      c.appendChild(d);
+      var d=document.createElement('span'); d.className='iex-dot'+(j===0?' cur':''); d.title='Domanda '+(j+1);
+      (function(j){ d.onclick=function(){ show(j); }; })(j); c.appendChild(d);
     }
-  }
-  buildDots();
+  })();
   window.iexCaricanav=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
+  window.showSol = window.showSol || function(id){ $(id).style.display='block'; };
 
-  function shootConf(el){
-    if(restoring)return;
-    var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
-    var cl=['#7c3aed','#0891b2','#0f766e','#f59e0b','#dc2626','#65a30d','#ec4899'];
-    for(var i=0;i<55;i++){
-      var p=document.createElement('div'), a=Math.random()*Math.PI*2, sp=4+Math.random()*8;
-      p.style.cssText='position:fixed;width:7px;height:7px;background:'+cl[i%cl.length]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';left:'+cx+'px;top:'+cy+'px;pointer-events:none;z-index:9999;';
-      document.body.appendChild(p);
-      (function(p,vx,vy,x,y){
-        var op=1;
-        function step(){
-          vy+=.28; x+=vx; y+=vy; op-=.016;
-          p.style.left=x+'px'; p.style.top=y+'px'; p.style.opacity=op;
-          if(op>0)requestAnimationFrame(step); else p.remove();
-        }
-        requestAnimationFrame(step);
-      })(p,Math.cos(a)*sp,Math.sin(a)*sp-5,cx,cy);
+  function num(id){ return parseFloat($(id).value.trim().replace(/\s+/g,'').replace(',','.').replace(/[−–]/g,'-')); }
+  function typeset(el){ if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]); }
+  function good(row, fb, btn, msg){
+    ok[row]=true; fb.className='iex-fb ok';
+    fb.innerHTML='&#10003; Esatto! '+msg+(row<N-1?' <button class="iex-nextbtn" onclick="iexCaricanav(1)">Passo successivo &rarr;</button>':'');
+    if(!restoring&&window._shoot)_shoot(btn);
+    if(window._lvEsito&&!restoring)_lvEsito('carousel','iexCarica2-'+row,true);
+    updateDots(); saveState(); typeset(fb);
+  }
+  function bad(fb, html, solId){
+    fb.className='iex-fb err';
+    fb.innerHTML=html+(solId?' Oppure <button class="iex-lbtn" onclick="showSol(\''+solId+'\')">vedi la soluzione</button>.':'');
+    saveState(); typeset(fb);
+  }
+
+  // controlla insieme la carica come multiplo di e e la carica in coulomb
+  function checkCharge(row, n, msg){
+    var fb=$('iexCaricafb'+row), btn=$('iexCaricarow'+row).querySelector('.iex-vbtn');
+    var vn=num('crg'+row+'n'), c=num('crg'+row+'c'), x=parseInt($('crg'+row+'x').value.trim().replace(/[−–]/g,'-'),10);
+    var target=n*E, problems=[];
+    var okN = !isNaN(vn) && Math.round(vn)===n && Math.abs(vn-n)<1e-9;
+    if(isNaN(vn)) problems.push('Scrivi la carica come multiplo di $e$.');
+    else if(!okN) problems.push(vn===-n ? 'Multiplo di $e$: attento al segno.' : 'Multiplo di $e$: non è esatto. Conta protoni ed elettroni: $Q=(n_p-n_e)\\,e$.');
+    var okC=false;
+    if(isNaN(c)||isNaN(x)) problems.push('Scrivi la carica in coulomb: il numero e l\'esponente di 10.');
+    else {
+      var v=c*Math.pow(10,x), close=Math.abs(v-target)<=Math.abs(target)*0.01;
+      if(close && Math.abs(c)>=1 && Math.abs(c)<10) okC=true;
+      else if(close) problems.push('Coulomb: il valore è giusto, ma il numero davanti alla potenza di 10 deve essere compreso fra 1 e 10.');
+      else if(Math.abs(v+target)<=Math.abs(target)*0.01) problems.push('Coulomb: attento al segno.');
+      else problems.push('Coulomb: non è esatto. Moltiplica il multiplo di $e$ per $e=1{,}6\\times10^{-19}\\ \\text{C}$.');
     }
+    if(okN&&okC) good(row, fb, btn, msg); else bad(fb, problems.join(' '));
   }
-  window.showSol = window.showSol || function(id){ document.getElementById(id).style.display='block'; };
-
-  function parseInt2(raw){
-    var s = raw.trim().replace(',', '.').replace(/e$/i,'').trim();
-    return parseFloat(s);
-  }
-
-  function numCheck(rowIdx, inputId, fbId, target, msgOk, solId){
-    var v = parseInt2(document.getElementById(inputId).value);
-    var fb = document.getElementById(fbId);
-    var vb = document.querySelector('#'+inputId).closest('.iex-ir').querySelector('.iex-vbtn');
-    if(isNaN(v)){ fb.className='iex-fb err'; fb.textContent='Inserisci un numero.'; return; }
-    if(Math.round(v) === target){
-      ok[rowIdx]=true; fb.className='iex-fb ok';
-      fb.innerHTML='&#10003; Esatto! '+msgOk+' <button class="iex-nextbtn" onclick="iexCaricanav(1)">Passo successivo &rarr;</button>';
-      shootConf(vb); updateDots(); saveState();
-    } else {
-      fb.className='iex-fb err';
-      var extra = solId ? ' Oppure <button class="iex-lbtn" onclick="showSol(\''+solId+'\')">vedi la soluzione</button>.' : '';
-      fb.innerHTML='Non è esatto. Riprova.'+extra;
-    }
-    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-  }
-
-  window.iexCaricacheck0 = function(){
-    numCheck(0, 'iexCaricam0', 'iexCaricafb0', -3, 'Ci sono 2 protoni e 5 elettroni: $Q = (2-5)e = -3e$.', null);
+  window.iexCaricacheck0=function(){ checkCharge(0,-3,'Ci sono 2 protoni e 5 elettroni: $Q=(2-5)\\,e=-3e=-3\\times1{,}6\\times10^{-19}\\ \\text{C}=-4{,}8\\times10^{-19}\\ \\text{C}$.'); };
+  window.iexCaricacheck1=function(){ checkCharge(1,4,'$Q=(15-11)\\,e=4e=4\\times1{,}6\\times10^{-19}\\ \\text{C}=6{,}4\\times10^{-19}\\ \\text{C}$.'); };
+  window.iexCaricacheck2=function(){ checkCharge(2,-7,'$Q=(20-27)\\,e=-7e=-7\\times1{,}6\\times10^{-19}\\ \\text{C}=-1{,}12\\times10^{-18}\\ \\text{C}$.'); };
+  window.iexCaricacheck3=function(){
+    var fb=$('iexCaricafb3'), btn=$('iexCaricarow3').querySelector('.iex-vbtn');
+    var vn=num('crg3n'), ne=num('crg3e'), p=[];
+    if(isNaN(vn)||Math.abs(vn-15)>1e-9) p.push(isNaN(vn)?'Scrivi la carica come multiplo di $e$.':'Multiplo di $e$: non è esatto. Dividi $Q$ per $e$.');
+    if(isNaN(ne)||Math.abs(ne-25)>1e-9) p.push(isNaN(ne)?'Scrivi il numero di elettroni.':'Elettroni: non è esatto. Ricorda che $n_p-n_e=Q/e$.');
+    if(!p.length) good(3, fb, btn, '$Q/e=15$, quindi $Q=+15e$ e $n_e=40-15=25$.'); else bad(fb, p.join(' '), 'iexCaricasol3');
   };
-  window.iexCaricacheck1 = function(){
-    numCheck(1, 'iexCaricam1', 'iexCaricafb1', 4, '$Q = (n_p-n_e)\\cdot e = (15-11)\\cdot e = 4e$.', null);
-  };
-  window.iexCaricacheck2 = function(){
-    numCheck(2, 'iexCaricam2', 'iexCaricafb2', 25, 'Con $n=n_p-n_e=Q/e=15$ e $n_p=40$, si ottiene $n_e = 40-15 = 25$.', 'iexCaricasol2');
-  };
-  window.iexCaricacheck4 = function(){
-    numCheck(4, 'iexCaricam4', 'iexCaricafb4', -9, '$n_p-n_e = Q/e = -9$.', 'iexCaricasol4');
+  window.iexCaricacheck5=function(){
+    var fb=$('iexCaricafb5'), btn=$('iexCaricarow5').querySelector('.iex-vbtn'), v=num('crg5n');
+    if(isNaN(v)) { bad(fb,'Inserisci un numero.'); return; }
+    if(Math.abs(v+9)<1e-9) good(5, fb, btn, '$n_p-n_e=Q/e=-9$: il corpo ha 9 elettroni in più dei protoni.');
+    else bad(fb, v===9?'Attento al segno: la carica è negativa.':'Non è esatto. Riprova.', 'iexCaricasol5');
   };
 
-  (function initChoices3(){
-    var btns = document.querySelectorAll('#iexCaricachoices3 .iex-choice-btn');
-    var fb = document.getElementById('iexCaricafb3');
+  (function initChoices(){
+    var btns=document.querySelectorAll('#iexCaricachoices4 .iex-choice-btn'), fb=$('iexCaricafb4');
     btns.forEach(function(btn){
       btn.addEventListener('click', function(){
         if(btn.disabled) return;
-        btns.forEach(function(b){ b.disabled = true; });
-        var correct = btn.dataset.v === 'c';
-        fb.style.display = 'block';
+        btns.forEach(function(b){ b.disabled=true; });
+        var correct=btn.dataset.v==='c';
+        fb.style.display='block';
         if(correct){
-          btn.className = 'iex-choice-btn correct';
-          ok[3] = true; fb.className = 'iex-fb ok';
-          fb.innerHTML = '&#10003; Esatto! La carica di un corpo è sempre un multiplo intero di $e$: $75{,}5\\,e$ non è un intero, quindi non può esistere in natura. <button class="iex-nextbtn" onclick="iexCaricanav(1)">Passo successivo &rarr;</button>';
-          shootConf(btn); updateDots();
+          btn.className='iex-choice-btn correct';
+          mcqChosen=btn.dataset.v;
+          good(4, fb, btn, 'La carica di un corpo è sempre un multiplo intero di $e$: $75{,}5\\,e$ non è un intero, quindi non può esistere in natura.');
         } else {
-          btn.className = 'iex-choice-btn wrong';
-          var correctBtn = document.querySelector('#iexCaricachoices3 .iex-choice-btn[data-v="c"]');
-          correctBtn.className = 'iex-choice-btn correct';
-          fb.className = 'iex-fb err';
-          fb.innerHTML = 'Non è corretto: la carica di un corpo è sempre un multiplo <strong>intero</strong> della carica elementare $e$ (quantizzazione della carica). $75{,}5$ non è un numero intero, quindi quella misura non può essere corretta.';
+          btn.className='iex-choice-btn wrong';
+          document.querySelector('#iexCaricachoices4 .iex-choice-btn[data-v="c"]').className='iex-choice-btn correct';
+          mcqChosen=btn.dataset.v;
+          bad(fb,'Non è corretto: la carica di un corpo è sempre un multiplo <strong>intero</strong> della carica elementare $e$ (quantizzazione della carica). $75{,}5$ non è un numero intero, quindi quella misura non può essere corretta.');
         }
-        if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([fb]);
-        mcqChosen = btn.dataset.v; saveState();
       });
     });
   })();
 
   (function restoreState(){
-    var saved=_lvLoad('carousel','iexCarica');
-    if(!saved)return;
+    var saved=_lvLoad('carousel','iexCarica2'); if(!saved) return;
     restoring=true;
-    for(var k in inputIds){
-      if(saved.ok && saved.ok[k]){
-        if(saved.vals && saved.vals[k]!==undefined)document.getElementById(inputIds[k]).value=saved.vals[k];
-        window['iexCaricacheck'+k]();
-      }
-    }
-    if(saved.mcq3){
-      var btn=document.querySelector('#iexCaricachoices3 .iex-choice-btn[data-v="'+saved.mcq3+'"]');
-      if(btn)btn.click();
-    }
-    restoring=false;
-    updateDots();
+    if(saved.vals) FIELDS.forEach(function(id){ if(saved.vals[id]!==undefined) $(id).value=saved.vals[id]; });
+    [0,1,2,3,5].forEach(function(k){ if(saved.ok&&saved.ok[k]) window['iexCaricacheck'+k](); });
+    if(saved.mcq){ var b=document.querySelector('#iexCaricachoices4 .iex-choice-btn[data-v="'+saved.mcq+'"]'); if(b) b.click(); }
+    restoring=false; updateDots();
   })();
 })();
 </script>
