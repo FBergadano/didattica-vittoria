@@ -24,6 +24,10 @@
 .mp-nodo.mp-testata { font-weight: 700; text-align: center; display: flex; align-items: center; justify-content: center; }
 .mp-nodo.mp-testata .mp-testo { width: 100%; }
 .mp-nodo.mp-dis { border: none; background: transparent; padding: 0; }
+.mp-nodo.mp-gruppo { border-width: 2px; border-radius: 14px; }
+.mp-nodo.mp-cornice { background: transparent; border-width: 2px; border-style: dashed; border-radius: 14px; }
+.mp-nodo.mp-etichetta { border: none; background: transparent; font-weight: 700; font-size: 15px; text-align: center; display: flex; align-items: center; justify-content: center; }
+.mp-nodo.mp-etichetta .mp-testo { width: 100%; }
 .mp-testo { outline: none; min-height: 1em; word-wrap: break-word; white-space: pre-wrap; }
 .mp-testo b { color: inherit; }
 .mp-f mjx-container { margin: 0 !important; }

@@ -187,7 +187,7 @@ window._lvEsito = window._lvEsito || function() {};
       // tolgo dalla coda solo ciò che non è cambiato nel frattempo
       put(QK, ora.filter(function(it) { return fatti[it.k] !== it.imp; }));
       put(SK, inviati);
-      if (dalVivo && C.notifica) C.notifica('✓ Risposta arrivata al prof');
+      if (dalVivo && C.notifica) C.notifica('😊 L\'ho ricevuta!');
       if (C.aggiornaStato) C.aggiornaStato();
       if (get(QK, []).length && lotto.length === 100) return C.invia(false);
       return lotto.length;

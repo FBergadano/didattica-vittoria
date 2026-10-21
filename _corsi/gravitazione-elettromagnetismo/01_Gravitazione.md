@@ -946,9 +946,7 @@ Puoi verificarlo con la seguente animazione, in cui puoi costruire il tuo propri
 {% include box-end.html %} -->
 
 
-# Schema riassuntivo
-
-Prima degli esercizi, ecco tutto il capitolo in un colpo d'occhio. Con «Modifica» puoi costruire il tuo schema, partendo da questo o da un foglio bianco: aggiungere riquadri, frecce, colori, formule e scritte a mano.
+### Schema riassuntivo
 
 {% include mappa.html id="gravitazione" %}
 

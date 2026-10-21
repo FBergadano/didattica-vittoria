@@ -153,9 +153,12 @@
       e.style.height = (n.h || 60) + 'px';
       var s = svgPulito(n.svg); if (s) e.appendChild(s);
     } else {
-      var c = col(n.colore);
-      if (n.stile !== 'titolo') { e.style.background = c[0]; e.style.borderColor = c[1]; }
-      else e.style.color = c[1] === '#94a3b8' ? '' : c[1];
+      // stile: titolo / etichetta (solo testo colorato), cornice (bordo tratteggiato, niente sfondo),
+      // gruppo (fascia che racchiude altri riquadri), testata, oppure un riquadro normale
+      var c = col(n.colore), st = n.stile;
+      if (st === 'titolo' || st === 'etichetta') e.style.color = c[1] === '#94a3b8' ? '' : c[1];
+      else if (st === 'cornice') e.style.borderColor = c[1];
+      else { e.style.background = c[0]; e.style.borderColor = c[1]; }
       this.riempi(el('div', 'mp-testo', e), n.testo || '');
     }
     return e;
@@ -376,10 +379,10 @@
     btn('<b>B</b>', 'Grassetto', function () { if (self.inMod) document.execCommand('bold'); });
     btn('🗑', 'Elimina ciò che è selezionato', function () { self.elimina(); });
     btn('↶', 'Annulla l\'ultima modifica', function () { self.annulla(); });
-    btn('⟲', 'Ricomincia: dallo schema del prof o da un foglio bianco', function () { self.ricomincia(); });
+    btn('⟲', 'Ricomincia: dal mio schema o da un foglio bianco', function () { self.ricomincia(); });
     el('span', 'mp-spazio', barra);
     if (opz.pdf) btn('⬇ PDF', 'Scarica lo schema in PDF', function () { self.chiudiModifica(); opz.pdf(self.d, self.vista); }, 'mp-tw');
-    if (opz.invia) btn('📤 Invia', 'Invia lo schema al prof', function () { self.chiudiModifica(); opz.invia(self.d); }, 'mp-tw');
+    if (opz.invia) btn('📤 Invia', 'Mandami lo schema', function () { self.chiudiModifica(); opz.invia(self.d); }, 'mp-tw');
     btn('✓ Fine', 'Chiudi l\'editor (lo schema resta salvato)', function () { self.chiudi(); }, 'mp-tw mp-fine');
 
     this.aiuto = el('div', 'mp-aiuto', ov);
@@ -661,7 +664,7 @@
     var az = el('div', 'mp-faz', p);
     function b(t, fn, cls) { var x = el('button', 'mp-b' + (cls ? ' ' + cls : ''), az); x.type = 'button'; x.textContent = t; x.onclick = function () { ov.remove(); if (fn) fn(); }; }
     b('Annulla');
-    if (this.opz.modello) b('Dallo schema del prof', function () { self.salvaStoria(); self.d = normalizza(copia(self.opz.modello)); self.ridisegna(); });
+    if (this.opz.modello) b('Dal mio schema', function () { self.salvaStoria(); self.d = normalizza(copia(self.opz.modello)); self.ridisegna(); });
     b('Da un foglio bianco', function () { self.salvaStoria(); self.d = vuoto(); self.ridisegna(); }, 'mp-b-pri');
   };
   Editor.prototype.tasto = function (e) {
@@ -698,7 +701,7 @@
     function aggiornaStato(msg, cls) {
       var m = leggi();
       stato.className = 'mp-stato' + (cls ? ' ' + cls : '');
-      stato.textContent = msg || (m ? 'Questa è la tua versione (salvata nel browser il ' + quando(m.ts) + ').' : 'Questo è lo schema del prof: con «Modifica» puoi costruire il tuo.');
+      stato.textContent = msg || (m ? 'Questa è la tua versione (salvata nel browser il ' + quando(m.ts) + ').' : 'Questo è il mio schema: con «Modifica» puoi costruire il tuo.');
     }
     aggiornaStato();
     var tR = null;
@@ -708,12 +711,12 @@
     function invia(d) {
       if (!C || !C.chiama) { aggiornaStato('Le consegne non sono attive su questo sito.', 'mp-err'); return; }
       var a = C.accesso && C.accesso();
-      if (!a) { alert('Per inviare lo schema al prof, prima accedi con il pulsante 👤 in alto (codice e PIN).'); return; }
+      if (!a) { alert('Per mandarmi lo schema, prima accedi con il pulsante 👤 in alto (codice e PIN).'); return; }
       aggiornaStato('Invio in corso…');
       var o = copia(d); delete o.ts;
       C.chiama('/schema', { token: a.token, pagina: pagina, titolo: titolo, tipo: 'mappa', dati: JSON.stringify(o) }).then(function () {
-        aggiornaStato('✓ Schema inviato al prof il ' + quando(Date.now()) + '. Se lo modifichi, ricordati di inviarlo di nuovo.', 'mp-ok');
-        if (C.notifica) C.notifica('✓ Schema inviato al prof');
+        aggiornaStato('😊 L\'ho ricevuto! (' + quando(Date.now()) + ') Se lo modifichi, ricordati di inviarmelo di nuovo.', 'mp-ok');
+        if (C.notifica) C.notifica('😊 L\'ho ricevuto!');
       }).catch(function (err) {
         var t = { troppi: 'Hai già inviato molti schemi oggi: riprova domani.', grande: 'Lo schema è troppo grande per essere inviato.' }[err && err.codice];
         if (err && err.status === 404) t = 'Il server non accetta ancora gli schemi: avvisa il prof.';

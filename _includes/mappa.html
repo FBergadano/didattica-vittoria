@@ -1,8 +1,8 @@
 {% comment %}
 Schema riassuntivo del capitolo, da mettere subito prima degli esercizi di
-riepilogo. Mostra lo schema del prof (in _data/mappe/<id>.json); lo studente
+riepilogo. Mostra il mio schema (in _data/mappe/<id>.json); lo studente
 con «Modifica» lo cambia o ne costruisce uno da zero (riquadri, frecce,
-colori, formule senza LaTeX, penna), lo scarica in PDF e lo invia al prof
+colori, formule senza LaTeX, penna), lo scarica in PDF e me lo invia
 (arriva nella pagina del docente, scheda «Schemi»). La sua versione resta
 salvata nel browser. Motore: assets/js/mappa.js, aspetto: assets/css/mappa.css.
 
@@ -10,7 +10,7 @@ salvata nel browser. Motore: assets/js/mappa.js, aspetto: assets/css/mappa.css.
   titolo — facoltativo (default: il titolo del capitolo)
 
 Esempio:
-  # Schema riassuntivo
+  ### Schema riassuntivo
   {% include mappa.html id="gravitazione" %}
 {% endcomment %}
 {% assign _m = site.data.mappe[include.id] %}
@@ -21,7 +21,7 @@ Esempio:
 <div class="mp-azioni">
 <button type="button" class="mp-b mp-b-pri" data-mp="modifica">✎ Modifica / costruisci il tuo schema</button>
 <button type="button" class="mp-b" data-mp="pdf">⬇ Scarica PDF</button>
-<button type="button" class="mp-b" data-mp="invia">📤 Invia al prof</button>
+<button type="button" class="mp-b" data-mp="invia">📤 Invia</button>
 <span class="mp-stato"></span>
 </div>
 </div>

@@ -46,69 +46,82 @@ class M:
         with open(os.path.join(OUT, nome + '.json'), 'w') as f: json.dump(s.d, f, ensure_ascii=False, indent=1)
 
 # ═════════ GRAVITAZIONE ═════════
+# Tabella 2 × 2: due fasce colorate (righe: vettoriali / scalari) che contengono il proprio nome e
+# le proprie caselle, e due cornici tratteggiate (colonne: due masse / una massa) che partono
+# dall'intestazione e scendono fino in fondo.
+def tabella(mm, y0, hh, hv, hs, cA, cB, eV, eS):
+    """y0: cima delle cornici; hh: altezza intestazioni; hv/hs: altezze delle fasce. Restituisce le y delle caselle."""
+    A, B, CW = 175, 600, 390
+    yV = y0 + hh + 14; yS = yV + hv + 10; yfine = yS + hs
+    mm.box(6, yV, 988, hv, '', 'viola', 'gruppo')
+    mm.box(6, yS, 988, hs, '', 'arancio', 'gruppo')
+    mm.box(A - 8, y0, CW + 16, yfine - y0 + 8, '', 'grigio', 'cornice')
+    mm.box(B - 8, y0, CW + 16, yfine - y0 + 8, '', 'grigio', 'cornice')
+    mm.box(A, y0 + 6, CW, hh, cA, 'grigio', 'testata')
+    mm.box(B, y0 + 6, CW, hh, cB, 'grigio', 'testata')
+    mm.box(14, yV + 8, 148, hv - 16, eV, 'viola', 'etichetta')
+    mm.box(14, yS + 8, 148, hs - 16, eS, 'arancio', 'etichetta')
+    return A, B, CW, yV + 8, hv - 16, yS + 8, hs - 16
+
 g = M('La gravitazione',
       ['G', 'M', 'm', 'r', '\\vec F', '\\vec g', 'U', 'V', 'K', 'E', 'M_\\oplus', '\\vec F_{tot}', '\\vec g_{tot}'],
       ['N', 'J', 'kg', 'm', 's', '\\text{N/kg}', '\\text{J/kg}', '\\text{N}\\cdot\\text{m}^2/\\text{kg}^2'])
-g.box(300, 6, 400, 36, 'La gravitazione', 'azzurro', 'titolo')
-# intestazioni di colonna
-A, B, CW = 175, 610, 380
-cA = g.box(A, 50, CW, 44, '**Due masse** $M$ e $m$ a distanza $r$', 'grigio', 'testata')
-cB = g.box(B, 50, CW, 44, '**Una massa sola** $M$: il campo che genera nello spazio', 'grigio', 'testata')
-# intestazioni di riga
-rV = g.box(10, 102, 155, 175, '**Grandezze vettoriali**\n\nfrecce: modulo, direzione e verso', 'viola', 'testata')
-rS = g.box(10, 287, 155, 150, '**Grandezze scalari**\n\nnumeri, con il segno', 'arancio', 'testata')
-F = g.box(A, 102, CW, 175,
+g.box(300, 4, 400, 34, 'La gravitazione', 'azzurro', 'titolo')
+A, B, CW, yv, hv, ys, hs = tabella(g, 40, 40, 178, 152,
+  '**Due masse** $M$ e $m$ a distanza $r$', '**Una massa sola** $M$: il campo che genera',
+  'Grandezze vettoriali\n(frecce)', 'Grandezze scalari\n(numeri con segno)')
+F = g.box(A, yv, CW, hv,
   '**Forza gravitazionale** $\\vec F$\n'
   '$F = G\\,\\dfrac{M\\,m}{r^2}$\n'
   'sempre attrattiva, lungo la retta che unisce le masse; uguale e opposta sulle due masse\n'
-  '$[F] = \\text{N}$\n$G = 6{,}67\\times10^{-11}\\ \\text{N}\\cdot\\text{m}^2/\\text{kg}^2$', 'viola')
-g.dis(A + 235, 214, 140, 56, svg('0 0 140 56',
+  '$[F] = \\text{N}$\n$G = 6{,}67\\times10^{-11}\\ \\text{N}\\cdot\\text{m}^2/\\text{kg}^2$', 'bianco')
+g.dis(A + 245, yv + hv - 60, 140, 56, svg('0 0 140 56',
   sfera(26, 30, 17, lab='M') + sfera(116, 30, 9, lab='m', size=11) + fr(45, 30, 70, 30, '#7c3aed') + fr(105, 30, 80, 30, '#7c3aed')
   + txt(58, 20, 'F', 11, '#7c3aed') + txt(93, 20, 'F', 11, '#7c3aed')))
-gg = g.box(B, 102, CW, 175,
+gg = g.box(B, yv, CW, hv,
   '**Campo gravitazionale** $\\vec g$\n'
   '$g = G\\,\\dfrac{M}{r^2}$    $\\vec g = \\dfrac{\\vec F}{m}$\n'
   'punta verso $M$; non dipende dalla massa esploratrice $m$\n'
-  '$[g] = \\text{N/kg}$', 'viola')
-g.dis(B + 258, 190, 120, 84, svg('0 0 120 84', sfera(60, 42, 13, lab='M', size=11) + radiali(60, 42, 38, 18, 6, True, '#7c3aed')))
-U = g.box(A, 287, CW, 150,
+  '$[g] = \\text{N/kg}$', 'bianco')
+g.dis(B + 280, yv + hv - 88, 104, 84, svg('0 0 120 84', sfera(60, 42, 13, lab='M', size=11) + radiali(60, 42, 38, 18, 6, True, '#7c3aed')))
+U = g.box(A, ys, CW, hs,
   '**Energia potenziale gravitazionale** $U$\n'
   '$U = -G\\,\\dfrac{M\\,m}{r}$\n'
   'sempre negativa; vale 0 a distanza infinita\n'
-  '$[U] = \\text{J}$', 'arancio')
-V = g.box(B, 287, CW, 150,
+  '$[U] = \\text{J}$', 'bianco')
+V = g.box(B, ys, CW, hs,
   '**Potenziale gravitazionale** $V$\n'
   '$V = \\dfrac{U}{m} = -G\\,\\dfrac{M}{r}$\n'
   'non dipende da $m$\n'
-  '$[V] = \\text{J/kg}$', 'arancio')
+  '$[V] = \\text{J/kg}$', 'bianco')
 g.fr(F, gg, '$\\div\\, m$', 'freccia', 'viola')
 g.fr(U, V, '$\\div\\, m$', 'freccia', 'arancio')
-# riga in basso
-Y = 452
-so = g.box(10, Y, 300, 245,
+Y = ys + hs + 22
+HB = 700 - Y
+so = g.box(10, Y, 300, HB,
   '**Sovrapposizione degli effetti**\n'
   'con più masse, ognuna agisce come se le altre non ci fossero\n'
   '$\\vec F_{tot} = \\vec F_1 + \\vec F_2 + \\cdots$\n$\\vec g_{tot} = \\vec g_1 + \\vec g_2 + \\cdots$\n'
   'somma **vettoriale** (regola del parallelogramma)\n'
   '$U_{tot} = U_1 + U_2 + \\cdots$\n$V_{tot} = V_1 + V_2 + \\cdots$\n'
   'somma **algebrica** (con i segni)', 'verde')
-mo = g.box(320, Y, 260, 245,
+mo = g.box(320, Y, 260, HB,
   '**Moto in un campo**\n'
   'forza peso: $\\vec F = m\\,\\vec g$\n'
-  'accelerazione: $\\vec a = \\vec g$\n(non dipende da $m$)\n'
+  'accelerazione: $\\vec a = \\vec g$ (non dipende da $m$)\n'
   'energia meccanica costante:\n$E = K + U = \\dfrac12 m v^2 - G\\,\\dfrac{M m}{r}$', 'giallo')
-li = g.box(590, Y, 195, 245,
+li = g.box(590, Y, 195, HB,
   '**Linee di campo**\n'
   'in ogni punto tangenti a $\\vec g$\n'
   'più fitte dove il campo è più intenso\n'
   'entrano nella massa', 'azzurro')
-g.dis(640, Y + 150, 90, 90, svg('0 0 90 90', sfera(45, 45, 9) + radiali(45, 45, 44, 13, 8, True, '#0284c7')))
-eq = g.box(795, Y, 195, 245,
+g.dis(645, Y + HB - 92, 86, 86, svg('0 0 90 90', sfera(45, 45, 9) + radiali(45, 45, 44, 13, 8, True, '#0284c7')))
+eq = g.box(795, Y, 195, HB,
   '**Superfici equipotenziali**\n'
   'punti con lo stesso $V$\n'
   'per una massa: sfere concentriche\n'
   'sempre $\\perp$ alle linee di campo', 'azzurro')
-g.dis(848, Y + 150, 90, 90, svg('0 0 90 90', sfera(45, 45, 7)
+g.dis(850, Y + HB - 92, 86, 86, svg('0 0 90 90', sfera(45, 45, 7)
   + ''.join(f'<circle cx="45" cy="45" r="{r}" fill="none" stroke="#0284c7" stroke-width="1.3" stroke-dasharray="4 3"/>' for r in (18, 30, 42))
   + ''.join(f'<line x1="{45+9*math.cos(a):.1f}" y1="{45+9*math.sin(a):.1f}" x2="{45+44*math.cos(a):.1f}" y2="{45+44*math.sin(a):.1f}" stroke="#94a3b8" stroke-width="1"/>' for a in [k*math.pi/4 for k in range(8)])))
 g.fr(li, eq, '$\\perp$', 'linea', 'azzurro')
@@ -122,55 +135,54 @@ def carica(cx, cy, r, segno, size=12):
 e = M("L'elettrostatica",
       ['Q', 'q', 'q_1', 'q_2', 'e', 'k', 'r', '\\vec F', '\\vec E', 'U', 'V', '\\Delta V', 'n_p', 'n_e', '\\vec F_{tot}', '\\vec E_{tot}'],
       ['C', 'N', 'J', 'V', 'm', 'kg', '\\text{N/C}', '\\text{J/C}', '\\text{N}\\cdot\\text{m}^2/\\text{C}^2'])
-e.box(300, 4, 400, 34, "L'elettrostatica", 'azzurro', 'titolo')
-q1 = e.box(10, 44, 330, 126, '**Carica elettrica** $Q$, $[Q] = \\text C$\n'
+e.box(300, 2, 400, 32, "L'elettrostatica", 'azzurro', 'titolo')
+e.box(10, 38, 330, 112, '**Carica elettrica** $Q$, $[Q] = \\text C$\n'
   'quantizzata: $Q = n\\,e$, con $n = n_p - n_e$\n$e = 1{,}6\\times10^{-19}\\ \\text C$\n'
   'si **conserva**: non si crea e non si distrugge', 'azzurro')
-q2 = e.box(350, 44, 280, 126, '**Conduttori e isolanti**\n'
+e.box(350, 38, 280, 112, '**Conduttori e isolanti**\n'
   'conduttori: cariche libere di muoversi (metalli, corpo umano, Terra)\n'
   'isolanti: nessuna carica libera (vetro, plastica, gomma)', 'grigio')
-q3 = e.box(640, 44, 350, 126, '**Elettrizzazione**\n'
+e.box(640, 38, 350, 112, '**Elettrizzazione**\n'
   'strofinio: i due corpi, segni **opposti**\n'
   'contatto: segno **uguale** (la carica si divide)\n'
   'induzione: polarizzazione + collegamento a terra → segno **opposto**', 'rosa')
-A, B, CW = 175, 610, 380
-e.box(A, 178, CW, 38, '**Due cariche** $Q$ e $q$ a distanza $r$', 'grigio', 'testata')
-e.box(B, 178, CW, 38, '**Una carica sola** $Q$: il campo che genera', 'grigio', 'testata')
-e.box(10, 224, 155, 150, '**Grandezze vettoriali**\n\nmodulo, direzione e verso', 'viola', 'testata')
-e.box(10, 382, 155, 132, '**Grandezze scalari**\n\nnumeri, con il segno', 'arancio', 'testata')
-F = e.box(A, 224, CW, 150, '**Forza elettrica** (legge di Coulomb)\n'
+A, B, CW, yv, hv, ys, hs = tabella(e, 158, 36, 156, 130,
+  '**Due cariche** $Q$ e $q$ a distanza $r$', '**Una carica sola** $Q$: il campo che genera',
+  'Grandezze vettoriali\n(frecce)', 'Grandezze scalari\n(numeri con segno)')
+F = e.box(A, yv, CW, hv, '**Forza elettrica** (legge di Coulomb)\n'
   '$F = k\\,\\dfrac{\\lvert q_1\\, q_2\\rvert}{r^2}$\n'
   'si respingono se hanno lo stesso segno,\nsi attraggono se di segno opposto\n'
-  '$[F] = \\text N$\n$k = 8{,}99\\times10^{9}\\ \\text N\\cdot\\text m^2/\\text C^2$', 'viola')
-e.dis(A + 240, 318, 135, 50, svg('0 0 135 50', carica(45, 25, 12, '+') + carica(90, 25, 12, '+') + fr(30, 25, 6, 25, '#7c3aed') + fr(105, 25, 129, 25, '#7c3aed')))
-E = e.box(B, 224, CW, 150, '**Campo elettrico** $\\vec E$\n'
+  '$[F] = \\text N$\n$k = 8{,}99\\times10^{9}\\ \\text N\\cdot\\text m^2/\\text C^2$', 'bianco')
+e.dis(A + 250, yv + hv - 52, 135, 48, svg('0 0 135 50', carica(45, 25, 12, '+') + carica(90, 25, 12, '+') + fr(30, 25, 6, 25, '#7c3aed') + fr(105, 25, 129, 25, '#7c3aed')))
+E = e.box(B, yv, CW, hv, '**Campo elettrico** $\\vec E$\n'
   '$E = k\\,\\dfrac{\\lvert Q\\rvert}{r^2}$    $\\vec E = \\dfrac{\\vec F}{q}$\n'
   'esce dalle cariche positive, entra in quelle negative\n'
-  '$[E] = \\text{N/C}$', 'viola')
-e.dis(B + 292, 292, 82, 82, svg('0 0 82 82', carica(41, 41, 11, '+') + radiali(41, 41, 15, 38, 8, True, '#7c3aed')))
-U = e.box(A, 382, CW, 132, '**Energia potenziale elettrica** $U$\n'
+  '$[E] = \\text{N/C}$', 'bianco')
+e.dis(B + 300, yv + hv - 80, 76, 76, svg('0 0 82 82', carica(41, 41, 11, '+') + radiali(41, 41, 15, 38, 8, True, '#7c3aed')))
+U = e.box(A, ys, CW, hs, '**Energia potenziale elettrica** $U$\n'
   '$U = k\\,\\dfrac{Q\\,q}{r}$ (cariche con il loro segno)\n'
-  'negativa se si attraggono, positiva se si respingono\n$[U] = \\text J$', 'arancio')
-V = e.box(B, 382, CW, 132, '**Potenziale elettrico** $V$\n'
+  'negativa se si attraggono, positiva se si respingono\n$[U] = \\text J$', 'bianco')
+V = e.box(B, ys, CW, hs, '**Potenziale elettrico** $V$\n'
   '$V = \\dfrac{U}{q} = k\\,\\dfrac{Q}{r}$     $U = q\\,V$\n'
-  '$[V] = \\text V = \\text{J/C}$ (volt)', 'arancio')
+  '$[V] = \\text V = \\text{J/C}$ (volt)', 'bianco')
 e.fr(F, E, '$\\div\\, q$', 'freccia', 'viola')
 e.fr(U, V, '$\\div\\, q$', 'freccia', 'arancio')
-Y = 524
-e.box(10, Y, 235, 175, '**Sovrapposizione degli effetti**\n'
+Y = ys + hs + 22
+HB = 703 - Y
+e.box(10, Y, 235, HB, '**Sovrapposizione degli effetti**\n'
   'ogni carica agisce come se le altre non ci fossero\n'
   '$\\vec F_{tot}$, $\\vec E_{tot}$: somma **vettoriale**\n$U_{tot}$, $V_{tot}$: somma **algebrica**', 'verde')
-e.box(255, Y, 320, 175, '**Una carica in un campo**\n'
+e.box(255, Y, 320, HB, '**Una carica in un campo**\n'
   '$\\vec F = q\\,\\vec E$ (verso opposto se $q<0$)\n'
   '$\\vec a = \\dfrac{q}{m}\\,\\vec E$\n'
   '$\\Delta U = q\\,\\Delta V$; partendo da ferma $K = \\lvert q\\rvert\\,\\lvert\\Delta V\\rvert$\n'
   'le cariche positive vanno verso $V$ più basso', 'giallo')
-li = e.box(585, Y, 200, 175, '**Linee di campo**\n'
+li = e.box(585, Y, 200, HB, '**Linee di campo**\n'
   'tangenti a $\\vec E$, escono da +, entrano in −, non si incrociano\n'
   'fra due lastre: campo uniforme', 'azzurro')
-e.dis(690, Y + 125, 80, 46, svg('0 0 80 46', '<line x1="8" y1="3" x2="8" y2="43" stroke="#be123c" stroke-width="3"/><line x1="72" y1="3" x2="72" y2="43" stroke="#1d4ed8" stroke-width="3"/>'
-  + ''.join(fr(13, y, 66, y, '#0284c7', 1.3, 5) for y in (10, 23, 36)) + txt(4, 46, '+', 10, '#be123c', False) + txt(76, 46, '−', 10, '#1d4ed8', False)))
-eq = e.box(795, Y, 195, 175, '**Superfici equipotenziali**\n'
+e.dis(695, Y + HB - 50, 80, 46, svg('0 0 80 46', '<line x1="8" y1="3" x2="8" y2="43" stroke="#be123c" stroke-width="3"/><line x1="72" y1="3" x2="72" y2="43" stroke="#1d4ed8" stroke-width="3"/>'
+  + ''.join(fr(13, y, 66, y, '#0284c7', 1.3, 5) for y in (10, 23, 36))))
+eq = e.box(795, Y, 195, HB, '**Superfici equipotenziali**\n'
   'punti con lo stesso $V$\nsempre $\\perp$ alle linee di campo\nper una carica: sfere concentriche', 'azzurro')
 e.fr(li, eq, '$\\perp$', 'linea', 'azzurro')
 e.salva('elettrostatica')

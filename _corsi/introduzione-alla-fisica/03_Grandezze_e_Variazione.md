@@ -638,9 +638,7 @@ $$\Delta s = \frac{\Delta h}{\text{var}_{h,s}} = \frac{-30}{-0{,}15} = 200\ \tex
 
 {% include box-end.html %}
 
-# Schema riassuntivo
-
-Prima degli esercizi, ecco tutto il capitolo in un colpo d'occhio. Con «Modifica» puoi costruire il tuo schema, partendo da questo o da un foglio bianco: aggiungere riquadri, frecce, colori, formule e scritte a mano.
+### Schema riassuntivo
 
 {% include mappa.html id="grandezze-variazione" %}
 

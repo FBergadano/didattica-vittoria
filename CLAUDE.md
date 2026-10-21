@@ -322,7 +322,7 @@ Testo in Markdown.
 Subito prima di `# Esercizi di riepilogo`:
 
 ```liquid
-# Schema riassuntivo
+### Schema riassuntivo
 
 {% include mappa.html id="gravitazione" %}
 ```

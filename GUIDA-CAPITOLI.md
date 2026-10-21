@@ -31,7 +31,7 @@ strumenti (box, esercizi, widget) vedi `CLAUDE.md`.
 4. **Chiusura.**
    - **In sintesi**: le formule e le idee chiave in una pagina.
    - **Sai fare?**: una lista di abilità da spuntare.
-   - **Schema riassuntivo** (`# Schema riassuntivo` + `{% include mappa.html id="…" %}`),
+   - **Schema riassuntivo** (`### Schema riassuntivo` + `{% include mappa.html id="…" %}`),
      subito prima degli esercizi di riepilogo: tutto il capitolo in un foglio,
      breve e schematico ma completo (grandezze, formule, unità, legami fra i
      concetti, qualche disegnino). Lo schema del prof sta in `_data/mappe/<id>.json`

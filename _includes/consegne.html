@@ -171,7 +171,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       '<ul class="cons-inviate"></ul>';
     // schemi per l'interrogazione
     h += '<h4>Schemi per l\'interrogazione</h4>' +
-      '<div class="cons-hint" style="margin-top:0">Se puoi portare le mappe all\'interrogazione, mandamele qui. Lo schema che costruisci in fondo a ogni capitolo, prima degli esercizi di riepilogo, si invia con il suo pulsante «📤 Invia al prof». Qui puoi mandarmi anche uno schema fatto a mano o con un altro programma.</div>' +
+      '<div class="cons-hint" style="margin-top:0">Se puoi portare le mappe all\'interrogazione, mandamele qui. Lo schema che costruisci in fondo a ogni capitolo, prima degli esercizi di riepilogo, si invia con il suo pulsante «📤 Invia». Qui puoi mandarmi anche uno schema fatto a mano o con un altro programma.</div>' +
       '<label>Argomento dello schema</label><input type="text" class="cons-stitolo" maxlength="120" placeholder="es. La gravitazione">' +
       '<div style="margin-top:.6rem"><label class="cons-b cons-file">📎 Invia un PDF o una foto<input type="file" accept="application/pdf,image/*" class="cons-sinput"></label></div>' +
       '<div class="cons-msg cons-smsg"></div><ul class="cons-inviate cons-schemi"></ul>';
@@ -230,7 +230,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       return C.chiama('/schema', { token: a.token, titolo: tit, pagina: '', tipo: 'file', file: d });
     }).then(function() {
       panel.querySelector('.cons-stitolo').value = '';
-      msg('.cons-smsg', '✓ Schema inviato al prof.', 'ok'); caricaFoto();
+      msg('.cons-smsg', '😊 L\'ho ricevuto!', 'ok'); caricaFoto();
     }).catch(function(err) {
       var t = { troppi: 'Hai già inviato molti schemi oggi: riprova domani.', grande: 'Questo file è troppo grande.', formato: 'Puoi inviare solo un PDF o una foto.' }[err.codice];
       if (err.status === 404) t = 'Il server non accetta ancora gli schemi: avvisa il prof.';
@@ -267,7 +267,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     var el = panel.querySelector('.cons-stato'); if (!el) return;
     var n = C.inCoda();
     el.className = 'cons-stato cons-msg ' + (n ? '' : 'ok');
-    el.textContent = n ? '⏳ ' + n + ' rispost' + (n === 1 ? 'a' : 'e') + ' in attesa di invio (partono appena c\'è rete)' : '✓ Mi sono arrivate tutte le tue risposte';
+    el.textContent = n ? '⏳ ' + n + ' rispost' + (n === 1 ? 'a' : 'e') + ' in attesa di invio (partono appena c\'è rete)' : '😊 Ho ricevuto tutte le tue risposte';
   }
 
   function disegnaAccesso() {
@@ -325,7 +325,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       (function prossima() {
         if (!lista.length) {
           b.disabled = false; inAttesa = []; mostraAnteprime(); caricaFoto();
-          msg('.cons-fmsg', '✓ ' + (fatte === 1 ? 'Foto inviata' : fatte + ' foto inviate') + ' al prof.', 'ok'); return;
+          msg('.cons-fmsg', fatte === 1 ? '😊 L\'ho ricevuta!' : '😊 Le ho ricevute tutte e ' + fatte + '!', 'ok'); return;
         }
         var f = lista.shift();
         msg('.cons-fmsg', 'Invio ' + (fatte + 1) + ' di ' + (fatte + 1 + lista.length) + '…', '');
@@ -348,7 +348,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       var s = sezioneVisibile();
       b.disabled = true;
       C.chiama('/dubbi', { token: a.token, pagina: C.pagina, sezione: s ? s.t : null, ancora: s ? s.id : null, testo: testo }).then(function() {
-        ta.value = ''; b.disabled = false; msg('.cons-dmsg', '✓ Dubbio inviato al prof.', 'ok'); caricaDubbi();
+        ta.value = ''; b.disabled = false; msg('.cons-dmsg', '😊 L\'ho ricevuto! Ti risponderò qui.', 'ok'); caricaDubbi();
       }).catch(function(err) {
         b.disabled = false;
         msg('.cons-dmsg', err.codice === 'troppi' ? 'Hai già inviato molti dubbi oggi: riprova domani.' : 'Non riesco a inviarlo: controlla la connessione e riprova.', 'err');
