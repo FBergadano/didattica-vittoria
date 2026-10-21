@@ -143,10 +143,31 @@
       aggiungiQR(f.parentNode, f.src, 'Simulazione interattiva' + (didascalia(f.parentNode) ? '' : ' (PhET)'));
     });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', preparaQR); else preparaQR();
+  // stampa "senza esercizi": via gli esercizi di riepilogo, e al posto di ogni
+  // esercizio numerato solo una barra "N Verifica Subito! — Visualizza sul sito"
+  function preparaBarre() {
+    var prose = document.querySelector('.chapter-prose');
+    if (!prose) return;
+    prose.querySelectorAll('[data-es]').forEach(function(el) {
+      var lbl = el.querySelector('.box-label, .iex-lbl');
+      var t = lbl ? lbl.textContent.replace(/^\s*\d+/, '').replace(/^\s*Esercizio\s*\d*\s*[—–-]?\s*/i, '').trim() : '';
+      if (!/^(Verifica Subito|Prova tu)/i.test(t)) t = 'Verifica Subito!';
+      var b = document.createElement('a');
+      b.className = 'es-barra-stampa';
+      b.href = location.href.split('#')[0] + '#' + (el.id || '');
+      b.innerHTML = '<span class="es-num">' + el.dataset.es + '</span><span class="es-barra-t">' + esc(t) + '</span><span class="es-barra-link">Visualizza sul sito</span>';
+      el.parentNode.insertBefore(b, el);
+    });
+    prose.querySelectorAll('h1').forEach(function(h) {
+      if (!/^\s*Esercizi di riepilogo\s*$/i.test(h.textContent)) return;
+      for (var x = h; x && !(x !== h && x.tagName === 'H1'); x = x.nextElementSibling) x.classList.add('riepilogo-stampa');
+    });
+  }
+  function prepara() { preparaQR(); preparaBarre(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', prepara); else prepara();
 
   // ── opzioni di stampa ──
-  var DEF = { testo: 100, margini: 15, spoiler: 'chiusi', immagini: true };
+  var DEF = { testo: 100, margini: 15, spoiler: 'chiusi', immagini: true, esercizi: false };
   function leggi() { try { var o = JSON.parse(localStorage.getItem('lv-stampa') || '{}'); for (var k in DEF) if (!(k in o)) o[k] = DEF[k]; return o; } catch (e) { return JSON.parse(JSON.stringify(DEF)); } }
   function salva(o) { try { localStorage.setItem('lv-stampa', JSON.stringify(o)); } catch (e) {} }
   var stile = document.createElement('style'); document.head.appendChild(stile);
@@ -155,6 +176,7 @@
     stile.textContent = '@page { margin: ' + o.margini + 'mm; }' +
       '@media print { .main-content { zoom: ' + (o.testo / 100) + '; } }';
     document.documentElement.classList.toggle('stampa-senza-immagini', !o.immagini);
+    document.documentElement.classList.toggle('stampa-senza-esercizi', !o.esercizi);
     if (o.spoiler === 'aperti') document.querySelectorAll('details.spoiler:not([open])').forEach(function(d) { d.open = true; aperti.push(d); });
   }
   window.addEventListener('beforeprint', function() { if (!aperti.length) applica(leggi()); });
@@ -176,7 +198,8 @@
           '<span class="stampa-scelta"><label><input type="radio" name="stampa-sp" value="chiusi"> chiusi</label>' +
           '<label><input type="radio" name="stampa-sp" value="aperti"> aperti</label></span></div>' +
         '<label class="stampa-riga stampa-check"><input type="checkbox" data-k="immagini"> Stampa le immagini</label>' +
-        '<p class="stampa-nota">I video diventano QR code; ogni pagina ha il suo numero. Nella finestra di stampa scegli “Salva come PDF”.</p>' +
+        '<label class="stampa-riga stampa-check"><input type="checkbox" data-k="esercizi"> Stampa gli esercizi</label>' +
+        '<p class="stampa-nota">Senza esercizi, al posto di ogni Verifica Subito resta solo una barra, e gli esercizi di riepilogo non si stampano. I video diventano QR code; ogni pagina ha il suo numero. Nella finestra di stampa scegli “Salva come PDF”.</p>' +
         '<div class="stampa-bott"><button type="button" class="stampa-annulla">Annulla</button>' +
         '<button type="button" class="stampa-vai">Stampa / salva PDF</button></div>' +
         '</div>';
@@ -186,6 +209,7 @@
         box.querySelector('[data-k=testo]').value = o.testo;
         box.querySelector('[data-k=margini]').value = o.margini;
         box.querySelector('[data-k=immagini]').checked = o.immagini;
+        box.querySelector('[data-k=esercizi]').checked = o.esercizi;
         box.querySelector('input[name=stampa-sp][value=' + o.spoiler + ']').checked = true;
         box.querySelector('[data-v=testo]').textContent = o.testo + '%';
         box.querySelector('[data-v=margini]').textContent = o.margini + ' mm';
@@ -195,6 +219,7 @@
           testo: +box.querySelector('[data-k=testo]').value,
           margini: +box.querySelector('[data-k=margini]').value,
           immagini: box.querySelector('[data-k=immagini]').checked,
+          esercizi: box.querySelector('[data-k=esercizi]').checked,
           spoiler: box.querySelector('input[name=stampa-sp]:checked').value
         };
       }

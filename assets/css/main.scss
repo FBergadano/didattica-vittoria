@@ -140,6 +140,16 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
   .video-qr-url { font-size: .65rem; color: $text-muted; word-break: break-all; margin: 0; }
 }
 
+// barra al posto di un esercizio nella stampa "senza esercizi" (scripts.html)
+.es-barra-stampa {
+  display: none; align-items: center; gap: .1rem;
+  border-left: 4px solid $box-ex-border; background: #fff;
+  padding: .35rem .8rem; margin: .8rem 0; break-inside: avoid;
+  text-decoration: none !important; color: inherit;
+  .es-barra-t { font-family: $font-accessible; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: $box-ex-border; }
+  .es-barra-link { margin-left: auto; font-size: .78rem; font-style: italic; color: $text-muted; }
+}
+
 // ── Finestrella "Esporta come PDF" (scripts.html) ─────────────
 .stampa-dlg {
   position: fixed; inset: 0; z-index: 10000; background: rgba(15,23,42,.45);
@@ -1301,6 +1311,12 @@ cit em, cit i { font-style: normal; }
   .video-wrap { display: none !important; }
   .video-qr-print { display: flex !important; }
   .stampa-dlg { display: none !important; }
+
+  // senza esercizi (opzione della finestrella di stampa, attiva di default)
+  html.stampa-senza-esercizi {
+    .chapter-prose [data-es], .riepilogo-stampa, .ex-box { display: none !important; }
+    .es-barra-stampa { display: flex !important; }
+  }
 
   // senza immagini (opzione della finestrella di stampa)
   html.stampa-senza-immagini {
