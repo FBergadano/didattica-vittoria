@@ -271,6 +271,7 @@ Verifica con il seguente esercizio che <u>l'unità di misura del coefficiente di
 
 $$[\alpha]=\frac 1 {\text{K}}.$$
 
+{% include unisci.html %}
 {% include esercizi/unita-alfa.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -283,6 +284,7 @@ $$[\alpha]=\frac 1 {\text{K}}.$$
 ]{% endcapture %}
 {% include quiz.html domande=_qdilatazione id="q-dilatazione" senza_esempi="true" %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 ## Alcuni Esperimenti e alcune Applicazioni Tecnologiche della Dilatazione Termica
 
@@ -444,6 +446,7 @@ $$P = \frac{Q}{\Delta t}.$$
 Come ogni potenza, si misura in watt (W): $1\ \text W = 1\ \text J/\text s$.
 {% include box-end.html %}
 
+{% include unisci.html %}
 {% include esercizi/invert-potenza-termica.html %}
 
 {% include esercizi/esercizio-potenza-termica.html %}
@@ -458,6 +461,7 @@ Come ogni potenza, si misura in watt (W): $1\ \text W = 1\ \text J/\text s$.
 ]{% endcapture %}
 {% include quiz.html domande=_qtrasmissione id="q-trasmissione" senza_esempi="true" %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 
 ## La Trasmissione del Calore per Conduzione e la Legge di Fourier

@@ -773,6 +773,7 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 
 
 
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qenergia %}[
 {"t":"L'energia potenziale gravitazionale si misura in joule (J).","ok":true,"s":"Sì, essendo un'energia."},
@@ -791,6 +792,7 @@ Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u m
 {% include box-end.html %}
 
 {% include esercizi/esercizio-energia-potenziale.html %}
+{% include unisci-end.html %}
 
 ## Moto di una massa in un campo gravitazionale
 
@@ -830,6 +832,7 @@ Ad esempio, uno stesso astronauta ha la stessa massa sulla Terra e sulla Luna, m
 
 {% include lab-virtuali/forza-peso-pianeti-lab.html %}
 
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qpeso %}[
 {"t":"La forza peso e la massa di un corpo sono la stessa grandezza, misurata in unità diverse.","ok":false,"s":"No: sono due grandezze diverse. La massa (kg) è una proprietà invariante del corpo; il peso (N) è una forza, e dipende anche dal valore di $g$ nel luogo in cui ci si trova."},
@@ -848,6 +851,7 @@ Ad esempio, uno stesso astronauta ha la stessa massa sulla Terra e sulla Luna, m
 {% include box-end.html %}
 
 {% include esercizi/esercizio-forza-peso.html %}
+{% include unisci-end.html %}
 
 ### L'Accelerazione Gravitazionale
 
@@ -889,9 +893,11 @@ $$\vec g = \frac{\Delta \vec v}{\Delta t}.$$
 
 Puoi provare con il seguente esercizio che l'unità di misura del campo corrisponde all'unità di misura dell'accelerazione.
 
+{% include unisci.html %}
 {% include esercizi/unita-nkg.html %}
 
 {% include esercizi/esercizio-accelerazione.html %}
+{% include unisci-end.html %}
 <!-- 
 ### L'Energia Meccanica
 

@@ -1,0 +1,19 @@
+{% comment %}
+Più esercizi consecutivi in un unico riquadro "Verifica Subito!", con un solo
+numero e un'unica fila di pallini che scorre tutte le domande, una dopo
+l'altra (anche quelle dei caroselli interni). Gli esercizi dentro restano
+quelli di prima, con le risposte già salvate: perdono solo la loro cornice,
+la loro etichetta e la loro barra di navigazione.
+
+  testo — etichetta del riquadro (default "Verifica Subito!")
+
+Uso:
+  {% include unisci.html %}
+  {% include box-ex.html testo="Verifica Subito!" %} ... {% include box-end.html %}
+  {% include esercizi/esercizio-conduttori.html %}
+  {% include unisci-end.html %}
+{% endcomment %}
+<div class="box box-ex unisci">
+<p class="box-label">{{ include.testo | default: "Verifica Subito!" }}</p>
+<div class="iex-topnav unisci-nav"><button type="button" class="iex-navbtn unisci-prev" aria-label="Domanda precedente"></button><span class="iex-dots unisci-dots"></span><button type="button" class="iex-navbtn unisci-next" aria-label="Domanda successiva"></button></div>
+<div class="unisci-parti" markdown="1">

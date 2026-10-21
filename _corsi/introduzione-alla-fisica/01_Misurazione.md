@@ -355,11 +355,13 @@ Ci sarà in generale molto utile convertire tutti i multipli dei secondi (minuti
   {"p":"Quanti secondi ci sono in 1 giorno?","a":86400,"t":0.0001},
   {"p":"Quanti secondi ci sono in 1 anno? (Considera 365,25 giorni/anno.)","a":31557600,"t":0.005}
 ]{% endcapture %}
+{% include unisci.html %}
 {% include iex-num.html id="t8" domande=_d8 testo="Esercizio 8 — Secondi in un giorno e in un anno" hint="Indizio: 1 giorno = 24 h, 1 h = 60 min, 1 min = 60 s. Per l'anno considera 365,25 giorni medi (anni bisestili ogni 4 anni)." %}
 
 <p class="iex-lbl">Esercizio 9 — Secondi in un secolo e in un millennio</p>
 {% include sci.html prima="Un secolo =" coeff="3.15576,3.16,3.2" exp="9" s="3,15576 × 10⁹ s" %}
 {% include sci.html prima="Un millennio =" coeff="3.15576,3.16,3.2" exp="10" s="3,15576 × 10¹⁰ s" %}
+{% include unisci-end.html %}
 
 <div class="calc-flow">
 {% include calc-margin.html id="calc1" %}
@@ -464,9 +466,11 @@ Se per la lunghezza il fattore di conversione è $10^n$, per il **volume** è $1
 
 {% include lab-virtuali/prefissi-volume-lab.html %}
 
+{% include unisci.html %}
 {% include esercizi/esercizio-qvol.html %}
 
 {% include esercizi/esercizio-aree-esponenti.html %}
+{% include unisci-end.html %}
 
 Spesso, per misurare il volume dei liquidi e dei gas, è più comune utilizzare il <definizione>litro</definizione> (simbolo ℓ), invece del m³.
 
@@ -477,6 +481,7 @@ $$1 \ \text ℓ= 1 \ \text{dm}^3.$$
 
 {% include box-end.html %}
 
+{% include unisci.html %}
 <div class="iex-widget">
 <p class="iex-lbl">Esercizio — Il litro</p>
 <p class="iex-hint">Ricorda le equivalenze fra m³, dm³ e cm³. Scrivi i risultati in notazione scientifica.</p>
@@ -492,6 +497,7 @@ $$1 \ \text ℓ= 1 \ \text{dm}^3.$$
 {% include sci.html prima="A quanti cm³ corrisponde 1 mℓ?" coeff="1" exp="0" tol=1 s="1 mℓ = 10⁻³ ℓ = 10⁻³ dm³ = 1 cm³ = 1 × 10⁰ cm³" %}
 {% include sci.html prima="Un cucchiaio contiene circa 15 mℓ di sciroppo. Quanti cucchiai servono per svuotare un flacone da 0,3 ℓ?" coeff="2" exp="1" tol=1 s="0,3 ℓ = 300 mℓ; 300 : 15 = 20 = 2 × 10¹ cucchiai" %}
 </div>
+{% include unisci-end.html %}
 
 # Esercizi di riepilogo
 ### Le unità di misura e il Sistema Internazionale

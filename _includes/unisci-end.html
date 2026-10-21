@@ -1,0 +1,94 @@
+</div>
+<script>
+(function(){
+  var root = document.currentScript.parentNode;
+  // aspetto la pagina intera: alcuni esercizi creano i loro pallini con uno script che viene dopo
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  function init() {
+  var cont = root.querySelector('.unisci-parti');
+  var nav = root.querySelector('.unisci-nav'), dotsBox = root.querySelector('.unisci-dots');
+  var prevBtn = root.querySelector('.unisci-prev'), nextBtn = root.querySelector('.unisci-next');
+  // dove comincia un nuovo esercizio (il resto si accoda all'esercizio precedente)
+  var INIZIO = '.box, .iex-widget, .iex-lbl, .iex-nested, .invx-widget, .uderive-widget, .ubx-widget, .qgf-widget, ' +
+               '.sciex-widget, .frayer, .match-widget, .sort-widget, .order-widget, .vdrag-widget, .fillm-wrap, .fill-wrap, .tf-item, .raperta, .gexp-widget';
+
+  // 1. raggruppo i figli in "parti", una per esercizio
+  var parts = [], part = null;
+  [].slice.call(cont.children).forEach(function(el) {
+    var vero = !/^(STYLE|SCRIPT|LINK)$/.test(el.tagName);
+    if (!part || (vero && el.matches(INIZIO) && part.dataset.vuota !== '1')) {
+      part = document.createElement('div'); part.className = 'unisci-parte'; part.dataset.vuota = '1';
+      cont.insertBefore(part, el); parts.push(part);
+    }
+    part.appendChild(el);
+    if (vero && el.matches(INIZIO)) part.dataset.vuota = '0';
+  });
+
+  // un titolo vero dell'esercizio (non "Verifica Subito!") resta, come sottotitolo
+  parts.forEach(function(p) {
+    var lbl = p.querySelector(':scope > .box > .box-label, :scope > .iex-widget > .iex-lbl, :scope > .iex-lbl');
+    if (!lbl) return;
+    var t = lbl.textContent.replace(/^\s*(Esercizio|Verifica Subito!?|Prova tu!?)\s*\d*\s*[—–-]?\s*/i, '').replace(/^\((.*)\)$/, '$1').trim();
+    if (!t) return;
+    var sub = document.createElement('p');
+    sub.className = 'unisci-sub'; sub.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+    p.insertBefore(sub, p.firstChild);
+  });
+
+  // 2. le domande: i pallini dei caroselli interni (iex o slide), altrimenti una sola
+  var steps = [];
+  parts.forEach(function(p, i) {
+    var inner = null, onCls = 'cur';
+    var d = p.querySelector('.iex-dots');
+    if (d && d.querySelectorAll('.iex-dot').length > 1) { inner = d; d.closest('.iex-topnav').classList.add('unisci-guidata'); }
+    else if ((d = p.querySelector('.scorri-dots')) && d.children.length > 1) { inner = d; onCls = 'on'; d.closest('.scorri-nav').classList.add('unisci-guidata'); }
+    p._inner = inner; p._on = onCls;
+    var dots = inner ? [].slice.call(inner.children) : [null];
+    dots.forEach(function(dot, k) { steps.push({ p: i, k: k, dot: dot }); });
+  });
+  var cur = 0;
+  steps.forEach(function(s, n) {
+    var d = document.createElement('span');
+    d.className = 'iex-dot'; d.title = 'Domanda ' + (n + 1);
+    d.addEventListener('click', function() { go(n); });
+    dotsBox.appendChild(d); s.u = d;
+  });
+
+  function paint() {
+    steps.forEach(function(s, n) {
+      s.u.className = 'iex-dot' + (n === cur ? ' cur' : '') + (s.dot && s.dot.classList.contains('ok') ? ' ok' : '');
+    });
+    prevBtn.disabled = cur === 0; nextBtn.disabled = cur === steps.length - 1;
+  }
+  function showPart(i) {
+    parts.forEach(function(p, j) { p.classList.toggle('on', j === i); });
+  }
+  function go(n) {
+    if (n < 0 || n >= steps.length) return;
+    var s = steps[n], cambia = !parts[s.p].classList.contains('on');
+    cur = n; showPart(s.p);
+    if (cambia) window.dispatchEvent(new Event('resize')); // le slide ricalcolano l'altezza
+    if (s.dot) s.dot.click();
+    paint();
+  }
+  prevBtn.addEventListener('click', function() { go(cur - 1); });
+  nextBtn.addEventListener('click', function() { go(cur + 1); });
+
+  // se lo studente va avanti dall'interno (es. "Passo successivo →"), seguo
+  if (window.MutationObserver) parts.forEach(function(p, i) {
+    if (!p._inner) return;
+    new MutationObserver(function() {
+      if (parts[i].classList.contains('on')) {
+        var kids = [].slice.call(p._inner.children);
+        for (var n = 0; n < steps.length; n++)
+          if (steps[n].p === i && kids[steps[n].k] && kids[steps[n].k].classList.contains(p._on)) { cur = n; break; }
+      }
+      paint();
+    }).observe(p._inner, { attributes: true, subtree: true, attributeFilter: ['class'] });
+  });
+
+  showPart(0); paint();
+  }
+})();
+</script>
+</div>

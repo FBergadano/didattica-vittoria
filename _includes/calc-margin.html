@@ -1,5 +1,7 @@
 {% comment %}
-Calcolatrice nel margine destro della pagina, con notazione scientifica
+Calcolatrice nel margine destro della pagina, chiusa all'inizio: si vede
+solo un piccolo pulsante 🧮 che la apre (e la richiude). In stampa sparisce.
+Notazione scientifica
 (pulsante ×10ˣ), radice quadrata (√) e possibilità di scrivere anche con
 la tastiera fisica (oltre che cliccando i pulsanti).
 Parametri:
@@ -11,7 +13,9 @@ Esempio:
   <div style="clear:both"></div>
 {% endcomment %}
 {% assign _id = include.id | default: "calc" %}
-<div class="calc-outer" id="{{ _id }}" tabindex="0">
+<div class="calc-wrap">
+<button type="button" class="calc-toggle" aria-expanded="false" aria-controls="{{ _id }}"><span class="calc-toggle-ico" aria-hidden="true">🧮</span> <span class="calc-toggle-txt">Apri la calcolatrice</span></button>
+<div class="calc-outer" id="{{ _id }}" tabindex="0" hidden>
   <div class="calc-label">Calcolatrice</div>
   <div class="calc-expr" id="{{ _id }}-expr">&nbsp;</div>
   <div class="calc-disp" id="{{ _id }}-disp">0</div>
@@ -34,12 +38,21 @@ Esempio:
   </div>
   <div class="calc-hint">Puoi anche scrivere con la tastiera.</div>
 </div>
+</div>
 <script>
 (function(){
 var id='{{ _id }}';
 var el=document.getElementById(id);
 var disp=document.getElementById(id+'-disp');
 var expr=document.getElementById(id+'-expr');
+var tog=el.parentNode.querySelector('.calc-toggle');
+tog.addEventListener('click',function(){
+  var apri=el.hidden;
+  el.hidden=!apri;
+  tog.setAttribute('aria-expanded',apri?'true':'false');
+  tog.querySelector('.calc-toggle-txt').textContent=apri?'Chiudi la calcolatrice':'Apri la calcolatrice';
+  if(apri) el.focus({preventScroll:true});
+});
 var s={buf:'0',op:null,prev:null,fresh:true,expMode:false,mantissa:'0',expDigits:'',expNeg:false};
 function fmt(n){
   if(!isFinite(n))return '∞';

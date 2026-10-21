@@ -107,9 +107,11 @@ $$
 \text{J} = \text{N}\cdot\text{m} = \text{kg}\cdot\frac{\text{m}}{\text{s}^2}\cdot\text{m} = \text{kg}\cdot\frac{\text{m}^2}{\text{s}^2}.
 $$
 
+{% include unisci.html %}
 {% include esercizi/esercizio-lavoro.html %}
 
 {% include esercizi/invert-lavoro.html %}
+{% include unisci-end.html %}
 
 ## La Potenza
 
@@ -172,6 +174,7 @@ Prova tu ora a invertire sia questa formula sia quella vista in precedenza, $P=\
 
 Prova infine con qualche esercizio e un quiz vero/falso sulla potenza.
 
+{% include unisci.html %}
 {% include esercizi/esercizio-potenza.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -185,6 +188,7 @@ Prova infine con qualche esercizio e un quiz vero/falso sulla potenza.
 ]{% endcapture %}
 {% include quiz.html domande=_qpotenza id="q-potenza" senza_esempi="true" %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 ### Il lavoro si può convertire in altre forme di energia
 Quando applichiamo una forza su un corpo e ne produciamo uno spostamento, abbiamo compiuto un lavoro. Ma nel momento in cui smettiamo di applicare la forza, il lavoro svanisce. Eppure, l'energia non può scomparire. Questo significa che l'energia ha cambiato forma: il lavoro è diventato qualcos'altro. 
@@ -293,9 +297,11 @@ Quindi:
 
 $$[K]=[m]\cdot[v]^2=\text{kg}\cdot\left(\frac{\text m}{\text s}\right)^2=\text{kg}\cdot\frac{\text m^2}{\text s^2}=\text J.$$
 
+{% include unisci.html %}
 {% include esercizi/esercizio-cinetica.html %}
 
 {% include esercizi/invert-cinetica.html %}
+{% include unisci-end.html %}
 
 # L'Energia Potenziale
 
@@ -390,9 +396,11 @@ L'unità di misura dell'energia potenziale gravitazionale è il joule (J).
 
 
 
+{% include unisci.html %}
 {% include esercizi/esercizio-potenziale-grav.html %}
 
 {% include esercizi/invert-potenziale-grav.html %}
+{% include unisci-end.html %}
 
 # L'Energia Meccanica e il Calore
 
@@ -519,9 +527,11 @@ $$v_f = \sqrt{2gh_i}.$$
 
 {% include box-end.html %}
 
+{% include unisci.html %}
 {% include esercizi/invert-impatto.html %}
 
 {% include esercizi/esercizio-impatto.html %}
+{% include unisci-end.html %}
 
 ## I Sistemi non Isolati e la Conservazione dell'Energia Meccanica Totale
 
@@ -565,6 +575,7 @@ Ci sono quindi tre situazioni:
 
 Ad esempio, l'attrito compie sempre un lavoro negativo, perciò diminuisce l'energia meccanica, mentre un motore compie sempre un lavoro positivo, perciò aumenta l'energia meccanica.
 
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qlavene %}[
 {"t":"Se su un sistema si compie un lavoro positivo, la sua energia meccanica aumenta.","ok":true,"s":"Sì: per il teorema $\\Delta E = L$, se $L>0$ allora anche $\\Delta E>0$."},
@@ -579,6 +590,7 @@ Ad esempio, l'attrito compie sempre un lavoro negativo, perciò diminuisce l'ene
 {% include box-end.html %}
 
 {% include esercizi/esercizio-lavoro-scambiato.html %}
+{% include unisci-end.html %}
 
 ### La palla da bowling
 
@@ -614,6 +626,7 @@ Sì. Infatti, ogni schiaffo corrisponde a una forza che provoca una compressione
 L'energia meccanica che viene dissipata si converte in **calore** (simbolo $Q$). Pertanto, anche il calore è una forma di energia e perciò la sua unità di misura è il joule.
 {% include box-end.html %}
 
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qCalore %}[
 {"t":"Il calore è la stessa cosa dell'energia meccanica: sono due nomi per la stessa grandezza.","ok":false,"s":"No: il calore è l'energia meccanica dissipata, cioè quella che un sistema non isolato perde a causa dell'attrito — non è l'energia meccanica del sistema stesso."},
@@ -625,6 +638,7 @@ L'energia meccanica che viene dissipata si converte in **calore** (simbolo $Q$).
 {% include box-end.html %}
 
 {% include esercizi/esercizio-calore.html %}
+{% include unisci-end.html %}
 
 Prova tu stesso a esplorare la conservazione — e la dissipazione — dell'energia meccanica con questa simulazione:
 

@@ -154,6 +154,7 @@ $$x = \bar{x} \pm \Delta_x$$
 - Calcolo l'incertezza totale (semidispersione + incertezza strumentale): $\Delta_\ell = \text{i.s.} + s_\ell = 0{,}05\ \text{cm} + 0{,}1\ \text{cm} = 0{,}15\ \text{cm}$
 - Risultato: $\ell = (12{,}4 \pm 0{,}15)\ \text{cm}$
 
+{% include unisci.html %}
 {% include esercizi/prova-semidispersione.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -166,6 +167,7 @@ Anna e Bruno misurano la stessa matita con lo stesso righello. Anna ottiene $(17
 ]{% endcapture %}
 {% include mcq.html id="mcq-matita" opts=_o ok="b" s="Se la lunghezza vera stesse in entrambi gli intervalli, i due intervalli dovrebbero avere almeno un punto in comune. Non ce l'hanno: qualcosa non torna." %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 ### Errore relativo percentuale
 
@@ -191,6 +193,7 @@ $$e_\ell = \frac{0{,}15}{12{,}4} \times 100\% \approx 1{,}2\%$$
 
 <u>Un errore relativo percentuale piccolo indica una misura precisa; uno grande indica che l'incertezza è rilevante rispetto al valore misurato.</u>
 
+{% include unisci.html %}
 {% include esercizi/prova-errore-relativo.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -202,6 +205,7 @@ Quale di queste due misure è più precisa?
 ]{% endcapture %}
 {% include mcq.html id="mcq-auto-moneta" opts=_o ok="a" s="Bisogna confrontare gli errori relativi, non le incertezze: per l'automobile $10/1200 \approx 0{,}8\%$, per la moneta $0{,}1/7{,}5 \approx 1{,}3\%$. Dieci chili sembrano tanti, ma rispetto a una tonnellata sono pochi." %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 ### Propagazione degli errori
 
@@ -225,6 +229,7 @@ L'incertezza assoluta risultante si ricava sempre come $\Delta_z = \bar{z}\,\cdo
 In $z = x - y$, le incertezze *assolute* si sommano (non si sottraggono). Se $x$ e $y$ sono vicini, $z = x - y$ è piccolo ma $\Delta_z = \Delta_x + \Delta_y$ rimane grande: l'errore relativo percentuale su $z$ può diventare molto elevato.
 {% include box-end.html %}
 
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qProp %}[
 {"t":"Nella differenza $z = x - y$ le incertezze assolute si sottraggono.","ok":false,"s":"No: si sommano sempre, anche nella differenza."},
@@ -235,6 +240,7 @@ In $z = x - y$, le incertezze *assolute* si sommano (non si sottraggono). Se $x$
 {% include box-end.html %}
 
 {% include esercizi/prova-propagazione.html %}
+{% include unisci-end.html %}
 
 </div>
 </section>

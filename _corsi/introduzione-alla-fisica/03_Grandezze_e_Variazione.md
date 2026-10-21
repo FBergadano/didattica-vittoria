@@ -44,6 +44,7 @@ $$
 
 {% include box-end.html %}
 
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 
 Per ciascuna delle seguenti, decidi: è una **grandezza unitaria** oppure no?
@@ -103,6 +104,7 @@ Poiché $18\,200 > 18\,000$, è Anna a guadagnare di più — anche se di poco: 
 {% include spoiler-end.html %}
 
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 Prima di proseguire, fissiamo le idee su cosa sia una grandezza unitaria.
 
@@ -217,6 +219,7 @@ $$[V] = \text{m}\cdot\text{m}\cdot\text{m} = \text{m}^3,$$
 cioè il volume si misura in metri cubi.
 {% include box-end.html %}
 
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 
 Per ciascuna delle seguenti, decidi: vero o falso (oppure completa, dove richiesto).
@@ -246,6 +249,7 @@ Ora tocca a te: costruisci l'unità di misura cliccando sui tasti, uno alla volt
 {% include unitbuild.html id="ub-lunghezza-massa" domande=_ub1 palette="m|kg|s|·|/|(|)" %}
 
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 ### Ipotizzare la formula a partire dall'unità di misura
 
@@ -335,6 +339,7 @@ $$x = \frac y z.$$
 
 Prova tu: hai a disposizione alcune mosse (scambiare i membri, moltiplicare o dividere entrambi i membri per una delle tre variabili). Isola prima $y$, poi $z$, cercando di usare il minor numero di mosse possibile. Quando trovi la combinazione di mosse migliore, appuntalo sul tuo quaderno, scrivendolo in un luogo che tu possa consultare sempre!
 
+{% include unisci.html %}
 {% include invert.html id="inv-y" variabili="x|y|z" sinistra="x" destra="y/z" obiettivo="y" %}
 
 {% include invert.html id="inv-z" variabili="x|y|z" sinistra="x" destra="y/z" obiettivo="z" %}
@@ -403,6 +408,7 @@ cioè un volume più di $200$ volte più grande di quello del piombo, a parità 
 {% include spoiler-end.html %}
 
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 # La variazione
 

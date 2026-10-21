@@ -127,18 +127,39 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
   &:hover { background: $text-muted; color: #fff; }
 }
 
-// ── QR code placeholder (shown only in print via @media print) ─
+// ── QR code dei video (solo in stampa, scripts.html) ─────────
 .video-qr-print {
   display: none;
-  text-align: center;
-  border: 1px solid $border;
-  border-radius: $radius-md;
-  padding: 1.25rem; margin: 1.5rem 0;
-  img { display: block; margin: 0 auto 0.6rem; }
-  .video-qr-url {
-    font-size: 0.72rem; color: $text-muted;
-    word-break: break-all; margin-top: 0.25rem;
-  }
+  align-items: center; gap: .8rem;
+  border: 1px solid $border; border-radius: $radius-md;
+  padding: .5rem .7rem; margin: .8rem 0;
+  break-inside: avoid;
+  .video-qr-code { flex: 0 0 auto; width: 22mm; height: 22mm; svg { width: 100%; height: 100%; display: block; } }
+  .video-qr-txt { min-width: 0; }
+  .video-qr-cap { font-size: .8rem; font-style: italic; margin: 0 0 .15rem; color: #333; }
+  .video-qr-url { font-size: .65rem; color: $text-muted; word-break: break-all; margin: 0; }
+}
+
+// ── Finestrella "Esporta come PDF" (scripts.html) ─────────────
+.stampa-dlg {
+  position: fixed; inset: 0; z-index: 10000; background: rgba(15,23,42,.45);
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+  &[hidden] { display: none; }
+}
+.stampa-pan {
+  background: #fff; border-radius: $radius-lg; padding: 1.2rem 1.4rem; width: 100%; max-width: 380px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.25); font-size: .9rem; color: $text-primary;
+  h4 { margin: 0 0 .9rem; font-size: 1.05rem; }
+}
+.stampa-riga { display: block; margin: 0 0 .85rem; }
+.stampa-riga input[type=range] { display: block; width: 100%; margin-top: .3rem; accent-color: #0e7490; }
+.stampa-v { float: right; font-weight: 600; color: #0e7490; }
+.stampa-scelta { float: right; label { margin-left: .8rem; cursor: pointer; } }
+.stampa-check { cursor: pointer; input { margin-right: .4rem; accent-color: #0e7490; } }
+.stampa-nota { font-size: .76rem; color: $text-muted; margin: .2rem 0 1rem; }
+.stampa-bott { display: flex; justify-content: flex-end; gap: .5rem;
+  button { border-radius: 999px; padding: .4rem 1rem; cursor: pointer; font-size: .85rem; border: 1px solid #cbd5e1; background: #fff; }
+  .stampa-vai { background: #0e7490; border-color: #0e7490; color: #fff; }
 }
 
 // ── Homepage hero ────────────────────────────────────────────
@@ -598,7 +619,7 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
   &.on { background: #0e7490; }
 }
 @media print {
-  .scorri-track { display: block; overflow: visible; }
+  .scorri-track { display: block; overflow: visible; height: auto !important; }
   .scorri-slide { margin-bottom: 1rem; }
   .scorri-nav { display: none; }
 }
@@ -1205,10 +1226,20 @@ cit em, cit i { font-style: normal; }
 .iex-num-row { margin-bottom: .9rem; }
 
 // ── Calcolatrice nel margine ─────────────────────────────────
+// chiusa all'inizio: resta solo il pulsante 🧮 (calc-toggle) che la apre
+.calc-wrap { float: right; clear: right; margin: 0 0 1rem 1.6rem; width: 196px; text-align: right; }
+.calc-toggle {
+  display: inline-flex; align-items: center; gap: .35rem;
+  background: #fff; border: 1px solid #cbd5e1; border-radius: 999px;
+  padding: .2rem .7rem .2rem .5rem; cursor: pointer;
+  font-family: $font-body; font-size: .8rem; color: #334155; line-height: 1.3;
+  &:hover { border-color: #0e7490; color: #0e7490; }
+  .calc-toggle-ico { font-size: 1.1rem; }
+}
+.calc-outer[hidden] { display: none; }
 .calc-outer {
-  float: right; clear: right;
-  margin: 0 0 1.4rem 1.6rem;
-  width: 196px;
+  margin: .5rem 0 0;
+  text-align: left;
   background: #1c1c1e;
   border-radius: 20px;
   padding: 14px 12px 14px;
@@ -1241,12 +1272,18 @@ cit em, cit i { font-style: normal; }
 // contenuto anziché sopra, pur restando prima nel markup (serve per il float).
 @media (max-width: 600px) {
   .calc-flow { display: flex; flex-direction: column; }
-  .calc-flow .calc-outer { float: none; clear: none; order: 2; width: 100%; max-width: 240px; margin: 1rem auto 0; }
+  .calc-flow .calc-wrap { float: none; clear: none; order: 2; width: 100%; max-width: 240px; margin: .8rem auto 0; text-align: center; }
   .calc-flow .calc-flow-body { order: 1; }
 }
 
 // ── Print / PDF export ────────────────────────────────────────
+// numero di pagina in basso al centro (i margini li sceglie la finestrella di stampa)
+@page {
+  margin: 15mm;
+  @bottom-center { content: counter(page) " / " counter(pages); font-size: 9pt; color: #666; }
+}
 @media print {
+  .calc-wrap { display: none !important; }
   // Hide navigation, interactive widgets, and topbar controls
   .sidebar, .chapter-nav, .chapter-toc,
   .read-progress-track, .read-progress, .read-progress-pct,
@@ -1262,7 +1299,13 @@ cit em, cit i { font-style: normal; }
 
   // Videos hidden; QR replacements shown
   .video-wrap { display: none !important; }
-  .video-qr-print { display: block !important; }
+  .video-qr-print { display: flex !important; }
+  .stampa-dlg { display: none !important; }
+
+  // senza immagini (opzione della finestrella di stampa)
+  html.stampa-senza-immagini {
+    .chapter-prose figure:not(.scorri-slide), .chapter-prose img, .video-loop-wrap, .img-row { display: none !important; }
+  }
 
   // Simplify section headings for print (grayscale, no fill)
   .chapter-prose h1 {
@@ -2069,6 +2112,24 @@ cit em, cit i { font-style: normal; }
 // dello stesso riquadro, non un'altra scheda annidata.
 .iex-nested .invx-widget, .iex-nested .uderive-widget {
   background: transparent; border: none; box-shadow: none; padding: 0; margin: 0;
+}
+// Più esercizi in un solo riquadro (unisci.html): gli esercizi interni perdono
+// cornice ed etichetta, e la loro navigazione la guidano i pallini comuni
+.unisci-parte { display: none; }
+.unisci-parte.on { display: block; }
+.unisci-parti {
+  > .unisci-parte > :is(.box, .iex-widget, .invx-widget, .uderive-widget, .ubx-widget, .vdrag-widget, .iex-nested) {
+    background: transparent; border: none; box-shadow: none; border-radius: 0; padding: 0; margin: 0 !important;
+  }
+  > .unisci-parte > .box > .box-label, > .unisci-parte > .iex-widget > .iex-lbl, > .unisci-parte > .iex-lbl { display: none; }
+  .unisci-guidata { display: none !important; }
+}
+.unisci-sub { font-weight: 600; font-size: .95rem; color: $box-ex-border; margin: 0 0 .6rem; }
+.unisci-prev::before { content: "‹"; }
+.unisci-next::before { content: "›"; }
+@media print {
+  .unisci-nav { display: none !important; }
+  .unisci-parte { display: block; margin-bottom: 1rem; }
 }
 .iex-choices { display: flex; flex-direction: column; gap: .5rem; margin: .7rem 0; }
 .iex-choice-btn {

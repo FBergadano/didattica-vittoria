@@ -1,3 +1,4 @@
+<script src="{{ '/assets/js/qrcode.min.js' | relative_url }}"></script>
 <script>
 // ── Citazioni <cit autore="..."> ─────────────────────────────
 (function() {
@@ -102,51 +103,117 @@
   });
 })();
 
-// ── PDF export with QR codes for videos ───────────────────────
-function exportPDF() {
-  var wraps = document.querySelectorAll('.video-wrap');
-  var inserted = [];
+// ── Stampa / PDF ───────────────────────────────────────────────
+// I video (YouTube, BBC…) e le simulazioni PhET diventano QR code: sono
+// generati qui nella pagina (assets/js/qrcode.min.js), quindi ci sono sempre,
+// anche stampando con Ctrl+P. Il pulsante "Esporta come PDF" apre prima una
+// finestrella di opzioni: dimensione del testo, margini, spoiler aperti o
+// chiusi, immagini sì o no. Il numero di pagina è nel CSS (@page).
+(function() {
+  function esc(t) { return String(t).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function qrSvg(url) {
+    if (!window.qrcode) return '';
+    var q = qrcode(0, 'M'); q.addData(url); q.make();
+    return q.createSvgTag({ cellSize: 2, margin: 0, scalable: true });
+  }
+  function didascalia(el) {
+    var n = el.nextElementSibling;
+    return n && n.classList.contains('video-caption') ? n.textContent.trim() : '';
+  }
+  function aggiungiQR(dopo, url, testo) {
+    var d = document.createElement('div');
+    d.className = 'video-qr-print';
+    d.innerHTML = '<div class="video-qr-code">' + qrSvg(url) + '</div>' +
+      '<div class="video-qr-txt">' + (testo ? '<p class="video-qr-cap">' + esc(testo) + '</p>' : '') +
+      '<p class="video-qr-url">' + esc(url) + '</p></div>';
+    var n = dopo.nextElementSibling;
+    if (n && n.classList.contains('video-caption')) dopo = n; // il QR va sotto la didascalia
+    dopo.parentNode.insertBefore(d, dopo.nextSibling);
+  }
+  function preparaQR() {
+    document.querySelectorAll('.video-wrap iframe').forEach(function(f) {
+      var m = f.src.match(/youtube(?:-nocookie)?\.com\/embed\/([^?&\/]+)/);
+      var url = m ? 'https://www.youtube.com/watch?v=' + m[1] : f.src;
+      aggiungiQR(f.parentNode, url, f.title || 'Video');
+    });
+    document.querySelectorAll('.video-link[data-url]').forEach(function(a) {
+      aggiungiQR(a, a.getAttribute('data-url'), a.getAttribute('data-titolo') || 'Video');
+    });
+    document.querySelectorAll('.phet-wrap iframe').forEach(function(f) {
+      aggiungiQR(f.parentNode, f.src, 'Simulazione interattiva' + (didascalia(f.parentNode) ? '' : ' (PhET)'));
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', preparaQR); else preparaQR();
 
-  wraps.forEach(function(wrap) {
-    var iframe = wrap.querySelector('iframe');
-    if (!iframe) return;
-    var m = iframe.src.match(/\/embed\/([^?&]+)/);
-    if (!m) return;
-    var vid = m[1];
-    var ytUrl = 'https://www.youtube.com/watch?v=' + vid;
-    var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(ytUrl);
-    var cap = iframe.title || '';
+  // ── opzioni di stampa ──
+  var DEF = { testo: 100, margini: 15, spoiler: 'chiusi', immagini: true };
+  function leggi() { try { var o = JSON.parse(localStorage.getItem('lv-stampa') || '{}'); for (var k in DEF) if (!(k in o)) o[k] = DEF[k]; return o; } catch (e) { return JSON.parse(JSON.stringify(DEF)); } }
+  function salva(o) { try { localStorage.setItem('lv-stampa', JSON.stringify(o)); } catch (e) {} }
+  var stile = document.createElement('style'); document.head.appendChild(stile);
+  var aperti = [];
+  function applica(o) {
+    stile.textContent = '@page { margin: ' + o.margini + 'mm; }' +
+      '@media print { .main-content { zoom: ' + (o.testo / 100) + '; } }';
+    document.documentElement.classList.toggle('stampa-senza-immagini', !o.immagini);
+    if (o.spoiler === 'aperti') document.querySelectorAll('details.spoiler:not([open])').forEach(function(d) { d.open = true; aperti.push(d); });
+  }
+  window.addEventListener('beforeprint', function() { if (!aperti.length) applica(leggi()); });
+  window.addEventListener('afterprint', function() { aperti.forEach(function(d) { d.open = false; }); aperti = []; });
 
-    var div = document.createElement('div');
-    div.className = 'video-qr-print';
-    div.innerHTML =
-      '<img src="' + qrUrl + '" width="200" height="200" alt="QR code video">' +
-      (cap ? '<p class="video-caption">' + cap + '</p>' : '') +
-      '<p class="video-qr-url">' + ytUrl + '</p>';
-    wrap.parentNode.insertBefore(div, wrap.nextSibling);
-    inserted.push(div);
-  });
-
-  // video esterni (video-link.html): stesso QR, con l'indirizzo della pagina
-  document.querySelectorAll('.video-link[data-url]').forEach(function(a) {
-    var url = a.getAttribute('data-url');
-    var div = document.createElement('div');
-    div.className = 'video-qr-print';
-    div.innerHTML =
-      '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url) + '" width="200" height="200" alt="QR code video">' +
-      '<p class="video-caption">' + (a.getAttribute('data-titolo') || '') + '</p>' +
-      '<p class="video-qr-url">' + url + '</p>';
-    a.parentNode.insertBefore(div, a.nextSibling);
-    inserted.push(div);
-  });
-
-  window.addEventListener('afterprint', function cleanup() {
-    inserted.forEach(function(d) { d.remove(); });
-    window.removeEventListener('afterprint', cleanup);
-  });
-
-  window.print();
-}
+  var box = null;
+  window.exportPDF = function() {
+    if (!box) {
+      box = document.createElement('div');
+      box.className = 'stampa-dlg'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', 'Opzioni di stampa');
+      box.innerHTML =
+        '<div class="stampa-pan">' +
+        '<h4>Esporta come PDF</h4>' +
+        '<label class="stampa-riga">Dimensione del testo <b class="stampa-v" data-v="testo"></b>' +
+          '<input type="range" min="60" max="110" step="5" data-k="testo"></label>' +
+        '<label class="stampa-riga">Margini <b class="stampa-v" data-v="margini"></b>' +
+          '<input type="range" min="5" max="25" step="1" data-k="margini"></label>' +
+        '<div class="stampa-riga">Spoiler ' +
+          '<span class="stampa-scelta"><label><input type="radio" name="stampa-sp" value="chiusi"> chiusi</label>' +
+          '<label><input type="radio" name="stampa-sp" value="aperti"> aperti</label></span></div>' +
+        '<label class="stampa-riga stampa-check"><input type="checkbox" data-k="immagini"> Stampa le immagini</label>' +
+        '<p class="stampa-nota">I video diventano QR code; ogni pagina ha il suo numero. Nella finestra di stampa scegli “Salva come PDF”.</p>' +
+        '<div class="stampa-bott"><button type="button" class="stampa-annulla">Annulla</button>' +
+        '<button type="button" class="stampa-vai">Stampa / salva PDF</button></div>' +
+        '</div>';
+      document.body.appendChild(box);
+      function mostra() {
+        var o = leggi();
+        box.querySelector('[data-k=testo]').value = o.testo;
+        box.querySelector('[data-k=margini]').value = o.margini;
+        box.querySelector('[data-k=immagini]').checked = o.immagini;
+        box.querySelector('input[name=stampa-sp][value=' + o.spoiler + ']').checked = true;
+        box.querySelector('[data-v=testo]').textContent = o.testo + '%';
+        box.querySelector('[data-v=margini]').textContent = o.margini + ' mm';
+      }
+      function prendi() {
+        return {
+          testo: +box.querySelector('[data-k=testo]').value,
+          margini: +box.querySelector('[data-k=margini]').value,
+          immagini: box.querySelector('[data-k=immagini]').checked,
+          spoiler: box.querySelector('input[name=stampa-sp]:checked').value
+        };
+      }
+      box.addEventListener('input', function() { salva(prendi()); mostra(); });
+      box.addEventListener('change', function() { salva(prendi()); mostra(); });
+      box.querySelector('.stampa-annulla').onclick = function() { box.hidden = true; };
+      box.addEventListener('click', function(e) { if (e.target === box) box.hidden = true; });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && box && !box.hidden) box.hidden = true; });
+      box.querySelector('.stampa-vai').onclick = function() {
+        var o = prendi(); salva(o); box.hidden = true;
+        applica(o);
+        setTimeout(function() { window.print(); }, 50);
+      };
+      box._mostra = mostra;
+    }
+    box._mostra(); box.hidden = false;
+    box.querySelector('.stampa-vai').focus();
+  };
+})();
 
 // ── Font accessibility toggle ──────────────────────────────────
 function toggleFont() {

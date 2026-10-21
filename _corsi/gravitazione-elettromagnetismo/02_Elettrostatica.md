@@ -59,7 +59,6 @@ Che un pezzo d'ambra strofinato attiri le pagliuzze lo sapevano già i Greci: se
 
 Per più di duemila anni il fenomeno rimase una curiosità. Nel 1600 il medico inglese William Gilbert, nel suo libro *De Magnete*, provò a dargli una spiegazione: strofinando l'ambra se ne libererebbe un "effluvio", una sostanza sottilissima che si allunga verso le pagliuzze come un braccio invisibile, le afferra e le riporta indietro.
 
-Nel 1730 Stephen Gray, un tintore inglese appassionato di esperimenti, scoprì che la "virtù elettrica" può viaggiare lungo un filo per decine di metri: era la scoperta dei conduttori. Per dimostrarlo inventò l'esperimento del "ragazzo volante": appendeva al soffitto, con corde di seta, un ragazzino disteso in orizzontale, gli avvicinava ai piedi un tubo di vetro strofinato, e dalle mani e dal viso del ragazzo pezzetti di carta e foglioline d'oro saltavano verso di lui.
 
 Pochi anni dopo il francese Charles Du Fay si accorse che esistono due tipi di elettricità, che chiamò *vitrea* (quella del vetro strofinato) e *resinosa* (quella dell'ambra e delle resine): due corpi con lo stesso tipo si respingono, due corpi con tipi diversi si attraggono. Pensava che fossero due fluidi distinti. Il suo assistente, l'abate Jean-Antoine Nollet, divenne famoso per le dimostrazioni pubbliche: davanti al re Luigi XV fece passare una scarica elettrica attraverso 180 guardie reali che si tenevano per mano, facendole saltare tutte nello stesso istante, e in seguito ripeté l'esperimento con circa duecento monaci in fila.
 
@@ -229,14 +228,7 @@ Quando molti atomi si uniscono per formare un corpo, le cariche si comportano in
 I metalli sono in genere ottimi conduttori (argento, rame e oro fra i migliori); vetro, gomma, plastica e aria secca sono invece buoni isolanti. È per questo che i fili elettrici sono fatti di rame e rivestiti di plastica. Il miglior conduttore in assoluto è l'oro; il miglior isolante è il teflon (il vuoto è un isolante anche migliore del teflon, però non è a tutti gli effetti “un materiale”).
 {% include margin-note-end.html %}
 
-{% include margin-note.html testo="L'esperimento di Stephen Gray" %}
-Nel 1730 Stephen Gray mostrò la differenza fra conduttori e isolanti con l'esperimento del "ragazzo volante": un ragazzo appeso al soffitto con corde di seta veniva caricato avvicinandogli ai piedi un tubo di vetro strofinato, e subito le sue mani attiravano pezzetti di carta. La carica aveva attraversato tutto il corpo del ragazzo, che quindi si comporta da conduttore; le corde di seta, invece, sono isolanti, e le impedivano di disperdersi nel soffitto. Con dei fili metallici l'esperimento non avrebbe funzionato. Nel video (in inglese) il fisico Jim Al-Khalili lo ripete.
-{% include margin-note-end.html %}
 
-{% include video-link.html url="https://www.bbc.co.uk/programmes/p00ksnyn"
-   img="/corsi/immagini/stephen-gray-hanging-boy-bbc.webp"
-   titolo="Il ragazzo volante di Stephen Gray"
-   fonte="BBC Four, Shock and Awe" durata="3 min" %}
 
 Osserva l'animazione seguente: nel conduttore (ferro) alcuni elettroni sono liberi di muoversi fra i nuclei; nell'isolante (legno), invece, ogni elettrone orbita sempre e soltanto attorno al proprio nucleo. Poi trascina la carica vicino ai due materiali e confronta che cosa succede.
 
@@ -269,6 +261,18 @@ Dopodiché, quando l'assistito non è più attraversato da corrente elettrica,
 Per approfondire, la Croce Rossa Italiana ha una pagina dedicata al primo soccorso in caso di ustioni (comprese quelle da elettricità): [Ustioni — Croce Rossa Italiana](https://cri.it/cosa-facciamo/salute/primo-soccorso/pillole-di-primo-soccorso/ustioni/).
 {% include spoiler-end.html %}
 
+
+{% include box-note.html testo="Il ragazzo volante di Stephen Gray" %}
+Nel 1730, Stephen Gray  scoprì che quella che ai tempi era nota come “virtù elettrica” poteva viaggiare all'interno di alcuni materiali, ma non altri. Ha scoperto cioè la differenza tra conduttori e isolanti. Lo fece con un esperimento: l'esperimento del "ragazzo volante". Un ragazzo appeso al soffitto con corde di seta veniva caricato avvicinandogli ai piedi un tubo di vetro strofinato, e subito le sue mani attiravano foglioline d'oro. La carica aveva attraversato tutto il corpo del ragazzo, che quindi si comporta da conduttore; le corde di seta, invece, sono isolanti, e le impedivano di disperdersi nel soffitto. Con dei fili metallici l'esperimento non avrebbe funzionato, perché la carica dal corpo del ragazzo si sarebbe dispersa, tramite i fili metallici, fino al soffitto e poi alla Terra. Nel video (in inglese) il fisico Jim Al-Khalili lo ripete.
+
+
+{% include video-link.html url="https://www.bbc.co.uk/programmes/p00ksnyn"
+   img="/corsi/immagini/stephen-gray-hanging-boy-bbc.webp"
+   titolo="Il ragazzo volante di Stephen Gray"
+   fonte="BBC Four, Shock and Awe" durata="3 min" %}
+{% include box-end.html %}
+
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qCond %}[
 {"t":"I metalli sono generalmente buoni conduttori di elettricità.","ok":true,"s":"Vero: nei metalli molti elettroni sono liberi di muoversi da un atomo all'altro."},
@@ -285,6 +289,7 @@ Per approfondire, la Croce Rossa Italiana ha una pagina dedicata al primo soccor
 {% include box-end.html %}
 
 {% include esercizi/esercizio-conduttori.html %}
+{% include unisci-end.html %}
 
 ## L'Elettrizzazione
 
@@ -1137,7 +1142,7 @@ Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta con le
 # Il Campo Elettrico
 
 {% include margin-note.html testo="Perché ci serve il campo elettrico" %}
-La legge di Coulomb ci dice ***quanto*** due cariche si attraggano. Ma, esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, nel 1831, per spiegare i suoi esperimenti sull'elettromagnetismo; il campo gravitazionale arrivò molto tempo più tardi, con Einstein, nella teoria della relatività del 1915).
+La legge di Coulomb ci dice ***quanto*** due cariche si attraggano. Ma, esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, nel 1831, per spiegare i suoi esperimenti sull'elettromagnetismo; il campo gravitazionale arrivò molto tempo più tardi, con Einstein, nella teoria della relatività generale del 1915).
 {% include margin-note-end.html %}
 
 
@@ -1625,6 +1630,7 @@ Esplora tu stesso come cambia $U$ al variare di $Q$, di $q$ o di $r$ (qui le due
    formula="k*Q*q/r" formula_latex="k\dfrac{Q \cdot q}{r}"
    y_simbolo="U" y_unita="J" solo_positivi="true" %}
 
+{% include unisci.html %}
 {% include esercizi/invert-energia-elettrica.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -1686,6 +1692,7 @@ Teniamo ferme, vicine fra loro, due sferette con carica positiva, poi le lasciam
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 ### Sovrapposizione degli effetti per l'energia potenziale
 
@@ -1788,6 +1795,7 @@ Esplora tu stesso come cambia $V$ al variare di $Q$ o di $r$ (qui la carica è p
    formula="k*Q/r" formula_latex="k\dfrac{Q}{r}"
    y_simbolo="V" y_unita="V" solo_positivi="true" %}
 
+{% include unisci.html %}
 {% include esercizi/invert-potenziale-elettrico.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -1856,6 +1864,7 @@ A quale distanza da una carica $Q = +4\times10^{-9}\ \text C$ il potenziale vale
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 ### Sovrapposizione degli effetti per il potenziale
 

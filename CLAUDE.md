@@ -152,6 +152,19 @@ La soluzione è $x = 2$.
 - `diff=1/2/3` aggiunge ★/★★/★★★ sotto il numero
 - Due colonne: avvolgere in `<div class="ex-2col">`
 
+### Più esercizi consecutivi in un solo riquadro
+
+Mai due "Verifica Subito!" (o Prova tu, Isola le altre grandezze…) uno
+dopo l'altro: si avvolgono in un unico riquadro, con un solo numero e una
+sola fila di pallini che scorre tutte le domande.
+
+```liquid
+{% include unisci.html %}
+{% include box-ex.html testo="Verifica Subito!" %} ... {% include box-end.html %}
+{% include esercizi/esercizio-conduttori.html %}
+{% include unisci-end.html %}
+```
+
 ### Vero/Falso interattivo
 
 ```liquid
