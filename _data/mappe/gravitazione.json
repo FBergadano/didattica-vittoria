@@ -183,7 +183,7 @@
    "y": 448,
    "w": 260,
    "h": 252,
-   "testo": "**Moto in un campo**\nforza peso: $\\vec F = m\\,\\vec g$\naccelerazione: $\\vec a = \\vec g$ (non dipende da $m$)\nenergia meccanica costante:\n$E = K + U = \\dfrac12 m v^2 - G\\,\\dfrac{M m}{r}$",
+   "testo": "**Moto in un campo**\nforza peso: $\\vec F = m\\,\\vec g$\naccelerazione: $\\vec a = \\vec g$ (non dipende da $m$)",
    "colore": "giallo"
   },
   {

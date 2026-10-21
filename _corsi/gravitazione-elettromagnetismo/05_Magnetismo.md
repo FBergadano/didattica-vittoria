@@ -4,7 +4,7 @@ title: "Il Magnetismo"
 corso: "gravitazione-elettromagnetismo"
 corso_titolo: "La Gravitazione e l'Elettromagnetismo"
 materia: fisica
-numero: 4
+numero: 5
 ---
 
 <cit autore="Aristotele, De Anima">

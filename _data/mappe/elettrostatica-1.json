@@ -1,5 +1,5 @@
 {
- "titolo": "L'elettrostatica",
+ "titolo": "L'elettrostatica (parte 1)",
  "simboli": [
   "Q",
   "q",
@@ -32,11 +32,11 @@
  "nodi": [
   {
    "id": "n1",
-   "x": 300,
+   "x": 250,
    "y": 2,
-   "w": 400,
+   "w": 500,
    "h": 32,
-   "testo": "L'elettrostatica",
+   "testo": "Carica, forza e campo elettrico",
    "colore": "azzurro",
    "stile": "titolo"
   },
@@ -44,73 +44,63 @@
    "id": "n2",
    "x": 10,
    "y": 38,
-   "w": 330,
-   "h": 112,
+   "w": 300,
+   "h": 118,
    "testo": "**Carica elettrica** $Q$, $[Q] = \\text C$\nquantizzata: $Q = n\\,e$, con $n = n_p - n_e$\n$e = 1{,}6\\times10^{-19}\\ \\text C$\nsi **conserva**: non si crea e non si distrugge",
    "colore": "azzurro"
   },
   {
    "id": "n3",
-   "x": 350,
+   "x": 320,
    "y": 38,
-   "w": 280,
-   "h": 112,
-   "testo": "**Conduttori e isolanti**\nconduttori: cariche libere di muoversi (metalli, corpo umano, Terra)\nisolanti: nessuna carica libera (vetro, plastica, gomma)",
+   "w": 260,
+   "h": 118,
+   "testo": "**Conduttori e isolanti**\nconduttori: hanno cariche libere di muoversi\nisolanti: non hanno cariche libere",
    "colore": "grigio"
   },
   {
    "id": "n4",
-   "x": 640,
+   "x": 590,
    "y": 38,
-   "w": 350,
-   "h": 112,
-   "testo": "**Elettrizzazione**\nstrofinio: i due corpi, segni **opposti**\ncontatto: segno **uguale** (la carica si divide)\ninduzione: polarizzazione + collegamento a terra → segno **opposto**",
+   "w": 400,
+   "h": 118,
+   "testo": "**Elettrizzazione**\nstrofinio: i due corpi si caricano con segni **opposti**\ncontatto (conduttori): segno **uguale** a quello del corpo carico\npolarizzazione: le cariche si separano, il totale resta zero\ninduzione: polarizzazione + collegamento a terra → segno **opposto**",
    "colore": "rosa"
   },
   {
    "id": "n5",
    "x": 6,
-   "y": 208,
+   "y": 216,
    "w": 988,
-   "h": 156,
+   "h": 176,
    "testo": "",
    "colore": "viola",
    "stile": "gruppo"
   },
   {
    "id": "n6",
-   "x": 6,
-   "y": 374,
-   "w": 988,
-   "h": 130,
+   "x": 167,
+   "y": 166,
+   "w": 406,
+   "h": 234,
    "testo": "",
-   "colore": "arancio",
-   "stile": "gruppo"
+   "colore": "grigio",
+   "stile": "cornice"
   },
   {
    "id": "n7",
-   "x": 167,
-   "y": 158,
+   "x": 592,
+   "y": 166,
    "w": 406,
-   "h": 354,
+   "h": 234,
    "testo": "",
    "colore": "grigio",
    "stile": "cornice"
   },
   {
    "id": "n8",
-   "x": 592,
-   "y": 158,
-   "w": 406,
-   "h": 354,
-   "testo": "",
-   "colore": "grigio",
-   "stile": "cornice"
-  },
-  {
-   "id": "n9",
    "x": 175,
-   "y": 164,
+   "y": 172,
    "w": 390,
    "h": 36,
    "testo": "**Due cariche** $Q$ e $q$ a distanza $r$",
@@ -118,9 +108,9 @@
    "stile": "testata"
   },
   {
-   "id": "n10",
+   "id": "n9",
    "x": 600,
-   "y": 164,
+   "y": 172,
    "w": 390,
    "h": 36,
    "testo": "**Una carica sola** $Q$: il campo che genera",
@@ -128,146 +118,102 @@
    "stile": "testata"
   },
   {
-   "id": "n11",
+   "id": "n10",
    "x": 14,
-   "y": 216,
+   "y": 224,
    "w": 148,
-   "h": 140,
+   "h": 160,
    "testo": "Grandezze vettoriali\n(frecce)",
    "colore": "viola",
    "stile": "etichetta"
   },
   {
-   "id": "n12",
-   "x": 14,
-   "y": 382,
-   "w": 148,
-   "h": 114,
-   "testo": "Grandezze scalari\n(numeri con segno)",
-   "colore": "arancio",
-   "stile": "etichetta"
-  },
-  {
-   "id": "n13",
+   "id": "n11",
    "x": 175,
-   "y": 216,
+   "y": 224,
    "w": 390,
-   "h": 140,
-   "testo": "**Forza elettrica** (legge di Coulomb)\n$F = k\\,\\dfrac{\\lvert q_1\\, q_2\\rvert}{r^2}$\nsi respingono se hanno lo stesso segno,\nsi attraggono se di segno opposto\n$[F] = \\text N$\n$k = 8{,}99\\times10^{9}\\ \\text N\\cdot\\text m^2/\\text C^2$",
+   "h": 160,
+   "testo": "**Forza elettrica** (legge di Coulomb)\n$F = k\\,\\dfrac{\\lvert q_1\\, q_2\\rvert}{r^2}$\nlungo la retta che unisce le cariche\nrepulsiva fra cariche dello stesso segno, attrattiva fra segni opposti\n$[F] = \\text N$\n$k = 8{,}99\\times10^{9}\\ \\text N\\cdot\\text m^2/\\text C^2$",
    "colore": "bianco"
   },
   {
-   "id": "d14",
+   "id": "d12",
    "x": 425,
-   "y": 304,
+   "y": 332,
    "w": 135,
    "h": 48,
    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 135 50\"><circle cx=\"45\" cy=\"25\" r=\"12\" fill=\"#fecdd3\" stroke=\"#be123c\" stroke-width=\"1.5\"/><text x=\"45\" y=\"29.3\" font-size=\"12\" text-anchor=\"middle\" fill=\"#be123c\" font-weight=\"700\">+</text><circle cx=\"90\" cy=\"25\" r=\"12\" fill=\"#fecdd3\" stroke=\"#be123c\" stroke-width=\"1.5\"/><text x=\"90\" y=\"29.3\" font-size=\"12\" text-anchor=\"middle\" fill=\"#be123c\" font-weight=\"700\">+</text><line x1=\"30.0\" y1=\"25.0\" x2=\"10.8\" y2=\"25.0\" stroke=\"#7c3aed\" stroke-width=\"1.8\"/><polygon points=\"6.0,25.0 12.0,28.3 12.0,21.7\" fill=\"#7c3aed\"/><line x1=\"105.0\" y1=\"25.0\" x2=\"124.2\" y2=\"25.0\" stroke=\"#7c3aed\" stroke-width=\"1.8\"/><polygon points=\"129.0,25.0 123.0,21.7 123.0,28.3\" fill=\"#7c3aed\"/></svg>"
   },
   {
-   "id": "n15",
+   "id": "n13",
    "x": 600,
-   "y": 216,
+   "y": 224,
    "w": 390,
-   "h": 140,
-   "testo": "**Campo elettrico** $\\vec E$\n$E = k\\,\\dfrac{\\lvert Q\\rvert}{r^2}$    $\\vec E = \\dfrac{\\vec F}{q}$\nesce dalle cariche positive, entra in quelle negative\n$[E] = \\text{N/C}$",
+   "h": 160,
+   "testo": "**Campo elettrico** $\\vec E$\n$E = k\\,\\dfrac{\\lvert Q\\rvert}{r^2}$    $\\vec E = \\dfrac{\\vec F}{q}$\nnon dipende dalla carica di prova $q$\nesce dalle cariche positive, entra in quelle negative\n$[E] = \\text{N/C}$",
    "colore": "bianco"
   },
   {
-   "id": "d16",
+   "id": "d14",
    "x": 900,
-   "y": 276,
+   "y": 304,
    "w": 76,
    "h": 76,
    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 82 82\"><circle cx=\"41\" cy=\"41\" r=\"11\" fill=\"#fecdd3\" stroke=\"#be123c\" stroke-width=\"1.5\"/><text x=\"41\" y=\"45.3\" font-size=\"12\" text-anchor=\"middle\" fill=\"#be123c\" font-weight=\"700\">+</text><line x1=\"56.0\" y1=\"41.0\" x2=\"75.0\" y2=\"41.0\" stroke=\"#7c3aed\" stroke-width=\"1.4\"/><polygon points=\"79.0,41.0 74.0,38.2 74.0,43.8\" fill=\"#7c3aed\"/><line x1=\"51.6\" y1=\"51.6\" x2=\"65.0\" y2=\"65.0\" stroke=\"#7c3aed\" stroke-width=\"1.4\"/><polygon points=\"67.9,67.9 66.3,62.4 62.4,66.3\" fill=\"#7c3aed\"/><line x1=\"41.0\" y1=\"56.0\" x2=\"41.0\" y2=\"75.0\" stroke=\"#7c3aed\" stroke-width=\"1.4\"/><polygon points=\"41.0,79.0 43.8,74.0 38.2,74.0\" fill=\"#7c3aed\"/><line x1=\"30.4\" y1=\"51.6\" x2=\"17.0\" y2=\"65.0\" stroke=\"#7c3aed\" stroke-width=\"1.4\"/><polygon points=\"14.1,67.9 19.6,66.3 15.7,62.4\" fill=\"#7c3aed\"/><line x1=\"26.0\" y1=\"41.0\" x2=\"7.0\" y2=\"41.0\" stroke=\"#7c3aed\" stroke-width=\"1.4\"/><polygon points=\"3.0,41.0 8.0,43.8 8.0,38.3\" fill=\"#7c3aed\"/><line x1=\"30.4\" y1=\"30.4\" x2=\"17.0\" y2=\"17.0\" stroke=\"#7c3aed\" stroke-width=\"1.4\"/><polygon points=\"14.1,14.1 15.7,19.6 19.6,15.7\" fill=\"#7c3aed\"/><line x1=\"41.0\" y1=\"26.0\" x2=\"41.0\" y2=\"7.0\" stroke=\"#7c3aed\" stroke-width=\"1.4\"/><polygon points=\"41.0,3.0 38.2,8.0 43.7,8.0\" fill=\"#7c3aed\"/><line x1=\"51.6\" y1=\"30.4\" x2=\"65.0\" y2=\"17.0\" stroke=\"#7c3aed\" stroke-width=\"1.4\"/><polygon points=\"67.9,14.1 62.4,15.7 66.3,19.6\" fill=\"#7c3aed\"/></svg>"
   },
   {
-   "id": "n17",
-   "x": 175,
-   "y": 382,
-   "w": 390,
-   "h": 114,
-   "testo": "**Energia potenziale elettrica** $U$\n$U = k\\,\\dfrac{Q\\,q}{r}$ (cariche con il loro segno)\nnegativa se si attraggono, positiva se si respingono\n$[U] = \\text J$",
-   "colore": "bianco"
-  },
-  {
-   "id": "n18",
-   "x": 600,
-   "y": 382,
-   "w": 390,
-   "h": 114,
-   "testo": "**Potenziale elettrico** $V$\n$V = \\dfrac{U}{q} = k\\,\\dfrac{Q}{r}$     $U = q\\,V$\n$[V] = \\text V = \\text{J/C}$ (volt)",
-   "colore": "bianco"
-  },
-  {
-   "id": "n19",
+   "id": "n15",
    "x": 10,
-   "y": 518,
+   "y": 416,
    "w": 235,
-   "h": 185,
-   "testo": "**Sovrapposizione degli effetti**\nogni carica agisce come se le altre non ci fossero\n$\\vec F_{tot}$, $\\vec E_{tot}$: somma **vettoriale**\n$U_{tot}$, $V_{tot}$: somma **algebrica**",
+   "h": 284,
+   "testo": "**Sovrapposizione degli effetti**\nogni carica agisce come se le altre non ci fossero\n$\\vec F_{tot} = \\vec F_1 + \\vec F_2 + \\cdots$\n$\\vec E_{tot} = \\vec E_1 + \\vec E_2 + \\cdots$\nsomma **vettoriale** (regola del parallelogramma)",
    "colore": "verde"
   },
   {
-   "id": "n20",
+   "id": "n16",
    "x": 255,
-   "y": 518,
-   "w": 320,
-   "h": 185,
-   "testo": "**Una carica in un campo**\n$\\vec F = q\\,\\vec E$ (verso opposto se $q<0$)\n$\\vec a = \\dfrac{q}{m}\\,\\vec E$\n$\\Delta U = q\\,\\Delta V$; partendo da ferma $K = \\lvert q\\rvert\\,\\lvert\\Delta V\\rvert$\nle cariche positive vanno verso $V$ più basso",
+   "y": 416,
+   "w": 235,
+   "h": 284,
+   "testo": "**Forza elettrica e gravità**\nstessa forma: dipendono da $1/r^2$\nla gravità attrae sempre; la forza elettrica può anche respingere\nfra particelle cariche la forza elettrica è enormemente più intensa",
    "colore": "giallo"
   },
   {
-   "id": "n21",
-   "x": 585,
-   "y": 518,
-   "w": 200,
-   "h": 185,
-   "testo": "**Linee di campo**\ntangenti a $\\vec E$, escono da +, entrano in −, non si incrociano\nfra due lastre: campo uniforme",
+   "id": "n17",
+   "x": 500,
+   "y": 416,
+   "w": 245,
+   "h": 284,
+   "testo": "**Linee di campo**\ntangenti a $\\vec E$ in ogni punto\nescono da +, entrano in −\nnon si incrociano mai\npiù fitte dove $E$ è più intenso",
    "colore": "azzurro"
   },
   {
-   "id": "d22",
-   "x": 695,
-   "y": 653,
+   "id": "n18",
+   "x": 755,
+   "y": 416,
+   "w": 235,
+   "h": 284,
+   "testo": "**Campo uniforme**\nstesso modulo, direzione e verso in ogni punto\nfra due lastre piane cariche con segni opposti: dalla lastra + alla lastra −",
+   "colore": "azzurro"
+  },
+  {
+   "id": "d19",
+   "x": 860,
+   "y": 648,
    "w": 80,
    "h": 46,
    "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 80 46\"><line x1=\"8\" y1=\"3\" x2=\"8\" y2=\"43\" stroke=\"#be123c\" stroke-width=\"3\"/><line x1=\"72\" y1=\"3\" x2=\"72\" y2=\"43\" stroke=\"#1d4ed8\" stroke-width=\"3\"/><line x1=\"13.0\" y1=\"10.0\" x2=\"62.0\" y2=\"10.0\" stroke=\"#0284c7\" stroke-width=\"1.3\"/><polygon points=\"66.0,10.0 61.0,7.2 61.0,12.8\" fill=\"#0284c7\"/><line x1=\"13.0\" y1=\"23.0\" x2=\"62.0\" y2=\"23.0\" stroke=\"#0284c7\" stroke-width=\"1.3\"/><polygon points=\"66.0,23.0 61.0,20.2 61.0,25.8\" fill=\"#0284c7\"/><line x1=\"13.0\" y1=\"36.0\" x2=\"62.0\" y2=\"36.0\" stroke=\"#0284c7\" stroke-width=\"1.3\"/><polygon points=\"66.0,36.0 61.0,33.2 61.0,38.8\" fill=\"#0284c7\"/></svg>"
-  },
-  {
-   "id": "n23",
-   "x": 795,
-   "y": 518,
-   "w": 195,
-   "h": 185,
-   "testo": "**Superfici equipotenziali**\npunti con lo stesso $V$\nsempre $\\perp$ alle linee di campo\nper una carica: sfere concentriche",
-   "colore": "azzurro"
   }
  ],
  "frecce": [
   {
    "id": "f1",
-   "da": "n13",
-   "a": "n15",
+   "da": "n11",
+   "a": "n13",
    "tipo": "freccia",
    "colore": "viola",
    "testo": "$\\div\\, q$"
-  },
-  {
-   "id": "f2",
-   "da": "n17",
-   "a": "n18",
-   "tipo": "freccia",
-   "colore": "arancio",
-   "testo": "$\\div\\, q$"
-  },
-  {
-   "id": "f3",
-   "da": "n21",
-   "a": "n23",
-   "tipo": "linea",
-   "colore": "azzurro",
-   "testo": "$\\perp$"
   }
  ],
  "tratti": []

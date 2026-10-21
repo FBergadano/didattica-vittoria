@@ -1,0 +1,198 @@
+{
+ "titolo": "L'elettrostatica (parte 2)",
+ "simboli": [
+  "Q",
+  "q",
+  "q_1",
+  "q_2",
+  "e",
+  "k",
+  "r",
+  "\\vec F",
+  "\\vec E",
+  "U",
+  "V",
+  "\\Delta V",
+  "n_p",
+  "n_e",
+  "\\vec F_{tot}",
+  "\\vec E_{tot}",
+  "K",
+  "m_e",
+  "m_p",
+  "\\vec a"
+ ],
+ "unita": [
+  "C",
+  "N",
+  "J",
+  "V",
+  "m",
+  "kg",
+  "\\text{N/C}",
+  "\\text{J/C}",
+  "\\text{N}\\cdot\\text{m}^2/\\text{C}^2"
+ ],
+ "nodi": [
+  {
+   "id": "n1",
+   "x": 300,
+   "y": 2,
+   "w": 400,
+   "h": 32,
+   "testo": "L'energia elettrica",
+   "colore": "azzurro",
+   "stile": "titolo"
+  },
+  {
+   "id": "n2",
+   "x": 6,
+   "y": 88,
+   "w": 988,
+   "h": 160,
+   "testo": "",
+   "colore": "arancio",
+   "stile": "gruppo"
+  },
+  {
+   "id": "n3",
+   "x": 167,
+   "y": 38,
+   "w": 406,
+   "h": 218,
+   "testo": "",
+   "colore": "grigio",
+   "stile": "cornice"
+  },
+  {
+   "id": "n4",
+   "x": 592,
+   "y": 38,
+   "w": 406,
+   "h": 218,
+   "testo": "",
+   "colore": "grigio",
+   "stile": "cornice"
+  },
+  {
+   "id": "n5",
+   "x": 175,
+   "y": 44,
+   "w": 390,
+   "h": 36,
+   "testo": "**Due cariche** $Q$ e $q$ a distanza $r$",
+   "colore": "grigio",
+   "stile": "testata"
+  },
+  {
+   "id": "n6",
+   "x": 600,
+   "y": 44,
+   "w": 390,
+   "h": 36,
+   "testo": "**Una carica sola** $Q$: il potenziale che genera",
+   "colore": "grigio",
+   "stile": "testata"
+  },
+  {
+   "id": "n7",
+   "x": 14,
+   "y": 96,
+   "w": 148,
+   "h": 144,
+   "testo": "Grandezze scalari\n(numeri con segno)",
+   "colore": "arancio",
+   "stile": "etichetta"
+  },
+  {
+   "id": "n8",
+   "x": 175,
+   "y": 96,
+   "w": 390,
+   "h": 144,
+   "testo": "**Energia potenziale elettrica** $U$\n$U = k\\,\\dfrac{Q\\,q}{r}$ (cariche con il loro segno)\nnegativa se si attraggono, positiva se si respingono; zero a distanza infinita\n$[U] = \\text J$",
+   "colore": "bianco"
+  },
+  {
+   "id": "n9",
+   "x": 600,
+   "y": 96,
+   "w": 390,
+   "h": 144,
+   "testo": "**Potenziale elettrico** $V$\n$V = \\dfrac{U}{q} = k\\,\\dfrac{Q}{r}$ ($Q$ con il suo segno)\nnon dipende dalla carica di prova\n$U = q\\,V$\n$[V] = \\text V = \\text{J/C}$ (volt)",
+   "colore": "bianco"
+  },
+  {
+   "id": "n10",
+   "x": 10,
+   "y": 272,
+   "w": 300,
+   "h": 135,
+   "testo": "**Sovrapposizione degli effetti**\nogni carica contribuisce come se le altre non ci fossero\n$U_{tot} = U_1 + U_2 + \\cdots$\n$V_{tot} = V_1 + V_2 + \\cdots$\nsomma **algebrica** (con i segni)",
+   "colore": "verde"
+  },
+  {
+   "id": "n11",
+   "x": 320,
+   "y": 272,
+   "w": 300,
+   "h": 135,
+   "testo": "**Superfici equipotenziali**\npunti con lo stesso $V$\nsempre $\\perp$ alle linee di campo\nper una carica: sfere concentriche\nfra due lastre: piani paralleli alle lastre",
+   "colore": "azzurro"
+  },
+  {
+   "id": "n12",
+   "x": 630,
+   "y": 272,
+   "w": 360,
+   "h": 135,
+   "testo": "**Differenza di potenziale** (tensione)\n$\\Delta V = V_{arrivo} - V_{partenza}$, in volt\n$\\Delta U = q\\,\\Delta V$\nsenza differenza di potenziale una carica lasciata libera non si muove",
+   "colore": "viola"
+  },
+  {
+   "id": "n13",
+   "x": 10,
+   "y": 429,
+   "w": 300,
+   "h": 274,
+   "testo": "**Una carica in un campo**\n$\\vec F = q\\,\\vec E$ (verso opposto a $\\vec E$ se $q<0$)\n$\\vec a = \\dfrac{q}{m}\\,\\vec E$: dipende dalla particella\nil peso di elettroni e protoni si trascura",
+   "colore": "giallo"
+  },
+  {
+   "id": "n14",
+   "x": 320,
+   "y": 429,
+   "w": 300,
+   "h": 274,
+   "testo": "**Il moto con l'energia**\n$K + U$ resta costante\nogni carica va verso $U$ più bassa: le positive verso $V$ più basso, le negative verso $V$ più alto\npartendo da ferma: $K = \\lvert q\\rvert\\,\\lvert\\Delta V\\rvert$",
+   "colore": "giallo"
+  },
+  {
+   "id": "n15",
+   "x": 630,
+   "y": 429,
+   "w": 360,
+   "h": 274,
+   "testo": "**Esperimento di Millikan**\ngoccioline d'olio cariche ferme fra due lastre: $\\lvert q\\rvert\\,E = m\\,g$\nle cariche misurate sono sempre multipli interi di $e$: la carica è quantizzata",
+   "colore": "rosa"
+  }
+ ],
+ "frecce": [
+  {
+   "id": "f1",
+   "da": "n8",
+   "a": "n9",
+   "tipo": "freccia",
+   "colore": "arancio",
+   "testo": "$\\div\\, q$"
+  },
+  {
+   "id": "f2",
+   "da": "n9",
+   "a": "n12",
+   "tipo": "tratteggiata",
+   "colore": "viola"
+  }
+ ],
+ "tratti": []
+}

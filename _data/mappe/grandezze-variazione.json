@@ -40,7 +40,7 @@
    "y": 52,
    "w": 290,
    "h": 130,
-   "testo": "**Grandezza unitaria**\nrapporto tra due grandezze\n$\\text{gr. unitaria} = \\dfrac{\\text{grandezza 1}}{\\text{grandezza 2}}$\nes. €/kg, km/h, kg/m³",
+   "testo": "**Grandezza unitaria**\nrapporto tra due grandezze\n$\\text{gr. unitaria} = \\dfrac{\\text{grandezza 1}}{\\text{grandezza 2}}$\nsi misura in (unità della grandezza 1)/(unità della grandezza 2)",
    "colore": "azzurro"
   },
   {
@@ -76,7 +76,7 @@
    "y": 52,
    "w": 290,
    "h": 250,
-   "testo": "**Invertire una formula**\nsi fa la stessa operazione su entrambi i membri; scambiare i membri è sempre permesso\n$x = \\dfrac{y}{z}$\n$\\times z:\\quad x\\,z = y$\n$\\div x:\\quad z = \\dfrac{y}{x}$\ncerca la strada con meno mosse",
+   "testo": "**Invertire una formula**\nsi fa la **stessa operazione** su entrambi i membri, finché la grandezza cercata resta da sola\nmosse: moltiplicare o dividere entrambi i membri per una grandezza\nscambiare i membri è sempre permesso\ncerca la strada con meno mosse",
    "colore": "arancio"
   },
   {

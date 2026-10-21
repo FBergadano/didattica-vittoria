@@ -4,7 +4,7 @@ title: "La Teoria dell'Elettromagnetismo Unificato"
 corso: "gravitazione-elettromagnetismo"
 corso_titolo: "La Gravitazione e l'Elettromagnetismo"
 materia: fisica
-numero: 5
+numero: 6
 ---
 
 <cit autore="Schopenhauer, il Mondo come Volontà e Rappresentazione">

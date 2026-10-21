@@ -49,27 +49,31 @@ class M:
 # Tabella 2 × 2: due fasce colorate (righe: vettoriali / scalari) che contengono il proprio nome e
 # le proprie caselle, e due cornici tratteggiate (colonne: due masse / una massa) che partono
 # dall'intestazione e scendono fino in fondo.
-def tabella(mm, y0, hh, hv, hs, cA, cB, eV, eS):
-    """y0: cima delle cornici; hh: altezza intestazioni; hv/hs: altezze delle fasce. Restituisce le y delle caselle."""
+def tabella(mm, y0, hh, righe, cA, cB):
+    """righe: lista di (altezza, colore, etichetta). Fasce colorate (righe) che contengono il proprio
+    nome e le proprie caselle; cornici tratteggiate (colonne) che partono dall'intestazione.
+    Restituisce A, B, CW e la lista delle (y, h) utili per le caselle di ogni riga."""
     A, B, CW = 175, 600, 390
-    yV = y0 + hh + 14; yS = yV + hv + 10; yfine = yS + hs
-    mm.box(6, yV, 988, hv, '', 'viola', 'gruppo')
-    mm.box(6, yS, 988, hs, '', 'arancio', 'gruppo')
+    y = y0 + hh + 14; caselle = []
+    for (h, colore, etich) in righe:
+        mm.box(6, y, 988, h, '', colore, 'gruppo'); caselle.append((y, h, colore, etich)); y += h + 10
+    yfine = y - 10
     mm.box(A - 8, y0, CW + 16, yfine - y0 + 8, '', 'grigio', 'cornice')
     mm.box(B - 8, y0, CW + 16, yfine - y0 + 8, '', 'grigio', 'cornice')
     mm.box(A, y0 + 6, CW, hh, cA, 'grigio', 'testata')
     mm.box(B, y0 + 6, CW, hh, cB, 'grigio', 'testata')
-    mm.box(14, yV + 8, 148, hv - 16, eV, 'viola', 'etichetta')
-    mm.box(14, yS + 8, 148, hs - 16, eS, 'arancio', 'etichetta')
-    return A, B, CW, yV + 8, hv - 16, yS + 8, hs - 16
+    out = []
+    for (yy, h, colore, etich) in caselle:
+        mm.box(14, yy + 8, 148, h - 16, etich, colore, 'etichetta'); out.append((yy + 8, h - 16))
+    return A, B, CW, out, yfine
 
 g = M('La gravitazione',
       ['G', 'M', 'm', 'r', '\\vec F', '\\vec g', 'U', 'V', 'K', 'E', 'M_\\oplus', '\\vec F_{tot}', '\\vec g_{tot}'],
       ['N', 'J', 'kg', 'm', 's', '\\text{N/kg}', '\\text{J/kg}', '\\text{N}\\cdot\\text{m}^2/\\text{kg}^2'])
 g.box(300, 4, 400, 34, 'La gravitazione', 'azzurro', 'titolo')
-A, B, CW, yv, hv, ys, hs = tabella(g, 40, 40, 178, 152,
-  '**Due masse** $M$ e $m$ a distanza $r$', '**Una massa sola** $M$: il campo che genera',
-  'Grandezze vettoriali\n(frecce)', 'Grandezze scalari\n(numeri con segno)')
+A, B, CW, rr, yfine = tabella(g, 40, 40, [(178, 'viola', 'Grandezze vettoriali\n(frecce)'), (152, 'arancio', 'Grandezze scalari\n(numeri con segno)')],
+  '**Due masse** $M$ e $m$ a distanza $r$', '**Una massa sola** $M$: il campo che genera')
+(yv, hv), (ys, hs) = rr
 F = g.box(A, yv, CW, hv,
   '**Forza gravitazionale** $\\vec F$\n'
   '$F = G\\,\\dfrac{M\\,m}{r^2}$\n'
@@ -108,8 +112,7 @@ so = g.box(10, Y, 300, HB,
 mo = g.box(320, Y, 260, HB,
   '**Moto in un campo**\n'
   'forza peso: $\\vec F = m\\,\\vec g$\n'
-  'accelerazione: $\\vec a = \\vec g$ (non dipende da $m$)\n'
-  'energia meccanica costante:\n$E = K + U = \\dfrac12 m v^2 - G\\,\\dfrac{M m}{r}$', 'giallo')
+  'accelerazione: $\\vec a = \\vec g$ (non dipende da $m$)', 'giallo')
 li = g.box(590, Y, 195, HB,
   '**Linee di campo**\n'
   'in ogni punto tangenti a $\\vec g$\n'
@@ -131,88 +134,132 @@ def carica(cx, cy, r, segno, size=12):
     f, st = ('#fecdd3', '#be123c') if segno == '+' else ('#bfdbfe', '#1d4ed8')
     return sfera(cx, cy, r, f, st) + f'<text x="{cx}" y="{cy + size*.36:.1f}" font-size="{size}" text-anchor="middle" fill="{st}" font-weight="700">{segno}</text>'
 
-# ═════════ ELETTROSTATICA ═════════
-e = M("L'elettrostatica",
-      ['Q', 'q', 'q_1', 'q_2', 'e', 'k', 'r', '\\vec F', '\\vec E', 'U', 'V', '\\Delta V', 'n_p', 'n_e', '\\vec F_{tot}', '\\vec E_{tot}'],
-      ['C', 'N', 'J', 'V', 'm', 'kg', '\\text{N/C}', '\\text{J/C}', '\\text{N}\\cdot\\text{m}^2/\\text{C}^2'])
-e.box(300, 2, 400, 32, "L'elettrostatica", 'azzurro', 'titolo')
-e.box(10, 38, 330, 112, '**Carica elettrica** $Q$, $[Q] = \\text C$\n'
+# ═════════ ELETTROSTATICA, PARTE 1 ═════════
+SIMB_E = ['Q', 'q', 'q_1', 'q_2', 'e', 'k', 'r', '\\vec F', '\\vec E', 'U', 'V', '\\Delta V', 'n_p', 'n_e', '\\vec F_{tot}', '\\vec E_{tot}']
+UNI_E = ['C', 'N', 'J', 'V', 'm', 'kg', '\\text{N/C}', '\\text{J/C}', '\\text{N}\\cdot\\text{m}^2/\\text{C}^2']
+e = M("L'elettrostatica (parte 1)", SIMB_E, UNI_E)
+e.box(250, 2, 500, 32, "Carica, forza e campo elettrico", 'azzurro', 'titolo')
+e.box(10, 38, 300, 118, '**Carica elettrica** $Q$, $[Q] = \\text C$\n'
   'quantizzata: $Q = n\\,e$, con $n = n_p - n_e$\n$e = 1{,}6\\times10^{-19}\\ \\text C$\n'
   'si **conserva**: non si crea e non si distrugge', 'azzurro')
-e.box(350, 38, 280, 112, '**Conduttori e isolanti**\n'
-  'conduttori: cariche libere di muoversi (metalli, corpo umano, Terra)\n'
-  'isolanti: nessuna carica libera (vetro, plastica, gomma)', 'grigio')
-e.box(640, 38, 350, 112, '**Elettrizzazione**\n'
-  'strofinio: i due corpi, segni **opposti**\n'
-  'contatto: segno **uguale** (la carica si divide)\n'
+e.box(320, 38, 260, 118, '**Conduttori e isolanti**\n'
+  'conduttori: hanno cariche libere di muoversi\n'
+  'isolanti: non hanno cariche libere', 'grigio')
+e.box(590, 38, 400, 118, '**Elettrizzazione**\n'
+  'strofinio: i due corpi si caricano con segni **opposti**\n'
+  'contatto (conduttori): segno **uguale** a quello del corpo carico\n'
+  'polarizzazione: le cariche si separano, il totale resta zero\n'
   'induzione: polarizzazione + collegamento a terra → segno **opposto**', 'rosa')
-A, B, CW, yv, hv, ys, hs = tabella(e, 158, 36, 156, 130,
-  '**Due cariche** $Q$ e $q$ a distanza $r$', '**Una carica sola** $Q$: il campo che genera',
-  'Grandezze vettoriali\n(frecce)', 'Grandezze scalari\n(numeri con segno)')
+A, B, CW, rr, yfine = tabella(e, 166, 36, [(176, 'viola', 'Grandezze vettoriali\n(frecce)')],
+  '**Due cariche** $Q$ e $q$ a distanza $r$', '**Una carica sola** $Q$: il campo che genera')
+(yv, hv), = rr
 F = e.box(A, yv, CW, hv, '**Forza elettrica** (legge di Coulomb)\n'
   '$F = k\\,\\dfrac{\\lvert q_1\\, q_2\\rvert}{r^2}$\n'
-  'si respingono se hanno lo stesso segno,\nsi attraggono se di segno opposto\n'
+  'lungo la retta che unisce le cariche\nrepulsiva fra cariche dello stesso segno, attrattiva fra segni opposti\n'
   '$[F] = \\text N$\n$k = 8{,}99\\times10^{9}\\ \\text N\\cdot\\text m^2/\\text C^2$', 'bianco')
 e.dis(A + 250, yv + hv - 52, 135, 48, svg('0 0 135 50', carica(45, 25, 12, '+') + carica(90, 25, 12, '+') + fr(30, 25, 6, 25, '#7c3aed') + fr(105, 25, 129, 25, '#7c3aed')))
 E = e.box(B, yv, CW, hv, '**Campo elettrico** $\\vec E$\n'
   '$E = k\\,\\dfrac{\\lvert Q\\rvert}{r^2}$    $\\vec E = \\dfrac{\\vec F}{q}$\n'
+  'non dipende dalla carica di prova $q$\n'
   'esce dalle cariche positive, entra in quelle negative\n'
   '$[E] = \\text{N/C}$', 'bianco')
 e.dis(B + 300, yv + hv - 80, 76, 76, svg('0 0 82 82', carica(41, 41, 11, '+') + radiali(41, 41, 15, 38, 8, True, '#7c3aed')))
-U = e.box(A, ys, CW, hs, '**Energia potenziale elettrica** $U$\n'
-  '$U = k\\,\\dfrac{Q\\,q}{r}$ (cariche con il loro segno)\n'
-  'negativa se si attraggono, positiva se si respingono\n$[U] = \\text J$', 'bianco')
-V = e.box(B, ys, CW, hs, '**Potenziale elettrico** $V$\n'
-  '$V = \\dfrac{U}{q} = k\\,\\dfrac{Q}{r}$     $U = q\\,V$\n'
-  '$[V] = \\text V = \\text{J/C}$ (volt)', 'bianco')
 e.fr(F, E, '$\\div\\, q$', 'freccia', 'viola')
-e.fr(U, V, '$\\div\\, q$', 'freccia', 'arancio')
-Y = ys + hs + 22
-HB = 703 - Y
+Y = yfine + 24
+HB = 700 - Y
 e.box(10, Y, 235, HB, '**Sovrapposizione degli effetti**\n'
   'ogni carica agisce come se le altre non ci fossero\n'
-  '$\\vec F_{tot}$, $\\vec E_{tot}$: somma **vettoriale**\n$U_{tot}$, $V_{tot}$: somma **algebrica**', 'verde')
-e.box(255, Y, 320, HB, '**Una carica in un campo**\n'
-  '$\\vec F = q\\,\\vec E$ (verso opposto se $q<0$)\n'
-  '$\\vec a = \\dfrac{q}{m}\\,\\vec E$\n'
-  '$\\Delta U = q\\,\\Delta V$; partendo da ferma $K = \\lvert q\\rvert\\,\\lvert\\Delta V\\rvert$\n'
-  'le cariche positive vanno verso $V$ più basso', 'giallo')
-li = e.box(585, Y, 200, HB, '**Linee di campo**\n'
-  'tangenti a $\\vec E$, escono da +, entrano in −, non si incrociano\n'
-  'fra due lastre: campo uniforme', 'azzurro')
-e.dis(695, Y + HB - 50, 80, 46, svg('0 0 80 46', '<line x1="8" y1="3" x2="8" y2="43" stroke="#be123c" stroke-width="3"/><line x1="72" y1="3" x2="72" y2="43" stroke="#1d4ed8" stroke-width="3"/>'
+  '$\\vec F_{tot} = \\vec F_1 + \\vec F_2 + \\cdots$\n$\\vec E_{tot} = \\vec E_1 + \\vec E_2 + \\cdots$\n'
+  'somma **vettoriale** (regola del parallelogramma)', 'verde')
+e.box(255, Y, 235, HB, '**Forza elettrica e gravità**\n'
+  'stessa forma: dipendono da $1/r^2$\n'
+  'la gravità attrae sempre; la forza elettrica può anche respingere\n'
+  'fra particelle cariche la forza elettrica è enormemente più intensa', 'giallo')
+li = e.box(500, Y, 245, HB, '**Linee di campo**\n'
+  'tangenti a $\\vec E$ in ogni punto\nescono da +, entrano in −\nnon si incrociano mai\npiù fitte dove $E$ è più intenso', 'azzurro')
+un = e.box(755, Y, 235, HB, '**Campo uniforme**\n'
+  'stesso modulo, direzione e verso in ogni punto\n'
+  'fra due lastre piane cariche con segni opposti: dalla lastra + alla lastra −', 'azzurro')
+e.dis(860, Y + HB - 52, 80, 46, svg('0 0 80 46', '<line x1="8" y1="3" x2="8" y2="43" stroke="#be123c" stroke-width="3"/><line x1="72" y1="3" x2="72" y2="43" stroke="#1d4ed8" stroke-width="3"/>'
   + ''.join(fr(13, y, 66, y, '#0284c7', 1.3, 5) for y in (10, 23, 36))))
-eq = e.box(795, Y, 195, HB, '**Superfici equipotenziali**\n'
-  'punti con lo stesso $V$\nsempre $\\perp$ alle linee di campo\nper una carica: sfere concentriche', 'azzurro')
-e.fr(li, eq, '$\\perp$', 'linea', 'azzurro')
-e.salva('elettrostatica')
+e.salva('elettrostatica-1')
+
+# ═════════ ELETTROSTATICA, PARTE 2 ═════════
+e = M("L'elettrostatica (parte 2)", SIMB_E + ['K', 'm_e', 'm_p', '\\vec a'], UNI_E)
+e.box(300, 2, 400, 32, "L'energia elettrica", 'azzurro', 'titolo')
+A, B, CW, rr, yfine = tabella(e, 38, 36, [(160, 'arancio', 'Grandezze scalari\n(numeri con segno)')],
+  '**Due cariche** $Q$ e $q$ a distanza $r$', '**Una carica sola** $Q$: il potenziale che genera')
+(ys, hs), = rr
+U = e.box(A, ys, CW, hs, '**Energia potenziale elettrica** $U$\n'
+  '$U = k\\,\\dfrac{Q\\,q}{r}$ (cariche con il loro segno)\n'
+  'negativa se si attraggono, positiva se si respingono; zero a distanza infinita\n$[U] = \\text J$', 'bianco')
+V = e.box(B, ys, CW, hs, '**Potenziale elettrico** $V$\n'
+  '$V = \\dfrac{U}{q} = k\\,\\dfrac{Q}{r}$ ($Q$ con il suo segno)\n'
+  'non dipende dalla carica di prova\n'
+  '$U = q\\,V$\n$[V] = \\text V = \\text{J/C}$ (volt)', 'bianco')
+e.fr(U, V, '$\\div\\, q$', 'freccia', 'arancio')
+Y = yfine + 24
+so = e.box(10, Y, 300, 135, '**Sovrapposizione degli effetti**\n'
+  'ogni carica contribuisce come se le altre non ci fossero\n'
+  '$U_{tot} = U_1 + U_2 + \\cdots$\n$V_{tot} = V_1 + V_2 + \\cdots$\n'
+  'somma **algebrica** (con i segni)', 'verde')
+eq = e.box(320, Y, 300, 135, '**Superfici equipotenziali**\n'
+  'punti con lo stesso $V$\nsempre $\\perp$ alle linee di campo\n'
+  'per una carica: sfere concentriche\nfra due lastre: piani paralleli alle lastre', 'azzurro')
+dv = e.box(630, Y, 360, 135, '**Differenza di potenziale** (tensione)\n'
+  '$\\Delta V = V_{arrivo} - V_{partenza}$, in volt\n'
+  '$\\Delta U = q\\,\\Delta V$\n'
+  'senza differenza di potenziale una carica lasciata libera non si muove', 'viola')
+Y2 = Y + 135 + 22
+HB = 703 - Y2
+fo = e.box(10, Y2, 300, HB, '**Una carica in un campo**\n'
+  '$\\vec F = q\\,\\vec E$ (verso opposto a $\\vec E$ se $q<0$)\n'
+  '$\\vec a = \\dfrac{q}{m}\\,\\vec E$: dipende dalla particella\n'
+  'il peso di elettroni e protoni si trascura', 'giallo')
+en = e.box(320, Y2, 300, HB, '**Il moto con l\'energia**\n'
+  '$K + U$ resta costante\n'
+  'ogni carica va verso $U$ più bassa: le positive verso $V$ più basso, le negative verso $V$ più alto\n'
+  'partendo da ferma: $K = \\lvert q\\rvert\\,\\lvert\\Delta V\\rvert$', 'giallo')
+mi = e.box(630, Y2, 360, HB, '**Esperimento di Millikan**\n'
+  'goccioline d\'olio cariche ferme fra due lastre: $\\lvert q\\rvert\\,E = m\\,g$\n'
+  'le cariche misurate sono sempre multipli interi di $e$: la carica è quantizzata', 'rosa')
+e.fr(V, dv, '', 'tratteggiata', 'viola')
+e.salva('elettrostatica-2')
 
 # ═════════ MISURAZIONE ═════════
 m = M('La misura',
       ['\\times10^{n}', '10^{-3}', '10^{3}', '\\ell', '\\mu', '\\text{k}', '\\text{M}', '\\text{G}', '\\text{c}', '\\text{m}', '\\text{n}'],
       ['m', 'kg', 's', 'K', 'A', 'mol', 'cd', '\\text{m}^2', '\\text{m}^3', '\\text{dm}^3', '\\text{cm}^3', '\\ell'])
 m.box(300, 6, 400, 36, 'La misura', 'azzurro', 'titolo')
-mi = m.box(10, 52, 290, 75, '**Misurare**\nconfrontare una grandezza con un\'unità di misura: risultato = numero + unità', 'grigio')
-si = m.box(10, 170, 290, 205, '**Sistema Internazionale (SI)**\n7 grandezze fondamentali:\n'
+si = m.box(10, 52, 300, 215, '**Sistema Internazionale (SI)**\n7 grandezze fondamentali:\n'
   'lunghezza — metro (m)\nmassa — chilogrammo (kg)\ntempo — secondo (s)\ntemperatura — kelvin (K)\n'
   'corrente elettrica — ampere (A)\nquantità di sostanza — mole (mol)\nintensità luminosa — candela (cd)', 'azzurro')
-de = m.box(10, 425, 290, 105, '**Grandezze derivate**\nsi ottengono dalle fondamentali con le formule\n'
+de = m.box(10, 305, 300, 95, '**Grandezze derivate**\nsi ottengono dalle fondamentali con le formule\n'
   'area: $\\text m^2$, volume: $\\text m^3$\n$1\\ \\ell = 1\\ \\text{dm}^3$', 'verde')
-pr = m.box(355, 170, 290, 95, '**Prefissi**\n'
-  'G $10^{9}$ · M $10^{6}$ · k $10^{3}$ · h $10^{2}$ · da $10^{1}$\n'
-  'd $10^{-1}$ · c $10^{-2}$ · m $10^{-3}$ · μ $10^{-6}$ · n $10^{-9}$', 'giallo')
-co = m.box(355, 320, 290, 175, '**Convertire**\nda un prefisso $10^{n}$ a uno $10^{m}$: fattore $10^{n-m}$ (conta i salti sulla retta dei prefissi)\n'
-  'aree: esponente $\\times 2$\n$1\\ \\text m^2 = 10^{4}\\ \\text{cm}^2$\nvolumi: esponente $\\times 3$\n$1\\ \\text m^3 = 10^{6}\\ \\text{cm}^3$', 'arancio')
-ns = m.box(700, 52, 290, 135, '**Notazione scientifica**\n$a\\times10^{n}$ con $1 \\le a < 10$\n'
-  '$n > 0$: numero grande, $n < 0$: numero piccolo\n$0{,}00052 = 5{,}2\\times10^{-4}$\n'
-  'calcolatrice: 5.2E-4', 'viola')
-op = m.box(700, 240, 290, 140, '**Operazioni**\n'
+ns = m.box(355, 52, 300, 110, '**Notazione scientifica**\n$a\\times10^{n}$ con $1 \\le a < 10$\n'
+  '$n > 0$: numero grande; $n < 0$: numero piccolo\n'
+  'sulla calcolatrice: E al posto di $\\times10$', 'viola')
+op = m.box(355, 205, 300, 150, '**Operazioni**\n'
   '$(a\\times10^{n})\\cdot(b\\times10^{m}) = a b\\times10^{n+m}$\n'
   '$\\dfrac{a\\times10^{n}}{b\\times10^{m}} = \\dfrac{a}{b}\\times10^{n-m}$\n'
   'somma: prima lo stesso esponente, poi $(a \\pm b)\\times10^{n}$', 'viola')
-te = m.box(700, 430, 290, 85, '**Il tempo** (non decimale)\n$1\\ \\text h = 60\\ \\text{min} = 3600\\ \\text s$\n1 giorno $= 86\\,400\\ \\text s$', 'grigio')
-m.fr(mi, si); m.fr(si, de); m.fr(ns, op); m.fr(pr, co)
-m.fr(si, pr, 'multipli', 'tratteggiata'); m.fr(de, co, 'aree e volumi', 'tratteggiata'); m.fr(pr, ns, '', 'tratteggiata')
+te = m.box(700, 52, 290, 90, '**Il tempo** (non decimale)\n$1\\ \\text{min} = 60\\ \\text s$\n$1\\ \\text h = 3600\\ \\text s$', 'grigio')
+co = m.box(700, 185, 290, 195, '**Convertire fra prefissi**\nconta i salti sulla retta dei prefissi: il numero di salti è l\'esponente\n'
+  'salti verso destra: esponente **negativo**\nsalti verso sinistra: esponente **positivo**\n'
+  'aree: ogni salto vale il **doppio**\nvolumi: ogni salto vale il **triplo**', 'arancio')
+pr = m.box(10, 425, 980, 270, '**Prefissi** e retta dei prefissi\nsono gli stessi per tutte le unità di misura', 'giallo')
+P = [('p', 'pico', '10⁻¹²', 40), ('n', 'nano', '10⁻⁹', 125), ('μ', 'micro', '10⁻⁶', 210), ('m', 'milli', '10⁻³', 295),
+     ('c', 'centi', '10⁻²', 350), ('d', 'deci', '10⁻¹', 405), ('—', 'unità', '10⁰', 460), ('da', 'deca', '10¹', 515),
+     ('h', 'etto', '10²', 570), ('k', 'kilo', '10³', 625), ('M', 'Mega', '10⁶', 710), ('G', 'Giga', '10⁹', 795), ('T', 'Tera', '10¹²', 880)]
+corpo = fr(15, 60, 935, 60, '#374151', 2, 9)
+for (sim, nome, pot, x) in P:
+    grande = sim in ('p', 'n', 'μ', 'm', '—', 'k', 'M', 'G', 'T')
+    corpo += f'<line x1="{x}" y1="{48 if grande else 52}" x2="{x}" y2="{72 if grande else 68}" stroke="#7c3aed" stroke-width="{2.5 if grande else 1.6}"/>'
+    corpo += txt(x, 36, sim, 20 if grande else 16, '#1f2937', False)
+    corpo += txt(x, 92, pot, 14, '#7c3aed', False)
+    corpo += txt(x, 112, nome, 12, '#64748b', False)
+m.dis(20, 490, 960, 125, svg('0 0 960 125', corpo))
+m.fr(si, de); m.fr(ns, op); m.fr(pr, co)
 m.salva('misurazione')
 
 # ═════════ GRANDEZZE E VARIAZIONE ═════════
@@ -221,7 +268,7 @@ v = M('Grandezze unitarie e variazione',
       ['m', 'kg', 's', 'h', '€', '\\text{km/h}', '\\text{kg/m}^3', '€/\\text{kg}'])
 v.box(250, 6, 500, 36, 'Grandezze unitarie e variazione', 'azzurro', 'titolo')
 gu = v.box(10, 52, 290, 130, '**Grandezza unitaria**\nrapporto tra due grandezze\n'
-  '$\\text{gr. unitaria} = \\dfrac{\\text{grandezza 1}}{\\text{grandezza 2}}$\nes. €/kg, km/h, kg/m³', 'azzurro')
+  '$\\text{gr. unitaria} = \\dfrac{\\text{grandezza 1}}{\\text{grandezza 2}}$\nsi misura in (unità della grandezza 1)/(unità della grandezza 2)', 'azzurro')
 pp = v.box(10, 235, 290, 140, '**Proporzionalità** in $x = \\dfrac{y}{z}$\n'
   '$x$ e $y$ **direttamente** proporzionali: se $y$ cresce, $x$ cresce\n'
   '$x$ e $z$ **inversamente** proporzionali: se $z$ cresce, $x$ cala', 'verde')
@@ -231,8 +278,9 @@ uf = v.box(355, 52, 290, 105, '**Dalla formula all\'unità**\n'
 fu = v.box(355, 215, 290, 105, '**Dall\'unità alla formula**\n'
   'se $[x] = A/B$, probabilmente $x$ è il rapporto tra una grandezza misurata in $A$ e una misurata in $B$', 'viola')
 inv = v.box(700, 52, 290, 250, '**Invertire una formula**\n'
-  'si fa la stessa operazione su entrambi i membri; scambiare i membri è sempre permesso\n'
-  '$x = \\dfrac{y}{z}$\n$\\times z:\\quad x\\,z = y$\n$\\div x:\\quad z = \\dfrac{y}{x}$\n'
+  'si fa la **stessa operazione** su entrambi i membri, finché la grandezza cercata resta da sola\n'
+  'mosse: moltiplicare o dividere entrambi i membri per una grandezza\n'
+  'scambiare i membri è sempre permesso\n'
   'cerca la strada con meno mosse', 'arancio')
 va = v.box(355, 405, 290, 105, '**Variazione**\n$\\Delta x = x_f - x_i$\n'
   '$\\Delta x > 0$: $x$ aumenta; $\\Delta x < 0$: diminuisce', 'giallo')
