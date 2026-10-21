@@ -38,11 +38,19 @@ const SCHEMA = [
      classe TEXT NOT NULL, codice TEXT NOT NULL, compito TEXT, ts INTEGER NOT NULL,
      tipo TEXT NOT NULL, dim INTEGER NOT NULL, dati TEXT NOT NULL)`,
   `CREATE INDEX IF NOT EXISTS foto_classe ON foto (classe, compito)`,
+  // schemi per l'interrogazione: uno schema costruito sul sito (tipo "mappa", dati JSON)
+  // oppure un file (PDF o foto, in base64)
+  `CREATE TABLE IF NOT EXISTS schemi (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     classe TEXT NOT NULL, codice TEXT NOT NULL, pagina TEXT, titolo TEXT, ts INTEGER NOT NULL,
+     tipo TEXT NOT NULL, dim INTEGER NOT NULL, dati TEXT NOT NULL)`,
+  `CREATE INDEX IF NOT EXISTS schemi_classe ON schemi (classe, ts)`,
 ];
 
 const MAX_ERRORI_PIN = 8, BLOCCO_MS = 15 * 60 * 1000;
 const MAX_DUBBI_GIORNO = 20;
 const MAX_FOTO_GIORNO = 40, MAX_FOTO_B64 = 1400000; // ~1 MB per foto (il telefono le riduce a ~300 KB)
+const MAX_SCHEMI_GIORNO = 30, MAX_MAPPA = 400000;
 const RE_CLASSE = /^[A-Za-z0-9][A-Za-z0-9 _-]{0,15}$/, RE_CODICE = /^[A-Z]{2,12}$/;
 
 let pronto = null; // le tabelle si creano una volta sola per istanza
@@ -77,6 +85,9 @@ export default {
         case '/foto':        return await nuovaFoto(corpo, env, cors);
         case '/mie-foto':    return await mieFoto(corpo, env, cors);
         case '/foto-elimina': return await eliminaFoto(corpo, env, cors);
+        case '/schema':      return await nuovoSchema(corpo, env, cors);
+        case '/miei-schemi': return await mieiSchemi(corpo, env, cors);
+        case '/schema-elimina': return await eliminaSchema(corpo, env, cors);
       }
       return json({ errore: 'percorso sconosciuto' }, 404, cors);
     } catch (e) {
@@ -258,6 +269,45 @@ async function eliminaFoto(c, env, cors) {
   return json({ ok: true }, 200, cors);
 }
 
+// ───────── schemi per l'interrogazione ─────────
+async function nuovoSchema(c, env, cors) {
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  const ora = Date.now();
+  const n = await env.DB.prepare('SELECT COUNT(*) AS n FROM schemi WHERE classe = ? AND codice = ? AND ts > ?').bind(st.classe, st.codice, ora - 24 * 3600 * 1000).first();
+  if (n.n >= MAX_SCHEMI_GIORNO) return json({ errore: 'troppi' }, 429, cors);
+  const pagina = str(c.pagina, 200) || '', titolo = str(c.titolo, 200) || '';
+  let tipo, dati;
+  if (c.tipo === 'mappa') {
+    dati = String(c.dati || '');
+    if (dati.length > MAX_MAPPA) return json({ errore: 'grande' }, 413, cors);
+    try { JSON.parse(dati); } catch (e) { return json({ errore: 'formato' }, 400, cors); }
+    tipo = 'mappa';
+    // dello schema di un capitolo tengo solo l'ultima versione inviata
+    await env.DB.prepare("DELETE FROM schemi WHERE classe = ? AND codice = ? AND pagina = ? AND tipo = 'mappa'").bind(st.classe, st.codice, pagina).run();
+  } else {
+    const m = /^data:(application\/pdf|image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/.exec(String(c.file || ''));
+    if (!m) return json({ errore: 'formato' }, 400, cors);
+    if (m[2].length > MAX_FOTO_B64) return json({ errore: 'grande' }, 413, cors);
+    tipo = m[1]; dati = m[2];
+  }
+  const r = await env.DB.prepare('INSERT INTO schemi (classe, codice, pagina, titolo, ts, tipo, dim, dati) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+    .bind(st.classe, st.codice, pagina, titolo, ora, tipo, tipo === 'mappa' ? dati.length : Math.round(dati.length * 3 / 4), dati).run();
+  return json({ ok: true, id: r.meta.last_row_id }, 200, cors);
+}
+async function mieiSchemi(c, env, cors) {
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  const r = await env.DB.prepare('SELECT id, pagina, titolo, ts, tipo, dim FROM schemi WHERE classe = ? AND codice = ? ORDER BY ts DESC LIMIT 100').bind(st.classe, st.codice).all();
+  return json({ schemi: r.results }, 200, cors);
+}
+async function eliminaSchema(c, env, cors) {
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  await env.DB.prepare('DELETE FROM schemi WHERE id = ? AND classe = ? AND codice = ?').bind(Number(c.id), st.classe, st.codice).run();
+  return json({ ok: true }, 200, cors);
+}
+
 // ───────── docente ─────────
 async function docenteAutorizzato(req, env) {
   if (!env.DOCENTE_PASSWORD) return 'password non impostata';
@@ -297,6 +347,7 @@ async function docente(p, url, c, env, cors) {
         ops.push(DB.prepare('DELETE FROM risposte WHERE classe = ? AND codice = ?').bind(classe, x));
         ops.push(DB.prepare('DELETE FROM dubbi WHERE classe = ? AND codice = ?').bind(classe, x));
         ops.push(DB.prepare('DELETE FROM foto WHERE classe = ? AND codice = ?').bind(classe, x));
+        ops.push(DB.prepare('DELETE FROM schemi WHERE classe = ? AND codice = ?').bind(classe, x));
       }
       if (ops.length) await DB.batch(ops);
       return json({ ok: true, aggiunti: codici.filter((x) => !attuali.includes(x)).length, tolti: via.length }, 200, cors);
@@ -346,13 +397,27 @@ async function docente(p, url, c, env, cors) {
       await DB.prepare('DELETE FROM foto WHERE id = ?').bind(Number(c.id)).run();
       return json({ ok: true }, 200, cors);
     }
+    case '/docente/schemi': { // elenco degli schemi di una classe (senza i dati)
+      const r = await DB.prepare('SELECT id, codice, pagina, titolo, ts, tipo, dim FROM schemi WHERE classe = ? ORDER BY ts DESC').bind(q('classe')).all();
+      return json({ schemi: r.results }, 200, cors);
+    }
+    case '/docente/schema': { // uno schema, con i dati
+      const f = await DB.prepare('SELECT id, codice, pagina, titolo, ts, tipo, dati FROM schemi WHERE id = ?').bind(Number(q('id'))).first();
+      if (!f) return json({ errore: 'non trovato' }, 404, cors);
+      return json(f.tipo === 'mappa' ? f : { ...f, dati: undefined, src: 'data:' + f.tipo + ';base64,' + f.dati }, 200, cors);
+    }
+    case '/docente/schema-elimina': {
+      await DB.prepare('DELETE FROM schemi WHERE id = ?').bind(Number(c.id)).run();
+      return json({ ok: true }, 200, cors);
+    }
     case '/docente/cancella': { // cancella risposte, dubbi e foto più vecchi di una data
       const prima = Number(c.prima_di);
       if (!isFinite(prima) || prima <= 0) return json({ errore: 'data non valida' }, 400, cors);
       const a = await DB.prepare('DELETE FROM risposte WHERE ricevuto < ?').bind(prima).run();
       const b = await DB.prepare('DELETE FROM dubbi WHERE ts < ?').bind(prima).run();
       const f = await DB.prepare('DELETE FROM foto WHERE ts < ?').bind(prima).run();
-      return json({ ok: true, risposte: a.meta.changes, dubbi: b.meta.changes, foto: f.meta.changes }, 200, cors);
+      const g = await DB.prepare('DELETE FROM schemi WHERE ts < ?').bind(prima).run();
+      return json({ ok: true, risposte: a.meta.changes, dubbi: b.meta.changes, foto: f.meta.changes, schemi: g.meta.changes }, 200, cors);
     }
   }
   return json({ errore: 'percorso sconosciuto' }, 404, cors);
