@@ -641,6 +641,12 @@ In una teiera che bolle sul fornello sono all'opera tutti e tre i modi di trasme
 {% include box-end.html %}
 
 
+# Schema riassuntivo
+
+Prima degli esercizi, ecco tutto il capitolo in un colpo d'occhio. Con «Modifica» puoi costruire il tuo schema, partendo da questo o da un foglio bianco: aggiungere riquadri, frecce, colori, formule e scritte a mano.
+
+{% include mappa.html id="calore" %}
+
 # Esercizi di Riepilogo
 
 ### Calore, temperatura ed equilibrio termico

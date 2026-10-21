@@ -1,0 +1,99 @@
+/* Schema riassuntivo (assets/js/mappa.js): vista, editor, finestra delle formule, stampa */
+
+.mp-widget { margin: 1.5rem 0 2rem; }
+.mp-anteprima { width: 100%; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; overflow: hidden; }
+.mp-azioni { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem .6rem; margin-top: .6rem; }
+.mp-stato { font-size: .8rem; color: #64748b; font-style: italic; flex-basis: 100%; }
+.mp-stato.mp-ok { color: #15803d; font-style: normal; }
+.mp-stato.mp-err { color: #dc2626; font-style: normal; }
+.mp-b { font: inherit; font-size: .85rem; border: 1px solid #cbd5e1; background: #fff; color: #334155; border-radius: 999px; padding: .35rem .9rem; cursor: pointer; }
+.mp-b:hover { border-color: #0e7490; color: #0e7490; }
+.mp-b-pri { background: #0e7490; border-color: #0e7490; color: #fff; }
+.mp-b-pri:hover { color: #fff; background: #0c6b82; }
+
+/* il foglio: 1000 × 707, rimpicciolito con transform */
+.mp-scala { position: relative; overflow: hidden; }
+.mp-tela { position: absolute; left: 0; top: 0; width: 1000px; height: 707px; transform-origin: 0 0; background: #fff;
+  font-family: "Atkinson Hyperlegible", "Source Sans 3", Arial, sans-serif; font-size: 13px; line-height: 1.35; color: #1f2937; }
+.mp-frecce, .mp-tratti { position: absolute; left: 0; top: 0; overflow: visible; }
+.mp-frecce { pointer-events: none; }
+.mp-tratti { pointer-events: none; }
+.mp-nodi { position: absolute; inset: 0; }
+.mp-nodo { position: absolute; box-sizing: border-box; border: 1.5px solid #94a3b8; border-radius: 9px; padding: 5px 8px; background: #fff; }
+.mp-nodo.mp-titolo { border: none; background: transparent; font-size: 22px; font-weight: 700; text-align: center; padding: 2px; }
+.mp-nodo.mp-testata { font-weight: 700; text-align: center; display: flex; align-items: center; justify-content: center; }
+.mp-nodo.mp-testata .mp-testo { width: 100%; }
+.mp-nodo.mp-dis { border: none; background: transparent; padding: 0; }
+.mp-testo { outline: none; min-height: 1em; word-wrap: break-word; white-space: pre-wrap; }
+.mp-testo b { color: inherit; }
+.mp-f mjx-container { margin: 0 !important; }
+.mp-f mjx-container[jax="CHTML"] { font-size: 105% !important; }
+.mp-etich { position: absolute; transform: translate(-50%, -50%); background: #fff; padding: 0 4px; border-radius: 4px; font-size: 12px; white-space: nowrap; color: #334155; }
+.mp-etich.mp-vuota { display: none; }
+
+/* editor */
+html.mp-editor-aperto, html.mp-editor-aperto body { overflow: hidden; }
+.mp-editor { position: fixed; inset: 0; z-index: 9000; background: #f1f5f9; display: flex; flex-direction: column; }
+.mp-barra { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 6px 8px; background: #fff; border-bottom: 1px solid #e2e8f0; }
+.mp-tb { font: inherit; font-size: 15px; min-width: 34px; height: 34px; border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; cursor: pointer; padding: 0 7px; color: #1f2937; }
+.mp-tb small { font-size: 11px; }
+.mp-tb:hover { border-color: #0e7490; }
+.mp-tb.on { background: #0e7490; border-color: #0e7490; color: #fff; }
+.mp-tb.mp-col { min-width: 24px; width: 24px; height: 24px; border-radius: 50%; border-width: 2px; padding: 0; }
+.mp-tb.mp-col.on { outline: 2px solid #0e7490; outline-offset: 2px; }
+.mp-tb.mp-tw { font-size: 13px; padding: 0 10px; }
+.mp-tb.mp-fine { background: #0e7490; color: #fff; border-color: #0e7490; }
+.mp-sep { width: 1px; height: 24px; background: #e2e8f0; margin: 0 3px; }
+.mp-spazio { flex: 1; }
+.mp-aiuto { font-size: 12px; color: #475569; padding: 4px 10px; font-family: "Atkinson Hyperlegible", Arial, sans-serif; }
+.mp-area { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.mp-host { box-shadow: 0 4px 24px rgba(15,23,42,.15); border-radius: 4px; background: #fff; }
+.mp-editor .mp-tela { touch-action: none; }
+.mp-editor .mp-nodo { cursor: move; user-select: none; -webkit-user-select: none; }
+.mp-editor .mp-nodo.mp-in-mod { cursor: text; user-select: text; -webkit-user-select: text; }
+.mp-editor .mp-nodo.mp-in-mod .mp-testo, .mp-editor .mp-etich.mp-in-mod { outline: 2px dashed #0e7490; outline-offset: 2px; min-width: 20px; }
+.mp-editor .mp-nodo.mp-sel { box-shadow: 0 0 0 3px rgba(14,116,144,.35); }
+.mp-editor .mp-nodo .mp-f { cursor: pointer; }
+.mp-maniglia { position: absolute; right: -7px; bottom: -7px; width: 14px; height: 14px; border-radius: 3px; background: #0e7490; cursor: nwse-resize; }
+.mp-editor .mp-frecce { pointer-events: none; }
+.mp-editor .mp-freccia .mp-hit { stroke: transparent; stroke-width: 14; fill: none; pointer-events: stroke; cursor: pointer; }
+.mp-editor .mp-freccia.mp-sel .mp-linea { stroke-width: 3.5; }
+.mp-editor .mp-etich { cursor: pointer; }
+.mp-editor .mp-etich.mp-sel { box-shadow: 0 0 0 2px rgba(14,116,144,.35); }
+.mp-editor .mp-modo-penna, .mp-editor .mp-modo-evidenzia { cursor: crosshair; }
+.mp-editor .mp-modo-penna .mp-nodi, .mp-editor .mp-modo-evidenzia .mp-nodi, .mp-editor .mp-modo-gomma .mp-nodi { pointer-events: none; }
+.mp-editor .mp-modo-gomma .mp-tratti .mp-tratto { pointer-events: stroke; }
+.mp-editor .mp-modo-gomma { cursor: cell; }
+.mp-editor .mp-modo-riquadro { cursor: copy; }
+.mp-editor .mp-modo-collega .mp-nodo { cursor: pointer; }
+
+/* finestra delle formule */
+.mp-fdlg { position: fixed; inset: 0; z-index: 9500; background: rgba(15,23,42,.45); display: flex; align-items: center; justify-content: center; padding: 10px; }
+.mp-fpan { background: #fff; border-radius: 12px; padding: 14px 16px; width: 100%; max-width: 620px; max-height: calc(100vh - 20px); overflow: auto;
+  font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: 14px; color: #1f2937; box-shadow: 0 12px 40px rgba(0,0,0,.25); }
+.mp-fpan.mp-piccolo { max-width: 420px; }
+.mp-fpan h4 { margin: 0 0 10px; font-size: 16px; }
+.mp-fcampo { border: 1.5px solid #67e8f9; border-radius: 8px; padding: 6px; min-height: 52px; font-size: 22px; }
+.mp-mf { width: 100%; font-size: 22px; border: none; outline: none; }
+.mp-finput { width: 100%; font: inherit; font-size: 16px; border: none; outline: none; }
+.mp-fhint { font-size: 12px; color: #64748b; margin: 6px 0 8px; }
+.mp-fgr { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #0e7490; font-weight: 700; margin: 8px 0 4px; }
+.mp-fbtn { display: flex; flex-wrap: wrap; gap: 4px; }
+.mp-fbtn button { min-width: 38px; height: 34px; border: 1px solid #cbd5e1; background: #f8fafc; border-radius: 6px; cursor: pointer; padding: 0 6px; font-size: 14px; }
+.mp-fbtn button:hover { border-color: #0e7490; background: #ecfeff; }
+.mp-faz { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+/* stampa di un solo schema (Scarica PDF) */
+.mp-stampa { display: none; }
+@media print {
+  html.mp-stampa-on body > *:not(.mp-stampa) { display: none !important; }
+  html.mp-stampa-on body { margin: 0 !important; padding: 0 !important; min-height: 0 !important; }
+  html.mp-stampa-on .mp-stampa { display: block; page: mappa; break-inside: avoid; }
+  .mp-stampa-tit { font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: 12pt; font-weight: 700; margin-bottom: 4px; }
+  .mp-stampa .mp-scala { overflow: hidden; }
+  .mp-editor, .mp-fdlg { display: none !important; }
+  .mp-azioni { display: none !important; }
+  .mp-anteprima { border: none; }
+  .mp-widget { break-inside: avoid; }
+}
+@page mappa { size: A4 landscape; margin: 10mm; }

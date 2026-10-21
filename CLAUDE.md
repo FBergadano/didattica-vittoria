@@ -317,6 +317,28 @@ Testo in Markdown.
 {% include mcq.html id="id-univoco" opts=_o ok="b" s="Spiegazione." %}
 ```
 
+## Schema riassuntivo (ogni capitolo)
+
+Subito prima di `# Esercizi di riepilogo`:
+
+```liquid
+# Schema riassuntivo
+
+{% include mappa.html id="gravitazione" %}
+```
+
+- mostra lo schema del prof, in `_data/mappe/<id>.json` (lo genera
+  `strumenti/mappe_gen.py`: foglio 1000 × 707, riquadri con `**grassetto**`,
+  `$formule$`, frecce, disegnini SVG; `simboli`/`unita` = pulsanti del
+  capitolo nell'editor delle formule)
+- «Modifica»: editor a tutto schermo (riquadri, frecce, colori, penna,
+  formule con MathLive, senza LaTeX); la versione dello studente resta nel browser
+- «Scarica PDF» (A4 orizzontale) e «Invia al prof»: arriva nella pagina del
+  docente, scheda «Schemi», con l'orario d'invio. Dal pannello 👤 lo studente
+  può inviare anche uno schema fatto a mano (PDF o foto) — sezione «Schemi per
+  l'interrogazione»
+- motore in `assets/js/mappa.js`, aspetto in `assets/css/mappa.css`
+
 ## Altri elementi
 
 ```

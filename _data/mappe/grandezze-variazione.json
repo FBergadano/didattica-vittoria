@@ -1,0 +1,149 @@
+{
+ "titolo": "Grandezze unitarie e variazione",
+ "simboli": [
+  "x",
+  "y",
+  "z",
+  "[x]",
+  "\\Delta x",
+  "x_f",
+  "x_i",
+  "\\Delta t",
+  "\\Delta s",
+  "\\text{var}_{x,t}",
+  "\\text{var}_{x,s}"
+ ],
+ "unita": [
+  "m",
+  "kg",
+  "s",
+  "h",
+  "€",
+  "\\text{km/h}",
+  "\\text{kg/m}^3",
+  "€/\\text{kg}"
+ ],
+ "nodi": [
+  {
+   "id": "n1",
+   "x": 250,
+   "y": 6,
+   "w": 500,
+   "h": 36,
+   "testo": "Grandezze unitarie e variazione",
+   "colore": "azzurro",
+   "stile": "titolo"
+  },
+  {
+   "id": "n2",
+   "x": 10,
+   "y": 52,
+   "w": 290,
+   "h": 130,
+   "testo": "**Grandezza unitaria**\nrapporto tra due grandezze\n$\\text{gr. unitaria} = \\dfrac{\\text{grandezza 1}}{\\text{grandezza 2}}$\nes. €/kg, km/h, kg/m³",
+   "colore": "azzurro"
+  },
+  {
+   "id": "n3",
+   "x": 10,
+   "y": 235,
+   "w": 290,
+   "h": 140,
+   "testo": "**Proporzionalità** in $x = \\dfrac{y}{z}$\n$x$ e $y$ **direttamente** proporzionali: se $y$ cresce, $x$ cresce\n$x$ e $z$ **inversamente** proporzionali: se $z$ cresce, $x$ cala",
+   "colore": "verde"
+  },
+  {
+   "id": "n4",
+   "x": 355,
+   "y": 52,
+   "w": 290,
+   "h": 105,
+   "testo": "**Dalla formula all'unità**\n$x = \\dfrac{y}{z} \\;\\Rightarrow\\; [x] = \\dfrac{[y]}{[z]}$\n$x = y\\cdot z \\;\\Rightarrow\\; [x] = [y]\\times[z]$",
+   "colore": "viola"
+  },
+  {
+   "id": "n5",
+   "x": 355,
+   "y": 215,
+   "w": 290,
+   "h": 105,
+   "testo": "**Dall'unità alla formula**\nse $[x] = A/B$, probabilmente $x$ è il rapporto tra una grandezza misurata in $A$ e una misurata in $B$",
+   "colore": "viola"
+  },
+  {
+   "id": "n6",
+   "x": 700,
+   "y": 52,
+   "w": 290,
+   "h": 250,
+   "testo": "**Invertire una formula**\nsi fa la stessa operazione su entrambi i membri; scambiare i membri è sempre permesso\n$x = \\dfrac{y}{z}$\n$\\times z:\\quad x\\,z = y$\n$\\div x:\\quad z = \\dfrac{y}{x}$\ncerca la strada con meno mosse",
+   "colore": "arancio"
+  },
+  {
+   "id": "n7",
+   "x": 355,
+   "y": 405,
+   "w": 290,
+   "h": 105,
+   "testo": "**Variazione**\n$\\Delta x = x_f - x_i$\n$\\Delta x > 0$: $x$ aumenta; $\\Delta x < 0$: diminuisce",
+   "colore": "giallo"
+  },
+  {
+   "id": "n8",
+   "x": 10,
+   "y": 560,
+   "w": 290,
+   "h": 110,
+   "testo": "**Variazione nel tempo**\n$\\text{var}_{x,t} = \\dfrac{\\Delta x}{\\Delta t}$\nunità: quella di $x$ divisa per un tempo",
+   "colore": "giallo"
+  },
+  {
+   "id": "n9",
+   "x": 700,
+   "y": 560,
+   "w": 290,
+   "h": 110,
+   "testo": "**Variazione nello spazio**\n$\\text{var}_{x,s} = \\dfrac{\\Delta x}{\\Delta s}$\nunità: quella di $x$ divisa per una lunghezza",
+   "colore": "giallo"
+  }
+ ],
+ "frecce": [
+  {
+   "id": "f1",
+   "da": "n2",
+   "a": "n3",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f2",
+   "da": "n4",
+   "a": "n5",
+   "tipo": "doppia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f3",
+   "da": "n7",
+   "a": "n8",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f4",
+   "da": "n7",
+   "a": "n9",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f5",
+   "da": "n2",
+   "a": "n4",
+   "tipo": "tratteggiata",
+   "colore": "grigio",
+   "testo": "unità"
+  }
+ ],
+ "tratti": []
+}

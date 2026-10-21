@@ -1,0 +1,168 @@
+{
+ "titolo": "La misura",
+ "simboli": [
+  "\\times10^{n}",
+  "10^{-3}",
+  "10^{3}",
+  "\\ell",
+  "\\mu",
+  "\\text{k}",
+  "\\text{M}",
+  "\\text{G}",
+  "\\text{c}",
+  "\\text{m}",
+  "\\text{n}"
+ ],
+ "unita": [
+  "m",
+  "kg",
+  "s",
+  "K",
+  "A",
+  "mol",
+  "cd",
+  "\\text{m}^2",
+  "\\text{m}^3",
+  "\\text{dm}^3",
+  "\\text{cm}^3",
+  "\\ell"
+ ],
+ "nodi": [
+  {
+   "id": "n1",
+   "x": 300,
+   "y": 6,
+   "w": 400,
+   "h": 36,
+   "testo": "La misura",
+   "colore": "azzurro",
+   "stile": "titolo"
+  },
+  {
+   "id": "n2",
+   "x": 10,
+   "y": 52,
+   "w": 290,
+   "h": 75,
+   "testo": "**Misurare**\nconfrontare una grandezza con un'unità di misura: risultato = numero + unità",
+   "colore": "grigio"
+  },
+  {
+   "id": "n3",
+   "x": 10,
+   "y": 170,
+   "w": 290,
+   "h": 205,
+   "testo": "**Sistema Internazionale (SI)**\n7 grandezze fondamentali:\nlunghezza — metro (m)\nmassa — chilogrammo (kg)\ntempo — secondo (s)\ntemperatura — kelvin (K)\ncorrente elettrica — ampere (A)\nquantità di sostanza — mole (mol)\nintensità luminosa — candela (cd)",
+   "colore": "azzurro"
+  },
+  {
+   "id": "n4",
+   "x": 10,
+   "y": 425,
+   "w": 290,
+   "h": 105,
+   "testo": "**Grandezze derivate**\nsi ottengono dalle fondamentali con le formule\narea: $\\text m^2$, volume: $\\text m^3$\n$1\\ \\ell = 1\\ \\text{dm}^3$",
+   "colore": "verde"
+  },
+  {
+   "id": "n5",
+   "x": 355,
+   "y": 170,
+   "w": 290,
+   "h": 95,
+   "testo": "**Prefissi**\nG $10^{9}$ · M $10^{6}$ · k $10^{3}$ · h $10^{2}$ · da $10^{1}$\nd $10^{-1}$ · c $10^{-2}$ · m $10^{-3}$ · μ $10^{-6}$ · n $10^{-9}$",
+   "colore": "giallo"
+  },
+  {
+   "id": "n6",
+   "x": 355,
+   "y": 320,
+   "w": 290,
+   "h": 175,
+   "testo": "**Convertire**\nda un prefisso $10^{n}$ a uno $10^{m}$: fattore $10^{n-m}$ (conta i salti sulla retta dei prefissi)\naree: esponente $\\times 2$\n$1\\ \\text m^2 = 10^{4}\\ \\text{cm}^2$\nvolumi: esponente $\\times 3$\n$1\\ \\text m^3 = 10^{6}\\ \\text{cm}^3$",
+   "colore": "arancio"
+  },
+  {
+   "id": "n7",
+   "x": 700,
+   "y": 52,
+   "w": 290,
+   "h": 135,
+   "testo": "**Notazione scientifica**\n$a\\times10^{n}$ con $1 \\le a < 10$\n$n > 0$: numero grande, $n < 0$: numero piccolo\n$0{,}00052 = 5{,}2\\times10^{-4}$\ncalcolatrice: 5.2E-4",
+   "colore": "viola"
+  },
+  {
+   "id": "n8",
+   "x": 700,
+   "y": 240,
+   "w": 290,
+   "h": 140,
+   "testo": "**Operazioni**\n$(a\\times10^{n})\\cdot(b\\times10^{m}) = a b\\times10^{n+m}$\n$\\dfrac{a\\times10^{n}}{b\\times10^{m}} = \\dfrac{a}{b}\\times10^{n-m}$\nsomma: prima lo stesso esponente, poi $(a \\pm b)\\times10^{n}$",
+   "colore": "viola"
+  },
+  {
+   "id": "n9",
+   "x": 700,
+   "y": 430,
+   "w": 290,
+   "h": 85,
+   "testo": "**Il tempo** (non decimale)\n$1\\ \\text h = 60\\ \\text{min} = 3600\\ \\text s$\n1 giorno $= 86\\,400\\ \\text s$",
+   "colore": "grigio"
+  }
+ ],
+ "frecce": [
+  {
+   "id": "f1",
+   "da": "n2",
+   "a": "n3",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f2",
+   "da": "n3",
+   "a": "n4",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f3",
+   "da": "n7",
+   "a": "n8",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f4",
+   "da": "n5",
+   "a": "n6",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f5",
+   "da": "n3",
+   "a": "n5",
+   "tipo": "tratteggiata",
+   "colore": "grigio",
+   "testo": "multipli"
+  },
+  {
+   "id": "f6",
+   "da": "n4",
+   "a": "n6",
+   "tipo": "tratteggiata",
+   "colore": "grigio",
+   "testo": "aree e volumi"
+  },
+  {
+   "id": "f7",
+   "da": "n5",
+   "a": "n7",
+   "tipo": "tratteggiata",
+   "colore": "grigio"
+  }
+ ],
+ "tratti": []
+}

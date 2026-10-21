@@ -499,6 +499,12 @@ $$1 \ \text ℓ= 1 \ \text{dm}^3.$$
 </div>
 {% include unisci-end.html %}
 
+# Schema riassuntivo
+
+Prima degli esercizi, ecco tutto il capitolo in un colpo d'occhio. Con «Modifica» puoi costruire il tuo schema, partendo da questo o da un foglio bianco: aggiungere riquadri, frecce, colori, formule e scritte a mano.
+
+{% include mappa.html id="misurazione" %}
+
 # Esercizi di riepilogo
 ### Le unità di misura e il Sistema Internazionale
 

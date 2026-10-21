@@ -169,6 +169,12 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       '<button class="cons-b" data-az="foto-invia" hidden>Invia le foto</button><div class="cons-msg cons-fmsg"></div>' +
       '<div class="cons-hint">Inquadra tutto il foglio, con buona luce. Non scrivere il tuo nome sul foglio: mi basta il tuo codice.</div>' +
       '<ul class="cons-inviate"></ul>';
+    // schemi per l'interrogazione
+    h += '<h4>Schemi per l\'interrogazione</h4>' +
+      '<div class="cons-hint" style="margin-top:0">Se puoi portare le mappe all\'interrogazione, mandamele qui. Lo schema che costruisci in fondo a ogni capitolo, prima degli esercizi di riepilogo, si invia con il suo pulsante «📤 Invia al prof». Qui puoi mandarmi anche uno schema fatto a mano o con un altro programma.</div>' +
+      '<label>Argomento dello schema</label><input type="text" class="cons-stitolo" maxlength="120" placeholder="es. La gravitazione">' +
+      '<div style="margin-top:.6rem"><label class="cons-b cons-file">📎 Invia un PDF o una foto<input type="file" accept="application/pdf,image/*" class="cons-sinput"></label></div>' +
+      '<div class="cons-msg cons-smsg"></div><ul class="cons-inviate cons-schemi"></ul>';
     // dubbi
     var sez = sezioneVisibile();
     h += '<h4>Hai un dubbio?</h4>' +
@@ -177,7 +183,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       '<button class="cons-b" data-az="dubbio">Invia il dubbio</button><div class="cons-msg cons-dmsg"></div>' +
       '<div class="cons-miei"></div>';
     panel.innerHTML = h;
-    stato(); mostraDubbi(); mostraAnteprime(); mostraFoto();
+    stato(); mostraDubbi(); mostraAnteprime(); mostraFoto(); mostraSchemi();
   }
 
   // ── foto dei compiti su carta ──
@@ -199,6 +205,38 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
   function caricaFoto() {
     var a = C.accesso(); if (!a) return;
     C.chiama('/mie-foto', { token: a.token }).then(function(j) { mieFoto = j.foto || []; mostraFoto(); }).catch(function() {});
+    C.chiama('/miei-schemi', { token: a.token }).then(function(j) { mieiSchemi = j.schemi || []; mostraSchemi(); }).catch(function() {});
+  }
+  // ── schemi per l'interrogazione ──
+  var mieiSchemi = [];
+  function mostraSchemi() {
+    var ul = panel.querySelector('.cons-schemi'); if (!ul) return;
+    ul.innerHTML = mieiSchemi.length ? '<li><b>Già inviati: ' + mieiSchemi.length + '</b></li>' + mieiSchemi.map(function(f) {
+      var ico = f.tipo === 'mappa' ? '🗺' : f.tipo === 'application/pdf' ? '📄' : '📷';
+      return '<li><span>' + ico + ' ' + esc(f.titolo || CAPITOLI[f.pagina] || 'schema') + ' · ' + quando(f.ts) + '</span><button class="cons-link" data-az="schema-elimina" data-id="' + f.id + '">elimina</button></li>';
+    }).join('') : '';
+  }
+  function leggiFile(file) {
+    return new Promise(function(ok, ko) { var r = new FileReader(); r.onload = function() { ok(r.result); }; r.onerror = function() { ko(new Error('file')); }; r.readAsDataURL(file); });
+  }
+  function inviaSchema(file) {
+    var a = C.accesso(), tit = (panel.querySelector('.cons-stitolo').value || '').trim();
+    if (!tit) { msg('.cons-smsg', 'Scrivi prima l\'argomento dello schema.', 'err'); return; }
+    var pdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+    if (!pdf && !/^image\//.test(file.type) && !/\.(jpe?g|png|heic|webp)$/i.test(file.name)) { msg('.cons-smsg', 'Puoi inviare solo un PDF o una foto.', 'err'); return; }
+    if (pdf && file.size > 1000000) { msg('.cons-smsg', 'Questo PDF è troppo grande (massimo 1 MB): prova a esportarlo più leggero, o mandami una foto.', 'err'); return; }
+    msg('.cons-smsg', 'Invio in corso…', '');
+    (pdf ? leggiFile(file) : riduci(file)).then(function(d) {
+      return C.chiama('/schema', { token: a.token, titolo: tit, pagina: '', tipo: 'file', file: d });
+    }).then(function() {
+      panel.querySelector('.cons-stitolo').value = '';
+      msg('.cons-smsg', '✓ Schema inviato al prof.', 'ok'); caricaFoto();
+    }).catch(function(err) {
+      var t = { troppi: 'Hai già inviato molti schemi oggi: riprova domani.', grande: 'Questo file è troppo grande.', formato: 'Puoi inviare solo un PDF o una foto.' }[err.codice];
+      if (err.status === 404) t = 'Il server non accetta ancora gli schemi: avvisa il prof.';
+      msg('.cons-smsg', t || (err.message === 'immagine' ? 'Non riesco ad aprire questa foto.' : 'Non riesco a inviarlo: controlla la connessione e riprova.'), 'err');
+      if (err.status === 401) { C.salvaAccesso(null); disegna(); }
+    });
   }
   // riduce la foto (lato lungo 1600 px, JPEG) prima di spedirla: ~300 KB invece di diversi MB
   function riduci(file) {
@@ -219,6 +257,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
   }
   panel.addEventListener('change', function(e) {
     if (e.target.matches('.cons-fcompito')) { fotoCompito = e.target.value; mostraFoto(); }
+    if (e.target.matches('.cons-sinput')) { var f0 = e.target.files[0]; e.target.value = ''; if (f0) inviaSchema(f0); }
     if (e.target.matches('.cons-finput')) {
       [].forEach.call(e.target.files, function(f) { if (/^image\//.test(f.type) || /\.(jpe?g|png|heic|webp)$/i.test(f.name)) inAttesa.push({ file: f, url: URL.createObjectURL(f) }); });
       e.target.value = ''; mostraAnteprime(); msg('.cons-fmsg', '', '');
@@ -274,6 +313,9 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       });
     } else if (az === 'foto-togli') {
       var f = inAttesa.splice(+b.dataset.i, 1)[0]; if (f) URL.revokeObjectURL(f.url); mostraAnteprime();
+    } else if (az === 'schema-elimina') {
+      if (!confirm('Eliminare questo schema? Non lo vedrò più.')) return;
+      C.chiama('/schema-elimina', { token: C.accesso().token, id: +b.dataset.id }).then(caricaFoto);
     } else if (az === 'foto-elimina') {
       if (!confirm('Eliminare questa foto? Non la vedrò più.')) return;
       C.chiama('/foto-elimina', { token: C.accesso().token, id: +b.dataset.id }).then(caricaFoto);

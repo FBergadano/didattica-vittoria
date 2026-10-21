@@ -1,0 +1,184 @@
+{
+ "titolo": "L'energia",
+ "simboli": [
+  "L",
+  "F",
+  "\\Delta s",
+  "P",
+  "\\Delta t",
+  "K",
+  "U",
+  "E",
+  "m",
+  "v",
+  "g",
+  "h",
+  "h_i",
+  "v_f",
+  "Q",
+  "\\Delta E",
+  "\\Delta K",
+  "L_{U\\to S}",
+  "L_{S\\to U}"
+ ],
+ "unita": [
+  "J",
+  "W",
+  "N",
+  "m",
+  "s",
+  "kg",
+  "\\text{m/s}",
+  "\\text{m/s}^2",
+  "\\text{J/s}"
+ ],
+ "nodi": [
+  {
+   "id": "n1",
+   "x": 300,
+   "y": 6,
+   "w": 400,
+   "h": 36,
+   "testo": "L'energia",
+   "colore": "azzurro",
+   "stile": "titolo"
+  },
+  {
+   "id": "n2",
+   "x": 330,
+   "y": 50,
+   "w": 340,
+   "h": 62,
+   "testo": "**Energia** — si misura in joule (J)\nnon si crea e non si distrugge: si trasforma",
+   "colore": "azzurro",
+   "stile": "testata"
+  },
+  {
+   "id": "n3",
+   "x": 10,
+   "y": 140,
+   "w": 290,
+   "h": 135,
+   "testo": "**Lavoro** $L$\n$L = F\\cdot\\Delta s$ (forza parallela allo spostamento)\n$L>0$ se concordi, $L<0$ se opposti, $L=0$ se perpendicolari\n$[L] = \\text J = \\text N\\cdot\\text m$",
+   "colore": "viola"
+  },
+  {
+   "id": "n4",
+   "x": 10,
+   "y": 335,
+   "w": 290,
+   "h": 95,
+   "testo": "**Potenza** $P$\n$P = \\dfrac{L}{\\Delta t}$\n$[P] = \\text W = \\text{J/s}$",
+   "colore": "viola"
+  },
+  {
+   "id": "n5",
+   "x": 355,
+   "y": 140,
+   "w": 290,
+   "h": 100,
+   "testo": "**Energia cinetica** $K$\n$K = \\dfrac12\\, m\\, v^2$\nteorema: $L_{tot} = \\Delta K$",
+   "colore": "verde"
+  },
+  {
+   "id": "n6",
+   "x": 355,
+   "y": 300,
+   "w": 290,
+   "h": 110,
+   "testo": "**Energia potenziale gravitazionale** $U$\n$U = m\\,g\\,h$\nquando il corpo sale di $h$ il peso compie $L = -m g h$",
+   "colore": "verde"
+  },
+  {
+   "id": "n7",
+   "x": 355,
+   "y": 600,
+   "w": 290,
+   "h": 95,
+   "testo": "**Calore** $Q$\nl'energia meccanica dissipata (attriti) diventa calore\n$[Q] = \\text J$",
+   "colore": "rosa"
+  },
+  {
+   "id": "n8",
+   "x": 700,
+   "y": 140,
+   "w": 290,
+   "h": 70,
+   "testo": "**Energia meccanica**\n$E = K + U$",
+   "colore": "giallo"
+  },
+  {
+   "id": "n9",
+   "x": 700,
+   "y": 265,
+   "w": 290,
+   "h": 110,
+   "testo": "**Sistema isolato**\n$E$ costante: $K_i + U_i = K_f + U_f$\ncaduta da $h_i$: $v_f = \\sqrt{2\\,g\\,h_i}$",
+   "colore": "giallo"
+  },
+  {
+   "id": "n10",
+   "x": 700,
+   "y": 430,
+   "w": 290,
+   "h": 120,
+   "testo": "**Sistema non isolato**\nscambia lavoro con l'Universo:\n$\\Delta E = L$\n$L = L_{U\\to S} - L_{S\\to U}$",
+   "colore": "arancio"
+  }
+ ],
+ "frecce": [
+  {
+   "id": "f1",
+   "da": "n3",
+   "a": "n4",
+   "tipo": "freccia",
+   "colore": "grigio",
+   "testo": "$\\div\\,\\Delta t$"
+  },
+  {
+   "id": "f2",
+   "da": "n3",
+   "a": "n5",
+   "tipo": "freccia",
+   "colore": "grigio",
+   "testo": "$L = \\Delta K$"
+  },
+  {
+   "id": "f3",
+   "da": "n5",
+   "a": "n8",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f4",
+   "da": "n6",
+   "a": "n8",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f5",
+   "da": "n8",
+   "a": "n9",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f6",
+   "da": "n9",
+   "a": "n10",
+   "tipo": "tratteggiata",
+   "colore": "grigio"
+  },
+  {
+   "id": "f7",
+   "da": "n10",
+   "a": "n7",
+   "tipo": "tratteggiata",
+   "colore": "grigio",
+   "testo": "dissipazione"
+  }
+ ],
+ "tratti": []
+}

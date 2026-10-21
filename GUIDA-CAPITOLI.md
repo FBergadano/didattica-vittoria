@@ -31,6 +31,12 @@ strumenti (box, esercizi, widget) vedi `CLAUDE.md`.
 4. **Chiusura.**
    - **In sintesi**: le formule e le idee chiave in una pagina.
    - **Sai fare?**: una lista di abilità da spuntare.
+   - **Schema riassuntivo** (`# Schema riassuntivo` + `{% include mappa.html id="…" %}`),
+     subito prima degli esercizi di riepilogo: tutto il capitolo in un foglio,
+     breve e schematico ma completo (grandezze, formule, unità, legami fra i
+     concetti, qualche disegnino). Lo schema del prof sta in `_data/mappe/<id>.json`
+     (generato da `strumenti/mappe_gen.py`); lo studente lo modifica o ne fa
+     uno suo, lo scarica in PDF e lo invia al prof.
    - **Esercizi di riepilogo**, raggruppati per argomento con titoletti `###`,
      nello stesso ordine del capitolo; dentro ogni gruppo dal più facile (★) al
      più difficile (★★★). Ogni gruppo si chiude con esercizi non banali.
@@ -113,6 +119,7 @@ nel sito è leggibile da chiunque. Per la chat vedi
 - [ ] Obiettivi in apertura, "In sintesi" e "Sai fare?" in chiusura.
 - [ ] Ogni concetto ha almeno una domanda di produzione.
 - [ ] Ogni formula nuova ha unità di misura e formula invertita.
+- [ ] Schema riassuntivo prima degli esercizi di riepilogo.
 - [ ] Esercizi di riepilogo raggruppati per argomento e ordinati per difficoltà.
 - [ ] Ogni esercizio numerico ha la soluzione; i risultati sono ricontrollati.
 - [ ] Correttezza fisica: nessuna semplificazione che diventi un'affermazione falsa.

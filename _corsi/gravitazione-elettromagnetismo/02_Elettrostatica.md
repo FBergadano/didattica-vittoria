@@ -1142,7 +1142,7 @@ Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta con le
 # Il Campo Elettrico
 
 {% include margin-note.html testo="Perché ci serve il campo elettrico" %}
-La legge di Coulomb ci dice ***quanto*** due cariche si attraggano. Ma, esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, nel 1831, per spiegare i suoi esperimenti sull'elettromagnetismo; il campo gravitazionale arrivò molto tempo più tardi, con Einstein, nella teoria della relatività generale del 1915).
+La legge di Coulomb ci dice ***quanto*** due cariche si attraggano. Ma, esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, nel 1831, per spiegare i suoi esperimenti sull'elettromagnetismo; il campo gravitazionale arrivò molto tempo più tardi, con Einstein, nella teoria della Relatività Generale del 1915).
 {% include margin-note-end.html %}
 
 
@@ -2388,6 +2388,12 @@ Un protone e un elettrone, partendo da fermi, vengono accelerati dalla stessa di
 {% include scorri-end.html %}
 {% include box-end.html %}
 
+
+# Schema riassuntivo
+
+Prima degli esercizi, ecco tutto il capitolo in un colpo d'occhio. Con «Modifica» puoi costruire il tuo schema, partendo da questo o da un foglio bianco: aggiungere riquadri, frecce, colori, formule e scritte a mano.
+
+{% include mappa.html id="elettrostatica" %}
 
 # Esercizi di riepilogo
 

@@ -1,0 +1,179 @@
+{
+ "titolo": "Calore e temperatura",
+ "simboli": [
+  "Q",
+  "T",
+  "T_i",
+  "T_f",
+  "\\Delta T",
+  "c",
+  "m",
+  "\\alpha",
+  "L_i",
+  "\\Delta L",
+  "P",
+  "\\Delta t",
+  "k",
+  "A",
+  "\\Delta x",
+  "^\\circ\\text{C}"
+ ],
+ "unita": [
+  "J",
+  "K",
+  "W",
+  "kg",
+  "m",
+  "\\text{m}^2",
+  "\\text{J/(kg K)}",
+  "\\text{K}^{-1}"
+ ],
+ "nodi": [
+  {
+   "id": "n1",
+   "x": 300,
+   "y": 6,
+   "w": 400,
+   "h": 36,
+   "testo": "Calore e temperatura",
+   "colore": "azzurro",
+   "stile": "titolo"
+  },
+  {
+   "id": "n2",
+   "x": 10,
+   "y": 52,
+   "w": 290,
+   "h": 120,
+   "testo": "**Calore** $Q$, $[Q] = \\text J$\nenergia che passa da un corpo a un altro\nva dal corpo più caldo al più freddo, fino all'**equilibrio termico**",
+   "colore": "rosa"
+  },
+  {
+   "id": "n3",
+   "x": 10,
+   "y": 225,
+   "w": 290,
+   "h": 100,
+   "testo": "**Segno del calore**\n$Q > 0$: entra nel sistema\n$Q < 0$: esce dal sistema\n$Q = 0$: nessuno scambio",
+   "colore": "rosa"
+  },
+  {
+   "id": "n4",
+   "x": 355,
+   "y": 52,
+   "w": 290,
+   "h": 120,
+   "testo": "**Temperatura** $T$, $[T] = \\text K$\n$T^{\\text K} = T^{^\\circ\\text C} + 273{,}15$\nmisura l'**agitazione termica** delle particelle",
+   "colore": "arancio"
+  },
+  {
+   "id": "n5",
+   "x": 355,
+   "y": 225,
+   "w": 290,
+   "h": 85,
+   "testo": "**Dilatazione termica**\n$\\Delta L = \\alpha\\,L_i\\,\\Delta T$\n$[\\alpha] = 1/\\text K$",
+   "colore": "arancio"
+  },
+  {
+   "id": "n6",
+   "x": 700,
+   "y": 52,
+   "w": 290,
+   "h": 160,
+   "testo": "**Calorimetria**\n$Q = c\\,m\\,\\Delta T$\n$c$ = calore specifico: il calore che serve per scaldare di 1 K un kg di materiale\n$[c] = \\text J/(\\text{kg}\\cdot\\text K)$",
+   "colore": "viola"
+  },
+  {
+   "id": "n7",
+   "x": 355,
+   "y": 385,
+   "w": 290,
+   "h": 75,
+   "testo": "**Potenza termica**\n$P = \\dfrac{Q}{\\Delta t}$, $[P] = \\text W$",
+   "colore": "viola"
+  },
+  {
+   "id": "n8",
+   "x": 10,
+   "y": 540,
+   "w": 290,
+   "h": 110,
+   "testo": "**Conduzione** (nei solidi)\nlegge di Fourier:\n$P = k\\,A\\,\\dfrac{\\Delta T}{\\Delta x}$",
+   "colore": "azzurro"
+  },
+  {
+   "id": "n9",
+   "x": 355,
+   "y": 540,
+   "w": 290,
+   "h": 110,
+   "testo": "**Convezione** (liquidi e gas)\nspostamento di materia dovuto a una differenza di temperatura",
+   "colore": "azzurro"
+  },
+  {
+   "id": "n10",
+   "x": 700,
+   "y": 540,
+   "w": 290,
+   "h": 110,
+   "testo": "**Irraggiamento**\nemissione di radiazione elettromagnetica: funziona anche nel vuoto",
+   "colore": "azzurro"
+  }
+ ],
+ "frecce": [
+  {
+   "id": "f1",
+   "da": "n2",
+   "a": "n3",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f2",
+   "da": "n4",
+   "a": "n5",
+   "tipo": "freccia",
+   "colore": "grigio",
+   "testo": "$\\Delta T$"
+  },
+  {
+   "id": "f3",
+   "da": "n4",
+   "a": "n6",
+   "tipo": "freccia",
+   "colore": "grigio",
+   "testo": "$\\Delta T$"
+  },
+  {
+   "id": "f4",
+   "da": "n7",
+   "a": "n8",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f5",
+   "da": "n7",
+   "a": "n9",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f6",
+   "da": "n7",
+   "a": "n10",
+   "tipo": "freccia",
+   "colore": "grigio"
+  },
+  {
+   "id": "f7",
+   "da": "n3",
+   "a": "n7",
+   "tipo": "tratteggiata",
+   "colore": "grigio",
+   "testo": "come si trasmette"
+  }
+ ],
+ "tratti": []
+}
