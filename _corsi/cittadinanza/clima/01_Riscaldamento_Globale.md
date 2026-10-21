@@ -2,9 +2,10 @@
 layout: capitolo
 title: "Il Riscaldamento Globale"
 corso: "clima"
-corso_titolo: "Lezioni sul Clima"
+corso_titolo: "Il Riscaldamento Globale"
 materia: cittadinanza
 numero: 1
+unico: true
 ---
 
 <cit autore="Eunice Foote, 1856">

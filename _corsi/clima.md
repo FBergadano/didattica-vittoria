@@ -1,14 +1,15 @@
 ---
 layout: corso
-title: "Lezioni sul Clima"
+title: "Il Riscaldamento Globale"
 slug: clima
 materia: cittadinanza
 ordine: 1
+diretto: true
 ---
 
 <header class="course-hero">
   <span class="course-tag">Cittadinanza</span>
-  <h1 class="course-title">Lezioni sul Clima</h1>
+  <h1 class="course-title">Il Riscaldamento Globale</h1>
   <p class="course-desc">
     Il riscaldamento globale raccontato dagli studenti: la fisica dell'effetto
     serra, le conseguenze, la storia della scoperta, i rifugiati climatici e

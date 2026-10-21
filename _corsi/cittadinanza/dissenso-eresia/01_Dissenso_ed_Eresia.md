@@ -10,7 +10,7 @@ unico: true
 
 “Dissentire”. Dis-sentire. Vuol dire “sentire l'altro”: sentire il diverso, il nuovo. Ed è un sentire: un fatto corporeo, che sta sulle mani, negli occhi, nelle orecchie, dentro ai sensi.
 
-Ma in realtà quello di cui parleremo non è solo questo, ma qualcosa di più, perché non basta sentire. Parleremo di scelta: come si possa *scegliere* di dissentire. Scelta — è una parola connessa al greco *hairéo*, cioè “prendo”, o ancora meglio *hairesis*, ovvero “cosa presa”, quindi “scelta”. E, da *hairesis*, “eresia”.
+Ma in realtà quello di cui parleremo non è solo questo, ma qualcosa di più, perché non basta sentire. C'è anche bisogno di ***scegliere*** di sentire. E allora parleremo di come si possa *scegliere* di dissentire. *Scelta* — è una parola connessa al greco *hairéo*, cioè “prendo”, o ancora meglio *hairesis*, ovvero “cosa presa”, quindi “scelta”. E, da *hairesis*, “eresia”.
 
 Guarderemo alle storie di uomini e donne che hanno scelto — con un coraggio immenso — di sentire qualcosa di nuovo, rischiando tutto, andando incontro a censure, torture, massacri.
 
@@ -50,9 +50,7 @@ Quando i coloni nord-americani dovettero dichiarare la propria indipendenza, fon
 <p class="tf-fonte">— Declaration of Independence (Dichiarazione d'Indipendenza degli Stati Uniti), 1776</p>
 </div>
 
-È interessante che la prima dichiarazione sui diritti universali dell'uomo nasca da una rivoluzione, cioè da un sentirsi diversi: dal **dissenso**. 
-
-Per la prima volta nella Storia, una frase (quella che avete letto sopra) risuonò in tutto il mondo. La sua eco arrivò in Francia e scatenò una nuova rivoluzione: la Rivoluzione Francese (1789-1799). Anche in questa rivoluzione, si afferma qualcosa di universale:
+È interessante che la prima dichiarazione sui diritti universali dell'uomo nasca da una rivoluzione, cioè da un sentirsi diversi: dal **dissenso**. Questa piccola dichiarazione cambia tutto e (per la prima volta nella Storia) delle parole scritte fanno il giro di tutto il mondo. La loro eco arrivò in Francia e scatenò una nuova rivoluzione: la Rivoluzione Francese (1789-1799). Anche in questa rivoluzione si afferma qualcosa di universale:
 
 <div class="testo-fronte">
 <div class="tf-col tf-orig" lang="fr"><span class="tf-lingua">Originale (francese)</span>

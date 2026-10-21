@@ -24,7 +24,7 @@ per tenerli ordinati nel finder — l'ordine vero (pagina del corso, link
 | `termodinamica/` | Termodinamica | fisica |
 | `gravitazione-elettromagnetismo/` | La Gravitazione e l'Elettromagnetismo | fisica |
 | `cittadinanza/` | Cittadinanza e Prospettive Globali | cittadinanza |
-| `clima/` | Lezioni sul Clima | cittadinanza |
+| `cittadinanza/clima/` (pagina `clima.md`) | Il Riscaldamento Globale | cittadinanza |
 | `cittadinanza/dissenso-eresia/` | Dissenso ed Eresia | cittadinanza |
 
 Un argomento con un solo capitolo può saltare il menù dei capitoli: con
@@ -317,6 +317,9 @@ Soluzione qui.
 
 # Video YouTube (solo l'ID, non l'URL completo)
 {% include video.html id="ID_YOUTUBE" didascalia="Descrizione" %}
+
+# Video su siti che non si lasciano incorporare (BBC, ecc.): anteprima cliccabile, QR in stampa
+{% include video-link.html url="https://..." img="/corsi/immagini/foo.webp" titolo="..." fonte="BBC Four" durata="3 min" %}
 
 # Compiti
 {% include homework.html testo="Titolo" descrizione="..." link="https://..." %}

@@ -229,6 +229,15 @@ Quando molti atomi si uniscono per formare un corpo, le cariche si comportano in
 I metalli sono in genere ottimi conduttori (argento, rame e oro fra i migliori); vetro, gomma, plastica e aria secca sono invece buoni isolanti. È per questo che i fili elettrici sono fatti di rame e rivestiti di plastica. Il miglior conduttore in assoluto è l'oro; il miglior isolante è il teflon (il vuoto è un isolante anche migliore del teflon, però non è a tutti gli effetti “un materiale”).
 {% include margin-note-end.html %}
 
+{% include margin-note.html testo="L'esperimento di Stephen Gray" %}
+Nel 1730 Stephen Gray mostrò la differenza fra conduttori e isolanti con l'esperimento del "ragazzo volante": un ragazzo appeso al soffitto con corde di seta veniva caricato avvicinandogli ai piedi un tubo di vetro strofinato, e subito le sue mani attiravano pezzetti di carta. La carica aveva attraversato tutto il corpo del ragazzo, che quindi si comporta da conduttore; le corde di seta, invece, sono isolanti, e le impedivano di disperdersi nel soffitto. Con dei fili metallici l'esperimento non avrebbe funzionato. Nel video (in inglese) il fisico Jim Al-Khalili lo ripete.
+{% include margin-note-end.html %}
+
+{% include video-link.html url="https://www.bbc.co.uk/programmes/p00ksnyn"
+   img="/corsi/immagini/stephen-gray-hanging-boy-bbc.webp"
+   titolo="Il ragazzo volante di Stephen Gray"
+   fonte="BBC Four, Shock and Awe" durata="3 min" %}
+
 Osserva l'animazione seguente: nel conduttore (ferro) alcuni elettroni sono liberi di muoversi fra i nuclei; nell'isolante (legno), invece, ogni elettrone orbita sempre e soltanto attorno al proprio nucleo. Poi trascina la carica vicino ai due materiali e confronta che cosa succede.
 
 {% include lab-virtuali/conduttore-isolante-lab.html %}

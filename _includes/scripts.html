@@ -127,6 +127,19 @@ function exportPDF() {
     inserted.push(div);
   });
 
+  // video esterni (video-link.html): stesso QR, con l'indirizzo della pagina
+  document.querySelectorAll('.video-link[data-url]').forEach(function(a) {
+    var url = a.getAttribute('data-url');
+    var div = document.createElement('div');
+    div.className = 'video-qr-print';
+    div.innerHTML =
+      '<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(url) + '" width="200" height="200" alt="QR code video">' +
+      '<p class="video-caption">' + (a.getAttribute('data-titolo') || '') + '</p>' +
+      '<p class="video-qr-url">' + url + '</p>';
+    a.parentNode.insertBefore(div, a.nextSibling);
+    inserted.push(div);
+  });
+
   window.addEventListener('afterprint', function cleanup() {
     inserted.forEach(function(d) { d.remove(); });
     window.removeEventListener('afterprint', cleanup);
@@ -270,6 +283,7 @@ function toggleFont() {
   })();
   window.addEventListener('resize', later);
   document.addEventListener('toggle', later, true); // spoiler e soluzioni aperti
+  document.addEventListener('click', later, true);  // slide dei caroselli, schede: formule prima nascoste
 })();
 
 // ── Stampa: carica subito le immagini "pigre" non ancora arrivate ────

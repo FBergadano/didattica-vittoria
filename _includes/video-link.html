@@ -1,0 +1,28 @@
+{% comment %}
+Video su un sito che non si lascia incorporare (BBC, ecc.): anteprima
+cliccabile che apre il video in una nuova scheda. In stampa diventa un
+QR code (vedi exportPDF in scripts.html).
+
+  url        — indirizzo della pagina del video (obbligatorio)
+  img        — anteprima, dalla root del sito (es. "/corsi/immagini/foo.webp")
+  titolo     — titolo del video
+  fonte      — chi l'ha prodotto (es. "BBC Four")
+  durata     — es. "3 min"
+  didascalia — testo sotto il riquadro (opzionale)
+
+Esempio:
+{% include video-link.html url="https://www.bbc.co.uk/programmes/p00ksnyn"
+   img="/corsi/immagini/stephen-gray-hanging-boy-bbc.webp"
+   titolo="Il ragazzo appeso di Stephen Gray" fonte="BBC Four" durata="3 min" %}
+{% endcomment %}
+<a class="video-link" href="{{ include.url }}" target="_blank" rel="noopener" data-url="{{ include.url }}" data-titolo="{{ include.titolo | strip_html | escape }}">
+  <span class="video-link-thumb">
+    {% if include.img %}<img src="{{ include.img | relative_url }}" alt="" loading="lazy">{% endif %}
+    <span class="video-link-play" aria-hidden="true"></span>
+  </span>
+  <span class="video-link-info">
+    <span class="video-link-title">{{ include.titolo }}</span>
+    <span class="video-link-meta">{% if include.fonte %}{{ include.fonte }}{% endif %}{% if include.fonte and include.durata %} · {% endif %}{% if include.durata %}{{ include.durata }}{% endif %} · si apre in una nuova scheda ↗</span>
+  </span>
+</a>
+{% if include.didascalia %}<p class="video-caption">{{ include.didascalia }}</p>{% endif %}

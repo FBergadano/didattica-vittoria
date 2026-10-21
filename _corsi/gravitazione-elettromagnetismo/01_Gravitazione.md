@@ -93,7 +93,7 @@ Nella realtà la rotazione era così minuscola che Cavendish dovette leggerla co
 
 {% capture _r %}Raddoppiando una delle due masse, la forza <strong>raddoppia</strong>. Raddoppiando la distanza, invece, la forza non si dimezza: diventa <strong>un quarto</strong>, perché dipende dal quadrato della distanza. Se avevi previsto "si dimezza", non preoccuparti: è la previsione più comune, ed è proprio quella che l'esperimento smentisce.{% endcapture %}
 {% include risposta-aperta.html id="ra-prev-cavendish" tipo="prevedi"
-   domanda="Prima di usare l'animazione: secondo te, cosa succede alla forza fra le due sfere se raddoppi la massa di una delle due? E se invece raddoppi la distanza fra loro?"
+   domanda="Prima di usare l'animazione: secondo te, cosa succede alla forza fra le due sfere se raddoppi la massa di una delle due? E se la raddoppi entrambe? E se invece raddoppi la distanza fra loro?"
    risposta=_r %}
 
 Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
