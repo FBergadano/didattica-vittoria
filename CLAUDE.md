@@ -258,6 +258,14 @@ sola fila di pallini che scorre tutte le domande.
 - Verifica: chip verde/rosso + coriandoli se tutto giusto
 - Nascosto in stampa PDF
 
+### Tocca il più piccolo e il più grande (tabella di misurazioni)
+
+```liquid
+{% include misure-clic.html id="mc-matita" valori="12,3|12,5|12,4" unita="cm" simbolo="\ell" %}
+```
+
+- tabella delle misurazioni: lo studente tocca prima il valore più piccolo, poi il più grande (per la semidispersione); gli sbagli sono segnalati e contano per pallini e fuochi
+
 ### Scrivi e confronta (definizioni)
 
 ```liquid

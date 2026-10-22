@@ -2155,6 +2155,23 @@ cit em, cit i { font-style: normal; }
   .unisci-parte { display: block; margin-bottom: 1rem; }
 }
 .iex-choices { display: flex; flex-direction: column; gap: .5rem; margin: .7rem 0; }
+// tabella delle misurazioni: tocca il più piccolo e il più grande (misure-clic.html)
+.mclic-widget { margin: .6rem 0; overflow-x: auto; }
+.mclic-tab { border-collapse: collapse; font-size: .92rem; margin: 0 auto; }
+.mclic-tab th, .mclic-tab td { border: 1px solid #cbd5e1; padding: .3rem .5rem; text-align: center; }
+.mclic-tab th { background: #f1f5f9; font-weight: 600; }
+.mclic-v { font: inherit; border: 1.5px solid #67e8f9; background: #fff; border-radius: 6px; padding: .2rem .55rem; cursor: pointer; min-width: 3.4em; }
+.mclic-v:hover:not(:disabled) { background: #cffafe; }
+.mclic-v:disabled { cursor: default; color: inherit; }
+.mclic-v.min { background: #dbeafe; border-color: #2563eb; }
+.mclic-v.max { background: #fee2e2; border-color: #dc2626; }
+.mclic-v.min::after { content: " min"; font-size: .7em; color: #2563eb; }
+.mclic-v.max::after { content: " max"; font-size: .7em; color: #dc2626; }
+.mclic-v.no { animation: mclic-no .5s; border-color: #dc2626; }
+@keyframes mclic-no { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.mclic-msg { text-align: center; font-size: .88rem; margin: .5rem 0 0; }
+.mclic-msg.ok { color: #0f766e; }
+.mclic-msg.err { color: #dc2626; }
 .iex-choice-btn {
   text-align: left; background: #fff; border: 1.5px solid #67e8f9; border-radius: 6px;
   padding: .5rem .8rem; font-family: $font-body; font-size: .93rem; color: $text-primary;

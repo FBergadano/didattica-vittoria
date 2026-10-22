@@ -34,11 +34,16 @@ Scopri perché nessuna misura è perfetta e come si dichiara quanto è precisa: 
 
 ### Errore e incertezza: una distinzione importante
 
-Abbiamo detto che misurare significa associare un numero a una caratteristica di un oggetto. Eppure sorgono subito alcuni problemi.
-- **Problema 1: l'instabilità di una misurazione.** Quasi sempre <u markdown="span">gli oggetti *cambiano* continuamente</u>, anche se non ce ne accorgiamo. E quindi in realtà quello che abbiamo misurato in un certo momento potrebbe essere molto diverso da ciò che misureremmo in un momento successivo.
-- **Problema 2: le imprecisioni.** Se anche un oggetto possedesse una caratteristica che non cambia mai, come faremmo a misurarla perfettamente? <u markdown="span">Ogni strumento che abbiamo è **imperfetto**</u>: non si può mai ottenere una misurazione infinitamente precisa. Inoltre, per compiere una misurazione dobbiamo basarci **sui nostri sensi** (vista, udito, ecc.), che sono limitati. Quindi anche noi che compiamo la misurazione siamo imperfetti e quindi introduciamo errori.
+Abbiamo detto che misurare significa associare un numero a una caratteristica di un oggetto. Chiameremo questa caratteristica il <definizione>misurando</definizione>.
+{% include box-def.html testo="Misurando e Misura" %}
+Il **misurando** è la grandezza che si vuole misurare: l'altezza di un tavolo, la massa di un sacco di riso, il volume di una bottiglietta d'acqua, etc.  
+{% include box-end.html %} 
 
-Considera l'esempio di questo cactus. La bilancia segna che la massa del cactus corrisponde a 3 421 g. Tuttavia, il vero valore della massa del cactus è leggermente diverso e corrisponde, inizialmente, a 3 421,2 g. Quella leggera differenza è così piccola che la bilancia non è in grado di rilevarla.  
+Eppure, quando si vuole misurare qualcosa, sorgono subito alcuni problemi. Li illustriamo con i seguenti esempi.
+<!-- - **Problema 1: l'instabilità di una misurazione.** Quasi sempre <u markdown="span">gli oggetti *cambiano* continuamente</u>, anche se non ce ne accorgiamo. E quindi in realtà quello che abbiamo misurato in un certo momento potrebbe essere molto diverso da ciò che misureremmo in un momento successivo.
+- **Problema 2: le imprecisioni.** Se anche un oggetto possedesse una caratteristica che non cambia mai, come faremmo a misurarla perfettamente? <u markdown="span">Ogni strumento che abbiamo è **imperfetto**</u>: non si può mai ottenere una misurazione infinitamente precisa. Inoltre, per compiere una misurazione dobbiamo basarci **sui nostri sensi** (vista, udito, ecc.), che sono limitati. Quindi anche noi che compiamo la misurazione siamo imperfetti e quindi introduciamo errori. -->
+
+Considera questo cactus, di cui ci domandiamo la massa. La bilancia segna che la massa del cactus corrisponde a 3 421 g. Tuttavia, il vero valore della massa del cactus è leggermente diverso e corrisponde, inizialmente, a 3 421,2 g. Quella leggera differenza è così piccola che la bilancia non è in grado di rilevarla.  
 Inoltre, quando arriva il Sole, l'acqua contenuta all'interno del cactus evapora parzialmente. Quindi la massa del cactus diminuisce, ma di così poco che la bilancia non è in grado di farlo vedere.  
 È insomma evidente che non si possa misurare perfettamente la massa di un cactus, né di qualsiasi altra cosa.
 
@@ -48,8 +53,8 @@ Oppure considerate il seguente esempio, in cui un'ape vola sopra un righello. Pr
 
 {% include lab-virtuali/ape-righello-lab.html %}
 
-Tutte queste considerazioni ci portano a realizzare che in Fisica nessuna misurazione può essere perfetta: esiste sempre una **incertezza** intrinseca nel processo di misura. Si preferisce parlare di *incertezza*, e non di “errore”, perché --- non potendo mai conoscere il valore esatto di una grandezza fisica --- <u>non possiamo nemmeno sapere di quanto ci siamo sbagliati</u>.  
-È perciò importante, quando si fornisce il valore di una misurazione, dichiarare anche quanto pensiamo che il valore sia vicino a quello reale, anche se non ne saremo mai sicuri. In questa attività scopriremo come fare a fornire questo tipo di informazione.
+Tutte queste considerazioni ci portano a realizzare che in Fisica <u>nessuna misurazione può essere perfetta</u>: esiste sempre una <definizione>incertezza</definizione> intrinseca nel processo di misura. Si preferisce parlare di *“incertezza”*, e non di “errore”, perché --- non potendo mai conoscere il valore esatto di una grandezza fisica --- non possiamo nemmeno sapere di quanto ci siamo sbagliati (né *se* ci siamo sbagliati).  
+È perciò importante, quando si fornisce il valore di una misurazione, dichiarare anche quanto pensiamo che il valore sia vicino a quello reale. Questa stima sarà **un numero**, ed è ciò a cui ci riferiremo con il termine “incertezza”. In questa attività scopriremo come fare a fornire questo tipo di informazione.
 
 {% include box-imp.html testo="Incertezza di misura" %}
 L'**incertezza di misura** quantifica l'imprecisione della misurazione di una grandezza fisica. Una misura senza incertezza dichiarata è una misura incompleta.
@@ -57,18 +62,11 @@ L'**incertezza di misura** quantifica l'imprecisione della misurazione di una gr
 
 ### Le fonti di incertezza
 
-Prima di elencarle, diamo un nome a ciò che vogliamo misurare.
-
-{% include box-def.html testo="Misurando" %}
-Il <definizione>misurando</definizione> è la grandezza che si vuole misurare: la massa del cactus, la lunghezza dell'ape, il volume dell'acqua in un cilindro graduato.
-{% include box-end.html %}
-
 Ogni misurazione è affetta da più sorgenti di incertezza. Le principali sono:
 
 1. **Risoluzione dello strumento** — nessuno strumento è infinitamente preciso: un righello normalmente ha le tacche spaziate di un millimetro, e quindi non è in grado di rilevare differenze dell'ordine, ad esempio, del micrometro. Allo stesso modo, una bilancia digitale da cucina normalmente ha le cifre fino al grammo, quindi non è in grado di rilevare una differenza di un decimo di grammo.
 2. **Variabilità del misurando** — a volte è la grandezza stessa a cambiare mentre la misuriamo, e allora misurazioni ripetute danno valori diversi. È il caso del cactus: mentre l'acqua al suo interno evapora, la sua massa diminuisce, e pesandolo più volte nel corso della giornata otterremmo valori via via più piccoli.
-3. **Condizioni ambientali** — temperatura, vibrazioni, correnti d'aria possono influenzare il risultato.
-4. **Errore umano** — anche chi misura sbaglia: può leggere male una tacca, guardare la scala di sbieco invece che di fronte, far partire il cronometro un attimo in ritardo. È quello che succede con l'ape sul righello: lo strumento funziona benissimo, ma noi facciamo fatica a leggerlo.
+3. **Errore umano** — anche chi misura sbaglia. Ad esempio, quando si deve misurare il tempo di un corridore nei 100 m, il tempo è spesso misurato da un arbitro che avvia e ferma il cronometro. Ma l'arbitro avrà dei tempi di reazione e quindi potrebbe essere leggermente in ritardo o leggermente in anticipo, alterando quindi --- anche se di poco --- il valore della misurazione. È quello che succede con l'ape sul righello: lo strumento funziona benissimo, ma noi facciamo fatica a leggerlo.
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qFonti %}[
@@ -102,7 +100,7 @@ L'incertezza strumentale, che indichiamo nelle nostre formule con i.s., dipende 
 
 {% include lab-virtuali/esempio-calibro-lab.html %}
 
-{% include esercizi/prova-incertezza-strumentale.html %}
+{% include esercizi/prova-strumenti.html %}
 
 ### Semidispersione e la notazione $\bar x \pm \Delta_x$
 
@@ -113,8 +111,35 @@ Quando si eseguono più misurazioni della stessa grandezza si ottengono in gener
      formula="\bar x = \dfrac{x_1 + x_2 + \cdots + x_N}{\, N \,}"
      frammenti="\bar x|x_1 + x_2 + \cdots + x_N|\, N \,"
      etichette="valore medio|somma di tutte le misurazioni|numero di misurazioni"
-     posizioni="basso|alto|basso"
+     posizioni="alto|alto|basso"
   %}
+
+{% include box-ex.html testo="Prova tu!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+Misuri cinque volte il periodo di oscillazione di un pendolo.
+
+| Misurazione | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|
+| $T$ (s) | 2,10 | 2,14 | 2,08 | 2,12 | 2,11 |
+
+Quanto vale il valore medio $\bar T$?
+
+{% include num.html id="numMediaPendolo" valore="2.11" unit="s" tol="0.2" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Misuri quattro volte la temperatura di una stanza, in punti diversi.
+
+| Misurazione | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| $T$ (°C) | 21,4 | 21,8 | 21,6 | 21,2 |
+
+Quanto vale la temperatura media $\bar T$?
+
+{% include num.html id="numMediaStanza" valore="21.5" unit="°C" tol="0.1" %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
 
 Dopodiché misuriamo anche l'incertezza della misurazione tramite la <definizione>semidispersione</definizione>, che corrisponde alla metà della differenza tra il valore massimo e quello minimo, e si indica con $s_x$:
 
@@ -126,13 +151,42 @@ Dopodiché misuriamo anche l'incertezza della misurazione tramite la <definizion
      posizioni="basso|alto|alto"
   %}
 
-La semidispersione dice quanto sono "sparpagliate" le misurazioni: più sono lontane l'una dall'altra, più è grande. Ad esempio, se cronometrando quattro volte la caduta di una pallina ottengo $1{,}32\ \text s$, $1{,}28\ \text s$, $1{,}35\ \text s$ e $1{,}30\ \text s$, il valore più grande è $1{,}35\ \text s$ e il più piccolo è $1{,}28\ \text s$, quindi
+La semidispersione dice quanto sono "sparpagliate" le misurazioni: più sono lontane l'una dall'altra, più è grande. Vediamola su un esempio: cronometriamo quattro volte il tempo $t$ di caduta di una pallina e otteniamo questi valori.
+
+| Misurazione | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| $t$ (s) | 1,32 | 1,28 | 1,35 | 1,30 |
+
+Il valore più grande è $1{,}35\ \text s$, il più piccolo $1{,}28\ \text s$: sono loro, e solo loro, a entrare nella formula.
+
+{% include lab-virtuali/semidispersione-lab.html %}
+
+Quindi:
 
 $$
 s_t = \frac{1{,}35\ \text s - 1{,}28\ \text s}{2} = \frac{0{,}07\ \text s}{2} = 0{,}035\ \text s.
 $$
 
 Le altre due misurazioni non contano: la semidispersione dipende solo dai due valori estremi.
+
+{% include box-ex.html testo="Prova tu!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+Pesi quattro volte una mela con la stessa bilancia. Tocca il valore più piccolo e il più grande, poi calcola la semidispersione $s_m$.
+
+{% include misure-clic.html id="mc-mela" valori="152|149|155|150" unita="g" simbolo="m" %}
+
+{% include num.html id="numSemiMela" valore="3" unit="g" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Misuri cinque volte la larghezza di un quaderno. Tocca il valore più piccolo e il più grande, poi calcola la semidispersione $s_\ell$.
+
+{% include misure-clic.html id="mc-quaderno" valori="21,0|21,2|20,9|21,1|21,3" unita="cm" simbolo="\ell" %}
+
+{% include num.html id="numSemiQuaderno" valore="0.2" unit="cm" %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
 
 Alla fine si considera come incertezza globale $\Delta_x$ la somma tra l'incertezza strumentale e la semidispersione:
 
@@ -141,10 +195,10 @@ Alla fine si considera come incertezza globale $\Delta_x$ la somma tra l'incerte
      formula="\Delta_x = \text{i.s.} + s_x"
      frammenti="\Delta_x|\text{i.s.}|s_x"
      etichette="incertezza totale|incertezza strumentale|semidispersione"
-     posizioni="basso|alto|alto"
+     posizioni="alto|alto|alto"
   %}
 
-{% include box-def.html testo="Valore medio e incertezza" %}
+{% include box-imp.html testo="Valore medio e incertezza" %}
 **Valore medio:**
 $$\bar{x} = \frac{x_1 + x_2 + \cdots + x_N}{N}$$
 
@@ -155,13 +209,48 @@ Il risultato della misura si riporta nella forma:
 $$x = \bar{x} \pm \Delta_x$$
 {% include box-end.html %}
 
-*Esempio.* Misuro tre volte la lunghezza di un oggetto, con un righello avente tacche distanziate di un millimetro. L'incertezza strumentale è quindi $0{,}5\ \text{mm} = 0{,}05\ \text{cm}$. Inoltre, i valori della misurazione sono: $12{,}3\ \text{cm}$, $12{,}5\ \text{cm}$, $12{,}4\ \text{cm}$.
-- Calcolo il valor medio: $\bar{\ell} = (12{,}3 + 12{,}5 + 12{,}4)/3\ \text{cm} = 12{,}4\ \text{cm}$
-- Calcolo la semidispersione: $s_\ell = (12{,}5 - 12{,}3)/2\ \text{cm} = 0{,}1\ \text{cm}$
-- Calcolo l'incertezza totale (semidispersione + incertezza strumentale): $\Delta_\ell = \text{i.s.} + s_\ell = 0{,}05\ \text{cm} + 0{,}1\ \text{cm} = 0{,}15\ \text{cm}$
-- Risultato: $\ell = (12{,}4 \pm 0{,}15)\ \text{cm}$
-
 {% include unisci.html %}
+{% include box-ex.html testo="Prova tu!" %}
+Misuri tre volte la lunghezza di una matita con un righello che ha una tacca ogni millimetro, e ottieni questi valori.
+
+| Misurazione | 1 | 2 | 3 |
+|---|---|---|---|
+| $\ell$ (cm) | 12,3 | 12,5 | 12,4 |
+
+{% include scorri.html %}
+{% include scorri-slide.html titolo="1. Il valore medio" %}
+Quanto vale il valore medio $\bar\ell$ delle tre misurazioni?
+
+{% include num.html id="numPassiMedia" valore="12.4" unit="cm" tol="0.1" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="2. Il più piccolo e il più grande" %}
+Tocca, nella tabella, il valore più piccolo e poi il più grande.
+
+{% include misure-clic.html id="mc-matita" valori="12,3|12,5|12,4" unita="cm" simbolo="\ell" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="3. La semidispersione" %}
+Con il valore più piccolo e il più grande delle misurazioni della matita, quanto vale la semidispersione $s_\ell$?
+
+{% include num.html id="numPassiSemi" valore="0.1" unit="cm" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="4. L'incertezza totale" %}
+Il righello ha una tacca ogni millimetro. Quanto vale l'incertezza totale $\Delta_\ell = \text{i.s.} + s_\ell$, in centimetri?
+
+{% include num.html id="numPassiDelta" valore="0.15" unit="cm" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="5. Il risultato" %}
+Come si scrive il risultato della misura della matita?
+{% capture _oMatita %}[
+{"v":"a","t":"$\\ell = (0{,}15 \\pm 12{,}4)\\ \\text{cm}$"},
+{"v":"b","t":"$\\ell = (12{,}4 \\pm 0{,}15)\\ \\text{cm}$"},
+{"v":"c","t":"$\\ell = (12{,}4 \\pm 0{,}1)\\ \\text{cm}$"},
+{"v":"d","t":"$\\ell = (12{,}4 \\pm 0{,}05)\\ \\text{cm}$"}
+]{% endcapture %}
+{% include mcq.html id="mcq-passi-risultato" opts=_oMatita ok="b" s="Prima il valore medio, poi, dopo il $\pm$, l'incertezza totale: $\ell = (12{,}4 \pm 0{,}15)\ \text{cm}$. Nell'incertezza vanno sia la semidispersione ($0{,}1\ \text{cm}$) sia l'incertezza strumentale ($0{,}05\ \text{cm}$)." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
 {% include esercizi/prova-semidispersione.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -178,29 +267,37 @@ Anna e Bruno misurano la stessa matita con lo stesso righello. Anna ottiene $(17
 
 ### Errore relativo percentuale
 
-Un'incertezza di un centimetro nella misurazione dell'altezza della Tour Eiffel significa che la misurazione è molto precisa. Al contrario, la stessa incertezza di un centimetro nella misurazione della dimensione di una cellula biologica è un errore gigantesco.   
-Per questo è necessario, oltreché stimare l'incertezza riferirla anche all'oggetto stesso che si è misurato. Il modo migliore di farlo è il seguente.
+Per chiedersi se l'incertezza di una misurazione sia grande o piccola, si deve confrontare l'incertezza con il valore della misurazione. Ad esempio, un'incertezza di un centimetro nella misurazione dell'altezza della Tour Eiffel significa che la misurazione è molto precisa. D'altra parte, la stessa incertezza di un centimetro nella misurazione della dimensione di una cellula biologica (dell'ordine del micrometro) è un errore gigantesco.   
+Per questo è necessario, oltreché stimare l'incertezza, riferirla anche all'oggetto che si è misurato. Il modo migliore di farlo è il seguente.
 
 {% include box-imp.html testo="Errore relativo percentuale" %}
 L'<definizione>errore relativo percentuale</definizione> esprime l'incertezza della misurazione come percentuale del valore medio:
 
 {% include eq-annotated.html
      id="errore-relativo"
-     formula="e_x = \dfrac{\Delta_x}{\bar{x}} \times 100\%"
+     formula="e_x = \left(\dfrac{\Delta_x}{\bar{x}} \times 100\right)\%"
      frammenti="e_x|\Delta_x|\bar{x}"
      etichette="errore relativo percentuale|incertezza totale|valore medio"
-     posizioni="basso|alto|basso"
+     posizioni="alto|alto|basso"
   %}
+
+<u>Un errore relativo percentuale piccolo indica una misura precisa</u> (l'incertezza è piccola rispetto al valore misurato); <u>un errore relativo percentuale grande indica che la misurazione non è affidabile</u> (l'incertezza è rilevante rispetto al valore misurato).
 
 
 {% include box-end.html %}
 
-*Esempio.* Con $\ell = (12{,}4 \pm 0{,}15)$ cm:
-$$e_\ell = \frac{0{,}15}{12{,}4} \times 100\% \approx 1{,}2\%$$
-
-<u>Un errore relativo percentuale piccolo indica una misura precisa; uno grande indica che l'incertezza è rilevante rispetto al valore misurato.</u>
-
 {% include unisci.html %}
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcErrMatita" %}
+La lunghezza della matita è $\ell = (12{,}4 \pm 0{,}15)\ \text{cm}$. Quanto vale il suo errore relativo percentuale $e_\ell$?
+
+{% include num.html id="numErrMatita" valore="1.21" unit="%" tol="3" %}
+<div style="clear:both"></div>
+{% include spoiler.html testo="Mostra la soluzione" %}
+$$e_\ell = \frac{\Delta_\ell}{\bar\ell}\times 100\% = \frac{0{,}15\ \text{cm}}{12{,}4\ \text{cm}}\times 100\% \approx 1{,}2\%.$$
+{% include spoiler-end.html %}
+{% include box-end.html %}
+
 {% include esercizi/prova-errore-relativo.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}

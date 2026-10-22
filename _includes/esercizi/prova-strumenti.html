@@ -1,0 +1,140 @@
+{% comment %}
+Prova tu! sull'incertezza strumentale: una slide per strumento, ciascuna con il
+disegno dello strumento (righello millimetrato e bilance, che si usano
+nell'attività di laboratorio; poi cilindro graduato, cronometro, bilancia di
+precisione, multimetro, luxmetro, metro da sarta), dal più facile al più
+difficile. Risposta numerica (num.html). Nessun parametro.
+{% endcomment %}
+<style>
+.strum-fig { display: block; margin: .3rem auto .5rem; max-width: 100%; height: auto; }
+</style>
+{% include box-ex.html testo="Prova tu!" %}
+Per ogni strumento trova l'incertezza strumentale: metà della divisione più piccola per gli strumenti analogici, metà dell'ultima cifra del display per quelli digitali.
+
+{% include scorri.html %}
+
+{% include scorri-slide.html titolo="Il righello millimetrato (lo userai in laboratorio)" %}
+<svg class="strum-fig" viewBox="0 0 330 70" width="330" aria-label="Un righello con una tacca ogni millimetro e i numeri da 0 a 4 centimetri">
+<rect x="5" y="8" width="320" height="52" rx="4" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+{% for k in (0..40) %}{% assign xx = k | times: 7 | plus: 20 %}{% assign m5 = k | modulo: 5 %}{% assign m10 = k | modulo: 10 %}<line x1="{{ xx }}" y1="8" x2="{{ xx }}" y2="{% if m10 == 0 %}30{% elsif m5 == 0 %}24{% else %}17{% endif %}" stroke="#78350f" stroke-width="1"/>{% if m10 == 0 %}<text x="{{ xx }}" y="46" font-size="12" text-anchor="middle" fill="#78350f" font-family="Georgia,serif">{{ k | divided_by: 10 }}</text>{% endif %}{% endfor %}
+<text x="306" y="46" font-size="11" fill="#78350f" font-family="Georgia,serif">cm</text>
+</svg>
+Il righello ha una tacca ogni millimetro. Qual è la sua incertezza strumentale, in centimetri?
+
+{% include num.html id="numIsRighello" valore="0.05" unit="cm" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-slide.html titolo="La bilancia da cucina digitale" %}
+<svg class="strum-fig" viewBox="0 0 240 130" width="240" aria-label="Una bilancia da cucina digitale che segna 523 g">
+<ellipse cx="120" cy="30" rx="95" ry="16" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5"/>
+<path d="M30 40 L210 40 L222 112 Q222 120 212 120 L28 120 Q18 120 18 112 Z" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+<rect x="70" y="62" width="100" height="36" rx="4" fill="#bbf7d0" stroke="#166534" stroke-width="1.2"/>
+<text x="160" y="88" font-size="24" text-anchor="end" fill="#14532d" font-family="'Courier New',monospace" font-weight="700">523</text>
+<text x="165" y="88" font-size="12" fill="#14532d" font-family="Arial">g</text>
+</svg>
+La bilancia che userai in laboratorio segna $523\ \text g$. Qual è la sua incertezza strumentale?
+
+{% include num.html id="numIsBilCucina" valore="0.5" unit="g" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-slide.html titolo="Il cilindro graduato" %}
+<svg class="strum-fig" viewBox="0 0 120 170" width="110" aria-label="Un cilindro graduato con una tacca ogni 2 mL">
+<path d="M40 10 L80 10 L80 150 L95 160 L25 160 L40 150 Z" fill="#f0f9ff" stroke="#0369a1" stroke-width="1.5"/>
+<rect x="41" y="70" width="38" height="79" fill="#bae6fd"/>
+{% for k in (0..10) %}{% assign yy = k | times: 12 | plus: 26 %}{% assign m5 = k | modulo: 5 %}<line x1="{% if m5 == 0 %}60{% else %}68{% endif %}" y1="{{ yy }}" x2="80" y2="{{ yy }}" stroke="#0c4a6e" stroke-width="1"/>{% endfor %}
+<text x="36" y="30" font-size="10" text-anchor="end" fill="#0c4a6e" font-family="Arial">20</text>
+<text x="36" y="90" font-size="10" text-anchor="end" fill="#0c4a6e" font-family="Arial">10</text>
+<text x="36" y="148" font-size="10" text-anchor="end" fill="#0c4a6e" font-family="Arial">0</text>
+<text x="100" y="30" font-size="10" fill="#0c4a6e" font-family="Arial">mL</text>
+</svg>
+Il cilindro graduato ha una tacca ogni $2\ \text{mL}$. Qual è la sua incertezza strumentale?
+
+{% include num.html id="numIsCilindro" valore="1" unit="mL" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-slide.html titolo="La bilancia a lancetta" %}
+<svg class="strum-fig" viewBox="0 0 260 160" width="260" aria-label="Una bilancia a lancetta con le tacche da 0 a 500 g">
+<rect x="20" y="20" width="220" height="130" rx="14" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+<path d="M45 125 A85 85 0 0 1 215 125" fill="none" stroke="#334155" stroke-width="1.5"/>
+{% for k in (0..25) %}{% assign m5 = k | modulo: 5 %}{% assign ang = k | times: 7.2 %}<line x1="130" y1="{% if m5 == 0 %}48{% else %}44{% endif %}" x2="130" y2="40" stroke="#1f2937" stroke-width="{% if m5 == 0 %}1.8{% else %}1{% endif %}" transform="rotate({{ ang | minus: 90 }} 130 125)"/>{% if m5 == 0 %}<text x="130" y="62" font-size="10" text-anchor="middle" fill="#1f2937" font-family="Arial" transform="rotate({{ ang | minus: 90 }} 130 125)">{{ k | times: 20 }}</text>{% endif %}{% endfor %}
+<line x1="130" y1="125" x2="130" y2="48" stroke="#dc2626" stroke-width="2.2" transform="rotate(-6 130 125)"/>
+<circle cx="130" cy="125" r="5" fill="#dc2626"/>
+<text x="130" y="143" font-size="11" text-anchor="middle" fill="#64748b" font-family="Arial">g</text>
+</svg>
+Guarda le tacche della bilancia a lancetta: fra due numeri ci sono $100\ \text g$. Qual è la sua incertezza strumentale?
+
+{% include num.html id="numIsBilLancetta" valore="10" unit="g" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-slide.html titolo="Il cronometro digitale" %}
+<svg class="strum-fig" viewBox="0 0 200 190" width="180" aria-label="Un cronometro digitale che segna 00:12.48">
+<rect x="88" y="6" width="24" height="16" rx="3" fill="#64748b"/>
+<circle cx="100" cy="105" r="80" fill="#1f2937"/>
+<circle cx="100" cy="105" r="70" fill="#334155"/>
+<rect x="38" y="85" width="124" height="40" rx="4" fill="#bbf7d0" stroke="#166534"/>
+<text x="100" y="114" font-size="24" text-anchor="middle" fill="#14532d" font-family="'Courier New',monospace" font-weight="700">00:12.48</text>
+<text x="100" y="150" font-size="10" text-anchor="middle" fill="#cbd5e1" font-family="Arial">min : s . centesimi</text>
+</svg>
+Il cronometro segna $12{,}48\ \text s$. Qual è la sua incertezza strumentale?
+
+{% include num.html id="numIsCrono" valore="0.005" unit="s" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-slide.html titolo="La bilancia di precisione" %}
+<svg class="strum-fig" viewBox="0 0 240 130" width="240" aria-label="Una bilancia di precisione che segna 12.47 g">
+<rect x="60" y="14" width="120" height="10" rx="3" fill="#cbd5e1" stroke="#64748b"/>
+<rect x="114" y="24" width="12" height="16" fill="#94a3b8"/>
+<rect x="20" y="40" width="200" height="80" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+<rect x="60" y="58" width="120" height="36" rx="4" fill="#bbf7d0" stroke="#166534" stroke-width="1.2"/>
+<text x="166" y="84" font-size="24" text-anchor="end" fill="#14532d" font-family="'Courier New',monospace" font-weight="700">12.47</text>
+<text x="170" y="84" font-size="12" fill="#14532d" font-family="Arial">g</text>
+</svg>
+La bilancia di precisione di un laboratorio segna $12{,}47\ \text g$. Qual è la sua incertezza strumentale?
+
+{% include num.html id="numIsBilPrec" valore="0.005" unit="g" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-slide.html titolo="Il multimetro (misura la corrente)" %}
+<svg class="strum-fig" viewBox="0 0 170 210" width="150" aria-label="Un multimetro digitale che segna 0.235 A">
+<rect x="15" y="8" width="140" height="195" rx="14" fill="#facc15" stroke="#a16207" stroke-width="1.5"/>
+<rect x="30" y="22" width="110" height="44" rx="4" fill="#bbf7d0" stroke="#166534"/>
+<text x="124" y="53" font-size="22" text-anchor="end" fill="#14532d" font-family="'Courier New',monospace" font-weight="700">0.235</text>
+<text x="128" y="53" font-size="11" fill="#14532d" font-family="Arial">A</text>
+<circle cx="85" cy="122" r="32" fill="#1f2937"/>
+<line x1="85" y1="122" x2="85" y2="96" stroke="#facc15" stroke-width="4"/>
+<circle cx="50" cy="182" r="7" fill="#dc2626"/><circle cx="85" cy="182" r="7" fill="#1f2937"/><circle cx="120" cy="182" r="7" fill="#dc2626"/>
+</svg>
+Il multimetro misura una corrente elettrica e segna $0{,}235\ \text A$ (ampere). Qual è la sua incertezza strumentale?
+
+{% include num.html id="numIsMulti" valore="0.0005" unit="A" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-slide.html titolo="Il luxmetro (misura l'intensità della luce)" %}
+<svg class="strum-fig" viewBox="0 0 260 170" width="240" aria-label="Un luxmetro digitale con il sensore collegato da un filo, che segna 1250 lx">
+<rect x="20" y="20" width="120" height="140" rx="12" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/>
+<rect x="32" y="34" width="96" height="40" rx="4" fill="#bbf7d0" stroke="#166534"/>
+<text x="112" y="62" font-size="22" text-anchor="end" fill="#14532d" font-family="'Courier New',monospace" font-weight="700">1250</text>
+<text x="116" y="62" font-size="11" fill="#14532d" font-family="Arial">lx</text>
+<circle cx="80" cy="115" r="14" fill="#94a3b8"/>
+<path d="M140 120 C175 125 185 80 205 70" fill="none" stroke="#1f2937" stroke-width="2.5"/>
+<rect x="195" y="58" width="50" height="22" rx="6" fill="#1f2937"/>
+<ellipse cx="220" cy="58" rx="18" ry="9" fill="#f8fafc" stroke="#475569"/>
+</svg>
+Il luxmetro misura l'intensità della luce in lux (lx) e segna $1250\ \text{lx}$. Qual è la sua incertezza strumentale?
+
+{% include num.html id="numIsLux" valore="0.5" unit="lx" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-slide.html titolo="Il metro da sarta" %}
+<svg class="strum-fig" viewBox="0 0 330 60" width="330" aria-label="Un metro da sarta con una tacca ogni mezzo centimetro">
+<rect x="5" y="10" width="320" height="40" rx="3" fill="#fef9c3" stroke="#a16207" stroke-width="1.2"/>
+{% for k in (0..12) %}{% assign xx = k | times: 24 | plus: 18 %}{% assign m2 = k | modulo: 2 %}<line x1="{{ xx }}" y1="10" x2="{{ xx }}" y2="{% if m2 == 0 %}28{% else %}20{% endif %}" stroke="#713f12" stroke-width="1.2"/>{% if m2 == 0 %}<text x="{{ xx }}" y="42" font-size="12" text-anchor="middle" fill="#713f12" font-family="Georgia,serif">{{ k | divided_by: 2 | plus: 30 }}</text>{% endif %}{% endfor %}
+<text x="310" y="42" font-size="10" fill="#713f12" font-family="Georgia,serif">cm</text>
+</svg>
+Il metro a nastro di una sarta ha una tacca ogni mezzo centimetro. Qual è la sua incertezza strumentale, in millimetri?
+
+{% include num.html id="numIsSarta" valore="2.5" unit="mm" %}
+{% include scorri-slide-end.html %}
+
+{% include scorri-end.html %}
+{% include box-end.html %}

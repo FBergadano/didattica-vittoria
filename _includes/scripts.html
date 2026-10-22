@@ -42,7 +42,7 @@
   // ciò a cui si risponde (gli slider delle simulazioni non contano)
   var RISPOSTA = 'input:not([type=range]), select, textarea, .tf-btn, .iex-choice-btn, .qgf-btn-si, .match-widget, .sort-widget, .order-widget';
   // widget che sono esercizi anche senza un riquadro intorno
-  var SCIOLTI = '.uderive-widget, .invx-widget, .ubx-widget, .frayer, .fillm-wrap, .fill-wrap, .sci-wrap, .sciex-widget, .tplcz-widget, ' +
+  var SCIOLTI = '.mclic-widget, .uderive-widget, .invx-widget, .ubx-widget, .frayer, .fillm-wrap, .fill-wrap, .sci-wrap, .sciex-widget, .tplcz-widget, ' +
                 '.match-widget, .sort-widget, .order-widget, .qgf-widget, .tf-item, .iex-choices, .raperta, .riflessione';
   var CAND = '.iex-widget, .box.box-ex, .iex-lbl, ' + SCIOLTI;
   var n = 0;
@@ -398,7 +398,7 @@ window.addEventListener('beforeprint', function() {
 // UNIT e comunicare l'esito come sopra.
 (function() {
   var UNIT = '.qgf-widget, .iex-choices, .fillm-wrap, .fill-wrap, .tf-item, .invx-widget, .uderive-widget, .sort-widget, .match-widget, .vdrag-widget, ' +
-             '.num-wrap, .sci-wrap, .order-widget, .ubx-widget, .sciex-widget, .tplcz-widget';
+             '.num-wrap, .sci-wrap, .order-widget, .ubx-widget, .sciex-widget, .tplcz-widget, .mclic-widget';
   var RISP = 'input:not([type=range]):not([type=hidden]), select, .iex-vbtn, .iex-choice-btn';
   var last = null, lastT = 0, rec = new WeakMap(), stato = new WeakMap(), lastFire = 0;
   ['pointerdown', 'keydown', 'input', 'change', 'click'].forEach(function(t) {

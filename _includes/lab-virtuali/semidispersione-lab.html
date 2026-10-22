@@ -1,0 +1,61 @@
+{% comment %}
+Animazione (in loop): la tabella di quattro tempi di caduta di una pallina
+(1,32 · 1,28 · 1,35 · 1,30 s). Un evidenziatore scorre le righe, si fermano
+il valore più grande (rosso, «massimo») e il più piccolo (blu, «minimo»), che
+volano dentro la formula s_t = (t_max − t_min)/2 al posto dei simboli; poi la
+differenza diventa 0,07 s e il risultato 0,035 s si incornicia. Le altre due
+misure si spengono: non contano. Controlli di pausa e velocità dal motore
+formula-anim-engine.html. Nessun parametro.
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap" style="max-width:560px"><canvas id="cv-semidisp"></canvas></div>
+<script>
+FormulaAnim.create({id:'cv-semidisp',W:560,H:248,cycle:16,still:13.5,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,c=A.ctx,G=A.G;
+  var V=['1,32','1,28','1,35','1,30'],RX=40,RW=150,RY=[96,131,166,201],RH=32;
+  var BLU='#2563eb',ROS='#dc2626',GR='#94a3b8';
+  // ── tabella
+  c.globalAlpha=G;
+  c.fillStyle='#f1f5f9';c.fillRect(RX,40,RW,RH);
+  c.strokeStyle='#cbd5e1';c.lineWidth=1;
+  for(var r=0;r<5;r++)c.strokeRect(RX,40+r*35,RW,RH);
+  c.fillStyle='#334155';c.font='600 15px Georgia,serif';c.textAlign='center';
+  c.fillText('n°',RX+28,61);c.fillText('t (s)',RX+100,61);
+  c.beginPath();c.moveTo(RX+56,40);c.lineTo(RX+56,40+5*35-3);c.stroke();
+  var sMax=p(t,3.2,3.7),sMin=p(t,4.0,4.5),spegni=p(t,11.0,11.8);
+  for(var i=0;i<4;i++){
+    var y=RY[i];
+    // evidenziatore che scorre le righe (fra 0,8 e 3,0)
+    var sc=Math.max(0,1-Math.abs((t-0.9)/0.55-i))*(1-p(t,3.0,3.2));
+    if(sc>0){c.globalAlpha=G*sc*.45;c.fillStyle='#fde68a';c.fillRect(RX+1,y-20,RW-2,RH-2);}
+    var col=A.DARK,bg=null;
+    if(i===2){col=mix(A.DARK,ROS,sMax);bg=sMax;}
+    if(i===1){col=mix(A.DARK,BLU,sMin);bg=sMin;}
+    if(bg){c.globalAlpha=G*bg*.18;c.fillStyle=i===2?ROS:BLU;c.fillRect(RX+1,y-20,RW-2,RH-2);}
+    var al=(i===0||i===3)?1-0.65*spegni:1;
+    c.globalAlpha=G*al;c.fillStyle=(i===0||i===3)?mix(A.DARK,GR,spegni):col;c.font='16px Georgia,serif';c.textAlign='center';
+    c.fillText(String(i+1),RX+28,y);c.fillText(V[i],RX+100,y);
+  }
+  c.globalAlpha=G*sMax;c.fillStyle=ROS;c.font='italic 13px Georgia,serif';c.textAlign='left';c.fillText('massimo',RX+RW+8,RY[2]-4);
+  c.globalAlpha=G*sMin;c.fillStyle=BLU;c.fillText('minimo',RX+RW+8,RY[1]-4);
+  c.globalAlpha=G*spegni;c.fillStyle='#64748b';c.font='italic 12px Georgia,serif';c.fillText('le altre misure non contano',RX-10,240);
+  c.globalAlpha=1;
+  // ── formula: s_t = (t_max − t_min) / 2
+  var fx=300,ny=104,ly=114,dy=146,app=p(t,4.8,5.4);
+  var vMax=p(t,6.0,7.2),vMin=p(t,7.4,8.6),col=p(t,9.0,9.8),ris=p(t,10.2,11.0);
+  A.tok('s',fx,ly+8,app,A.DARK,{it:true,size:24,sub:'t'});
+  A.tok('=',fx+38,ly+8,app,A.DARK,{size:24});
+  c.globalAlpha=G*app;c.strokeStyle=A.DARK;c.lineWidth=1.6;c.beginPath();c.moveTo(fx+60,ly);c.lineTo(fx+250,ly);c.stroke();c.globalAlpha=1;
+  A.tok('2',fx+155,dy,app,A.DARK,{size:22});
+  // numeratore: prima i simboli, poi i valori che arrivano dalla tabella
+  var numAl=1-col;
+  A.tok('t',fx+92,ny,app*(1-vMax)*numAl,A.DARK,{it:true,size:22,sub:'max'});
+  A.tok('−',fx+155,ny,app*numAl,A.DARK,{size:22});
+  A.tok('t',fx+212,ny,app*(1-vMin)*numAl,A.DARK,{it:true,size:22,sub:'min'});
+  if(vMax>0)A.tok('1,35 s',L(RX+100,fx+102,vMax),L(RY[2],ny,vMax),numAl,ROS,{size:L(16,20,vMax)});
+  if(vMin>0)A.tok('1,28 s',L(RX+100,fx+212,vMin),L(RY[1],ny,vMin),numAl,BLU,{size:L(16,20,vMin)});
+  A.tok('0,07 s',fx+155,ny,col,A.DARK,{size:20});
+  A.tok('= 0,035 s',fx+150,196,ris,A.TEAL,{size:24});
+  A.box(fx+70,168,160,40,p(t,10.8,11.4));
+}});
+</script>

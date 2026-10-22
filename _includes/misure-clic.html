@@ -1,0 +1,52 @@
+{% comment %}
+Tabella di misurazioni in cui lo studente tocca prima il valore più piccolo e
+poi il più grande (per la semidispersione). Gli sbagli vengono segnalati; la
+risposta conta per i pallini e per i fuochi (scripts.html, classe mclic-widget).
+
+Parametri:
+  id      — ID univoco (obbligatorio)
+  valori  — le misurazioni, separate da | e scritte con la virgola, es. "12,3|12,5|12,4"
+  unita   — unità di misura (es. "cm")
+  simbolo — simbolo della grandezza, in LaTeX (es. "\ell"); default "x"
+
+Esempio:
+  {% include misure-clic.html id="mc-matita" valori="12,3|12,5|12,4" unita="cm" simbolo="\ell" %}
+{% endcomment %}
+{% assign _v = include.valori | split: "|" %}
+<div class="mclic-widget" id="{{ include.id }}" data-u="{{ include.unita }}">
+<table class="mclic-tab">
+<tr><th>Misurazione</th>{% for x in _v %}<th>{{ forloop.index }}</th>{% endfor %}</tr>
+<tr><th>${{ include.simbolo | default: "x" }}$ ({{ include.unita }})</th>{% for x in _v %}<td><button type="button" class="mclic-v" data-v="{{ x | replace: ',', '.' }}">{{ x }}</button></td>{% endfor %}</tr>
+</table>
+<p class="mclic-msg">Tocca il valore <b>più piccolo</b>.</p>
+</div>
+<script>
+(function(){
+  var root=document.getElementById('{{ include.id }}'),ID='{{ include.id }}',msg=root.querySelector('.mclic-msg');
+  var bs=[].slice.call(root.querySelectorAll('.mclic-v')),vals=bs.map(function(b){return parseFloat(b.dataset.v);});
+  var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals),passo=0,errori=0;
+  function fine(silenzioso){
+    bs.forEach(function(b){b.disabled=true;});
+    msg.className='mclic-msg ok';
+    msg.innerHTML='✓ Il più piccolo è '+bs[vals.indexOf(mn)].textContent+' {{ include.unita }}, il più grande '+bs[vals.indexOf(mx)].textContent+' {{ include.unita }}: le altre misurazioni non servono per la semidispersione.';
+    if(!silenzioso&&window._shoot)_shoot(bs[vals.indexOf(mx)]);
+  }
+  function segna(){bs[vals.indexOf(mn)].classList.add('min');if(passo>1)bs[vals.indexOf(mx)].classList.add('max');}
+  bs.forEach(function(b,i){
+    b.addEventListener('click',function(){
+      var cerca=passo===0?mn:mx;
+      if(vals[i]===cerca){
+        passo++;segna();
+        if(passo===1){msg.className='mclic-msg';msg.innerHTML='Bene. Ora tocca il valore <b>più grande</b>.';}
+        else{fine();if(window._lvSave)_lvSave('mclic',ID,{fatto:true,ok:errori===0});}
+      }else{
+        errori++;b.classList.add('no');setTimeout(function(){b.classList.remove('no');},700);
+        msg.className='mclic-msg err';
+        msg.innerHTML=passo===0?'No: c\'è un valore più piccolo di '+b.textContent+'. Riprova.':'No: c\'è un valore più grande di '+b.textContent+'. Riprova.';
+      }
+    });
+  });
+  var s=window._lvLoad&&_lvLoad('mclic',ID);
+  if(s&&s.fatto){passo=2;segna();fine(true);}
+})();
+</script>
