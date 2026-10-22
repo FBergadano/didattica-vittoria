@@ -383,29 +383,37 @@ function toggleFont() {
 window.addEventListener('beforeprint', function() {
   document.querySelectorAll('img[loading="lazy"]').forEach(function(img) { img.loading = 'eager'; });
 });
-// ── Fuochi d'artificio per un esercizio della teoria fatto tutto giusto ──
-// Ogni parte di un esercizio numerato (data-es) che ha una risposta giusta o
-// sbagliata (domanda a scelta multipla, vero/falso, completamento, isola,
-// unità di misura, trascina…) comunica il suo esito con _lvSave/_lvEsito o
-// con l'evento iex:correct. Qui si ricorda, per ciascuna parte, il primo esito
-// e l'ultimo (in questa visita della pagina): quando tutte le parti
-// dell'esercizio sono giuste, e giuste al primo colpo, partono i fuochi.
-// Le risposte rimesse a posto all'apertura della pagina non contano.
+// ── Esiti degli esercizi: pallini colorati e fuochi d'artificio ──────────────
+// Ogni "unità" di un esercizio che ha una risposta giusta o sbagliata (vero/falso,
+// scelta multipla, completamento, valore numerico, notazione scientifica, isola,
+// unità di misura, trascina, ordina, abbina…) comunica il suo esito con
+// _lvSave/_lvEsito o con l'evento iex:correct. Nei caroselli scritti a mano
+// (_includes/esercizi) un passo senza widget riconoscibili conta come un'unità
+// a sé: il suo esito si legge dal riquadro di risposta .iex-fb (ok / err).
+//  - Pallini: il pallino di una slide (scorri) o di un passo (iex) diventa verde
+//    quando tutte le sue unità sono giuste, rosso se una è sbagliata (data-lv).
+//  - Fuochi: quando tutte le unità di un esercizio numerato (data-es) sono
+//    giuste, e giuste al primo colpo in questa visita della pagina.
+// Un nuovo widget con risposta giusta/sbagliata deve avere la classe radice in
+// UNIT e comunicare l'esito come sopra.
 (function() {
-  var UNIT = '.qgf-widget, .iex-choices, .fillm-wrap, .fill-wrap, .tf-item, .invx-widget, .uderive-widget, .sort-widget, .match-widget, .vdrag-widget';
-  var last = null, lastT = 0, rec = new WeakMap(), lastFire = 0;
+  var UNIT = '.qgf-widget, .iex-choices, .fillm-wrap, .fill-wrap, .tf-item, .invx-widget, .uderive-widget, .sort-widget, .match-widget, .vdrag-widget, ' +
+             '.num-wrap, .sci-wrap, .order-widget, .ubx-widget, .sciex-widget, .tplcz-widget';
+  var RISP = 'input:not([type=range]):not([type=hidden]), select, .iex-vbtn, .iex-choice-btn';
+  var last = null, lastT = 0, rec = new WeakMap(), stato = new WeakMap(), lastFire = 0;
   ['pointerdown', 'keydown', 'input', 'change', 'click'].forEach(function(t) {
     document.addEventListener(t, function(e) { if (e.isTrusted && e.target && e.target.nodeType === 1) { last = e.target; lastT = Date.now(); } }, true);
   });
+  function dalVivo() { return Date.now() - lastT < 6000; }
   function esitoDi(ns, d) {
     if (!d || typeof d !== 'object') return null;
     if (typeof d.right === 'boolean') return d.right ? 1 : 0;
     if (typeof d.found === 'boolean') return d.found ? 1 : 0;
     if (typeof d.ok === 'boolean') return d.ok ? 1 : 0;
-    if (Array.isArray(d.ok) && d.ok.length) return d.ok.filter(Boolean).length / d.ok.length;
-    if (ns === 'quiz' && Array.isArray(d.results) && d.results.length) return d.results.filter(Boolean).length / d.results.length;
+    if (typeof d.ok === 'number') return d.ok;
+    if (ns === 'quiz' && typeof d.allOk === 'boolean') return d.allOk ? 1 : 0; // il quiz salva solo quando è finito
     if (ns === 'uderive') return 1;
-    return null;
+    return null; // riassunti di un intero carosello (ok: [...]): non sono l'esito di una singola risposta
   }
   // fuochi d'artificio (condivisi: anche il quiz vero/falso li usa), mai due volte di fila
   window._lvFuochi = function() {
@@ -433,30 +441,86 @@ window.addEventListener('beforeprint', function() {
       if (alive || cnt < max) requestAnimationFrame(frame); else canvas.remove();
     })();
   };
-  function segna(unit, ok) {
+
+  // un passo di un carosello scritto a mano, senza widget riconoscibili dentro
+  function passoLibero(r) { return r && !r.querySelector(UNIT) && r.querySelector(RISP) && r.querySelector('.iex-fb'); }
+  // l'unità a cui appartiene un elemento: il widget più esterno, o il passo libero
+  function unitaDi(el) {
+    if (!el || !el.closest) return null;
+    var u = el.closest(UNIT), x = u;
+    while (x && x.parentElement && (x = x.parentElement.closest(UNIT))) u = x;
+    if (u) return u;
+    var r = el.closest('.iex-q');
+    return passoLibero(r) ? r : null;
+  }
+  function unitaIn(root) {
+    var a = [].slice.call(root.querySelectorAll(UNIT)).filter(function(u) { var p = u.parentElement.closest(UNIT); return !p || !root.contains(p); });
+    [].forEach.call(root.querySelectorAll('.iex-q'), function(r) { if (passoLibero(r)) a.push(r); });
+    if (root.matches && root.matches('.iex-q') && passoLibero(root)) a.push(root);
+    return a;
+  }
+  // 1 = tutto giusto, 0 = qualcosa di sbagliato, null = non ancora fatto (o a metà)
+  function statoDi(root) {
+    var us = unitaIn(root); if (!us.length) return null;
+    var tutte = true, sbagliata = false;
+    us.forEach(function(u) { var s = stato.get(u); if (s !== 1) tutte = false; if (s === 0) sbagliata = true; });
+    return tutte ? 1 : sbagliata ? 0 : null;
+  }
+  window._lvStato = statoDi;
+  function pallinoDi(slot) {
+    var cont = slot.parentElement, dots = null, fratelli;
+    if (slot.matches('.iex-q')) { dots = cont.querySelector(':scope > .iex-topnav .iex-dots'); fratelli = cont.querySelectorAll(':scope > .iex-q'); }
+    else { var sc = cont.parentElement; dots = sc && sc.querySelector('.scorri-dots'); fratelli = cont.querySelectorAll(':scope > .scorri-slide'); }
+    if (!dots) return null;
+    var i = [].indexOf.call(fratelli, slot);
+    return i >= 0 ? dots.children[i] : null;
+  }
+  function colora(slot) {
+    var d = pallinoDi(slot); if (!d) return;
+    var s = statoDi(slot);
+    if (s === 1) d.dataset.lv = 'ok'; else if (s === 0) d.dataset.lv = 'no'; else delete d.dataset.lv;
+  }
+  function segna(unit, ok, vivo) {
     if (!unit || ok === null || ok === undefined) return;
-    var r = rec.get(unit); if (!r) { r = { first: ok }; rec.set(unit, r); } r.last = ok;
+    stato.set(unit, ok);
+    if (vivo) { var r = rec.get(unit); if (!r) { r = { first: ok }; rec.set(unit, r); } r.last = ok; }
+    var slot = unit.parentElement && unit.parentElement.closest('.iex-q, .scorri-slide');
+    if (unit.matches('.iex-q')) slot = unit;
+    while (slot) { colora(slot); slot = slot.parentElement && slot.parentElement.closest('.iex-q, .scorri-slide'); }
+    document.dispatchEvent(new CustomEvent('lv:esito'));
+    if (!vivo) return;
     var box = unit.closest('[data-es]'); if (!box || box.dataset.fuochi) return;
-    var units = [].slice.call(box.querySelectorAll(UNIT)).filter(function(u) { return !u.parentElement.closest(UNIT); });
-    var tutte = units.length && units.every(function(u) { var x = rec.get(u); return x && x.first === 1 && x.last === 1; });
+    var us = unitaIn(box);
+    var tutte = us.length && us.every(function(u) { var x = rec.get(u); return x && x.first === 1 && x.last === 1; });
     if (tutte) { box.dataset.fuochi = '1'; setTimeout(window._lvFuochi, 600); }
   }
-  function unitaDi(el) { return el && el.closest ? el.closest(UNIT) : null; }
-  function dalVivo() { return Date.now() - lastT < 6000; }
   var origSave = window._lvSave, origEsito = window._lvEsito;
   if (origSave) window._lvSave = function(ns, id, data) {
     var r = origSave.apply(this, arguments);
-    try { if (dalVivo()) segna(unitaDi(last), esitoDi(ns, data)); } catch (e) {}
+    try { if (dalVivo()) segna(unitaDi(last), esitoDi(ns, data), true); } catch (e) {}
     return r;
   };
   window._lvEsito = function(ns, id, giusto) {
     if (origEsito) origEsito.apply(this, arguments);
-    try { if (dalVivo()) segna(unitaDi(last), giusto ? 1 : 0); } catch (e) {}
+    try { if (dalVivo()) segna(unitaDi(last), giusto ? 1 : 0, true); } catch (e) {}
   };
   document.addEventListener('iex:correct', function(e) {
-    if (!dalVivo()) return;
-    var u = unitaDi(e.target) || (e.target.querySelector && e.target.querySelector(UNIT));
-    if (u) segna(u, 1);
+    var u = unitaDi(e.target) || (e.target.querySelector && unitaDi(e.target.querySelector(UNIT)));
+    if (u) segna(u, 1, dalVivo());
   });
+  // caroselli scritti a mano: l'esito di un passo si legge dal suo riquadro di risposta
+  function osservaPassi() {
+    [].forEach.call(document.querySelectorAll('.iex-q'), function(r) {
+      function leggi(vivo) {
+        var fb = [].slice.call(r.querySelectorAll('.iex-fb')).filter(function(f) { return f.closest('.iex-q') === r; });
+        var err = fb.some(function(f) { return f.classList.contains('err'); }), ok = fb.length && fb.every(function(f) { return f.classList.contains('ok') || !f.textContent.trim(); }) && fb.some(function(f) { return f.classList.contains('ok'); });
+        if (passoLibero(r)) { if (err) segna(r, 0, vivo); else if (ok) segna(r, 1, vivo); }
+        else if (err) unitaIn(r).forEach(function(u) { if (!stato.has(u)) segna(u, 0, vivo); });
+      }
+      leggi(false);
+      new MutationObserver(function() { leggi(dalVivo()); }).observe(r, { attributes: true, subtree: true, attributeFilter: ['class'] });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', osservaPassi); else osservaPassi();
 })();
 </script>

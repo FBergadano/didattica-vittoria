@@ -56,7 +56,9 @@
 
   function paint() {
     steps.forEach(function(s, n) {
-      s.u.className = 'iex-dot' + (n === cur ? ' cur' : '') + (s.dot && s.dot.classList.contains('ok') ? ' ok' : '');
+      var st = s.dot ? (s.dot.classList.contains('ok') || s.dot.dataset.lv === 'ok' ? 1 : s.dot.dataset.lv === 'no' ? 0 : null)
+                     : (window._lvStato ? window._lvStato(parts[s.p]) : null);
+      s.u.className = 'iex-dot' + (n === cur ? ' cur' : '') + (st === 1 ? ' ok' : st === 0 ? ' no' : '');
     });
     prevBtn.disabled = cur === 0; nextBtn.disabled = cur === steps.length - 1;
   }
@@ -84,8 +86,9 @@
           if (steps[n].p === i && kids[steps[n].k] && kids[steps[n].k].classList.contains(p._on)) { cur = n; break; }
       }
       paint();
-    }).observe(p._inner, { attributes: true, subtree: true, attributeFilter: ['class'] });
+    }).observe(p._inner, { attributes: true, subtree: true, attributeFilter: ['class', 'data-lv'] });
   });
+  document.addEventListener('lv:esito', paint);
 
   showPart(0); paint();
   }

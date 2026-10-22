@@ -14,7 +14,7 @@ Esempio:
   {% include num.html id="numB1" valore="98" unit="J" %}
 {% endcomment %}
 {% assign _tol = include.tol | default: 1 %}
-<div class="iex-ir">
+<div class="iex-ir num-wrap">
 <input class="iex-m" id="{{ include.id }}" type="text" placeholder="valore" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')nc_{{ include.id }}()">
 {% if include.unit %}<span class="iex-unit">{{ include.unit }}</span>{% endif %}
 <button class="iex-vbtn" onclick="nc_{{ include.id }}()">Verifica</button>

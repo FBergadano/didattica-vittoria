@@ -637,6 +637,26 @@ L'energia meccanica che viene dissipata si converte in **calore** (simbolo $Q$).
 {% include quiz.html domande=_qCalore id="q-calore" senza_esempi="true" %}
 {% include box-end.html %}
 
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+Una cassa scivola sul pavimento e, a causa dell'attrito, rallenta fino a fermarsi. Che fine ha fatto la sua energia cinetica?
+{% capture _oCassa %}[
+{"v":"a","t":"è scomparsa: l'attrito l'ha distrutta"},
+{"v":"b","t":"si è trasformata in calore: la cassa e il pavimento si sono scaldati un po'"},
+{"v":"c","t":"si è trasformata in energia potenziale gravitazionale"},
+{"v":"d","t":"è rimasta nella cassa, che però è ferma"}
+]{% endcapture %}
+{% include mcq.html id="mcq-calore-cassa" opts=_oCassa ok="b" s="L'energia non si crea e non si distrugge: l'attrito compie un lavoro negativo e l'energia cinetica persa diventa calore. La cassa non è salita, quindi la sua energia potenziale non è cambiata." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include fill.html prima="Su un corpo che striscia, il lavoro compiuto dalla forza d'attrito è sempre" tipo="drop" opts="positivo|negativo|nullo" ok="negativo" dopo="," s="L'attrito ha verso opposto allo spostamento: forza e spostamento sono opposti, quindi L < 0." %}
+
+{% include fill.html prima="e l'energia meccanica del corpo" tipo="drop" opts="aumenta|diminuisce|resta la stessa" ok="diminuisce" dopo="." s="Per un sistema non isolato ΔE = L: con L < 0, l'energia meccanica diminuisce, e quella che manca diventa calore." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
 {% include esercizi/esercizio-calore.html %}
 {% include unisci-end.html %}
 
