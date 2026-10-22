@@ -12,6 +12,11 @@ numero: 1
 <em>GALILEO</em> “Allora, Eminenza, l'Onnipotente ci avrebbe forniti di cervelli fatti così <em>(traccia col dito lo stesso movimento)</em> perché potessimo credere che un movimento così <em>(ripete il tracciato immaginario)</em> fosse il più semplice possibile! Io ho fede nel cervello.”
 </cit>
 
+{% include box-obiettivi.html %}
+Scopri la legge con cui due masse qualsiasi si attraggono, dalla mela che cade alla Luna che gira attorno alla Terra, e impari a calcolare quanto vale questa forza. Poi cambi punto di vista: studi come una massa modifica lo spazio intorno a sé, cioè il campo gravitazionale, e impari a disegnarlo con le linee di campo. Passi quindi all'energia, con l'energia potenziale, il potenziale e le superfici equipotenziali. Il capitolo si chiude con il moto di una massa in un campo: la forza peso e l'accelerazione di gravità.
+{% include box-end.html %}
+
+
 
 {% include margin-note.html testo="Tutto interagisce con tutto." %}
 Tutti noi sappiamo che la forza gravitazionale è quella che ci attrae verso il centro della Terra e che attrae la Terra verso il Sole. Ciò che invece è meno comune è comprendere che **ogni oggetto dotato di massa** (cioè quasi qualsiasi cosa tranne la luce) **è attratto da qualsiasi altro oggetto dotato di massa**. Voi siete attratti dal tavolo che avete di fronte, e lo attraete a vostra volta, e lo stesso vale per ogni granello di sabbia in ogni spiaggia lontana o ogni molecola di aria. Ogni oggetto tende ad unirsi con ogni altro oggetto nell'Universo per via dell'interazione gravitazionale. 

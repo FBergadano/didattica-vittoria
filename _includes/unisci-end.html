@@ -43,6 +43,13 @@
     if (d && d.querySelectorAll('.iex-dot').length > 1) { inner = d; d.closest('.iex-topnav').classList.add('unisci-guidata'); }
     else if ((d = p.querySelector('.scorri-dots')) && d.children.length > 1) { inner = d; onCls = 'on'; d.closest('.scorri-nav').classList.add('unisci-guidata'); }
     p._inner = inner; p._on = onCls;
+    // un quiz vero/falso: ogni affermazione è un passo (niente pallino unico per tutto il quiz)
+    var qz = !inner && p.querySelector('.qgf-widget');
+    if (qz && qz._qgf && qz._qgf.n > 1) {
+      p._qgf = qz;
+      for (var k = 0; k < qz._qgf.n; k++) steps.push({ p: i, k: k, dot: null, qgf: qz });
+      return;
+    }
     var dots = inner ? [].slice.call(inner.children) : [null];
     dots.forEach(function(dot, k) { steps.push({ p: i, k: k, dot: dot }); });
   });
@@ -56,7 +63,9 @@
 
   function paint() {
     steps.forEach(function(s, n) {
-      var st = s.dot ? (s.dot.classList.contains('ok') || s.dot.dataset.lv === 'ok' ? 1 : s.dot.dataset.lv === 'no' ? 0 : null)
+      var r = s.qgf && s.qgf._qgf.esito(s.k);
+      var st = s.qgf ? (r === true ? 1 : r === false ? 0 : null)
+             : s.dot ? (s.dot.classList.contains('ok') || s.dot.dataset.lv === 'ok' ? 1 : s.dot.dataset.lv === 'no' ? 0 : null)
                      : (window._lvStato ? window._lvStato(parts[s.p]) : null);
       s.u.className = 'iex-dot' + (n === cur ? ' cur' : '') + (st === 1 ? ' ok' : st === 0 ? ' no' : '');
     });
@@ -71,8 +80,20 @@
     cur = n; showPart(s.p);
     if (cambia) window.dispatchEvent(new Event('resize')); // le slide ricalcolano l'altezza
     if (s.dot) s.dot.click();
+    if (s.qgf && s.qgf._qgf.indice() !== s.k) s.qgf._qgf.vai(s.k);
     paint();
   }
+  // quiz: «Avanti →» porta alla domanda successiva dell'esercizio, anche fuori dal quiz;
+  // e se lo studente cambia domanda dal quiz, i pallini lo seguono
+  parts.forEach(function(p, i) {
+    if (!p._qgf) return;
+    p._qgf._qgfAvanti = function() { go(cur + 1); };
+    p._qgf.addEventListener('qgf:cambia', function() {
+      if (!p.classList.contains('on')) { paint(); return; }
+      for (var n = 0; n < steps.length; n++) if (steps[n].p === i && steps[n].k === p._qgf._qgf.indice()) { cur = n; break; }
+      paint();
+    });
+  });
   prevBtn.addEventListener('click', function() { go(cur - 1); });
   nextBtn.addEventListener('click', function() { go(cur + 1); });
 

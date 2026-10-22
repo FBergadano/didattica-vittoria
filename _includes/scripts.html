@@ -470,7 +470,11 @@ window.addEventListener('beforeprint', function() {
   function pallinoDi(slot) {
     var cont = slot.parentElement, dots = null, fratelli;
     if (slot.matches('.iex-q')) { dots = cont.querySelector(':scope > .iex-topnav .iex-dots'); fratelli = cont.querySelectorAll(':scope > .iex-q'); }
-    else { var sc = cont.parentElement; dots = sc && sc.querySelector('.scorri-dots'); fratelli = cont.querySelectorAll(':scope > .scorri-slide'); }
+    else { // slide: il suo pallino (le slide con un quiz hanno un pallino per affermazione, colorati da scorri-end.html)
+      var sc = cont.parentElement; dots = sc && sc.querySelector('.scorri-dots'); if (!dots) return null;
+      var k = [].indexOf.call(cont.querySelectorAll(':scope > .scorri-slide'), slot);
+      return dots.querySelector('.scorri-dot[data-slide="' + k + '"]:not([data-qk])');
+    }
     if (!dots) return null;
     var i = [].indexOf.call(fratelli, slot);
     return i >= 0 ? dots.children[i] : null;

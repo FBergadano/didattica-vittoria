@@ -549,7 +549,7 @@ window.ex7check=function(i){
     if(vb)shootConf2(vb);
     var dots=document.querySelectorAll('#ex7dots .iex-dot');
     for(var k=0;k<N7;k++)dots[k].className='iex-dot'+(k===ex7c[0]?' cur':'')+(ex7ok[k]?' ok':'');
-    if(ex7ok.every(function(x){return x;}))setTimeout(shootFW2,600);
+    if(ex7ok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     _lvSave('scinot','ex7',ex7Snapshot());
   } else {
     fb.className='iex-fb err';
@@ -623,7 +623,7 @@ window.pfxcheck=function(i){
     if(vb)shootConf2(vb);
     var dots=document.querySelectorAll('#pfxdots .iex-dot');
     for(var k=0;k<Npfx;k++)dots[k].className='iex-dot'+(k===pfxc[0]?' cur':'')+(pfxok[k]?' ok':'');
-    if(pfxok.every(function(x){return x;}))setTimeout(shootFW2,600);
+    if(pfxok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     _lvSave('scinot','pfxquiz',pfxSnapshot());
   } else {
     fb.className='iex-fb err';

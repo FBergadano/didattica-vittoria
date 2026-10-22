@@ -90,7 +90,7 @@ window.setupInvCarousel = window.setupInvCarousel || function(ID,N){
       row.addEventListener('iex:correct', function(){
         if(ok[k])return;
         ok[k]=true; updateDots();
-        if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+        if(ok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
       });
     })(k);
   }

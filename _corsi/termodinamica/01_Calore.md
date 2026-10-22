@@ -13,6 +13,11 @@ And a heaven in a wild flower
 To hold infinity in the palm of your hand
 And eternity in an hour.
 </cit>
+
+{% include box-obiettivi.html %}
+Scopri che il calore è energia che passa da un corpo all'altro, e che cosa misura davvero la temperatura, fino al livello delle particelle. Impari a passare dai gradi centigradi ai kelvin, a calcolare di quanto si allunga un oggetto scaldato e quanto calore serve per cambiare la temperatura di un corpo. Infine vedi i tre modi in cui il calore si trasmette: conduzione, convezione e irraggiamento.
+{% include box-end.html %}
+
 {% include margin-note.html testo="Il calore e Joule" %}
 In questo capitolo studieremo nel dettaglio una delle forme di energia che abbiamo incontrato: il <definizione>calore</definizione>.  
 Abbiamo già detto, nello scorso capitolo, che l'energia meccanica può convertirsi in calore per azione dell'attrito. Questa scoperta fu fatta dall'inglese [James Prescott Joule](https://it.wikipedia.org/wiki/James_Prescott_Joule): un mastro birraio che aveva bisogno di fare esperimenti sul calore per trovare il modo ottimale di raffreddare la birra. A lui (e alla birra) si deve un esperimento che è noto come <definizione>il mulinello di Joule</definizione>. Per questa esperienza, gli fu intitolato il nome dell'unità di misura dell'energia: il “joule”.

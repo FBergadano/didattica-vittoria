@@ -7,7 +7,12 @@ materia: fisica
 numero: 1
 ---
 
-<cit autore="Giacomo Leopardi, Zibaldone">Niuna cosa maggiormente dimostra la grandezza e la potenza dell'umano intelletto, né l'altezza e nobiltà dell'uomo, che il poter l'uomo conoscere e interamente comprendere e fortemente sentire la sua piccolezza.</cit> 
+<cit autore="Giacomo Leopardi, Zibaldone">Niuna cosa maggiormente dimostra la grandezza e la potenza dell'umano intelletto, né l'altezza e nobiltà dell'uomo, che il poter l'uomo conoscere e interamente comprendere e fortemente sentire la sua piccolezza.</cit>
+
+{% include box-obiettivi.html %}
+Scopri che cosa significa misurare una grandezza e quali sono le sette grandezze fondamentali del Sistema Internazionale, da cui si ottengono tutte le altre. Impari a scrivere i numeri molto grandi e molto piccoli in notazione scientifica, anche sulla calcolatrice, e a fare i calcoli con loro. Infine impari a passare da un'unità di misura ai suoi multipli e sottomultipli con i prefissi, anche per le aree, i volumi e il tempo.
+{% include box-end.html %}
+ 
 
 Una delle cose più meravigliose dell'Universo è la sua immensità. L'infinita grandezza della galassia che ci contiene e l'infinita piccolezza degli atomi di cui siamo composti. Noi uomini siamo sospesi a metà tra questi due infiniti, e questo è un fatto che non cesserà mai di meravigliarci.
 

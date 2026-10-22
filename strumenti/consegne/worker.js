@@ -7,6 +7,10 @@
 //    DOCENTE_PASSWORD — Secret: la password della pagina del docente
 //    ORIGINE          — Variable: indirizzo del sito, es. https://fbergadano.github.io
 //                       (più indirizzi separati da virgole)
+//    TELEGRAM_TOKEN   — Secret facoltativo: il token del bot Telegram che avvisa il
+//                       docente (dubbi, foto, schemi, risposte). Vedi LEGGIMI.md.
+//    DOCENTE_URL      — Variable facoltativa: indirizzo della pagina del docente,
+//                       aggiunto in fondo a ogni notifica.
 //
 //  Nel database non ci sono nomi: solo codici (es. GIUR) scelti dal docente.
 //  I PIN sono salvati solo come impronta (HMAC), mai in chiaro.
@@ -56,7 +60,7 @@ const RE_CLASSE = /^[A-Za-z0-9][A-Za-z0-9 _-]{0,15}$/, RE_CODICE = /^[A-Z]{2,12}
 let pronto = null; // le tabelle si creano una volta sola per istanza
 
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const cors = corsHeaders(req, env);
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     try {
@@ -73,19 +77,19 @@ export default {
       if (p.startsWith('/docente/')) {
         const ok = await docenteAutorizzato(req, env);
         if (ok !== true) return json({ errore: ok }, 401, cors);
-        return await docente(p, url, corpo, env, cors);
+        return await docente(p, url, corpo, env, cors, ctx);
       }
       switch (p) {
         case '/':            return json({ ok: true, servizio: 'consegne' }, 200, cors);
         case '/classi':      return json({ classi: (await env.DB.prepare('SELECT DISTINCT classe FROM studenti ORDER BY classe').all()).results.map((r) => r.classe) }, 200, cors);
         case '/accedi':      return await accedi(corpo, env, cors);
-        case '/risposte':    return await risposte(corpo, env, cors);
-        case '/dubbi':       return await nuovoDubbio(corpo, env, cors);
+        case '/risposte':    return await risposte(corpo, env, cors, ctx);
+        case '/dubbi':       return await nuovoDubbio(corpo, env, cors, ctx);
         case '/miei-dubbi':  return await mieiDubbi(corpo, env, cors);
-        case '/foto':        return await nuovaFoto(corpo, env, cors);
+        case '/foto':        return await nuovaFoto(corpo, env, cors, ctx);
         case '/mie-foto':    return await mieFoto(corpo, env, cors);
         case '/foto-elimina': return await eliminaFoto(corpo, env, cors);
-        case '/schema':      return await nuovoSchema(corpo, env, cors);
+        case '/schema':      return await nuovoSchema(corpo, env, cors, ctx);
         case '/miei-schemi': return await mieiSchemi(corpo, env, cors);
         case '/schema-elimina': return await eliminaSchema(corpo, env, cors);
       }
@@ -184,7 +188,7 @@ async function studenteDa(token, env) {
   return { classe, codice };
 }
 
-async function risposte(c, env, cors) {
+async function risposte(c, env, cors, ctx) {
   const st = await studenteDa(c.token, env);
   if (!st) return json({ errore: 'accesso' }, 401, cors);
   const items = Array.isArray(c.items) ? c.items.slice(0, 100) : [];
@@ -219,10 +223,14 @@ async function risposte(c, env, cors) {
       Math.max(0, Math.min(50, Number(it.n) || 0)), ora, str(it.esercizio, 10)));
   }
   if (righe.length) await env.DB.batch(righe);
+  // una notifica al giorno per studente e pagina: «ha cominciato a consegnare»
+  const oggi = new Date(ora + 2 * 3600 * 1000).toISOString().slice(0, 10);
+  for (const pg of new Set(items.map((it) => str(it.pagina, 200)).filter(Boolean)))
+    notifica(env, ctx, `✏️ ${st.codice} (${st.classe}) ha cominciato a consegnare: ${nomePagina(pg)}`, `r|${st.classe}|${st.codice}|${pg}|${oggi}`, 36 * 3600 * 1000);
   return json({ ok: righe.length }, 200, cors);
 }
 
-async function nuovoDubbio(c, env, cors) {
+async function nuovoDubbio(c, env, cors, ctx) {
   const st = await studenteDa(c.token, env);
   if (!st) return json({ errore: 'accesso' }, 401, cors);
   const testo = str(c.testo, 2000);
@@ -232,6 +240,9 @@ async function nuovoDubbio(c, env, cors) {
   if (n.n >= MAX_DUBBI_GIORNO) return json({ errore: 'troppi' }, 429, cors);
   await env.DB.prepare('INSERT INTO dubbi (classe, codice, pagina, sezione, ancora, testo, ts) VALUES (?, ?, ?, ?, ?, ?, ?)')
     .bind(st.classe, st.codice, str(c.pagina, 200), str(c.sezione, 120), str(c.ancora, 120), testo.trim(), ora).run();
+  const t = testo.trim();
+  notifica(env, ctx, `❓ Nuovo dubbio da ${st.codice} (${st.classe})` + (c.pagina ? ` — ${nomePagina(str(c.pagina, 200))}` : '') +
+    (c.sezione ? `, «${str(c.sezione, 120)}»` : '') + `\n\n${t.length > 400 ? t.slice(0, 400) + '…' : t}`);
   return json({ ok: true }, 200, cors);
 }
 
@@ -243,7 +254,7 @@ async function mieiDubbi(c, env, cors) {
   return json({ dubbi: r.results }, 200, cors);
 }
 
-async function nuovaFoto(c, env, cors) {
+async function nuovaFoto(c, env, cors, ctx) {
   const st = await studenteDa(c.token, env);
   if (!st) return json({ errore: 'accesso' }, 401, cors);
   const m = /^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/.exec(String(c.immagine || ''));
@@ -254,6 +265,9 @@ async function nuovaFoto(c, env, cors) {
   if (n.n >= MAX_FOTO_GIORNO) return json({ errore: 'troppe' }, 429, cors);
   const r = await env.DB.prepare('INSERT INTO foto (classe, codice, compito, ts, tipo, dim, dati) VALUES (?, ?, ?, ?, ?, ?, ?)')
     .bind(st.classe, st.codice, str(c.compito, 200) || '', ora, m[1], Math.round(m[2].length * 3 / 4), m[2]).run();
+  // più foto inviate insieme: una sola notifica
+  notifica(env, ctx, `📷 ${st.codice} (${st.classe}) ha consegnato delle foto` + (c.compito ? ` — compito per ${String(c.compito).slice(0, 10)}` : ''),
+    `f|${st.classe}|${st.codice}|${str(c.compito, 200) || ''}`, 15 * 60 * 1000);
   return json({ ok: true, id: r.meta.last_row_id }, 200, cors);
 }
 async function mieFoto(c, env, cors) {
@@ -269,8 +283,41 @@ async function eliminaFoto(c, env, cors) {
   return json({ ok: true }, 200, cors);
 }
 
+// ───────── notifiche per il docente (bot Telegram) ─────────
+// Il token del bot è il secret TELEGRAM_TOKEN; la chat a cui scrivere si collega dalla pagina
+// del docente (scheda Dati) e sta nella tabella conf. Le notifiche partono in background
+// (ctx.waitUntil), senza rallentare lo studente. Nei messaggi ci sono solo codici, mai nomi.
+// chiave/finestra: niente doppioni (la stessa chiave non notifica di nuovo entro la finestra).
+function notifica(env, ctx, testo, chiave, finestra) {
+  if (!env.TELEGRAM_TOKEN || !ctx) return;
+  ctx.waitUntil((async () => {
+    try {
+      const chat = await env.DB.prepare("SELECT v FROM conf WHERE k = 'telegram_chat'").first();
+      if (!chat) return;
+      const ora = Date.now();
+      if (chiave) {
+        const k = 'n|' + chiave;
+        const r = await env.DB.prepare('SELECT v FROM conf WHERE k = ?').bind(k).first();
+        if (r && ora - Number(r.v) < finestra) return;
+        await env.DB.batch([
+          env.DB.prepare('INSERT OR REPLACE INTO conf (k, v) VALUES (?, ?)').bind(k, String(ora)),
+          env.DB.prepare("DELETE FROM conf WHERE k LIKE 'n|%' AND CAST(v AS INTEGER) < ?").bind(ora - 3 * 24 * 3600 * 1000),
+        ]);
+      }
+      await telegram(env, chat.v, testo + (env.DOCENTE_URL ? '\n\n' + env.DOCENTE_URL : ''));
+    } catch (e) {}
+  })());
+}
+function telegram(env, chat, testo) {
+  return fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/sendMessage`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chat, text: testo, disable_web_page_preview: true }),
+  });
+}
+function nomePagina(p) { return String(p || '').replace(/^\/?corsi\//, '').replace(/\/+$/, '').replace(/^[^/]*\//, '').replace(/^\d+_/, '').replace(/_/g, ' ') || p; }
+
 // ───────── schemi per l'interrogazione ─────────
-async function nuovoSchema(c, env, cors) {
+async function nuovoSchema(c, env, cors, ctx) {
   const st = await studenteDa(c.token, env);
   if (!st) return json({ errore: 'accesso' }, 401, cors);
   const ora = Date.now();
@@ -293,6 +340,7 @@ async function nuovoSchema(c, env, cors) {
   }
   const r = await env.DB.prepare('INSERT INTO schemi (classe, codice, pagina, titolo, ts, tipo, dim, dati) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
     .bind(st.classe, st.codice, pagina, titolo, ora, tipo, tipo === 'mappa' ? dati.length : Math.round(dati.length * 3 / 4), dati).run();
+  notifica(env, ctx, `🗺 ${st.codice} (${st.classe}) ha inviato uno schema per l'interrogazione` + (titolo ? `: ${titolo}` : ''), `s|${st.classe}|${st.codice}|${pagina}|${titolo}`, 5 * 60 * 1000);
   return json({ ok: true, id: r.meta.last_row_id }, 200, cors);
 }
 async function mieiSchemi(c, env, cors) {
@@ -324,7 +372,7 @@ async function docenteAutorizzato(req, env) {
   return e2 >= 10 ? 'bloccato' : 'password';
 }
 
-async function docente(p, url, c, env, cors) {
+async function docente(p, url, c, env, cors, ctx) {
   const q = (k) => url.searchParams.get(k);
   const DB = env.DB;
   switch (p) {
@@ -409,6 +457,36 @@ async function docente(p, url, c, env, cors) {
     case '/docente/schema-elimina': {
       await DB.prepare('DELETE FROM schemi WHERE id = ?').bind(Number(c.id)).run();
       return json({ ok: true }, 200, cors);
+    }
+    case '/docente/telegram': { // stato, collegamento e prova delle notifiche
+      const chat = await DB.prepare("SELECT v FROM conf WHERE k = 'telegram_chat'").first();
+      if (c.azione === 'collega') {
+        if (!env.TELEGRAM_TOKEN) return json({ errore: 'manca il secret TELEGRAM_TOKEN' }, 400, cors);
+        // l'ultima chat che ha scritto al bot (il docente gli ha appena mandato /start)
+        const u = await (await fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/getUpdates`)).json().catch(() => ({}));
+        const msg = (u.result || []).map((x) => x.message || x.edited_message).filter(Boolean).pop();
+        if (!msg) return json({ errore: 'nessun messaggio: scrivi /start al bot e riprova' }, 400, cors);
+        await DB.prepare("INSERT OR REPLACE INTO conf (k, v) VALUES ('telegram_chat', ?)").bind(String(msg.chat.id)).run();
+        await telegram(env, msg.chat.id, '✅ Notifiche collegate: da ora ti scrivo qui quando arrivano dubbi, foto, schemi e consegne.');
+        return json({ ok: true, nome: [msg.chat.first_name, msg.chat.last_name].filter(Boolean).join(' ') || msg.chat.username || '' }, 200, cors);
+      }
+      if (c.azione === 'prova') {
+        if (!env.TELEGRAM_TOKEN || !chat) return json({ errore: 'notifiche non collegate' }, 400, cors);
+        await telegram(env, chat.v, '🔔 Prova: le notifiche funzionano.');
+        return json({ ok: true }, 200, cors);
+      }
+      if (c.azione === 'scollega') { await DB.prepare("DELETE FROM conf WHERE k = 'telegram_chat'").run(); return json({ ok: true }, 200, cors); }
+      return json({ token: !!env.TELEGRAM_TOKEN, collegato: !!chat }, 200, cors);
+    }
+    case '/docente/novita': { // ciò che è arrivato dopo un certo istante (per gli avvisi nella pagina del docente)
+      const da = Number(q('da')) || 0;
+      const [d, f, s, r] = await DB.batch([
+        DB.prepare('SELECT classe, codice, ts FROM dubbi WHERE ts > ? ORDER BY ts DESC LIMIT 50').bind(da),
+        DB.prepare('SELECT classe, codice, ts FROM foto WHERE ts > ? ORDER BY ts DESC LIMIT 50').bind(da),
+        DB.prepare('SELECT classe, codice, ts FROM schemi WHERE ts > ? ORDER BY ts DESC LIMIT 50').bind(da),
+        DB.prepare('SELECT classe, codice, pagina, MAX(ricevuto) AS ts FROM risposte WHERE ricevuto > ? GROUP BY classe, codice, pagina ORDER BY ts DESC LIMIT 50').bind(da),
+      ]);
+      return json({ ora: Date.now(), dubbi: d.results, foto: f.results, schemi: s.results, risposte: r.results }, 200, cors);
     }
     case '/docente/cancella': { // cancella risposte, dubbi e foto più vecchi di una data
       const prima = Number(c.prima_di);

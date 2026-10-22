@@ -31,6 +31,10 @@ E allora proveremo a parlare anche di questo: dell'immensa gioia e dell'immenso 
 
 <cit autore="Pier Paolo Pasolini, discorso da pronunciare al 15° congresso del Partito Radicale, ma da lui mai pronunciato poiché morì due giorni prima (assassinato)">Voi non dovete fare altro (io credo) che continuare semplicemente a essere voi stessi: il che significa essere continuamente irriconoscibili. Dimenticate subito i grandi successi e continuate imperterriti, ostinati, eternamente contrari, a pretendere, volere, a identificarvi col diverso, a scandalizzare, a bestemmiare.</cit>
 
+{% include box-obiettivi.html %}
+Attraverso le storie di cinque eretici — Olympe de Gouges, Fernanda Farias de Albuquerque, Socrate, Giordano Bruno e Galileo Galilei — scopri che cosa significa dissentire: vedere qualcosa di nuovo e scegliere di difenderlo, anche quando costa tutto. Per ciascuno ricostruisci il contesto storico, le idee che difese e il prezzo che pagò. Alla fine scopri che c'è un ultimo eretico di cui parlare, e che quell'eretico sei tu.
+{% include box-end.html %}
+
 # Olympe de Gouges: l'Eresia del nascere liberi
 
 ## Le Rivoluzioni del '700

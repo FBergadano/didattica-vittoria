@@ -7,6 +7,10 @@ materia: fisica
 numero: 3
 ---
 
+{% include box-obiettivi.html %}
+Riprendi le forze e i campi della prima parte e li traduci nel linguaggio dell'energia, seguendo la stessa strada già percorsa per la gravità: energia potenziale elettrica, potenziale, superfici equipotenziali. Con questi strumenti studi il moto di una carica in un campo elettrico: quale forza subisce, quanto accelera, verso dove va se la lasci libera e con quale velocità arriva dopo aver attraversato una differenza di potenziale. Vedrai anche come Millikan riuscì a misurare la carica di un singolo elettrone.
+{% include box-end.html %}
+
 # L'energia elettrica
 
 {% include margin-note.html testo="Dalle forze all'energia" %}

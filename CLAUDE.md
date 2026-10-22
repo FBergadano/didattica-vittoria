@@ -56,6 +56,21 @@ Dentro `_corsi/Appunti/<classe>/` (es. `fisica-3b/`, `matematica-4acd/`) stanno
 esclusi dalla build Jekyll (vedi `exclude:` in `_config.yml`). Non ci va
 contenuto `.md` del sito: quello vive tutto nelle cartelle per argomento sopra.
 
+## Apertura di ogni capitolo
+
+Subito dopo la citazione d'apertura (`<cit>`), ogni capitolo ha un riquadro che
+racconta in poche righe (2–4 frasi, in seconda persona, niente elenchi) che cosa
+lo studente imparerà, nell'ordine del capitolo:
+
+```liquid
+{% include box-obiettivi.html %}
+Scopri … Impari … Infine …
+{% include box-end.html %}
+```
+
+Quando si aggiunge o si toglie una sezione (o la si commenta), il riquadro va
+aggiornato.
+
 ## Guida per i nuovi capitoli
 
 La scaletta di ogni capitolo, le convenzioni (tono, notazione, box, quiz,
@@ -464,6 +479,9 @@ I compiti per lezione stanno in `_data/compiti.yml`. Attivo solo se
 `consegne_url` in `_config.yml` non è vuoto.
 
 - Nel server non devono mai finire nomi di studenti: solo codici.
+- Notifiche al docente: bot Telegram (secret `TELEGRAM_TOKEN`, collegamento
+  dalla pagina del docente, scheda Dati) e avvisi del browser con la pagina
+  aperta. Istruzioni in `strumenti/consegne/LEGGIMI.md`.
 - Tutti gli esercizi della teoria (qualunque nome: Verifica Subito!, Prova
   tu!, Isola le altre grandezze, completamenti, Frayer…) vengono numerati da
   soli (scripts.html: un'unica serie per capitolo, cerchietto accanto

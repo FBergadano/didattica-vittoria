@@ -515,7 +515,7 @@ function opCheck(pfx,Q,ok,cur,N,i){
     ok[i]=true;fb.className='iex-fb ok';
     fb.innerHTML='&#10003; Esatto!'+(i<N-1?' <button class="iex-nextbtn" onclick="'+pfx+'show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootConf(vb);updateDots(pfx,cur[0],ok,N);
-    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    if(ok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     _lvSave('scinot',pfx,snapshot(pfx,ok,N));
   } else {
     fb.className='iex-fb err';

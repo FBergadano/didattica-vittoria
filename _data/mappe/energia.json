@@ -45,85 +45,86 @@
   },
   {
    "id": "n2",
-   "x": 330,
-   "y": 50,
-   "w": 340,
-   "h": 62,
+   "x": 10,
+   "y": 44,
+   "w": 290,
+   "h": 95,
    "testo": "**Energia** — si misura in joule (J)\nnon si crea e non si distrugge: si trasforma",
    "colore": "azzurro",
    "stile": "testata"
   },
   {
    "id": "n3",
-   "x": 10,
-   "y": 140,
-   "w": 290,
-   "h": 135,
+   "x": 345,
+   "y": 44,
+   "w": 310,
+   "h": 125,
    "testo": "**Lavoro** $L$\n$L = F\\cdot\\Delta s$ (forza parallela allo spostamento)\n$L>0$ se concordi, $L<0$ se opposti, $L=0$ se perpendicolari\n$[L] = \\text J = \\text N\\cdot\\text m$",
    "colore": "viola"
   },
   {
    "id": "n4",
-   "x": 10,
-   "y": 335,
-   "w": 290,
+   "x": 705,
+   "y": 44,
+   "w": 285,
    "h": 95,
    "testo": "**Potenza** $P$\n$P = \\dfrac{L}{\\Delta t}$\n$[P] = \\text W = \\text{J/s}$",
    "colore": "viola"
   },
   {
    "id": "n5",
-   "x": 355,
-   "y": 140,
-   "w": 290,
-   "h": 100,
+   "x": 110,
+   "y": 215,
+   "w": 330,
+   "h": 95,
    "testo": "**Energia cinetica** $K$\n$K = \\dfrac12\\, m\\, v^2$\nteorema: $L_{tot} = \\Delta K$",
    "colore": "verde"
   },
   {
    "id": "n6",
-   "x": 355,
-   "y": 300,
-   "w": 290,
-   "h": 110,
+   "x": 560,
+   "y": 215,
+   "w": 330,
+   "h": 95,
    "testo": "**Energia potenziale gravitazionale** $U$\n$U = m\\,g\\,h$\nquando il corpo sale di $h$ il peso compie $L = -m g h$",
    "colore": "verde"
   },
   {
    "id": "n7",
-   "x": 355,
-   "y": 600,
-   "w": 290,
-   "h": 95,
-   "testo": "**Calore** $Q$\nl'energia meccanica dissipata (attriti) diventa calore\n$[Q] = \\text J$",
-   "colore": "rosa"
+   "x": 350,
+   "y": 360,
+   "w": 300,
+   "h": 62,
+   "testo": "**Energia meccanica**\n$E = K + U$",
+   "colore": "giallo",
+   "stile": "testata"
   },
   {
    "id": "n8",
-   "x": 700,
-   "y": 140,
-   "w": 290,
-   "h": 70,
-   "testo": "**Energia meccanica**\n$E = K + U$",
-   "colore": "giallo"
-  },
-  {
-   "id": "n9",
-   "x": 700,
-   "y": 265,
-   "w": 290,
-   "h": 110,
+   "x": 40,
+   "y": 470,
+   "w": 400,
+   "h": 105,
    "testo": "**Sistema isolato**\n$E$ costante: $K_i + U_i = K_f + U_f$\ncaduta da $h_i$: $v_f = \\sqrt{2\\,g\\,h_i}$",
    "colore": "giallo"
   },
   {
-   "id": "n10",
-   "x": 700,
-   "y": 430,
-   "w": 290,
-   "h": 120,
-   "testo": "**Sistema non isolato**\nscambia lavoro con l'Universo:\n$\\Delta E = L$\n$L = L_{U\\to S} - L_{S\\to U}$",
+   "id": "n9",
+   "x": 560,
+   "y": 470,
+   "w": 400,
+   "h": 110,
+   "testo": "**Sistema non isolato**\nscambia lavoro con l'Universo: $\\Delta E = L$\n$L = L_{U\\to S} - L_{S\\to U}$",
    "colore": "arancio"
+  },
+  {
+   "id": "n10",
+   "x": 560,
+   "y": 618,
+   "w": 400,
+   "h": 82,
+   "testo": "**Calore** $Q$\nl'energia meccanica dissipata (attriti) diventa calore\n$[Q] = \\text J$",
+   "colore": "rosa"
   }
  ],
  "frecce": [
@@ -145,37 +146,46 @@
   },
   {
    "id": "f3",
-   "da": "n5",
-   "a": "n8",
+   "da": "n3",
+   "a": "n6",
    "tipo": "freccia",
    "colore": "grigio"
   },
   {
    "id": "f4",
-   "da": "n6",
-   "a": "n8",
+   "da": "n5",
+   "a": "n7",
    "tipo": "freccia",
    "colore": "grigio"
   },
   {
    "id": "f5",
-   "da": "n8",
-   "a": "n9",
+   "da": "n6",
+   "a": "n7",
    "tipo": "freccia",
    "colore": "grigio"
   },
   {
    "id": "f6",
-   "da": "n9",
-   "a": "n10",
-   "tipo": "tratteggiata",
-   "colore": "grigio"
+   "da": "n7",
+   "a": "n8",
+   "tipo": "freccia",
+   "colore": "grigio",
+   "testo": "nessuno scambio"
   },
   {
    "id": "f7",
-   "da": "n10",
-   "a": "n7",
-   "tipo": "tratteggiata",
+   "da": "n7",
+   "a": "n9",
+   "tipo": "freccia",
+   "colore": "grigio",
+   "testo": "scambio di lavoro"
+  },
+  {
+   "id": "f8",
+   "da": "n9",
+   "a": "n10",
+   "tipo": "freccia",
    "colore": "grigio",
    "testo": "dissipazione"
   }

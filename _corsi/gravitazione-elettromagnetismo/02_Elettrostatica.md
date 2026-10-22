@@ -9,7 +9,12 @@ numero: 2
 
 <cit autore="I Ching, il libro dei mutamenti">
 Le leggi naturali non sono esterne alle cose. Sono anzi l'armonia del moto, immanente alle cose.
-</cit> 
+</cit>
+
+{% include box-obiettivi.html %}
+Scopri che la materia è piena di cariche elettriche, perché in alcuni materiali possono muoversi e in altri no, e in quanti modi un corpo può caricarsi: per strofinio, per contatto, per induzione. Impari la legge di Coulomb, che dice con quale forza due cariche si attraggono o si respingono, e la confronti con la gravitazione. Infine introduci il campo elettrico e impari a rappresentarlo con le linee di campo, fino al campo uniforme fra due lastre.
+{% include box-end.html %}
+ 
 
 <!-- <cit autore="Empedocle, Sulla Natura">
 Sole fulgido, Terra, Cielo, Mare

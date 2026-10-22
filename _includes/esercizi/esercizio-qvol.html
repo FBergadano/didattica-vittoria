@@ -58,7 +58,7 @@ window.qvolCheck=function(i){
     qvolok[i]=true;fb.className='iex-fb ok';
     fb.innerHTML='&#10003; Esatto!'+(i<NQVOL-1?' <button class="iex-nextbtn" onclick="qvolShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootCV(vb);updDotsV();
-    if(qvolok.every(function(x){return x;}))setTimeout(shootFWV,600);
+    if(qvolok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     qvolSaveState();
   } else {
     fb.className='iex-fb err';

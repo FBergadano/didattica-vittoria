@@ -1,21 +1,67 @@
-</div><div class="scorri-nav"><button type="button" class="scorri-prev" aria-label="Esempio precedente">‹</button><span class="scorri-dots"></span><button type="button" class="scorri-next" aria-label="Esempio successivo">›</button></div>
+</div><div class="scorri-nav"><button type="button" class="scorri-prev" aria-label="Precedente">‹</button><span class="scorri-dots"></span><button type="button" class="scorri-next" aria-label="Successivo">›</button></div>
 <script>
 (function(){
-  var root=document.currentScript.parentNode,track=root.querySelector('.scorri-track'),slides=track.querySelectorAll('.scorri-slide'),dots=root.querySelector('.scorri-dots'),cur=0;
-  slides.forEach(function(s,k){var d=document.createElement('button');d.type='button';d.className='scorri-dot';d.setAttribute('aria-label','Esempio '+(k+1));
-    d.addEventListener('click',function(){go(k);});dots.appendChild(d);});
-  function go(k){k=(k+slides.length)%slides.length;cur=k;track.scrollTo({left:track.scrollLeft+slides[k].getBoundingClientRect().left-track.getBoundingClientRect().left,behavior:'smooth'});}
-  function mark(){var best=1e9;slides.forEach(function(sl,k){var d=Math.abs(sl.getBoundingClientRect().left-track.getBoundingClientRect().left);if(d<best){best=d;cur=k;}});dots.querySelectorAll('.scorri-dot').forEach(function(d,k){d.classList.toggle('on',k===cur);});}
-  root.querySelector('.scorri-prev').addEventListener('click',function(){go(cur-1);});
-  root.querySelector('.scorri-next').addEventListener('click',function(){go(cur+1);});
+  var root=document.currentScript.parentNode,track=root.querySelector('.scorri-track'),slides=[].slice.call(track.querySelectorAll(':scope > .scorri-slide')),dots=root.querySelector('.scorri-dots');
+  // i passi: una slide, oppure, se la slide contiene un quiz vero/falso, ciascuna delle sue affermazioni
+  // (così il quiz non si salta con una freccia, e «Avanti →» del quiz porta alla slide successiva)
+  var steps=[],cs=0,vis=0;
+  slides.forEach(function(sl,k){
+    var q=sl.querySelector('.qgf-widget'),n=(q&&q._qgf&&q._qgf.n>1)?q._qgf.n:1;
+    for(var j=0;j<n;j++)steps.push({s:k,q:n>1?q:null,j:j});
+  });
+  steps.forEach(function(st,n){
+    var d=document.createElement('button');d.type='button';d.className='scorri-dot';
+    d.dataset.slide=st.s; if(st.q)d.dataset.qk=st.j;
+    d.setAttribute('aria-label',st.q?'Affermazione '+(st.j+1):'Domanda '+(n+1));
+    d.addEventListener('click',function(){vai(n);});dots.appendChild(d);
+  });
+  var D=[].slice.call(dots.children);
+  function scorriA(k){track.scrollTo({left:track.scrollLeft+slides[k].getBoundingClientRect().left-track.getBoundingClientRect().left,behavior:'smooth'});}
+  function vai(n){
+    if(n<0||n>=steps.length)return;
+    var st=steps[n];cs=n;
+    if(st.s!==vis){vis=st.s;scorriA(st.s);}
+    if(st.q&&st.q._qgf.indice()!==st.j)st.q._qgf.vai(st.j);
+    paint();
+  }
+  function paint(){
+    D.forEach(function(d,n){
+      d.classList.toggle('on',n===cs);
+      var st=steps[n];
+      if(st.q){var r=st.q._qgf.esito(st.j);if(r===true)d.dataset.lv='ok';else if(r===false)d.dataset.lv='no';else delete d.dataset.lv;}
+    });
+  }
+  // la slide visibile (anche quando si scorre col dito)
+  function mark(){
+    var best=1e9,k=vis;
+    slides.forEach(function(sl,i){var d=Math.abs(sl.getBoundingClientRect().left-track.getBoundingClientRect().left);if(d<best){best=d;k=i;}});
+    if(k!==vis||steps[cs].s!==k){
+      vis=k;
+      for(var n=0;n<steps.length;n++)if(steps[n].s===k&&(!steps[n].q||steps[n].j===steps[n].q._qgf.indice())){cs=n;break;}
+      paint();
+    }
+  }
+  root.querySelector('.scorri-prev').addEventListener('click',function(){vai(cs-1);});
+  root.querySelector('.scorri-next').addEventListener('click',function(){vai(cs+1);});
+  slides.forEach(function(sl,k){
+    var q=sl.querySelector('.qgf-widget');if(!q||!q._qgf||q._qgf.n<2)return;
+    q.addEventListener('qgf:cambia',function(){
+      for(var n=0;n<steps.length;n++)if(steps[n].q===q&&steps[n].j===q._qgf.indice()){if(steps[n].s===vis)cs=n;break;}
+      paint();
+    });
+    q._qgfAvanti=function(){
+      if(cs<steps.length-1)vai(cs+1);
+      else{var u=root.closest('.unisci');if(u)u.querySelector('.unisci-next').click();}
+    };
+  });
   // altezza: quella della slide che si sta guardando (niente spazio vuoto sotto le domande corte);
   // si aggiorna anche quando la slide cresce, per esempio quando compare una spiegazione
-  function fit(){var h=slides[cur]?slides[cur].offsetHeight:0;if(h)track.style.height=h+'px';}
+  function fit(){var h=slides[vis]?slides[vis].offsetHeight:0;if(h)track.style.height=h+'px';}
   track.addEventListener('scroll',function(){window.requestAnimationFrame(function(){mark();fit();});});
   if(window.ResizeObserver){var ro=new ResizeObserver(function(){fit();});slides.forEach(function(s){ro.observe(s);});}
   window.addEventListener('resize',fit);
   window.addEventListener('beforeprint',function(){track.style.height='';});
-  mark();fit();
+  paint();fit();
 })();
 </script>
 </div>

@@ -297,22 +297,23 @@ en = M("L'energia",
        ['L', 'F', '\\Delta s', 'P', '\\Delta t', 'K', 'U', 'E', 'm', 'v', 'g', 'h', 'h_i', 'v_f', 'Q', '\\Delta E', '\\Delta K', 'L_{U\\to S}', 'L_{S\\to U}'],
        ['J', 'W', 'N', 'm', 's', 'kg', '\\text{m/s}', '\\text{m/s}^2', '\\text{J/s}'])
 en.box(300, 6, 400, 36, "L'energia", 'azzurro', 'titolo')
-E0 = en.box(330, 50, 340, 62, '**Energia** — si misura in joule (J)\nnon si crea e non si distrugge: si trasforma', 'azzurro', 'testata')
-La = en.box(10, 140, 290, 135, '**Lavoro** $L$\n$L = F\\cdot\\Delta s$ (forza parallela allo spostamento)\n'
+E0 = en.box(10, 44, 290, 95, '**Energia** — si misura in joule (J)\nnon si crea e non si distrugge: si trasforma', 'azzurro', 'testata')
+La = en.box(345, 44, 310, 125, '**Lavoro** $L$\n$L = F\\cdot\\Delta s$ (forza parallela allo spostamento)\n'
   '$L>0$ se concordi, $L<0$ se opposti, $L=0$ se perpendicolari\n$[L] = \\text J = \\text N\\cdot\\text m$', 'viola')
-Po = en.box(10, 335, 290, 95, '**Potenza** $P$\n$P = \\dfrac{L}{\\Delta t}$\n$[P] = \\text W = \\text{J/s}$', 'viola')
-Ki = en.box(355, 140, 290, 100, '**Energia cinetica** $K$\n$K = \\dfrac12\\, m\\, v^2$\n'
+Po = en.box(705, 44, 285, 95, '**Potenza** $P$\n$P = \\dfrac{L}{\\Delta t}$\n$[P] = \\text W = \\text{J/s}$', 'viola')
+Ki = en.box(110, 215, 330, 95, '**Energia cinetica** $K$\n$K = \\dfrac12\\, m\\, v^2$\n'
   'teorema: $L_{tot} = \\Delta K$', 'verde')
-Up = en.box(355, 300, 290, 110, '**Energia potenziale gravitazionale** $U$\n$U = m\\,g\\,h$\n'
+Up = en.box(560, 215, 330, 95, '**Energia potenziale gravitazionale** $U$\n$U = m\\,g\\,h$\n'
   'quando il corpo sale di $h$ il peso compie $L = -m g h$', 'verde')
-Ca = en.box(355, 600, 290, 95, '**Calore** $Q$\nl\'energia meccanica dissipata (attriti) diventa calore\n$[Q] = \\text J$', 'rosa')
-Me = en.box(700, 140, 290, 70, '**Energia meccanica**\n$E = K + U$', 'giallo')
-Is = en.box(700, 265, 290, 110, '**Sistema isolato**\n$E$ costante: $K_i + U_i = K_f + U_f$\n'
+Me = en.box(350, 360, 300, 62, '**Energia meccanica**\n$E = K + U$', 'giallo', 'testata')
+Is = en.box(40, 470, 400, 105, '**Sistema isolato**\n$E$ costante: $K_i + U_i = K_f + U_f$\n'
   'caduta da $h_i$: $v_f = \\sqrt{2\\,g\\,h_i}$', 'giallo')
-NI = en.box(700, 430, 290, 120, '**Sistema non isolato**\nscambia lavoro con l\'Universo:\n$\\Delta E = L$\n'
+NI = en.box(560, 470, 400, 110, '**Sistema non isolato**\nscambia lavoro con l\'Universo: $\\Delta E = L$\n'
   '$L = L_{U\\to S} - L_{S\\to U}$', 'arancio')
-en.fr(La, Po, '$\\div\\,\\Delta t$'); en.fr(La, Ki, '$L = \\Delta K$'); en.fr(Ki, Me); en.fr(Up, Me)
-en.fr(Me, Is); en.fr(Is, NI, '', 'tratteggiata'); en.fr(NI, Ca, 'dissipazione', 'tratteggiata')
+Ca = en.box(560, 618, 400, 82, '**Calore** $Q$\nl\'energia meccanica dissipata (attriti) diventa calore\n$[Q] = \\text J$', 'rosa')
+en.fr(La, Po, '$\\div\\,\\Delta t$'); en.fr(La, Ki, '$L = \\Delta K$'); en.fr(La, Up)
+en.fr(Ki, Me); en.fr(Up, Me)
+en.fr(Me, Is, 'nessuno scambio'); en.fr(Me, NI, 'scambio di lavoro'); en.fr(NI, Ca, 'dissipazione')
 en.salva('energia')
 
 # ═════════ CALORE ═════════

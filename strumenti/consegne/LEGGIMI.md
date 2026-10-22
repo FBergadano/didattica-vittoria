@@ -118,3 +118,29 @@ dalla scheda **Studenti**.
 
 Se `worker.js` cambia, ripeti solo il punto 2.2 (*Edit code*, incolla,
 *Deploy*): database, impostazioni e dati restano.
+
+## Notifiche sul telefono (Telegram)
+
+Quando arriva un dubbio, delle foto, uno schema o le prime risposte del giorno
+di uno studente su una pagina, la Worker ti scrive su Telegram (solo codici,
+mai nomi; il testo dei dubbi passa da Telegram). Si attiva una volta sola:
+
+1. Su Telegram cerca **@BotFather**, scrivigli `/newbot` e segui le domande
+   (un nome, per esempio «Consegne Vittoria», e un nome utente che finisce
+   in `bot`). Alla fine ti dà un **token**, una stringa come
+   `123456789:AAH...`: copialo.
+2. Da questa cartella:
+   ```bash
+   npx wrangler@4 secret put TELEGRAM_TOKEN   # incolla il token
+   npx wrangler@4 deploy
+   ```
+3. Su Telegram apri il tuo nuovo bot e premi **Avvia** (`/start`).
+4. Nella pagina del docente, scheda **Dati** → **Collega Telegram**.
+   Ti arriva subito un messaggio di conferma; con «Manda una prova» puoi
+   ricontrollare quando vuoi.
+
+Per spegnerle: **Scollega**, nella stessa scheda.
+
+Nella scheda Dati c'è anche «Mostrami gli avvisi del browser»: mentre la pagina
+del docente è aperta, ogni minuto controlla le novità e le mostra con un avviso
+del computer (funziona anche senza Telegram).

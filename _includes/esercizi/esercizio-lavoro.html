@@ -149,7 +149,7 @@ Esercizio a carosello (Verifica Subito!) sul lavoro. Nessun parametro.
   // Fuochi d'artificio finali, quando TUTTE le domande (comprese quelle
   // annidate come sci.html/invert.html, vedi sotto) sono state risolte.
   function checkFinale(){
-    if(ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    if(ok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
   }
   function shootFW(){
     for(var b=0;b<7;b++)(function(b){setTimeout(function(){

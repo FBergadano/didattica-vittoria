@@ -18,6 +18,13 @@ Sorride, non ti dice la sua età.
 Ma tutto questo Alice non lo sa.
 </cit>
 
+{% include box-obiettivi.html %}
+Scopri perché nessuna misura è perfetta e come si dichiara quanto è precisa: l'incertezza strumentale, la semidispersione, l'errore relativo. Impari come si propagano le incertezze quando metti insieme più misure in un calcolo. Poi metti tutto in pratica in un'attività di laboratorio: misurare la densità di un sasso con un bicchiere d'acqua.
+{% include box-end.html %}
+
+
+
+
 <section id="cap1" class="chapter-section">
 <header class="chapter-header">
   <span class="chapter-number">Parte I</span>
@@ -28,16 +35,16 @@ Ma tutto questo Alice non lo sa.
 ### Errore e incertezza: una distinzione importante
 
 Abbiamo detto che misurare significa associare un numero a una caratteristica di un oggetto. Eppure sorgono subito alcuni problemi.
-- **Problema 1: l'instabilità di una misurazione.** Quasi sempre gli oggetti *cambiano* continuamente, anche se non ce ne accorgiamo. E quindi in realtà quello che abbiamo misurato in un certo momento potrebbe essere molto diverso da ciò che misureremmo in un momento successivo.
-- **Problema 2: le imprecisioni.** Se anche un oggetto possedesse una caratteristica che non cambia mai, come faremmo a misurarla perfettamente? Ogni strumento che abbiamo è imperfetto: non si può mai misurare con precisione infinita.
+- **Problema 1: l'instabilità di una misurazione.** Quasi sempre <u markdown="span">gli oggetti *cambiano* continuamente</u>, anche se non ce ne accorgiamo. E quindi in realtà quello che abbiamo misurato in un certo momento potrebbe essere molto diverso da ciò che misureremmo in un momento successivo.
+- **Problema 2: le imprecisioni.** Se anche un oggetto possedesse una caratteristica che non cambia mai, come faremmo a misurarla perfettamente? <u markdown="span">Ogni strumento che abbiamo è **imperfetto**</u>: non si può mai ottenere una misurazione infinitamente precisa. Inoltre, per compiere una misurazione dobbiamo basarci **sui nostri sensi** (vista, udito, ecc.), che sono limitati. Quindi anche noi che compiamo la misurazione siamo imperfetti e quindi introduciamo errori.
 
 Considera l'esempio di questo cactus. La bilancia segna che la massa del cactus corrisponde a 3 421 g. Tuttavia, il vero valore della massa del cactus è leggermente diverso e corrisponde, inizialmente, a 3 421,2 g. Quella leggera differenza è così piccola che la bilancia non è in grado di rilevarla.  
 Inoltre, quando arriva il Sole, l'acqua contenuta all'interno del cactus evapora parzialmente. Quindi la massa del cactus diminuisce, ma di così poco che la bilancia non è in grado di farlo vedere.  
-È insomma evidente che non si possa misurare perfettamente la massa di un cactus.
+È insomma evidente che non si possa misurare perfettamente la massa di un cactus, né di qualsiasi altra cosa.
 
 {% include lab-virtuali/bilancia-cactus-lab.html %}
 
-Oppure considerate il seguente esempio, in cui un'ape vola sopra un righello. Provate a indovinare la lunghezza dell'ape, e realizzerete quanto è difficile farlo. Qui la colpa non è né dello strumento né dell'ape: siamo noi che facciamo fatica a leggere il valore della misurazione perché le condizioni sono difficili.
+Oppure considerate il seguente esempio, in cui un'ape vola sopra un righello. Provate a indovinare la lunghezza dell'ape, e realizzerete quanto è difficile farlo. Qui la colpa non è né dello strumento né dell'ape: siamo noi che facciamo fatica a leggere il valore della misurazione perché le condizioni sono difficili. Come dicevamo, i nostri sensi sono limitati, e pur disponendo di un righello ben tarato talvolta è difficile realizzare una misurazione molto accurata.
 
 {% include lab-virtuali/ape-righello-lab.html %}
 

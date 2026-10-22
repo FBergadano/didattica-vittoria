@@ -8,9 +8,10 @@ strumenti (box, esercizi, widget) vedi `CLAUDE.md`.
 
 ## 1. La scaletta di un capitolo
 
-1. **Apertura.** Una citazione (`<cit autore="…">`) e un aggancio di
-   meraviglia: un fenomeno, una domanda, una storia. Subito dopo, 3–5
-   **obiettivi** ("Alla fine di questo capitolo saprai…").
+1. **Apertura.** Una citazione (`<cit autore="…">`), subito dopo il riquadro
+   **«In questo capitolo»** (`box-obiettivi.html`: 2–4 frasi che raccontano che
+   cosa si imparerà), poi un aggancio di meraviglia: un fenomeno, una domanda,
+   una storia.
 
 2. **Per ogni concetto, sempre nello stesso ordine:**
    1. *Fenomeno o esperimento* (meglio se interattivo). Prima di mostrarlo,
@@ -116,7 +117,7 @@ nel sito è leggibile da chiunque. Per la chat vedi
 
 ## 4. Lista di controllo prima di pubblicare
 
-- [ ] Obiettivi in apertura, "In sintesi" e "Sai fare?" in chiusura.
+- [ ] Riquadro «In questo capitolo» in apertura, "In sintesi" e "Sai fare?" in chiusura.
 - [ ] Ogni concetto ha almeno una domanda di produzione.
 - [ ] Ogni formula nuova ha unità di misura e formula invertita.
 - [ ] Schema riassuntivo prima degli esercizi di riepilogo.

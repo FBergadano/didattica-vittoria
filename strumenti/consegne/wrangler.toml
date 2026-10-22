@@ -14,6 +14,7 @@ enabled = false
 
 [vars]
 ORIGINE = "https://fbergadano.github.io"
+DOCENTE_URL = "https://fbergadano.github.io/didattica-vittoria/consegna/docente/"
 
 [[d1_databases]]
 binding = "DB"

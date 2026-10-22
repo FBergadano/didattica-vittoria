@@ -239,7 +239,7 @@ window.ex1check=function(i){
     ex1ok[i]=true;fb.className='iex-fb ok';
     fb.innerHTML='&#10003; Esatto!'+(i<N1-1?' <button class="iex-nextbtn" onclick="ex1show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     shootConf(vb);updateDots('ex1',ex1cur,ex1ok,N1);
-    if(ex1ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    if(ex1ok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     _lvSave('scinot','ex1',snapshotME('ex1',ex1ok,N1));
   } else {
     fb.className='iex-fb err';
@@ -255,7 +255,7 @@ window.ex2check=function(i){
     ex2ok[i]=true;fb.className='iex-fb ok';
     fb.innerHTML='&#10003; Esatto!'+(i<N2-1?' <button class="iex-nextbtn" onclick="ex2show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     shootConf(vb);updateDots('ex2',ex2cur,ex2ok,N2);
-    if(ex2ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    if(ex2ok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     _lvSave('scinot','ex2',snapshotFull('ex2',ex2ok,N2));
   } else {
     fb.className='iex-fb err';

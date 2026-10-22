@@ -58,7 +58,7 @@ window.qarCheck=function(i){
     qarok[i]=true;fb.className='iex-fb ok';
     fb.innerHTML='&#10003; Esatto!'+(i<NQAR-1?' <button class="iex-nextbtn" onclick="qarShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootCA(vb);updDotsA();
-    if(qarok.every(function(x){return x;}))setTimeout(shootFWA,600);
+    if(qarok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     qarSaveState();
   } else {
     fb.className='iex-fb err';

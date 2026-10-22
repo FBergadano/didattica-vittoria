@@ -250,6 +250,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       sel.innerHTML = lista.map(function(c) { return '<option>' + esc(c) + '</option>'; }).join('') + '<option value="">+ nuova classe…</option>';
       if (lista.indexOf(prima) >= 0) sel.value = prima;
       cambiaClasse();
+      avviaNovita();
     }).catch(function(e) { if (e.message !== 'accesso') $('#pwmsg').textContent = 'Non riesco a contattare il server (' + e.message + ').'; $('#accesso').hidden = !pw() ? false : $('#accesso').hidden; });
   }
   $('#classe').onchange = cambiaClasse;
@@ -569,17 +570,76 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   }
 
   // ───────── dati ─────────
+  // ───────── avvisi: novità mentre la pagina è aperta ─────────
+  // Ogni minuto chiedo al server che cosa è arrivato (dubbi, foto, schemi, risposte):
+  // il numero compare nel titolo della scheda del browser e, se l'ho permesso, in un avviso.
+  var AK = 'lv-docente:avvisi', daNovita = 0, nNovita = 0, tNovita = null, TITOLO = document.title;
+  function avvisiOn() { try { return localStorage.getItem(AK) === '1'; } catch (e) { return false; } }
+  function avviaNovita() {
+    if (tNovita) return;
+    daNovita = Date.now();
+    tNovita = setInterval(controllaNovita, 60000);
+    document.addEventListener('visibilitychange', function() { if (!document.hidden) { nNovita = 0; document.title = TITOLO; } });
+  }
+  function controllaNovita() {
+    chiama('/docente/novita?da=' + daNovita).then(function(j) {
+      daNovita = j.ora || Date.now();
+      var righe = [];
+      (j.dubbi || []).forEach(function(x) { righe.push('❓ dubbio da ' + x.codice + ' (' + x.classe + ')'); });
+      var f = {}; (j.foto || []).forEach(function(x) { f[x.codice + ' (' + x.classe + ')'] = 1; });
+      Object.keys(f).forEach(function(k) { righe.push('📷 foto da ' + k); });
+      (j.schemi || []).forEach(function(x) { righe.push('🗺 schema da ' + x.codice + ' (' + x.classe + ')'); });
+      var r = {}; (j.risposte || []).forEach(function(x) { r[x.codice + ' (' + x.classe + ')'] = 1; });
+      Object.keys(r).forEach(function(k) { righe.push('✏️ risposte da ' + k); });
+      if (!righe.length) return;
+      nNovita += righe.length;
+      if (document.hidden) document.title = '(' + nNovita + ') ' + TITOLO;
+      if (avvisiOn() && window.Notification && Notification.permission === 'granted')
+        new Notification('Consegne: novità', { body: righe.slice(0, 6).join('\n') + (righe.length > 6 ? '\n…' : ''), tag: 'lv-consegne' });
+      if ((j.dubbi || []).length) chiama('/docente/dubbi?classe=' + encodeURIComponent(classe)).then(function(x) { dubbi = x.dubbi || []; mostra(); }).catch(function() {});
+    }).catch(function() {});
+  }
+
+  function vistaNotifiche() {
+    var box = $('#notifiche'); if (!box) return;
+    box.innerHTML = '<b>Notifiche</b><p class="nota">Caricamento…</p>';
+    chiama('/docente/telegram', {}).then(function(st) {
+      var h = '<b>Notifiche sul telefono (Telegram)</b>';
+      if (!st.token) h += '<p class="nota">Non ancora attive: serve un bot Telegram. Istruzioni in <code>strumenti/consegne/LEGGIMI.md</code>, paragrafo «Notifiche» (5 minuti, una volta sola).</p>';
+      else if (!st.collegato) h += '<p class="nota">Il bot c\'è. Per collegarlo: apri il tuo bot su Telegram, scrivigli <b>/start</b>, poi premi qui.</p><p><button class="pri" data-tg="collega">Collega Telegram</button> <span class="nota" id="tgmsg"></span></p>';
+      else h += '<p class="nota">✓ Attive: ti scrivo quando arrivano un dubbio, delle foto, uno schema, o le prime risposte del giorno di uno studente su una pagina.</p><p><button data-tg="prova">Manda una prova</button> <button class="peric" data-tg="scollega">Scollega</button> <span class="nota" id="tgmsg"></span></p>';
+      h += '<hr style="border:none;border-top:1px solid var(--bordo);margin:.8rem 0"><b>Avvisi nel browser</b><p class="nota">Mentre questa pagina è aperta (anche in un\'altra scheda), ogni minuto controllo le novità: il numero compare nel titolo della scheda e, se lo permetti, in un avviso.</p>' +
+        '<label style="display:flex;gap:.4rem;align-items:center"><input type="checkbox" id="avvisi"' + (avvisiOn() ? ' checked' : '') + '> Mostrami gli avvisi del browser</label>';
+      box.innerHTML = h;
+      $$('[data-tg]', box).forEach(function(b) {
+        b.onclick = function() {
+          b.disabled = true;
+          chiama('/docente/telegram', { azione: b.dataset.tg }).then(function(j) {
+            if (b.dataset.tg === 'prova') { $('#tgmsg').textContent = '✓ Inviata: controlla Telegram.'; b.disabled = false; }
+            else vistaNotifiche();
+          }).catch(function(e) { b.disabled = false; $('#tgmsg').textContent = e.message; });
+        };
+      });
+      $('#avvisi').onchange = function() {
+        var on = this.checked;
+        try { localStorage.setItem(AK, on ? '1' : '0'); } catch (e) {}
+        if (on && window.Notification && Notification.permission !== 'granted') Notification.requestPermission();
+      };
+    }).catch(function() { box.innerHTML = '<b>Notifiche</b><p class="nota">Il server non gestisce ancora le notifiche: va aggiornata la Worker (<code>npx wrangler@4 deploy</code>).</p>'; });
+  }
+
   function vistaDati() {
     var sec = $('#s-dati');
-    sec.innerHTML = '<div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte, le foto e i dubbi arrivati prima della data scelta. ' +
+    sec.innerHTML = '<div class="card" id="notifiche"></div><div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte, le foto e i dubbi arrivati prima della data scelta. ' +
       'Conviene farlo a fine quadrimestre: sul server resta solo ciò che serve.</p>' +
       '<p>Cancella tutto ciò che è precedente al <input type="date" id="primadi"> <button class="peric" id="cancella">Cancella</button> <span id="canmsg" class="nota"></span></p></div>';
     $('#cancella').onclick = function() {
       var v = $('#primadi').value; if (!v) return;
       var t = giorno(v).getTime();
       if (!confirm('Cancellare definitivamente risposte e dubbi precedenti al ' + bella(giorno(v)) + ' ' + v.slice(0, 4) + '?')) return;
-      chiama('/docente/cancella', { prima_di: t }).then(function(j) { $('#canmsg').textContent = '✓ Cancellati ' + j.risposte + ' risposte, ' + (j.foto || 0) + ' foto e ' + j.dubbi + ' dubbi.'; });
+      chiama('/docente/cancella', { prima_di: t }).then(function(j) { $('#canmsg').textContent = '✓ Cancellati ' + j.risposte + ' risposte, ' + (j.foto || 0) + ' foto, ' + j.dubbi + ' dubbi e ' + (j.schemi || 0) + ' schemi.'; });
     };
+    vistaNotifiche();
   }
 
   if (pw()) avvia(); else esci('');

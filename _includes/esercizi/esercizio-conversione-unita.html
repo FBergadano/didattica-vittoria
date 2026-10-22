@@ -141,7 +141,7 @@ window.ex6check=function(i){
     ex6ok[i]=true;fb.className='iex-fb ok';
     fb.innerHTML='&#10003; Esatto!'+(i<N6-1?' <button class="iex-nextbtn" onclick="ex6show('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootConf(vb);updateDots('ex6',ex6c[0],ex6ok,N6);
-    if(ex6ok.every(function(x){return x;}))setTimeout(shootFW,600);
+    if(ex6ok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     _lvSave('scinot','ex6',ex6Snapshot());
   } else {
     fb.className='iex-fb err';

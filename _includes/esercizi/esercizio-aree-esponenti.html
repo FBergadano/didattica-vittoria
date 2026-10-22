@@ -132,7 +132,7 @@ window.aeCheck=function(i){
     aeok[i]=true;fb.className='iex-fb ok';
     fb.innerHTML='&#10003; Esatto!'+(i<NAE-1?' <button class="iex-nextbtn" onclick="aeShow('+(i+1)+')">Domanda successiva &rarr;</button>':'&ensp;Hai completato l\'esercizio!');
     if(vb)shootCAE(vb);updDotsAE();
-    if(aeok.every(function(x){return x;}))setTimeout(shootFWAE,600);
+    if(aeok.every(function(x){return x;}))null/* fuochi: li lancia scripts.html, alla fine di tutto l'esercizio */;
     aeSaveState();
   } else {
     fb.className='iex-fb err';

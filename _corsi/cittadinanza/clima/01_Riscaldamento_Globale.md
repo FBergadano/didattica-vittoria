@@ -18,7 +18,9 @@ La frase qui sopra è di [Eunice Foote](https://it.wikipedia.org/wiki/Eunice_New
 
 Nelle prossime settimane ci occupiamo del <definizione>riscaldamento globale</definizione>, cioè dell'aumento della temperatura media della Terra che si misura dalla fine dell'Ottocento. Questa volta le lezioni le preparate tu e i tuoi compagni. La classe si divide in cinque gruppi e ciascuno spiega agli altri un pezzo del problema: la fisica, le conseguenze, chi lo ha scoperto e chi oggi si mobilita, i rifugiati climatici, le soluzioni possibili.
 
+{% include box-obiettivi.html %}
 Alla fine saprai spiegare come funziona l'effetto serra e leggere i dati sul clima, sapere quali conseguenze vediamo già anche in Piemonte, e avrai gli strumenti per farti un'idea tua e dire la tua nei dibattiti di oggi.
+{% include box-end.html %}
 
 {% include riflessione.html id="clima-inizio" etichetta="💭 Il punto di partenza"
    domanda="Prima di cominciare, scrivi in poche righe che cosa sai oggi del riscaldamento globale: perché succede, e se ti riguarda. Lo rileggerai alla fine." %}

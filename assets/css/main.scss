@@ -519,6 +519,8 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
                 .box-label { color: $box-blue-border; } }
   &.box-proof { background: $box-proof-bg; border-color: $box-proof-border;
                 .box-label { color: $box-proof-border; } }
+  &.box-obiettivi { background: #f0fdf4; border-color: #16a34a;
+                .box-label { color: #15803d; } }
   &.box-note  { background: $box-note-bg;  border-color: $box-note-border;
                 .box-label { color: $box-note-border; } }
   &.box-ricorda { background: $box-ricorda-bg; border-color: $box-ricorda-border;
@@ -2144,6 +2146,7 @@ cit em, cit i { font-style: normal; }
   > .unisci-parte > .box > .box-label, > .unisci-parte > .iex-widget > .iex-lbl, > .unisci-parte > .iex-lbl { display: none; }
   .unisci-guidata { display: none !important; }
 }
+.unisci-parti .qgf-prog, .scorri .qgf-prog { display: none; } // i passi del quiz sono già nei pallini comuni
 .unisci-sub { font-weight: 600; font-size: .95rem; color: $box-ex-border; margin: 0 0 .6rem; }
 .unisci-prev::before { content: "‹"; }
 .unisci-next::before { content: "›"; }

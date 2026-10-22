@@ -12,6 +12,11 @@ Mais où sont les neiges d'antan?
 (Dove sono le nevi di un tempo?)
 </cit>
 
+{% include box-obiettivi.html %}
+Scopri che cos'è l'energia attraverso la sua proprietà più importante: non si crea e non si distrugge, si trasforma soltanto. Impari a calcolare il lavoro di una forza e la potenza, e vedi in quali forme il lavoro può trasformarsi: energia cinetica ed energia potenziale gravitazionale. Le metti insieme nell'energia meccanica e scopri quando si conserva, nei sistemi isolati, e quando invece cambia, nei sistemi non isolati, fino all'energia che l'attrito trasforma in calore.
+{% include box-end.html %}
+
+
 {% include margin-note.html testo="L'energia si conserva"%}
 Tutto cambia continuamente: osserviamo in ogni momento forme, colori e sostanze che scompaiono. Eppure ci deve essere una realtà sottostante che non cambia, che rimane immutata, insomma qualcosa che “non si crea e non si distrugge”.  
 Questa “cosa” che non cambia, noi la chiameremo <definizione>energia</definizione>: anche se non abbiamo la più pallida idea di cosa sia veramente. Come diceva uno dei più grandi Fisici del Novecento,
@@ -592,7 +597,7 @@ Ad esempio, l'attrito compie sempre un lavoro negativo, perciò diminuisce l'ene
 {% include esercizi/esercizio-lavoro-scambiato.html %}
 {% include unisci-end.html %}
 
-### La palla da bowling
+### Gli urti
 
 Consideriamo l'esempio di una palla da bowling che cade.
 

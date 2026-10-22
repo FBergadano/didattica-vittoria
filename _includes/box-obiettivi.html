@@ -1,0 +1,9 @@
+{% comment %}
+Riquadro d'apertura del capitolo: racconta in poche righe che cosa lo studente
+imparerà. Va all'inizio di ogni capitolo, subito dopo la citazione d'apertura.
+Si chiude con box-end.html. Parametro facoltativo: testo (etichetta, default
+"In questo capitolo").
+{% endcomment %}
+<div class="box box-obiettivi">
+<p class="box-label">{% if include.testo %}{{ include.testo }}{% else %}In questo capitolo{% endif %}</p>
+<div class="box-content" markdown="1">

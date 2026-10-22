@@ -9,8 +9,9 @@ numero: 3
 
 <cit autore="Eraclito">Non è possibile che un uomo si immerga due volte nello stesso fiume, perché non sarà più lo stesso fiume, né sarà più lo stesso uomo.</cit> 
 
-In questo capitolo impariamo a osservare un fenomeno fino a essere in grado di descriverlo **con una formula matematica**. Impariamo cioè a *creare*, *interpretare* e *gestire* le formule della Fisica. Infine,
-impareremo anche a **descrivere** il cambiamento di tutto ciò che ci circonda, e ad esprimerlo a livello delle equazioni.
+{% include box-obiettivi.html %}
+Impari a osservare un fenomeno fino a saperlo descrivere con una formula: che cosa sono le grandezze unitarie, quando due grandezze sono direttamente o inversamente proporzionali, come si trova l'unità di misura di una grandezza dalla sua formula (e viceversa) e come si inverte una formula. Poi impari a descrivere il cambiamento di ciò che ti circonda: la variazione di una grandezza, e la sua variazione nel tempo e nello spazio.
+{% include box-end.html %}
 
 # Le Grandezze Unitarie
 
