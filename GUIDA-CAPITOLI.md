@@ -124,6 +124,6 @@ nel sito è leggibile da chiunque. Per la chat vedi
 - [ ] Esercizi di riepilogo raggruppati per argomento e ordinati per difficoltà.
 - [ ] Ogni esercizio numerico ha la soluzione; i risultati sono ricontrollati.
 - [ ] Correttezza fisica: nessuna semplificazione che diventi un'affermazione falsa.
-- [ ] Refusi riletti; `<definizione>` solo alla prima occorrenza; "tu" ovunque.
+- [ ] Refusi riletti; `<definizione>` solo alla prima occorrenza; "tu" nella spiegazione teorica e negli esercizi, "voi" nei progetti di gruppo (che si leggono insieme).
 - [ ] Nessun `<script>` / `<style>` nel `.md`; id dei widget tutti diversi.
 - [ ] `bundle exec jekyll serve`: la pagina si apre senza errori e i widget funzionano.

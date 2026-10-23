@@ -55,6 +55,8 @@ Quando presentò i suoi risultati, negli anni Quaranta dell'Ottocento, molti sci
 {% include spoiler-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qcalore %}[
 {"t": "Il calore è una forma di energia e si misura in joule.", "ok": true, "s": "Sì: proprio per questo la sua unità di misura è il joule, come per il lavoro e per ogni altra forma di energia."},
 {"t": "Strofinando le mani, l'energia meccanica si trasforma in calore.", "ok": true, "s": "Sì: l'attrito dissipa l'energia meccanica, che diventa calore."},
@@ -63,6 +65,44 @@ Quando presentò i suoi risultati, negli anni Quaranta dell'Ottocento, molti sci
 {"t": "Un corpo caldo contiene più calore di un corpo freddo.", "ok": false, "s": "No: il calore non è qualcosa che un corpo contiene. È energia che passa da un corpo a un altro: un corpo caldo ha una temperatura più alta, non «più calore»."}
 ]{% endcapture %}
 {% include quiz.html domande=_qcalore id="q-calore" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Nel suo mulinello, Joule faceva cadere i pesi decine di volte di fila, riavvolgendo ogni volta le corde. Perché?
+{% capture _o %}[
+{"v":"a","t":"Perché i pesi, cadendo più volte, diventavano più pesanti"},
+{"v":"b","t":"Perché a ogni caduta l'acqua si scaldava pochissimo: ripetendo, l'energia si accumulava e il riscaldamento diventava abbastanza grande da misurarlo"},
+{"v":"c","t":"Perché l'acqua doveva prima raffreddarsi"},
+{"v":"d","t":"Perché una sola caduta avrebbe raffreddato l'acqua"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-joule-ripete" opts=_o ok="b" s="L'energia potenziale persa in una caduta è piccola, e l'aumento di temperatura che produce è di pochi millesimi di grado. Ripetendo le cadute, l'energia trasformata in calore si somma, e la temperatura sale abbastanza da poterla misurare con precisione." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcVsBici" %}
+Un ciclista, con la bici, ha una massa totale di $80\ \text{kg}$ e viaggia a $10\ \text{m/s}$. Frena fino a fermarsi. Quanta energia è diventata calore, soprattutto nei freni e nelle ruote?
+
+{% include num.html id="numVsBici" valore="4000" unit="J" %}
+{% include spoiler.html testo="Mostra la soluzione" %}
+Tutta l'energia cinetica, $K = \dfrac12 m v^2 = \dfrac12\cdot 80\ \text{kg}\cdot(10\ \text{m/s})^2 = 4\,000\ \text J$, viene dissipata dall'attrito e diventa calore: è per questo che, dopo una lunga discesa frenando, i freni di una bici scottano.
+{% include spoiler-end.html %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Le «stelle cadenti» sono sassolini, spesso più piccoli di un chicco di riso, che entrano nell'atmosfera a decine di chilometri al secondo. Perché brillano?
+{% capture _o %}[
+{"v":"a","t":"Perché riflettono la luce del Sole"},
+{"v":"b","t":"Perché sono fatti di materiale luminoso"},
+{"v":"c","t":"Perché l'attrito con l'aria trasforma la loro enorme energia cinetica in calore: si scaldano fino a migliaia di gradi e diventano incandescenti"},
+{"v":"d","t":"Perché sono già caldissimi quando arrivano dallo spazio"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-meteora" opts=_o ok="c" s="A decine di chilometri al secondo anche un sassolino ha un'energia cinetica enorme. Frenato dall'aria, la dissipa in calore in pochi secondi: si scalda fino a diventare incandescente e quasi sempre si consuma prima di toccare terra." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _r %}Non è sparita: a ogni rimbalzo una parte dell'energia meccanica della palla viene dissipata. Diventa soprattutto calore (la palla e il pavimento si scaldano un pochino, nel punto dell'urto) e in parte suono. Alla fine tutta l'energia potenziale iniziale si è trasformata così: la quantità totale di energia è rimasta la stessa.{% endcapture %}
+{% include risposta-aperta.html id="ra-vs-palla" tipo="spiega"
+   domanda="Una palla rimbalza sul pavimento sempre un po' più in basso, finché si ferma. Dove è andata a finire la sua energia?"
+   risposta=_r %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 {% include margin-note.html testo="Quando e come" %}
@@ -108,6 +148,8 @@ Trascina la spada nella fornace per scaldarla, nel cesto di ghiaccio per raffred
 {% include lab-virtuali/spada-lab.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qtemperatura %}[
 {"t": "Due corpi in equilibrio termico hanno la stessa temperatura.", "ok": true, "s": "Sì: è proprio la definizione di equilibrio termico."},
 {"t": "Il calore passa sempre dal corpo che ha più massa a quello che ne ha meno.", "ok": false, "s": "No: il calore passa dal corpo a temperatura maggiore a quello a temperatura minore, qualunque sia la loro massa."},
@@ -116,6 +158,43 @@ Trascina la spada nella fornace per scaldarla, nel cesto di ghiaccio per raffred
 {"t": "Una bottiglia d'acqua chiusa in frigorifero da un giorno intero scambia ancora calore con l'aria del frigorifero.", "ok": false, "s": "No: dopo tanto tempo ha raggiunto la temperatura del frigorifero. È in equilibrio termico, quindi $Q=0$."}
 ]{% endcapture %}
 {% include quiz.html domande=_qtemperatura id="q-temperatura" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Quando ti misuri la febbre, devi tenere il termometro sotto la lingua per qualche minuto. Perché non basta un secondo?
+{% capture _o %}[
+{"v":"a","t":"Perché il termometro deve prima scaricarsi"},
+{"v":"b","t":"Perché il termometro misura la sua temperatura: deve aspettare di arrivare all'equilibrio termico con il tuo corpo, e il calore impiega un po' di tempo a passare"},
+{"v":"c","t":"Perché la febbre sale piano piano mentre tieni il termometro in bocca"},
+{"v":"d","t":"Perché in bocca la temperatura cambia continuamente"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-termometro-bocca" opts=_o ok="b" s="Un termometro misura sempre la propria temperatura. Se è in equilibrio termico con il corpo che tocca, le due temperature sono uguali, e solo allora la lettura è giusta. Per arrivarci, il calore deve passare dalla bocca al termometro, e serve un po' di tempo." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+In un contenitore che non scambia calore con l'esterno, metti a contatto tre corpi: $A$ a $80\ \text{°C}$, $B$ a $50\ \text{°C}$ e $C$ a $20\ \text{°C}$. Dopo molto tempo,
+{% capture _o %}[
+{"v":"a","t":"$A$ resta a $80\\ \\text{°C}$ e gli altri due si scaldano fino a lui"},
+{"v":"b","t":"tutti e tre arrivano alla stessa temperatura, compresa fra $20\\ \\text{°C}$ e $80\\ \\text{°C}$"},
+{"v":"c","t":"tutti e tre arrivano a $50\\ \\text{°C}$, perché è la temperatura di mezzo"},
+{"v":"d","t":"$B$ non scambia calore con nessuno, perché è già a metà"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-tre-corpi" opts=_o ok="b" s="Il calore passa dai corpi più caldi a quelli più freddi finché c'è una differenza di temperatura: alla fine i tre corpi sono in equilibrio termico, cioè alla stessa temperatura. Quale sia esattamente dipende dalle loro masse e dai materiali: non è detto che sia proprio $50\ \text{°C}$. Anche $B$ partecipa: prima riceve calore da $A$ o ne cede a $C$, a seconda di come cambiano le temperature." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una tazza di tè a $70\ \text{°C}$ è appoggiata sul tavolo, in una stanza a $20\ \text{°C}$.
+
+{% include fill.html prima="Il calore passa" tipo="drop" opts="dal tè all'aria|dall'aria al tè" ok="dal tè all'aria" dopo="," %}
+
+{% include fill.html prima="e, prendendo il tè come sistema, il segno del calore è" tipo="drop" opts="Q > 0|Q < 0|Q = 0" ok="Q < 0" dopo="." %}
+
+{% include fill.html prima="Il tè smette di raffreddarsi quando arriva a" tipo="drop" opts="0 °C|20 °C|37 °C" ok="20 °C" dopo="," s="cioè quando è in equilibrio termico con l'aria della stanza." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _r %}Perché il corpo umano non è come una tazza di tè: produce continuamente energia, trasformando quella chimica del cibo che mangiamo (il metabolismo). Questa energia compensa il calore che cediamo all'ambiente e mantiene la temperatura del corpo costante, intorno ai $37\ \text{°C}$. Non siamo in equilibrio termico con la stanza: lo scambio di calore continua sempre, e per questo dobbiamo mangiare. Quando fa freddo e cediamo più calore, tremiamo: i muscoli producono altro calore.{% endcapture %}
+{% include risposta-aperta.html id="ra-vs-corpo-37" tipo="spiega"
+   domanda="In una stanza a $20\ \text{°C}$ il tuo corpo è a circa $37\ \text{°C}$: c'è una differenza di temperatura, quindi cedi continuamente calore all'aria. Perché allora non ti raffreddi fino a $20\ \text{°C}$, come una tazza di tè?"
+   risposta=_r %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 
@@ -172,6 +251,8 @@ Esiste, come vedremo meglio più avanti, una temperatura minima possibile in ass
 {% include margin-note-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qkelvin %}[
 {"t": "$0\\ \\text{°C}$ corrispondono a $273{,}15\\ \\text K$.", "ok": true, "s": "Sì: $T^{\\text K}=0+273{,}15$."},
 {"t": "Una temperatura di $-10\\ \\text K$ è possibile, anche se molto fredda.", "ok": false, "s": "No: lo zero della scala kelvin è lo zero assoluto, e sulla scala kelvin non esistono temperature negative."},
@@ -180,6 +261,48 @@ Esiste, come vedremo meglio più avanti, una temperatura minima possibile in ass
 {"t": "Se la temperatura passa da $10\\ \\text{°C}$ a $20\\ \\text{°C}$, raddoppia anche in kelvin.", "ok": false, "s": "No: in kelvin passa da $283{,}15\\ \\text K$ a $293{,}15\\ \\text K$, che non è il doppio. Aumenta della stessa quantità ($10$ gradi), ma non dello stesso fattore."}
 ]{% endcapture %}
 {% include quiz.html domande=_qkelvin id="q-kelvin" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcVsVostok" %}
+La temperatura più bassa mai registrata sulla superficie della Terra è di $-89{,}2\ \text{°C}$, il 21 luglio 1983, alla stazione Vostok, in Antartide. Quanto vale in kelvin?
+
+{% include num.html id="numVsVostok" valore="183.95" unit="K" tol="0.1" %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcVsSole" %}
+La superficie del Sole è a circa $5\,800\ \text K$. Quanto vale in gradi centigradi?
+
+{% include num.html id="numVsSole" valore="5527" unit="°C" tol="0.5" %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Ieri la temperatura era di $10\ \text{°C}$, oggi di $20\ \text{°C}$. Un giornalista scrive: «Oggi fa il doppio del caldo di ieri». Ha ragione?
+{% capture _o %}[
+{"v":"a","t":"Sì: $20$ è il doppio di $10$"},
+{"v":"b","t":"No: lo zero dei gradi centigradi è stato scelto per comodità; nella scala Kelvin, che parte dallo zero assoluto, si passa da $283\\ \\text K$ a $293\\ \\text K$, appena il $3{,}5\\%$ in più"},
+{"v":"c","t":"No: la temperatura è diminuita"},
+{"v":"d","t":"Non si può dire senza conoscere l'umidità"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-doppio-caldo" opts=_o ok="b" s="Raddoppiare una temperatura ha senso solo in kelvin, dove lo zero è lo zero assoluto. Lo zero dei gradi centigradi è la temperatura del ghiaccio fondente, una scelta comoda ma arbitraria: $20\ \text{°C}$ non è «il doppio» di $10\ \text{°C}$ più di quanto $-20\ \text{°C}$ sia «il doppio del freddo» di $-10\ \text{°C}$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Metti in ordine queste temperature, dalla più fredda alla più calda.
+
+{% capture _d %}[
+{"t":"$0\\ \\text K$","pos":0},
+{"t":"$-100\\ \\text{°C}$","pos":1},
+{"t":"$200\\ \\text K$","pos":2},
+{"t":"$0\\ \\text{°C}$","pos":3},
+{"t":"$300\\ \\text K$","pos":4},
+{"t":"$50\\ \\text{°C}$","pos":5}
+]{% endcapture %}
+{% include order.html id="ord-vs-temperature" dati=_d direz="dalla più fredda alla più calda" %}
+{% include spoiler.html testo="Mostra la soluzione" %}
+In kelvin: $0\ \text K$, $-100\ \text{°C} = 173\ \text K$, $200\ \text K$, $0\ \text{°C} = 273\ \text K$, $300\ \text K$ (cioè $27\ \text{°C}$), $50\ \text{°C} = 323\ \text K$.
+{% include spoiler-end.html %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 
@@ -221,6 +344,8 @@ Oggi crediamo che la materia sia composta da un numero gigantesco di **molecole*
 {% include lab-virtuali/agitazione-termica-lab.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qmicroscopica %}[
 {"t": "Le particelle di un corpo fermo sono anch'esse ferme.", "ok": false, "s": "No: anche in un corpo fermo le particelle sono in continuo movimento, per l'agitazione termica."},
 {"t": "Più è alta la temperatura di un corpo, più velocemente si muovono le sue particelle.", "ok": true, "s": "Sì: la temperatura misura proprio l'agitazione termica."},
@@ -229,6 +354,34 @@ Oggi crediamo che la materia sia composta da un numero gigantesco di **molecole*
 {"t": "Secondo la teoria del calorico, il calore era una sostanza che passava da un corpo all'altro.", "ok": true, "s": "Sì: un fluido invisibile e senza peso. Oggi sappiamo invece che il calore è energia legata al movimento delle particelle."}
 ]{% endcapture %}
 {% include quiz.html domande=_qmicroscopica id="q-microscopica" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Le molecole dell'aria che stai respirando, a temperatura ambiente, si muovono in media a una velocità di circa
+{% capture _o %}[
+{"v":"a","t":"$0{,}5\\ \\text{m/s}$, come una persona che passeggia piano"},
+{"v":"b","t":"$15\\ \\text{m/s}$, come un'automobile in città"},
+{"v":"c","t":"$500\\ \\text{m/s}$, più veloci di un aereo di linea"},
+{"v":"d","t":"$300\\,000\\ \\text{km/s}$, come la luce"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-molecole-aria" opts=_o ok="c" s="Circa $500\ \text{m/s}$, cioè quasi $1\,800\ \text{km/h}$! Non ce ne accorgiamo perché ogni molecola percorre pochissima strada prima di urtarne un'altra e cambiare direzione: si muovono velocissime, ma in tutte le direzioni a caso. È proprio questa l'agitazione termica." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+In un solido le particelle non possono andarsene in giro come in un gas: ognuna resta più o meno al suo posto. Come si manifesta allora la loro agitazione termica?
+{% capture _o %}[
+{"v":"a","t":"Non c'è: nei solidi le particelle sono ferme"},
+{"v":"b","t":"Le particelle vibrano avanti e indietro attorno alla loro posizione, tanto più velocemente quanto più alta è la temperatura"},
+{"v":"c","t":"Le particelle ruotano tutte insieme nello stesso verso"},
+{"v":"d","t":"Le particelle si allontanano sempre di più, finché il solido sparisce"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-solido-vibra" opts=_o ok="b" s="Ogni particella di un solido vibra attorno alla sua posizione, legata alle vicine come da tante piccole molle. Scaldando il solido le vibrazioni diventano più veloci e più ampie; è proprio per questo, come vedrai, che i corpi scaldati si dilatano." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _r %}Nel tè caldo le particelle d'acqua si muovono più velocemente, cioè hanno un'agitazione termica maggiore. Urtano i granelli di zucchero più spesso e con più forza, e staccano più rapidamente le molecole di zucchero, che poi si sparpagliano nel tè. Nel tè freddo gli urti sono più lenti e più deboli, e lo zucchero si scioglie più lentamente.{% endcapture %}
+{% include risposta-aperta.html id="ra-vs-zucchero" tipo="spiega"
+   domanda="Lo zucchero si scioglie molto più in fretta nel tè caldo che nel tè freddo. Prova a spiegarlo pensando alle particelle."
+   risposta=_r %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 ## Il Termometro e la Dilatazione Termica
@@ -280,6 +433,8 @@ $$[\alpha]=\frac 1 {\text{K}}.$$
 {% include esercizi/unita-alfa.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qdilatazione %}[
 {"t": "Quasi tutti i corpi, scaldandosi, aumentano di volume.", "ok": true, "s": "Sì: è la dilatazione termica, che riguarda solidi, liquidi e gas."},
 {"t": "Il coefficiente di dilatazione $\\alpha$ è uguale per tutti i materiali.", "ok": false, "s": "No: dipende dal materiale. Materiali diversi, scaldati allo stesso modo, si dilatano in modo diverso."},
@@ -288,6 +443,31 @@ $$[\alpha]=\frac 1 {\text{K}}.$$
 {"t": "Una barra lunga $10\\ \\text m$ con $\\alpha=1{,}2\\times10^{-5}\\ \\text K^{-1}$, scaldata di $50\\ \\text K$, si allunga di $6\\ \\text{mm}$.", "ok": true, "s": "Sì: $\\Delta L=1{,}2\\times10^{-5}\\ \\text K^{-1}\\cdot 10\\ \\text m\\cdot 50\\ \\text K=6\\times10^{-3}\\ \\text m=6\\ \\text{mm}$."}
 ]{% endcapture %}
 {% include quiz.html domande=_qdilatazione id="q-dilatazione" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcVsEiffel" %}
+La Torre Eiffel è di ferro ($\alpha = 1{,}2\times10^{-5}\ \text K^{-1}$) ed è alta circa $300\ \text m$ (senza antenne). Fra una giornata d'inverno a $-5\ \text{°C}$ e una d'estate a $35\ \text{°C}$, di quanti centimetri cambia la sua altezza?
+
+{% include fill-multi.html testo="$\Delta L =$ [14,4|14.4] cm" s="$\Delta T = 35 - (-5) = 40\ \text K$, quindi $\Delta L = \alpha\,L_i\,\Delta T = 1{,}2\times10^{-5}\ \text K^{-1}\cdot 300\ \text m\cdot 40\ \text K = 0{,}144\ \text m$: d'estate la torre è circa $15\ \text{cm}$ più alta che d'inverno." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una barra d'acciaio ($\alpha = 1{,}2\times10^{-5}\ \text K^{-1}$) e una d'alluminio ($\alpha = 2{,}4\times10^{-5}\ \text K^{-1}$) hanno la stessa lunghezza e vengono scaldate della stessa $\Delta T$. La barra d'alluminio si allunga
+{% capture _o %}[
+{"v":"a","t":"di meno, perché è più leggera"},
+{"v":"b","t":"come quella d'acciaio"},
+{"v":"c","t":"il doppio di quella d'acciaio"},
+{"v":"d","t":"il quadruplo di quella d'acciaio"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-acciaio-alluminio" opts=_o ok="c" s="In $\Delta L = \alpha\,L_i\,\Delta T$ la lunghezza iniziale e $\Delta T$ sono le stesse: $\Delta L$ è direttamente proporzionale ad $\alpha$, che per l'alluminio è il doppio." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _r %}D'estate pendono di più. Con il caldo il metallo dei fili si dilata e si allunga: la distanza fra i tralicci resta la stessa, e il filo, più lungo, deve formare una curva più profonda. Per questo i fili si montano lasciandoli un po' lenti: d'inverno si accorciano, e se fossero già tesi rischierebbero di spezzarsi.{% endcapture %}
+{% include risposta-aperta.html id="ra-vs-fili-luce" tipo="prevedi"
+   domanda="I fili della corrente sono tesi fra due tralicci. D'estate pendono più o meno che d'inverno? Perché?"
+   risposta=_r %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 {% include unisci-end.html %}
 
@@ -329,6 +509,8 @@ Anche un ponte si allunga d'estate e si accorcia d'inverno: un viadotto lungo qu
 {% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qapplicazioni %}[
 {"t": "Nella lamina bimetallica i due metalli hanno lo stesso coefficiente di dilatazione.", "ok": false, "s": "No: devono avere coefficienti diversi. Se si dilatassero allo stesso modo, la lamina si allungherebbe senza incurvarsi."},
 {"t": "I giunti di dilatazione lasciano spazio a ponti e binari per allungarsi d'estate.", "ok": true, "s": "Sì: senza quello spazio, la dilatazione deformerebbe la struttura."},
@@ -337,6 +519,34 @@ Anche un ponte si allunga d'estate e si accorcia d'inverno: un viadotto lungo qu
 {"t": "Scaldata, una lamina bimetallica si incurva dalla parte del metallo che si dilata di più.", "ok": false, "s": "No: il metallo che si allunga di più resta all'esterno della curva. La lamina si incurva dalla parte del metallo che si dilata di meno."}
 ]{% endcapture %}
 {% include quiz.html domande=_qapplicazioni id="q-applicazioni" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una teglia di vetro, appena tolta dal forno, viene messa sotto l'acqua fredda e si crepa. Perché?
+{% capture _o %}[
+{"v":"a","t":"Perché l'acqua fredda scioglie il vetro"},
+{"v":"b","t":"Perché la superficie, raffreddata di colpo, si contrae subito, mentre l'interno del vetro è ancora caldo e dilatato: le due parti «tirano» in modo diverso e il vetro si spezza"},
+{"v":"c","t":"Perché il vetro caldo diventa più pesante"},
+{"v":"d","t":"Perché il vetro non si dilata con la temperatura"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-vetro-forno" opts=_o ok="b" s="Il vetro conduce male il calore: la superficie si raffredda subito, l'interno resta caldo per un po'. La superficie vorrebbe accorciarsi, l'interno no, e lo sforzo può rompere la teglia. I vetri da forno speciali hanno un coefficiente di dilatazione molto piccolo proprio per resistere a questi sbalzi." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+I materiali per le otturazioni dei denti vengono scelti con un coefficiente di dilatazione simile a quello del dente. Perché?
+{% capture _o %}[
+{"v":"a","t":"Per avere lo stesso colore del dente"},
+{"v":"b","t":"Perché mangiando un gelato o bevendo un tè caldo dente e otturazione cambiano temperatura insieme: se si dilatassero in modo diverso, l'otturazione si staccherebbe o creperebbe il dente"},
+{"v":"c","t":"Perché così l'otturazione pesa come il dente"},
+{"v":"d","t":"Perché il dente non cambia mai temperatura"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-otturazioni" opts=_o ok="b" s="Nella bocca la temperatura cambia di decine di gradi in pochi secondi. Se otturazione e dente si dilatassero in modo diverso, a ogni sbalzo si creerebbero piccoli spazi fra i due, o sforzi che potrebbero crepare il dente." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _r %}Quando la piastra diventa troppo calda, anche la lamina bimetallica si scalda: i due metalli si dilatano in modo diverso e la lamina si incurva, staccandosi dal contatto e aprendo il circuito. La corrente non passa più e la piastra smette di scaldarsi. Raffreddandosi, la lamina torna dritta, richiude il contatto, e la piastra ricomincia a scaldarsi. Così la temperatura oscilla di poco attorno al valore scelto.{% endcapture %}
+{% include risposta-aperta.html id="ra-vs-ferro-stiro" tipo="spiega"
+   domanda="Il termostato di un vecchio ferro da stiro è una lamina bimetallica che fa parte del circuito elettrico che scalda la piastra. Spiega come fa a mantenere la piastra a una temperatura quasi costante."
+   risposta=_r %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 # La Legge Fondamentale della Calorimetria
@@ -414,6 +624,8 @@ Il calore specifico è una caratteristica del materiale che misura la quantità 
 {% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qcalorimetria %}[
 {"t": "Fornendo calore a un corpo ($Q>0$), la sua temperatura aumenta.", "ok": true, "s": "Sì: con $Q>0$ anche $\\Delta T=\\frac{Q}{c\\,m}$ è positiva."},
 {"t": "A parità di calore fornito, un corpo di massa doppia si scalda il doppio.", "ok": false, "s": "No: si scalda la metà, perché $\\Delta T$ è inversamente proporzionale alla massa."},
@@ -422,6 +634,32 @@ Il calore specifico è una caratteristica del materiale che misura la quantità 
 {"t": "D'estate la sabbia della spiaggia scotta mentre l'acqua del mare resta fresca anche perché l'acqua ha un calore specifico molto più alto della sabbia.", "ok": true, "s": "Sì: ricevendo dal Sole la stessa energia, l'acqua si scalda molto meno della sabbia."}
 ]{% endcapture %}
 {% include quiz.html domande=_qcalorimetria id="q-calorimetria" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcVsVasca" %}
+Per fare un bagno caldo si riempie la vasca con $150\ \text{kg}$ d'acqua, che va scaldata da $15\ \text{°C}$ a $40\ \text{°C}$. Quanto calore serve? ($c_{\text{acqua}} = 4\,186\ \text{J/(kg·K)}$)
+
+{% include fill-multi.html testo="$Q \approx$ [1,57|1.57|1,6|1.6] $\times10^{7}$ J" s="$Q = c\,m\,\Delta T = 4\,186\cdot 150\cdot 25\ \text J \approx 1{,}57\times10^{7}\ \text J$: più di quanto serve per sollevare un'automobile di una tonnellata in cima a un grattacielo di $1\,500$ metri." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una torta di mele è appena uscita dal forno: la crosta e il ripieno sono alla stessa temperatura. Eppure la crosta si può mangiare quasi subito, mentre il ripieno ustiona la lingua. Perché?
+{% capture _o %}[
+{"v":"a","t":"Perché il ripieno è più caldo della crosta"},
+{"v":"b","t":"Perché il ripieno è pieno d'acqua, che ha un calore specifico altissimo: raffreddandosi fino alla temperatura della lingua, cede molto più calore della crosta"},
+{"v":"c","t":"Perché la crosta è un isolante"},
+{"v":"d","t":"Perché le mele producono calore"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-torta-mele" opts=_o ok="b" s="Alla stessa temperatura, ciò che conta per scottarsi è quanto calore il cibo cede alla lingua mentre si raffredda: $Q = c\,m\,\Delta T$. Il ripieno, ricco d'acqua, ha un calore specifico molto più alto della crosta secca e, raffreddandosi degli stessi gradi, cede molto più calore." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcVsCorpo" %}
+A riposo, il corpo umano produce circa $100\ \text W$ di potenza termica (cioè $100\ \text J$ ogni secondo). Se una persona di $70\ \text{kg}$ non riuscisse a cedere all'ambiente nemmeno un po' di questo calore, di quanto salirebbe la sua temperatura in un'ora? (Il calore specifico medio del corpo umano è circa $3\,500\ \text{J/(kg·K)}$.)
+
+{% include fill-multi.html testo="$\Delta T \approx$ [1,5|1.5|1,47|1.47] K" s="In un'ora il corpo produce $Q = 100\ \text W\cdot 3\,600\ \text s = 360\,000\ \text J$, e $\Delta T = \dfrac{Q}{c\,m} = \dfrac{360\,000}{3\,500\cdot 70}\ \text K \approx 1{,}5\ \text K$. In un'ora avrebbe la febbre: ecco perché il corpo deve cedere continuamente calore, e perché d'estate sudiamo." %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 # La Trasmissione del Calore
@@ -532,6 +770,8 @@ $$[k]=\frac{\text W}{\text m\cdot\text K}.$$
    risposta=_r %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qconduzione %}[
 {"t": "Nella conduzione le particelle si spostano da un'estremità all'altra del corpo.", "ok": false, "s": "No: le particelle restano al loro posto e si passano l'energia attraverso gli urti."},
 {"t": "Il rame è un buon isolante termico.", "ok": false, "s": "No: il rame ha una conducibilità termica molto alta, quindi è un ottimo conduttore."},
@@ -540,6 +780,39 @@ $$[k]=\frac{\text W}{\text m\cdot\text K}.$$
 {"t": "Al tatto, un oggetto di metallo sembra più freddo di uno di legno alla stessa temperatura, perché il metallo porta via calore dalla mano più rapidamente.", "ok": true, "s": "Sì: i due oggetti sono alla stessa temperatura, ma il metallo, buon conduttore, toglie calore alla mano con una potenza termica molto maggiore."}
 ]{% endcapture %}
 {% include quiz.html domande=_qconduzione id="q-conduzione" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcVsMattoni" %}
+Una parete di mattoni ($k = 0{,}7\ \text{W/(m·K)}$) ha un'area di $10\ \text m^2$ ed è spessa $30\ \text{cm}$. Dentro casa ci sono $20\ \text{°C}$, fuori $0\ \text{°C}$. Quale potenza termica attraversa la parete?
+
+{% include num.html id="numVsMattoni" valore="466.7" unit="W" tol="1" %}
+{% include spoiler.html testo="Mostra la soluzione" %}
+$$P = k\,A\,\frac{\Delta T}{\Delta x} = 0{,}7\ \tfrac{\text W}{\text m\cdot\text K}\cdot 10\ \text m^2\cdot\frac{20\ \text K}{0{,}3\ \text m}\approx 467\ \text W:$$
+quasi mezzo kilowatt per una sola parete, che la caldaia deve rimpiazzare continuamente.
+{% include spoiler-end.html %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Le finestre a doppio vetro hanno due lastre separate da uno strato d'aria (o di un altro gas) di qualche millimetro. Perché isolano molto meglio di un vetro singolo?
+{% capture _o %}[
+{"v":"a","t":"Perché due vetri sono il doppio più spessi"},
+{"v":"b","t":"Perché l'aria ferma è un pessimo conduttore di calore: la sua conducibilità termica è decine di volte più piccola di quella del vetro"},
+{"v":"c","t":"Perché il secondo vetro riflette il freddo"},
+{"v":"d","t":"Perché fra i due vetri c'è il vuoto"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-doppio-vetro" opts=_o ok="b" s="La conducibilità termica dell'aria è circa $0{,}025\ \text{W/(m·K)}$, quella del vetro circa $0{,}9\ \text{W/(m·K)}$: pochi millimetri d'aria ferma isolano quanto decine di centimetri di vetro. Lo strato è sottile proprio perché l'aria resti ferma e non si metta a circolare." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+D'inverno molti uccelli «si gonfiano», sollevando le piume, e sembrano due volte più grossi. A che cosa serve?
+{% capture _o %}[
+{"v":"a","t":"A spaventare i predatori"},
+{"v":"b","t":"A intrappolare uno strato d'aria ferma fra le piume: l'aria è un ottimo isolante termico, e l'uccello disperde meno calore"},
+{"v":"c","t":"A raccogliere più luce del Sole"},
+{"v":"d","t":"A far circolare più aria attorno al corpo per scaldarsi"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-piume" opts=_o ok="b" s="È lo stesso principio dei piumini e dei maglioni di lana: non sono le piume o la lana a scaldare, ma l'aria ferma che intrappolano, che conduce pochissimo il calore." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 
@@ -586,6 +859,8 @@ Le rocce caldissime del mantello terrestre si muovono per convezione, come l'acq
 {% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qconv %}[
 {"t":"La convezione può avvenire all'interno di una sbarra di ferro.","ok":false,"s":"No: nei solidi le particelle restano al loro posto e non possono spostarsi trasportando l'energia. Nei solidi il calore si trasmette per conduzione."},
 {"t":"Nella convezione è il fluido stesso a spostarsi, portando con sé l'energia.","ok":true,"s":"Sì, è proprio questa la differenza con la conduzione, in cui l'energia passa da una particella all'altra ma le particelle restano al loro posto."},
@@ -596,6 +871,34 @@ Le rocce caldissime del mantello terrestre si muovono per convezione, come l'acq
 {"t":"In un frigorifero, conviene che la parte che raffredda l'aria si trovi in alto.","ok":true,"s":"Sì: l'aria raffreddata in alto diventa più densa e scende, e al suo posto sale l'aria più calda del fondo, che a sua volta viene raffreddata. Si forma un moto convettivo che raffredda tutto il frigorifero."}
 ]{% endcapture %}
 {% include quiz.html domande=_qconv id="q-convezione" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+In una giornata d'estate, al mare, a metà giornata il vento soffia dal mare verso la spiaggia (la «brezza di mare»). Perché?
+{% capture _o %}[
+{"v":"a","t":"Perché il mare spinge l'aria con le onde"},
+{"v":"b","t":"Perché la spiaggia si scalda molto più del mare: l'aria sopra la spiaggia si scalda, diventa meno densa e sale, e al suo posto arriva l'aria più fresca che sta sopra il mare"},
+{"v":"c","t":"Perché l'aria calda sopra il mare scende verso la spiaggia"},
+{"v":"d","t":"Perché di giorno il vento soffia sempre verso terra"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-brezza" opts=_o ok="b" s="È un grande moto convettivo: la sabbia, con il suo calore specifico basso, si scalda più in fretta del mare; l'aria sopra di lei sale, e viene sostituita da aria più fresca proveniente dal mare. Di notte succede il contrario: la terra si raffredda prima del mare, e la brezza soffia da terra verso il mare." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una mongolfiera sale quando il bruciatore scalda l'aria dentro il pallone. Perché?
+{% capture _o %}[
+{"v":"a","t":"Perché il fuoco spinge il pallone verso l'alto"},
+{"v":"b","t":"Perché l'aria calda dentro il pallone si è dilatata ed è meno densa dell'aria fredda che sta fuori: come l'acqua calda nella pentola, tende a salire, e si porta dietro il pallone"},
+{"v":"c","t":"Perché il calore va sempre verso l'alto"},
+{"v":"d","t":"Perché l'aria calda pesa di più"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-mongolfiera" opts=_o ok="b" s="È lo stesso motivo per cui l'acqua calda sale nella pentola: scaldata, l'aria si dilata e diventa meno densa di quella che la circonda, ed è spinta verso l'alto. Spegnendo il bruciatore, l'aria nel pallone si raffredda e la mongolfiera scende." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _r %}Seguiranno il moto convettivo dell'acqua: saliranno al centro della pentola, sopra la fiamma, dove l'acqua è più calda e meno densa; arrivati in superficie si sposteranno verso le pareti, scenderanno lungo le pareti, dove l'acqua è più fredda, e sul fondo torneranno verso il centro, ricominciando il giro. Il pepe rende visibile la convezione.{% endcapture %}
+{% include risposta-aperta.html id="ra-vs-pepe" tipo="prevedi"
+   domanda="In una pentola d'acqua sul fuoco butti qualche grano di pepe, che resta sospeso nell'acqua. Mentre l'acqua si scalda, come si muoveranno i grani?"
+   risposta=_r %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 {% capture _r %}Il calore non «sale»: va sempre dalla zona più calda a quella più fredda, in qualsiasi direzione. Nella pentola a salire è l'acqua calda del fondo: scaldandosi si dilata, diventa meno densa e sale, mentre l'acqua fredda, più densa, scende a prenderne il posto. È l'acqua che si muove a portare il calore fino in superficie: questa è la convezione.{% endcapture %}
@@ -631,6 +934,8 @@ Anche il nostro corpo, e quello degli animali, emette continuamente radiazione, 
    larghezza="280px" %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 In una teiera che bolle sul fornello sono all'opera tutti e tre i modi di trasmettere il calore. Riconoscili nei cinque punti indicati.
 
 {% include lab-virtuali/teiera-trasmissione-lab.html %}
@@ -643,6 +948,34 @@ In una teiera che bolle sul fornello sono all'opera tutti e tre i modi di trasme
 {"t":"Seduto vicino a un falò, senza toccarlo, senti caldo soprattutto per irraggiamento.","ok":true,"s":"Sì: l'aria calda del falò sale verso l'alto (convezione), ma ciò che ti scalda di lato è la radiazione emessa dalle fiamme e dalla brace."}
 ]{% endcapture %}
 {% include quiz.html domande=_qirr id="q-irraggiamento" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+D'estate, sotto il Sole, conviene vestirsi di bianco piuttosto che di nero. Perché?
+{% capture _o %}[
+{"v":"a","t":"Perché il bianco è più leggero"},
+{"v":"b","t":"Perché un tessuto bianco riflette gran parte della radiazione del Sole, mentre uno nero la assorbe quasi tutta, e chi assorbe più radiazione di quanta ne emette si scalda"},
+{"v":"c","t":"Perché il nero emette freddo"},
+{"v":"d","t":"Perché il bianco conduce meglio il calore"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-bianco" opts=_o ok="b" s="Il colore dice quanta radiazione (visibile) un corpo assorbe: il nero quasi tutta, il bianco poca. Al Sole, una maglietta nera assorbe molta più energia di una bianca e si scalda di più." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+D'inverno, le notti con il cielo sereno sono più fredde di quelle con il cielo coperto di nuvole. Perché?
+{% capture _o %}[
+{"v":"a","t":"Perché le nuvole producono calore"},
+{"v":"b","t":"Perché di notte il terreno emette radiazione infrarossa verso il cielo: le nuvole ne assorbono e ne rimandano indietro una parte, mentre con il cielo sereno se ne va quasi tutta nello spazio"},
+{"v":"c","t":"Perché con il cielo sereno arriva la luce fredda delle stelle"},
+{"v":"d","t":"Perché le nuvole bloccano il vento"}
+]{% endcapture %}
+{% include mcq.html id="mcq-vs-notte-serena" opts=_o ok="b" s="Di notte il Sole non scalda, e il terreno si raffredda emettendo radiazione. Con il cielo coperto, le nuvole fanno un po' da coperta: ne assorbono una parte e la riemettono anche verso il basso. Con il cielo sereno, invece, la radiazione se ne va libera nello spazio, e al mattino si può trovare la brina." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _r %}Il corpo umano perde calore anche per irraggiamento, emettendo radiazione infrarossa. La coperta, lucida come uno specchio, riflette indietro verso il corpo gran parte di questa radiazione, invece di lasciarla disperdere. In più ferma l'aria vicino al corpo e il vento, riducendo anche le perdite per convezione. Non produce calore: impedisce a quello del corpo di andarsene.{% endcapture %}
+{% include risposta-aperta.html id="ra-vs-coperta-termica" tipo="spiega"
+   domanda="I soccorritori avvolgono le persone infreddolite in coperte sottilissime, dorate o argentate, che pesano pochi grammi. Come fanno a tenere caldo?"
+   risposta=_r %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 
@@ -681,6 +1014,18 @@ $-40\ \text{°C}$ in kelvin:
 $25+273{,}15=298{,}15\ \text K$; $\quad 300-273{,}15=26{,}85\ \text{°C}$; $\quad -40+273{,}15=233{,}15\ \text K$.
 {% include ex-sol-end.html %}
 
+{% capture _dStoria %}[
+{"l":"Empedocle","m":"il calore è legato al fuoco, contenuto in quantità diversa nei corpi","r":"antica Grecia"},
+{"l":"Lavoisier e Laplace","m":"il calore è un fluido invisibile, il calorico; costruiscono uno dei primi calorimetri","r":"Settecento"},
+{"l":"Il conte di Rumford","m":"l'attrito nella foratura dei cannoni produce calore senza fine","r":"1798"},
+{"l":"Joule","m":"con il mulinello misura quanto lavoro serve per produrre una certa quantità di calore","r":"anni Quaranta dell'Ottocento"}
+]{% endcapture %}
+{% include ex.html diff=1 %}
+Chi pensava che cosa sul calore, e quando? Collega ciascuno scienziato alla sua idea e alla sua epoca.
+
+{% include match.html id="riep-match-storia" dati=_dStoria col1="Chi" col2="Che cosa" col3="Quando" %}
+{% include ex-end.html %}
+
 {% capture _sortRiepQ %}[
   {"t":"L'acqua della pasta sul fornello acceso (sistema: l'acqua)","c":0},
   {"t":"Un cubetto di ghiaccio tenuto in mano (sistema: il ghiaccio)","c":0},
@@ -695,6 +1040,31 @@ Per ciascuna situazione, stabilisci il segno del calore $Q$ scambiato dal sistem
 {% include sort.html id="sort-riep-segno-q" dati=_sortRiepQ col0="Q > 0 (il calore entra)" col1="Q < 0 (il calore esce)" %}
 {% include ex-end.html %}
 
+{% capture _oRumford %}[
+{"v":"a","t":"Che il bronzo dei cannoni conteneva moltissimo calorico"},
+{"v":"b","t":"Che l'attrito fra il trapano e il metallo continuava a produrre calore finché si continuava a forare, come se il calore non finisse mai: difficile da spiegare se il calore è una sostanza contenuta nei corpi in quantità limitata"},
+{"v":"c","t":"Che i cannoni, forati, diventavano più freddi"},
+{"v":"d","t":"Che il calore passava dal metallo freddo al trapano caldo"}
+]{% endcapture %}
+{% include ex.html diff=2 %}
+Che cosa osservò il conte di Rumford, nel 1798, mentre si foravano i cannoni, e perché la sua osservazione mise in crisi la teoria del calorico?
+{% include mcq.html id="mcq-riep-rumford" opts=_oRumford ok="b" s="Se il calore fosse una sostanza contenuta nei corpi, a forza di forare prima o poi dovrebbe esaurirsi. Invece il calore continuava a uscire finché si faceva lavoro con il trapano: non è una sostanza, ma qualcosa che si produce compiendo lavoro, cioè energia." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+{% capture _r %}La temperatura è una proprietà di un corpo: la misura il termometro e dice quanto sono agitate le sue particelle. Il calore invece non è una proprietà: è energia **in viaggio** da un corpo a un altro, e passa solo se c'è una differenza di temperatura, dal corpo più caldo a quello più freddo. Per questo un corpo «ha» una temperatura, ma non «ha» calore: il calore esiste solo mentre passa. Un esempio: una vasca d'acqua tiepida e una tazza di tè bollente; il tè ha la temperatura più alta, ma la vasca, molto più grande, può cedere molto più calore raffreddandosi di un grado.{% endcapture %}
+{% include risposta-aperta.html id="ra-riep-calore-temperatura" tipo="spiega"
+   domanda="Che differenza c'è fra calore e temperatura? Perché si dice che un corpo non «ha» calore?"
+   risposta=_r %}
+{% include ex-end.html %}
+
+{% include ex.html diff=2 %}
+{% capture _r %}Il freddo non esiste come «cosa» che passa da un corpo all'altro: passa soltanto il calore, e sempre dal corpo più caldo a quello più freddo. È la bibita, più calda, a cedere calore al ghiaccio: la bibita si raffredda perché perde energia, e il ghiaccio la riceve (e infatti fonde).{% endcapture %}
+{% include risposta-aperta.html id="ra-errore-freddo" tipo="errore"
+   domanda="Un compagno dice: «Il ghiaccio raffredda la bibita perché le cede il suo freddo». Dove sbaglia? Spiega che cosa succede davvero."
+   risposta=_r %}
+{% include ex-end.html %}
+
 {% include ex.html diff=3 %}
 La temperatura di un oggetto è di $20\ \text{°C}$. Qual è, in gradi centigradi, la temperatura che corrisponde al **doppio** di questa temperatura misurata in kelvin?
 
@@ -704,10 +1074,12 @@ La temperatura di un oggetto è di $20\ \text{°C}$. Qual è, in gradi centigrad
 In kelvin la temperatura è $20+273{,}15=293{,}15\ \text K$; il doppio è $586{,}3\ \text K$, cioè $586{,}3-273{,}15=313{,}15\ \text{°C}$. «Il doppio di $20\ \text{°C}$» non è $40\ \text{°C}$: raddoppiare una temperatura ha senso solo nella scala kelvin, che parte dallo zero assoluto.
 {% include ex-sol-end.html %}
 
-{% capture _r %}Il freddo non esiste come «cosa» che passa da un corpo all'altro: passa soltanto il calore, e sempre dal corpo più caldo a quello più freddo. È la bibita, più calda, a cedere calore al ghiaccio: la bibita si raffredda perché perde energia, e il ghiaccio la riceve (e infatti fonde).{% endcapture %}
-{% include risposta-aperta.html id="ra-errore-freddo" tipo="errore"
-   domanda="Un compagno dice: «Il ghiaccio raffredda la bibita perché le cede il suo freddo». Dove sbaglia? Spiega che cosa succede davvero."
+{% include ex.html diff=3 %}
+{% capture _r %}La temperatura misura l'agitazione termica, cioè quanto velocemente si muovono le particelle di un corpo. Più un corpo si raffredda, più le sue particelle rallentano. Lo zero assoluto, $0\ \text K = -273{,}15\ \text{°C}$, è la temperatura in cui l'agitazione è la più piccola possibile: non si può scendere più in basso, perché le particelle non possono essere «meno agitate di così». Per questo la scala Kelvin, che parte proprio da lì, non ha temperature negative. Lo zero assoluto si può avvicinare moltissimo, ma non raggiungere.{% endcapture %}
+{% include risposta-aperta.html id="ra-riep-zero-assoluto" tipo="spiega"
+   domanda="Perché nella scala Kelvin non esistono temperature negative? Che cosa succede alle particelle di un corpo man mano che ci si avvicina allo zero assoluto?"
    risposta=_r %}
+{% include ex-end.html %}
 
 ### La dilatazione termica
 
@@ -719,6 +1091,15 @@ Una sbarra d'acciaio ($\alpha = 1{,}2\times10^{-5}\ \text K^{-1}$) lunga $2\ \te
 {% include ex-sol.html %}
 $$\Delta L=\alpha\,L_i\,\Delta T=1{,}2\times10^{-5}\ \text K^{-1}\cdot 2\ \text m\cdot 50\ \text K=1{,}2\times10^{-3}\ \text m=1{,}2\ \text{mm}.$$
 {% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Vero o falso?
+
+{% include tf.html q="I giunti di dilatazione dei ponti e delle rotaie servono a lasciare spazio all'allungamento d'estate." ok=true s="Sì: senza quello spazio, allungandosi, il metallo spingerebbe e si deformerebbe." %}
+{% include tf.html q="Scaldando una lamina bimetallica, essa si incurva dalla parte del metallo che si dilata di più." ok=false s="No: il metallo che si dilata di più diventa più lungo e resta all'esterno della curva; la lamina si incurva dalla parte di quello che si dilata di meno." %}
+{% include tf.html q="Scaldando una lastra di metallo con un foro in mezzo, il foro si allarga." ok=true s="Sì: tutto il metallo si dilata, anche attorno al foro, e la lastra si ingrandisce come una fotografia ingrandita, foro compreso. È per questo che, nell'esperimento di 's Gravesande, anche l'anello scaldato lascerebbe passare la sfera più facilmente." %}
+{% include tf.html q="Il liquido di un termometro sale perché, scaldandosi, aumenta di volume." ok=true s="Sì: il termometro sfrutta proprio la dilatazione termica del liquido." %}
+{% include ex-end.html %}
 
 {% include ex.html diff=1 %}
 Una sbarra lunga $1\ \text m$, scaldata di $100\ \text K$, si allunga di $2{,}4\ \text{mm}$. Qual è il suo coefficiente di dilatazione? Scrivi il risultato in notazione scientifica.
@@ -748,6 +1129,13 @@ Un ponte d'acciaio ($\alpha = 1{,}2\times10^{-5}\ \text K^{-1}$) è lungo $300\ 
 $$\Delta L=1{,}2\times10^{-5}\ \text K^{-1}\cdot 300\ \text m\cdot 35\ \text K=0{,}126\ \text m,\qquad L_f=L_i+\Delta L=300{,}126\ \text m.$$
 {% include ex-sol-end.html %}
 
+{% include ex.html diff=2 %}
+{% capture _r %}Quando un corpo si scalda, le sue particelle si muovono più velocemente: vibrano di più attorno alle loro posizioni e si urtano con più forza. Urtandosi più forte, «rimbalzano» di più e tendono ad allontanarsi le une dalle altre. Se ogni particella sta un po' più lontana dalle vicine, il corpo nel suo insieme occupa più spazio: si dilata. Raffreddandolo succede il contrario.{% endcapture %}
+{% include risposta-aperta.html id="ra-riep-dilatazione" tipo="spiega"
+   domanda="Spiega, pensando alle particelle che compongono un corpo, perché un corpo scaldato si dilata."
+   risposta=_r %}
+{% include ex-end.html %}
+
 {% include ex.html diff=3 %}
 In un esperimento simile a quello di 's Gravesande, il foro di un anello ha un diametro di $2{,}000\ \text{cm}$, mentre una sfera di ottone ($\alpha = 1{,}9\times10^{-5}\ \text K^{-1}$) ha un diametro di $2{,}002\ \text{cm}$ e non passa. Di quanti kelvin bisogna raffreddare la sfera (lasciando l'anello com'è), come minimo, perché passi?
 
@@ -764,6 +1152,13 @@ La sfera va raffreddata di circa $53\ \text K$.
 Una lamina bimetallica è fatta di acciaio ($\alpha = 1{,}2\times10^{-5}\ \text K^{-1}$) e di ottone ($\alpha = 1{,}9\times10^{-5}\ \text K^{-1}$). Scaldandola, da quale parte si incurva?
 
 {% include mcq.html id="mcq-riep-bimetallica" opts=_o_riepBimet ok="a" s="L'ottone si allunga di più e resta all'esterno della curva: la lamina si incurva dalla parte dell'acciaio, che si allunga di meno." %}
+{% include ex-end.html %}
+
+{% include ex.html diff=3 %}
+{% capture _r %}Il coperchio è di metallo, il barattolo di vetro, e il metallo ha un coefficiente di dilatazione più grande di quello del vetro. Sotto l'acqua calda tutti e due si scaldano, ma il coperchio si dilata di più: si allarga attorno alla bocca del barattolo, che invece si allarga poco, e si allenta. Funziona meglio se l'acqua scalda soprattutto il coperchio, senza scaldare troppo il vetro.{% endcapture %}
+{% include risposta-aperta.html id="ra-riep-barattolo" tipo="spiega"
+   domanda="Un barattolo di vetro ha il coperchio di metallo bloccato. Se si mette il coperchio sotto l'acqua calda per qualche secondo, spesso si apre. Perché?"
+   risposta=_r %}
 {% include ex-end.html %}
 
 ### La legge fondamentale della calorimetria
@@ -787,6 +1182,17 @@ Attenzione alla massa in chilogrammi: $m=0{,}5\ \text{kg}$.
 $$\Delta T=\frac{Q}{c\,m}=\frac{9\,000\ \text J}{450\ \tfrac{\text J}{\text{kg}\cdot\text K}\cdot 0{,}5\ \text{kg}}=40\ \text K.$$
 {% include ex-sol-end.html %}
 
+{% capture _oSpiaggia %}[
+{"v":"a","t":"Perché l'acqua riflette tutta la luce del Sole"},
+{"v":"b","t":"Perché l'acqua ha un calore specifico molto più alto di quello della sabbia: a parità di calore ricevuto, la sua temperatura sale molto meno"},
+{"v":"c","t":"Perché la sabbia è un buon conduttore di calore"},
+{"v":"d","t":"Perché il Sole scalda di più la sabbia che l'acqua"}
+]{% endcapture %}
+{% include ex.html diff=1 %}
+D'estate, a mezzogiorno, la sabbia della spiaggia scotta, mentre l'acqua del mare è fresca, anche se il Sole le ha scaldate allo stesso modo per tutta la mattina. Perché?
+{% include mcq.html id="mcq-riep-spiaggia" opts=_oSpiaggia ok="b" s="Dalla legge $Q = c\,m\,\Delta T$: a parità di calore e di massa, $\Delta T = Q/(c\,m)$ è tanto più piccolo quanto più grande è $c$. L'acqua ha uno dei calori specifici più alti in assoluto: si scalda lentamente e si raffredda lentamente. Per lo stesso motivo, di notte la sabbia si raffredda in fretta e il mare resta tiepido." %}
+{% include ex-end.html %}
+
 {% include ex.html diff=2 %}
 Per scaldare di $10\ \text K$ un blocco di $2\ \text{kg}$ di un materiale sconosciuto servono $18\,000\ \text J$. Qual è il calore specifico del materiale?
 
@@ -795,6 +1201,20 @@ Per scaldare di $10\ \text K$ un blocco di $2\ \text{kg}$ di un materiale sconos
 {% include ex-sol.html %}
 $$c=\frac{Q}{m\,\Delta T}=\frac{18\,000\ \text J}{2\ \text{kg}\cdot 10\ \text K}=900\ \tfrac{\text J}{\text{kg}\cdot\text K}$$
 (è il calore specifico dell'alluminio).
+{% include ex-sol-end.html %}
+
+{% capture _dOrdC %}[
+{"t":"rame ($c = 385$)","pos":0},
+{"t":"ferro ($c = 450$)","pos":1},
+{"t":"alluminio ($c = 900$)","pos":2},
+{"t":"acqua ($c = 4\\,186$)","pos":3}
+]{% endcapture %}
+{% include ex.html diff=2 %}
+Hai quattro corpi della stessa massa, fatti di materiali diversi (i calori specifici sono in J/(kg·K)), e a ciascuno dai la stessa quantità di calore. Mettili in ordine, da quello che si scalda di più a quello che si scalda di meno.
+
+{% include order.html id="riep-ord-calore-specifico" dati=_dOrdC direz="da quello che si scalda di più a quello che si scalda di meno" %}
+{% include ex-sol.html %}
+$\Delta T = \dfrac{Q}{c\,m}$: a parità di $Q$ e di $m$, si scalda di più il materiale con il calore specifico più piccolo. Il rame si scalda più di dieci volte dell'acqua.
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -806,10 +1226,12 @@ Con l'energia di $1\ \text{kWh}$ ($3{,}6\times10^{6}\ \text J$), quanti chilogra
 $$m=\frac{Q}{c\,\Delta T}=\frac{3{,}6\times10^{6}\ \text J}{4\,186\ \tfrac{\text J}{\text{kg}\cdot\text K}\cdot 80\ \text K}\approx 10{,}8\ \text{kg}.$$
 {% include ex-sol-end.html %}
 
+{% include ex.html diff=2 %}
 {% capture _r %}L'errore è la massa: nella formula $Q=c\,m\,\Delta T$, con $c$ in $\text{J/(kg·K)}$, la massa va espressa in chilogrammi. $500\ \text g=0{,}5\ \text{kg}$, quindi $Q=4\,186\cdot 0{,}5\cdot 10=20\,930\ \text J$, mille volte meno del risultato del compagno.{% endcapture %}
 {% include risposta-aperta.html id="ra-errore-grammi" tipo="errore"
    domanda="Per scaldare di 10 K mezzo litro d'acqua (500 g), un compagno scrive: Q = 4186 · 500 · 10 = 20 930 000 J. Dove sbaglia? Qual è il risultato corretto?"
    risposta=_r %}
+{% include ex-end.html %}
 
 {% include ex.html diff=3 %}
 In un recipiente isolato si versano $1\ \text{kg}$ d'acqua a $80\ \text{°C}$ e $2\ \text{kg}$ d'acqua a $20\ \text{°C}$. Qual è la temperatura finale, all'equilibrio termico?
@@ -834,6 +1256,13 @@ $$225\,(200-T)=8\,372\,(T-20)\quad\Rightarrow\quad T=\frac{45\,000+167\,440}{8\,
 Il ferro era caldissimo, ma l'acqua si scalda di meno di $5\ \text K$: ha una massa maggiore e, soprattutto, un calore specifico quasi dieci volte più grande.
 {% include ex-sol-end.html %}
 
+{% include ex.html diff=3 %}
+{% capture _r %}Il calore specifico dell'olio è circa la metà di quello dell'acqua. Il fornello dà alle due pentole la stessa potenza, quindi nello stesso tempo lo stesso calore; con la stessa massa, per $Q = c\,m\,\Delta T$ l'aumento di temperatura è inversamente proporzionale a $c$: l'olio si scalda circa il doppio dell'acqua. Dopo lo stesso tempo l'olio è quindi molto più caldo, e scotta di più. (Inoltre l'olio non bolle a $100\ \text{°C}$ come l'acqua: può superare i $150\ \text{°C}$, ed è per questo che si usa per friggere.){% endcapture %}
+{% include risposta-aperta.html id="ra-riep-olio" tipo="prevedi"
+   domanda="Su due fornelli uguali metti due pentole identiche: una con 1 kg d'acqua e una con 1 kg d'olio, entrambi a temperatura ambiente. Dopo due minuti, quale dei due liquidi è più caldo? Perché?"
+   risposta=_r %}
+{% include ex-end.html %}
+
 ### La trasmissione del calore
 
 {% include ex.html diff=1 %}
@@ -845,6 +1274,27 @@ Per ciascuna situazione, scegli il modo in cui si trasmette soprattutto il calor
 {% include fill.html prima="Ti scaldi le mani davanti al camino, senza toccarlo:" tipo="drop" opts="conduzione|convezione|irraggiamento" ok="irraggiamento" dopo="." %}
 {% include fill.html prima="Il fondo di una pentola sul fuoco si scalda fino alla parte interna:" tipo="drop" opts="conduzione|convezione|irraggiamento" ok="conduzione" dopo="." %}
 {% include fill.html prima="Le correnti termiche che fanno salire gli uccelli:" tipo="drop" opts="conduzione|convezione|irraggiamento" ok="convezione" dopo="." %}
+{% include ex-end.html %}
+
+{% capture _sCond %}[
+{"t":"rame","c":0},{"t":"alluminio","c":0},{"t":"ferro","c":0},{"t":"argento","c":0},
+{"t":"legno","c":1},{"t":"lana","c":1},{"t":"aria","c":1},{"t":"polistirolo","c":1},{"t":"sughero","c":1}
+]{% endcapture %}
+{% include ex.html diff=1 %}
+Trascina ciascun materiale nella colonna giusta.
+
+{% include sort.html id="riep-sort-conduttori-termici" dati=_sCond col0="Buoni conduttori di calore" col1="Isolanti termici" %}
+{% include ex-end.html %}
+
+{% capture _oTermo %}[
+{"v":"a","t":"Perché il gatto riflette la luce della stanza"},
+{"v":"b","t":"Perché il gatto, come ogni corpo, emette radiazione infrarossa, più intensa dove è più caldo: la termocamera la rileva anche senza luce"},
+{"v":"c","t":"Perché la termocamera misura il calore che il gatto le trasmette per conduzione"},
+{"v":"d","t":"Perché l'aria attorno al gatto si muove per convezione"}
+]{% endcapture %}
+{% include ex.html diff=1 %}
+Una termocamera «vede» un gatto anche in una stanza completamente buia. Come è possibile?
+{% include mcq.html id="mcq-riep-termocamera" opts=_oTermo ok="b" s="È l'irraggiamento: ogni corpo emette radiazione elettromagnetica, e un corpo alla temperatura del nostro (o di un gatto) la emette soprattutto nell'infrarosso, che i nostri occhi non vedono. Non serve una sorgente di luce: è il gatto stesso a «brillare»." %}
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}
@@ -876,6 +1326,13 @@ $$k=\frac{P\,\Delta x}{A\,\Delta T}=\frac{6{,}24\ \text W\cdot 0{,}5\ \text m}{1
 è rame.
 {% include ex-sol-end.html %}
 
+{% include ex.html diff=2 %}
+{% capture _r %}La maniglia di metallo e il legno della porta sono alla stessa temperatura, quella della stanza (sono in equilibrio termico). La maniglia sembra più fredda perché il metallo è un buon conduttore: toglie calore alla mano molto più rapidamente del legno, che è un isolante. La nostra pelle non misura la temperatura, ma la rapidità con cui perde calore.{% endcapture %}
+{% include risposta-aperta.html id="ra-errore-maniglia" tipo="errore"
+   domanda="Un compagno dice: «D'inverno la maniglia di metallo della porta è più fredda del legno della porta: basta toccarla per sentirlo». Dove sbaglia? Spiega che cosa succede davvero."
+   risposta=_r %}
+{% include ex-end.html %}
+
 {% include ex.html diff=3 %}
 Quanto deve essere spesso uno strato di legno ($k = 0{,}15\ \text{W/(m·K)}$) per lasciar passare la stessa potenza termica di uno strato di vetro ($k = 0{,}9\ \text{W/(m·K)}$) spesso $1\ \text{cm}$, a parità di area e di differenza di temperatura?
 
@@ -887,10 +1344,12 @@ $$\frac{0{,}15}{\Delta x}=\frac{0{,}9}{1\ \text{cm}}\quad\Rightarrow\quad \Delta
 Meno di due millimetri di legno isolano quanto un centimetro di vetro.
 {% include ex-sol-end.html %}
 
-{% capture _r %}La maniglia di metallo e il legno della porta sono alla stessa temperatura, quella della stanza (sono in equilibrio termico). La maniglia sembra più fredda perché il metallo è un buon conduttore: toglie calore alla mano molto più rapidamente del legno, che è un isolante. La nostra pelle non misura la temperatura, ma la rapidità con cui perde calore.{% endcapture %}
-{% include risposta-aperta.html id="ra-errore-maniglia" tipo="errore"
-   domanda="Un compagno dice: «D'inverno la maniglia di metallo della porta è più fredda del legno della porta: basta toccarla per sentirlo». Dove sbaglia? Spiega che cosa succede davvero."
+{% include ex.html diff=3 %}
+{% capture _r %}Il calore può passare in tre modi, e il thermos li ostacola tutti e tre. Fra le due pareti c'è il vuoto: senza materia non c'è né conduzione (che ha bisogno di particelle che si urtano) né convezione (che ha bisogno di un fluido che si sposta). Resta l'irraggiamento, che funziona anche nel vuoto: per questo le pareti sono argentate, come uno specchio, e riflettono indietro gran parte della radiazione invece di assorbirla o lasciarla uscire. Il tappo, di plastica o di sughero, isola la bocca. Funziona in tutti e due i versi: tiene caldo il caffè e fresca una bibita.{% endcapture %}
+{% include risposta-aperta.html id="ra-riep-thermos" tipo="spiega"
+   domanda="Un thermos ha due pareti di vetro con il vuoto in mezzo, e le pareti sono argentate come uno specchio. Spiega come ciascuna di queste scelte ostacola uno dei tre modi in cui si trasmette il calore."
    risposta=_r %}
+{% include ex-end.html %}
 
 ### Ripasso: energia e calore
 
