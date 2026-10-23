@@ -35,9 +35,16 @@
 #     capitolo: [gravitazione-elettromagnetismo/01_Gravitazione, gravitazione-elettromagnetismo/02_Elettrostatica]
 
 
-   
-"4B":
+
+
+"4ACD":
   - data: 2026-10-23
+    capitolo: meccanica/06_Energia
+    esercizi: [13]
+    note: "Il Verifica Subito sul calore (dissipazione dell'energia)"
+
+"4B":
+  - data: 2026-10-27
     capitolo: gravitazione-elettromagnetismo/01_Gravitazione
     esercizi: [1]
 
@@ -46,9 +53,3 @@
   - data: 2026-10-29
     capitolo: gravitazione-elettromagnetismo/02_Elettrostatica
     esercizi: [1]
-
-"4ACD":
-  - data: 2026-10-23
-    capitolo: meccanica/06_Energia
-    esercizi: [13]
-    note: "Il Verifica Subito sul calore (dissipazione dell'energia)"

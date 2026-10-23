@@ -462,10 +462,15 @@ async function docente(p, url, c, env, cors, ctx) {
       const chat = await DB.prepare("SELECT v FROM conf WHERE k = 'telegram_chat'").first();
       if (c.azione === 'collega') {
         if (!env.TELEGRAM_TOKEN) return json({ errore: 'manca il secret TELEGRAM_TOKEN' }, 400, cors);
+        // prima controllo il token: a quale bot appartiene?
+        const me = await (await fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/getMe`)).json().catch(() => ({}));
+        if (!me.ok) return json({ errore: 'Telegram non accetta il token salvato (' + (me.description || 'errore sconosciuto') + '): rifai «npx wrangler@4 secret put TELEGRAM_TOKEN» incollando il token intero, con i due punti, senza spazi' }, 400, cors);
+        const bot = '@' + me.result.username;
         // l'ultima chat che ha scritto al bot (il docente gli ha appena mandato /start)
         const u = await (await fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/getUpdates`)).json().catch(() => ({}));
+        if (!u.ok) return json({ errore: `${bot}: Telegram non mi dà i messaggi (${u.description || 'errore sconosciuto'})` }, 400, cors);
         const msg = (u.result || []).map((x) => x.message || x.edited_message).filter(Boolean).pop();
-        if (!msg) return json({ errore: 'nessun messaggio: scrivi /start al bot e riprova' }, 400, cors);
+        if (!msg) return json({ errore: `il token salvato è quello del bot ${bot}, che non ha ricevuto messaggi: su Telegram apri proprio ${bot}, scrivigli /start e riprova (se il tuo bot ha un altro nome, il token salvato è di un altro bot)` }, 400, cors);
         await DB.prepare("INSERT OR REPLACE INTO conf (k, v) VALUES ('telegram_chat', ?)").bind(String(msg.chat.id)).run();
         await telegram(env, msg.chat.id, '✅ Notifiche collegate: da ora ti scrivo qui quando arrivano dubbi, foto, schemi e consegne.');
         return json({ ok: true, nome: [msg.chat.first_name, msg.chat.last_name].filter(Boolean).join(' ') || msg.chat.username || '' }, 200, cors);
