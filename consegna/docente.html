@@ -199,11 +199,18 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   }
   function capitoliDi(c) { return [].concat(c.capitolo || []).map(function(p) { return '/corsi/' + String(p).replace(/^\/+|\/+$/g, '').replace(/^corsi\//, '') + '/'; }); }
   function norm(s) { return String(s || '').toLowerCase().replace(/\s+/g, ' ').trim(); }
-  function eserciziDi(c) { return [].concat(c.esercizi || []).map(function(x) { return String(x).trim(); }).filter(Boolean); }
-  function titoloCompito(c) {
-    var es = eserciziDi(c);
-    return capitoliDi(c).map(function(u) { return CAPITOLI[u] || u; }).join(' + ') + (c.sezione ? ' — ' + c.sezione : '') + (es.length ? ' — es. ' + es.join(', ') : '');
+  // esercizi della teoria (3, 5…) ed esercizi di riepilogo (R2, R7…, dal campo «riepilogo»)
+  function eserciziDi(c) {
+    return [].concat(c.esercizi || []).map(function(x) { return String(x).trim(); })
+      .concat([].concat(c.riepilogo || []).map(function(x) { return 'R' + String(x).trim(); })).filter(function(x) { return x && x !== 'R'; });
   }
+  function nomeEs(x) { x = String(x); return x.charAt(0) === 'R' ? 'riepilogo ' + x.slice(1) : x; }
+  function titoloCompito(c) {
+    var es = [].concat(c.esercizi || []), ri = [].concat(c.riepilogo || []);
+    return capitoliDi(c).map(function(u) { return CAPITOLI[u] || u; }).join(' + ') + (c.sezione ? ' — ' + c.sezione : '') +
+      (es.length ? ' — es. ' + es.join(', ') : '') + (ri.length ? ' — riepilogo ' + ri.join(', ') : '');
+  }
+  function ordineEs(x) { x = String(x || ''); return x.charAt(0) === 'R' ? 1000 + (+x.slice(1) || 0) : (+x || 1e9); }
 
   // ───────── stato ─────────
   var studenti = [], classe = null, righe = [], dubbi = [], foto = [], schemi = [], scheda = 'compiti';
@@ -373,7 +380,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     });
     // in ordine di capitolo e di numero di esercizio (quelli senza numero in fondo)
     return Object.keys(m).map(function(k) { return m[k]; }).sort(function(a, b) {
-      return a.pagina < b.pagina ? -1 : a.pagina > b.pagina ? 1 : (+a.esercizio || 1e9) - (+b.esercizio || 1e9);
+      return a.pagina < b.pagina ? -1 : a.pagina > b.pagina ? 1 : ordineEs(a.esercizio) - ordineEs(b.esercizio);
     });
   }
   function esitoHtml(ok) {
@@ -416,7 +423,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       var h = '<table class="dett"><tr><th>Esercizio</th><th>Esito</th><th>Al primo colpo</th><th>Verifiche</th><th>Quando</th></tr>';
       tutte.forEach(function(t) {
         var x = mie[t.pagina + '|' + t.chiave];
-        h += '<tr><td>' + (t.esercizio ? '<b>Es. ' + esc(t.esercizio) + '</b> · ' : '') + esc(t.etichetta || '(esercizio senza testo)') + '<div class="nota" style="margin:.1rem 0 0">' + linkPagina(t.pagina, t.sezione) + '</div>' + (x ? datiHtml(x.dati) : '') + '</td>';
+        h += '<tr><td>' + (t.esercizio ? '<b>Es. ' + esc(nomeEs(t.esercizio)) + '</b> · ' : '') + esc(t.etichetta || '(esercizio senza testo)') + '<div class="nota" style="margin:.1rem 0 0">' + linkPagina(t.pagina, t.sezione) + '</div>' + (x ? datiHtml(x.dati) : '') + '</td>';
         if (!x) h += '<td class="e"><span class="e-nd">non svolto</span></td><td></td><td></td><td></td>';
         else h += '<td class="e">' + esitoHtml(x.ok) + '</td><td>' + (x.primo_ok === null ? '' : x.primo_ok >= 1 ? '✓' : '✗') + '</td><td>' + (x.verifiche || '') + '</td>' +
           '<td>' + (x.ultimo_ts ? ora(x.ultimo_ts) : '<span class="e-nd">prima dell\'accesso</span>') + '</td>';
@@ -440,7 +447,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       '<table class="dett"><tr><th>Esercizio</th><th>Svolto da</th><th>Giusto (alla fine)</th><th>Giusto al primo colpo</th></tr>';
     function bar(x) { return x === null ? '<span class="e-nd">—</span>' : '<div class="barra"><i style="width:' + Math.round(x * 100) + '%"></i></div>' + Math.round(x * 100) + '%'; }
     stat.forEach(function(s) {
-      h += '<tr><td>' + (s.t.esercizio ? '<b>Es. ' + esc(s.t.esercizio) + '</b> · ' : '') + esc(s.t.etichetta || '(esercizio senza testo)') + '<div class="nota" style="margin:.1rem 0 0">' + linkPagina(s.t.pagina, s.t.sezione) + '</div></td>' +
+      h += '<tr><td>' + (s.t.esercizio ? '<b>Es. ' + esc(nomeEs(s.t.esercizio)) + '</b> · ' : '') + esc(s.t.etichetta || '(esercizio senza testo)') + '<div class="nota" style="margin:.1rem 0 0">' + linkPagina(s.t.pagina, s.t.sezione) + '</div></td>' +
         '<td>' + s.n + '/' + cod.length + '</td><td>' + bar(s.ok) + '</td><td>' + bar(s.primo) + '</td></tr>';
     });
     apriModale(h + '</table>');

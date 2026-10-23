@@ -15,6 +15,9 @@
 #              parentesi quadre: [3, 5, 7]. Contano solo quelli.
 #              Se il compito ha più capitoli, scrivi un compito per
 #              capitolo (stessa data), perché i numeri ripartono da 1.
+#    riepilogo: facoltativo — i numeri degli esercizi di riepilogo (il
+#              quadratino accanto all'esercizio), tra parentesi quadre:
+#              [2, 7, 15]. Si può usare insieme a «esercizi».
 #    sezione:  facoltativo — il titolo di una sezione (# Titolo) del
 #              capitolo: contano solo gli esercizi di quella sezione
 #    note:     facoltativo — testo mostrato agli studenti
@@ -42,6 +45,8 @@
     capitolo: meccanica/06_Energia
     esercizi: [13]
     note: "Il Verifica Subito sul calore (dissipazione dell'energia)"
+
+
 
 "4B":
   - data: 2026-10-27

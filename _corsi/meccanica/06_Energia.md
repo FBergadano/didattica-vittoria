@@ -193,6 +193,35 @@ Prova infine con qualche esercizio e un quiz vero/falso sulla potenza.
 ]{% endcapture %}
 {% include quiz.html domande=_qpotenza id="q-potenza" senza_esempi="true" %}
 {% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcTrenoMumbai" %}
+Il 28 luglio 2019, a Mumbai, un treno suburbano viaggiava a circa $80\ \text{km/h}$ quando il macchinista, Narendra Talekar, vide un ragazzo sdraiato sui binari. Frenò d'emergenza e il treno si fermò a pochi metri dal ragazzo, che fu salvato.
+
+Gli altri dati non sono nella notizia, ma sono verosimili: il macchinista comincia a frenare quando il ragazzo è a $270\ \text m$ dal treno, e il treno si ferma a $6\ \text m$ da lui; la forza frenante vale $5{,}0\times10^{5}\ \text N$ e la frenata dura $24\ \text s$.
+<div style="clear:both"></div>
+
+{% include scorri.html %}
+{% include scorri-slide.html titolo="1. Lo spostamento" %}
+Di quanti metri si è spostato il treno mentre frenava?
+
+{% include num.html id="numTrenoDs" valore="264" unit="m" %}
+{% include spoiler.html testo="Mostra la soluzione" %}
+All'inizio il ragazzo è a $270\ \text m$, alla fine a $6\ \text m$: il treno si è avvicinato di $\Delta s = 270\ \text m - 6\ \text m = 264\ \text m$.
+{% include spoiler-end.html %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="2. Il lavoro della forza frenante" %}
+Quanto vale il lavoro compiuto sul treno dalla forza frenante, durante tutta la frenata? Attento al segno.
+
+{% include fill-multi.html testo="$L =$ [-1,32|−1,32|-1.32|−1.32] $\times10^{8}$ J" s="La forza frenante ha verso opposto allo spostamento, quindi il lavoro è negativo: $L = -F\cdot\Delta s = -5{,}0\times10^{5}\ \text N\cdot 264\ \text m = -1{,}32\times10^{8}\ \text J$. È l'energia cinetica che i freni tolgono al treno, trasformandola in calore." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="3. La potenza dei freni" %}
+Con quale potenza i freni tolgono energia al treno? (Usa il valore assoluto del lavoro.)
+
+{% include fill-multi.html testo="$P =$ [5,5|5.5] $\times10^{6}$ W" s="$P = \dfrac{\lvert L\rvert}{\Delta t} = \dfrac{1{,}32\times10^{8}\ \text J}{24\ \text s} = 5{,}5\times10^{6}\ \text W$: cinque megawatt e mezzo, la potenza di qualche migliaio di asciugacapelli accesi insieme." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
 {% include unisci-end.html %}
 
 ### Il lavoro si può convertire in altre forme di energia
@@ -1225,6 +1254,55 @@ Marco lancia una palla da fermo, di massa $200\ \text g$, facendole raggiungere 
 La palla parte da ferma, quindi $v_i=0$ e $K_i=0$. Convertendo la massa, $200\ \text g=0{,}2\ \text{kg}$. Per il teorema dell'energia cinetica,
 
 $$L = \Delta K = K_f - K_i = \frac12 m v_f^2 - 0 = \frac12\times0{,}2\ \text{kg}\times(15\ \text{m/s})^2 = 22{,}5\ \text J.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+{% include calc-margin.html id="calcSputacchina" %}
+L'animale con l'accelerazione più grande mai misurata è un insetto lungo pochi millimetri, la sputacchina (*Philaenus spumarius*): nei suoi salti migliori, partendo da ferma, raggiunge una velocità di $4\ \text{m/s}$ con una spinta delle zampe posteriori che dura appena $1\ \text{ms}$, durante la quale il suo corpo si sposta di circa $2\ \text{mm}$. La sua massa è di circa $12\ \text{mg}$.
+
+{% include spoiler.html testo="Indizio" %}
+Usa il secondo principio della dinamica: per trovare la forza con cui le zampe spingono l'insetto ti serve prima la sua accelerazione, cioè di quanto cambia la velocità in ogni secondo.
+{% include spoiler-end.html %}
+
+Quanto lavoro compiono le zampe sull'insetto durante la spinta?
+
+{% include fill-multi.html testo="$L =$ [9,6|9.6] $\times10^{-5}$ J" %}
+
+Con quale potenza?
+
+{% include fill-multi.html testo="$P =$ [9,6|9.6] $\times10^{-2}$ W" %}
+
+Quanto vale l'energia cinetica dell'insetto quando si stacca da terra? Confrontala con il lavoro.
+
+{% include fill-multi.html testo="$K =$ [9,6|9.6] $\times10^{-5}$ J" %}
+<div style="clear:both"></div>
+
+{% include ex-sol.html %}
+La massa è $12\ \text{mg} = 1{,}2\times10^{-5}\ \text{kg}$, la durata della spinta $1\ \text{ms} = 10^{-3}\ \text s$, lo spostamento $2\ \text{mm} = 2\times10^{-3}\ \text m$.
+
+L'accelerazione è la variazione di velocità divisa per il tempo:
+
+$$a = \frac{\Delta v}{\Delta t} = \frac{4\ \text{m/s}}{10^{-3}\ \text s} = 4\times10^{3}\ \text{m/s}^2,$$
+
+circa $400$ volte l'accelerazione di gravità. Per il secondo principio della dinamica, la forza delle zampe è
+
+$$F = m\,a = 1{,}2\times10^{-5}\ \text{kg}\times4\times10^{3}\ \text{m/s}^2 = 4{,}8\times10^{-2}\ \text N,$$
+
+e il lavoro è
+
+$$L = F\cdot\Delta s = 4{,}8\times10^{-2}\ \text N\times2\times10^{-3}\ \text m = 9{,}6\times10^{-5}\ \text J.$$
+
+La potenza è
+
+$$P = \frac{L}{\Delta t} = \frac{9{,}6\times10^{-5}\ \text J}{10^{-3}\ \text s} = 9{,}6\times10^{-2}\ \text W.$$
+
+L'energia cinetica al decollo è
+
+$$K = \frac12\,m\,v^2 = \frac12\times1{,}2\times10^{-5}\ \text{kg}\times(4\ \text{m/s})^2 = 9{,}6\times10^{-5}\ \text J:$$
+
+esattamente il lavoro compiuto dalle zampe. Non è un caso: è il teorema dell'energia cinetica, $L = \Delta K$, con $K_i = 0$ perché l'insetto parte da fermo.
+
+*Dati da M. Burrows, «Froghopper insects leap to new heights», Nature 424, 509 (2003).*
 {% include ex-sol-end.html %}
 
 ### Esercizi sull'energia potenziale

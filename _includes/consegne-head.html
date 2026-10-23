@@ -91,8 +91,8 @@ window._lvEsito = window._lvEsito || function() {};
     if (!last || !prose || !prose.contains(last)) return {};
     var a = last, t = '';
     while (a && a !== prose) { t = testoDi(a).replace(/\s+/g, ' ').trim(); if (t.length >= 30) break; a = a.parentElement; }
-    var s = C.sezioneDi(last), es = last.closest('[data-es]');
-    return { sezione: s ? s.t : null, etichetta: t.slice(0, 160) || null, esercizio: es ? es.dataset.es : null };
+    var s = C.sezioneDi(last), es = last.closest('[data-es]'), ri = !es && last.closest('[data-rie]');
+    return { sezione: s ? s.t : null, etichetta: t.slice(0, 160) || null, esercizio: es ? es.dataset.es : ri ? 'R' + ri.dataset.rie : null };
   }
 
   // ── coda delle risposte da spedire ──

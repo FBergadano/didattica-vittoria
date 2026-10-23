@@ -103,6 +103,32 @@
   });
 })();
 
+// ── Esercizi di riepilogo: ancora #rie-N (N = il numero nel quadratino) ─────
+// e, se la pagina si apre con #es-N o #rie-N (link dei «Prossimi compiti»),
+// scorrimento fino all'esercizio quando la pagina è pronta (anche dopo che le
+// formule hanno cambiato l'impaginazione), con un breve risalto.
+(function() {
+  var prose = document.querySelector('.chapter-prose');
+  if (!prose) return;
+  [].forEach.call(prose.querySelectorAll('.ex-box'), function(b, i) { b.dataset.rie = i + 1; if (!b.id) b.id = 'rie-' + (i + 1); });
+  function vai(evidenzia) {
+    var m = /^#((?:es|rie)-\d+)$/.exec(location.hash); if (!m) return;
+    var el = document.getElementById(m[1]); if (!el) return;
+    var y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+    window.scrollTo({ top: y, behavior: 'auto' });
+    if (evidenzia) { el.classList.remove('lv-qui'); void el.offsetWidth; el.classList.add('lv-qui'); }
+  }
+  function quandoPronta() {
+    vai(true);
+    var mj = window.MathJax;
+    if (mj && mj.startup && mj.startup.promise) mj.startup.promise.then(function() { setTimeout(function() { vai(false); }, 300); });
+    window.addEventListener('load', function() { setTimeout(function() { vai(false); }, 200); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function() { setTimeout(quandoPronta, 50); });
+  else setTimeout(quandoPronta, 50);
+  window.addEventListener('hashchange', function() { vai(true); });
+})();
+
 // ── Stampa / PDF ───────────────────────────────────────────────
 // I video (YouTube, BBC…) e le simulazioni PhET diventano QR code: sono
 // generati qui nella pagina (assets/js/qrcode.min.js), quindi ci sono sempre,

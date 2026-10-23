@@ -151,8 +151,10 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     if (!lista.length) h += '<div class="cons-hint">Nessun compito in programma.</div>';
     else h += '<ul>' + lista.map(function(c) {
       var cap = capitoliDi(c).map(function(u) { return '<a href="' + esc(BASE + u) + '">' + esc(CAPITOLI[u] || u) + '</a>'; }).join(', ');
-      var es = [].concat(c.esercizi || []), u0 = capitoliDi(c)[0];
-      var esHtml = es.length ? ' — es. ' + es.map(function(n) { return '<a href="' + esc(BASE + u0) + '#es-' + esc(n) + '">' + esc(n) + '</a>'; }).join(', ') : '';
+      var es = [].concat(c.esercizi || []), ri = [].concat(c.riepilogo || []), u0 = capitoliDi(c)[0];
+      function link(pre, n) { return '<a href="' + esc(BASE + u0) + '#' + pre + '-' + esc(n) + '">' + esc(n) + '</a>'; }
+      var esHtml = (es.length ? ' — es. ' + es.map(function(n) { return link('es', n); }).join(', ') : '') +
+                   (ri.length ? ' — esercizi di riepilogo ' + ri.map(function(n) { return link('rie', n); }).join(', ') : '');
       return '<li class="cons-compito"><span class="cons-data">per ' + bella(giorno(c.data)) + '</span>: ' + cap +
         (c.sezione ? ' — sezione «' + esc(c.sezione) + '»' : '') + esHtml + (c.note ? '<div class="cons-hint">' + esc(c.note) + '</div>' : '') + '</li>';
     }).join('') + '</ul>';

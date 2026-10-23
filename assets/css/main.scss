@@ -1366,6 +1366,9 @@ cit em, cit i { font-style: normal; }
 
 // ── Esercizi ─────────────────────────────────────────────────
 .chapter-prose { counter-reset: ex; }
+// l'esercizio raggiunto da un link dei «Prossimi compiti» (scripts.html) si illumina per un attimo
+.lv-qui { animation: lv-qui 2.4s ease-out; border-radius: 8px; }
+@keyframes lv-qui { 0%, 30% { box-shadow: 0 0 0 4px rgba(250, 204, 21, .85); } 100% { box-shadow: 0 0 0 4px rgba(250, 204, 21, 0); } }
 
 .ex-box {
   display: flex;
