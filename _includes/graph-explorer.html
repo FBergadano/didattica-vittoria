@@ -48,6 +48,12 @@ Parametri:
   solo_positivi   — "true" se tutte le variabili rappresentano grandezze che non possono essere
                     negative (masse, distanze, ecc.): il campo di calcolo rifiuta lo zero e i
                     valori negativi (opzionale, default: non rifiuta nulla).
+  punti_min       — (opzionale) trasforma il widget in un esercizio, da mettere dentro un
+                    Verifica Subito: lo studente deve calcolare almeno questo numero di punti,
+                    con valori dell'ascissa diversi e ben distanziati (il più grande almeno il
+                    triplo del più piccolo). I punti vengono uniti da una linea tratteggiata,
+                    così si vede la forma della curva; il «grafico completo» si sblocca solo
+                    quando l'obiettivo è raggiunto (esito giusto, conta per le consegne).
 
 Esempio:
   {% include graph-explorer.html id="ge-campo"
@@ -71,8 +77,10 @@ Esempio:
 {% assign _min_str = include.min | default: _min_default %}
 {% assign _max_str = include.max | default: _max_default %}
 
-<div class="gexp-widget" id="{{ _gid }}">
+<div class="gexp-widget{% if include.punti_min %} gexp-sfida{% endif %}" id="{{ _gid }}">
 <p class="gexp-lbl">{{ include.titolo | default: "Prova tu: esplora il grafico" }}</p>
+{% if include.punti_min %}<p class="gexp-consegna">Scegli la grandezza da mettere in ascissa e calcola almeno <strong>{{ include.punti_min }} punti</strong>, con valori ben distanziati (il più grande almeno il triplo del più piccolo). I punti vengono uniti da una linea: guarda che forma prende la curva.</p>
+<p class="gexp-progress" id="{{ _gid }}-progress" aria-live="polite"></p>{% endif %}
 
 <div class="gexp-axispick" id="{{ _gid }}-axispick" role="radiogroup" aria-label="Scegli la variabile sull'asse orizzontale">
 <span class="gexp-axispick-lbl">Ascissa:</span>
@@ -134,6 +142,10 @@ Esempio:
 .gexp-steps > div{margin:.12rem 0;}
 .gexp-points{margin-top:.4rem;font-size:.74rem;color:#64748b;}
 .gexp-points b{color:#0f766e;}
+.gexp-consegna{font-size:.84rem;color:#334155;margin:0 0 .45rem;text-align:center;}
+.gexp-progress{font-size:.8rem;color:#475569;margin:0 0 .5rem;text-align:center;}
+.gexp-progress.ok{color:#15803d;font-weight:600;}
+.gexp-curvebtn:disabled{opacity:.45;cursor:not-allowed;border-color:#cbd5e1;color:#94a3b8;}
 @media print{.gexp-widget{display:none!important;}}
 </style>
 
@@ -159,6 +171,8 @@ Esempio:
   var YUNIT={{ include.y_unita | jsonify }};
   var YSCALE={{ include.y_scala | default: 1 }};
   var SOLO_POSITIVI={% if include.solo_positivi %}true{% else %}false{% endif %};
+  var PUNTI_MIN={{ include.punti_min | default: 0 }};
+  var fatto=false; // sfida: obiettivo raggiunto (resta tale anche se poi i punti si cancellano)
 
   var fn=new Function(VARS.concat(CONSTS).join(','), 'return ('+FORMULA+');');
   function evalAtReal(realVals){
@@ -297,6 +311,36 @@ Esempio:
     return {y:y, html:'<div>'+latex1+'</div><div>'+latex2+'</div><div><strong>'+latex3+'</strong></div>'};
   }
 
+  // Sfida: quanti valori diversi dell'ascissa, e se sono abbastanza distanziati.
+  function distinti(){
+    var xs=[];
+    points.forEach(function(p){ if(!xs.some(function(x){ return Math.abs(x-p.x)<=1e-9*Math.max(1,Math.abs(x)); })) xs.push(p.x); });
+    return xs;
+  }
+  function aggiornaSfida(dalVivo){
+    if(!PUNTI_MIN) return;
+    var prog=document.getElementById(ID+'-progress');
+    var xs=distinti(), n=xs.length;
+    var lo=Math.min.apply(null,xs.map(Math.abs)), hi=Math.max.apply(null,xs.map(Math.abs));
+    var largo = n>=2 && lo>0 && hi>=3*lo;
+    if(!fatto && dalVivo && n>=PUNTI_MIN && largo){
+      fatto=true;
+      try{ window._lvSave && _lvSave('gexp', ID, {ok:true, punti:n}); }catch(e){}
+      if(window._shoot) _shoot(prog);
+    }
+    if(fatto){
+      prog.className='gexp-progress ok';
+      prog.textContent='✓ Fatto! Ora confronta i tuoi punti con il grafico completo.';
+    } else {
+      prog.className='gexp-progress';
+      var msg='Punti calcolati: '+Math.min(n,PUNTI_MIN)+' su '+PUNTI_MIN+'.';
+      if(n>=PUNTI_MIN && !largo) msg+=' Sono troppo vicini fra loro: scegli un valore più grande o più piccolo (il più grande almeno il triplo del più piccolo).';
+      prog.textContent=msg;
+    }
+    curveBtn.disabled=!fatto;
+    curveBtn.title=fatto?'':'Si sblocca quando hai calcolato abbastanza punti';
+  }
+
   function renderPointsList(){
     if(!points.length){ pointsEl.textContent=''; return; }
     var xi=idx(xVar);
@@ -339,11 +383,13 @@ Esempio:
     points.push({x:xval,y:r.y});
     renderPointsList();
     recomputeAndRender();
+    aggiornaSfida(true);
   });
   xinputEl.addEventListener('keydown', function(e){ if(e.key==='Enter') calcBtn.click(); });
 
   function clearPoints(){
     points=[]; stepsEl.style.display='none'; stepsEl.innerHTML=''; renderPointsList();
+    if(typeof curveBtn!=='undefined') aggiornaSfida(false);
   }
   document.getElementById(ID+'-clearbtn').addEventListener('click', function(){ clearPoints(); recomputeAndRender(); });
 
@@ -373,7 +419,7 @@ Esempio:
   // ---------- grafico SVG ----------
   var svg=document.getElementById(ID+'-svg');
   var curveBtn=document.getElementById(ID+'-curvebtn');
-  var PAD_L=52,PAD_R=26,PAD_T=22,PAD_B=38,W=480,H=380;
+  var PAD_L=74,PAD_R=26,PAD_T=22,PAD_B=38,W=480,H=380;
   var PLOT_W=W-PAD_L-PAD_R, PLOT_H=H-PAD_T-PAD_B;
   var axisX={min:0,max:1}, axisY={min:0,max:1};
 
@@ -443,14 +489,14 @@ Esempio:
     // <text> SVG non è markup valido lì, quindi l'esponente di "×10ⁿ" non
     // veniva disegnato. fmtLatex già gestisce la notazione scientifica.
     function tickLabel(refX, refY, value, hAlign, vAlign){
-      var w=60, h=18;
+      var w=hAlign==='center'?60:70, h=18;
       var x = hAlign==='center' ? refX-w/2 : refX-w;
       var y = vAlign==='center' ? refY-h/2 : refY;
       var fo=svgEl('foreignObject',{x:x,y:y,width:w,height:h});
       var div=document.createElement('div');
       div.setAttribute('xmlns','http://www.w3.org/1999/xhtml');
       div.style.cssText='font-size:11px;line-height:1;color:#334155;height:100%;display:flex;align-items:center;justify-content:'+(hAlign==='center'?'center':'flex-end')+';white-space:nowrap;';
-      div.innerHTML='$'+fmtLatex(value)+'$';
+      div.innerHTML='$'+fmtLatex(value).replace(/^\\left\((.*)\\right\)$/,'$1')+'$'; // niente parentesi sulle tacche
       fo.appendChild(div);
       svg.appendChild(fo);
     }
@@ -473,6 +519,12 @@ Esempio:
     if(curveVisible){
       var d=curve.map(function(p,i){ return (i===0?'M':'L')+mapX(p.x).toFixed(1)+','+mapY(p.y).toFixed(1); }).join(' ');
       svg.appendChild(svgEl('path',{d:d,fill:'none',stroke:'#7c3aed','stroke-width':2.4}));
+    }
+    // sfida: i punti calcolati uniti da una linea, in ordine di ascissa
+    if(PUNTI_MIN && points.length>1){
+      var ord=points.slice().sort(function(a,b){ return a.x-b.x; });
+      var dp=ord.map(function(p,i){ return (i===0?'M':'L')+mapX(p.x).toFixed(1)+','+mapY(p.y).toFixed(1); }).join(' ');
+      svg.appendChild(svgEl('path',{d:dp,fill:'none',stroke:'#0f766e','stroke-width':1.8,'stroke-dasharray':'5 4'}));
     }
     // punti
     points.forEach(function(p){
@@ -508,5 +560,10 @@ Esempio:
 
   buildControls();
   recomputeAndRender();
+  if(PUNTI_MIN){
+    var sv=window._lvLoad && _lvLoad('gexp', ID);
+    if(sv && sv.ok) fatto=true;
+    aggiornaSfida(false);
+  }
 })();
 </script>

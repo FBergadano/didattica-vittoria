@@ -891,6 +891,7 @@ $$F = k\,\frac{\lvert q_1\cdot q_2\rvert}{r^2}, \qquad k = 8{,}99\times10^9\ \fr
 La forza è <u>diretta lungo la retta che congiunge le due cariche</u> (è una forza centrale): repulsiva se le cariche hanno lo stesso segno, attrattiva se hanno segno opposto.
 {% include box-end.html %}
 
+{% include unisci.html %}
 Esplora tu stesso come cambia $F$ al variare di una fra $q_1$, $q_2$ e $r$.
 
 {% include graph-explorer.html id="ge-coulomb"
@@ -898,7 +899,12 @@ Esplora tu stesso come cambia $F$ al variare di una fra $q_1$, $q_2$ e $r$.
    min="0.1|0.1|0.05" max="10|10|2" default="2|3|0.3"
    costanti="k" costanti_valori="8.99e9"
    formula="k*q1*q2/(r*r)" formula_latex="k\dfrac{\lvert q_1\rvert \cdot \lvert q_2\rvert}{r^2}"
-   y_simbolo="F" y_unita="N" solo_positivi="true" %}
+   y_simbolo="F" y_unita="N" solo_positivi="true"
+   titolo="Esplora il grafico" punti_min="5" %}
+
+Con $r$ in ascissa, che forma ha il grafico di $F$?
+{% capture _o_mcqgecoulomb %}[{"v":"a","t":"Una retta che passa per l'origine"},{"v":"b","t":"Una retta che scende"},{"v":"c","t":"Una curva che scende sempre più piano, avvicinandosi all'asse $r$ senza mai toccarlo"},{"v":"d","t":"Una curva che sale sempre più ripida"}]{% endcapture %}
+{% include mcq.html id="mcqgecoulomb" opts=_o_mcqgecoulomb ok="c" s="Come per la gravità, $F$ è inversamente proporzionale a $r^2$: a distanza doppia la forza diventa un quarto. La curva scende in fretta e poi si appiattisce, senza mai arrivare a zero." %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
@@ -1010,6 +1016,7 @@ Due ioni, immersi nell'acqua, hanno i centri a $1\ \text{nm}$ di distanza. A qua
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 ### Confronto fra forza elettrica e forza gravitazionale
 
@@ -1252,6 +1259,7 @@ $$E = k\,\dfrac{\lvert Q\rvert}{r^2} = \dfrac{F}{q}.$$
 Si misura in N/C, e **non dipende** dalla carica di prova $q$: dipende solo da $Q$ (che lo genera) e da $r$ (il punto in cui lo si misura).
 {% include box-end.html %}
 
+{% include unisci.html %}
 Esplora tu stesso come cambia $E$ al variare di $Q$ o di $r$.
 
 {% include graph-explorer.html id="ge-campo-e"
@@ -1259,7 +1267,12 @@ Esplora tu stesso come cambia $E$ al variare di $Q$ o di $r$.
    min="0.1|0.1" max="10|5" default="2|1"
    costanti="k" costanti_valori="8.99e9"
    formula="k*Q/(r*r)" formula_latex="k\dfrac{\lvert Q\rvert}{r^2}"
-   y_simbolo="E" y_unita="N/C" solo_positivi="true" %}
+   y_simbolo="E" y_unita="N/C" solo_positivi="true"
+   titolo="Esplora il grafico" punti_min="5" %}
+
+Con $\lvert Q\rvert$ in ascissa (e $r$ fisso), che forma ha il grafico di $E$?
+{% capture _o_mcqgecampoe %}[{"v":"a","t":"Una retta che passa per l'origine"},{"v":"b","t":"Una curva che scende sempre più piano, avvicinandosi all'asse $Q$ senza mai toccarlo"},{"v":"c","t":"Una retta orizzontale: $E$ non dipende da $Q$"},{"v":"d","t":"Una parabola"}]{% endcapture %}
+{% include mcq.html id="mcqgecampoe" opts=_o_mcqgecampoe ok="a" s="$E = k\,\lvert Q\rvert/r^2$: a $r$ fisso, $E$ è direttamente proporzionale a $\lvert Q\rvert$. Carica doppia, campo doppio: i punti stanno su una retta che passa per l'origine." %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
@@ -1320,6 +1333,7 @@ Isola le altre grandezze nella formula del campo elettrico. Per ciascuna, cerca 
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
 
 ### Direzione e verso del vettore campo elettrico

@@ -82,6 +82,7 @@ $$[U]=[k]\cdot\frac{[Q]\cdot[q]}{[r]}=\frac{\text N\cdot\text m^2}{\text C^2}\cd
 - **Unità di misura:** joule (J).
 {% include box-end.html %}
 
+{% include unisci.html %}
 Esplora tu stesso come cambia $U$ al variare di $Q$, di $q$ o di $r$ (qui le due cariche sono positive).
 
 {% include graph-explorer.html id="ge-energia-el"
@@ -89,9 +90,13 @@ Esplora tu stesso come cambia $U$ al variare di $Q$, di $q$ o di $r$ (qui le due
    min="0.1|0.1|0.1" max="10|10|5" default="2|3|1"
    costanti="k" costanti_valori="8.99e9"
    formula="k*Q*q/r" formula_latex="k\dfrac{Q \cdot q}{r}"
-   y_simbolo="U" y_unita="J" solo_positivi="true" %}
+   y_simbolo="U" y_unita="J" solo_positivi="true"
+   titolo="Esplora il grafico" punti_min="5" %}
 
-{% include unisci.html %}
+Leggi sul grafico di $U$ con $r$ in ascissa: quando $r$ raddoppia, che cosa succede a $U$?
+{% capture _o_mcqgeenergiael %}[{"v":"a","t":"Raddoppia"},{"v":"b","t":"Diventa un quarto"},{"v":"c","t":"Si dimezza"},{"v":"d","t":"Resta uguale"}]{% endcapture %}
+{% include mcq.html id="mcqgeenergiael" opts=_o_mcqgeenergiael ok="c" s="$U = k\,Q\,q/r$ è inversamente proporzionale a $r$, non a $r^2$ come la forza: a distanza doppia l'energia si dimezza." %}
+
 {% include esercizi/invert-energia-elettrica.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -247,6 +252,7 @@ $$1\ \text V = 1\ \frac{\text J}{\text C}.$$
    domanda="Qual è la differenza fra energia potenziale elettrica $U$ e potenziale elettrico $V$? Spiegala con un esempio numerico inventato da te."
    risposta=_rUVel %}
 
+{% include unisci.html %}
 Esplora tu stesso come cambia $V$ al variare di $Q$ o di $r$ (qui la carica è positiva).
 
 {% include graph-explorer.html id="ge-potenziale-el"
@@ -254,9 +260,13 @@ Esplora tu stesso come cambia $V$ al variare di $Q$ o di $r$ (qui la carica è p
    min="0.1|0.1" max="10|5" default="2|1"
    costanti="k" costanti_valori="8.99e9"
    formula="k*Q/r" formula_latex="k\dfrac{Q}{r}"
-   y_simbolo="V" y_unita="V" solo_positivi="true" %}
+   y_simbolo="V" y_unita="V" solo_positivi="true"
+   titolo="Esplora il grafico" punti_min="5" %}
 
-{% include unisci.html %}
+Con $r$ in ascissa, il potenziale $V$ di una carica positiva arriva a zero a una certa distanza?
+{% capture _o_mcqgepotenzialeel %}[{"v":"a","t":"Sì, a qualche metro dalla carica"},{"v":"b","t":"No: scende verso zero ma non lo raggiunge mai; vale zero solo a distanza infinita"},{"v":"c","t":"No: resta sempre uguale"},{"v":"d","t":"Sì, e poi diventa negativo"}]{% endcapture %}
+{% include mcq.html id="mcqgepotenzialeel" opts=_o_mcqgepotenzialeel ok="b" s="$V = k\,Q/r$ è positivo per ogni $r$ e diminuisce allontanandosi, avvicinandosi a zero senza mai toccarlo: per convenzione $V=0$ solo a distanza infinita." %}
+
 {% include esercizi/invert-potenziale-elettrico.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}

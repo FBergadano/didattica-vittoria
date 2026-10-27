@@ -186,6 +186,7 @@ sempre con i vettori di lunghezza uguale, anche se le masse sono diverse.
 
 {% include box-end.html %}
 
+{% include unisci.html %}
 Esplora tu stesso come cambia $F$ al variare di una fra $m_1$, $m_2$ e $r$.
 
 {% include graph-explorer.html id="ge-forza"
@@ -193,9 +194,13 @@ Esplora tu stesso come cambia $F$ al variare di una fra $m_1$, $m_2$ e $r$.
    min="1e2|1e2|1" max="1e6|1e6|100" default="1e3|1e3|10"
    costanti="G" costanti_valori="6.67e-11"
    formula="G*m1*m2/(r*r)" formula_latex="G\dfrac{m_1 \cdot m_2}{r^2}"
-   y_simbolo="F" y_unita="N" solo_positivi="true" %}
+   y_simbolo="F" y_unita="N" solo_positivi="true"
+   titolo="Esplora il grafico" punti_min="5" %}
 
-{% include unisci.html %}
+Con $r$ in ascissa, che forma ha il grafico di $F$?
+{% capture _o_mcqgeforza %}[{"v":"a","t":"Una retta che passa per l'origine"},{"v":"b","t":"Una retta che scende"},{"v":"c","t":"Una curva che scende sempre più piano, avvicinandosi all'asse $r$ senza mai toccarlo"},{"v":"d","t":"Una curva che sale sempre più ripida"}]{% endcapture %}
+{% include mcq.html id="mcqgeforza" opts=_o_mcqgeforza ok="c" s="$F$ è inversamente proporzionale a $r^2$: se $r$ raddoppia, $F$ diventa un quarto; se $r$ triplica, un nono. La curva scende in fretta e poi si appiattisce, ma non arriva mai a zero." %}
+
 {% include esercizi/invert-forza-gravitazionale.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -257,9 +262,77 @@ Nel simulatore seguente puoi spostare le masse e cambiarne i valori: guarda come
 
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-forza-grav" tipo="forza" fisica="grav" %}
 
+{% include unisci.html %}
 Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta in un contesto concreto — con quattro scenari diversi.
 
 {% include esercizi/parallelogramma-scenari.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+{% capture _qsovr %}[
+{"t":"Se avvicino a $m$ una seconda massa $M_2$, la forza che $M_1$ esercita su $m$ cambia.","ok":false,"s":"No: per il principio di sovrapposizione degli effetti, $M_1$ attrae $m$ esattamente come se $M_2$ non ci fosse. Cambia la forza <em>totale</em>, perché le si aggiunge quella di $M_2$."},
+{"t":"Se su $m$ agiscono due forze gravitazionali di $3\\ \\text N$ e di $4\\ \\text N$, la forza totale vale sempre $7\\ \\text N$.","ok":false,"s":"No: le forze si sommano come vettori. Vale $7\\ \\text N$ solo se hanno stessa direzione e stesso verso; se hanno versi opposti vale $1\\ \\text N$, se sono perpendicolari vale $5\\ \\text N$."},
+{"t":"Una pallina posta esattamente a metà strada fra due masse uguali resta ferma.","ok":true,"s":"Sì: le due forze hanno lo stesso modulo (stesse masse, stessa distanza), la stessa direzione e versi opposti. La loro somma è zero."},
+{"t":"Se una pallina resta ferma fra due masse, vuol dire che le due masse non la attraggono.","ok":false,"s":"No: la attraggono tutte e due, ma con forze uguali e opposte, che si annullano a vicenda."},
+{"t":"Fra due masse diverse, il punto in cui una pallina resta ferma è più vicino alla massa più piccola.","ok":true,"s":"Sì: la massa più piccola, per attrarre quanto quella grande, deve essere più vicina."},
+{"t":"Il punto in cui la pallina resta ferma dipende dalla massa della pallina.","ok":false,"s":"No: la massa $m$ della pallina compare in entrambe le forze, e nell'uguaglianza si semplifica."}
+]{% endcapture %}
+{% include quiz.html domande=_qsovr id="q-sovrapposizione" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Due sfere uguali, di $50\ \text{kg}$ ciascuna, hanno i centri a $6\ \text m$ l'una dall'altra.
+
+{% include fill-multi.html testo="Una pallina resta ferma sulla retta dei centri, fra le due sfere, a [3] m dal centro della prima." s="Con masse uguali le due forze sono uguali quando le distanze sono uguali: a metà strada, cioè a $3\ \text m$ da ciascuna sfera." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Due masse $M_1$ e $M_2$ stanno su una retta. Una pallina viene messa sulla stessa retta, ma **fuori** dal segmento che le unisce, oltre $M_2$. Può restare ferma?
+{% capture _o_mcqSovFuori %}[
+{"v":"a","t":"Sì, se è abbastanza lontana"},
+{"v":"b","t":"Sì, se $M_2$ è più grande di $M_1$"},
+{"v":"c","t":"No: le due forze hanno lo stesso verso, verso le masse, e non si annullano mai"},
+{"v":"d","t":"No, perché lì $M_1$ non la attrae più"}
+]{% endcapture %}
+{% include mcq.html id="mcqSovFuori" opts=_o_mcqSovFuori ok="c" s="Fuori dal segmento entrambe le masse stanno dalla stessa parte della pallina, e la forza gravitazionale è sempre attrattiva: le due forze puntano nello stesso verso e si sommano. Si possono annullare solo fra le due masse." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una pallina di massa $m$ sta fra $M_1$ e $M_2$, i cui centri distano $d$; chiama $x$ la distanza della pallina da $M_1$. Quale uguaglianza devi scrivere perché resti ferma?
+{% capture _o_mcqSovEq %}[
+{"v":"a","t":"$G\\dfrac{M_1\\cdot m}{x^2} = G\\dfrac{M_2\\cdot m}{x^2}$"},
+{"v":"b","t":"$G\\dfrac{M_1\\cdot m}{x^2} = G\\dfrac{M_2\\cdot m}{(d-x)^2}$"},
+{"v":"c","t":"$G\\dfrac{M_1\\cdot m}{x} = G\\dfrac{M_2\\cdot m}{d-x}$"},
+{"v":"d","t":"$G\\dfrac{M_1\\cdot M_2}{d^2} = 0$"}
+]{% endcapture %}
+{% include mcq.html id="mcqSovEq" opts=_o_mcqSovEq ok="b" s="I moduli delle due forze devono essere uguali, ciascuno con la propria distanza: $x$ da $M_1$ e $d-x$ da $M_2$. Semplificando $G$ e $m$ resta $\dfrac{M_1}{x^2} = \dfrac{M_2}{(d-x)^2}$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una sfera di $M_1 = 400\ \text{kg}$ e una di $M_2 = 100\ \text{kg}$ hanno i centri a $3\ \text m$ di distanza. Dove resta ferma una pallina, fra le due?
+
+{% include fill-multi.html testo="A [2] m da $M_1$ e a [1] m da $M_2$." s="$\dfrac{400}{x^2} = \dfrac{100}{(3-x)^2}$, cioè $\dfrac{x^2}{(3-x)^2}=4$, quindi $\dfrac{x}{3-x}=2$ e $x = 2\ \text m$. Prova: $\dfrac{400}{2^2} = 100$ e $\dfrac{100}{1^2} = 100$. La massa quattro volte più grande va tenuta a distanza doppia." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una pallina resta ferma fra due sfere, a $1\ \text m$ dal centro della prima, che ha massa $M_1 = 20\ \text{kg}$, e a $3\ \text m$ dal centro della seconda.
+
+{% include fill-multi.html testo="La seconda sfera ha massa $M_2 =$ [180] kg." s="$\dfrac{M_1}{1^2} = \dfrac{M_2}{3^2}$, quindi $M_2 = 9\cdot M_1 = 180\ \text{kg}$: a distanza tripla serve una massa nove volte più grande." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una pallina è ferma fra due masse $M_1$ e $M_2$. Se raddoppi **soltanto** $M_1$, dove si trova il nuovo punto in cui la pallina resta ferma?
+{% capture _o_mcqSovSposta %}[
+{"v":"a","t":"Nello stesso punto"},
+{"v":"b","t":"Più vicino a $M_1$"},
+{"v":"c","t":"Più vicino a $M_2$"},
+{"v":"d","t":"Non esiste più"}
+]{% endcapture %}
+{% include mcq.html id="mcqSovSposta" opts=_o_mcqSovSposta ok="c" s="Nel vecchio punto ora $M_1$ tira il doppio e vince: la pallina va verso $M_2$, finché la forza di $M_2$, che cresce avvicinandosi, torna a pareggiare. Se invece raddoppiassi tutte e due le masse, il punto non cambierebbe: le due forze raddoppierebbero insieme." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+La massa della Terra è circa $81$ volte quella della Luna, e i loro centri distano circa $384\,000\ \text{km}$. Una sonda diretta verso la Luna passa per un punto in cui l'attrazione della Terra e quella della Luna si annullano.
+
+{% include fill-multi.html testo="Quel punto si trova a [345600] km dal centro della Terra, cioè a [38400] km dal centro della Luna." s="$\dfrac{81\,M_L}{x^2} = \dfrac{M_L}{(d-x)^2}$ dà $\dfrac{x}{d-x} = 9$, quindi $x = \dfrac{9}{10}\,d = 345\,600\ \text{km}$. Il punto sta ai nove decimi del viaggio: la Luna, ottantuno volte meno massiccia, prevale solo nell'ultimo tratto." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+{% include unisci-end.html %}
 
 
 # Il Campo Gravitazionale
@@ -418,6 +491,7 @@ Inoltre, il campo **non dipende** dalla massa esploratrice $m$: dipende solo da 
 
 
 
+{% include unisci.html %}
 Esplora tu stesso come cambia $g$ al variare di $M$ o di $r$.
 
 {% include graph-explorer.html id="ge-campo"
@@ -425,9 +499,15 @@ Esplora tu stesso come cambia $g$ al variare di $M$ o di $r$.
    min="1e23|6.371e6" max="2e25|2.5e7" default="5.97e24|6.371e6"
    costanti="G" costanti_valori="6.67e-11"
    formula="G*M/(r*r)" formula_latex="G\dfrac{M}{r^2}"
-   y_simbolo="g" y_unita="N/kg" solo_positivi="true" %}
+   y_simbolo="g" y_unita="N/kg" solo_positivi="true"
+   titolo="Esplora il grafico" punti_min="5" %}
+
+Con $M$ in ascissa (e $r$ fisso), che forma ha il grafico di $g$?
+{% capture _o_mcqgecampo %}[{"v":"a","t":"Una retta che passa per l'origine"},{"v":"b","t":"Una curva che scende sempre più piano, avvicinandosi all'asse $M$ senza mai toccarlo"},{"v":"c","t":"Una retta orizzontale: $g$ non dipende da $M$"},{"v":"d","t":"Una parabola"}]{% endcapture %}
+{% include mcq.html id="mcqgecampo" opts=_o_mcqgecampo ok="a" s="$g = G\,M/r^2$: a $r$ fisso, $g$ è direttamente proporzionale a $M$. Raddoppia la massa, raddoppia il campo: i punti stanno su una retta che passa per l'origine." %}
 
 {% include esercizi/invert-campo-gravitazionale.html %}
+{% include unisci-end.html %}
 
 ### Direzione e verso del vettore campo gravitazionale
 
@@ -631,6 +711,7 @@ $$[U]=[G]\cdot\frac{[M]\cdot[m]}{[r]}=\frac{\text N\cdot\text m^2}{\text{kg}^2}\
 - **Unità di misura:** essendo un'energia, si misura in joule (simbolo J).
 {% include box-end.html %}
 
+{% include unisci.html %}
 Esplora tu stesso come cambia $U$ al variare di $M$, di $m$ o di $r$.
 
 {% include graph-explorer.html id="ge-energia"
@@ -638,9 +719,15 @@ Esplora tu stesso come cambia $U$ al variare di $M$, di $m$ o di $r$.
    min="0.1|0.1|1" max="20|10|30" default="6|0.5|6.4"
    costanti="G" costanti_valori="6.67e-11"
    formula="-G*M*m/r" formula_latex="-G\dfrac{M \cdot m}{r}"
-   y_simbolo="U" y_unita="GJ" y_scala="1e9" solo_positivi="true" %}
+   y_simbolo="U" y_unita="GJ" y_scala="1e9" solo_positivi="true"
+   titolo="Esplora il grafico" punti_min="5" %}
+
+Con $r$ in ascissa, che forma ha il grafico di $U$?
+{% capture _o_mcqgeenergia %}[{"v":"a","t":"Una curva sopra l'asse $r$, che scende verso zero"},{"v":"b","t":"Una curva sotto l'asse $r$, che sale verso zero senza mai raggiungerlo"},{"v":"c","t":"Una retta che scende sotto l'asse $r$"},{"v":"d","t":"Una retta orizzontale"}]{% endcapture %}
+{% include mcq.html id="mcqgeenergia" opts=_o_mcqgeenergia ok="b" s="Per il segno meno, $U$ è sempre negativa: la curva sta sotto l'asse. Allontanandosi, $U$ cresce (diventa meno negativa) e si avvicina a zero, il valore che ha a distanza infinita." %}
 
 {% include esercizi/invert-energia-potenziale.html %}
+{% include unisci-end.html %}
 
 ### Sovrapposizione degli effetti per l'energia potenziale
 
@@ -716,6 +803,7 @@ $$[V]=\frac{[U]}{[m]}=\frac{\text J}{\text{kg}}.$$ -->
    domanda="Qual è la differenza fra energia potenziale $U$ e potenziale $V$? Spiegala con un esempio numerico inventato da te."
    risposta=_r %}
 
+{% include unisci.html %}
 Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
 
 {% include graph-explorer.html id="ge-potenziale"
@@ -723,9 +811,15 @@ Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
    min="0.1|1" max="20|30" default="6|6.4"
    costanti="G" costanti_valori="6.67e-11"
    formula="-G*M/r" formula_latex="-G\dfrac{M}{r}"
-   y_simbolo="V" y_unita="MJ/kg" y_scala="1e6" solo_positivi="true" %}
+   y_simbolo="V" y_unita="MJ/kg" y_scala="1e6" solo_positivi="true"
+   titolo="Esplora il grafico" punti_min="5" %}
+
+Leggi sul grafico di $V$ con $r$ in ascissa: quando $r$ raddoppia, che cosa succede a $V$?
+{% capture _o_mcqgepotenziale %}[{"v":"a","t":"Raddoppia"},{"v":"b","t":"Diventa un quarto"},{"v":"c","t":"Si dimezza (restando negativo)"},{"v":"d","t":"Resta uguale"}]{% endcapture %}
+{% include mcq.html id="mcqgepotenziale" opts=_o_mcqgepotenziale ok="c" s="$V=-G\,M/r$ è inversamente proporzionale a $r$, non a $r^2$: a distanza doppia il valore si dimezza. Per esempio da $-62{,}5$ MJ/kg a $-31{,}3$ MJ/kg." %}
 
 {% include esercizi/invert-potenziale.html %}
+{% include unisci-end.html %}
 
 ### Sovrapposizione degli effetti per il potenziale 
 Esattamente come per l'energia potenziale, in presenza di più masse si può calcolare un potenziale totale in modo molto semplice. 
