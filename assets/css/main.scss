@@ -2314,3 +2314,7 @@ cit em, cit i { font-style: normal; }
   li p { margin: 0 0 .4rem; }
 }
 .footnote { font-size: .75em; }
+
+/* Due figure affiancate (una sotto l'altra sul telefono) */
+.fig-coppia { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 0 1.5rem; }
+.fig-coppia > .fig-block { flex: 1 1 200px; max-width: 260px; margin-left: 0; margin-right: 0; }

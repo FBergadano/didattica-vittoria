@@ -269,6 +269,17 @@ Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta in un 
 {% include margin-note-end.html %}
 
 {% include spoiler.html testo="A questa domanda nemmeno Newton non seppe rispondere" %}
+
+<div class="fig-coppia">
+{% include figura.html id="ritratto-newton-bentley"
+   src="/corsi/immagini/Portrait_of_Sir_Isaac_Newton,_1689_(brightened).webp"
+   didascalia="Isaac Newton nel 1689, tre anni prima delle lettere a Bentley."
+   larghezza="200px" %}
+{% include figura.html id="ritratto-bentley"
+   src="/corsi/immagini/Richard_Bentley_Thornhill.webp"
+   didascalia="Richard Bentley in un ritratto di James Thornhill (pubblico dominio)."
+   larghezza="200px" %}
+</div>
 Tra il 1692 e il 1693 Newton scambiò alcune lettere con Richard Bentley, un giovane teologo che voleva usare la legge di gravitazione nelle sue prediche. Bentley dava per scontato che la gravità fosse una proprietà della materia, come il colore o il peso. Newton gli rispose così:
 
 > *«È inconcepibile che la materia bruta e inanimata possa, senza la mediazione di qualcos'altro che non sia materiale, agire su altra materia e influenzarla senza un contatto reciproco. […] Che la gravità sia innata, inerente ed essenziale alla materia, così che un corpo possa agire su un altro a distanza, attraverso il vuoto, senza la mediazione di nient'altro per mezzo del quale la loro azione e la loro forza possano essere trasmesse dall'uno all'altro, è per me un'assurdità così grande che credo che nessun uomo che abbia una competente capacità di pensare in materia filosofica possa mai cadervi.»*
