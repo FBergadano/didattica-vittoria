@@ -268,14 +268,14 @@ Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta in un 
 È  fondamentale osservare che la legge di gravitazione universale **descrive** il fatto che una massa attragga a sé un'altra massa <u markdown="span">ma non dice *perché* né *come* due masse si attraggano</u>. Il *perché* è un mistero: nessuno lo sa. Sul *come* possiamo lavorarci un pochino. Risponderemo quindi alla seguente domanda: **come fa una massa a *sentire* la presenza di un'altra massa?**
 {% include margin-note-end.html %}
 
-{% include spoiler.html testo="Se ti sembra una domanda strana, sappi che se la poneva anche Newton" %}
+{% include spoiler.html testo="A questa domanda nemmeno Newton non seppe rispondere" %}
 Tra il 1692 e il 1693 Newton scambiò alcune lettere con Richard Bentley, un giovane teologo che voleva usare la legge di gravitazione nelle sue prediche. Bentley dava per scontato che la gravità fosse una proprietà della materia, come il colore o il peso. Newton gli rispose così:
 
 > *«È inconcepibile che la materia bruta e inanimata possa, senza la mediazione di qualcos'altro che non sia materiale, agire su altra materia e influenzarla senza un contatto reciproco. […] Che la gravità sia innata, inerente ed essenziale alla materia, così che un corpo possa agire su un altro a distanza, attraverso il vuoto, senza la mediazione di nient'altro per mezzo del quale la loro azione e la loro forza possano essere trasmesse dall'uno all'altro, è per me un'assurdità così grande che credo che nessun uomo che abbia una competente capacità di pensare in materia filosofica possa mai cadervi.»*
 
 Proprio l'uomo che aveva scritto la legge di gravitazione, quindi, trovava assurdo che due masse si attraessero "da lontano", senza niente in mezzo. La sua legge funzionava benissimo, ma lui stesso non sapeva spiegare *come* la forza passasse da un corpo all'altro, e lasciò la questione aperta.
 
-È la stessa domanda da cui partiamo adesso. La risposta della fisica moderna è il **campo**: la massa modifica lo spazio attorno a sé, e l'altra massa sente questa modifica nel punto in cui si trova.
+È la stessa domanda da cui partiamo adesso.
 {% include spoiler-end.html %}
 
 {% include margin-note.html testo="Analogia del telo" %}
