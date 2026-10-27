@@ -12,6 +12,17 @@ numero: 1
 <em>GALILEO</em> “Allora, Eminenza, l'Onnipotente ci avrebbe forniti di cervelli fatti così <em>(traccia col dito lo stesso movimento)</em> perché potessimo credere che un movimento così <em>(ripete il tracciato immaginario)</em> fosse il più semplice possibile! Io ho fede nel cervello.”
 </cit>
 
+<cit autore="Leopardi, Canto Notturno di un Pastore Errante dell'Asia" >
+Che fai tu luna in ciel? Dimmi, che fai, 
+Silenziosa luna?
+Sorgi la sera, e vai,
+Contemplando i deserti; indi ti posi.
+Ancor non sei tu paga
+Di riandare i sempiterni calli?
+Ancor non prendi a schivo, ancor sei vaga
+Di mirar queste valli?
+</cit>
+
 {% include box-obiettivi.html %}
 Scopri la legge con cui due masse qualsiasi si attraggono, dalla mela che cade alla Luna che gira attorno alla Terra, e impari a calcolare quanto vale questa forza. Poi cambi punto di vista: studi come una massa modifica lo spazio intorno a sé, cioè il campo gravitazionale, e impari a disegnarlo con le linee di campo. Passi quindi all'energia, con l'energia potenziale, il potenziale e le superfici equipotenziali. Il capitolo si chiude con il moto di una massa in un campo: la forza peso e l'accelerazione di gravità.
 {% include box-end.html %}
@@ -149,7 +160,7 @@ Il modulo $F = G\,\dfrac{m_1 \cdot m_2}{r^2}$ ci dice *quanto* vale la forza gra
 
 Questo significa che i vettori si disegnano nel seguente modo.
 
-{% include figure/figura-dir-verso-gravita.html %}
+{% include lab-virtuali/dir-verso-gravita.html %}
 
 {% include margin-note.html testo="Forze centrali" %}
 Le forze che, come quella gravitazionale, hanno come direzione la retta che passa per i centri dei corpi si chiamano <definizione>forze centrali</definizione>. Queste forze hanno delle proprietà molto importanti, come cominceremo a vedere nella <a href="#energia-potenziale-gravitazionale">sezione sull'energia potenziale</a>, più sotto.
@@ -184,7 +195,36 @@ Esplora tu stesso come cambia $F$ al variare di una fra $m_1$, $m_2$ e $r$.
    formula="G*m1*m2/(r*r)" formula_latex="G\dfrac{m_1 \cdot m_2}{r^2}"
    y_simbolo="F" y_unita="N" solo_positivi="true" %}
 
+{% include unisci.html %}
 {% include esercizi/invert-forza-gravitazionale.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qdirverso %}[
+{"t":"La direzione della forza gravitazionale fra due masse è la retta che congiunge i loro centri.","ok":true,"s":"Sì: per questo si dice che è una forza centrale."},
+{"t":"Il vettore $\\vec F_{2\\to1}$ ha origine nel centro di $m_2$.","ok":false,"s":"No: $\\vec F_{2\\to1}$ è la forza che $m_2$ esercita <em>su</em> $m_1$, quindi si disegna con l'origine nel centro di $m_1$, e punta verso $m_2$."},
+{"t":"La forza gravitazionale può essere attrattiva o repulsiva, a seconda delle due masse.","ok":false,"s":"No: è sempre attrattiva. Non esistono masse negative che si respingono."},
+{"t":"$\\vec F_{2\\to1}$ e $\\vec F_{1\\to2}$ hanno lo stesso modulo, la stessa direzione e verso opposto.","ok":true,"s":"Sì, è il terzo principio della dinamica: $\\vec F_{2\\to1} = -\\vec F_{1\\to2}$."},
+{"t":"Se raddoppio la massa $m_2$, raddoppia la forza che agisce su $m_1$, mentre quella che agisce su $m_2$ resta la stessa.","ok":false,"s":"No: nella formula $F = G\\,m_1 m_2/r^2$ c'è un solo $F$, che vale per entrambe. Se raddoppia $m_2$ raddoppiano tutte e due le forze, e restano uguali fra loro."},
+{"t":"Una mela che cade attrae la Terra con una forza uguale a quella con cui la Terra attrae la mela.","ok":true,"s":"Sì. Però la Terra ha una massa enorme e, con la stessa forza, la sua accelerazione è così piccola che non ce ne accorgiamo: è la mela a fare quasi tutta la strada."},
+{"t":"Una forza si dice centrale quando agisce soltanto nel centro dei corpi.","ok":false,"s":"No: si dice centrale perché la sua <em>direzione</em> è la retta che passa per i centri dei due corpi."}
+]{% endcapture %}
+{% include quiz.html domande=_qdirverso id="q-dirverso" senza_esempi="true" %}
+
+Due sfere hanno masse $m_1$ e $m_2 = 4\,m_1$. Come vanno disegnate le due forze gravitazionali?
+{% capture _o_mcqDisegnaF %}[{"v":"a","t":"Quella su $m_1$ quattro volte più lunga di quella su $m_2$, perché $m_2$ attrae di più"},{"v":"b","t":"Quella su $m_2$ quattro volte più lunga di quella su $m_1$, perché $m_2$ è più grande"},{"v":"c","t":"Lunghe uguali, sulla retta dei centri, ciascuna diretta verso l'altra massa"},{"v":"d","t":"Lunghe uguali, sulla retta dei centri, ciascuna diretta lontano dall'altra massa"}]{% endcapture %}
+{% include mcq.html id="mcqDisegnaF" opts=_o_mcqDisegnaF ok="c" s="Per il terzo principio i due vettori hanno lo stesso modulo, qualunque sia il rapporto fra le masse; la direzione è la retta dei centri e il verso è attrattivo." %}
+
+{% include fill.html prima="Il Sole attrae la Terra con una forza" tipo="drop" opts="più grande di quella|uguale a quella|più piccola di quella" ok="uguale a quella" dopo=" con cui la Terra attrae il Sole." s="Terzo principio. È la Terra a girare attorno al Sole, e non il contrario, perché a parità di forza la massa più piccola subisce l'accelerazione più grande." %}
+
+Perché la forza gravitazionale si dice <em>centrale</em>?
+{% capture _o_mcqCentraleDef %}[{"v":"a","t":"Perché agisce solo nel centro dei corpi"},{"v":"b","t":"Perché la sua direzione è la retta che congiunge i centri dei due corpi"},{"v":"c","t":"Perché è più intensa vicino al centro della Terra"},{"v":"d","t":"Perché attira tutti i corpi verso il centro dell'Universo"}]{% endcapture %}
+{% include mcq.html id="mcqCentraleDef" opts=_o_mcqCentraleDef ok="b" s="Centrale si riferisce alla direzione: la retta che passa per i centri dei due corpi che interagiscono." %}
+
+{% capture _r %}Il ragionamento confonde la forza con il suo effetto. Per il terzo principio la Terra attira me e io attiro la Terra con forze di modulo uguale. Quello che cambia è l'accelerazione: la stessa forza, divisa per la mia massa, mi fa cadere; divisa per l'enorme massa della Terra, non la sposta in modo misurabile.{% endcapture %}
+{% include risposta-aperta.html id="ra-terra-me" tipo="errore"
+   domanda="Un compagno scrive: «La Terra ha una massa molto più grande della mia, quindi mi attira con una forza più grande di quella con cui io attiro lei». Dov'è l'errore?" risposta=_r %}
+{% include box-end.html %}
+{% include unisci-end.html %}
 
 
 Utilizza questa simulazione per sperimentare con la forza gravitazionale!
@@ -227,6 +267,16 @@ Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta in un 
 {% include margin-note.html testo="Introduzione del concetto di Campo" %}
 È  fondamentale osservare che la legge di gravitazione universale **descrive** il fatto che una massa attragga a sé un'altra massa <u markdown="span">ma non dice *perché* né *come* due masse si attraggano</u>. Il *perché* è un mistero: nessuno lo sa. Sul *come* possiamo lavorarci un pochino. Risponderemo quindi alla seguente domanda: **come fa una massa a *sentire* la presenza di un'altra massa?**
 {% include margin-note-end.html %}
+
+{% include spoiler.html testo="Se ti sembra una domanda strana, sappi che se la poneva anche Newton" %}
+Tra il 1692 e il 1693 Newton scambiò alcune lettere con Richard Bentley, un giovane teologo che voleva usare la legge di gravitazione nelle sue prediche. Bentley dava per scontato che la gravità fosse una proprietà della materia, come il colore o il peso. Newton gli rispose così:
+
+> *«È inconcepibile che la materia bruta e inanimata possa, senza la mediazione di qualcos'altro che non sia materiale, agire su altra materia e influenzarla senza un contatto reciproco. […] Che la gravità sia innata, inerente ed essenziale alla materia, così che un corpo possa agire su un altro a distanza, attraverso il vuoto, senza la mediazione di nient'altro per mezzo del quale la loro azione e la loro forza possano essere trasmesse dall'uno all'altro, è per me un'assurdità così grande che credo che nessun uomo che abbia una competente capacità di pensare in materia filosofica possa mai cadervi.»*
+
+Proprio l'uomo che aveva scritto la legge di gravitazione, quindi, trovava assurdo che due masse si attraessero "da lontano", senza niente in mezzo. La sua legge funzionava benissimo, ma lui stesso non sapeva spiegare *come* la forza passasse da un corpo all'altro, e lasciò la questione aperta.
+
+È la stessa domanda da cui partiamo adesso. La risposta della fisica moderna è il **campo**: la massa modifica lo spazio attorno a sé, e l'altra massa sente questa modifica nel punto in cui si trova.
+{% include spoiler-end.html %}
 
 {% include margin-note.html testo="Analogia del telo" %}
 Per rispondere a questa domanda prendiamo un'analogia. Immaginate un telo di pellicola trasparente, inizialmente piatto, su cui posate una sfera metallica piuttosto pesante. Il telo si curva. Dopodiché inserite una pallina piccola e leggera. La pallina piccola comincerà a muoversi verso la sfera grande: semplicemente perché risente della curvatura del telo.

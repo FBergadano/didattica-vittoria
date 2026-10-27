@@ -53,6 +53,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - "_corsi/Appunti/"
   - "_corsi/**/appunti-*.md"
   - "_corsi/**/appunti-*.tex"
   - "_corsi/**/appunti-*.pdf"
@@ -68,4 +69,5 @@ exclude:
   - "_corsi/**/esercizi-*.synctex.gz"
   - "latex/"
   - "verifiche/"
+  - "programmi/"
   - "strumenti/"
