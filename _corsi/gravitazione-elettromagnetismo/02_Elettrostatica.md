@@ -102,6 +102,39 @@ Per parlare di particelle elettricamente cariche, dobbiamo quindi introdurre un'
 
 Nel 1955, per la prima volta nella Storia, un uomo **ha visto** gli atomi (Erwin Müller, con il microscopio a ioni di campo), confermando la teoria atomica nata nell'Antica Grecia con Leucippo e Democrito. È un evento tanto sensazionale quanto la prima volta in cui un uomo ha camminato su un pianeta extraterrestre (avvenuto 14 anni dopo).
 
+{% include spoiler.html testo="Che aspetto ha un atomo visto al microscopio?" %}
+Con un microscopio come quelli del laboratorio di scienze gli atomi non si vedono, e non si vedrebbero nemmeno con il miglior microscopio ottico mai costruito. La luce è un'onda, e la sua lunghezza d'onda è qualche migliaio di volte più grande di un atomo: un'onda non riesce a mostrare dettagli molto più piccoli di sé stessa. Per vedere gli atomi ci vuole un'idea completamente diversa.
+
+L'idea di Müller fu il <definizione>microscopio a ioni di campo</definizione>. Si prende un ago di metallo affilato al punto che la sua estremità è larga appena qualche centinaio di atomi, lo si chiude in un'ampolla con un po' di gas, lo si raffredda moltissimo e lo si carica elettricamente. Gli atomi del gas che sfiorano la punta perdono un elettrone e vengono respinti con forza verso uno schermo, che si illumina dove arrivano. Siccome partono proprio dai punti in cui sporgono gli atomi della punta, sullo schermo compare la punta ingrandita milioni di volte, atomo per atomo. Quando, nell'ottobre del 1955, comparve sullo schermo la prima immagine nitida, Müller esclamò: «Atoms, ja, atoms!».
+
+{% include figura.html id="fim-muller"
+   src="/corsi/immagini/muller-fim.webp"
+   didascalia="Un'immagine storica al microscopio a ioni di campo, dagli archivi della Penn State University, dove lavorava Müller. Ogni puntino luminoso è un singolo atomo della punta. (Eberly Family Special Collections, Penn State University Libraries, CC BY-NC-ND 4.0)"
+   larghezza="480px" %}
+
+Guarda bene la figura: ogni atomo è un puntino luminoso, una macchiolina tonda con i contorni un po' sfumati, accanto a tante altre macchioline identiche. Non si vedono il nucleo né gli elettroni che girano. Gli anelli che si vedono sono i gradini della punta, che è fatta di strati di atomi sovrapposti, e sullo schermo appaiono come le curve di livello di una montagna su una cartina.
+
+Nel 1981 Gerd Binnig e Heinrich Rohrer, nei laboratori IBM di Zurigo, inventarono un altro strumento, il <definizione>microscopio a effetto tunnel</definizione>, che si indica con la sigla STM (dall'inglese *Scanning Tunneling Microscope*) e che nel 1986 valse loro il premio Nobel. Anche qui c'è una punta sottilissima, ma questa volta passa sopra la superficie del campione, riga dopo riga, senza mai toccarla. Fra la punta e la superficie passa una debolissima corrente elettrica, grazie a un fenomeno della fisica quantistica chiamato *effetto tunnel*, e questa corrente cambia moltissimo appena la distanza cambia anche di pochissimo. Così la punta "sente" ogni atomo su cui passa, un po' come chi legge il Braille con i polpastrelli, e il computer mette insieme tutte le righe in una mappa in rilievo della superficie.
+
+{% include figura.html id="stm-silicio"
+   src="/corsi/immagini/stm-silicio.webp"
+   didascalia="Atomi di silicio sulla superficie di un cristallo di carburo di silicio, visti con l'STM. Due atomi vicini distano circa 0,3 miliardesimi di metro. (Guillaume Baffou, CC BY-SA 3.0)"
+   larghezza="260px" %}
+
+{% include figura.html id="stm-cobalto"
+   src="/corsi/immagini/stm-cobalto.webp"
+   didascalia="Un singolo atomo di cobalto appoggiato su una superficie di rame, visto con l'STM e disegnato in rilievo dal computer. (NIST, pubblico dominio)"
+   larghezza="260px" %}
+
+Anche con l'STM un atomo è una piccola collina tondeggiante, senza un bordo netto. I colori, invece, sono scelti dal computer per rendere l'immagine più leggibile: un atomo non ha colore.
+
+Con la punta dell'STM, oltre a guardare gli atomi, si possono anche spostare uno alla volta. Nel 2013 i ricercatori dell'IBM l'hanno usata per spostare, una per una, delle molecole su una superficie di rame e ci hanno girato il film più piccolo del mondo. Ogni puntino che vedi è una molecola di monossido di carbonio, ingrandita circa cento milioni di volte.
+
+{% include video.html id="oSCX78-8-q0" didascalia="IBM, «A Boy and His Atom» (2013): un cartone animato fatto spostando molecole una a una con la punta di un STM." %}
+
+In tutte queste immagini, quindi, un atomo è un pallino sfumato. Le orbite e le palline colorate che trovi nei disegni, compresi quelli di questo capitolo, sono modelli che ci servono per ragionare, non fotografie.
+{% include spoiler-end.html %}
+
 
 {% include margin-note.html testo="La materia è costituita da atomi" %}
 Gli atomi sono ciò di cui è costituita la materia, i piccoli mattoncini che si organizzano in molecole, le quali a loro volta costituiscono i solidi, i liquidi e i gas da cui siamo circondati e di cui siamo composti.
