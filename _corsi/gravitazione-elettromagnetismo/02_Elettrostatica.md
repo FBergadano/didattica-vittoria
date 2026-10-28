@@ -231,7 +231,7 @@ Oppure, raccogliendo la carica elementare $e$,
 
 $$Q = (n_p-n_e)\cdot e.$$
 
-Se un corpo ha lo stesso numero di protoni ed elettroni, allora $Q = 0$. Il corpo si dice quindi neutro, come abbiamo visto sopra per gli atomi. Se invece un corpo cede o acquista elettroni, resta con un eccesso di carica positiva o negativa e si dice <definizione>elettrizzato</definizione>.
+Se un corpo ha lo stesso numero di protoni ed elettroni, allora $Q = 0$. Il corpo si dice quindi **neutro**, come abbiamo visto sopra per gli atomi. Se invece un corpo cede o acquista elettroni, resta con un eccesso di carica positiva o negativa e si dice <definizione>elettrizzato</definizione> o, semplicemente, <definizione>carico</definizione>.
 {% include margin-note-end.html %}
 
 Osserva i quattro corpi seguenti e le loro rispettive cariche.

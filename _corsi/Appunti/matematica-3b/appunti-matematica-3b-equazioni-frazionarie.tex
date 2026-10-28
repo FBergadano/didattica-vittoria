@@ -19,6 +19,7 @@
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
 \usepackage{booktabs}
+\usepackage{cancel}
 
 % Colori
 \definecolor{blu}{HTML}{1D4ED8}
@@ -222,21 +223,101 @@
   \pause
   Dividiamo per $x-1$:
   \[
-    x = \frac{1}{-1+x}
+    x = \frac{1}{-1+\textcolor{rosso}x}
     \qquad\pause \textcolor{rosso}{\text{un'altra ricorsione}}
   \]
-  \pause
+\end{frame}
+
+\begin{frame}{Un altro castello di frazioni}
   \[
-    x = \cfrac{1}{-1 + \cfrac{1}{-1 + \textcolor{rosso}x}}
+    x = \frac{1}{-1+\textcolor{rosso}{x}}
   \]
-  \pause
-  \[
-    0 \;\to\; -1 \;\uncover<4->{\to\; -0\virgola5} \;\uncover<5->{\to\; -0\virgola667}
-    \;\uncover<6->{\to\; -0\virgola6} \;\uncover<7->{\to\; -0\virgola625} \;\uncover<8->{\to\; -0\virgola615 \;\to\;\cdots}
-  \]
-  \uncover<9->{\[
-    \boxed{\;x_2 = \frac{1-\sqrt5}{2} \approx -0\virgola618\;}
+  \vspace{0.5em}
+  \only<2>{\[
+    x = \cfrac{1}{-1 + \cfrac{1}{-1+\textcolor{rosso}{x}}}
+  \]}%
+  \only<3>{\[
+    x = \cfrac{1}{-1 + \cfrac{1}{-1 + \textcolor{rosso}{\cfrac{1}{-1+x}}}}
+  \]}%
+  \only<4>{\[
+    x = \cfrac{1}{-1 + \cfrac{1}{-1 + \cfrac{1}{-1+\cfrac{1}{-1+\cfrac{1}{\;\ddots\;}}}}}
   \]}
+\end{frame}
+
+\begin{frame}{Costruiamo il castello piano per piano}
+  \begin{columns}[T]
+    \begin{column}{0.4\textwidth}
+      \centering
+      \begin{tabular}{ccc}
+        \toprule
+        piano & frazione & valore \\
+        \midrule
+        1  & $-1$ & $-1$ \\
+        \riga{2}{2}{$-1/2$}{$-0\virgola5$} \\
+        \riga{3}{3}{$-2/3$}{$-0\virgola6667$} \\
+        \riga{4}{4}{$-3/5$}{$-0\virgola6$} \\
+        \riga{5}{5}{$-5/8$}{$-0\virgola625$} \\
+        \riga{6}{6}{$-8/13$}{$-0\virgola6154$} \\
+        \riga{7}{7}{$-13/21$}{$-0\virgola6190$} \\
+        \riga{8}{8}{$-21/34$}{$-0\virgola6176$} \\
+        \riga{9}{9}{$-34/55$}{$-0\virgola6182$} \\
+        \riga{10}{10}{$-55/89$}{$-0\virgola6180$} \\
+        \riga{11}{11}{$-89/144$}{$-0\virgola6181$} \\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.58\textwidth}
+      \centering
+      \begin{tikzpicture}
+        \begin{axis}[
+          width=\linewidth, height=6cm,
+          xmin=0.5, xmax=11.5, ymin=-1.1, ymax=-0.35,
+          xtick={1,...,11}, ytick={-1,-0.5},
+          yticklabels={$-1$,$-0\virgola5$},
+          xlabel={piano}, ylabel={valore},
+          tick label style={font=\footnotesize},
+          label style={font=\footnotesize},
+          axis lines=left,
+        ]
+          \addplot[oro, dashed, thick, domain=0.5:11.5, visible on=<12->] {-0.6180339887};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<1->]  coordinates {(1,-1)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<2->]  coordinates {(1,-1)(2,-0.5)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<3->]  coordinates {(2,-0.5)(3,-0.66667)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<4->]  coordinates {(3,-0.66667)(4,-0.6)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<5->]  coordinates {(4,-0.6)(5,-0.625)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<6->]  coordinates {(5,-0.625)(6,-0.61538)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<7->]  coordinates {(6,-0.61538)(7,-0.61905)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<8->]  coordinates {(7,-0.61905)(8,-0.61765)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<9->]  coordinates {(8,-0.61765)(9,-0.61818)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<10->] coordinates {(9,-0.61818)(10,-0.61798)};
+          \addplot[blu, thin, mark=*, mark size=2pt, visible on=<11->] coordinates {(10,-0.61798)(11,-0.61806)};
+          \node[oro, anchor=south east, visible on=<12->] at (axis cs:11.4,-0.45) {si stabilizza su $-0\virgola6180339\ldots$};
+        \end{axis}
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Che numero è?}
+  \[
+    -0\virgola6180339\ldots \;=\; \frac{1-\sqrt5}{2} \;=\; x_2
+    \qquad \text{la soluzione \textbf{negativa}}
+  \]
+  \pause
+  \[
+    \frac{1-\sqrt5}{2} \;=\; 1 - \frac{1+\sqrt5}{2}
+  \]
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=oro, line width=1.5pt, rounded corners, fill=oro!12, inner sep=8pt, font=\LARGE]
+        {$x_2 = 1 - \aureo$};
+    \end{tikzpicture}
+  \end{center}
+  \pause
+  \begin{center}
+    $1 - 1\virgola6180339\ldots = -0\virgola6180339\ldots$\\[0.4em]
+    \textcolor{oro}{stesse cifre dopo la virgola: le due soluzioni differiscono di esattamente $1$}
+  \end{center}
 \end{frame}
 
 % ============================================================
@@ -372,16 +453,13 @@
 \begin{frame}{In natura}
   \centering
   \begin{tabular}{cccc}
-    \includegraphics[height=2.7cm]{immagini-frazionarie/girasole.jpg} &
+    \includegraphics[height=2.7cm]{immagini-frazionarie/felce.jpg} &
     \includegraphics[height=2.7cm]{immagini-frazionarie/pigna.jpg} &
     \includegraphics[height=2.7cm]{immagini-frazionarie/romanesco.jpg} &
     \includegraphics[height=2.7cm]{immagini-frazionarie/aloe.jpg} \\
-    girasole & pigna & cavolo romanesco & \emph{Aloe polyphylla}
+    felce & pigna & cavolo romanesco & \emph{Aloe polyphylla}
   \end{tabular}
-
-  \vfill
-  {\tiny\textcolor{grigio}{Immagini da Wikimedia Commons: girasole L.~Shyamal (CC BY-SA 2.5),
-  pigna Bubba73 (CC BY-SA 4.0), romanesco Ivar Leidus (CC BY-SA 4.0), aloe Just chaos (CC BY 2.0).}}
+  % crediti delle immagini in immagini-frazionarie/crediti.txt
 \end{frame}
 
 % ============================================================
@@ -436,29 +514,57 @@
   \end{alertblock}
 \end{frame}
 
-\begin{frame}{E moltiplicando?}
+% \begin{frame}{E moltiplicando?}
+%   \[
+%     x - 1 = 0 \qquad\Rightarrow\qquad x = 1
+%   \]
+%   \pause
+%   Moltiplico sopra e sotto per $x - 2$:
+%   \[
+%     \frac{(x-2)(x-1)}{x-2} = 0
+%   \]
+%   \pause
+%   Una frazione vale zero quando il numeratore vale zero:
+%   \[
+%     (x-2)(x-1) = 0 \qquad\Rightarrow\qquad x = 1 \quad\vee\quad \textcolor{rosso}{x = 2}
+%   \]
+%   \pause
+%   \[
+%     x = 2: \qquad 2 - 1 = 0 \quad\Rightarrow\quad 1 = 0 \qquad \text{falso!}
+%   \]
+%   \pause
+%   \begin{alertblock}{}
+%     \centering Moltiplicando per $x-2$, che può valere $0$, si possono \textbf{guadagnare}
+%     soluzioni che non ci sono.
+%   \end{alertblock}
+% \end{frame}
+
+% 1·0 = 0, divido per 0 da entrambe le parti: a sinistra "semplifico", a destra
+% "zero diviso qualcosa fa zero". Poi la croce rossa su tutta la slide.
+\begin{frame}{Un'ultima buona ragione per non dividere per zero}
   \[
-    x - 1 = 0 \qquad\Rightarrow\qquad x = 1
+    1 \cdot 0 = 0
   \]
   \pause
-  Moltiplico sopra e sotto per $x - 2$:
+  Divido per $0$ da entrambe le parti:
   \[
-    \frac{(x-2)(x-1)}{x-2} = 0
-  \]
-  \pause
-  Una frazione vale zero quando il numeratore vale zero:
-  \[
-    (x-2)(x-1) = 0 \qquad\Rightarrow\qquad x = 1 \quad\vee\quad \textcolor{rosso}{x = 2}
+    \frac{1 \cdot \cancel{0}}{\cancel{0}} = \frac{0}{0}
   \]
   \pause
   \[
-    x = 2: \qquad 2 - 1 = 0 \quad\Rightarrow\quad 1 = 0 \qquad \text{falso!}
+    \Large 1 = 0 \;\;?!
   \]
   \pause
-  \begin{alertblock}{}
-    \centering Moltiplicando per $x-2$, che può valere $0$, si possono \textbf{guadagnare}
-    soluzioni che non ci sono.
-  \end{alertblock}
+  \begin{center}
+    Allo stesso modo $2\cdot 0 = 0 \;\Rightarrow\; 2 = 0$, \quad $3 = 0$, \quad \ldots\\[0.4em]
+    \textcolor{rosso}{tutti i numeri sarebbero uguali a zero (e quindi uguali fra loro)!}
+  \end{center}
+  \only<5->{\begin{tikzpicture}[remember picture, overlay]
+    \draw[rosso, line width=10pt, opacity=0.85, line cap=round]
+      ([xshift=1.2cm,yshift=-0.8cm]current page.north west) -- ([xshift=-1.2cm,yshift=0.8cm]current page.south east);
+    \draw[rosso, line width=10pt, opacity=0.85, line cap=round]
+      ([xshift=-1.2cm,yshift=-0.8cm]current page.north east) -- ([xshift=1.2cm,yshift=0.8cm]current page.south west);
+  \end{tikzpicture}}
 \end{frame}
 
 \begin{frame}{Le equazioni frazionarie}
