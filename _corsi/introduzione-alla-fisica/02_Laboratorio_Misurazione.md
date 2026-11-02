@@ -39,17 +39,16 @@ Abbiamo detto che misurare significa associare un numero a una caratteristica di
 Il **misurando** è la grandezza che si vuole misurare: l'altezza di un tavolo, la massa di un sacco di riso, il volume di una bottiglietta d'acqua, etc.  
 {% include box-end.html %} 
 
-Eppure, quando si vuole misurare qualcosa, sorgono subito alcuni problemi. Li illustriamo con i seguenti esempi.
-<!-- - **Problema 1: l'instabilità di una misurazione.** Quasi sempre <u markdown="span">gli oggetti *cambiano* continuamente</u>, anche se non ce ne accorgiamo. E quindi in realtà quello che abbiamo misurato in un certo momento potrebbe essere molto diverso da ciò che misureremmo in un momento successivo.
-- **Problema 2: le imprecisioni.** Se anche un oggetto possedesse una caratteristica che non cambia mai, come faremmo a misurarla perfettamente? <u markdown="span">Ogni strumento che abbiamo è **imperfetto**</u>: non si può mai ottenere una misurazione infinitamente precisa. Inoltre, per compiere una misurazione dobbiamo basarci **sui nostri sensi** (vista, udito, ecc.), che sono limitati. Quindi anche noi che compiamo la misurazione siamo imperfetti e quindi introduciamo errori. -->
+Eppure, quando si vuole misurare qualcosa, sorgono subito alcuni problemi. Li illustriamo con i seguenti due esempi.
 
-Considera questo cactus, di cui ci domandiamo la massa. La bilancia segna che la massa del cactus corrisponde a 3 421 g. Tuttavia, il vero valore della massa del cactus è leggermente diverso e corrisponde, inizialmente, a 3 421,2 g. Quella leggera differenza è così piccola che la bilancia non è in grado di rilevarla.  
+1. Considera questo cactus, di cui ci domandiamo la massa. La bilancia segna che la massa del cactus corrisponde a 3 421 g. Tuttavia, il vero valore della massa del cactus è leggermente diverso e corrisponde, inizialmente, a 3 421,2 g. Quella leggera differenza è così piccola che la bilancia non è in grado di rilevarla.  
 Inoltre, quando arriva il Sole, l'acqua contenuta all'interno del cactus evapora parzialmente. Quindi la massa del cactus diminuisce, ma di così poco che la bilancia non è in grado di farlo vedere.  
 È insomma evidente che non si possa misurare perfettamente la massa di un cactus, né di qualsiasi altra cosa.
 
 {% include lab-virtuali/bilancia-cactus-lab.html %}
 
-Oppure considerate il seguente esempio, in cui un'ape vola sopra un righello. Provate a indovinare la lunghezza dell'ape, e realizzerete quanto è difficile farlo. Qui la colpa non è né dello strumento né dell'ape: siamo noi che facciamo fatica a leggere il valore della misurazione perché le condizioni sono difficili. Come dicevamo, i nostri sensi sono limitati, e pur disponendo di un righello ben tarato talvolta è difficile realizzare una misurazione molto accurata.
+{: start="2"}
+2. Ora considera il seguente esempio, in cui un'ape vola sopra un righello. Prova a indovinare la lunghezza dell'ape, e realizzerai quanto è difficile farlo. Qui la colpa non è né dello strumento né dell'ape: siamo noi che facciamo fatica a leggere il valore della misurazione perché le condizioni sono difficili. Come dicevamo, i nostri sensi sono limitati, e pur disponendo di un righello ben tarato talvolta è difficile realizzare una misurazione molto accurata.
 
 {% include lab-virtuali/ape-righello-lab.html %}
 

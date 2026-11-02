@@ -15,10 +15,11 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 .rl-res{background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:.8rem 1rem;margin:.5rem 0;break-inside:avoid;}
 .rl-stars span{font-size:22px;cursor:pointer;opacity:.3;color:#f59e0b;user-select:none;}
 .rl-stars span.on{opacity:1;}
+/* «Stampa modulo» stampa solo il modulo; la stampa del capitolo lo lascia al suo posto */
 @media print{
-  body,body *{visibility:hidden!important;}
-  #rl-form,#rl-form *{visibility:visible!important;}
-  #rl-form{position:absolute;top:0;left:0;width:100%;padding:1rem 2rem;box-sizing:border-box;background:white;}
+  html.rl-solo-modulo body,html.rl-solo-modulo body *{visibility:hidden!important;}
+  html.rl-solo-modulo #rl-form,html.rl-solo-modulo #rl-form *{visibility:visible!important;}
+  html.rl-solo-modulo #rl-form{position:absolute;top:0;left:0;width:100%;padding:1rem 2rem;box-sizing:border-box;background:white;}
   .rl-np{display:none!important;visibility:hidden!important;}
   .rl-in{border-bottom:1px solid #aaa!important;}
   .rl-sel{border-bottom:1px solid #aaa!important;}
@@ -117,7 +118,7 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 </div>
 
 <div style="text-align:center;margin:1.2rem 0;" class="rl-np">
-<button onclick="window.print()" style="padding:.5rem 2rem;background:#1a4d6a;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:Georgia,serif;">&#128424; Stampa modulo</button>
+<button onclick="rlStampaModulo()" style="padding:.5rem 2rem;background:#1a4d6a;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:Georgia,serif;">&#128424; Stampa modulo</button>
 </div>
 
 </div>
@@ -136,4 +137,12 @@ window.rlStar=function(ev,cid){
   stars.forEach(function(s,i){s.classList.toggle('on',i<=idx);});
 };
 })();
+</script>
+<script>
+function rlStampaModulo(){
+  var h=document.documentElement;
+  h.classList.add('rl-solo-modulo');
+  window.addEventListener('afterprint',function f(){h.classList.remove('rl-solo-modulo');window.removeEventListener('afterprint',f);});
+  window.print();
+}
 </script>

@@ -1,0 +1,246 @@
+{% comment %}
+Il paradosso di Achille e la tartaruga (Zenone, nella versione di Borges).
+Achille (immagine achille.webp, ritagliata dall'illustrazione .avif in
+_corsi/immagini) è dieci volte più veloce e concede 10 m di vantaggio; i due
+traslano a velocità costante, quindi ogni tratto (e la pausa che lo segue)
+dura dieci volte meno del precedente. A ogni passo corre fino al punto in cui
+si trovava la tartaruga (ne resta l'"ombra" sbiadita), mentre lei avanza di
+un decimo di quella distanza: 10 m, 1 m, 1 dm, 1 cm, 1 mm, ... La scala della
+pista resta fissa: dal terzo passo gli spostamenti sono più piccoli di un
+pixel, e la didascalia lo dice. Sotto: distanza percorsa da Achille e
+vantaggio rimasto. Pulsanti Avvia/Pausa, Un passo, Ricomincia; velocità
+regolabile. Nascosta in stampa.
+{% endcomment %}
+<div class="zen-widget" id="zenAchille">
+<canvas class="zen-canvas" id="zenCanvas" role="img" aria-label="Animazione: Achille corre fino al punto in cui era la tartaruga, ma lei nel frattempo è avanzata di un decimo, e così via"></canvas>
+<div class="zen-info">
+<span>Achille ha percorso: <b id="zenDist">0 m</b></span>
+<span>Vantaggio della tartaruga: <b id="zenVant">10 m</b></span>
+</div>
+<div class="zen-actions">
+<button type="button" class="zen-btn" id="zenPlay">▶ Avvia</button>
+<button type="button" class="zen-btn zen-btn2" id="zenStep">Un passo</button>
+<button type="button" class="zen-btn zen-btn2" id="zenReset">↺ Ricomincia</button>
+<label class="zen-speed">Velocità:&ensp;<input type="range" id="zenSpeed" min="0.25" max="2" step="0.25" value="1"><span id="zenSpeedLbl">1×</span></label>
+</div>
+<p class="zen-caption" id="zenCaption">Achille concede alla tartaruga dieci metri di vantaggio. Premi «Avvia».</p>
+</div>
+
+<style>
+#zenAchille{max-width:660px;margin:1.3rem auto;padding:.9rem 1rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+#zenAchille .zen-canvas{width:100%;height:auto;display:block;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
+#zenAchille .zen-info{display:flex;flex-wrap:wrap;justify-content:space-around;gap:.3rem 1.2rem;font-size:.88rem;color:#334155;margin:.6rem 0 0;}
+#zenAchille .zen-info b{font-variant-numeric:tabular-nums;}
+#zenAchille .zen-actions{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.5rem .7rem;margin:.7rem 0 0;}
+#zenAchille .zen-btn{background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.85rem;}
+#zenAchille .zen-btn2{background:#fff;color:#7c3aed;border:1px solid #c4b5fd;}
+#zenAchille .zen-btn:disabled{opacity:.45;cursor:default;}
+#zenAchille .zen-speed{font-size:.85rem;display:flex;align-items:center;gap:.4rem;color:#334155;}
+#zenAchille .zen-speed span{font-size:.8rem;color:#6b7280;min-width:2.6em;}
+#zenAchille .zen-caption{font-size:.85rem;color:#475569;text-align:center;margin:.6rem 0 0;min-height:2.6em;}
+@media print{#zenAchille{display:none!important;}}
+</style>
+
+<script>
+(function(){
+  var root=document.getElementById('zenAchille');
+  if(!root) return;
+  var canvas=document.getElementById('zenCanvas');
+  var ctx=canvas.getContext('2d');
+  var W=640,H=250,Y=194;              // Y = linea della pista
+  var dpr=Math.max(1,Math.min(3,window.devicePixelRatio||1));
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  var reduce=!!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  var X0=70, SC=38;                   // Achille parte a X0 px; 1 m = SC px
+  var KMAX=8;                         // numero di passi mostrati
+  var PAROLE=['dieci metri','un metro','un decimetro','un centimetro','un millimetro',
+    'un decimo di millimetro','un centesimo di millimetro','un millesimo di millimetro',
+    'un decimillesimo di millimetro'];
+  var UNITA={1:'10 m',0:'1 m','-1':'1 dm','-2':'1 cm','-3':'1 mm','-4':'0,1 mm',
+    '-5':'0,01 mm','-6':'1 µm','-7':'0,1 µm','-8':'0,01 µm'};
+
+  function d(k){ return Math.pow(10,1-k); }           // tratto di Achille al passo k
+  function a(k){ var s=0; for(var j=0;j<k;j++) s+=d(j); return s; } // posizione di Achille
+  function px(x){ return X0+x*SC; }
+
+  // stato: phase = idle (all'inizio) | run | pause (fra un passo e l'altro) | done
+  var k=0, phase='idle', p=0, playing=false, stepping=false, last=null, raf=null, pauseLeft=0, stride=0;
+  var speed=1;
+  // velocità costante: ogni tratto è dieci volte più corto del precedente,
+  // quindi dura dieci volte meno; lo stesso vale per la pausa fra un tratto e l'altro
+  function durRun(){ return 3000/Math.pow(10,k); }
+  function pausa(){ return 800/Math.pow(10,k); }
+
+  function posizioni(){
+    var dk=d(k), q = phase==='idle' ? 0 : (phase==='run' ? p : 1);
+    return {A:a(k)+q*dk, T:a(k)+dk+q*dk/10};
+  }
+
+  function drawTrack(){
+    ctx.save();
+    ctx.strokeStyle='#64748b'; ctx.lineWidth=1.6;
+    ctx.beginPath(); ctx.moveTo(0,Y); ctx.lineTo(W,Y); ctx.stroke();
+    ctx.lineWidth=1; ctx.beginPath();
+    for(var n=-2;n<=16;n++){ var X=px(n), h=(n%5===0)?9:5; ctx.moveTo(X,Y); ctx.lineTo(X,Y+h); }
+    ctx.stroke();
+    // barra di scala
+    ctx.strokeStyle='#334155'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(16,22); ctx.lineTo(16+10*SC,22);
+    ctx.moveTo(16,16); ctx.lineTo(16,28); ctx.moveTo(16+10*SC,16); ctx.lineTo(16+10*SC,28); ctx.stroke();
+    ctx.fillStyle='#334155'; ctx.font='13px sans-serif'; ctx.textAlign='left'; ctx.textBaseline='middle';
+    ctx.fillText('10 m', 22+10*SC, 22);
+    ctx.restore();
+  }
+
+  // Achille: l'immagine (achille.webp) traslata, con la punta del piede davanti in x
+  var img=new Image(), IH=124, IW=IH*400/421, PIEDE=230/400;
+  img.onload=function(){ draw(); };
+  img.src="{{ '/corsi/immagini/achille.webp' | relative_url }}";
+  function achille(x){
+    if(img.complete && img.naturalWidth) ctx.drawImage(img, x-PIEDE*IW, Y+1-IH, IW, IH);
+    mark(x,'#dc2626');
+  }
+
+  // tartaruga: la coda è nel punto x, la testa davanti
+  function tartaruga(x, moving, alpha){
+    var ph=moving ? Math.sin(stride*0.7) : 0;
+    ctx.save();
+    ctx.globalAlpha=alpha;
+    ctx.fillStyle='#65a30d'; ctx.strokeStyle='#365314'; ctx.lineWidth=1.2;
+    // zampe
+    [[10,1],[34,-1]].forEach(function(l){
+      ctx.beginPath(); ctx.ellipse(x+l[0]+ph*3*l[1],Y-3,4,4,0,0,7); ctx.fill(); ctx.stroke();
+    });
+    // testa
+    ctx.beginPath(); ctx.ellipse(x+49,Y-10,6.5,5,0,0,7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#1e293b'; ctx.beginPath(); ctx.arc(x+51,Y-11.5,1.2,0,7); ctx.fill();
+    // coda
+    ctx.fillStyle='#65a30d'; ctx.beginPath(); ctx.moveTo(x+4,Y-7); ctx.lineTo(x,Y-4); ctx.lineTo(x+4,Y-4); ctx.fill();
+    // guscio
+    ctx.fillStyle='#a16207'; ctx.strokeStyle='#713f12';
+    ctx.beginPath(); ctx.ellipse(x+22,Y-6,19,15,0,Math.PI,0); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle='rgba(66,32,6,.6)'; ctx.beginPath();
+    ctx.moveTo(x+16,Y-6); ctx.lineTo(x+18,Y-14); ctx.lineTo(x+26,Y-14); ctx.lineTo(x+28,Y-6);
+    ctx.moveTo(x+18,Y-14); ctx.lineTo(x+14,Y-19); ctx.moveTo(x+26,Y-14); ctx.lineTo(x+30,Y-19);
+    ctx.stroke();
+    ctx.restore();
+    if(alpha>=1) mark(x,'#15803d');
+  }
+
+  function mark(x,col){
+    ctx.save(); ctx.fillStyle=col;
+    ctx.beginPath(); ctx.moveTo(x,Y+1); ctx.lineTo(x-5,Y+9); ctx.lineTo(x+5,Y+9); ctx.closePath(); ctx.fill();
+    ctx.restore();
+  }
+
+  // quota con etichetta, sopra (dir=-1) o sotto (dir=+1) la pista
+  function quota(x1,x2,y,txt,col,alpha){
+    if(alpha<=0) return;
+    ctx.save(); ctx.globalAlpha=alpha; ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.moveTo(x1,y); ctx.lineTo(x2,y);
+    ctx.moveTo(x1,y-5); ctx.lineTo(x1,y+5); ctx.moveTo(x2,y-5); ctx.lineTo(x2,y+5); ctx.stroke();
+    ctx.font='bold 13px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    var tx=(x1+x2)/2, w=ctx.measureText(txt).width+8;
+    ctx.fillStyle='#f8fafc'; ctx.fillRect(tx-w/2,y-9,w,18);
+    ctx.fillStyle=col; ctx.fillText(txt,tx,y);
+    ctx.restore();
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    var pos=posizioni();
+    drawTrack();
+    var xa=px(pos.A), xt=px(pos.T), xt0=px(a(k)+d(k));
+    if(phase!=='idle'){
+      // ombra della tartaruga dove si trovava all'inizio del passo
+      ctx.save(); ctx.globalAlpha=.55; ctx.strokeStyle='#15803d'; ctx.setLineDash([4,4]); ctx.lineWidth=1.2;
+      ctx.beginPath(); ctx.moveTo(xt0,Y-62); ctx.lineTo(xt0,Y+12); ctx.stroke(); ctx.restore();
+      tartaruga(xt0,false,.25);
+      // quote: Achille sopra, tartaruga sotto
+      quota(px(a(k)),xt0,Y-140,UNITA[1-k],'#dc2626',1);
+      quota(xt0,px(a(k)+d(k)*1.1),Y+30,UNITA[-k],'#15803d',1);
+    }
+    tartaruga(xt,phase==='run',1);
+    achille(xa);
+  }
+
+  var distEl=document.getElementById('zenDist'), vantEl=document.getElementById('zenVant');
+  var cap=document.getElementById('zenCaption');
+  var playBtn=document.getElementById('zenPlay'), stepBtn=document.getElementById('zenStep');
+
+  function dist(n){ // distanza percorsa dopo n passi: 10, 11, 11,1, 11,11, ...
+    if(n===0) return '0 m';
+    if(n===1) return '10 m';
+    if(n===2) return '11 m';
+    return '11,'+new Array(n-1).join('1')+' m';
+  }
+  function info(){
+    var fatti = (phase==='idle'||phase==='run') ? k : k+1;
+    distEl.textContent=dist(fatti);
+    vantEl.textContent=UNITA[1-fatti]||'…';
+  }
+  function caption(){
+    if(phase==='idle'){ cap.textContent='Achille concede alla tartaruga dieci metri di vantaggio. Premi «Avvia».'; return; }
+    if(phase==='done'){ cap.textContent='…e così all\'infinito: a ogni passo Achille arriva dove era la tartaruga, ma lei è sempre un po\' più avanti.'; return; }
+    cap.textContent='Achille percorre '+PAROLE[k]+' e la tartaruga percorre '+PAROLE[k+1]+'.'
+      +(k>=2 ? ' (A questa scala non si vede più nulla: ma la tartaruga è ancora davanti!)' : '');
+  }
+  function buttons(){
+    playBtn.textContent = playing ? '❚❚ Pausa' : '▶ Avvia';
+    playBtn.disabled = phase==='done';
+    stepBtn.disabled = phase==='done' || playing || stepping;
+  }
+  function refresh(){ info(); caption(); buttons(); draw(); }
+
+  // fa partire il passo successivo (se si è fermi fra un passo e l'altro)
+  function nextStep(){
+    if(phase==='idle'){ phase='run'; p=0; }
+    else if(phase==='pause'){ if(k+1>=KMAX){ phase='done'; } else { k++; phase='run'; p=0; } }
+  }
+
+  // stepping = "Un passo" in corso: Achille corre un tratto, poi si ferma
+  function tick(now){
+    raf=null;
+    if(!playing && !stepping){ last=null; refresh(); return; }
+    var dt = last===null ? 16 : Math.min(60, now-last);
+    last=now;
+    dt*=speed;
+    if(phase==='run'){
+      p+= reduce ? 1 : dt/durRun();
+      stride+=dt*0.011;
+      if(p>=1){ p=1; phase='pause'; pauseLeft=pausa(); stepping=false; }
+    } else {
+      pauseLeft-=dt;
+      if(pauseLeft<=0) nextStep();
+    }
+    if(phase==='done'){ playing=false; stepping=false; }
+    refresh();
+    if(playing||stepping){ raf=requestAnimationFrame(tick); } else last=null;
+  }
+  function go(){ if(!raf){ last=null; raf=requestAnimationFrame(tick); } }
+
+  playBtn.addEventListener('click',function(){
+    if(phase==='done') return;
+    playing=!playing;
+    if(playing){ if(phase!=='run') pauseLeft=0; go(); }
+    buttons();
+  });
+  stepBtn.addEventListener('click',function(){
+    if(playing||stepping||phase==='run') return;
+    nextStep();
+    if(phase==='done'){ refresh(); return; }
+    stepping=true; go(); buttons();
+  });
+  document.getElementById('zenReset').addEventListener('click',function(){
+    if(raf){ cancelAnimationFrame(raf); raf=null; }
+    k=0; phase='idle'; p=0; playing=false; stepping=false; stride=0; last=null;
+    refresh();
+  });
+  var sp=document.getElementById('zenSpeed'), spl=document.getElementById('zenSpeedLbl');
+  sp.addEventListener('input',function(){ speed=parseFloat(sp.value); spl.textContent=String(speed).replace('.',',')+'×'; });
+
+  refresh();
+})();
+</script>
