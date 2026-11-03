@@ -19,7 +19,7 @@ Ma tutto questo Alice non lo sa.
 </cit>
 
 {% include box-obiettivi.html %}
-Scopri perché nessuna misura è perfetta e come si dichiara quanto è precisa: l'incertezza strumentale, la semidispersione, l'errore relativo. Impari come si propagano le incertezze quando metti insieme più misure in un calcolo. Poi metti tutto in pratica in un'attività di laboratorio: misurare la densità di un sasso con un bicchiere d'acqua.
+Scopri perché nessuna misura è perfetta e come si dichiara quanto è precisa: l'incertezza strumentale, la semidispersione, l'incertezza relativa. Impari come si propagano le incertezze quando metti insieme più misure in un calcolo. Poi metti tutto in pratica in un'attività di laboratorio: misurare la densità di un sasso con un bicchiere d'acqua.
 {% include box-end.html %}
 
 
@@ -63,21 +63,21 @@ L'**incertezza di misura** quantifica l'imprecisione della misurazione di una gr
 
 Ogni misurazione è affetta da più sorgenti di incertezza. Le principali sono:
 
-1. **Risoluzione dello strumento** — nessuno strumento è infinitamente preciso: un righello normalmente ha le tacche spaziate di un millimetro, e quindi non è in grado di rilevare differenze dell'ordine, ad esempio, del micrometro. Allo stesso modo, una bilancia digitale da cucina normalmente ha le cifre fino al grammo, quindi non è in grado di rilevare una differenza di un decimo di grammo.
+1. **Sensibilità dello strumento** — nessuno strumento è infinitamente preciso: un righello normalmente ha le tacche spaziate di un millimetro, e quindi non è in grado di rilevare differenze dell'ordine, ad esempio, del micrometro. Allo stesso modo, una bilancia digitale da cucina normalmente ha le cifre fino al grammo, quindi non è in grado di rilevare una differenza di un decimo di grammo.
 2. **Variabilità del misurando** — a volte è la grandezza stessa a cambiare mentre la misuriamo, e allora misurazioni ripetute danno valori diversi. È il caso del cactus: mentre l'acqua al suo interno evapora, la sua massa diminuisce, e pesandolo più volte nel corso della giornata otterremmo valori via via più piccoli.
 3. **Errore umano** — anche chi misura sbaglia. Ad esempio, quando si deve misurare il tempo di un corridore nei 100 m, il tempo è spesso misurato da un arbitro che avvia e ferma il cronometro. Ma l'arbitro avrà dei tempi di reazione e quindi potrebbe essere leggermente in ritardo o leggermente in anticipo, alterando quindi --- anche se di poco --- il valore della misurazione. È quello che succede con l'ape sul righello: lo strumento funziona benissimo, ma noi facciamo fatica a leggerlo.
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qFonti %}[
-{"t":"Con uno strumento abbastanza preciso l'incertezza di una misura diventa zero.","ok":false,"s":"No: qualunque strumento ha una risoluzione finita, e restano comunque le altre fonti di incertezza."},
-{"t":"Se misuro tre volte la lunghezza di un tavolo con lo stesso righello e ottengo sempre lo stesso valore, la mia misura non ha incertezza.","ok":false,"s":"No: le misure non sono sparpagliate, ma resta l'incertezza dovuta alla risoluzione del righello."},
+{"t":"Con uno strumento abbastanza preciso l'incertezza di una misura diventa zero.","ok":false,"s":"No: qualunque strumento ha una sensibilità limitata, e restano comunque le altre fonti di incertezza."},
+{"t":"Se misuro tre volte la lunghezza di un tavolo con lo stesso righello e ottengo sempre lo stesso valore, la mia misura non ha incertezza.","ok":false,"s":"No: le misure non sono sparpagliate, ma resta l'incertezza dovuta alla sensibilità del righello."},
 {"t":"Guardare la scala di un cilindro graduato dall'alto, invece che all'altezza del liquido, è un esempio di errore umano.","ok":true,"s":"Sì: lo strumento è corretto, è la lettura a essere sbagliata."}
 ]{% endcapture %}
 {% include quiz.html domande=_qFonti id="q-fonti" senza_esempi="true" %}
 
 Misuri più volte, nel giro di dieci minuti, la temperatura di una tazza di tè appena versato, con un termometro digitale, e ottieni valori sempre più bassi. Qual è la fonte di incertezza principale?
 {% capture _o %}[
-{"v":"a","t":"La risoluzione del termometro"},
+{"v":"a","t":"La sensibilità del termometro"},
 {"v":"b","t":"La variabilità del misurando"},
 {"v":"c","t":"L'errore umano"},
 {"v":"d","t":"Le correnti d'aria che disturbano lo strumento"}
@@ -87,12 +87,42 @@ Misuri più volte, nel giro di dieci minuti, la temperatura di una tazza di tè 
 
 ### Stima dell'incertezza strumentale
 
+Impariamo a stimare l'incertezza che deriva dallo strumento guardando direttamente ad esso. Per farlo, abbiamo bisogno di distinguere tra <definizione>strumenti analogici</definizione> e <definizione>strumenti digitali</definizione>.
+
+{% include box-def.html testo="Strumenti analogici e digitali" %}
+Uno strumento è **analogico** quando il valore della misura si legge confrontando la posizione di un indice (una lancetta, il livello di un liquido, il bordo di un oggetto) con una **scala graduata**, cioè con una serie di tacche.
+
+Uno strumento è **digitale** quando il valore della misura compare già scritto in cifre su un **display**.
+{% include box-end.html %}
+
+Spesso lo stesso strumento esiste in entrambe le versioni. Nella prima riga qui sotto vedete una bilancia da cucina, un cronometro e un termometro analogici: per leggerli dovete guardare dove si ferma la lancetta o la colonnina di mercurio rispetto alle tacche.
+
+{% include img-row.html
+   immagini="/corsi/immagini/strumento-analogico-bil.webp|/corsi/immagini/strumento-analogico-cr.webp|/corsi/immagini/strumento-analogico-ter.webp"
+   alt="Bilancia da cucina a lancetta|Cronometro a lancette|Termometro a mercurio"
+   larghezza="190px" altezza="143px" %}
+
+Nella seconda riga ci sono gli stessi strumenti in versione digitale: qui il numero si legge direttamente sul display, senza tacche.
+
+{% include img-row.html
+   immagini="/corsi/immagini/strumento-digitale-bil.webp|/corsi/immagini/strumento-digitale-cr.webp|/corsi/immagini/strumento-digitale-ter.webp"
+   alt="Bilancia da cucina digitale|Cronometro digitale|Termometro digitale"
+   larghezza="190px" altezza="143px" %}
+
+<p style="font-size:11px;color:#6b7280;text-align:center;margin-top:-0.8rem;">Foto da Wikimedia Commons (CC BY-SA): Cristian.giovanetti, Al Riaz Uddin, Menchi, Ser Amantio di Nicolao, Lesselich, Srini297.</p>
+
+Che sia analogico o digitale, nessuno strumento può distinguere valori vicini quanto vogliamo: c'è sempre un limite, ed è questo limite che ci serve per stimare l'incertezza.
+
+{% include box-def.html testo="Sensibilità" %}
 La **sensibilità** di uno strumento è la più piccola variazione della grandezza misurata che esso riesce a rilevare.
+- **Strumenti analogici** (righello, bilancia a lancetta): la sensibilità è il valore della **divisione più piccola**, cioè della distanza fra due tacche vicine. Per un righello millimetrato è 1 mm.
+- **Strumenti digitali** (bilancia elettronica, termometro digitale): la sensibilità è il valore dell'**ultima cifra del display**. Per una bilancia che arriva fino al grammo è 1 g, per una che arriva fino al decimo di grammo è 0,1 g.
+{% include box-end.html %}
+
+Una volta trovata la sensibilità, l'incertezza strumentale si ottiene subito.
 
 {% include box-imp.html testo="Incertezza strumentale" %}
-L'incertezza strumentale, che indichiamo nelle nostre formule con i.s., dipende solo dallo strumento e si stima nel seguente modo. 
-- **Strumenti analogici** (righello, bilancia a lancetta): l'incertezza strumentale è pari a **metà della divisione più piccola**. Ad esempio, per un righello con la distanza tra una tacca e l'altra pari a un millimetro l'incertezza è pari a 0,5 mm.
-- **Strumenti digitali** (bilancia elettronica, termometro digitale): l'incertezza strumentale è pari a **metà dell'ultima cifra del display**. Ad esempio, per una bilancia che arriva fino al grammo l'incertezza è pari a 0,5 g, per una che arriva fino al decimo di grammo è pari a 0,05 g.
+L'incertezza strumentale, che indichiamo nelle nostre formule con i.s., dipende solo dallo strumento ed è pari a **metà della sensibilità**. Per il righello millimetrato è quindi 0,5 mm; per la bilancia che arriva fino al grammo 0,5 g, per quella che arriva al decimo di grammo 0,05 g.
 {% include box-end.html %}
 
 {% include figure/esempio-righello-figura.html %}
@@ -101,9 +131,10 @@ L'incertezza strumentale, che indichiamo nelle nostre formule con i.s., dipende 
 
 {% include esercizi/prova-strumenti.html %}
 
-### Semidispersione e la notazione $\bar x \pm \Delta_x$
+### Semidispersione e la notazione $\bar x \pm I_x$
 
-Quando si eseguono più misurazioni della stessa grandezza si ottengono in genere valori leggermente diversi: $x_1, x_2, \ldots, x_N$. Non sappiamo quale di quei valori sia quello corretto: per stimarlo, quindi, facciamo una media (proprio come con i voti!) e la indichiamo con $\bar x$, che corrisponde quindi a
+Come abbiamo detto prima, parte dell'incertezza proviene dallo strumento che utilizziamo, ma ci sono altre fonti di incertezza: l'errore umano, cioè del misuratore, e la variabilità del misurando. Stimare queste fonti di errore *a priori* sarebbe un compito molto difficile: l'errore umano dipende da persona a persona, e la variabilità del misurando dipende da un grandissimo numero di fattori, che cambiano da un luogo a un altro o da un momento a un altro. Questi tipi di incertezza, quindi, si stimano *a posteriori*, cioè **dopo** aver eseguito le misurazioni e aver osservato i valori ottenuti. 
+Immaginiamo di dover misurare una certa grandezza $x$. Quando si eseguono più misurazioni della stessa grandezza si ottengono in genere valori leggermente diversi: $x_1, x_2, \ldots, x_N$. Non sappiamo quale di quei valori sia quello corretto: per stimarlo, quindi, facciamo una media (proprio come con i voti!) e la indichiamo con $\bar x$, che corrisponde quindi a
 
 {% include eq-annotated.html
      id="media"
@@ -140,7 +171,7 @@ Quanto vale la temperatura media $\bar T$?
 {% include scorri-end.html %}
 {% include box-end.html %}
 
-Dopodiché misuriamo anche l'incertezza della misurazione tramite la <definizione>semidispersione</definizione>, che corrisponde alla metà della differenza tra il valore massimo e quello minimo, e si indica con $s_x$:
+Dopodiché misuriamo anche l'incertezza della misurazione tramite la <definizione>semidispersione</definizione>, che corrisponde alla metà della differenza tra il valore massimo e quello minimo. Ad esempio, se abbiamo una grandezza $x$ di cui effettuiamo un certo numero di misurazioni, la semidispersione $s_x$ si calcola nel seguente modo:
 
 {% include eq-annotated.html
      id="semidispersione"
@@ -150,7 +181,30 @@ Dopodiché misuriamo anche l'incertezza della misurazione tramite la <definizion
      posizioni="basso|alto|alto"
   %}
 
-La semidispersione dice quanto sono "sparpagliate" le misurazioni: più sono lontane l'una dall'altra, più è grande. Vediamola su un esempio: cronometriamo quattro volte il tempo $t$ di caduta di una pallina e otteniamo questi valori.
+La semidispersione dice quanto sono "sparpagliate" le misurazioni: più esse sono lontane l'una dall'altra, più la semidispersione è grande. 
+
+Proviamo a vederlo su un grafico. Due gruppi misurano sei volte l'altezza dello stesso banco, con lo stesso metro; in orizzontale mettiamo il numero della misurazione, in verticale il valore ottenuto. I due grafici hanno la stessa scala, quindi si possono confrontare a colpo d'occhio.
+
+{% include figure/semidispersione-gruppi-figura.html %}
+
+Come si legge la semidispersione su un grafico del genere? Tracciamo una linea orizzontale che passa per il punto più alto e un'altra che passa per il punto più basso: tutte le misurazioni stanno dentro la fascia compresa fra le due linee. L'altezza della fascia è proprio $x_\max - x_\min$, quindi la semidispersione è metà dell'altezza della fascia.
+
+{% include figure/semidispersione-fascia-figura.html %}
+
+Se i punti sono vicini fra loro, la fascia è sottile e $s_x$ è piccola; se sono sparpagliati, la fascia è larga e $s_x$ è grande.
+
+{% include box-ex.html testo="Verifica Subito!" %}
+Torna ai grafici dei due gruppi che misurano il banco. Quale dei due ha la semidispersione $s_x$ più elevata?
+
+{% capture _o %}[
+{"v":"a","t":"Il Gruppo 1"},
+{"v":"b","t":"Il Gruppo 2"},
+{"v":"c","t":"Hanno la stessa semidispersione, perché hanno fatto lo stesso numero di misurazioni"}
+]{% endcapture %}
+{% include mcq.html id="mcq-fascia" opts=_o ok="b" s="Nel Gruppo 2 i punti vanno da 74,6 cm a 76,1 cm: la fascia è alta 1,5 cm e la semidispersione è 0,75 cm. Nel Gruppo 1 vanno da 75,1 cm a 75,4 cm: la fascia è alta solo 0,3 cm e la semidispersione è 0,15 cm. Il numero di misurazioni non c'entra: conta quanto sono lontani il punto più alto e il più basso." %}
+{% include box-end.html %}
+
+Vediamo un esempio: cronometriamo quattro volte il tempo $t$ di caduta di una pallina e otteniamo questi valori.
 
 | Misurazione | 1 | 2 | 3 | 4 |
 |---|---|---|---|---|
@@ -184,15 +238,20 @@ Misuri cinque volte la larghezza di un quaderno. Tocca il valore più piccolo e 
 
 {% include num.html id="numSemiQuaderno" valore="0.2" unit="cm" %}
 {% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Ora tocca a te cronometrare. Achille corre i 100 metri: avvia il cronometro quando parte e fermalo quando si ferma sul traguardo. Il cronometro arriva al millesimo di secondo. Fai quattro prove (se una ti viene male puoi ripeterla da sola), poi calcola la semidispersione $s_t$ dei tuoi tempi.
+
+{% include lab-virtuali/cronometra-achille-lab.html %}
+{% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
 
-Alla fine si considera come incertezza globale $\Delta_x$ la somma tra l'incertezza strumentale e la semidispersione:
+Alla fine si considera come incertezza globale $I_x$ la somma tra l'incertezza strumentale e la semidispersione:
 
 {% include eq-annotated.html
      id="incertezza-totale"
-     formula="\Delta_x = \text{i.s.} + s_x"
-     frammenti="\Delta_x|\text{i.s.}|s_x"
+     formula="I_x = \text{i.s.} + s_x"
+     frammenti="I_x|\text{i.s.}|s_x"
      etichette="incertezza totale|incertezza strumentale|semidispersione"
      posizioni="alto|alto|alto"
   %}
@@ -202,10 +261,10 @@ Alla fine si considera come incertezza globale $\Delta_x$ la somma tra l'incerte
 $$\bar{x} = \frac{x_1 + x_2 + \cdots + x_N}{N}$$
 
 **Incertezza:**
-$$\Delta_x = \text{i.s.} + \frac{x_\text{max} - x_\text{min}}{2}.$$
+$$I_x = \text{i.s.} + \frac{x_\text{max} - x_\text{min}}{2}.$$
 
 Il risultato della misura si riporta nella forma:
-$$x = \bar{x} \pm \Delta_x$$
+$$x = \bar{x} \pm I_x$$
 {% include box-end.html %}
 
 {% include unisci.html %}
@@ -233,7 +292,7 @@ Con il valore più piccolo e il più grande delle misurazioni della matita, quan
 {% include num.html id="numPassiSemi" valore="0.1" unit="cm" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="4. L'incertezza totale" %}
-Il righello ha una tacca ogni millimetro. Quanto vale l'incertezza totale $\Delta_\ell = \text{i.s.} + s_\ell$, in centimetri?
+Il righello ha una tacca ogni millimetro. Quanto vale l'incertezza totale $I_\ell = \text{i.s.} + s_\ell$, in centimetri?
 
 {% include num.html id="numPassiDelta" valore="0.15" unit="cm" %}
 {% include scorri-slide-end.html %}
@@ -264,23 +323,23 @@ Anna e Bruno misurano la stessa matita con lo stesso righello. Anna ottiene $(17
 {% include box-end.html %}
 {% include unisci-end.html %}
 
-### Errore relativo percentuale
+### Incertezza relativa percentuale
 
 Per chiedersi se l'incertezza di una misurazione sia grande o piccola, si deve confrontare l'incertezza con il valore della misurazione. Ad esempio, un'incertezza di un centimetro nella misurazione dell'altezza della Tour Eiffel significa che la misurazione è molto precisa. D'altra parte, la stessa incertezza di un centimetro nella misurazione della dimensione di una cellula biologica (dell'ordine del micrometro) è un errore gigantesco.   
 Per questo è necessario, oltreché stimare l'incertezza, riferirla anche all'oggetto che si è misurato. Il modo migliore di farlo è il seguente.
 
-{% include box-imp.html testo="Errore relativo percentuale" %}
-L'<definizione>errore relativo percentuale</definizione> esprime l'incertezza della misurazione come percentuale del valore medio:
+{% include box-imp.html testo="Incertezza relativa percentuale" %}
+L'<definizione>incertezza relativa percentuale</definizione> esprime l'incertezza della misurazione come percentuale del valore medio:
 
 {% include eq-annotated.html
      id="errore-relativo"
-     formula="e_x = \left(\dfrac{\Delta_x}{\bar{x}} \times 100\right)\%"
-     frammenti="e_x|\Delta_x|\bar{x}"
-     etichette="errore relativo percentuale|incertezza totale|valore medio"
+     formula="i_x = \left(\dfrac{I_x}{\bar{x}} \times 100\right)\%"
+     frammenti="i_x|I_x|\bar{x}"
+     etichette="incertezza relativa percentuale|incertezza totale|valore medio"
      posizioni="alto|alto|basso"
   %}
 
-<u>Un errore relativo percentuale piccolo indica una misura precisa</u> (l'incertezza è piccola rispetto al valore misurato); <u>un errore relativo percentuale grande indica che la misurazione non è affidabile</u> (l'incertezza è rilevante rispetto al valore misurato).
+<u>Un'incertezza relativa percentuale piccola indica una misura precisa</u> (l'incertezza è piccola rispetto al valore misurato); <u>un'incertezza relativa percentuale grande indica che la misurazione non è affidabile</u> (l'incertezza è rilevante rispetto al valore misurato).
 
 
 {% include box-end.html %}
@@ -288,12 +347,12 @@ L'<definizione>errore relativo percentuale</definizione> esprime l'incertezza de
 {% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include calc-margin.html id="calcErrMatita" %}
-La lunghezza della matita è $\ell = (12{,}4 \pm 0{,}15)\ \text{cm}$. Quanto vale il suo errore relativo percentuale $e_\ell$?
+La lunghezza della matita è $\ell = (12{,}4 \pm 0{,}15)\ \text{cm}$. Quanto vale la sua incertezza relativa percentuale $i_\ell$?
 
 {% include num.html id="numErrMatita" valore="1.21" unit="%" tol="3" %}
 <div style="clear:both"></div>
 {% include spoiler.html testo="Mostra la soluzione" %}
-$$e_\ell = \frac{\Delta_\ell}{\bar\ell}\times 100\% = \frac{0{,}15\ \text{cm}}{12{,}4\ \text{cm}}\times 100\% \approx 1{,}2\%.$$
+$$i_\ell = \frac{I_\ell}{\bar\ell}\times 100\% = \frac{0{,}15\ \text{cm}}{12{,}4\ \text{cm}}\times 100\% \approx 1{,}2\%.$$
 {% include spoiler-end.html %}
 {% include box-end.html %}
 
@@ -306,7 +365,7 @@ Quale di queste due misure è più precisa?
 {"v":"b","t":"La massa di una moneta: $(7{,}5 \\pm 0{,}1)\\ \\text g$"},
 {"v":"c","t":"Sono ugualmente precise"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-auto-moneta" opts=_o ok="a" s="Bisogna confrontare gli errori relativi, non le incertezze: per l'automobile $10/1200 \approx 0{,}8\%$, per la moneta $0{,}1/7{,}5 \approx 1{,}3\%$. Dieci chili sembrano tanti, ma rispetto a una tonnellata sono pochi." %}
+{% include mcq.html id="mcq-auto-moneta" opts=_o ok="a" s="Bisogna confrontare le incertezze relative, non quelle assolute: per l'automobile $10/1200 \approx 0{,}8\%$, per la moneta $0{,}1/7{,}5 \approx 1{,}3\%$. Dieci chili sembrano tanti, ma rispetto a una tonnellata sono pochi." %}
 {% include box-end.html %}
 {% include unisci-end.html %}
 
@@ -315,29 +374,29 @@ Quale di queste due misure è più precisa?
 Spesso la grandezza che ci interessa non si misura direttamente, ma si *calcola* a partire da grandezze misurate. La quantità calcolata avrà un'incertezza che è data dal seguente teorema.
 
 {% include box-thm.html testo="Teorema di propagazione degli errori" %}
-Siano $x$ e $y$ due grandezze misurate con incertezze assolute $\Delta_x$, $\Delta_y$ e incertezze relative percentuali $e_x = (\Delta_x/\bar{x})\times 100\%$, $e_y = (\Delta_y/\bar{y})\times 100\%$.
+Siano $x$ e $y$ due grandezze misurate con incertezze assolute $I_x$, $I_y$ e incertezze relative percentuali $i_x = (I_x/\bar{x})\times 100\%$, $i_y = (I_y/\bar{y})\times 100\%$.
 
 | Operazione | Incertezza da usare | Regola |
 |---|---|---|
-| $z = x + y$ | **assoluta** | $\Delta_z = \Delta_x + \Delta_y$ |
-| $z = x - y$ | **assoluta** | $\Delta_z = \Delta_x + \Delta_y$ |
-| $z = x \cdot y$ | **relativa %** | $e_z = e_x + e_y$ |
-| $z = x / y$ | **relativa %** | $e_z = e_x + e_y$ |
-| $z = x^n$ | **relativa %** | $e_z = n\,e_x$ |
+| $z = x + y$ | **assoluta** | $I_z = I_x + I_y$ |
+| $z = x - y$ | **assoluta** | $I_z = I_x + I_y$ |
+| $z = x \cdot y$ | **relativa %** | $i_z = i_x + i_y$ |
+| $z = x / y$ | **relativa %** | $i_z = i_x + i_y$ |
+| $z = x^n$ | **relativa %** | $i_z = n\,i_x$ |
 
-L'incertezza assoluta risultante si ricava sempre come $\Delta_z = \bar{z}\,\cdot\,e_z / 100$.
+L'incertezza assoluta risultante si ricava sempre come $I_z = \bar{z}\,\cdot\,i_z / 100$.
 {% include box-end.html %}
 
 {% include box-warn.html testo="Attenzione: nella differenza le incertezze si sommano!" %}
-In $z = x - y$, le incertezze *assolute* si sommano (non si sottraggono). Se $x$ e $y$ sono vicini, $z = x - y$ è piccolo ma $\Delta_z = \Delta_x + \Delta_y$ rimane grande: l'errore relativo percentuale su $z$ può diventare molto elevato.
+In $z = x - y$, le incertezze *assolute* si sommano (non si sottraggono). Se $x$ e $y$ sono vicini, $z = x - y$ è piccolo ma $I_z = I_x + I_y$ rimane grande: l'incertezza relativa percentuale su $z$ può diventare molto elevato.
 {% include box-end.html %}
 
 {% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qProp %}[
 {"t":"Nella differenza $z = x - y$ le incertezze assolute si sottraggono.","ok":false,"s":"No: si sommano sempre, anche nella differenza."},
-{"t":"Nel prodotto $z = x \\cdot y$ si sommano le incertezze assolute.","ok":false,"s":"No: nel prodotto e nel quoziente si sommano gli errori relativi percentuali."},
-{"t":"Se il lato di un quadrato ha un errore relativo del $2\\%$, l'area del quadrato ha un errore relativo del $4\\%$.","ok":true,"s":"Sì: l'area è il lato al quadrato, e per una potenza l'errore relativo si moltiplica per l'esponente: $2 \\times 2\\% = 4\\%$."}
+{"t":"Nel prodotto $z = x \\cdot y$ si sommano le incertezze assolute.","ok":false,"s":"No: nel prodotto e nel quoziente si sommano le incertezze relative percentuali."},
+{"t":"Se il lato di un quadrato ha un'incertezza relativa del $2\\%$, l'area del quadrato ha un'incertezza relativa del $4\\%$.","ok":true,"s":"Sì: l'area è il lato al quadrato, e per una potenza l'incertezza relativa si moltiplica per l'esponente: $2 \\times 2\\% = 4\\%$."}
 ]{% endcapture %}
 {% include quiz.html domande=_qProp id="q-propagazione" senza_esempi="true" %}
 {% include box-end.html %}
@@ -403,7 +462,7 @@ Il calcolo funziona solo se il bicchiere ha **sezione costante**, cioè è un ci
 
 ## Istruzioni
 
-Segui le fasi nell'ordine indicato. Per ciascuna misurazione: riporta i dati grezzi, calcola media e incertezza, stima l'errore relativo percentuale. Scatta una fotografia per ogni fase.
+Segui le fasi nell'ordine indicato. Per ciascuna misurazione: riporta i dati grezzi, calcola media e incertezza, stima l'incertezza relativa percentuale. Scatta una fotografia per ogni fase.
 
 ---
 
@@ -427,7 +486,7 @@ $$\bar{d} = \frac{d_1 + d_2 + d_3}{3}, \qquad s_d = \frac{d_\text{max} - d_\text
 
 Quindi, calcola 
 
-$$\Delta_d = \text{i.s.} + s_d, \qquad e_d = \frac{\Delta_d}{\bar d}.$$
+$$I_d = \text{i.s.} + s_d, \qquad i_d = \frac{I_d}{\bar d} \times 100\%.$$
 
 ---
 
@@ -441,9 +500,9 @@ Dopo aver calcolato $S$ sarà necessario anche stimare l'incertezza su $S$. Qui 
 
 $$z = x^n$$
 
-allora $e_z = n \cdot e_x$. Nel nostro caso, quindi,
+allora $i_z = n \cdot i_x$. Nel nostro caso, quindi,
 
-$$e_S = 2\,e_d.$$
+$$i_S = 2\,i_d.$$
 
 ---
 
@@ -451,7 +510,7 @@ $$e_S = 2\,e_d.$$
 
 Versa dell'acqua nel bicchiere. Misura l'altezza iniziale $h_i$ del livello con il righello. Ripeti almeno **3 volte**. Fai una fotografia del righello mentre misura l'altezza. A questo punto calcola tutte le quantità utili.
 
-$$\bar{h}_i = \ldots, \qquad s_{h_i} = \frac{h_{i,\text{max}} - h_{i,\text{min}}}{2}, \qquad e_{h_i} = \frac{s_{h_i} + \text{i.s.}}{\bar{h}_i} \times 100\%$$
+$$\bar{h}_i = \ldots, \qquad s_{h_i} = \frac{h_{i,\text{max}} - h_{i,\text{min}}}{2}, \qquad i_{h_i} = \frac{s_{h_i} + \text{i.s.}}{\bar{h}_i} \times 100\%$$
 
 
 ---
@@ -462,16 +521,16 @@ Conoscendo l'area di base dell'acqua e la sua altezza, possiamo calcolare il suo
 
 $$V_i=S\cdot h_i.$$
 
-Secondo il teorema di propagazione degli errori (vedi [qui](#propagazione-degli-errori)) l'errore relativo percentuale sul volume è pari alla somma degli errori relativi percentuali di sezione e altezza, cioè
+Secondo il teorema di propagazione degli errori (vedi [qui](#propagazione-degli-errori)) l'incertezza relativa percentuale sul volume è pari alla somma delle incertezze relative percentuali di sezione e altezza, cioè
 
 $$
-e_{V_i} = e_S + e_{h_i}.
+i_{V_i} = i_S + i_{h_i}.
 $$
 
-Ci sarà utile stimare anche l'incertezza $\Delta_{V_i}$ del volume iniziale, che possiamo ricavare a partire dall'errore relativo percentuale come
+Ci sarà utile stimare anche l'incertezza $I_{V_i}$ del volume iniziale, che possiamo ricavare a partire dall'incertezza relativa percentuale come
 
 $$
-\Delta_{V_i} = \frac{e_{V_i} \cdot V_i}{100}.
+I_{V_i} = \frac{i_{V_i} \cdot V_i}{100}.
 $$
 
 ---
@@ -485,7 +544,7 @@ Qui probabilmente ripetendo la misurazione il valore ottenuto sarebbe sempre ugu
 - Bilancia **digitale**: l'incertezza strumentale corrisponde a metà della cifra più piccola.
 - Bilancia **analogica**: l'incertezza strumentale corrisponde a metà della distanza tra due tacche.
 
-$$e_m = \frac{\text{i.s.}}{m} \times 100\%$$
+$$i_m = \frac{\text{i.s.}}{m} \times 100\%$$
 
 
 ---
@@ -501,25 +560,25 @@ Calcola di nuovo tutte le quantità che hai calcolato nella Fase 3 e nella Fase 
 
 #### Fase 7 — Calcolo della densità
 
-**Variazione di livello** (differenza: gli errori assoluti si sommano):
+**Variazione di livello** (differenza: le incertezze assolute si sommano):
 
-$$z=\bar{h}_f - \bar{h}_i, \qquad e_{z} = \Delta_{h_f} + \Delta_{h_i}, \qquad e_{z} = \frac{e_{z}}{z} \times 100\%$$
+$$z=\bar{h}_f - \bar{h}_i, \qquad I_z = I_{h_f} + I_{h_i}, \qquad i_z = \frac{I_z}{z} \times 100\%$$
 
-**Volume del sasso** (prodotto: gli errori relativi si sommano):
+**Volume del sasso** (prodotto: le incertezze relative si sommano):
 
-$$V_\text{sasso} = S \cdot \Delta h$$
+$$V_\text{sasso} = S \cdot z$$
 
-$$e_{V} = e_S + e_{z} = 2\,e_d + e_{z}, \qquad e_V = V_\text{sasso} \cdot \frac{e_V}{100}$$
+$$i_V = i_S + i_z = 2\,i_d + i_z, \qquad I_V = V_\text{sasso} \cdot \frac{i_V}{100}$$
 
-**Densità** (quoziente: gli errori relativi si sommano):
+**Densità** (quoziente: le incertezze relative si sommano):
 
 $$d = \frac{m}{V_\text{sasso}}$$
 
-$$e_d = e_m + e_V, \qquad e_d = d \cdot \frac{e_d}{100}$$
+$$i_d = i_m + i_V, \qquad I_d = d \cdot \frac{i_d}{100}$$
 
 **Risultato finale da riportare:**
 
-$$\boxed{d = \bar{d} \pm e_d \quad \left(e_d = \ldots\%\right)}$$
+$$\boxed{d = \bar{d} \pm I_d \quad \left(i_d = \ldots\%\right)}$$
 
 ---
 
@@ -528,7 +587,7 @@ $$\boxed{d = \bar{d} \pm e_d \quad \left(e_d = \ldots\%\right)}$$
 In questa sezione puoi **soltanto guadagnare punti**, non perderli. Rifletti liberamente sull'esperimento, senza l'aiuto dell'Intelligenza Artificiale. Ecco alcuni spunti (non obbligatori):
 
 - Quali sono state le principali fonti di incertezza nel tuo esperimento?
-- Quale grandezza ha contribuito di più all'errore finale su $d$? Perché?
+- Quale grandezza ha contribuito di più all'incertezza finale su $d$? Perché?
 - Come si potrebbe ridurre l'incertezza sul volume del sasso?
 - Cosa succederebbe se il bicchiere non fosse perfettamente cilindrico?
 - Esiste un modo alternativo per misurare il volume del sasso?
@@ -583,11 +642,11 @@ Ti potrà essere chiesto di rispondere a domande come queste:
 12.1 cm, 12.4 cm, 11.9 cm, 12.3 cm, 12.1 cm   
 e voi mi calcolate la semidispersione come  
 $$ s=\frac{12.4-11.9}{2} \ \text{cm}. $$
-- Cosa significa scrivere $x = \bar{x} \pm e_x$?
-- Cos'è l'errore relativo percentuale? Come si calcola e a cosa serve?
+- Cosa significa scrivere $x = \bar{x} \pm I_x$?
+- Cos'è l'incertezza relativa percentuale? Come si calcola e a cosa serve?
 - Perché nella differenza $z = x - y$ le incertezze *assolute* si sommano (e non si sottraggono)?
 - Perché nel prodotto e nel quoziente si sommano le incertezze *relative*?
-- Perché nella propagazione dell'errore su $S = \pi(d/2)^2$ compare un fattore 2?
+- Perché nella propagazione dell'incertezza su $S = \pi(d/2)^2$ compare un fattore 2?
 
 **Attenzione!** Questa lista di domande sono solo esempi per aiutarvi a comprendere la tipologia. Chiaramente, potrei farvi domande non contenute in questa lista.
 {% include box-end.html %}

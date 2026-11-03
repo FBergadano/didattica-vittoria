@@ -1,0 +1,213 @@
+{% comment %}
+Esercizio interattivo: cronometra Achille sui 100 m. Achille (achille.webp,
+la stessa figura di Cinematica) parte dopo un'attesa casuale, accelera, corre
+e si ferma sul traguardo: il suo tempo vero è sempre 9,800 s. Lo studente
+avvia e ferma un cronometro digitale al millesimo di secondo (pulsante o barra
+spaziatrice), per quattro prove; i tempi finiscono in tabella e ogni prova si
+può ripetere da sola («Ripeti»). Con quattro tempi compare la casella della
+semidispersione, controllata sui dati dello studente: (t_max − t_min)/2,
+con mezzo millesimo di tolleranza. Tempi ed esito restano salvati nel browser.
+Nessun parametro.
+{% endcomment %}
+<div class="cron-widget" id="cronAch">
+<canvas class="cron-canvas" id="cronCv" role="img" aria-label="Achille corre i 100 metri, dalla partenza al traguardo"></canvas>
+<div class="cron-row">
+  <div class="cron-lcd"><span id="cronLcd">0,000</span><small>s</small></div>
+  <button type="button" class="cron-btn" id="cronSS" disabled>START</button>
+</div>
+<p class="cron-msg" id="cronMsg">Premi «Fai partire Achille»: quando parte avvia il cronometro, quando si ferma fermalo (puoi usare anche la barra spaziatrice).</p>
+<div class="cron-actions"><button type="button" class="cron-go" id="cronGo">▶ Fai partire Achille</button></div>
+<table class="cron-tab">
+  <thead><tr><th>Prova</th><th>$t$ (s)</th><th></th></tr></thead>
+  <tbody id="cronBody"></tbody>
+</table>
+<div class="cron-semi" id="cronSemi" hidden>
+  <span>Semidispersione dei tuoi tempi: $s_t$ =</span>
+  <input type="text" id="cronIn" placeholder="valore" autocomplete="off" data-nosave>
+  <span>s</span>
+  <button type="button" class="iex-vbtn" id="cronVer">Verifica</button>
+  <div class="iex-fb" id="cronFb"></div>
+</div>
+</div>
+
+<style>
+#cronAch{max-width:640px;margin:1rem auto;padding:.8rem .9rem 1rem;border:1px solid #e2e8f0;border-radius:10px;background:#fff;}
+#cronAch .cron-canvas{width:100%;height:auto;display:block;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;}
+#cronAch .cron-row{display:flex;justify-content:center;align-items:center;gap:1rem;margin:.7rem 0 .2rem;flex-wrap:wrap;}
+#cronAch .cron-lcd{background:#c9d5b9;border:4px solid #1f2937;border-radius:8px;padding:.15rem .7rem;font-family:'Courier New',monospace;font-weight:700;font-size:2rem;color:#1f2a1a;min-width:8.5rem;text-align:right;font-variant-numeric:tabular-nums;}
+#cronAch .cron-lcd small{font-size:.9rem;margin-left:.3rem;}
+#cronAch .cron-btn{width:6.5rem;height:3.4rem;border-radius:50px;border:none;font-weight:700;font-size:1rem;color:#fff;background:#16a34a;cursor:pointer;touch-action:manipulation;user-select:none;-webkit-user-select:none;}
+#cronAch .cron-btn.stop{background:#dc2626;}
+#cronAch .cron-btn:disabled{background:#94a3b8;cursor:default;}
+#cronAch .cron-msg{font-size:.85rem;color:#475569;text-align:center;margin:.4rem 0;min-height:2.5em;}
+#cronAch .cron-actions{text-align:center;}
+#cronAch .cron-go{background:#7c3aed;color:#fff;border:none;border-radius:6px;padding:.4rem 1rem;cursor:pointer;font-size:.88rem;}
+#cronAch .cron-go:disabled{opacity:.45;cursor:default;}
+#cronAch .cron-tab{margin:.8rem auto 0;border-collapse:collapse;font-size:.9rem;}
+#cronAch .cron-tab th,#cronAch .cron-tab td{border:1px solid #cbd5e1;padding:.25rem .8rem;text-align:center;}
+#cronAch .cron-tab th{background:#f1f5f9;}
+#cronAch .cron-tab td.t{font-family:'Courier New',monospace;min-width:5.5rem;}
+#cronAch .cron-rip{background:#fff;color:#7c3aed;border:1px solid #c4b5fd;border-radius:5px;padding:.1rem .6rem;cursor:pointer;font-size:.8rem;}
+#cronAch .cron-rip:disabled{opacity:.4;cursor:default;}
+#cronAch .cron-semi{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.4rem;margin-top:.9rem;font-size:.92rem;}
+#cronAch .cron-semi input{width:6rem;padding:.25rem .4rem;border:1px solid #9ca3af;border-radius:4px;font-family:monospace;}
+#cronAch .cron-semi .iex-fb{flex-basis:100%;text-align:center;}
+@media print{#cronAch{display:none;}}
+</style>
+
+<script>
+(function(){
+  var ID='cron-achille', N=4, T=9.8, TA=2, TD=1, V=100/(TA/2+(T-TA-TD)+TD/2);
+  var cv=document.getElementById('cronCv'), ctx=cv.getContext('2d');
+  var W=640, H=205, X0=60, X1=590, Y=150, SC=(X1-X0)/100;
+  var lcd=document.getElementById('cronLcd'), ss=document.getElementById('cronSS'), go=document.getElementById('cronGo');
+  var msg=document.getElementById('cronMsg'), body=document.getElementById('cronBody');
+  var semi=document.getElementById('cronSemi'), inp=document.getElementById('cronIn'), fb=document.getElementById('cronFb');
+  var tempi=[null,null,null,null], esito=null, prova=-1;
+  // stato della corsa: attesa (prima del via), corsa, finita
+  var fase='ferma', tVia=0, tCron=null, letto=null, anim=null, attesa=null;
+
+  var dpr=window.devicePixelRatio||1;
+  cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  var img=new Image(), IH=110, IW=IH*400/421, PIEDE=230/400;
+  img.onload=function(){ disegna(0,0); };
+  img.src="{{ '/corsi/immagini/achille.webp' | relative_url }}";
+
+  // posizione (m) dopo s secondi dal via: accelera per TA, corre, frena negli ultimi TD
+  function pos(s){
+    if(s<=0) return 0;
+    if(s<TA) return V*s*s/(2*TA);
+    var d=V*TA/2, tc=T-TA-TD;
+    if(s<TA+tc) return d+V*(s-TA);
+    d+=V*tc; var u=Math.min(s-TA-tc,TD);
+    return Math.min(100, d+V*u-V*u*u/(2*TD));
+  }
+  function fmt(t,c){ return t.toFixed(c===undefined?3:c).replace('.',','); }
+
+  function disegna(x,s){
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#fca5a5'; ctx.fillRect(0,Y-6,W,22);          // pista
+    ctx.fillStyle='#86efac'; ctx.fillRect(0,Y+16,W,H-Y-16);
+    ctx.strokeStyle='#fff'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,Y-6); ctx.lineTo(W,Y-6); ctx.moveTo(0,Y+16); ctx.lineTo(W,Y+16); ctx.stroke();
+    ctx.font='11px sans-serif'; ctx.textAlign='center'; ctx.fillStyle='#64748b';
+    for(var m=10;m<100;m+=10){ var X=X0+m*SC; ctx.strokeStyle='rgba(255,255,255,.8)'; ctx.beginPath(); ctx.moveTo(X,Y-6); ctx.lineTo(X,Y+16); ctx.stroke(); ctx.fillText(m+' m',X,Y+30); }
+    ctx.lineWidth=4; ctx.strokeStyle='#fff';
+    ctx.beginPath(); ctx.moveTo(X0,Y-6); ctx.lineTo(X0,Y+16); ctx.stroke();
+    // traguardo a scacchi
+    for(var i=0;i<6;i++){ ctx.fillStyle=i%2?'#111827':'#fff'; ctx.fillRect(X1-3,Y-6+i*22/6,3,22/6); ctx.fillStyle=i%2?'#fff':'#111827'; ctx.fillRect(X1,Y-6+i*22/6,3,22/6); }
+    ctx.fillStyle='#334155'; ctx.font='bold 12px sans-serif';
+    ctx.fillText('PARTENZA',X0,Y+30+14); ctx.fillText('ARRIVO',X1,Y+30+14);
+    // Achille, con un piccolo saltello mentre corre
+    var px=X0+x*SC, salto=(x>0&&x<100)?Math.abs(Math.sin(s*9))*4:0;
+    if(img.complete&&img.naturalWidth) ctx.drawImage(img,px-PIEDE*IW,Y+4-IH-salto,IW,IH);
+  }
+
+  function aggiornaLcd(){
+    if(tCron===null){ lcd.textContent=fmt(letto===null?0:letto); return; }
+    lcd.textContent=fmt((performance.now()-tCron)/1000);
+  }
+
+  function ciclo(){
+    var ora=performance.now(), s=fase==='attesa'?0:(ora-tVia)/1000;
+    var x=pos(s);
+    disegna(x,s);
+    aggiornaLcd();
+    if(fase==='corsa'&&s>=T){ fase='finita'; tFine=ora; }
+    // si ferma da solo se lo studente si dimentica del cronometro
+    if(fase==='finita'&&ora-tFine>4000){
+      if(tCron!==null){ tCron=null; letto=null; }
+      fine(null,'Achille è arrivato da un pezzo e il cronometro non è stato fermato: ripeti la prova.');
+      return;
+    }
+    if(fase==='finita'&&tCron===null&&letto===null&&ora-tFine>2500){
+      fine(null,'Non hai avviato il cronometro: ripeti la prova.'); return;
+    }
+    anim=requestAnimationFrame(ciclo);
+  }
+  var tFine=0;
+
+  function avvia(k){
+    prova=k; fase='attesa'; tCron=null; letto=null; lcd.textContent=fmt(0);
+    blocca(true); ss.disabled=false; ss.textContent='START'; ss.classList.remove('stop');
+    try{ ss.focus({preventScroll:true}); }catch(e){}
+    msg.textContent='Prova '+(k+1)+': pronti… Achille può partire da un momento all\'altro.';
+    attesa=setTimeout(function(){ fase='corsa'; tVia=performance.now(); msg.textContent='Prova '+(k+1)+': Achille corre!'; }, 1500+Math.random()*2500);
+    cancelAnimationFrame(anim); anim=requestAnimationFrame(ciclo);
+  }
+
+  function premi(){
+    if(ss.disabled) return;
+    if(tCron===null&&letto===null){ tCron=performance.now(); ss.textContent='STOP'; ss.classList.add('stop'); return; }
+    if(tCron!==null){
+      letto=Math.round(performance.now()-tCron)/1000; tCron=null; ss.disabled=true; ss.textContent='START'; ss.classList.remove('stop');
+      lcd.textContent=fmt(letto);
+      // lascia finire la corsa, poi registra
+      (function aspetta(){ if(fase==='finita'||fase==='ferma') fine(letto,null); else setTimeout(aspetta,100); })();
+    }
+  }
+
+  function fine(t,avviso){
+    clearTimeout(attesa); cancelAnimationFrame(anim); anim=null;
+    if(fase==='finita'||fase==='attesa') disegna(fase==='finita'?100:0,0);
+    fase='ferma'; tCron=null; ss.disabled=true; ss.textContent='START'; ss.classList.remove('stop');
+    if(t!==null){
+      tempi[prova]=t; esito=null; fb.style.display='none'; fb.className='iex-fb'; inp.value='';
+      salva();
+      msg.textContent='Prova '+(prova+1)+': hai misurato '+fmt(t)+' s.'+(tempi.indexOf(null)<0?' Ora calcola la semidispersione dei tuoi quattro tempi.':'');
+    } else msg.textContent=avviso;
+    blocca(false); tabella();
+  }
+
+  function blocca(b){
+    go.disabled=b||tempi.indexOf(null)<0;
+    [].forEach.call(body.querySelectorAll('.cron-rip'),function(r){ r.disabled=b; });
+  }
+
+  function tabella(){
+    var h='';
+    for(var i=0;i<N;i++) h+='<tr><td>'+(i+1)+'</td><td class="t">'+(tempi[i]===null?'—':fmt(tempi[i]))+'</td><td>'+(tempi[i]===null?'':'<button type="button" class="cron-rip" data-k="'+i+'">↺ Ripeti</button>')+'</td></tr>';
+    body.innerHTML=h;
+    go.disabled=fase!=='ferma'||tempi.indexOf(null)<0;
+    go.textContent='▶ Fai partire Achille'+(tempi.indexOf(null)<0?'':' (prova '+(tempi.indexOf(null)+1)+')');
+    semi.hidden=tempi.indexOf(null)>=0;
+  }
+
+  function salva(){ var d={t:tempi,v:inp.value}; if(esito!==null) d.ok=esito; _lvSave('crono',ID,d); }
+
+  go.addEventListener('click',function(){ var k=tempi.indexOf(null); if(k>=0) avvia(k); });
+  body.addEventListener('click',function(e){ var b=e.target.closest('.cron-rip'); if(b&&!b.disabled) avvia(+b.dataset.k); });
+  ss.addEventListener('pointerdown',function(e){ e.preventDefault(); premi(); });
+  ss.addEventListener('keydown',function(e){ if(e.key===' '||e.key==='Enter'){ e.preventDefault(); premi(); } });
+  document.addEventListener('keydown',function(e){
+    if(e.key!==' '||fase==='ferma'||ss.disabled) return;
+    var t=e.target; if(t&&t.matches&&t.matches('input,textarea,select,button')) return;
+    e.preventDefault(); premi();
+  });
+
+  function verifica(){
+    var v=parseFloat(inp.value.trim().replace(',','.'));
+    var mx=Math.max.apply(null,tempi), mn=Math.min.apply(null,tempi), s=(mx-mn)/2;
+    var ok=!isNaN(v)&&Math.abs(v-s)<=0.00051;
+    fb.style.display='block';
+    if(ok){ fb.className='iex-fb ok'; fb.innerHTML='&#10003; Esatto! $s_t = '+fmt(s,4).replace(/0$/,'')+'\\ \\text s$'; _shoot(inp); }
+    else if(isNaN(v)){ fb.className='iex-fb err'; fb.textContent='Scrivi un numero.'; }
+    else { fb.className='iex-fb err'; fb.textContent='Non è corretto. Usa il tempo più grande e il più piccolo fra i tuoi quattro.'; }
+    if(!isNaN(v)){
+      esito=ok; salva();
+      if(window._lvEsito) _lvEsito('crono',ID,ok);
+    }
+    if(window.MathJax&&MathJax.typesetPromise) MathJax.typesetPromise([fb]);
+  }
+  document.getElementById('cronVer').addEventListener('click',verifica);
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter') verifica(); });
+
+  var d=_lvLoad('crono',ID);
+  if(d&&d.t&&d.t.length===N){
+    tempi=d.t; inp.value=d.v||'';
+    if(typeof d.ok==='boolean'){ esito=d.ok; fb.style.display='block'; fb.className='iex-fb '+(d.ok?'ok':'err'); fb.textContent=d.ok?'✓ Esatto!':'Non è corretto. Riprova.'; }
+  }
+  tabella(); disegna(0,0);
+})();
+</script>

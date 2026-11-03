@@ -37,7 +37,9 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 <div class="rl-card">
 <b><span class="rl-badge">Fase 0</span> Strumenti</b>
 <div class="rl-row">Strumenti utilizzati:</div>
-<textarea class="rl-ta" id="rl-strum" placeholder="Righello (sensibilità 1 mm), bilancia digitale (ultima cifra: ? g), bicchiere cilindrico, ..."></textarea>
+<textarea class="rl-ta" id="rl-strum" placeholder="Righello, bilancia digitale, bicchiere cilindrico, ..."></textarea>
+<div class="rl-row" style="margin-top:.4rem;">sensibilità righello = <input class="rl-in" id="rl-sr" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">sensibilità bilancia = <input class="rl-in" id="rl-sb" type="text"> <select class="rl-sel"><option>g</option><option>kg</option></select></div>
 <div class="rl-row" style="margin-top:.4rem;">i.s. righello = <input class="rl-in" id="rl-isr" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
 <div class="rl-row">i.s. bilancia = <input class="rl-in" id="rl-isb" type="text"> <select class="rl-sel"><option>g</option><option>kg</option></select></div>
 <div class="rl-row rl-np" style="margin-top:.4rem;">Foto strumenti: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph0')"></div>
@@ -47,8 +49,8 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 <div class="rl-card">
 <b><span class="rl-badge">Fase 1</span> Diametro del bicchiere</b>
 <div class="rl-row">$d_1$ = <input class="rl-in" id="d1" type="text"> &ensp; $d_2$ = <input class="rl-in" id="d2" type="text"> &ensp; $d_3$ = <input class="rl-in" id="d3" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
-<div class="rl-row">$\bar{d}$ = <input class="rl-in" id="d_m" type="text"> &ensp; $s_d$ = <input class="rl-in" id="d_s" type="text"> &ensp; $\Delta d$ = <input class="rl-in" id="d_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
-<div class="rl-row">$e_d$ = <input class="rl-in" id="d_r" type="text"> %</div>
+<div class="rl-row">$\bar{d}$ = <input class="rl-in" id="d_m" type="text"> &ensp; $s_d$ = <input class="rl-in" id="d_s" type="text"> &ensp; $I_d$ = <input class="rl-in" id="d_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$i_d$ = <input class="rl-in" id="d_r" type="text"> %</div>
 <div class="rl-row rl-np" style="margin-top:.3rem;">Foto: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph1')"></div>
 <div class="rl-phwrap" id="rlph1"></div>
 </div>
@@ -56,7 +58,7 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 <div class="rl-card">
 <b><span class="rl-badge">Fase 2</span> Area di base</b>
 <div class="rl-row">$S$ = <input class="rl-in" id="S_v" type="text"> <select class="rl-sel"><option>mm²</option><option>cm²</option></select></div>
-<div class="rl-row">$\Delta S$ = <input class="rl-in" id="DS_v" type="text"> <select class="rl-sel"><option>mm²</option><option>cm²</option></select> &ensp; $e_S$ = <input class="rl-in" id="eS_v" type="text"> %</div>
+<div class="rl-row">$I_S$ = <input class="rl-in" id="DS_v" type="text"> <select class="rl-sel"><option>mm²</option><option>cm²</option></select> &ensp; $i_S$ = <input class="rl-in" id="eS_v" type="text"> %</div>
 </div>
 
 <div class="rl-card">
@@ -64,14 +66,14 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 <div class="rl-row">$h_{i,1}$ = <input class="rl-in" id="hi1" type="text"> &ensp; $h_{i,2}$ = <input class="rl-in" id="hi2" type="text"> &ensp; $h_{i,3}$ = <input class="rl-in" id="hi3" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
 <div class="rl-row rl-np" style="margin-top:.3rem;">Foto: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph3')"></div>
 <div class="rl-phwrap" id="rlph3"></div>
-<div class="rl-row">$\bar{h}_i$ = <input class="rl-in" id="hi_m" type="text"> &ensp; $s_{h_i}$ = <input class="rl-in" id="hi_s" type="text"> &ensp; $\Delta h_i$ = <input class="rl-in" id="hi_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
-<div class="rl-row">$e_{h_i}$ = <input class="rl-in" id="hi_r" type="text"> %</div>
+<div class="rl-row">$\bar{h}_i$ = <input class="rl-in" id="hi_m" type="text"> &ensp; $s_{h_i}$ = <input class="rl-in" id="hi_s" type="text"> &ensp; $I_{h_i}$ = <input class="rl-in" id="hi_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$i_{h_i}$ = <input class="rl-in" id="hi_r" type="text"> %</div>
 </div>
 
 <div class="rl-card">
 <b><span class="rl-badge">Fase 4</span> Volume iniziale dell'acqua</b>
 <div class="rl-row">$V_i$ = <input class="rl-in" id="Vi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select></div>
-<div class="rl-row">$\Delta V_i$ = <input class="rl-in" id="DVi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select> &ensp; $e_{V_i}$ = <input class="rl-in" id="eVi_v" type="text"> %</div>
+<div class="rl-row">$I_{V_i}$ = <input class="rl-in" id="DVi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select> &ensp; $i_{V_i}$ = <input class="rl-in" id="eVi_v" type="text"> %</div>
 </div>
 
 <div class="rl-card">
@@ -79,11 +81,11 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 <div class="rl-row">$h_{f,1}$ = <input class="rl-in" id="hf1" type="text"> &ensp; $h_{f,2}$ = <input class="rl-in" id="hf2" type="text"> &ensp; $h_{f,3}$ = <input class="rl-in" id="hf3" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
 <div class="rl-row rl-np" style="margin-top:.3rem;">Foto: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph5')"></div>
 <div class="rl-phwrap" id="rlph5"></div>
-<div class="rl-row">$\bar{h}_f$ = <input class="rl-in" id="hf_m" type="text"> &ensp; $s_{h_f}$ = <input class="rl-in" id="hf_s" type="text"> &ensp; $\Delta h_f$ = <input class="rl-in" id="hf_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
-<div class="rl-row">$e_{h_f}$ = <input class="rl-in" id="hf_r" type="text"> %</div>
-<div class="rl-row">$z$ = <input class="rl-in" id="z_v" type="text"> &ensp; $\Delta z$ = <input class="rl-in" id="Dz_v" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select> &ensp; $e_z$ = <input class="rl-in" id="ez_v" type="text"> %</div>
+<div class="rl-row">$\bar{h}_f$ = <input class="rl-in" id="hf_m" type="text"> &ensp; $s_{h_f}$ = <input class="rl-in" id="hf_s" type="text"> &ensp; $I_{h_f}$ = <input class="rl-in" id="hf_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$i_{h_f}$ = <input class="rl-in" id="hf_r" type="text"> %</div>
+<div class="rl-row">$z$ = <input class="rl-in" id="z_v" type="text"> &ensp; $I_z$ = <input class="rl-in" id="Dz_v" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select> &ensp; $i_z$ = <input class="rl-in" id="ez_v" type="text"> %</div>
 <div class="rl-row">$V_s$ = <input class="rl-in" id="Vs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select></div>
-<div class="rl-row">$\Delta V_s$ = <input class="rl-in" id="DVs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select> &ensp; $e_{V_s}$ = <input class="rl-in" id="eVs_v" type="text"> %</div>
+<div class="rl-row">$I_{V_s}$ = <input class="rl-in" id="DVs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select> &ensp; $i_{V_s}$ = <input class="rl-in" id="eVs_v" type="text"> %</div>
 </div>
 
 <div class="rl-card">
@@ -91,14 +93,14 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 <div class="rl-row">$m_1$ = <input class="rl-in" id="m1" type="text"> &ensp; $m_2$ = <input class="rl-in" id="m2" type="text"> &ensp; $m_3$ = <input class="rl-in" id="m3" type="text"> <select class="rl-sel"><option>g</option><option>kg</option></select></div>
 <div class="rl-row rl-np" style="margin-top:.3rem;">Foto bilancia: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph6')"></div>
 <div class="rl-phwrap" id="rlph6"></div>
-<div class="rl-row">$\bar{m}$ = <input class="rl-in" id="m_m" type="text"> &ensp; $s_m$ = <input class="rl-in" id="m_s" type="text"> &ensp; $\Delta m$ = <input class="rl-in" id="m_e" type="text"> <select class="rl-sel"><option>g</option><option>kg</option></select></div>
-<div class="rl-row">$e_m$ = <input class="rl-in" id="m_r" type="text"> %</div>
+<div class="rl-row">$\bar{m}$ = <input class="rl-in" id="m_m" type="text"> &ensp; $s_m$ = <input class="rl-in" id="m_s" type="text"> &ensp; $I_m$ = <input class="rl-in" id="m_e" type="text"> <select class="rl-sel"><option>g</option><option>kg</option></select></div>
+<div class="rl-row">$i_m$ = <input class="rl-in" id="m_r" type="text"> %</div>
 </div>
 
 <div class="rl-res">
 <b style="font-size:13px;color:#1e3a5f;font-family:Georgia,serif;display:block;margin-bottom:.4rem;">Densità del sasso</b>
 <div class="rl-row">$d$ = <input class="rl-in" id="d_dens" type="text"> <select class="rl-sel"><option>g/cm³</option><option>kg/m³</option></select></div>
-<div class="rl-row">$\Delta d$ = <input class="rl-in" id="Dd_dens" type="text"> <select class="rl-sel"><option>g/cm³</option><option>kg/m³</option></select> &ensp; $e$ = <input class="rl-in" id="e_dens" type="text"> %</div>
+<div class="rl-row">$I_d$ = <input class="rl-in" id="Dd_dens" type="text"> <select class="rl-sel"><option>g/cm³</option><option>kg/m³</option></select> &ensp; $i_d$ = <input class="rl-in" id="e_dens" type="text"> %</div>
 <div class="rl-row" style="font-weight:bold;font-size:13px;margin-top:.5rem;border-top:1px solid #bfdbfe;padding-top:.4rem;">Risultato: <em>d</em> = ( <input class="rl-in" id="d2_dens" type="text" style="width:55px"> ± <input class="rl-in" id="Dd2_dens" type="text" style="width:55px"> ) <select class="rl-sel"><option>g/cm³</option><option>kg/m³</option></select></div>
 </div>
 
