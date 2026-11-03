@@ -38,7 +38,10 @@
 #     capitolo: [gravitazione-elettromagnetismo/01_Gravitazione, gravitazione-elettromagnetismo/02_Elettrostatica]
 
 
-
+"3B":
+  - data: 2026-11-09
+    capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
+    esercizi: [1, 2, 3]
 
 "4ACD":
   - data: 2026-10-23
