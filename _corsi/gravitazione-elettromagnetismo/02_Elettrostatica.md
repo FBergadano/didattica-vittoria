@@ -406,6 +406,9 @@ I componenti elettronici (schede, memorie, processori) possono essere danneggiat
 {% include scorri-slide.html img="/corsi/immagini/panni-lavatrice-elettrostatica.webp" alt="Una mano tira fuori dei jeans dal cestello della lavatrice" titolo="Gli ammorbidenti" %}
 I vestiti sintetici, strofinandosi fra loro nell'asciugatrice o addosso, si caricano: si appiccicano al corpo e fanno piccole scintille. Gli ammorbidenti lasciano sulle fibre un sottilissimo strato di sostanze che trattengono un po' di umidità: l'umidità aiuta le cariche a disperdersi, e i vestiti restano quasi neutri.
 {% include scorri-slide-end.html %}
+{% include scorri-slide.html img="/corsi/immagini/pellicola.webp" alt="Pellicola trasparente per alimenti" titolo="La pellicola per alimenti" %}
+Anche la pellicola trasparente per alimenti si carica quando la srotoliamo, perché i suoi strati, staccandosi, si strofinano l'uno sull'altro: per questo si attacca alle ciotole, anche a quelle di vetro. (E per lo stesso motivo, a volte, si attacca anche alle mani e si appallottola!)
+{% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
 
@@ -621,9 +624,6 @@ Nei camini delle fabbriche e in molti purificatori d'aria, i fumi passano fra fi
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html img="/corsi/immagini/panno-cattura-polvere.webp" alt="Panno cattura-polvere" titolo="Il panno cattura-polvere" %}
 I panni cattura-polvere di tessuto sintetico si caricano strofinando le superfici, e attirano la polvere polarizzandola: i granelli di polvere restano attaccati al panno invece di sollevarsi in aria.
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html img="/corsi/immagini/pellicola.webp" alt="Pellicola trasparente per alimenti" titolo="La pellicola per alimenti" %}
-Anche la pellicola trasparente per alimenti si carica quando la srotoliamo: per questo si attacca alle ciotole, anche a quelle di vetro, che vengono polarizzate dalla pellicola carica. (E per lo stesso motivo, a volte, si attacca anche alle mani e si appallottola!)
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
