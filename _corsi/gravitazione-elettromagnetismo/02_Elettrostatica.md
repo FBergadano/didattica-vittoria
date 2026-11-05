@@ -341,7 +341,7 @@ Ci sono diversi modi in cui un corpo può **cambiare** la sua carica. Questo con
 {% include margin-note-end.html %}
 
 
-{% include box-imp.html testo="Conservazione della carica" %}
+{% include box-imp.html testo="Principio di Conservazione della carica" %}
 <u markdown="span">La carica ***non*** si **crea** e ***non*** si **distrugge**</u>: semplicemente, può passare da un corpo a un altro.
 {% include box-end.html %}
 
