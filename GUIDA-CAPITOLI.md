@@ -41,6 +41,14 @@ strumenti (box, esercizi, widget) vedi `CLAUDE.md`.
    - **Esercizi di riepilogo**, raggruppati per argomento con titoletti `###`,
      nello stesso ordine del capitolo; dentro ogni gruppo dal più facile (★) al
      più difficile (★★★). Ogni gruppo si chiude con esercizi non banali.
+   - Al massimo **40 esercizi di riepilogo**: servono a capire le formule, a
+     invertirle e a usarle bene.
+   - **Esercizi simili alla verifica** (`# Esercizi simili alla verifica`, dopo il
+     riepilogo): le domande di teoria, i problemi in cui si ragiona su quale energia
+     o grandezza si trasforma in quale (anche quelli delle verifiche già svolte) e
+     tutti i bonus delle verifiche già svolte.
+   - Ogni esercizio di queste due parti ha un indizio breve
+     (`{% include spoiler.html testo="Indizio" %}`), che non dà il risultato.
    - Almeno un **"Trova l'errore"** (`risposta-aperta.html tipo="errore"`) per
      gli argomenti in cui gli studenti sbagliano più spesso.
    - Qualche **esercizio di ripasso dai capitoli precedenti**.

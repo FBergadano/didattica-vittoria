@@ -173,13 +173,11 @@ Hai scoperto quindi che la potenza si può scrivere anche così:
      posizioni="alto|basso|alto"
   %}
 
-Prova tu ora a invertire sia questa formula sia quella vista in precedenza, $P=\dfrac{L}{\Delta t}$, isolando ogni volta le altre grandezze.
-
-{% include esercizi/invert-potenza.html %}
-
-Prova infine con qualche esercizio e un quiz vero/falso sulla potenza.
+Prova tu ora a invertire sia questa formula sia quella vista in precedenza, $P=\dfrac{L}{\Delta t}$, isolando ogni volta le altre grandezze. Poi prova con qualche esercizio e un quiz vero/falso sulla potenza.
 
 {% include unisci.html %}
+{% include esercizi/invert-potenza.html %}
+
 {% include esercizi/esercizio-potenza.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
@@ -263,6 +261,45 @@ Notiamo che
 
 Vale a dire, il lavoro esercitato da una forza contraria allo spostamento è negativo, e quindi frena il corpo, facendone diminuire l'energia cinetica. Al contrario, quello esercitato da una forza che spinge nel verso dello spostamento è positivo, e quindi accelera il corpo, facendo aumentare l'energia cinetica.
 
+Dato che $L=\Delta K$, l'energia cinetica si misura come il lavoro: <u>in joule</u>.
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+Il lavoro totale compiuto su un carrello è di $+50\ \text J$. Che cosa succede alla sua energia cinetica?
+
+{% capture _oTeo1 %}[{"v":"a","t":"Aumenta di $50\\ \\text J$"},{"v":"b","t":"Diminuisce di $50\\ \\text J$"},{"v":"c","t":"Diventa $50\\ \\text J$, qualunque fosse prima"},{"v":"d","t":"Non cambia"}]{% endcapture %}
+{% include mcq.html id="mcq-teo-aumenta" opts=_oTeo1 ok="a" s="$\Delta K=L=+50\ \text J$: il lavoro ci dice di quanto cambia l'energia cinetica, non quanto vale alla fine." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un carrello ha un'energia cinetica di $30\ \text J$. Viene compiuto su di esso un lavoro totale di $50\ \text J$. Quanto vale ora la sua energia cinetica?
+
+{% include num.html id="numTeoKf" valore="80" unit="J" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un pallone ha un'energia cinetica di $200\ \text J$. Rotolando sul prato, l'attrito compie su di esso un lavoro di $-150\ \text J$. Quanto vale ora la sua energia cinetica?
+
+{% include num.html id="numTeoFrena" valore="50" unit="J" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+L'energia cinetica di una pattinatrice passa da $400\ \text J$ a $100\ \text J$. Quanto vale il lavoro totale compiuto su di lei? Attento al segno.
+
+{% include num.html id="numTeoL" valore="-300" unit="J" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una slitta è ferma sul ghiaccio. La tiri con una forza di $20\ \text N$, parallela allo spostamento, per $5\ \text m$. Trascura l'attrito. Quanto vale alla fine la sua energia cinetica?
+
+{% include num.html id="numTeoSlitta" valore="100" unit="J" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un'automobile viaggia a velocità costante: il motore la spinge e gli attriti la frenano. Quanto vale il lavoro totale compiuto sull'automobile?
+
+{% capture _oTeo2 %}[{"v":"a","t":"È positivo, perché il motore spinge"},{"v":"b","t":"È negativo, perché ci sono gli attriti"},{"v":"c","t":"È nullo"},{"v":"d","t":"Non si può dire senza conoscere la massa"}]{% endcapture %}
+{% include mcq.html id="mcq-teo-costante" opts=_oTeo2 ok="c" s="A velocità costante l'energia cinetica non cambia, quindi $L=\Delta K=0$: il lavoro positivo del motore e quello negativo degli attriti si compensano." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
 ### La formula dell'Energia Cinetica
 
 {% include margin-note.html testo="Dal teorema dell'energia cinetica alla formula" %}
@@ -317,6 +354,8 @@ Notiamo che:
 
 {% include box-warn.html %}
 Il fatto che sia direttamente proporzionale al quadrato della velocità significa che se la velocità raddoppia allora l'energia cinetica non raddoppia ma quadruplica. Se la velocità triplica, l'energia cinetica aumenta di nove volte; se la velocità quadruplica allora l'energia cinetica aumenta di 16 volte, etc.
+
+Vale anche al contrario: se la velocità si dimezza, l'energia cinetica si divide per $4$; se la velocità diventa un terzo, l'energia cinetica si divide per $9$, etc.
 {% include box-end.html %}
 
 ### L'unità di misura dell'Energia Cinetica
@@ -726,6 +765,10 @@ Vero o falso?
 {"t":"Raddoppiando la forza $F$ e la velocità $v$ con cui si muove un corpo, la potenza $P=Fv$ raddoppia.","ok":false,"s":"No: raddoppiando entrambi i fattori, $P=Fv$ quadruplica, non raddoppia."}
 ]{% endcapture %}
 {% include quiz.html domande=_qRipEnergia id="q-ripasso-energia" senza_esempi="true" %}
+{% include spoiler.html testo="Indizio" %}
+Per ogni affermazione guarda la formula: quali grandezze compaiono, e a che potenza?
+{% include spoiler-end.html %}
+
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}
@@ -740,38 +783,10 @@ Abbina ogni grandezza alla formula corrispondente.
   {"l":"Potenza","r":"$P=\\dfrac{L}{\\Delta t}$"}
 ]{% endcapture %}
 {% include match.html id="match-formule-energia" dati=_matchEnergia col1="Grandezza" col3="Formula" %}
-{% include ex-end.html %}
+{% include spoiler.html testo="Indizio" %}
+Il lavoro è una forza per uno spostamento, la potenza è un lavoro diviso un tempo. Per le energie, chiediti quale dipende dalla velocità e quale dall'altezza.
+{% include spoiler-end.html %}
 
-{% include ex.html diff=1 %}
-Classifica ciascuna situazione.
-
-{% capture _sortIsolati %}[
-  {"t":"Un pendolo che oscilla nel vuoto, senza attrito","c":0},
-  {"t":"Una palla che rotola su un prato, rallentando per attrito","c":1},
-  {"t":"Un satellite in orbita, lontano da ogni attrito","c":0},
-  {"t":"Una massa che scivola lungo un piano inclinato perfettamente liscio","c":0},
-  {"t":"Un bambino spinto da un adulto su un'altalena","c":1}
-]{% endcapture %}
-{% include sort.html id="sort-isolato-nonisolato" dati=_sortIsolati col0="Sistema isolato" col1="Sistema non isolato" %}
-{% include ex-end.html %}
-
-{% include ex.html diff=1 %}
-Completa le frasi.
-
-{% include fill.html prima="Se il lavoro totale compiuto su un corpo è positivo, la sua energia cinetica" tipo="drop" opts="aumenta|diminuisce|resta invariata" ok="aumenta" dopo="." s="Per il teorema dell'energia cinetica, $L=\Delta K$: se $L>0$ allora anche $\Delta K>0$." %}
-
-{% include fill.html prima="Un sistema che non scambia energia con il resto dell'Universo si dice" ok="isolato,isolata" dopo="." s="Un sistema isolato conserva la propria energia meccanica nel tempo." %}
-
-{% include fill.html prima="L'energia meccanica dissipata da un sistema non isolato (ad esempio a causa dell'attrito) si trasforma in" ok="calore" dopo="." s="Il calore è proprio la forma in cui finisce l'energia meccanica non conservata." %}
-
-{% include fill.html prima="Il rapporto tra il lavoro compiuto e il tempo impiegato per compierlo si chiama" ok="potenza" dopo="." s="$P=L/\Delta t$: è proprio la definizione di potenza." %}
-{% include ex-end.html %}
-
-{% include ex.html diff=1 %}
-Vero o falso?
-
-{% include tf.html q="Il lavoro compiuto da una forza dipende solo dalla componente della forza lungo lo spostamento." ok=true s="Esatto: le componenti perpendicolari allo spostamento non contribuiscono al lavoro." %}
-{% include tf.html q="Raddoppiando la velocità di un corpo, a parità di massa, la sua energia cinetica raddoppia." ok=false s="No: l'energia cinetica è proporzionale al quadrato della velocità, quindi raddoppiando $v$, $K$ quadruplica." %}
 {% include ex-end.html %}
 
 ### Esercizi sulla formula del lavoro
@@ -781,6 +796,10 @@ Vero o falso?
 Trascina ciascuna situazione nella colonna corrispondente.
 
 {% include esercizi/sort-segno-lavoro.html %}
+{% include spoiler.html testo="Indizio" %}
+Confronta il verso della forza con quello dello spostamento: sono concordi, opposti o perpendicolari?
+{% include spoiler-end.html %}
+
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}
@@ -790,6 +809,10 @@ Un'automobile traina un carrello che pesa $2\,500\ \text N$ con una forza pari a
 
 {% capture _o_mcqEx2choices %}[{"v": "a", "t": "A. $160\\ \\text J$"}, {"v": "b", "t": "B. $20\\,000\\ \\text J$"}, {"v": "c", "t": "C. $160\\,000\\ \\text J$"}, {"v": "d", "t": "D. $20\\,000\\,000\\ \\text J$"}]{% endcapture %}
 {% include mcq.html id="mcqEx2choices" opts=_o_mcqEx2choices ok="c" %}
+
+{% include spoiler.html testo="Indizio" %}
+Nel lavoro entra la forza con cui l'auto tira, non il peso del carrello. Attenzione ai chilometri.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Il peso del carrello ($2\,500\ \text N$) non serve a calcolare il lavoro: conta solo la forza effettivamente applicata lungo lo spostamento, cioè $F=20\ \text N$. Convertendo $8\ \text{km}=8\,000\ \text m$,
@@ -807,6 +830,10 @@ Qual è l'altezza da cui cade un corpo dal peso di $2\ \text N$ sapendo che il l
 {% capture _o_mcqEx3choices %}[{"v": "a", "t": "A. $1\\ \\text m$"}, {"v": "b", "t": "B. $2\\ \\text m$"}, {"v": "c", "t": "C. $10\\ \\text m$"}, {"v": "d", "t": "D. $20\\ \\text m$"}, {"v": "e", "t": "E. $0{,}5\\ \\text m$"}]{% endcapture %}
 {% include mcq.html id="mcqEx3choices" opts=_o_mcqEx3choices ok="a" %}
 
+{% include spoiler.html testo="Indizio" %}
+La forza qui è il peso, e lo spostamento è proprio l'altezza. Da $L=F\cdot\Delta s$ isola $\Delta s$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Il peso è già la forza di gravità: $F_{peso}=2\ \text N$. Durante la caduta, forza e spostamento hanno lo stesso verso (entrambi verso il basso), quindi
 
@@ -820,6 +847,10 @@ Un uomo tenta di spingere la sua auto. Spingendo al massimo, esercita una forza 
 
 {% capture _o_mcqEx4choices %}[{"v": "a", "t": "A. $10^3\\ \\text J$"}, {"v": "b", "t": "B. $0$"}, {"v": "c", "t": "C. $10^4\\ \\text J$"}, {"v": "d", "t": "D. Non è possibile rispondere perché mancano alcuni dati."}]{% endcapture %}
 {% include mcq.html id="mcqEx4choices" opts=_o_mcqEx4choices ok="b" %}
+
+{% include spoiler.html testo="Indizio" %}
+Nella formula $L=F\cdot\Delta s$, quanto vale $\Delta s$ se l'auto non si muove?
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Anche se l'uomo applica una forza, l'automobile non si sposta: lo spostamento è nullo, $\Delta s=0$. Quindi
@@ -835,6 +866,10 @@ L'attrito esercita una forza costante di $100\ \text N$ su un corpo che scivola 
 {% capture _o_mcqEx5choices %}[{"v": "a", "t": "A. $1\\,000\\ \\text J$"}, {"v": "b", "t": "B. $100\\ \\text J$"}, {"v": "c", "t": "C. $10\\ \\text J$"}, {"v": "d", "t": "D. $-1\\,000\\ \\text J$"}]{% endcapture %}
 {% include mcq.html id="mcqEx5choices" opts=_o_mcqEx5choices ok="d" %}
 
+{% include spoiler.html testo="Indizio" %}
+L'attrito è opposto allo spostamento: che segno ha il suo lavoro?
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 L'attrito si oppone sempre al moto: forza e spostamento hanno verso opposto, quindi il lavoro è negativo.
 
@@ -844,49 +879,11 @@ La risposta corretta è **D**.
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
-Calcola il lavoro compiuto da una forza di $4\times10^2\ \text N$ per spingere un corpo per una lunghezza di $3\ \text{km}$ lungo una direzione parallela alla forza stessa. Esprimi il risultato in joule, in notazione scientifica.
-
-{% include sci.html prima="$L=$" coeff="1.2" exp="6" s="$1{,}2\times10^6\ \text J$" %}
-
-{% include ex-sol.html %}
-Convertendo $3\ \text{km}=3\,000\ \text m$, e poiché la forza è parallela allo spostamento,
-
-$$L = F\cdot \Delta s = 4\times10^2\ \text N \times 3\,000\ \text m = 1{,}2\times10^6\ \text J.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
-Chi compie più lavoro tra Alice, che spinge con una forza di $300\ \text N$ per $50\ \text m$, e Bob, che spinge con una forza di $150\ \text N$ per $99{,}9\ \text m$?
-
-{% capture _o_mcqEx7choices %}[{"v": "alice", "t": "Alice"}, {"v": "bob", "t": "Bob"}, {"v": "uguali", "t": "Uguali"}]{% endcapture %}
-{% include mcq.html id="mcqEx7choices" opts=_o_mcqEx7choices ok="alice" %}
-
-{% include ex-sol.html %}
-Calcoliamo entrambi i lavori:
-
-$$L_{Alice} = 300\ \text N \times 50\ \text m = 15\,000\ \text J,$$
-
-$$L_{Bob} = 150\ \text N \times 99{,}9\ \text m = 14\,985\ \text J.$$
-
-Anche se Bob spinge per una distanza quasi doppia, la forza di Alice è più che doppia rispetto a quella di Bob: **Alice** compie più lavoro (anche se di poco).
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
-Calcola il lavoro compiuto dall'attrito radente su di un corpo di massa $20\ \text{kg}$ che scivola per dieci metri su una superficie orizzontale con coefficiente di attrito $\mu = 0{,}3$ (usa $g\approx 9{,}8\ \text{m/s}^2$). Esprimi il risultato in joule. *(Indizio: ricorda che la formula dell'attrito corrisponde a $F_{\text{att}} = \mu F_\perp$.)*
-
-{% include num.html id="numAttritoRadente" valore="-588" unit="J" %}
-
-{% include ex-sol.html %}
-Su una superficie orizzontale, la forza perpendicolare $F_\perp$ è semplicemente il peso del corpo, $F_\perp = mg$. Quindi la forza di attrito vale
-
-$$F_{\text{att}} = \mu F_\perp = \mu m g = 0{,}3 \times 20\ \text{kg} \times 9{,}8\ \text{m/s}^2 = 58{,}8\ \text N.$$
-
-L'attrito si oppone sempre al moto, quindi il lavoro è negativo: **non dimenticare il meno!**
-
-$$L = -F_{\text{att}}\cdot \Delta s = -58{,}8\ \text N \times 10\ \text m = -588\ \text J.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
 Calcola il lavoro esercitato dalla forza peso su di un corpo di massa $1\ \text{kg}$ che scivola orizzontalmente su una superficie per $50\ \text m$.
+
+{% include spoiler.html testo="Indizio" %}
+La forza peso è verticale, lo spostamento è orizzontale. Come sono fra loro?
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 La forza peso è sempre verticale, diretta verso il basso; lo spostamento, invece, è orizzontale. Forza e spostamento sono quindi **perpendicolari**, perciò il lavoro della forza peso è nullo:
@@ -902,6 +899,10 @@ In un'officina, per spostare una cassa di attrezzi lungo $15\ \text m$ di pavime
 
 {% include num.html id="numFE1" valore="30" unit="N" %}
 
+{% include spoiler.html testo="Indizio" %}
+Parti da $L=F\cdot\Delta s$ e isola $F$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 $$F = \frac{L}{\Delta s} = \frac{450\ \text J}{15\ \text m} = 30\ \text N.$$
 {% include ex-sol-end.html %}
@@ -911,6 +912,10 @@ In un magazzino, un carrello elevatore spinge una scatola con una forza di $50\ 
 
 {% include num.html id="numSE1" valore="15" unit="m" %}
 
+{% include spoiler.html testo="Indizio" %}
+Parti da $L=F\cdot\Delta s$ e isola $\Delta s$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 $$\Delta s = \frac{L}{F} = \frac{750\ \text J}{50\ \text N} = 15\ \text m.$$
 {% include ex-sol-end.html %}
@@ -919,6 +924,10 @@ $$\Delta s = \frac{L}{F} = \frac{750\ \text J}{50\ \text N} = 15\ \text m.$$
 Andrea cala un secchio pieno di acqua nel pozzo. Sapendo che la massa del secchio pieno corrisponde a $15\ \text{kg}$ e che è stato calato per $10\ \text m$ a velocità costante, trova il lavoro svolto da Andrea. Esprimi il risultato in joule, in notazione scientifica. (Usa $g\approx 10\ \text{m/s}^2$.)
 
 {% include sci.html prima="$L=$" coeff="-1.5" exp="3" s="$-1{,}5\times10^3\ \text J$" %}
+
+{% include spoiler.html testo="Indizio" %}
+A velocità costante la forza di Andrea è uguale al peso del secchio. Lui tira verso l'alto, ma il secchio scende: che segno ha il lavoro?
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Poiché il secchio scende a velocità costante, la forza che Andrea esercita con la corda (verso l'alto, per trattenerlo) deve avere lo stesso modulo del peso del secchio:
@@ -931,107 +940,18 @@ $$L = -F_{Andrea}\cdot \Delta s = -150\ \text N \times 10\ \text m = -1\,500\ \t
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Un rimorchiatore traina una nave lungo un canale per $800\ \text m$, compiendo un lavoro di $2{,}4\times10^6\ \text J$. Quale forza (costante, parallela allo spostamento) ha applicato? Esprimi il risultato in newton, in notazione scientifica.
-
-{% include sci.html prima="$F=$" coeff="3" exp="3" s="$3\times10^3\ \text N$" %}
-
-{% include ex-sol.html %}
-$$F = \frac{L}{\Delta s} = \frac{2{,}4\times10^6\ \text J}{800\ \text m} = 3\times10^3\ \text N.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Un trattore applica una forza costante di $800\ \text N$, parallela allo spostamento, e compie un lavoro di $4\times10^5\ \text J$ per trainare un carico lungo un campo. Per quanti metri lo ha trainato?
-
-{% include num.html id="numTrattore" valore="500" unit="m" %}
-
-{% include ex-sol.html %}
-$$\Delta s = \frac{L}{F} = \frac{4\times10^5\ \text J}{800\ \text N} = 5\times10^2\ \text m.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Quando esegue un servizio, una tennista lancia la palla (di massa $60\ \text g$) verso l'alto, facendola salire di $1\ \text m$. Trova il lavoro compiuto dalla forza peso. Esprimi il risultato in joule. (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numPallina" valore="-0.6" unit="J" %}
-
-{% include ex-sol.html %}
-Convertendo la massa in chilogrammi, $60\ \text g = 0{,}06\ \text{kg}$. La forza peso vale
-
-$$F_{peso} = mg = 0{,}06\ \text{kg}\times 10\ \text{m/s}^2 = 0{,}6\ \text N.$$
-
-La palla sale, quindi lo spostamento è verso l'**alto**, mentre la forza peso è sempre diretta verso il **basso**: sono opposti, quindi il lavoro è negativo. **Attenzione al segno meno!**
-
-$$L = -F_{peso}\cdot \Delta s = -0{,}6\ \text N \times 1\ \text m = -0{,}6\ \text J = -6\times10^{-1}\ \text J.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
 L'attrito frena una slitta che scivola in linea retta per $25\ \text m$, compiendo su di essa un lavoro di $-125\ \text J$. Quanto vale il **modulo** della forza di attrito?
 
 {% include num.html id="numFE3" valore="5" unit="N" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il modulo di una forza è positivo: da $\lvert L\rvert=F\cdot\Delta s$ isola $F$.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 L'attrito si oppone al moto, quindi il lavoro è negativo: $L=-F\cdot\Delta s$. Il modulo della forza, però, non può mai essere negativo:
 
 $$F = \frac{|L|}{\Delta s} = \frac{125\ \text J}{25\ \text m} = 5\ \text N.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-L'attrito, con una forza costante di $30\ \text N$, compie un lavoro di $-180\ \text J$ su un oggetto che scivola in linea retta. Per quanti metri si è spostato l'oggetto?
-
-{% include num.html id="numSE3" valore="6" unit="m" %}
-
-{% include ex-sol.html %}
-Anche lo spostamento $\Delta s$ non può mai essere negativo, quindi usiamo il valore assoluto del lavoro:
-
-$$\Delta s = \frac{|L|}{F} = \frac{180\ \text J}{30\ \text N} = 6\ \text m.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Una gatta di massa $4\ \text{kg}$ trasporta uno dei suoi cuccioli, di massa $0{,}5\ \text{kg}$, per la collottola. Nel primo tratto accelera con un'accelerazione di $0{,}5\ \text{m/s}^2$, per $4\ \text m$. Poi procede con velocità costante per $6\ \text m$. Qual è il lavoro totale? Esprimi il risultato in joule.
-
-{% include figura.html id="mamma-gatta"
-   src="/corsi/immagini/mamma-gatta.webp"
-   didascalia="Una gatta trasporta il proprio cucciolo per la collottola."
-   larghezza="320px" %}
-
-{% include num.html id="numGattaCucciolo" valore="1" unit="J" %}
-
-{% include ex-sol.html %}
-La massa della gatta ($4\ \text{kg}$) non serve: quello che conta è la forza che la gatta esercita **sul cucciolo** per trasportarlo, che dipende solo dalla massa del cucciolo.
-
-**Primo tratto (accelerato).** Per il secondo principio della dinamica, la forza netta sul cucciolo è
-
-$$F_1 = m_{cucciolo}\cdot a = 0{,}5\ \text{kg}\times 0{,}5\ \text{m/s}^2 = 0{,}25\ \text N,$$
-
-che compie un lavoro
-
-$$L_1 = F_1\cdot \Delta s_1 = 0{,}25\ \text N \times 4\ \text m = 1\ \text J.$$
-
-**Secondo tratto (velocità costante).** Se la velocità è costante, l'accelerazione è nulla: per il secondo principio della dinamica, anche la forza netta necessaria è nulla, quindi
-
-$$L_2 = 0\ \text J.$$
-
-**Totale.**
-
-$$L = L_1+L_2 = 1\ \text J + 0\ \text J = 1\ \text J.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Un facchino trascina un baule per $5\ \text{km}$ lungo un lunghissimo corridoio, compiendo un lavoro di $30\,000\ \text J$. Con quale forza (costante, parallela allo spostamento) lo ha trascinato?
-
-{% include num.html id="numFE4" valore="6" unit="N" %}
-
-Se il facchino ha impiegato $10$ minuti a percorrere l'intero corridoio, quale potenza media ha sviluppato?
-
-{% include num.html id="numFE4pot" valore="50" unit="W" %}
-
-{% include ex-sol.html %}
-Convertendo $5\ \text{km}=5\,000\ \text m$,
-
-$$F = \frac{L}{\Delta s} = \frac{30\,000\ \text J}{5\,000\ \text m} = 6\ \text N.$$
-
-Convertendo $10$ minuti $=600\ \text s$,
-
-$$P = \frac{L}{\Delta t} = \frac{30\,000\ \text J}{600\ \text s} = 50\ \text W.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -1042,6 +962,10 @@ Una forza costante di $2\,000\ \text N$, parallela allo spostamento, compie un l
 Se l'automobile ha percorso quello spazio, a velocità costante, in $50\ \text s$, quale potenza ha sviluppato la forza? Esprimi il risultato in watt, in notazione scientifica.
 
 {% include sci.html prima="$P=$" coeff="1" exp="5" s="$1\times10^5\ \text W$" %}
+
+{% include spoiler.html testo="Indizio" %}
+Da $L=F\cdot\Delta s$ isola $\Delta s$. Per la seconda domanda, la potenza è il lavoro diviso per il tempo.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 $$\Delta s = \frac{L}{F} = \frac{5\times10^6\ \text J}{2\,000\ \text N} = 2{,}5\times10^3\ \text m.$$
@@ -1058,16 +982,13 @@ $$P = F\cdot v = 2\,000\ \text N \times 50\ \text{m/s} = 1\times10^5\ \text W.$$
 ### Esercizi sulla potenza
 
 {% include ex.html diff=1 %}
-Vero o falso?
-
-{% include tf.html q="Un montacarichi che solleva un peso in pochi secondi sviluppa, a parità di lavoro compiuto, una potenza maggiore di un operaio che solleva lo stesso peso in alcuni minuti." ok=true s="Sì: a parità di lavoro, minore è il tempo impiegato, maggiore è la potenza." %}
-{% include tf.html q="A parità di potenza sviluppata, una macchina che lavora per più tempo compie meno lavoro." ok=false s="No: a parità di potenza, $L=P\cdot\Delta t$ è direttamente proporzionale al tempo, quindi lavorando più a lungo si compie più lavoro, non meno." %}
-{% include ex-end.html %}
-
-{% include ex.html diff=1 %}
 Un frullatore ha una potenza di $300\ \text W$ e viene utilizzato per $2$ minuti. Quale lavoro ha compiuto in questo intervallo di tempo?
 
 {% include num.html id="numPotRiep1" valore="36000" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+Da $P=L/\Delta t$ isola $L$. Il tempo va in secondi.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Convertendo $2$ minuti $=120\ \text s$,
@@ -1080,36 +1001,22 @@ Un rimorchiatore traina una nave esercitando una forza costante di $5\times10^4\
 
 {% include num.html id="numPotRiep2" valore="100000" unit="W" %}
 
+{% include spoiler.html testo="Indizio" %}
+A velocità costante puoi usare $P=F\cdot v$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 $$P = F\cdot v = 5\times10^4\ \text N \times 2\ \text{m/s} = 1\times10^5\ \text W = 100\,000\ \text W.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Il kilowattora (kWh) è un'unità di misura che compare spesso sulle bollette e sugli elettrodomestici, nonostante il suo nome contenga l'unità di potenza. A cosa corrisponde, nel Sistema Internazionale?
-
-{% capture _o_mcqKwhChoices %}[{"v": "a", "t": "$3{,}6\\times10^3\\ \\text J$"}, {"v": "b", "t": "$3{,}6\\times10^6\\ \\text J$"}, {"v": "c", "t": "$1\\,000\\ \\text J$"}, {"v": "d", "t": "$3{,}6\\times10^9\\ \\text J$"}]{% endcapture %}
-{% include mcq.html id="mcqKwhChoices" opts=_o_mcqKwhChoices ok="b" %}
-
-{% include ex-sol.html %}
-Un kilowattora è il lavoro (cioè l'energia) compiuto da una potenza di $1\ \text{kW}=1\,000\ \text W$ mantenuta per un'ora, cioè per $3\,600\ \text s$:
-
-$$1\ \text{kWh} = P\cdot \Delta t = 1\,000\ \text W \times 3\,600\ \text s = 3{,}6\times10^6\ \text J.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
-Una lampadina a LED da $8\ \text W$ resta accesa per $5$ ore. Quanta energia consuma? Esprimila in joule (in notazione scientifica) e in kilowattora.
-
-{% include sci.html prima="Energia =" coeff="1.44" exp="5" tol=1 s="1,44 × 10⁵ J" %}
-{% include num.html id="numPotRiep5" valore="0.04" unit="kWh" %}
-
-{% include ex-sol.html %}
-$\Delta t = 5 \times 3\,600\ \text s = 18\,000\ \text s$, quindi $L = P\cdot\Delta t = 8\ \text W \times 18\,000\ \text s = 1{,}44\times10^5\ \text J$. In kilowattora: $8\ \text W = 0{,}008\ \text{kW}$, quindi $0{,}008\ \text{kW}\times 5\ \text h = 0{,}04\ \text{kWh}$.
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
 Un'automobile viaggia a velocità costante di $90\ \text{km/h}$; per mantenerla, il motore deve vincere forze resistenti (aria e attriti) per un totale di $600\ \text N$. Quale potenza sviluppa il motore?
 
 {% include num.html id="numPotRiep6" valore="15000" unit="W" %}
+
+{% include spoiler.html testo="Indizio" %}
+Usa $P=F\cdot v$, con la velocità in m/s: dividi i km/h per $3{,}6$.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 $v = 90\ \text{km/h} = 25\ \text{m/s}$; la forza del motore è uguale alle forze resistenti, quindi
@@ -1121,6 +1028,10 @@ Un ascensore di massa totale $800\ \text{kg}$ sale di $30\ \text m$ in $20\ \tex
 
 {% include num.html id="numPotRiep7" valore="11760" unit="W" %}
 
+{% include spoiler.html testo="Indizio" %}
+Il motore deve dare all'ascensore l'energia potenziale $mgh$ in $20\ \text s$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Il motore deve compiere almeno il lavoro necessario a sollevare l'ascensore: $L = mgh = 800\ \text{kg}\times 9{,}8\ \text{m/s}^2 \times 30\ \text m = 235\,200\ \text J$. Quindi
 $$P = \frac{L}{\Delta t} = \frac{235\,200\ \text J}{20\ \text s} = 11\,760\ \text W \approx 1{,}2\times10^4\ \text W.$$
@@ -1130,6 +1041,10 @@ $$P = \frac{L}{\Delta t} = \frac{235\,200\ \text J}{20\ \text s} = 11\,760\ \tex
 Una gru ha una potenza di $5\ \text{kW}$. Quanto tempo le serve, come minimo, per sollevare un carico di $500\ \text{kg}$ di $20\ \text m$? (Usa $g = 9{,}8\ \text{m/s}^2$.)
 
 {% include num.html id="numPotRiep8" valore="19.6" unit="s" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il lavoro della gru è $mgh$. Da $P=L/\Delta t$ isola $\Delta t$, con la potenza in watt.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 $L = mgh = 500\ \text{kg}\times 9{,}8\ \text{m/s}^2\times 20\ \text m = 98\,000\ \text J$, quindi
@@ -1141,6 +1056,10 @@ Un ciclista professionista può sviluppare per un'ora una potenza di circa $400\
 
 {% include num.html id="numPotRiep9" valore="30.6" tol="2" unit="min" %}
 
+{% include spoiler.html testo="Indizio" %}
+Il lavoro delle gambe è l'energia potenziale guadagnata. Da $P=L/\Delta t$ isola $\Delta t$, poi passa ai minuti.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Il lavoro minimo è quello necessario per sollevare ciclista e bici di $1\,000\ \text m$: $L = mgh = 75\ \text{kg}\times 9{,}8\ \text{m/s}^2\times 1\,000\ \text m = 735\,000\ \text J$. Quindi
 $$\Delta t = \frac{L}{P} = \frac{735\,000\ \text J}{400\ \text W} \approx 1\,838\ \text s \approx 30{,}6\ \text{min}.$$
@@ -1151,29 +1070,13 @@ In realtà ci vuole di più, perché una parte del lavoro serve a vincere gli at
 
 
 {% include ex.html diff=1 %}
-In quale di queste situazioni l'energia cinetica di un ciclista **aumenta**?
-
-{% capture _o_mcqKE1choices %}[{"v": "a", "t": "Il ciclista frena"}, {"v": "b", "t": "Il ciclista pedala accelerando"}, {"v": "c", "t": "Il ciclista procede a velocità costante su un rettilineo"}, {"v": "d", "t": "Il ciclista sale in salita mantenendo la velocità costante"}]{% endcapture %}
-{% include mcq.html id="mcqKE1choices" opts=_o_mcqKE1choices ok="b" %}
-
-{% include ex-sol.html %}
-L'energia cinetica cambia solo se cambia la velocità. Pedalando e accelerando, il ciclista aumenta la sua velocità, quindi la sua energia cinetica aumenta. Negli altri tre casi la velocità resta costante (o diminuisce, se frena): l'energia cinetica non aumenta.
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
-Il lavoro totale compiuto su un corpo è negativo. Cosa possiamo concludere sulla sua energia cinetica?
-
-{% capture _o_mcqKE2choices %}[{"v": "a", "t": "È aumentata"}, {"v": "b", "t": "È diminuita"}, {"v": "c", "t": "È rimasta invariata"}, {"v": "d", "t": "È diventata negativa"}]{% endcapture %}
-{% include mcq.html id="mcqKE2choices" opts=_o_mcqKE2choices ok="b" %}
-
-{% include ex-sol.html %}
-Per il teorema dell'energia cinetica, $L=\Delta K$. Se $L<0$, allora $\Delta K<0$: l'energia cinetica **diminuisce**. Attenzione: l'energia cinetica $K=\frac12 mv^2$ non può mai diventare negativa (è sempre $\ge 0$), può solo avvicinarsi a zero.
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
 Un pallone da calcio di massa $450\ \text g$ viaggia a una velocità di $20\ \text{m/s}$. Quanta energia cinetica possiede?
 
 {% include num.html id="numKE3" valore="90" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+Prima di tutto porta la massa in chilogrammi.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Convertendo la massa in chilogrammi, $450\ \text g=0{,}45\ \text{kg}$.
@@ -1186,6 +1089,10 @@ $$K = \frac12 mv^2 = \frac12 \times 0{,}45\ \text{kg}\times (20\ \text{m/s})^2 =
 Un'automobile di massa $1\,200\ \text{kg}$ viaggia a una velocità di $72\ \text{km/h}$. Quanta energia cinetica possiede? Esprimi il risultato in joule, in notazione scientifica.
 
 {% include sci.html prima="$K=$" coeff="2.4" exp="5" s="$2{,}4\times10^5\ \text J$" %}
+
+{% include spoiler.html testo="Indizio" %}
+Porta la velocità in m/s, dividendo per $3{,}6$.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Convertendo la velocità in $\text{m/s}$:
@@ -1202,6 +1109,10 @@ Un cane insegue una pallina correndo a $8\ \text{m/s}$ (quasi $29\ \text{km/h}$!
 
 {% include num.html id="numKE5" valore="8" unit="kg" %}
 
+{% include spoiler.html testo="Indizio" %}
+Da $K=\frac12mv^2$ isola $m$: moltiplica per $2$ e dividi per $v^2$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Isoliamo $m$ nella formula $K=\frac12 mv^2$:
 
@@ -1213,6 +1124,10 @@ Una palla da bowling di massa $5\ \text{kg}$ rotola lungo la corsia con un'energ
 
 {% include num.html id="numKE6" valore="6" unit="m/s" %}
 
+{% include spoiler.html testo="Indizio" %}
+Da $K=\frac12mv^2$ isola $v$: alla fine c'è una radice quadrata.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Isoliamo $v$ nella formula $K=\frac12 mv^2$ (attenzione: qui serve una radice quadrata!):
 
@@ -1223,6 +1138,10 @@ $$v = \sqrt{\frac{2K}{m}} = \sqrt{\frac{2\times90\ \text J}{5\ \text{kg}}} = \sq
 Un proiettile di massa $10\ \text g$ possiede un'energia cinetica di $1\,250\ \text J$. A quale velocità viaggia? Esprimi il risultato in km/h.
 
 {% include num.html id="numKE7" valore="1800" unit="km/h" %}
+
+{% include spoiler.html testo="Indizio" %}
+Massa in chilogrammi, poi isola $v$. Per passare da m/s a km/h moltiplica per $3{,}6$.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Convertendo la massa in chilogrammi, $10\ \text g=0{,}01\ \text{kg}$. Isoliamo $v$:
@@ -1239,6 +1158,10 @@ Un'automobile di massa $1\,000\ \text{kg}$ accelera da $10\ \text{m/s}$ a $30\ \
 
 {% include sci.html prima="$L=$" coeff="4" exp="5" s="$4\times10^5\ \text J$" %}
 
+{% include spoiler.html testo="Indizio" %}
+Usa $L=K_f-K_i$. Calcola le due energie separatamente: non puoi usare la differenza delle velocità.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Per il teorema dell'energia cinetica, $L=\Delta K = K_f - K_i$:
 
@@ -1249,6 +1172,10 @@ $$L = \frac12 m v_f^2 - \frac12 m v_i^2 = \frac12\times1\,000\ \text{kg}\times\l
 Marco lancia una palla da fermo, di massa $200\ \text g$, facendole raggiungere una velocità di $15\ \text{m/s}$. Quanto lavoro ha compiuto Marco sulla palla?
 
 {% include num.html id="numKE9" valore="22.5" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+La palla parte da ferma, quindi $K_i=0$. La massa va in chilogrammi.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 La palla parte da ferma, quindi $v_i=0$ e $K_i=0$. Convertendo la massa, $200\ \text g=0{,}2\ \text{kg}$. Per il teorema dell'energia cinetica,
@@ -1312,25 +1239,22 @@ Un libro di massa $2\ \text{kg}$ viene posto su uno scaffale a $5\ \text m$ di a
 
 {% include num.html id="numB1" valore="98" unit="J" %}
 
+{% include spoiler.html testo="Indizio" %}
+Basta $U_g=mgh$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 $$U_g = mgh = 2\ \text{kg}\times 9{,}8\ \text{m/s}^2\times 5\ \text m = 98\ \text J.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=1 %}
-Una mela di massa $500\ \text g$ pende da un ramo a $4\ \text m$ di altezza dal suolo. Quanta energia potenziale gravitazionale possiede? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numB2" valore="20" unit="J" %}
-
-{% include ex-sol.html %}
-Convertendo la massa in chilogrammi, $500\ \text g=0{,}5\ \text{kg}$.
-
-$$U_g = mgh = 0{,}5\ \text{kg}\times 10\ \text{m/s}^2\times 4\ \text m = 20\ \text J.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
 Un vaso di fiori di massa $3\ \text{kg}$, appoggiato su un davanzale, possiede un'energia potenziale gravitazionale di $294\ \text J$ rispetto al marciapiede. A che altezza si trova il davanzale? (Usa $g\approx 9{,}8\ \text{m/s}^2$.)
 
 {% include num.html id="numUh" valore="10" unit="m" %}
+
+{% include spoiler.html testo="Indizio" %}
+Da $U_g=mgh$ isola $h$.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Isoliamo $h$ dalla formula $U_g=mgh$, dividendo entrambi i membri per $mg$:
@@ -1343,29 +1267,14 @@ Un sasso appoggiato in cima a un muro alto $12\ \text m$ ha un'energia potenzial
 
 {% include num.html id="numUm" valore="0.5" unit="kg" %}
 
+{% include spoiler.html testo="Indizio" %}
+Da $U_g=mgh$ isola $m$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Isoliamo $m$ dalla formula $U_g=mgh$, dividendo entrambi i membri per $gh$:
 
 $$m=\frac{U_g}{gh}=\frac{60\ \text J}{10\ \text{m/s}^2\times 12\ \text m}=0{,}5\ \text{kg}.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-I compagni di Ulisse devono sollevare l'albero orizzontale della vela, di massa $250\ \text{kg}$, fino a un'altezza di $4\ \text m$. (Usa $g\approx 9{,}8\ \text{m/s}^2$.)
-
-Qual è il lavoro compiuto dalla forza gravitazionale? Ed il lavoro compiuto dai compagni di Ulisse?
-
-{% include sci.html prima="$L_{\text{gravità}}=$" coeff="-9.8" exp="3" s="$-9{,}8\times10^3\ \text J$" %}
-
-{% include sci.html prima="$L_{\text{compagni}}=$" coeff="9.8" exp="3" s="$9{,}8\times10^3\ \text J$" %}
-
-{% include ex-sol.html %}
-Il lavoro della forza gravitazionale è negativo, poiché la forza (verso il basso) è opposta allo spostamento (verso l'alto):
-
-$$L_{\text{gravità}} = -mgh = -250\ \text{kg}\times 9{,}8\ \text{m/s}^2\times 4\ \text m = -9{,}8\times10^3\ \text J.$$
-
-L'albero parte da fermo e arriva fermo (velocità nulla sia all'inizio che alla fine): per il teorema dell'energia cinetica, $\Delta K=0$, quindi il lavoro **totale** deve essere nullo. Il lavoro dei compagni deve perciò compensare esattamente quello della gravità:
-
-$$L_{\text{compagni}} = -L_{\text{gravità}} = 9{,}8\times10^3\ \text J.$$
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
@@ -1376,6 +1285,10 @@ Sulla Luna, un'astronauta solleva un campione di roccia di massa $2\ \text{kg}$ 
 2. Quante volte è più piccola di quella terrestre ($9{,}8\ \text{m/s}^2$)?
 {% include num.html id="numRapLunaU" valore="6.05" tol="3" %}
 
+{% include spoiler.html testo="Indizio" %}
+Da $\Delta U_g=mg\,\Delta h$ isola $g$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Isoliamo $g$ dalla formula $U_g=mgh$, dividendo entrambi i membri per $mh$:
 
@@ -1385,20 +1298,13 @@ Circa sei volte più piccola: per questo sulla Luna si salta così in alto!
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Un drone di massa $2\ \text{kg}$ sta riprendendo un video a $3\ \text m$ di altezza. Il pilota lo fa salire ulteriormente, compiendo su di esso un lavoro di $40\ \text J$ (che si traduce in un aumento della sua energia potenziale gravitazionale). A quale altezza si trova adesso? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numHf" valore="5" unit="m" %}
-
-{% include ex-sol.html %}
-L'aumento di energia potenziale è $\Delta U_g = mg(h_f-h_i)$. Isoliamo $h_f$:
-
-$$h_f = h_i + \frac{\Delta U_g}{mg} = 3\ \text m + \frac{40\ \text J}{2\ \text{kg}\times 10\ \text{m/s}^2} = 3\ \text m + 2\ \text m = 5\ \text m.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
 A Natale, Babbo Natale cala lungo un camino un sacco di regali di massa $5\ \text{kg}$, legato a una corda. Su di esso viene compiuto un lavoro di $-150\ \text J$, che diminuisce la sua energia potenziale gravitazionale: alla fine si trova a un'altezza di $2\ \text m$ dal camino. Qual era la sua altezza iniziale? (Usa $g\approx 10\ \text{m/s}^2$.)
 
 {% include num.html id="numHi" valore="5" unit="m" %}
+
+{% include spoiler.html testo="Indizio" %}
+Da quel lavoro ricavi di quanti metri è sceso il sacco. Poi ricordati che alla fine si trova ancora a $2\ \text m$.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 L'aumento di energia potenziale è $\Delta U_g = mg(h_f-h_i)$. Isoliamo $h_i$:
@@ -1410,6 +1316,10 @@ $$h_i = h_f - \frac{\Delta U_g}{mg} = 2\ \text m - \frac{-150\ \text J}{5\ \text
 Un pescatore issa sulla banchina una cassa di pesce, sollevandola di $4\ \text m$: la sua energia potenziale gravitazionale aumenta di $800\ \text J$. Qual è il peso della cassa?
 
 {% include num.html id="numForza" valore="200" unit="N" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il peso è $mg$, quindi $\Delta U_g$ è il peso per l'altezza. Isola il peso.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Il lavoro compiuto contro la gravità (che si trasforma in energia potenziale) è $L=F\cdot\Delta s$, dove qui $F$ è proprio il peso della cassa e $\Delta s$ è l'altezza $h$. Isoliamo $F$:
@@ -1427,38 +1337,11 @@ Un oggetto $A$ di massa $m$ si trova all'altezza $h$. Un oggetto $B$ ha massa tr
 {"v":"d","t":"A un'altezza $h/9$"}
 ]{% endcapture %}
 {% include mcq.html id="mcqUprop" opts=_o_prop ok="c" s="Da $h=\dfrac{U_g}{mg}$: a parità di $U_g$ (e di $g$), l'altezza è inversamente proporzionale alla massa. Se la massa triplica, l'altezza deve diventare un terzo." %}
+{% include spoiler.html testo="Indizio" %}
+Scrivi $U_g$ per $A$ e per $B$, e uguagliale.
+{% include spoiler-end.html %}
+
 {% include ex-end.html %}
-
-{% include ex.html diff=3 %}
-Un vaso di massa $2\ \text{kg}$ è appoggiato sul parapetto di un balcone, $1{,}5\ \text m$ sopra il pavimento del balcone; il pavimento del balcone si trova $6\ \text m$ sopra il marciapiede. (Usa $g\approx 10\ \text{m/s}^2$.)
-
-1. Quanto vale l'energia potenziale gravitazionale del vaso rispetto al pavimento del balcone?
-{% include num.html id="numUref1" valore="30" unit="J" %}
-2. E rispetto al marciapiede?
-{% include num.html id="numUref2" valore="150" unit="J" %}
-3. Il vaso cade e arriva sul marciapiede. Di quanto diminuisce la sua energia potenziale? La risposta dipende dal livello di riferimento che hai scelto?
-{% include num.html id="numUref3" valore="150" unit="J" %}
-
-{% include ex-sol.html %}
-L'altezza $h$ nella formula $U_g=mgh$ si misura sempre **rispetto a un livello di riferimento**, che scegliamo noi:
-
-$$U_{\text{balcone}}=2\ \text{kg}\times10\ \text{m/s}^2\times1{,}5\ \text m=30\ \text J,\qquad U_{\text{marciapiede}}=2\ \text{kg}\times10\ \text{m/s}^2\times7{,}5\ \text m=150\ \text J.$$
-
-Quando il vaso arriva sul marciapiede, rispetto al marciapiede la sua energia potenziale vale $0$: è diminuita di $150\ \text J$. Rispetto al balcone, invece, il marciapiede si trova $6\ \text m$ **sotto** il riferimento, cioè ad altezza $-6\ \text m$: lì $U_g=2\times10\times(-6)=-120\ \text J$, e la diminuzione è di nuovo $30\ \text J-(-120\ \text J)=150\ \text J$. **Le variazioni di energia potenziale non dipendono dal riferimento**: cambiano solo i singoli valori di $U_g$.
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=3 %}
-Una barretta di cioccolato fornisce circa $1{,}0\times10^6\ \text J$ di energia. Una ragazza di massa $60\ \text{kg}$ vuole "consumarla" salendo le scale: quanti piani dovrebbe salire, se ogni piano è alto $3\ \text m$? Considera solo l'aumento della sua energia potenziale gravitazionale. (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numPiani" valore="556" unit="piani" tol="1" %}
-
-{% include ex-sol.html %}
-Isoliamo l'altezza dalla formula $U_g=mgh$:
-
-$$h=\frac{U_g}{mg}=\frac{1{,}0\times10^6\ \text J}{60\ \text{kg}\times10\ \text{m/s}^2}\approx 1\,667\ \text m,\qquad \text{piani}=\frac{1\,667\ \text m}{3\ \text m}\approx 556.$$
-
-Più di cinquecento piani: oltre il doppio dell'altezza del grattacielo più alto del mondo! (In realtà il nostro corpo usa l'energia in modo poco efficiente, e ne spende molta anche solo per restare in vita: con una barretta si salgono molti meno piani.)
-{% include ex-sol-end.html %}
 
 ### Esercizi sull'energia meccanica e sul calore
 
@@ -1466,29 +1349,14 @@ Prima di iniziare, fissiamo le idee su cosa sia un sistema isolato.
 
 {% include frayer.html id="frayer-sistema-isolato" termine="Sistema isolato" %}
 
-#### La conservazione dell'energia meccanica
-
-{% include ex.html diff=1 %}
-Prova a scrivere con parole tue, senza guardare indietro nel capitolo, cosa significa che l'energia meccanica di un sistema "si conserva".
-
-{% include def-compare.html id="dc-conservazione" testo="L'energia meccanica di un sistema si conserva quando…" label="Confronta con la definizione nel testo" %}
-{% include ex-end.html %}
-
-{% include ex.html diff=1 %}
-Marco gioca con uno yo-yo di massa $60\ \text g$. Lo yo-yo scende, srotolandosi, da fermo per un tratto di $0{,}9\ \text m$: trascurando l'attrito, quanta energia cinetica ha acquistato? (Usa $g\approx 10\ \text{m/s}^2$.)
-
-{% include num.html id="numYoyo" valore="0.54" unit="J" %}
-
-{% include ex-sol.html %}
-Convertendo la massa, $60\ \text g = 0{,}06\ \text{kg}$. In assenza di attrito, l'energia meccanica si conserva: tutta l'energia potenziale persa si ritrova come energia cinetica guadagnata,
-
-$$K = U_i - U_f = mgh = 0{,}06\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \text m = 0{,}54\ \text J.$$
-{% include ex-sol-end.html %}
-
 {% include ex.html diff=1 %}
 Una bambina su un'altalena viene tirata indietro finché non si trova a $0{,}45\ \text m$ di altezza rispetto al punto più basso, poi lasciata andare da ferma. Trascurando l'attrito, con che velocità passa per il punto più basso? (Usa $g\approx 10\ \text{m/s}^2$.)
 
 {% include num.html id="numAltalena1" valore="3" unit="m/s" %}
+
+{% include spoiler.html testo="Indizio" %}
+Tutta l'energia potenziale in alto diventa energia cinetica in basso. La massa si semplifica.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 È la stessa situazione di un corpo lasciato cadere da un'altezza $h$: tutta l'energia potenziale iniziale si trasforma in energia cinetica, quindi $mgh=\frac12 mv^2$, da cui $v=\sqrt{2gh}$:
@@ -1496,32 +1364,14 @@ Una bambina su un'altalena viene tirata indietro finché non si trova a $0{,}45\
 $$v = \sqrt{2gh} = \sqrt{2\times 10\ \text{m/s}^2\times 0{,}45\ \text m} = \sqrt 9 = 3\ \text{m/s}.$$
 {% include ex-sol-end.html %}
 
-{% include ex.html diff=1 %}
-Il pendolo di un vecchio orologio a muro, di massa $0{,}5\ \text{kg}$, viene spostato lateralmente fino a un'altezza di $0{,}8\ \text m$ rispetto al punto più basso della sua oscillazione, e lì lasciato fermo (usa $g\approx 10\ \text{m/s}^2$). Prendendo come riferimento il punto più basso, qual è la sua energia meccanica in quell'istante?
-
-{% include num.html id="numPendoloE" valore="4" unit="J" %}
-
-{% include ex-sol.html %}
-Il pendolo è fermo, quindi tutta la sua energia meccanica è potenziale ($K=0$):
-
-$$E = K+U = 0 + mgh = 0{,}5\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}8\ \text m = 4\ \text J.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Secondo la leggenda, il drammaturgo greco Eschilo morì perché era così calvo che un'aquila scambiò la sua testa per una roccia, e vi lasciò cadere sopra una tartaruga per romperne il guscio e mangiarla. Se l'aquila volava a $20\ \text m$ di altezza, a quale velocità la tartaruga ha colpito la testa di Eschilo? (Usa $g\approx 10\ \text{m/s}^2$ e trascura l'attrito dell'aria.)
-
-{% include num.html id="numEsch" valore="20" unit="m/s" %}
-
-{% include ex-sol.html %}
-È esattamente la situazione di un corpo che cade da fermo da un'altezza $h$: tutta l'energia potenziale si trasforma in energia cinetica, quindi vale la formula $v=\sqrt{2gh}$ già vista:
-
-$$v = \sqrt{2gh} = \sqrt{2\times 10\ \text{m/s}^2\times 20\ \text m} = \sqrt{400} = 20\ \text{m/s}.$$
-{% include ex-sol-end.html %}
-
 {% include ex.html diff=2 %}
 Un corpo viene sparato verticalmente verso l'alto con una velocità iniziale di $30\ \text{m/s}$. Che altezza massima raggiunge, trascurando l'attrito dell'aria? (Usa $g\approx 10\ \text{m/s}^2$.)
 
 {% include num.html id="numSparo" valore="45" unit="m" %}
+
+{% include spoiler.html testo="Indizio" %}
+È il contrario della caduta: l'energia cinetica diventa tutta potenziale. Da $\frac12mv^2=mgh$ isola $h$.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 È la situazione opposta di un corpo che cade: qui tutta l'energia cinetica iniziale si trasforma in energia potenziale, fino a che il corpo si ferma per un istante nel punto più alto. Vale quindi ancora $\frac12 mv^2 = mgh$, cioè $v=\sqrt{2gh}$, da cui isoliamo $h$:
@@ -1534,6 +1384,10 @@ Su un pianeta appena scoperto, un oggetto lasciato cadere da un'altezza di $5\ \
 
 {% include num.html id="numPianeta" valore="3.6" unit="m/s²" %}
 
+{% include spoiler.html testo="Indizio" %}
+Vale $\frac12mv^2=mgh$. La massa si semplifica: isola $g$.
+{% include spoiler-end.html %}
+
 {% include ex-sol.html %}
 Isoliamo $g$ dalla formula $v=\sqrt{2gh}$:
 
@@ -1543,24 +1397,13 @@ $$g = \frac{v^2}{2h} = \frac{(6\ \text{m/s})^2}{2\times 5\ \text m} = \frac{36}{
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Un'altra bambina, su un'altra altalena (trascura sempre l'attrito, usa $g\approx 10\ \text{m/s}^2$), passa per il punto più basso con una velocità di $5\ \text{m/s}$. Con che velocità passa per un punto che si trova $1{,}05\ \text m$ più in alto rispetto al punto più basso?
-
-{% include num.html id="numAltalena2" valore="2" unit="m/s" %}
-
-{% include ex-sol.html %}
-L'energia meccanica si conserva, quindi è la stessa nei due punti:
-
-$$\frac12 m v_{\text{basso}}^2 = \frac12 m v^2 + mgh.$$
-
-La massa si semplifica; isoliamo $v$:
-
-$$v = \sqrt{v_{\text{basso}}^2 - 2gh} = \sqrt{(5\ \text{m/s})^2 - 2\times 10\ \text{m/s}^2\times 1{,}05\ \text m} = \sqrt{25-21} = \sqrt 4 = 2\ \text{m/s}.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
 Uno skater in uno skatepark parte da un punto della rampa alto $3\ \text m$, già in movimento con una velocità di $3\ \text{m/s}$, e scende (trascurando l'attrito, usa $g\approx 10\ \text{m/s}^2$) fino a un punto alto $1\ \text m$. Con che velocità passa da quel punto?
 
 {% include num.html id="numSkater" valore="7" unit="m/s" %}
+
+{% include spoiler.html testo="Indizio" %}
+All'inizio ha sia energia cinetica sia energia potenziale. Scrivi $K_i+U_i=K_f+U_f$: la massa si semplifica.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 L'energia meccanica si conserva fra i due punti:
@@ -1573,63 +1416,27 @@ $$v_2 = \sqrt{v_1^2 + 2g(h_1-h_2)} = \sqrt{(3\ \text{m/s})^2 + 2\times 10\ \text
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=2 %}
-Un pendolo di un orologio a muro, di massa $0{,}5\ \text{kg}$, ha un'energia meccanica di $4\ \text J$ (rispetto al punto più basso della sua oscillazione). Con che velocità passa per quel punto più basso?
-
-{% include num.html id="numPendoloV" valore="4" unit="m/s" %}
-
-{% include ex-sol.html %}
-Nel punto più basso tutta l'energia meccanica è cinetica ($U=0$, prendendolo come riferimento):
-
-$$E = K = \frac12 mv^2 \quad\Rightarrow\quad v = \sqrt{\frac{2E}{m}} = \sqrt{\frac{2\times 4\ \text J}{0{,}5\ \text{kg}}} = \sqrt{16} = 4\ \text{m/s}.$$
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Osserva l'animazione seguente: rappresenta un **pendolo di Newton**, il classico giocattolo con una fila di palline identiche sospese a fili tutti della stessa lunghezza. Puoi scegliere tu stesso quante palline usare, poi trascinane una con il mouse: trascinandola verso il bordo più vicino sollevi solo le palline comprese fra quel bordo e quella che hai scelto (a formare un unico gruppo rigido); trascinandola verso il lato opposto sollevi invece tutte le altre. Quanto più in là trascini, tanto più in alto arriva il gruppo. Rilasciala per osservare cosa succede; puoi fermare l'animazione in qualsiasi momento con il pulsante "Ferma".
-
-{% include lab-virtuali/pendolo-newton-lab.html %}
-
-Scegli tu stesso da quante palline e da quale altezza cominciare, poi rispondi alle domande seguenti usando come dati proprio quelli che hai scelto:
-
-{% include esercizi/esercizio-pendolo-newton-numerico.html %}
-
-Prova ora a rispondere anche a questa domanda, con parole tue.
-
-{% include fill-def.html id="fd-pendolo-newton" prompt="Secondo te, perché si alza sempre lo stesso numero di palline che avevi lasciato cadere, e non ad esempio un numero diverso a un'altezza diversa?" %}
-
-{% include ex-sol.html %}
-Il completamento segue lo schema ormai familiare: energia tutta potenziale in alto, tutta cinetica appena prima dell'urto, ed energia meccanica totale $E=K+U_g$ che resta sempre la stessa lungo tutto il percorso.
-
-Per quanto riguarda il numero di palline: se dall'altra parte se ne alzasse uno diverso (o a un'altezza diversa), l'energia meccanica del gruppo dopo l'urto sarebbe diversa da quella di prima, e questo violerebbe la sua conservazione. Poiché tutte le palline hanno la stessa massa, l'unico modo per non violarla è che ne escano esattamente tante quante ne sono entrate, con la stessa velocità: ecco perché risalgono sempre alla stessa altezza $h$. (Per spiegare fino in fondo perché è proprio così — e non, ad esempio, il doppio delle palline a un quarto della velocità, che avrebbe la stessa energia cinetica — serve anche un'altra legge di conservazione, quella della *quantità di moto*, che incontrerai più avanti nei tuoi studi.)
-{% include ex-sol-end.html %}
-
-#### Il lavoro scambiato con l'Universo
-
-{% include ex.html diff=1 %}
-Una gru solleva un container compiendo su di esso un lavoro di $6{,}0\times10^4\ \text J$; intanto l'aria, opponendosi al moto, sottrae al container $2{,}0\times10^3\ \text J$. Prendendo il container come sistema, quanto vale il lavoro scambiato $L$? E di quanto varia l'energia meccanica del container?
-
-{% include sci.html prima="$L = \Delta E =$" coeff="5.8" exp="4" tol=1 s="5,8 × 10⁴ J" %}
-
-{% include ex-sol.html %}
-$$L = L_{U\to S} - L_{S\to U} = 6{,}0\times10^4\ \text J - 2{,}0\times10^3\ \text J = 5{,}8\times10^4\ \text J,$$
-e per il teorema $\Delta E = L = 5{,}8\times10^4\ \text J$: l'energia meccanica del container aumenta.
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
 Uno slittino di massa $10\ \text{kg}$, inizialmente fermo, viene tirato da un bambino su un tratto orizzontale: il bambino compie sullo slittino un lavoro di $200\ \text J$, mentre a causa dell'attrito lo slittino cede alla neve $110\ \text J$. Con quale velocità si muove lo slittino alla fine?
 
 {% include num.html id="numLavScambR2" valore="4.24" tol="2" unit="m/s" %}
+
+{% include spoiler.html testo="Indizio" %}
+Trova il lavoro totale, con il suo segno. Il tratto è orizzontale, quindi quel lavoro diventa tutto energia cinetica.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Il tratto è orizzontale, quindi l'energia potenziale non cambia e tutta la variazione di energia meccanica è energia cinetica:
 $$\Delta E = L = 200\ \text J - 110\ \text J = 90\ \text J = \tfrac12 m v^2 \quad\Rightarrow\quad v=\sqrt{\frac{2\cdot 90\ \text J}{10\ \text{kg}}}=\sqrt{18}\ \text{m/s}\approx 4{,}24\ \text{m/s}.$$
 {% include ex-sol-end.html %}
 
-#### L'energia dissipata: il calore
-
 {% include ex.html diff=2 %}
 Torniamo all'esperimento (immaginario!) del "pollo cotto a schiaffi". Supponi che ogni schiaffo comprima il pollo di $2{,}5\ \text{cm}$ esercitando una forza di $40\ \text N$, e che tutto il lavoro compiuto si dissipi istantaneamente in calore. Sapendo che per cuocere completamente il pollo servono circa $2\times10^5\ \text J$ di calore, quanti schiaffi sarebbero necessari?
 
 {% include sci.html prima="Numero di schiaffi $=$" coeff="2" exp="5" s="2 × 10⁵ schiaffi" %}
+
+{% include spoiler.html testo="Indizio" %}
+Calcola il lavoro di uno schiaffo, con lo spostamento in metri. Poi dividi l'energia totale per quel lavoro.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
 Il lavoro — e quindi il calore — prodotto da un singolo schiaffo è
@@ -1643,44 +1450,725 @@ $$n = \frac{2\times10^5\ \text J}{1\ \text J} = 2\times10^5 \text{ schiaffi},$$
 cioè 200 000 schiaffi — un numero completamente assurdo, che spiega bene perché non è davvero un modo pratico per cucinare un pollo!
 {% include ex-sol-end.html %}
 
+# Esercizi simili alla verifica
+
+In verifica non vi chiedo quasi mai di applicare una formula e basta: vi racconto una situazione, e tocca a voi capire quale energia si trasforma in quale. Se so quanto in alto salto, so anche con che velocità mi sono staccato da terra, perché l'energia cinetica della partenza è diventata energia potenziale. Se so quanto lavoro è stato compiuto su un corpo, il teorema dell'energia cinetica mi dice che velocità raggiunge.
+
+Davanti a un problema, quindi, vi conviene chiedervi per prima cosa che energia ha il corpo all'inizio e che energia ha alla fine. Poi guardate se qualcuno spinge o se c'è attrito: se non c'è nessuno dei due l'energia meccanica si conserva, altrimenti cambia di una quantità pari al lavoro scambiato. Solo a questo punto scegliete la formula.
+
+Molti di questi esercizi sono proprio quelli delle verifiche di quest'anno, e in fondo trovate tutti quelli per aggiungere punti. Fateli sul quaderno, scrivendo tutti i passaggi. Se vi bloccate aprite l'indizio, e guardate la soluzione solo alla fine. Usate sempre $g=10\ \text{m/s}^2$.
+
+### Le domande di teoria
+
+{% include ex.html diff=1 %}
+{% capture _r %}Il lavoro totale compiuto su un corpo da tutte le forze che agiscono su di esso è uguale alla variazione della sua energia cinetica: $L=\Delta K=K_f-K_i$.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-teorema" tipo="spiega" domanda="Enuncia il teorema dell'energia cinetica." risposta=_r %}
+
+{% capture _r %}È positivo se lo spostamento ha lo stesso verso della forza (la forza peso su un oggetto che cade), negativo se ha verso opposto (l'attrito su una slitta che scivola), nullo se è perpendicolare alla forza (la forza peso su un corpo che si muove in orizzontale).{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-segno" tipo="spiega" domanda="Quando il lavoro compiuto da una forza è positivo, quando è negativo e quando è nullo? Fai un esempio per ciascun caso." risposta=_r %}
+
+{% capture _r %}La potenza è il rapporto fra il lavoro compiuto e il tempo impiegato a compierlo, $P=L/\Delta t$. Si misura in watt: $1\ \text W=1\ \text{J/s}$.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-potenza" tipo="spiega" domanda="Che cos'è la potenza? Qual è la sua unità di misura, e perché?" risposta=_r %}
+
+{% capture _r %}L'energia meccanica è la somma dell'energia cinetica e dell'energia potenziale, $E=K+U$. Come ogni energia, si misura in joule.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-meccanica" tipo="spiega" domanda="Che cos'è l'energia meccanica di un corpo? In che unità si misura?" risposta=_r %}
+
+{% include spoiler.html testo="Indizio" %}
+Per il teorema pensa a che cosa cambia in un corpo su cui viene compiuto un lavoro. Per il segno del lavoro confronta il verso della forza con quello dello spostamento.
+{% include spoiler-end.html %}
+{% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+{% capture _r %}Un sistema è isolato se non scambia energia con il resto dell'Universo: non si compie lavoro su di esso e non c'è attrito. La sua energia meccanica resta costante, $K_i+U_i=K_f+U_f$: energia cinetica e potenziale si trasformano l'una nell'altra, ma la loro somma non cambia.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-isolato" tipo="spiega" domanda="Che cos'è un sistema isolato? Che cosa succede alla sua energia meccanica?" risposta=_r %}
+
+{% capture _r %}Vale $\Delta E=L$. Se $L>0$ l'energia meccanica aumenta, se $L=0$ resta costante, se $L<0$ diminuisce. Un esempio con $L<0$ è una slitta che scivola sulla neve e rallenta per l'attrito.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-scambio" tipo="spiega" domanda="Un sistema scambia con il resto dell'Universo un lavoro $L$. Come cambia la sua energia meccanica se $L$ è positivo, nullo o negativo? Fai un esempio con $L$ negativo." risposta=_r %}
+
+{% capture _r %}Il calore è l'energia meccanica dissipata, per esempio dall'attrito, e si misura in joule. Quando ti sfreghi le mani, l'attrito compie un lavoro negativo, l'energia cinetica delle mani si dissipa e le mani si scaldano.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-calore" tipo="spiega" domanda="Che cos'è il calore? Qual è la sua unità di misura? Spiega con un esempio da dove nasce." risposta=_r %}
+
+{% capture _r %}Con l'attrito il sistema non è isolato: l'attrito compie un lavoro negativo, e parte dell'energia meccanica si trasforma in calore. L'energia meccanica quindi diminuisce.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-attrito" tipo="spiega" domanda="Perché la conservazione dell'energia meccanica non vale in presenza di attrito?" risposta=_r %}
+
+{% include spoiler.html testo="Indizio" %}
+Il punto chiave è sempre lo stesso: l'energia meccanica cambia solo se il sistema scambia lavoro con il resto dell'Universo.
+{% include spoiler-end.html %}
+{% include ex-end.html %}
+
 {% include ex.html diff=2 %}
-L'immagine seguente è una termoscopia (una foto scattata con una telecamera a infrarossi) di una moto appena utilizzata: le zone arancioni sono quelle a temperatura più alta, quelle blu le più fredde.
+Vero o falso? Spiega perché.
 
-{% include figura.html id="moto-termoscopia"
-   src="/corsi/immagini/moto_termoscopia.webp"
-   didascalia="Termoscopia di una moto appena utilizzata: le zone arancioni sono le più calde."
-   larghezza="420px" %}
+{% capture _r %}Falso. In $K=\frac12mv^2$ la velocità è al quadrato: se raddoppia, l'energia cinetica diventa quattro volte più grande.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-vf1" tipo="spiega" domanda="Se la velocità di un corpo raddoppia, la sua energia cinetica raddoppia." risposta=_r %}
 
-Osserva quali parti della moto sono le più calde, e quali restano invece fredde (ad esempio il telaio, il serbatoio, il cerchione delle ruote). Sapendo che il calore prodotto in un corpo in movimento è energia meccanica dissipata dall'attrito, spiega perché sono proprio quelle parti a scaldarsi di più.
+{% capture _r %}Falso. Se $v$ si dimezza, $K$ diventa un quarto.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-vf2" tipo="spiega" domanda="Se la velocità di un corpo si dimezza, anche la sua energia cinetica si dimezza." risposta=_r %}
 
-{% include fill-def.html id="fd-moto-termoscopia" prompt="Perché, secondo te, proprio quelle parti della moto sono le più calde?" %}
+{% capture _r %}Vero. Da $mgh=\frac12mv^2$ la massa si semplifica e resta $v=\sqrt{2gh}$, che dipende solo dall'altezza.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-vf3" tipo="spiega" domanda="Lasciati cadere dalla stessa altezza, un sasso di 1 kg e uno di 5 kg arrivano a terra con la stessa velocità (trascura l'aria)." risposta=_r %}
+
+{% capture _r %}Vero. Per il teorema dell'energia cinetica $\Delta K=L<0$: l'energia cinetica diminuisce, quindi diminuisce la velocità.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-vf4" tipo="spiega" domanda="Se il lavoro totale compiuto su un corpo è negativo, il corpo rallenta." risposta=_r %}
+
+{% capture _r %}Vero. L'attrito ha verso opposto al moto, quindi $L=-F\cdot\Delta s$.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-vf5" tipo="spiega" domanda="Il lavoro compiuto dalla forza di attrito su un corpo che scivola è sempre negativo." risposta=_r %}
+
+{% capture _r %}Vero. Se la velocità è costante $\Delta K=0$, quindi $L=0$. Le forze possono compiere lavoro, ma quelli positivi e quelli negativi si compensano: su un'auto a velocità costante il lavoro del motore compensa quello degli attriti.{% endcapture %}
+{% include risposta-aperta.html id="ra-ver-vf6" tipo="spiega" domanda="Se un corpo si muove a velocità costante, il lavoro totale delle forze che agiscono su di esso è nullo, anche se su di esso agiscono delle forze." risposta=_r %}
+
+{% include spoiler.html testo="Indizio" %}
+Per le prime due guarda a che potenza compare $v$ in $K=\frac12mv^2$. Per le ultime usa il teorema dell'energia cinetica, $L=\Delta K$.
+{% include spoiler-end.html %}
+{% include ex-end.html %}
+
+### I problemi
+
+{% include ex.html diff=1 %}
+Una gru solleva un carico di $200\ \text{kg}$ di $15\ \text m$ in $10\ \text s$.
+
+**(a)** Quanta energia potenziale guadagna il carico?
+
+{% include num.html id="numVerGruU" valore="30000" unit="J" %}
+
+**(b)** Quale potenza sviluppa la gru?
+
+{% include num.html id="numVerGruP" valore="3000" unit="W" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il lavoro della gru è proprio l'energia potenziale guadagnata dal carico. La potenza è quel lavoro diviso per il tempo.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
-Le zone più calde sono il motore e il mozzo delle ruote (la parte centrale, vicino all'asse): sono proprio i punti dove due superfici restano a stretto contatto e scorrono l'una sull'altra ad alta velocità — i pistoni dentro i cilindri e gli ingranaggi del cambio nel motore, i cuscinetti (e, quando si frena, le pastiglie sul disco) nel mozzo delle ruote. È lì che l'attrito è più intenso e, come abbiamo visto, più l'attrito è intenso più lavoro viene dissipato in calore a parità di spostamento.
+**(a)** $\Delta U_g=mgh=200\ \text{kg}\times10\ \text{m/s}^2\times15\ \text m=30\,000\ \text J$.
 
-Il telaio, il serbatoio e il cerchione delle ruote, invece, si muovono in blocco, senza superfici interne che strisciano l'una sull'altra: l'attrito lì è trascurabile, e infatti restano molto più freddi.
+**(b)** $P=\dfrac{L}{\Delta t}=\dfrac{30\,000\ \text J}{10\ \text s}=3\,000\ \text W$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Un salmone di $4\ \text{kg}$ risale un fiume e, con un salto, supera una cascata alta $2\ \text m$. Il salto dura $0{,}4\ \text s$.
+
+**(a)** Quanto lavoro compie la forza peso sul salmone?
+
+{% include num.html id="numVerSalL" valore="-80" unit="J" %}
+
+**(b)** Quanta energia potenziale gravitazionale guadagna?
+
+{% include num.html id="numVerSalU" valore="80" unit="J" %}
+
+**(c)** Quale potenza sviluppano i suoi muscoli?
+
+{% include num.html id="numVerSalP" valore="200" unit="W" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il salmone sale e la forza peso è diretta verso il basso: che segno ha il suo lavoro? I muscoli devono fornire tutta l'energia potenziale guadagnata.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** Il salmone sale e la forza peso è verso il basso, quindi $L_{\text{peso}}=-mgh=-4\ \text{kg}\times10\ \text{m/s}^2\times2\ \text m=-80\ \text J$.
+
+**(b)** $\Delta U_g=mgh=80\ \text J$: è uguale e opposta al lavoro della forza peso.
+
+**(c)** $P=\dfrac{L}{\Delta t}=\dfrac{80\ \text J}{0{,}4\ \text s}=200\ \text W$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Uno stambecco di $60\ \text{kg}$ sale lungo un pendio, superando un dislivello di $600\ \text m$ in $20$ minuti.
+
+**(a)** Quanto lavoro compie la forza peso sullo stambecco?
+
+{% include num.html id="numVerStaL" valore="-360000" unit="J" %}
+
+**(b)** Quanta energia potenziale gravitazionale guadagna?
+
+{% include num.html id="numVerStaU" valore="360000" unit="J" %}
+
+**(c)** Quale potenza sviluppano i suoi muscoli?
+
+{% include num.html id="numVerStaP" valore="300" unit="W" %}
+
+{% include spoiler.html testo="Indizio" %}
+È come il salmone, ma stai attento al tempo: per avere la potenza in watt, i minuti vanno trasformati in secondi.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $L_{\text{peso}}=-mgh=-60\ \text{kg}\times10\ \text{m/s}^2\times600\ \text m=-360\,000\ \text J$.
+
+**(b)** $\Delta U_g=mgh=360\,000\ \text J$.
+
+**(c)** I muscoli compensano il lavoro della forza peso in $20\times60\ \text s=1\,200\ \text s$:
+
+$$P=\frac{L}{\Delta t}=\frac{360\,000\ \text J}{1\,200\ \text s}=300\ \text W.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Una pompa solleva $600\ \text{kg}$ d'acqua dal fondo di un pozzo profondo $10\ \text m$ fino al bordo, in $2$ minuti. Quale potenza sviluppa la pompa?
+
+{% include num.html id="numVerPompa" valore="500" unit="W" %}
+
+{% include spoiler.html testo="Indizio" %}
+Che energia guadagna l'acqua? Il lavoro della pompa serve proprio a darle quell'energia.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+Il lavoro della pompa aumenta l'energia potenziale dell'acqua: $L=\Delta U_g=mgh=600\ \text{kg}\times10\ \text{m/s}^2\times10\ \text m=60\,000\ \text J$. In $2$ minuti, cioè $120\ \text s$,
+
+$$P=\frac{L}{\Delta t}=\frac{60\,000\ \text J}{120\ \text s}=500\ \text W.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=1 %}
+Un'automobile di $1\,000\ \text{kg}$ accelera da $10\ \text{m/s}$ a $20\ \text{m/s}$. Quanto lavoro totale è stato compiuto sull'automobile?
+
+{% include num.html id="numVerAutoAcc" valore="150000" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+Non conosci né la forza né lo spostamento, ma conosci le velocità: quale teorema ti collega il lavoro alle velocità?
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+Per il teorema dell'energia cinetica $L=K_f-K_i$. Le due energie valgono $K_i=\frac12\times1\,000\ \text{kg}\times(10\ \text{m/s})^2=50\,000\ \text J$ e $K_f=\frac12\times1\,000\ \text{kg}\times(20\ \text{m/s})^2=200\,000\ \text J$, quindi $L=150\,000\ \text J$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un ghepardo di $50\ \text{kg}$ parte da fermo e in $3\ \text s$ raggiunge la velocità di $30\ \text{m/s}$, cioè più di $100\ \text{km/h}$.
+
+**(a)** Quanta energia cinetica ha alla fine dello scatto?
+
+{% include num.html id="numVerGheK" valore="22500" unit="J" %}
+
+**(b)** Quanto lavoro totale è stato compiuto sul ghepardo? Quale teorema usi?
+
+{% include num.html id="numVerGheL" valore="22500" unit="J" %}
+
+**(c)** Quale potenza media hanno sviluppato i suoi muscoli?
+
+{% include num.html id="numVerGheP" valore="7500" unit="W" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il ghepardo parte da fermo: quanto vale $K_i$? Da lì il teorema dell'energia cinetica ti dà subito il lavoro.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $K_f=\frac12mv^2=\frac12\times50\ \text{kg}\times(30\ \text{m/s})^2=22\,500\ \text J$.
+
+**(b)** Per il teorema dell'energia cinetica $L=K_f-K_i$, e $K_i=0$ perché parte da fermo: $L=22\,500\ \text J$.
+
+**(c)** $P=\dfrac{L}{\Delta t}=\dfrac{22\,500\ \text J}{3\ \text s}=7\,500\ \text W$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un carrello di $25\ \text{kg}$ è fermo. Lo spingi con una forza di $40\ \text N$ per $5\ \text m$. Trascura l'attrito.
+
+**(a)** Quanto lavoro compi?
+
+{% include num.html id="numVerCarL" valore="200" unit="J" %}
+
+**(b)** Qual è la velocità finale del carrello?
+
+{% include num.html id="numVerCarV" valore="4" unit="m/s" %}
+
+**(c)** La spinta dura $2{,}5\ \text s$. Quale potenza sviluppi?
+
+{% include num.html id="numVerCarP" valore="80" unit="W" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il lavoro che compi diventa tutto energia cinetica del carrello, perché parte da fermo. Conoscendo l'energia cinetica, isola $v$ da $K=\frac12mv^2$.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $L=F\cdot\Delta s=40\ \text N\times5\ \text m=200\ \text J$.
+
+**(b)** Per il teorema dell'energia cinetica, partendo da fermo, $K_f=L=200\ \text J$. Quindi
+
+$$v=\sqrt{\frac{2K_f}{m}}=\sqrt{\frac{2\times200\ \text J}{25\ \text{kg}}}=\sqrt{16}\ \text{m/s}=4\ \text{m/s}.$$
+
+**(c)** $P=\dfrac{L}{\Delta t}=\dfrac{200\ \text J}{2{,}5\ \text s}=80\ \text W$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Una pallavolista di $70\ \text{kg}$ salta verso l'alto per andare a muro, e il suo baricentro sale di $0{,}45\ \text m$. Trascura l'aria.
+
+**(a)** Quanta energia potenziale gravitazionale guadagna, arrivata nel punto più alto?
+
+{% include num.html id="numVerPalU" valore="315" unit="J" %}
+
+**(b)** Con che velocità si stacca da terra?
+
+{% include num.html id="numVerPalV" valore="3" unit="m/s" %}
+
+{% include spoiler.html testo="Indizio" %}
+Allo stacco ha solo energia cinetica, nel punto più alto solo energia potenziale. Scrivi che le due sono uguali.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $\Delta U_g=mgh=70\ \text{kg}\times10\ \text{m/s}^2\times0{,}45\ \text m=315\ \text J$.
+
+**(b)** Mentre sale, l'energia cinetica si trasforma in energia potenziale, e nel punto più alto è ferma:
+
+$$\frac12mv^2=mgh\quad\Rightarrow\quad v=\sqrt{2gh}=\sqrt{2\times10\ \text{m/s}^2\times0{,}45\ \text m}=\sqrt9\ \text{m/s}=3\ \text{m/s}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un canguro di $50\ \text{kg}$ spicca un salto verso l'alto e il suo baricentro sale di $1{,}8\ \text m$.
+
+**(a)** Quanta energia potenziale gravitazionale guadagna, arrivato nel punto più alto?
+
+{% include num.html id="numVerCanU" valore="900" unit="J" %}
+
+**(b)** Trascurando l'aria, con che velocità si stacca da terra?
+
+{% include num.html id="numVerCanV" valore="6" unit="m/s" %}
+
+**(c)** La spinta delle zampe dura $0{,}3\ \text s$. Quale potenza media sviluppano i suoi muscoli?
+
+{% include num.html id="numVerCanP" valore="3000" unit="W" %}
+
+{% include spoiler.html testo="Indizio" %}
+Per la velocità ragiona come sulla pallavolista. Per la potenza: durante la spinta i muscoli danno al canguro tutta la sua energia cinetica di partenza.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $U_g=mgh=50\ \text{kg}\times10\ \text{m/s}^2\times1{,}8\ \text m=900\ \text J$.
+
+**(b)** L'energia cinetica con cui si stacca diventa tutta energia potenziale nel punto più alto, quindi $v=\sqrt{2gh}=\sqrt{36}\ \text{m/s}=6\ \text{m/s}$. È lo stesso calcolo della velocità di impatto, al contrario.
+
+**(c)** Il lavoro dei muscoli è l'energia cinetica data al canguro durante la spinta, $900\ \text J$: $P=\dfrac{900\ \text J}{0{,}3\ \text s}=3\,000\ \text W$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Nel curling si lancia sul ghiaccio una pietra di $20\ \text{kg}$. La pietra parte a $3\ \text{m/s}$ e, scivolando, si ferma dopo $30\ \text m$.
+
+**(a)** Quanta energia cinetica ha la pietra alla partenza?
+
+{% include num.html id="numVerCurK" valore="90" unit="J" %}
+
+**(b)** Quanto lavoro compie l'attrito sulla pietra? Che segno ha, e perché?
+
+{% include num.html id="numVerCurL" valore="-90" unit="J" %}
+
+**(c)** Quanto vale la forza di attrito? Dove è finita l'energia cinetica della pietra?
+
+{% include num.html id="numVerCurF" valore="3" unit="N" %}
+
+{% include spoiler.html testo="Indizio" %}
+Alla fine la pietra è ferma, quindi $K_f=0$: usa il teorema dell'energia cinetica. Poi dal lavoro e dallo spostamento ricavi la forza.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $K_i=\frac12\times20\ \text{kg}\times(3\ \text{m/s})^2=90\ \text J$.
+
+**(b)** $L=\Delta K=0-90\ \text J=-90\ \text J$. È negativo perché la forza di attrito ha verso opposto allo spostamento.
+
+**(c)** Da $\lvert L\rvert=F\cdot\Delta s$ ricavo $F=\dfrac{90\ \text J}{30\ \text m}=3\ \text N$. L'energia cinetica si è trasformata in calore, che scalda la pietra e il ghiaccio.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un'automobile di $1\,000\ \text{kg}$ viaggia a $20\ \text{m/s}$. Il conducente frena e l'auto si ferma dopo $40\ \text m$.
+
+**(a)** Quanta energia cinetica ha l'auto prima di frenare?
+
+{% include num.html id="numVerAutK" valore="200000" unit="J" %}
+
+**(b)** Quanto lavoro compie la forza frenante sull'auto?
+
+{% include num.html id="numVerAutL" valore="-200000" unit="J" %}
+
+**(c)** Quanto vale, in modulo, la forza frenante? Dove è finita l'energia cinetica dell'auto?
+
+{% include num.html id="numVerAutF" valore="5000" unit="N" %}
+
+{% include spoiler.html testo="Indizio" %}
+Si ragiona come sulla pietra da curling: l'auto alla fine è ferma, quindi tutta l'energia cinetica è stata tolta dal lavoro della forza frenante.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $K_i=\frac12\times1\,000\ \text{kg}\times(20\ \text{m/s})^2=200\,000\ \text J$.
+
+**(b)** Alla fine $K_f=0$, quindi $L=K_f-K_i=-200\,000\ \text J$.
+
+**(c)** $F=\dfrac{\lvert L\rvert}{\Delta s}=\dfrac{200\,000\ \text J}{40\ \text m}=5\,000\ \text N$. L'energia cinetica si è trasformata in calore: i freni e le gomme si scaldano.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un ragazzo trascina su un prato innevato, in orizzontale, uno slittino di $8\ \text{kg}$, inizialmente fermo, tirandolo con una forza di $50\ \text N$ parallela al terreno per $20\ \text m$. Fra lo slittino e la neve agisce una forza di attrito di $30\ \text N$.
+
+**(a)** Quanto lavoro compie il ragazzo? E la forza di attrito?
+
+{% include num.html id="numVerSliLR" valore="1000" unit="J" %}
+{% include num.html id="numVerSliLA" valore="-600" unit="J" %}
+
+**(b)** Quanto vale il lavoro totale compiuto sullo slittino?
+
+{% include num.html id="numVerSliL" valore="400" unit="J" %}
+
+**(c)** Con che velocità si muove lo slittino alla fine dei $20\ \text m$?
+
+{% include num.html id="numVerSliV" valore="10" unit="m/s" %}
+
+{% include spoiler.html testo="Indizio" %}
+Nel teorema dell'energia cinetica conta il lavoro totale, non solo quello del ragazzo. Lo slittino parte da fermo, quindi quel lavoro diventa tutto energia cinetica.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $L_{\text{ragazzo}}=50\ \text N\times20\ \text m=1\,000\ \text J$ e $L_{\text{attrito}}=-30\ \text N\times20\ \text m=-600\ \text J$.
+
+**(b)** $L=1\,000\ \text J-600\ \text J=400\ \text J$. La forza peso e la reazione del terreno sono perpendicolari allo spostamento e non compiono lavoro.
+
+**(c)** Partendo da fermo, $L=K_f=\frac12mv^2$:
+
+$$v=\sqrt{\frac{2L}{m}}=\sqrt{\frac{2\times400\ \text J}{8\ \text{kg}}}=\sqrt{100}\ \text{m/s}=10\ \text{m/s}.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Un sasso di $2\ \text{kg}$ cade da fermo da una rupe alta $20\ \text m$. Trascura l'aria.
+
+**(a)** Quanto vale la sua energia potenziale in cima?
+
+{% include num.html id="numVerSasU" valore="400" unit="J" %}
+
+**(b)** Con che velocità arriva a terra?
+
+{% include num.html id="numVerSasV" valore="20" unit="m/s" %}
+
+**(c)** A metà altezza, quanto valgono la sua energia cinetica e la sua energia potenziale?
+
+{% include num.html id="numVerSasK2" valore="200" unit="J" %}
+{% include num.html id="numVerSasU2" valore="200" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+L'energia meccanica resta sempre quella che aveva in cima. A qualunque altezza, l'energia cinetica è quello che manca all'energia potenziale per arrivare al totale.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $U_g=mgh=2\ \text{kg}\times10\ \text{m/s}^2\times20\ \text m=400\ \text J$.
+
+**(b)** $v=\sqrt{2gh}=\sqrt{400}\ \text{m/s}=20\ \text{m/s}$.
+
+**(c)** A metà altezza $U_g=200\ \text J$. L'energia meccanica si conserva e resta $400\ \text J$, quindi $K=400\ \text J-200\ \text J=200\ \text J$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=2 %}
+Una pigna di $0{,}5\ \text{kg}$ si stacca da un pino, a $20\ \text m$ di altezza. Trascura l'aria.
+
+**(a)** Quanta energia potenziale gravitazionale ha all'inizio?
+
+{% include num.html id="numVerPigU" valore="100" unit="J" %}
+
+**(b)** Con che velocità arriva a terra?
+
+{% include num.html id="numVerPigV" valore="20" unit="m/s" %}
+
+**(c)** Quanto valgono la sua energia cinetica e la sua energia potenziale quando si trova a $5\ \text m$ da terra?
+
+{% include num.html id="numVerPigK" valore="75" unit="J" %}
+{% include num.html id="numVerPigU2" valore="25" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+Per la (c) calcola prima $U_g$ a $5\ \text m$ da terra. L'energia meccanica si conserva, quindi $K=E-U_g$.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $U_g=mgh=0{,}5\ \text{kg}\times10\ \text{m/s}^2\times20\ \text m=100\ \text J$.
+
+**(b)** $v=\sqrt{2gh}=\sqrt{400}\ \text{m/s}=20\ \text{m/s}$.
+
+**(c)** A $5\ \text m$ da terra $U_g=0{,}5\ \text{kg}\times10\ \text{m/s}^2\times5\ \text m=25\ \text J$. L'energia meccanica resta $100\ \text J$, quindi $K=100\ \text J-25\ \text J=75\ \text J$.
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=3 %}
-In un bowling, una palla di massa $6\ \text{kg}$ cade da uno scaffale alto $1{,}2\ \text m$ e rimbalza sul pavimento fino a raggiungere di nuovo un'altezza massima di soli $0{,}3\ \text m$. Quanta energia si è convertita in calore durante l'urto con il pavimento? (Usa $g\approx 10\ \text{m/s}^2$.)
+Un pinguino di $20\ \text{kg}$ si lascia scivolare a pancia in giù lungo un pendio ghiacciato, partendo da fermo da un'altezza di $3{,}2\ \text m$.
 
-{% include num.html id="numBowlingCalore" valore="54" unit="J" %}
+**(a)** Quanta energia potenziale gravitazionale ha in cima al pendio?
+
+{% include num.html id="numVerPinU" valore="640" unit="J" %}
+
+**(b)** Se non ci fosse attrito, con che velocità arriverebbe in fondo?
+
+{% include num.html id="numVerPinV" valore="8" unit="m/s" %}
+
+**(c)** In realtà arriva in fondo a $6\ \text{m/s}$. Quanta energia meccanica ha perso? Quanto lavoro ha compiuto l'attrito, e dove è finita l'energia persa?
+
+{% include num.html id="numVerPinE" valore="280" unit="J" %}
+{% include num.html id="numVerPinL" valore="-280" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+In cima ha solo $U_g$, in fondo solo $K$. L'energia persa è la differenza fra quello che aveva in cima e quello che ha davvero in fondo.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
-Sia appena prima di cadere sia nel punto più alto del rimbalzo la palla è ferma, quindi in entrambi i casi la sua energia meccanica è tutta potenziale. Se l'energia meccanica si fosse conservata, la palla sarebbe rimbalzata fino alla stessa altezza di partenza: il fatto che risalga solo fino a $0{,}3\ \text m$ significa che l'energia mancante,
+**(a)** $U_g=mgh=20\ \text{kg}\times10\ \text{m/s}^2\times3{,}2\ \text m=640\ \text J$.
 
-$$\Delta E = U_i - U_f = mg(h_i-h_f) = 6\ \text{kg}\times 10\ \text{m/s}^2\times(1{,}2\ \text m - 0{,}3\ \text m) = 6\ \text{kg}\times 10\ \text{m/s}^2\times 0{,}9\ \text m = 54\ \text J,$$
+**(b)** $v=\sqrt{2gh}=\sqrt{64}\ \text{m/s}=8\ \text{m/s}$.
 
-si è convertita in calore nell'urto con il pavimento.
+**(c)** In fondo l'energia è tutta cinetica: $K_f=\frac12\times20\ \text{kg}\times(6\ \text{m/s})^2=360\ \text J$. Il pinguino ha perso $640\ \text J-360\ \text J=280\ \text J$. Per $\Delta E=L$ l'attrito ha compiuto un lavoro $L=-280\ \text J$, e quell'energia è diventata calore, che scalda la pancia del pinguino e il ghiaccio.
 {% include ex-sol-end.html %}
 
 {% include ex.html diff=3 %}
-Uno slittino di massa $4\ \text{kg}$ scivola lungo una discesa innevata, partendo da fermo da un'altezza di $5\ \text m$. A causa dell'attrito con la neve, in fondo alla discesa la sua velocità è di soli $8\ \text{m/s}$ (minore di quella che avrebbe senza attrito). Quanta energia si è convertita in calore lungo la discesa? (Usa $g\approx 10\ \text{m/s}^2$.)
+Uno sciatore di $60\ \text{kg}$ parte da fermo e scende lungo una pista, superando un dislivello di $20\ \text m$. In fondo alla pista viaggia a $10\ \text{m/s}$.
 
-{% include num.html id="numSlittinoCalore" valore="72" unit="J" %}
+**(a)** Se non ci fosse attrito, con che velocità arriverebbe in fondo?
+
+{% include num.html id="numVerSciV" valore="20" unit="m/s" %}
+
+**(b)** Quanta energia meccanica ha perso? Dove è finita?
+
+{% include num.html id="numVerSciE" valore="9000" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+Attenzione: la velocità è la metà di quella ideale, ma l'energia cinetica non è la metà. Calcola $U_g$ in cima e $K$ in fondo, poi fai la differenza.
+{% include spoiler-end.html %}
 
 {% include ex-sol.html %}
-Se non ci fosse stato attrito, l'energia meccanica si sarebbe conservata e tutta l'energia potenziale iniziale si sarebbe trasformata in energia cinetica finale. L'energia effettivamente dissipata sotto forma di calore è allora la differenza fra l'energia potenziale iniziale e l'energia cinetica finale realmente osservata:
+**(a)** $v=\sqrt{2gh}=\sqrt{400}\ \text{m/s}=20\ \text{m/s}$.
 
-$$\Delta E = U_i - K_f = mgh - \frac12 mv^2 = 4\ \text{kg}\times 10\ \text{m/s}^2\times 5\ \text m - \frac12\times 4\ \text{kg}\times(8\ \text{m/s})^2 = 200\ \text J - 128\ \text J = 72\ \text J.$$
+**(b)** In cima $U_g=60\ \text{kg}\times10\ \text{m/s}^2\times20\ \text m=12\,000\ \text J$, in fondo $K_f=\frac12\times60\ \text{kg}\times(10\ \text{m/s})^2=3\,000\ \text J$. Ha perso $9\,000\ \text J$, cioè i tre quarti della sua energia, diventati calore che scalda gli sci e la neve.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Una goccia di pioggia di $0{,}05\ \text g$ si stacca da una nuvola a $2\,000\ \text m$ di altezza.
+
+**(a)** Qual è la sua energia potenziale?
+
+{% include num.html id="numVerGocU" valore="1" unit="J" %}
+
+**(b)** Se non ci fosse l'aria, con che velocità arriverebbe a terra?
+
+{% include num.html id="numVerGocV" valore="200" unit="m/s" %}
+
+**(c)** In realtà tocca terra a circa $10\ \text{m/s}$. Quanta energia meccanica ha perso durante la caduta? Dove è finita?
+
+{% include num.html id="numVerGocE" valore="1" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+La massa va in chilogrammi. Nella (c) calcola l'energia cinetica con cui arriva davvero a terra: vedrai che è quasi niente rispetto a quella di partenza.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** Con $m=0{,}05\ \text g=5\times10^{-5}\ \text{kg}$, $U=mgh=5\times10^{-5}\ \text{kg}\times10\ \text{m/s}^2\times2\,000\ \text m=1\ \text J$.
+
+**(b)** Senza aria $v=\sqrt{2gh}=\sqrt{40\,000}\ \text{m/s}=200\ \text{m/s}$, cioè circa $720\ \text{km/h}$.
+
+**(c)** $K_f=\frac12\times5\times10^{-5}\ \text{kg}\times(10\ \text{m/s})^2=0{,}0025\ \text J$, quindi ha perso $0{,}9975\ \text J$, quasi tutta l'energia. La resistenza dell'aria l'ha dissipata in calore, che scalda di pochissimo l'aria e la goccia.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Un chicco di grandine di $2\ \text g$ si forma in una nuvola a $4\,500\ \text m$ di altezza e cade.
+
+**(a)** Se non ci fosse l'aria, con che velocità arriverebbe a terra?
+
+{% include num.html id="numVerGraV" valore="300" unit="m/s" %}
+
+**(b)** In realtà tocca terra a circa $20\ \text{m/s}$. Quanta energia meccanica ha perso durante la caduta? Dove è finita?
+
+{% include num.html id="numVerGraE" valore="89.6" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+Per la (a) la massa non serve. Per la (b) sì: trasformala in chilogrammi, poi confronta $U_g$ in alto con $K$ a terra.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $v=\sqrt{2gh}=\sqrt{2\times10\ \text{m/s}^2\times4\,500\ \text m}=\sqrt{90\,000}\ \text{m/s}=300\ \text{m/s}$, circa $1\,080\ \text{km/h}$.
+
+**(b)** Con $m=2\times10^{-3}\ \text{kg}$, $U_i=mgh=90\ \text J$ e $K_f=\frac12\times2\times10^{-3}\ \text{kg}\times(20\ \text{m/s})^2=0{,}4\ \text J$. Ha perso $89{,}6\ \text J$: la resistenza dell'aria li ha trasformati in calore, che scalda l'aria e il chicco stesso.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Un ciclista, che insieme alla bicicletta ha una massa di $80\ \text{kg}$, sale lungo un passo di montagna superando un dislivello di $1\,000\ \text m$ in $40$ minuti.
+
+**(a)** Quanta energia potenziale gravitazionale guadagna il sistema ciclista-bicicletta?
+
+{% include num.html id="numVerCicU" valore="800000" unit="J" %}
+
+**(b)** Quale potenza media devono sviluppare, come minimo, le gambe del ciclista?
+
+{% include num.html id="numVerCicP" valore="333" tol="2" unit="W" %}
+
+**(c)** Una barretta energetica fornisce $1{,}0\times10^6\ \text J$, ma il corpo umano riesce a trasformare in lavoro dei muscoli solo il $25\%$ dell'energia del cibo. Quante barrette deve mangiare, come minimo, il ciclista per fare la salita?
+
+{% include num.html id="numVerCicB" valore="4" tol="0" unit="barrette" %}
+
+{% include spoiler.html testo="Indizio" %}
+Per la (c) trova prima quanta energia utile dà ai muscoli una barretta. Poi attento: le barrette si mangiano intere.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $\Delta U_g=mgh=80\ \text{kg}\times10\ \text{m/s}^2\times1\,000\ \text m=800\,000\ \text J$.
+
+**(b)** In $40\times60\ \text s=2\,400\ \text s$: $P=\dfrac{800\,000\ \text J}{2\,400\ \text s}\approx333\ \text W$.
+
+**(c)** Ogni barretta dà ai muscoli $0{,}25\times1{,}0\times10^6\ \text J=250\,000\ \text J$. Ne servono $\dfrac{800\,000\ \text J}{250\,000\ \text J}=3{,}2$, quindi almeno $4$ barrette.
+{% include ex-sol-end.html %}
+
+### Per aggiungere punti
+
+{% include ex.html diff=3 %}
+Un vaso di $2\ \text{kg}$ cade da un balcone alto $5\ \text m$ e arriva a terra a $8\ \text{m/s}$. Quanta energia si è trasformata in calore?
+
+{% include num.html id="numBonVaso" valore="36" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il calore è l'energia meccanica che manca all'appello: confronta l'energia in cima con quella a terra.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+In cima $U_g=2\ \text{kg}\times10\ \text{m/s}^2\times5\ \text m=100\ \text J$, a terra $K_f=\frac12\times2\ \text{kg}\times(8\ \text{m/s})^2=64\ \text J$. Il calore è $Q=100\ \text J-64\ \text J=36\ \text J$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Una palla di $0{,}5\ \text{kg}$ viene lasciata cadere da $2\ \text m$ e rimbalza fino a $1{,}5\ \text m$. Quanta energia si è trasformata in calore nel rimbalzo?
+
+{% include num.html id="numBonPalla" valore="2.5" unit="J" %}
+
+{% include spoiler.html testo="Indizio" %}
+Nei due punti più alti la palla è ferma, quindi la sua energia è tutta potenziale. Quanto è diminuita?
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+$Q=mg(h_i-h_f)=0{,}5\ \text{kg}\times10\ \text{m/s}^2\times0{,}5\ \text m=2{,}5\ \text J$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Dal balcone di un palazzo, a $15\ \text m$ di altezza, lanci due palline identiche, entrambe a $10\ \text{m/s}$: una verso l'alto e una verso il basso. Trascurando l'aria, quale delle due arriva a terra con la velocità maggiore? Calcola la velocità con cui arriva ciascuna.
+
+{% include num.html id="numBonBalcone" valore="20" unit="m/s" %}
+
+{% include spoiler.html testo="Indizio" %}
+Il verso del lancio compare nella formula dell'energia cinetica? Confronta l'energia meccanica delle due palline alla partenza.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+Arrivano con la stessa velocità. Partono con la stessa energia cinetica, perché $K$ dipende solo dal modulo della velocità, e con la stessa energia potenziale. L'energia meccanica si conserva, quindi a terra è la stessa:
+
+$$\frac12mv_f^2=\frac12mv_0^2+mgh\quad\Rightarrow\quad v_f=\sqrt{v_0^2+2gh}=\sqrt{100+300}\ \text{m/s}=20\ \text{m/s}.$$
+
+Cambia soltanto il tempo che impiegano ad arrivare: la pallina lanciata verso l'alto sale, si ferma e ripassa davanti al balcone a $10\ \text{m/s}$ verso il basso, e da lì si muove esattamente come l'altra.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Un'automobile di $1\,000\ \text{kg}$ viaggia a $108\ \text{km/h}$.
+
+**(a)** Quanta energia cinetica possiede?
+
+{% include num.html id="numBonAutoK" valore="450000" unit="J" %}
+
+**(b)** Da che altezza dovrebbe cadere la stessa automobile per arrivare a terra con la stessa energia?
+
+{% include num.html id="numBonAutoH" valore="45" unit="m" %}
+
+**(c)** A quanti piani di un palazzo corrisponde, se ogni piano è alto $3\ \text m$?
+
+{% include num.html id="numBonAutoP" valore="15" unit="piani" %}
+
+{% include spoiler.html testo="Indizio" %}
+Trasforma prima la velocità in m/s, dividendo per $3{,}6$. Poi cerchi l'altezza per cui $mgh$ è uguale a quell'energia cinetica.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $108\ \text{km/h}=30\ \text{m/s}$, quindi $K=\frac12\times1\,000\ \text{kg}\times(30\ \text{m/s})^2=450\,000\ \text J$.
+
+**(b)** Da $mgh=K$ ricavo $h=\dfrac{K}{mg}=\dfrac{450\,000\ \text J}{1\,000\ \text{kg}\times10\ \text{m/s}^2}=45\ \text m$.
+
+**(c)** $45\ \text m$ sono $15$ piani. La massa non conta, perché $h=v^2/2g$: conta la velocità, che compare al quadrato.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Nel salto con l'asta l'atleta arriva in fondo alla rincorsa a circa $10\ \text{m/s}$, e l'asta trasforma la sua energia cinetica in energia potenziale gravitazionale. Di quanto può salire, al massimo, il suo baricentro?
+
+{% include num.html id="numBonAsta" valore="5" unit="m" %}
+
+{% capture _r %}Il baricentro di un atleta in piedi è già a circa $1\ \text m$ da terra, quindi può arrivare a circa $6\ \text m$: la stima è compatibile con il record. Ho trascurato per esempio il lavoro che l'atleta compie con le braccia spingendo sull'asta, che aggiunge energia, e la velocità orizzontale che deve conservare per superare l'asticella.{% endcapture %}
+{% include risposta-aperta.html id="ra-bon-asta" tipo="spiega" domanda="Il record del mondo è di poco superiore a 6 m: è compatibile con la tua stima? Che cosa hai trascurato?" risposta=_r %}
+
+{% include spoiler.html testo="Indizio" %}
+È il salto di prima: $\frac12mv^2=mgh$, e la massa si semplifica. Per il confronto col record, pensa a quanto è alto il baricentro di una persona già prima di saltare.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+$\frac12mv^2=mg\,\Delta h$, quindi $\Delta h=\dfrac{v^2}{2g}=\dfrac{100}{20}\ \text m=5\ \text m$.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Lasci cadere una pallina da $1\ \text m$. A ogni rimbalzo perde sempre la stessa percentuale della sua energia: dopo il primo rimbalzo risale a $80\ \text{cm}$.
+
+**(a)** Che percentuale di energia perde a ogni rimbalzo?
+
+{% include num.html id="numBonRimP" valore="20" unit="%" %}
+
+**(b)** Dopo quanti rimbalzi risale per la prima volta a meno di $50\ \text{cm}$?
+
+{% include num.html id="numBonRimN" valore="4" tol="0" unit="rimbalzi" %}
+
+{% include spoiler.html testo="Indizio" %}
+Nel punto più alto l'energia è tutta potenziale, quindi è proporzionale all'altezza. La massa non serve. A ogni rimbalzo l'altezza si moltiplica sempre per lo stesso numero.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $U_g=mgh$ è proporzionale all'altezza. Se l'altezza passa da $100\ \text{cm}$ a $80\ \text{cm}$, la pallina conserva l'$80\%$ della sua energia e ne perde il $20\%$.
+
+**(b)** A ogni rimbalzo l'altezza si moltiplica per $0{,}8$: $100\to80\to64\to51{,}2\to40{,}96\ \text{cm}$. Scende sotto $50\ \text{cm}$ per la prima volta dopo il quarto rimbalzo.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+L'asteroide che 66 milioni di anni fa colpì la Terra, contribuendo all'estinzione dei dinosauri, aveva una massa di circa $10^{15}\ \text{kg}$ e viaggiava a circa $20\ \text{km/s}$.
+
+**(a)** Quanta energia cinetica aveva?
+
+{% include sci.html prima="$K=$" coeff="2" exp="23" s="$2\times10^{23}\ \text J$" %}
+
+**(b)** La bomba di Hiroshima liberò circa $6\times10^{13}\ \text J$. A quante bombe corrisponde, più o meno, l'impatto?
+
+{% include sci.html prima="Bombe $=$" coeff="3.33" exp="9" tol=12 s="circa $3\times10^{9}$" %}
+
+**(c)** Se l'asteroide avesse avuto massa doppia ma velocità dimezzata, l'impatto come sarebbe stato?
+
+{% capture _oBonAst %}[{"v":"a","t":"Uguale: massa doppia e velocità metà si compensano"},{"v":"b","t":"Meno violento, con metà dell'energia"},{"v":"c","t":"Più violento, con il doppio dell'energia"},{"v":"d","t":"Meno violento, con un quarto dell'energia"}]{% endcapture %}
+{% include mcq.html id="mcq-bon-asteroide" opts=_oBonAst ok="b" s="$K'=\frac12(2m)\left(\frac v2\right)^2=\frac12\cdot\frac12mv^2=\frac K2$. La velocità conta più della massa, perché compare al quadrato." %}
+
+{% include spoiler.html testo="Indizio" %}
+La velocità va in m/s: $20\ \text{km/s}=2\times10^4\ \text{m/s}$. Nella (c) sostituisci $2m$ e $v/2$ nella formula di $K$.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+**(a)** $K=\frac12mv^2=\frac12\times10^{15}\ \text{kg}\times(2\times10^4\ \text{m/s})^2=2\times10^{23}\ \text J$.
+
+**(b)** $\dfrac{2\times10^{23}\ \text J}{6\times10^{13}\ \text J}\approx3\times10^{9}$: circa tre miliardi di bombe di Hiroshima.
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Un muscolo, contraendosi, può compiere un lavoro di circa $100\ \text J$ per ogni chilogrammo di muscolo, e negli animali i muscoli delle zampe costituiscono circa un decimo della massa del corpo. Secondo questo modello, quanto in alto può saltare un uomo di $70\ \text{kg}$? E una pulce di $1\ \text{mg}$?
+
+{% include num.html id="numBonUomo" valore="1" unit="m" %}
+{% include num.html id="numBonPulce" valore="1" unit="m" %}
+
+{% capture _r %}Secondo il modello saltano alla stessa altezza, perché la massa si semplifica. Come ordine di grandezza è quello che si osserva: pulci, cavallette, gatti e persone saltano tutti fra qualche decina di centimetri e un metro, pur avendo masse molto diverse.{% endcapture %}
+{% include risposta-aperta.html id="ra-bon-pulce" tipo="spiega" domanda="Che cosa ne concludi?" risposta=_r %}
+
+{% include spoiler.html testo="Indizio" %}
+Scrivi il lavoro dei muscoli per una massa generica $m$: i muscoli pesano $m/10$. Poi uguaglialo a $mgh$ e guarda che fine fa $m$.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+I muscoli delle zampe hanno massa $m/10$, quindi compiono un lavoro $L=\dfrac{m}{10}\times100\ \text{J/kg}=m\times10\ \text{J/kg}$. Questo lavoro diventa energia potenziale, $L=mgh$:
+
+$$h=\frac{L}{mg}=\frac{m\times10\ \text{J/kg}}{m\times10\ \text{m/s}^2}=1\ \text m.$$
+{% include ex-sol-end.html %}
+
+{% include ex.html diff=3 %}
+Ogni secondo, dalle cascate del Niagara precipitano circa $2\,000\ \text m^3$ d'acqua (un metro cubo d'acqua ha una massa di $1\,000\ \text{kg}$), che cadono per circa $50\ \text m$. Se tutta questa energia si potesse trasformare in energia elettrica, quante case si potrebbero alimentare, sapendo che una casa usa in media una potenza di $1\ \text{kW}$?
+
+{% include sci.html prima="Case $=$" coeff="1" exp="6" s="circa $10^{6}$" %}
+
+{% capture _r %}L'energia cinetica dell'acqua si dissipa negli urti contro le rocce e contro l'acqua in fondo, e diventa calore: l'acqua in fondo alla cascata è un pochino più calda di quella in cima.{% endcapture %}
+{% include risposta-aperta.html id="ra-bon-niagara" tipo="spiega" domanda="E quando nessuno la sfrutta, che fine fa l'energia dell'acqua che arriva in fondo alla cascata?" risposta=_r %}
+
+{% include spoiler.html testo="Indizio" %}
+Calcola quanta energia potenziale perde in un secondo l'acqua che cade: l'energia in un secondo è proprio la potenza.
+{% include spoiler-end.html %}
+
+{% include ex-sol.html %}
+In un secondo cade una massa $m=2\,000\times1\,000\ \text{kg}=2\times10^6\ \text{kg}$, che perde l'energia potenziale
+
+$$U_g=mgh=2\times10^6\ \text{kg}\times10\ \text{m/s}^2\times50\ \text m=10^9\ \text J.$$
+
+Questa energia si libera ogni secondo, quindi la potenza è $10^9\ \text W$, e le case sono $\dfrac{10^9\ \text W}{10^3\ \text W}=10^6$, cioè circa un milione.
 {% include ex-sol-end.html %}

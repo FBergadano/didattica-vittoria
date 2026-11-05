@@ -10,17 +10,6 @@ Esercizio a carosello (Verifica Subito!) sull'energia cinetica. Nessun parametro
 </div>
 
 <div class="iex-q" id="iexCineticarow0">
-<p class="iex-qt">Se la velocità di un corpo <strong>triplica</strong> (a parità di massa), come cambia la sua energia cinetica?</p>
-<div class="iex-choices" id="iexCineticachoices0">
-<button class="iex-choice-btn" data-v="a">Triplica</button>
-<button class="iex-choice-btn" data-v="b">Si moltiplica per 6</button>
-<button class="iex-choice-btn" data-v="c">Si moltiplica per 9</button>
-<button class="iex-choice-btn" data-v="d">Resta invariata</button>
-</div>
-<div class="iex-fb" id="iexCineticafb0"></div>
-</div>
-
-<div class="iex-q" id="iexCineticarow1" style="display:none">
 <p class="iex-qt">Un ciclista di massa $70\ \text{kg}$ pedala a una velocità di $10\ \text{m/s}$. Quanta energia cinetica possiede? Esprimi il risultato in joule, in notazione scientifica.</p>
 <div class="calc-flow">
 {% include calc-margin.html id="calcCinetica" %}
@@ -33,18 +22,8 @@ Esercizio a carosello (Verifica Subito!) sull'energia cinetica. Nessun parametro
 </div>
 </div>
 
-<div class="iex-q" id="iexCineticarow2" style="display:none">
-<p class="iex-qt">Quale delle seguenti relazioni fra unità di misura <strong>non</strong> è corretta?</p>
-<div class="iex-choices" id="iexCineticachoices2">
-<button class="iex-choice-btn" data-v="a">$\text J = \text{kg}\cdot\frac{\text m^2}{\text s^2}$</button>
-<button class="iex-choice-btn" data-v="b">$\text J = \text{kg}\cdot\left(\frac{\text m}{\text s}\right)^2$</button>
-<button class="iex-choice-btn" data-v="c">$\text J = \text{kg}^2\cdot\frac{\text m^2}{\text s^2}$</button>
-<button class="iex-choice-btn" data-v="d">$\text J = \text N\cdot \text m$</button>
-</div>
-<div class="iex-fb" id="iexCineticafb2"></div>
-</div>
 
-<div class="iex-q" id="iexCineticarow3" style="display:none">
+<div class="iex-q" id="iexCineticarow1" style="display:none">
 <p class="iex-qt">Un'automobile e un camion, che ha una massa <strong>doppia</strong> rispetto all'automobile, viaggiano alla <strong>stessa velocità</strong>. Come si confrontano le loro energie cinetiche?</p>
 <div class="iex-choices" id="iexCineticachoices3">
 <button class="iex-choice-btn" data-v="a">Sono uguali</button>
@@ -55,11 +34,68 @@ Esercizio a carosello (Verifica Subito!) sull'energia cinetica. Nessun parametro
 <div class="iex-fb" id="iexCineticafb3"></div>
 </div>
 
+<div class="iex-q" id="iexCineticarow2" style="display:none">
+<p class="iex-qt">In $K=\frac12 mv^2$ la velocità è al <strong>quadrato</strong>. Completa.</p>
+<div class="iex-nested">
+{% include fill-multi.html testo="Se $v$ raddoppia, $K$ si moltiplica per [4]. Se $v$ triplica, si moltiplica per [9]. Se $v$ diventa $5$ volte più grande, si moltiplica per [25]." s="Il fattore che moltiplica $v$ va elevato al quadrato: $2^2=4$, $3^2=9$, $5^2=25$." %}
+{% include fill-multi.html testo="Se $v$ si dimezza, $K$ si divide per [4]. Se $v$ diventa un terzo, si divide per [9]. Se $v$ diventa un decimo, si divide per [100]." s="Anche il fattore che divide $v$ va elevato al quadrato: $2^2=4$, $3^2=9$, $10^2=100$." %}
+</div>
+</div>
+
+<div class="iex-q" id="iexCineticarow3" style="display:none">
+<p class="iex-qt">Un motorino viaggia a $10\ \text{m/s}$ e ha un'energia cinetica di $6\,000\ \text J$. Quanta energia cinetica ha, con la stessa massa, alle velocità seguenti? La massa non ti serve.</p>
+<p class="iex-qt">A $20\ \text{m/s}$:</p>
+<div class="iex-nested">
+{% include num.html id="numCinMot20" valore="24000" unit="J" %}
+</div>
+<p class="iex-qt">A $5\ \text{m/s}$:</p>
+<div class="iex-nested">
+{% include num.html id="numCinMot5" valore="1500" unit="J" %}
+</div>
+</div>
+
+<div class="iex-q" id="iexCineticarow4" style="display:none">
+<p class="iex-qt">Un'auto che viaggia a $50\ \text{km/h}$, frenando con una certa forza, si ferma in $15\ \text m$. Con la stessa forza frenante, in quanti metri si ferma se viaggia a $100\ \text{km/h}$?</p>
+<p class="iex-hint">Il lavoro della forza frenante, $F\cdot\Delta s$, deve togliere all'auto tutta la sua energia cinetica.</p>
+<div class="iex-nested">
+{% include num.html id="numCinFrenata" valore="60" unit="m" %}
+</div>
+</div>
+
+<div class="iex-q" id="iexCineticarow5" style="display:none">
+<p class="iex-qt">Un corpo rallenta e la sua energia cinetica diventa <strong>un quarto</strong> di quella iniziale. Che cosa è successo alla sua velocità?</p>
+<div class="iex-choices" id="iexCineticachoicesQ">
+<button class="iex-choice-btn" data-v="a">È diventata un quarto</button>
+<button class="iex-choice-btn" data-v="b">Si è dimezzata</button>
+<button class="iex-choice-btn" data-v="c">È diventata un sedicesimo</button>
+<button class="iex-choice-btn" data-v="d">Non è cambiata</button>
+</div>
+<div class="iex-fb" id="iexCineticafbQ"></div>
+</div>
+
+<div class="iex-q" id="iexCineticarow6" style="display:none">
+<p class="iex-qt">Un ciclista e la sua bicicletta hanno una massa complessiva di $80\ \text{kg}$ e un'energia cinetica di $1\,000\ \text J$. A che velocità viaggiano?</p>
+<div class="iex-nested">
+{% include num.html id="numCinV" valore="5" unit="m/s" %}
+</div>
+</div>
+
+<div class="iex-q" id="iexCineticarow7" style="display:none">
+<p class="iex-qt">Tiri sul ghiaccio una slitta di $10\ \text{kg}$, inizialmente ferma, con una forza di $40\ \text N$ parallela allo spostamento, per $8\ \text m$. Trascura l'attrito. Quanto lavoro compi?</p>
+<div class="iex-nested">
+{% include num.html id="numCinSlittaL" valore="320" unit="J" %}
+</div>
+<p class="iex-qt">Con che velocità si muove la slitta alla fine?</p>
+<div class="iex-nested">
+{% include num.html id="numCinSlittaV" valore="8" unit="m/s" %}
+</div>
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=4, cur=0, ok=[false,false,false,false];
+  var N=8, cur=0, ok=[false,false,false,false,false,false,false,false];
   function updateDots(){
     var dots=document.querySelectorAll('#iexCineticadots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -145,22 +181,19 @@ Esercizio a carosello (Verifica Subito!) sull'energia cinetica. Nessun parametro
       shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
     },b*270);})(b);
   }
-  var _row1=document.getElementById('iexCineticarow1');
-  if(_row1)_row1.addEventListener('iex:correct', function(){
-    if(!ok[1]){ ok[1]=true; updateDots(); checkFinale(); }
+  [0,2,3,4,6,7].forEach(function(i){
+    document.getElementById('iexCineticarow'+i).addEventListener('iex:correct', function(){
+      if(!ok[i]){ ok[i]=true; updateDots(); checkFinale(); }
+    });
   });
 
-  wireChoices(0, 'iexCineticachoices0', 'iexCineticafb0', 'c',
-    'L\'energia cinetica è proporzionale al <strong>quadrato</strong> della velocità: se $v$ triplica, $K$ si moltiplica per $3^2=9$.',
-    'Non è corretto: l\'energia cinetica non è direttamente proporzionale a $v$, ma al suo <strong>quadrato</strong>. Quindi se $v$ triplica, $K$ si moltiplica per $3^2$.');
-
-  wireChoices(2, 'iexCineticachoices2', 'iexCineticafb2', 'c',
-    'La massa compare una sola volta nella formula $K=\\frac12 mv^2$, quindi la sua unità di misura, il chilogrammo, compare a potenza 1 — non 2.',
-    'Non è corretto: tutte le altre relazioni sono forme equivalenti dell\'unità di energia. Controlla con che potenza compare il chilogrammo.');
-
-  wireChoices(3, 'iexCineticachoices3', 'iexCineticafb3', 'b',
+  wireChoices(1, 'iexCineticachoices3', 'iexCineticafb3', 'b',
     'L\'energia cinetica è direttamente proporzionale alla massa (potenza 1): a parità di velocità, raddoppiando la massa raddoppia anche $K$.',
     'Non è corretto: a parità di velocità, l\'energia cinetica è direttamente proporzionale alla massa (non al suo quadrato, a differenza della velocità).');
+
+  wireChoices(5, 'iexCineticachoicesQ', 'iexCineticafbQ', 'b',
+    'Se $v$ si dimezza, $K$ si divide per $2^2=4$. Quindi un quarto dell\'energia corrisponde a metà della velocità.',
+    'Non è corretto: $K$ dipende dal <strong>quadrato</strong> di $v$. Prova: se $v$ si dimezza, per quanto si divide $K$?');
 
   restoring=true;
   choiceRegistry.forEach(function(choicesId){

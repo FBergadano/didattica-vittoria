@@ -55,11 +55,18 @@ Esercizio a carosello (Verifica Subito!) sull'energia potenziale gravitazionale.
 <div class="iex-fb" id="iexPotenzialefb3"></div>
 </div>
 
+<div class="iex-q" id="iexPotenzialerow4" style="display:none">
+<p class="iex-qt">Il rover Perseverance, che esplora Marte dal 2021, ha una massa di circa $1\,000\ \text{kg}$. Risalendo il bordo di un cratere guadagna $20\ \text m$ di quota, e la sua energia potenziale gravitazionale aumenta di $74\,000\ \text J$. Quanto vale l'accelerazione di gravità su Marte?</p>
+<div class="iex-nested">
+{% include num.html id="numPotMarte" valore="3.7" unit="m/s²" %}
+</div>
+</div>
+
 </div>
 
 <script>
 (function(){
-  var N=4, cur=0, ok=[false,false,false,false];
+  var N=5, cur=0, ok=[false,false,false,false,false];
   function updateDots(){
     var dots=document.querySelectorAll('#iexPotenzialedots .iex-dot');
     for(var i=0;i<N;i++)dots[i].className='iex-dot'+(i===cur?' cur':'')+(ok[i]?' ok':'');
@@ -145,9 +152,10 @@ Esercizio a carosello (Verifica Subito!) sull'energia potenziale gravitazionale.
       shootConf({getBoundingClientRect:function(){return{left:window.innerWidth*(.15+Math.random()*.7),top:window.innerHeight*(.05+Math.random()*.55),width:0,height:0};}});
     },b*270);})(b);
   }
-  var _row1=document.getElementById('iexPotenzialerow1');
-  if(_row1)_row1.addEventListener('iex:correct', function(){
-    if(!ok[1]){ ok[1]=true; updateDots(); checkFinale(); }
+  [1,4].forEach(function(i){
+    document.getElementById('iexPotenzialerow'+i).addEventListener('iex:correct', function(){
+      if(!ok[i]){ ok[i]=true; updateDots(); checkFinale(); }
+    });
   });
 
   wireChoices(0, 'iexPotenzialechoices0', 'iexPotenzialefb0', 'a',
