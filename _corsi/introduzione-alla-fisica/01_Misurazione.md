@@ -1,4 +1,5 @@
 ---
+notazione_rigida: true
 layout: capitolo
 title: "La Misurazione"
 corso: "introduzione-alla-fisica"

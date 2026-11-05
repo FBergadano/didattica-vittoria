@@ -9,12 +9,16 @@ Parametri:
   s      — soluzione mostrata dopo risposta errata (opzionale)
   tol    — tolleranza percentuale sul coefficiente (es. tol=5 accetta ±5%); default: 0 (corrispondenza esatta)
 
+Conta solo il valore del numero: 12 × 10⁻⁷ vale come 1,2 × 10⁻⁶. Solo nei capitoli con
+notazione_rigida: true nel front matter (la Misurazione) coefficiente ed esponente
+devono essere proprio quelli indicati.
+
 Rendering: [prima]  [ coeff ] × 10^[ exp ]  [✓]  feedback
 
 Esempio:
   {% include sci.html prima="450 000 000 000 =" coeff="4.5" exp="11" s="4.5 × 10¹¹" %}
 {% endcomment %}
-<div class="sci-wrap" data-coeff="{{ include.coeff | escape }}" data-exp="{{ include.exp | escape }}" data-sol="{{ include.s | escape }}" data-tol="{{ include.tol | default: 0 }}" data-fkey="{{ include.prima | append: '|' | append: include.coeff | append: '|' | append: include.exp | escape }}">{% if include.prima %}<span class="sci-prima">{{ include.prima }}</span>{% endif %}<span class="sci-nota"><input class="sci-c" type="text" autocomplete="off" spellcheck="false"><span class="sci-x">&times;&thinsp;10<span class="sci-pow"><input class="sci-e" type="text" autocomplete="off" spellcheck="false"></span></span></span><button class="sci-btn">✓</button><span class="sci-fb"></span></div>
+<div class="sci-wrap" data-coeff="{{ include.coeff | escape }}" data-exp="{{ include.exp | escape }}" data-sol="{{ include.s | escape }}" data-tol="{{ include.tol | default: 0 }}" data-rigida="{% if page.notazione_rigida %}1{% endif %}" data-fkey="{{ include.prima | append: '|' | append: include.coeff | append: '|' | append: include.exp | escape }}">{% if include.prima %}<span class="sci-prima">{{ include.prima }}</span>{% endif %}<span class="sci-nota"><input class="sci-c" type="text" autocomplete="off" spellcheck="false"><span class="sci-x">&times;&thinsp;10<span class="sci-pow"><input class="sci-e" type="text" autocomplete="off" spellcheck="false"></span></span></span><button class="sci-btn">✓</button><span class="sci-fb"></span></div>
 <script>
 (function(){
 
@@ -26,12 +30,24 @@ var okc=w.dataset.coeff.split(',').map(function(x){return x.trim();});
 var oke=w.dataset.exp.split(',').map(function(x){return x.trim();});
 function norm(v){return v.trim().replace(',','.').replace('−','-').replace('+','');}
 var tol=parseFloat(w.dataset.tol||'0');
+var rigida=w.dataset.rigida==='1';
 var skey=_lvHash(w.dataset.fkey);
+function cifre(x){return x/Math.pow(10,Math.floor(Math.log10(Math.abs(x))));}
 function chk(){
   var cv=norm(ic.value),ev=norm(ie.value);
   var cvf=parseFloat(cv),cok,eok=oke.indexOf(ev)>=0;
   if(tol>0&&!isNaN(cvf)){cok=okc.some(function(ok){var ref=parseFloat(ok);return Math.abs(cvf-ref)<=Math.abs(ref)*tol/100+0.001;});}
   else{cok=okc.indexOf(cv)>=0;}
+  if(!rigida){
+    var evf=parseFloat(ev),val=cvf*Math.pow(10,evf),marg=tol>0?0.001:1e-9;
+    var giusto=okc.some(function(ok){return oke.some(function(oe){
+      var ref=parseFloat(ok)*Math.pow(10,parseFloat(oe));
+      return Math.abs(val-ref)<=Math.abs(ref)*tol/100+marg*Math.pow(10,parseFloat(oe));
+    });});
+    if(giusto){cok=true;eok=true;}
+    else if(okc.some(function(ok){var ref=cifre(parseFloat(ok));return Math.abs(cifre(cvf)-ref)<=Math.abs(ref)*tol/100+marg;})){cok=true;eok=false;}
+    else{cok=false;}
+  }
   ic.classList.toggle('ok',cok);ic.classList.toggle('err',!cok);
   ie.classList.toggle('ok',eok);ie.classList.toggle('err',!eok);
   if(cok&&eok){fb.textContent='✓';fb.className='sci-fb ok';_shoot(btn);w.dispatchEvent(new CustomEvent('iex:correct',{bubbles:true}));}

@@ -190,8 +190,7 @@ quantizzazione della carica. Nessun parametro.
     if(isNaN(c)||isNaN(x)) problems.push('Scrivi la carica in coulomb: il numero e l\'esponente di 10.');
     else {
       var v=c*Math.pow(10,x), close=Math.abs(v-target)<=Math.abs(target)*0.01;
-      if(close && Math.abs(c)>=1 && Math.abs(c)<10) okC=true;
-      else if(close) problems.push('Coulomb: il valore è giusto, ma il numero davanti alla potenza di 10 deve essere compreso fra 1 e 10.');
+      if(close) okC=true;
       else if(Math.abs(v+target)<=Math.abs(target)*0.01) problems.push('Coulomb: attento al segno.');
       else problems.push('Coulomb: non è esatto. Moltiplica il multiplo di $e$ per $e=1{,}6\\times10^{-19}\\ \\text{C}$.');
     }
