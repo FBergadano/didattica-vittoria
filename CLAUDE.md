@@ -304,6 +304,7 @@ sola fila di pallini che scorre tutte le domande.
 - `tipo` — `"prevedi"` (prima di un'animazione), `"spiega"` (con parole tue), `"errore"` (trova l'errore)
 - il pulsante "Confronta con una risposta possibile" si attiva solo dopo che lo studente ha scritto
 - la risposta scritta resta salvata nel browser
+- dentro un **Verifica Subito!** la risposta possibile non si mostra: c'è il pulsante «Invia al prof», e la risposta arriva nella pagina del docente solo quando lo studente lo preme
 
 ### Riflessione libera (nessuna risposta giusta)
 

@@ -22,8 +22,8 @@ window._lvEsito = window._lvEsito || function() {};
     pagina: location.pathname.indexOf(BASE) === 0 ? location.pathname.slice(BASE.length) : location.pathname
   };
   var QK = 'lv-cons:coda', SK = 'lv-cons:inviati', AK = 'lv-cons:accesso';
-  // namespace che non sono risposte (tasti premuti, scelte non ancora verificate)
-  var SKIP = { field: 1, tfsel: 1 };
+  // namespace che non sono risposte (tasti premuti, scelte non ancora verificate, bozze non ancora inviate)
+  var SKIP = { field: 1, tfsel: 1, rabozza: 1 };
   // risposte aperte: si salvano a ogni tasto, quindi le spedisco con calma
   var TESTO = { defcmp: 1, filldef: 1, frayer: 1, riflessione: 1, raperta: 1, schierati: 1 };
 

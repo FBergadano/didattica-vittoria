@@ -4,6 +4,11 @@ fra opzioni date), poi la confronta con una risposta possibile. Il pulsante
 "Confronta" si attiva solo dopo che lo studente ha scritto qualcosa.
 La risposta scritta resta salvata nel browser (come fill-def).
 
+Dentro un Verifica Subito! è diverso: la risposta possibile non si mostra, e al
+posto di "Confronta" c'è "Invia al prof". Finché lo studente non preme il
+pulsante, la risposta resta una bozza nel browser (namespace rabozza) e al
+server non arriva nulla.
+
 Parametri:
   id       — ID univoco (obbligatorio)
   tipo     — "prevedi"  (prima di un'animazione/esperimento: cosa succederà?)
@@ -35,6 +40,32 @@ Esempio:
   var root=document.getElementById('ra-{{ _rid }}');if(!root)return;
   var ta=root.querySelector('.ra-area'),btn=root.querySelector('.ra-btn'),hint=root.querySelector('.ra-hint'),ans=root.querySelector('.ra-ans');
   var MIN={{ include.min | default: 15 }},ID='{{ _rid }}';
+  function etichetta(b,c){var l=b&&b.querySelector(c);return !!l&&/Verifica Subito/i.test(l.textContent);}
+  if(window.LVC&&(etichetta(root.closest('.box-ex'),'.box-label')||etichetta(root.closest('.iex-widget'),'.iex-lbl'))){
+    ans.remove();
+    var inv=_lvLoad('raperta',ID),boz=_lvLoad('rabozza',ID),inviata=inv&&inv.inviata?inv.v:null;
+    ta.value=boz?boz.v:(inv&&inv.v)||'';
+    var agg=function(){
+      var ok=ta.value.trim().length>=MIN,uguale=inviata!==null&&ta.value.trim()===inviata.trim();
+      btn.disabled=!ok||uguale;
+      btn.textContent=!uguale?(inviata!==null?'Invia di nuovo al prof':'Invia al prof'):LVC.accesso()?'✓ Inviata al prof':'In attesa: accedi dal pulsante 👤';
+      hint.textContent='Scrivi prima la tua risposta.';hint.style.display=ok?'none':'';
+    };
+    agg();
+    var tb;
+    ta.addEventListener('input',function(){agg();clearTimeout(tb);tb=setTimeout(function(){_lvSave('rabozza',ID,{v:ta.value});},400);});
+    btn.addEventListener('click',function(){
+      inviata=ta.value;
+      _lvSave('rabozza',ID,{v:ta.value});
+      _lvSave('raperta',ID,{v:ta.value,inviata:Date.now()});
+      agg();
+      if(!LVC.accesso())return;
+      LVC.invia(true).then(function(){
+        if(LVC.inCoda()){btn.textContent='In attesa di connessione';hint.textContent='Partirà appena torna la rete.';hint.style.display='';}
+      });
+    });
+    return;
+  }
   function upd(){var ok=ta.value.trim().length>=MIN;btn.disabled=!ok;hint.style.display=ok?'none':'';}
   var s=window._lvLoad&&_lvLoad('raperta',ID);
   if(s){ta.value=s.v||'';if(s.open){ans.hidden=false;btn.textContent='Nascondi la risposta possibile';}}
