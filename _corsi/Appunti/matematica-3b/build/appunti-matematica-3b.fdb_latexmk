@@ -1,13 +1,12 @@
 # Fdb version 4
-["xdvipdfmx"] 1791268431.31596 "build/appunti-matematica-3b.xdv" "build/appunti-matematica-3b.pdf" "build/appunti-matematica-3b" 1791268432.67623 0
-  "build/appunti-matematica-3b.xdv" 1791268430.48245 97944 80bdae059c8deec05dd8a392d13d5cb7 "xelatex"
+["xdvipdfmx"] 1794217172.63013 "build/appunti-matematica-3b.xdv" "build/appunti-matematica-3b.pdf" "build/appunti-matematica-3b" 1794217173.2307 0
+  "build/appunti-matematica-3b.xdv" 1794217172.22055 169700 ec684271bc6539ed71824bc010134115 "xelatex"
   (generated)
   "build/appunti-matematica-3b.pdf"
   (rewritten before read)
-["xelatex"] 1791268415.89001 "/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b/appunti-matematica-3b.tex" "build/appunti-matematica-3b.xdv" "appunti-matematica-3b" 1791268432.62275 0
-  "../../../latex/preamble.tex" 1784534361.21135 32548 211d754f564a8551c25f77e9ef69f2ec ""
+["xelatex"] 1794217165.76823 "appunti-matematica-3b.tex" "build/appunti-matematica-3b.xdv" "appunti-matematica-3b" 1794217173.22263 0
+  "../../../latex/preamble.tex" 1791793048.33957 32569 83e559011f09dbbd61cc35428a2d0855 ""
   "/etc/texmf/web2c/texmf.cnf" 1784293461.96888 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b/appunti-matematica-3b.tex" 1791268415.12276 7362 1154bf19f3539d1d368d1457485e6b0a ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/symbol/psyr.tfm" 1136768653 1408 5937f58aa508ea2cea4901c07d10f5fe ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
@@ -357,10 +356,10 @@
   "/usr/share/texmf/tex/latex/tipa/tipa.sty" 1764712660 21394 82fa9965637ca62399434739ae5998f6 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1784293637 5946946 69ae8bc8924b15d5d8b35b1e757af58e ""
-  "appunti-matematica-3b.tex" 1791268415.12276 7362 1154bf19f3539d1d368d1457485e6b0a ""
-  "build/appunti-matematica-3b.aux" 1791268430.47411 3374 47d5d38ad9aeabdfc3008fca530df8eb "xelatex"
-  "build/appunti-matematica-3b.out" 1791268430.4788 2801 4e633255de3d5fb70187559283ed709c "xelatex"
-  "build/appunti-matematica-3b.toc" 1791268430.4808 1616 a938cb69dc8eb37e007ea39d00225f3d "xelatex"
+  "appunti-matematica-3b.tex" 1794217157.814 14249 84c5885844fea9bd683448351a78338c ""
+  "build/appunti-matematica-3b.aux" 1794217172.21792 4953 7f962135461eb000d7d8f1488a9623e5 "xelatex"
+  "build/appunti-matematica-3b.out" 1794217172.21955 3314 ed974f7a7c6116208232c04cce400d95 "xelatex"
+  "build/appunti-matematica-3b.toc" 1794217172.22055 2617 fb9e3c85c7631f07532dcf6efd2bcbb9 "xelatex"
   (generated)
   "build/appunti-matematica-3b.aux"
   "build/appunti-matematica-3b.log"

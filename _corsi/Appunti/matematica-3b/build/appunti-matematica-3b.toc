@@ -15,4 +15,16 @@
 \contentsline {subsection}{\numberline {1.6.1}La ricetta per la risoluzione di un'equazione di secondo grado}{5}{subsection.1.6.1}%
 \contentsline {subsection}{\numberline {1.6.2}Fattorizzazione}{5}{subsection.1.6.2}%
 \contentsline {subsubsection}{Esercizi sulla fattorizzazione}{6}{subsubsection*.5}%
-\contentsline {section}{\numberline {1.7}Note sul capitolo}{7}{section.1.7}%
+\contentsline {section}{\numberline {1.7}Equazioni Frazionarie}{7}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Scaletta: frazionarie con il denominatore da scomporre}{7}{subsection.1.7.1}%
+\contentsline {paragraph}{1. Riscaldamento: scomporre (0--8')}{8}{paragraph*.6}%
+\contentsline {paragraph}{2. La ricetta (8--15')}{8}{paragraph*.7}%
+\contentsline {paragraph}{3. Insieme alla lavagna: differenza di quadrati (15--30')}{8}{paragraph*.8}%
+\contentsline {paragraph}{4. Da soli: raccoglimento (30--50')}{9}{paragraph*.9}%
+\contentsline {paragraph}{5. Da soli: trinomio (55--67')}{9}{paragraph*.10}%
+\contentsline {paragraph}{6. Attenzione al meno (67--76')}{9}{paragraph*.11}%
+\contentsline {paragraph}{7. Due scomposizioni di seguito (76--85')}{10}{paragraph*.12}%
+\contentsline {paragraph}{8. Una storiella per chiudere (85--97')}{10}{paragraph*.13}%
+\contentsline {paragraph}{Compiti (97--100')}{10}{paragraph*.14}%
+\contentsline {paragraph}{Se resto indietro}{11}{paragraph*.15}%
+\contentsline {section}{\numberline {1.8}Note sul capitolo}{11}{section.1.8}%

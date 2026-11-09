@@ -233,6 +233,95 @@ Possiamo ripetere questo gioco, anche infinite volte, e otteniamo (scrivere il c
 
 
 
+\subsection{Scaletta: frazionarie con il denominatore da scomporre}
+
+Due ore da $50$ minuti, con una pausa di $5$ minuti a metà. Le frazionarie con il denominatore di primo grado le hanno già fatte: qui l'unica cosa nuova è che \textbf{prima bisogna scomporre il denominatore}, e alla fine resta un'equazione di secondo grado. Un esercizio per ogni idea nuova, niente doppioni. Fra parentesi quadre le risposte.
+
+\subsubsection*{Prima ora}
+
+\paragraph{1. Riscaldamento: scomporre (0--8')}
+Alla lavagna, uno per tipo di scomposizione che useremo:
+\begin{enumerate}
+    \item $x^2-9$ \quad [differenza di quadrati: $(x-3)(x+3)$]
+    \item $x^2-4x$ \quad [raccoglimento: $x(x-4)$]
+    \item $x^2-5x+6$ \quad [trinomio, con le soluzioni $2$ e $3$: $(x-2)(x-3)$]
+\end{enumerate}
+
+\paragraph{2. La ricetta (8--15')}
+La scrivo in un angolo della lavagna e la lascio lì per tutte e due le ore.
+\begin{mdframed}
+    \begin{enumerate}
+        \item \textbf{Scomponi} tutti i denominatori.
+        \item Scrivi le \textbf{condizioni di esistenza}: ogni fattore del denominatore deve essere diverso da $0$.
+        \item Trova il \textbf{denominatore comune} (il prodotto di tutti i fattori, presi una volta sola) e \textbf{moltiplica} tutti e due i membri per esso: i denominatori spariscono.
+        \item \textbf{Risolvi} l'equazione di secondo grado che resta.
+        \item \textbf{Controlla} le soluzioni con le condizioni di esistenza: quelle che non le rispettano si scartano.
+    \end{enumerate}
+\end{mdframed}
+
+\paragraph{3. Insieme alla lavagna: differenza di quadrati (15--30')}
+$$
+\frac{x}{x-2}-\frac{1}{x+2}=\frac{8}{x^2-4}
+$$
+[$x^2-4=(x-2)(x+2)$; CE: $x\neq2$, $x\neq-2$. Moltiplico per $(x-2)(x+2)$: $x(x+2)-(x-2)=8$, cioè $x^2+x-6=0$, quindi $(x+3)(x-2)=0$. Le soluzioni sarebbero $x=-3$ e $x=2$, ma $x=2$ \textbf{non rispetta le CE}: resta solo $x=-3$.]
+
+Qui mi fermo sul punto 5: senza le CE avrebbero tenuto anche $x=2$. Far sostituire $x=2$ nell'equazione di partenza: viene una divisione per zero.
+
+\paragraph{4. Da soli: raccoglimento (30--50')}
+$$
+\frac{x}{x-1}+\frac{2}{x}=\frac{6}{x^2-x}
+$$
+[$x^2-x=x(x-1)$; CE: $x\neq0$, $x\neq1$. Moltiplico per $x(x-1)$: $x^2+2(x-1)=6$, cioè $x^2+2x-8=0$, quindi $(x+4)(x-2)=0$: $x=-4$ e $x=2$, \textbf{tutte e due accettabili}.]
+
+Lascio un buon quarto d'ora per farlo davvero da soli, poi lo correggo alla lavagna con uno di loro. È quella in cui non si scarta niente: così vedono che non succede sempre.
+
+\subsubsection*{Pausa (50--55')}
+
+\subsubsection*{Seconda ora}
+
+\paragraph{5. Da soli: trinomio (55--67')}
+$$
+\frac{x}{x-3}-\frac{1}{x-2}=\frac{1}{x^2-5x+6}
+$$
+[$x^2-5x+6=(x-2)(x-3)$; CE: $x\neq2$, $x\neq3$. Moltiplico: $x(x-2)-(x-3)=1$, cioè $x^2-3x+2=0$, quindi $(x-1)(x-2)=0$: $x=1$ accettabile, $x=2$ \textbf{da scartare}.]
+
+Se si bloccano sulla scomposizione, ricordo che le soluzioni di $x^2-5x+6=0$ le abbiamo trovate nel riscaldamento.
+
+\paragraph{6. Attenzione al meno (67--76')}
+$$
+\frac{2x}{x-1}-\frac{x+3}{x+1}=\frac{4}{x^2-1}
+$$
+[CE: $x\neq\pm1$. Moltiplico per $(x-1)(x+1)$: $2x(x+1)-(x+3)(x-1)=4$. Il meno davanti alla seconda frazione cambia il segno di \textbf{tutto} il prodotto: $2x^2+2x-(x^2+2x-3)=4$, cioè $x^2-1=0$, quindi $x=\pm1$: \textbf{tutte e due da scartare}, l'equazione è impossibile.]
+
+Prima di correggere, guardo chi ha scritto $-x^2+2x-3$: è l'errore più frequente, e conviene farlo vedere alla lavagna. Il risultato \lette{impossibile} li spiazzerà: è voluto.
+
+\paragraph{7. Due scomposizioni di seguito (76--85')}
+$$
+\frac{x}{x-2}-\frac{4}{x+2}=\frac{32}{2x^2-8}
+$$
+[$2x^2-8=2(x^2-4)=2(x-2)(x+2)$: prima raccoglimento, poi differenza di quadrati. CE: $x\neq\pm2$. Moltiplico per $2(x-2)(x+2)$: $2x(x+2)-8(x-2)=32$, cioè $2x^2-4x-16=0$, e dividendo per $2$: $x^2-2x-8=0$, quindi $(x-4)(x+2)=0$: $x=4$ accettabile, $x=-2$ da scartare.]
+
+Novità: il $2$ del denominatore. Se qualcuno lo dimentica nel denominatore comune, i conti non tornano: farlo notare.
+
+\paragraph{8. Una storiella per chiudere (85--97')}
+Un gruppo di amici affitta una casa al mare per $600$ euro, divisi in parti uguali. Se fossero in $2$ di più, ognuno pagherebbe $25$ euro in meno. Quanti sono?
+
+[Se sono $x$, ognuno paga $\frac{600}{x}$; in $x+2$ pagherebbero $\frac{600}{x+2}$ a testa. Equazione: $\dfrac{600}{x}-\dfrac{600}{x+2}=25$. CE: $x\neq0$, $x\neq-2$. Moltiplico per $x(x+2)$: $600(x+2)-600x=25x(x+2)$, cioè $1200=25x^2+50x$; divido per $25$: $x^2+2x-48=0$, quindi $(x+8)(x-6)=0$. Le CE vanno bene per tutte e due, ma $x=-8$ non ha senso: \textbf{sono $6$ amici}.]
+
+Qui il denominatore non va scomposto: la novità è che, oltre alle CE, alla fine si scarta anche la soluzione che non ha senso nel problema. Imposto io l'equazione insieme a loro, i conti li fanno loro.
+
+\paragraph{Compiti (97--100')}
+\begin{enumerate}
+    \item $\dfrac{x+2}{x}+\dfrac{1}{x+1}=\dfrac{7}{x^2+x}$ \quad [CE: $x\neq0$, $x\neq-1$; $x^2+4x-5=0$: $x=-5$, $x=1$, tutte e due accettabili]
+    \item $\dfrac{x}{x+3}+\dfrac{3}{x-3}=\dfrac{18}{x^2-9}$ \quad [CE: $x\neq\pm3$; resta $x^2-9=0$, cioè $x=\pm3$: tutte e due da scartare, \textbf{impossibile}]
+    \item $\dfrac{x}{x-2}+\dfrac{1}{x+1}=\dfrac{9}{3x^2-3x-6}$ \quad [$3x^2-3x-6=3(x-2)(x+1)$: raccoglimento, poi trinomio. CE: $x\neq2$, $x\neq-1$. Moltiplico per $3(x-2)(x+1)$: $3x(x+1)+3(x-2)=9$, cioè $x^2+2x-5=0$: $x=-1\pm\sqrt6$, tutte e due accettabili]
+    \item $\dfrac{x}{x-3}=\dfrac{2}{x-2}+\dfrac{2}{x^2-5x+6}$ \quad [$x^2-4x+4=0$: $x=2$, da scartare: \textbf{impossibile}]
+    \item Una gita in pullman costa in tutto $900$ euro, divisi fra i partecipanti. Se ci fossero $5$ partecipanti in più, ognuno pagherebbe $6$ euro in meno. Quanti sono i partecipanti? \quad [$\frac{900}{x}-\frac{900}{x+5}=6$, cioè $x^2+5x-750=0$, $\Delta=3025=55^2$: $x=25$]
+\end{enumerate}
+
+\paragraph{Se resto indietro}
+Nell'ordine: il punto 7 (lo do per casa), poi la storiella (la imposto io e la finiscono a casa). \textbf{Non} tagliare il punto 3, che fa vedere perché servono le CE, né il punto 6, che contiene l'errore di segno più frequente.
+
 \section{Note sul capitolo}
 Alla sezione delle equazioni monomie, hanno avuto abbastanza difficoltà a comprendere che $-2(x-3)^2=0$ aveva come soluzione $x=3$. Ho provato a farlo fare a loro e ci è riuscito Guglielmo ma solo dopo un po' di tempo. Ha proposto di dividere per $-2$ e da lì hanno compreso.
 

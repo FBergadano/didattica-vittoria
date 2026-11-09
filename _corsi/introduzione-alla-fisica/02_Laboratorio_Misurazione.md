@@ -133,7 +133,9 @@ L'incertezza strumentale, che indichiamo nelle nostre formule con i.s., dipende 
 
 ### Semidispersione e la notazione $\bar x \pm I_x$
 
-Come abbiamo detto prima, parte dell'incertezza proviene dallo strumento che utilizziamo, ma ci sono altre fonti di incertezza: l'errore umano, cioè del misuratore, e la variabilità del misurando. Stimare queste fonti di errore *a priori* sarebbe un compito molto difficile: l'errore umano dipende da persona a persona, e la variabilità del misurando dipende da un grandissimo numero di fattori, che cambiano da un luogo a un altro o da un momento a un altro. Questi tipi di incertezza, quindi, si stimano *a posteriori*, cioè **dopo** aver eseguito le misurazioni e aver osservato i valori ottenuti. 
+Come abbiamo detto prima, parte dell'incertezza proviene dallo strumento che utilizziamo, ma ci sono altre fonti di incertezza: l'errore umano, cioè del misuratore, e la variabilità del misurando. Stimare queste fonti di errore *a priori* sarebbe un compito molto difficile: l'errore umano dipende da persona a persona, e la variabilità del misurando dipende da un grandissimo numero di fattori, che cambiano da un luogo a un altro o da un momento a un altro. Questi tipi di incertezza, quindi, si stimano *a posteriori*, cioè **dopo** aver eseguito le misurazioni e aver osservato i valori ottenuti.   
+
+
 Immaginiamo di dover misurare una certa grandezza $x$. Quando si eseguono più misurazioni della stessa grandezza si ottengono in genere valori leggermente diversi: $x_1, x_2, \ldots, x_N$. Non sappiamo quale di quei valori sia quello corretto: per stimarlo, quindi, facciamo una media (proprio come con i voti!) e la indichiamo con $\bar x$, che corrisponde quindi a
 
 {% include eq-annotated.html

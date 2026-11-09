@@ -1,0 +1,93 @@
+\documentclass[11pt]{report}
+\input{../../../latex/preamble.tex}
+
+\begin{document}
+
+\tableofcontents
+
+\chapter{Funzione inversa e trasformazioni dei grafici}
+
+\section{Scaletta: due ore di preparazione alla verifica}
+
+
+\begin{enumerate}
+    \item Dire a quelli della verifica che hanno 5 minuti a metà per fare domande e 5 minuti alla fine.
+    \item Dire agli altri che ci alleniamo per la verifica di Venerdì di Matematica, e che nelle prossime volte in cui ci vediamo facciamo sempre Fisica per allenarci per la verifica di Venerdì prossimo.
+    \item Scrivere alla lavagna le due domande che ritornano sempre: \lette{si può invertire?} e \lette{che cosa succede al grafico?}. Dire che l'ultima mezz'ora la facciamo su esercizi uguali a quelli della verifica.
+\end{enumerate}
+
+\subsection*{1. Si può invertire? Il test della retta orizzontale (5--20')}
+\begin{enumerate}
+  \item Ripasso lampo: una funzione si inverte solo se è biiettiva; con le frecce, \lette{giro tutte le frecce}. Disegno delle uova di una non-invertibile e di una invertibile. Poi chiedo loro di scegliere quale è quella invertibile. (Lascio loro dieci secondi per pensarci, poi gli chiedo di votare).
+  \item Alla lavagna quattro schizzi veloci: $y=2x-1$, $y=x^2$, $y=x^3$, $y=x^3-4x$ (quest'ultima la disegno io, con le due gobbe, senza tabella). Lascio qualche secondo e per ognuna chiedo: si può invertire? Faccio tracciare a loro la retta orizzontale che \lette{non va bene}.\\
+  {}[sì; no, manca sia l'iniettività sia la suriettività; sì; no, manca l'iniettività: la retta $y=0$ la tocca in $-2,0,2$]
+  \item Storiella (2 minuti, solo a parole): calcio un pallone verso l'alto. Un amico mi dice \lette{l'ho visto a 3 metri}: posso sapere quando? No, ci passa due volte, in salita e in discesa. È la parabola di prima: ecco perché non si inverte.
+\end{enumerate}
+
+
+\subsection*{2. Calcolare l'inversa (20--45')}
+\begin{enumerate}
+  \item \textbf{Insieme}: $f(x)=3x-2$. I tre passi, scritti in un angolo della lavagna e lasciati lì per tutta la lezione: (1) controllo che si possa invertire; (2) scambio $x$ e $y$ e isolo $y$; (3) Scrivo l'espressione di $f^{-1}(x)$; (4) Controllo con un numero $a$: $f(a)=b$, $f^{-1}(b)=a$.\\
+  {}[$f^{-1}(x)=\frac{x+2}{3}$]
+  \item \textbf{Da soli} (3 minuti), il taxi: $3$ euro alla partenza più $2$ euro al chilometro, $c(k)=3+2k$. Con $15$ euro quanti chilometri? Far notare che la domanda \lette{al contrario} è proprio l'inversa.\\
+  {}[$k=\frac{c-3}{2}$, $6$ km]
+  \item \textbf{Da soli}: $f(x)=x^3+1$. Uso la tabella di $x^3$ già alla lavagna per far vedere che si può invertire. Poi $f^{-1}(9)$ \lette{senza formula}: quale numero, elevato al cubo e più uno, fa $9$?\\
+  {}[$f^{-1}(x)=\sqrt[3]{x-1}$, $f^{-1}(9)=2$]
+  \item \emph{Se c'è tempo} (2 minuti): l'artista di strada, \lette{pensa un numero, per $3$, più $7$}. Uno di loro pensa il numero, io lo indovino, poi chiedo come ho fatto.\\
+  {}[$f^{-1}(x)=\frac{x-7}{3}$]
+\end{enumerate}
+\textbf{Non} faccio altre rette o altre cubiche: gli esercizi 13--15 della simulazione li lascio per casa.
+
+\subsection*{Pausa (45--50')}
+
+\subsection*{3. Le trasformazioni, sempre sulla stessa parabola (50--85')}
+Tengo sulla lavagna il grafico di $y=x^2$ con la tabella ($x=-2,\dots,2$) e disegno ogni trasformazione su piani piccoli uno accanto all'altro.
+\begin{enumerate}
+  \item $y=x^2+2$ e $y=x^2-4$: il grafico sale e scende.
+  \item $y=(x-3)^2$: \textbf{prima chiedo a loro} dove va. Molti diranno \lette{a sinistra}: li lascio sbagliare, poi controlliamo con un punto della tabella. Dove vale $0$? In $x=3$, quindi va a destra. È la trappola del segno, la più frequente in verifica.
+  \item $y=(x-3)^2+2$: le due cose insieme, vertice $(3,2)$.
+  \item $y=2x^2$ e $y=-x^2$: \textbf{stessa tabella}, raddoppio le $y$ oppure cambio il segno. Dilatazione e simmetria rispetto all'asse $x$ in cinque minuti.
+  \item $y=\lvert x^2-4\rvert$: riprendo $x^2-4$ già disegnata, ribalto il pezzo sotto l'asse.
+  \item $y=f(-x)$: un solo esempio, $\sqrt x$ e $\sqrt{-x}$ (il grafico si ribalta e va a sinistra). Su $x^2$ \textbf{non} lo faccio: non cambierebbe niente e li confonderebbe.
+  \item Storiella che riassume le tre trasformazioni (10 minuti, la faccio io guidando): il monopattino costa $c(t)=1+0{,}25t$ ($1$ euro per sbloccarlo più $0{,}25$ al minuto).
+  \begin{itemize}
+    \item lo sblocco passa a $1{,}50$ euro: $c(t)+0{,}5$, il grafico sale;
+    \item regalano i primi $4$ minuti: $c(t-4)$, il grafico va a destra;
+    \item nel fine settimana costa il doppio: $2c(t)$, il grafico si allunga.
+  \end{itemize}
+  Domanda veloce: con $6$ euro, quanti minuti faccio? È di nuovo l'inversa. [$20$ minuti]
+\end{enumerate}
+
+\subsection*{4. Esercizi tipo verifica (85--115')}
+\begin{enumerate}
+  \item \textbf{Insieme, ma loro alla lavagna} (15 minuti): $f(x)=(x-2)^3+1$ (esercizio 51 della simulazione). Riuso tutto: la cubica è già disegnata, $x^3+1$ l'abbiamo invertita prima.
+  \begin{enumerate}
+    \item trasformazioni da $y=x^3$ [a destra di $2$, su di $1$];
+    \item grafico [punto \lette{centrale} in $(2,1)$];
+    \item si può invertire? [sì, test della retta orizzontale];
+    \item $f^{-1}(x)$ [$\sqrt[3]{x-1}+2$].
+  \end{enumerate}
+  \item \textbf{Da soli, poi correggo} (15 minuti): $f(x)=(x+1)^2-4$ (esercizio 53).
+  \begin{enumerate}
+    \item trasformazioni da $y=x^2$ [a sinistra di $1$, giù di $4$; vertice $(-1,-4)$];
+    \item zeri [$x=1$, $x=-3$];
+    \item perché non si può invertire [è una parabola: retta orizzontale $y=0$];
+    \item grafico di $\lvert f(x)\rvert$ [il vertice va in $(-1,4)$].
+  \end{enumerate}
+\end{enumerate}
+Se arrivo qui in anticipo: esercizio 57, $f(x)=-\lvert x+1\rvert+2$.
+
+\subsection*{5. Compiti (115--120')}
+Dalla simulazione, un esercizio per tipo (in tutto una decina, per non sommergerli):
+\begin{itemize}
+  \item invertibilità dal grafico: 6, 10;
+  \item calcolo dell'inversa: 14, 17;
+  \item problemi: 20, 21;
+  \item trasformazioni: 29 (la spezzata), 37, 41;
+  \item riepilogo: 52, 55.
+\end{itemize}
+
+\subsection*{Se resto indietro: che cosa tagliare}
+Nell'ordine: l'artista di strada (2.4), $f(-x)$ (3.6), il secondo esercizio tipo verifica (lo do per casa). \textbf{Non} tagliare il monopattino né il primo esercizio tipo verifica: sono quelli che collegano le due parti.
+
+\end{document}
