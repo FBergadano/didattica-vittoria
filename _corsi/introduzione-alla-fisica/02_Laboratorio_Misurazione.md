@@ -180,7 +180,7 @@ Dopodiché misuriamo anche l'incertezza della misurazione tramite la <definizion
      formula="s_x = \dfrac{x_\max - x_\min}{2}"
      frammenti="s_x|x_\max|x_\min"
      etichette="semidispersione|valore più grande misurato|valore più piccolo misurato"
-     posizioni="basso|alto|alto"
+     posizioni="alto|alto|alto"
   %}
 
 La semidispersione dice quanto sono "sparpagliate" le misurazioni: più esse sono lontane l'una dall'altra, più la semidispersione è grande. 
