@@ -8,6 +8,7 @@ Esercizio a carosello (Prova tu!) sull'incertezza relativa percentuale. Nessun p
 <div class="iex-dots" id="iexProvaReldots"></div>
 <button class="iex-navbtn" id="iexProvaRelnext" onclick="iexProvaRelnav(1)">Succ. &rarr;</button>
 </div>
+{% include calc-margin.html id="calcProvaErrRel" %}
 
 <div class="iex-q" id="iexProvaRelrow0">
 <p class="iex-qt">L'altezza di una porta è $h = (2{,}110 \pm 0{,}025)\ \text m$. Calcola l'incertezza relativa percentuale.</p>
@@ -22,6 +23,7 @@ Esercizio a carosello (Prova tu!) sull'incertezza relativa percentuale. Nessun p
 {% include num.html id="numRelFrancobollo" valore="2" unit="%" tol="5" %}
 </div>
 
+<div style="clear:both"></div>
 </div>
 
 <script>

@@ -1,0 +1,10 @@
+{% comment %}
+Esempio svolto (colore lampone), distinto dai riquadri degli esercizi
+(Verifica Subito!, Prova tu!) che usano box-ex. Non viene numerato.
+Più esempi di fila: un solo box-esempio con dentro scorri.html, una slide per esempio.
+  testo — etichetta (default "Esempio")
+Si chiude con box-end.html.
+{% endcomment %}
+<div class="box box-esempio">
+<p class="box-label">{% if include.testo %}{{ include.testo }}{% else %}Esempio{% endif %}</p>
+<div class="box-content" markdown="1">

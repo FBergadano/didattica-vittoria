@@ -525,6 +525,8 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
                 .box-label { color: $box-note-border; } }
   &.box-ricorda { background: $box-ricorda-bg; border-color: $box-ricorda-border;
                 .box-label { color: $box-ricorda-border; } }
+  &.box-esempio { background: $box-esempio-bg; border-color: $box-esempio-border;
+                .box-label { color: $box-esempio-border; } }
 
   &.box-imp {
     border-left: none;
