@@ -173,7 +173,7 @@ Quanto vale la temperatura media $\bar T$?
 {% include scorri-end.html %}
 {% include box-end.html %}
 
-Dopodiché misuriamo anche l'incertezza della misurazione tramite la <definizione>semidispersione</definizione>, che corrisponde alla metà della differenza tra il valore massimo e quello minimo. Ad esempio, se abbiamo una grandezza $x$ di cui effettuiamo un certo numero di misurazioni, la semidispersione $s_x$ si calcola nel seguente modo:
+Dopodiché misuriamo anche l'incertezza della misurazione tramite la <definizione>semidispersione</definizione>, che corrisponde alla metà della differenza tra il valore massimo e quello minimo. Cioè, se abbiamo una grandezza $x$ di cui effettuiamo un certo numero di misurazioni, la semidispersione $s_x$ si calcola nel seguente modo:
 
 {% include eq-annotated.html
      id="semidispersione"
