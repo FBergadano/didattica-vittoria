@@ -1,5 +1,7 @@
 {% comment %}
-Esercizio a carosello: isola le grandezze nella formula del campo gravitazionale, usando invert.html. Nessun parametro.
+Esercizio a carosello: isola le grandezze nella formula del campo gravitazionale
+(invert.html) e, subito dopo ogni formula inversa, la usa: unità di misura di G
+(unit-derive + mcq) e distanza a cui il campo terrestre vale 2,45 N/kg (num.html). Nessun parametro.
 {% endcomment %}
 <div class="iex-widget" id="invCarCampo">
 <p class="iex-lbl">Isola le altre grandezze</p>
@@ -9,6 +11,7 @@ Esercizio a carosello: isola le grandezze nella formula del campo gravitazionale
 <div class="iex-dots" id="invCarCampodots"></div>
 <button class="iex-navbtn" id="invCarCamponext" onclick="invCarCamponav(1)">Succ. &rarr;</button>
 </div>
+{% include calc-margin.html id="calcInvCampo" %}
 
 <div class="iex-q" id="invCarCamporow0">
 <div class="iex-nested">
@@ -17,29 +20,54 @@ Esercizio a carosello: isola le grandezze nella formula del campo gravitazionale
 </div>
 
 <div class="iex-q" id="invCarCamporow1" style="display:none">
+<p class="iex-qt">Hai trovato $G = \dfrac{g\cdot r^2}{M}$. Ora sostituisci ogni grandezza con la sua unità di misura, per ritrovare l'unità di $G$.</p>
+<div class="iex-nested">
+{% include unit-derive.html id="ud-campo-G" testo="Trova [G]"
+   variabile="[G]"
+   numeratore_simboli="[g]|[r^2]" numeratore_corrette="N/kg|m²"
+   denominatore_simboli="[M]" denominatore_corrette="kg"
+   opzioni="N|N/kg|kg|m|m²|s" %}
+</div>
+<p class="iex-qt">Semplifica: a che cosa è uguale $\dfrac{\text{N/kg}\cdot\text m^2}{\text{kg}}$?</p>
+{% capture _oUnitaG %}[
+{"v":"a","t":"$\\text N\\cdot\\text m^2/\\text{kg}^2$"},
+{"v":"b","t":"$\\text N\\cdot\\text m^2/\\text{kg}$"},
+{"v":"c","t":"$\\text N/\\text{kg}$"},
+{"v":"d","t":"$\\text N\\cdot\\text{kg}/\\text m^2$"}
+]{% endcapture %}
+{% include mcq.html id="mcqUnitaGCampo" opts=_oUnitaG ok="a" s="Il kg del campo, $\text{N/kg}$, sta al denominatore, e si moltiplica per il kg di $M$: in tutto $\text{kg}^2$. Quindi $[G] = \text N\cdot\text m^2/\text{kg}^2$, la stessa unità trovata con la legge di gravitazione universale." %}
+</div>
+
+<div class="iex-q" id="invCarCamporow2" style="display:none">
 <div class="iex-nested">
 {% include invert.html id="inv-campo-M" variabili="g|G|M|r" sinistra="g" destra="G*M/r/r" obiettivo="M" %}
 </div>
 </div>
 
-<div class="iex-q" id="invCarCamporow2" style="display:none">
+<div class="iex-q" id="invCarCamporow3" style="display:none">
 <div class="iex-nested">
 {% include invert.html id="inv-campo-r" variabili="g|G|M|r" sinistra="g" destra="G*M/r/r" obiettivo="r" radice="1" %}
 </div>
 </div>
 
-<div class="iex-q" id="invCarCamporow3" style="display:none">
+<div class="iex-q" id="invCarCamporow4" style="display:none">
+<p class="iex-qt">Ora usa la formula per $r$. A che distanza dal <strong>centro</strong> della Terra il campo terrestre vale $2{,}45\ \text{N/kg}$, circa un quarto di quello in superficie? Usa $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$ e $G = 6{,}67\times10^{-11}\ \text{N}\cdot\text{m}^2/\text{kg}^2$, e confronta il risultato con il raggio terrestre, $6\,371\ \text{km}$.</p>
+{% include num.html id="numDistCampoQuarto" valore="12750" unit="km" tol="1" %}
+</div>
+
+<div class="iex-q" id="invCarCamporow5" style="display:none">
 <div class="iex-nested">
 {% include invert.html id="inv-campo-F" variabili="g|F|m" sinistra="g" destra="F/m" obiettivo="F" %}
 </div>
 </div>
 
-<div class="iex-q" id="invCarCamporow4" style="display:none">
+<div class="iex-q" id="invCarCamporow6" style="display:none">
 <div class="iex-nested">
 {% include invert.html id="inv-campo-m" variabili="g|F|m" sinistra="g" destra="F/m" obiettivo="m" %}
 </div>
 </div>
 
+<div style="clear:both"></div>
 </div>
 
 <script>
@@ -70,5 +98,5 @@ window.setupInvCarousel=function(ID,N){
   buildDots();
   window[ID+'nav']=function(d){ if(cur+d>=0 && cur+d<N) show(cur+d); };
 };
-setupInvCarousel('invCarCampo',5);
+setupInvCarousel('invCarCampo',7);
 </script>

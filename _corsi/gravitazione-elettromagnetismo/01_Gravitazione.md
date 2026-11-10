@@ -258,12 +258,11 @@ $$
 F_1 = G \frac{M_1 \cdot m}{r_1^2}, \qquad\qquad F_2 = G \frac{M_2\cdot m}{r_2^2} 
 $$
 
-Nel simulatore seguente puoi spostare le masse e cambiarne i valori: guarda come cambiano le due forze su $m$, e la loro somma.
+Nel seguente simulatore puoi spostare le masse e cambiarne i valori: guarda come cambiano le due forze su $m$, e la loro somma.
 
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-forza-grav" tipo="forza" fisica="grav" %}
 
 {% include unisci.html %}
-Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta in un contesto concreto — con quattro scenari diversi.
 
 {% include esercizi/parallelogramma-scenari.html %}
 
@@ -471,7 +470,8 @@ $$[g=\frac{\text N}{\text{kg}}.$$ -->
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Massa esploratrice"%}
-Inoltre, nonostante nella formula compaia la massa $m$, ricordiamo che il campo $g$ **non** dipende da essa (come visto prima, si semplifica con la $m$ contenuta in $F$). Spesso però ci capiterà di introdurre, all'interno di un certo campo generato da una massa $M$ una seconda massa $m$, di modo da misurare la forza di attrazione, da cui poi si ottiene il campo secondo la formula appena data. Pertanto, questa massa è chiamata <definizione>massa esploratrice</definizione> (nel senso che “esplora” il campo).
+Inoltre, nonostante nella formula compaia la massa $m$, ricordiamo che il campo $g$ **non** dipende da essa (come visto prima, si semplifica con la $m$ contenuta in $F$). Infatti, il campo dipende solo dalla massa generatrice $M$ e dal punto $\vec r$ in cui si misura il campo.  
+Spesso però ci capiterà di introdurre, all'interno di un certo campo generato da una massa $M$ una seconda massa $m$, di modo da misurare la forza di attrazione, da cui poi si ottiene il campo secondo la formula appena data. Pertanto, questa massa è chiamata <definizione>massa esploratrice</definizione> (nel senso che “esplora” il campo). Spesso diremo che questa seconda massa è "piccola" rispetto alla prima, così da poter trascurare il campo che essa genera.
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="Il modulo del campo gravitazionale generato da una massa M" %}
@@ -506,7 +506,41 @@ Con $M$ in ascissa (e $r$ fisso), che forma ha il grafico di $g$?
 {% capture _o_mcqgecampo %}[{"v":"a","t":"Una retta che passa per l'origine"},{"v":"b","t":"Una curva che scende sempre più piano, avvicinandosi all'asse $M$ senza mai toccarlo"},{"v":"c","t":"Una retta orizzontale: $g$ non dipende da $M$"},{"v":"d","t":"Una parabola"}]{% endcapture %}
 {% include mcq.html id="mcqgecampo" opts=_o_mcqgecampo ok="a" s="$g = G\,M/r^2$: a $r$ fisso, $g$ è direttamente proporzionale a $M$. Raddoppia la massa, raddoppia il campo: i punti stanno su una retta che passa per l'origine." %}
 
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcCampoGM" %}
+{% include scorri.html %}
+{% include scorri-slide.html titolo="Il campo sulla superficie terrestre" %}
+Nei capitoli precedenti abbiamo usato $g = 9{,}81\ \text{N/kg}$ per il campo sulla superficie terrestre. Verifica che la formula $g = G\,M/r^2$ dà proprio questo valore. La Terra ha massa $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$ e raggio $R_\oplus = 6\,371\ \text{km}$; $G = 6{,}67\times10^{-11}\ \text{N}\cdot\text{m}^2/\text{kg}^2$. Attenzione: la distanza va in metri.
+
+{% include num.html id="numgSuperficie" valore="9.81" unit="N/kg" tol="1" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="Il campo sulla Stazione Spaziale" %}
+La Stazione Spaziale Internazionale orbita a circa $400\ \text{km}$ di altezza sopra la superficie terrestre. Quanto vale lì il campo gravitazionale della Terra? Ricorda che $r$ è la distanza dal centro della Terra.
+
+{% include num.html id="numgISS" valore="8.69" unit="N/kg" tol="1.5" %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+<div style="clear:both"></div>
+{% include box-end.html %}
+
 {% include esercizi/invert-campo-gravitazionale.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcCampoFm" %}
+Su un pianeta sconosciuto, un sasso di $2{,}0\ \text{kg}$ appeso a un dinamometro fa segnare una forza di $7{,}4\ \text{N}$. Quanto vale il campo gravitazionale del pianeta in quel punto?
+
+{% include num.html id="numgDinamometro" valore="3.7" unit="N/kg" tol="1" %}
+<div style="clear:both"></div>
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qCampoTeoria %}[
+{"t":"Se raddoppio la massa esploratrice, il campo gravitazionale nel punto in cui si trova raddoppia.","ok":false,"s":"No: raddoppia la forza, ma il rapporto $F/m$ resta lo stesso. Il campo dipende solo da $M$ e da $r$."},
+{"t":"Se la distanza dal centro della Terra raddoppia, il campo terrestre diventa un quarto.","ok":true,"s":"Sì: $g$ è inversamente proporzionale a $r^2$, e $2^2 = 4$."},
+{"t":"Sulla Stazione Spaziale il campo gravitazionale terrestre è nullo: per questo gli astronauti galleggiano.","ok":false,"s":"No: hai calcolato che vale circa $8{,}7\\ \\text{N/kg}$, quasi come a terra. Gli astronauti galleggiano perché cadono insieme alla stazione, che è in orbita."}
+]{% endcapture %}
+{% include quiz.html domande=_qCampoTeoria id="q-campo-teoria" senza_esempi="true" %}
+{% include box-end.html %}
 {% include unisci-end.html %}
 
 ### Direzione e verso del vettore campo gravitazionale
@@ -540,6 +574,16 @@ $$\vec g = \frac {\vec F} m,$$
 ove $m$ è la massa esploratrice. <u markdown="span">Il vettore campo gravitazionale $\vec g$ ha pertanto **stessa direzione** e **stesso verso** del vettore forza $\vec F$</u>.
 
 
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qVettoreG %}[
+{"t":"In un punto vicino alla Terra, il vettore $\\vec g$ punta verso il centro della Terra.","ok":true,"s":"Sì: ha lo stesso verso della forza gravitazionale, che attira verso il centro della massa che genera il campo."},
+{"t":"Se nel punto $P$ metto una massa esploratrice doppia, il vettore $\\vec g$ in $P$ cambia.","ok":false,"s":"No: raddoppia la forza $\\vec F$, ma $\\vec g = \\vec F/m$ resta lo stesso, in modulo, direzione e verso."},
+{"t":"Il campo $\\vec g$ in un punto esiste anche se in quel punto non c'è nessuna massa esploratrice.","ok":true,"s":"Sì: è la massa $M$ a modificare lo spazio intorno a sé. La massa esploratrice serve solo a misurare il campo."},
+{"t":"I vettori $\\vec F$ e $\\vec g$ hanno sempre lo stesso modulo.","ok":false,"s":"No: hanno la stessa direzione e lo stesso verso, ma il modulo di $\\vec F$ è $m$ volte quello di $\\vec g$, e i due si misurano in unità diverse (N e N/kg)."}
+]{% endcapture %}
+{% include quiz.html domande=_qVettoreG id="q-vettore-g" senza_esempi="true" %}
 {% include box-end.html %}
 
 
@@ -632,6 +676,16 @@ Anche in questo caso possiamo pensare alle linee di campo come alle traiettorie 
 {% include margin-note-end.html %}
 
 {% include lab-virtuali/traiettoria-campo-doppio-lab.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qLineeCampo %}[
+{"t":"Due linee di campo possono incrociarsi.","ok":false,"s":"No: nel punto d'incrocio il campo dovrebbe avere due direzioni diverse, mentre in ogni punto il vettore $\\vec g$ è uno solo."},
+{"t":"In una piccola zona vicino alla superficie terrestre le linee di campo sono quasi parallele ed equidistanti, quindi il campo è quasi lo stesso in tutti i punti.","ok":true,"s":"Sì: su distanze piccole rispetto al raggio terrestre la curvatura delle linee non si vede, e la loro densità resta la stessa. Per questo a scuola si usa $g = 9{,}81\\ \\text{N/kg}$ ovunque."},
+{"t":"Le linee di campo sono qualcosa che esiste davvero nello spazio, come dei fili invisibili.","ok":false,"s":"No: sono un modo di disegnare il campo. Quello che esiste è il campo, cioè il vettore $\\vec g$ in ogni punto."},
+{"t":"Se il campo è generato da una sola massa, una massa esploratrice lasciata ferma cade lungo la linea di campo che passa per il suo punto di partenza.","ok":true,"s":"Sì: con una sola massa le linee sono rette che puntano verso il centro, e la caduta avviene proprio lungo di esse."}
+]{% endcapture %}
+{% include quiz.html domande=_qLineeCampo id="q-linee-campo" senza_esempi="true" %}
+{% include box-end.html %}
 
 # Energia Gravitazionale
 
@@ -727,6 +781,32 @@ Con $r$ in ascissa, che forma ha il grafico di $U$?
 {% include mcq.html id="mcqgeenergia" opts=_o_mcqgeenergia ok="b" s="Per il segno meno, $U$ è sempre negativa: la curva sta sotto l'asse. Allontanandosi, $U$ cresce (diventa meno negativa) e si avvicina a zero, il valore che ha a distanza infinita." %}
 
 {% include esercizi/invert-energia-potenziale.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcUNum" %}
+{% include scorri.html %}
+{% include scorri-slide.html titolo="L'energia potenziale di un satellite" %}
+Un satellite di $1\,000\ \text{kg}$ orbita a $r = 7{,}0\times10^{6}\ \text{m}$ dal centro della Terra. Calcola la sua energia potenziale gravitazionale, in joule. Usa $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$ e $G = 6{,}67\times10^{-11}\ \text{N}\cdot\text{m}^2/\text{kg}^2$.
+
+{% include sci.html prima="$U =$" coeff="-5.69" exp="10" tol="1" s="$U = -G\dfrac{M_\oplus m}{r} = -6{,}67\times10^{-11}\cdot\dfrac{5{,}97\times10^{24}\cdot 1\,000}{7{,}0\times10^{6}}\ \text J \approx -5{,}69\times10^{10}\ \text J$" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="Il campo dall'energia potenziale" %}
+Una sonda di $500\ \text{kg}$, a $r = 6{,}8\times10^{6}\ \text{m}$ dal centro di Marte, ha un'energia potenziale gravitazionale $U = -6{,}3\times10^{9}\ \text{J}$. Usa la formula $U = -mgr$ per ricavare il campo gravitazionale di Marte in quel punto.
+
+{% include num.html id="numgDaU" valore="1.85" unit="N/kg" tol="1.5" %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+<div style="clear:both"></div>
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qUTeoria %}[
+{"t":"Se un sasso si allontana dalla Terra, la sua energia potenziale gravitazionale aumenta.","ok":true,"s":"Sì: $U = -GMm/r$ diventa meno negativa, cioè più grande, quando $r$ cresce."},
+{"t":"L'energia potenziale gravitazionale di due masse vale zero solo quando sono infinitamente lontane.","ok":true,"s":"Sì: a qualunque distanza finita $U = -GMm/r$ è negativa, e si avvicina a zero quando $r$ diventa enorme."},
+{"t":"Siccome $U$ è negativa, per allontanare un sasso dalla Terra non serve energia.","ok":false,"s":"No: per allontanarlo bisogna far aumentare $U$, cioè fornire energia. Il segno meno dice che, vicino alla Terra, la coppia ha meno energia che a distanza infinita."}
+]{% endcapture %}
+{% include quiz.html domande=_qUTeoria id="q-u-teoria" senza_esempi="true" %}
+{% include box-end.html %}
 {% include unisci-end.html %}
 
 ### Sovrapposizione degli effetti per l'energia potenziale
@@ -819,6 +899,32 @@ Leggi sul grafico di $V$ con $r$ in ascissa: quando $r$ raddoppia, che cosa succ
 {% include mcq.html id="mcqgepotenziale" opts=_o_mcqgepotenziale ok="c" s="$V=-G\,M/r$ è inversamente proporzionale a $r$, non a $r^2$: a distanza doppia il valore si dimezza. Per esempio da $-62{,}5$ MJ/kg a $-31{,}3$ MJ/kg." %}
 
 {% include esercizi/invert-potenziale.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcVNum" %}
+{% include scorri.html %}
+{% include scorri-slide.html titolo="Il potenziale sulla superficie terrestre" %}
+Quanto vale il potenziale gravitazionale sulla superficie della Terra? Usa $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$, $R_\oplus = 6\,371\ \text{km}$ e $G = 6{,}67\times10^{-11}\ \text{N}\cdot\text{m}^2/\text{kg}^2$, ed esprimi il risultato in MJ/kg.
+
+{% include num.html id="numVSuperficie" valore="-62.5" unit="MJ/kg" tol="1" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="Il potenziale dall'energia potenziale" %}
+In un punto $P$ un satellite di $1\,200\ \text{kg}$ ha un'energia potenziale gravitazionale $U = -3{,}6\times10^{10}\ \text{J}$. Quanto vale il potenziale gravitazionale in $P$? Esprimi il risultato in MJ/kg.
+
+{% include num.html id="numVDaU" valore="-30" unit="MJ/kg" tol="1" %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+<div style="clear:both"></div>
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qVTeoria %}[
+{"t":"Due punti alla stessa distanza dal centro della Terra hanno lo stesso potenziale gravitazionale.","ok":true,"s":"Sì: $V = -GM/r$ dipende solo dalla distanza $r$ dal centro, non dalla direzione."},
+{"t":"Allontanandosi dalla Terra il potenziale gravitazionale aumenta, avvicinandosi a zero.","ok":true,"s":"Sì: $V$ è negativo e, quando $r$ cresce, diventa sempre meno negativo."},
+{"t":"Se in un punto $V = -10\\ \\text{J/kg}$, una massa di $2\\ \\text{kg}$ posta lì ha energia potenziale $U = -5\\ \\text J$.","ok":false,"s":"No: $U = mV = 2\\ \\text{kg}\\cdot(-10\\ \\text{J/kg}) = -20\\ \\text J$. Il potenziale si moltiplica per la massa, non si divide."}
+]{% endcapture %}
+{% include quiz.html domande=_qVTeoria id="q-v-teoria" senza_esempi="true" %}
+{% include box-end.html %}
 {% include unisci-end.html %}
 
 ### Sovrapposizione degli effetti per il potenziale 
@@ -1280,6 +1386,21 @@ Il campo gravitazionale generato da una massa $M$ vale $g$ in un certo punto. Co
 ]{% endcapture %}
 {% include match.html id="matchEffettoG" dati=_d_effetto_g col1="Modifica" col3="Effetto su $g$" %}
 {% include ex-end.html %}
+
+{% include ex.html diff=1 %}
+Nel 2005 la sonda Huygens, di circa $320\ \text{kg}$, si è posata su Titano, la luna più grande di Saturno, dove il campo gravitazionale vale $1{,}35\ \text{N/kg}$. Con quale forza Titano attirava la sonda?
+
+{% include calc-margin.html id="calcRiepHuygens" %}
+{% include num.html id="numFHuygens" valore="432" unit="N" tol="1" %}
+<div style="clear:both"></div>
+
+{% include ex-sol.html %}
+Da $g = F/m$ si ricava $F = g\,m$:
+
+$$F = 1{,}35\ \text{N/kg} \cdot 320\ \text{kg} = 432\ \text N.$$
+
+Sulla Terra la stessa sonda sarebbe attirata con una forza circa sette volte più grande.
+{% include ex-sol-end.html %}
 
 {% include ex.html diff=1 %}
 Marte ha massa $M = 6{,}42\times10^{23}\ \text{kg}$ e raggio $R = 3\,390\ \text{km}$. Calcola il modulo del campo gravitazionale sulla sua superficie.
