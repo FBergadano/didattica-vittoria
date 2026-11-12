@@ -1,0 +1,25 @@
+{% comment %}
+Figura statica, per un esercizio "trova l'errore": una carica grande (2 C) e una
+piccola (1 μC), entrambe positive, con le forze di repulsione disegnate SBAGLIATE
+(la freccia sulla carica piccola è molto più lunga di quella sulla carica grande;
+per il terzo principio dovrebbero essere lunghe uguali). Nessun parametro.
+{% endcomment %}
+<div style="margin:1rem 0 0.5rem;">
+<svg viewBox="0 0 440 150" xmlns="http://www.w3.org/2000/svg" style="max-width:460px;width:100%;display:block;margin:0.3rem auto;" font-family="Georgia,serif">
+  <defs>
+    <radialGradient id="fce-big" cx="35%" cy="32%" r="70%"><stop offset="0%" stop-color="#ffd9c2"/><stop offset="55%" stop-color="#e8983a"/><stop offset="100%" stop-color="#9a4a12"/></radialGradient>
+    <radialGradient id="fce-small" cx="35%" cy="32%" r="70%"><stop offset="0%" stop-color="#ffd9c2"/><stop offset="55%" stop-color="#e8983a"/><stop offset="100%" stop-color="#9a4a12"/></radialGradient>
+    <marker id="fce-a" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#dc2626"/></marker>
+  </defs>
+  <line x1="40" y1="75" x2="410" y2="75" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,4"/>
+  <circle cx="150" cy="75" r="34" fill="url(#fce-big)"/>
+  <text x="150" y="82" font-size="22" font-weight="700" text-anchor="middle" fill="#5a2f08">+</text>
+  <text x="150" y="132" font-size="14" text-anchor="middle" fill="#1f2937">q<tspan font-size="10" dy="4">1</tspan><tspan dy="-4"> = 2 C</tspan></text>
+  <circle cx="270" cy="75" r="10" fill="url(#fce-small)"/>
+  <text x="270" y="80" font-size="13" font-weight="700" text-anchor="middle" fill="#5a2f08">+</text>
+  <text x="270" y="132" font-size="14" text-anchor="middle" fill="#1f2937">q<tspan font-size="10" dy="4">2</tspan><tspan dy="-4"> = 1 μC</tspan></text>
+  <line x1="116" y1="75" x2="92" y2="75" stroke="#dc2626" stroke-width="3" marker-end="url(#fce-a)"/>
+  <text x="100" y="62" font-size="13" text-anchor="middle" fill="#dc2626" font-style="italic">F<tspan font-size="10" dy="4" font-style="normal">2→1</tspan></text>
+  <line x1="280" y1="75" x2="405" y2="75" stroke="#dc2626" stroke-width="3" marker-end="url(#fce-a)"/>
+  <text x="345" y="62" font-size="13" text-anchor="middle" fill="#dc2626" font-style="italic">F<tspan font-size="10" dy="4" font-style="normal">1→2</tspan></text>
+</svg></div>

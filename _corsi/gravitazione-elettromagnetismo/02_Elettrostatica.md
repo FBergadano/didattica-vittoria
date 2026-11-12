@@ -567,7 +567,7 @@ Perché, al contatto, quasi tutta la carica dell'aereo passa al terreno?
 {% include scorri-end.html %}
 {% include box-end.html %}
 
-### La Polarizzazione e l'Elettrizzazione per induzione
+### La Polarizzazione
 
 {% include margin-note.html testo="Caricare senza toccare?" %}
 C'è però un modo ancora più sorprendente per cambiare la carica di un conduttore: senza nemmeno sfiorarlo. Guarda che cosa succede se avviciniamo un corpo carico (isolante o conduttore) a un conduttore neutro:
@@ -616,7 +616,7 @@ Ritaglia da un foglio sottile degli omini di carta, piccoli e leggeri. Strofina 
 {% include video.html id="tHXVk1he7Qw" %}
 Appendi a un filo di cotone una pallina di carta stagnola e avvicinale una penna di plastica strofinata: la pallina viene attratta, tocca la penna e subito dopo viene respinta, come se avesse cambiato idea. Qui si vedono, uno dopo l'altro, due fenomeni che conosci: prima la penna polarizza la pallina e la attira; poi, al contatto, le cede un po' della sua carica (elettrizzazione per contatto): ora le due hanno carica dello stesso segno, e si respingono.
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="La verniciatura elettrostatica" %}
+{% include scorri-slide.html img="/corsi/immagini/verniciatura-elettrostatica.jpeg" alt="Schema del processo di verniciatura elettrostatica" titolo="La verniciatura elettrostatica" %}
 Le carrozzerie delle automobili si verniciano con uno spruzzo di goccioline di vernice cariche, che si caricano uscendo dall'ugello. La carrozzeria, che è un conduttore, viene polarizzata dalle goccioline cariche (ed è anche collegata a terra), e così le attira: si distribuiscono in modo uniforme e arrivano anche sui lati nascosti, che lo spruzzo non vede direttamente. In più, si spreca molta meno vernice.
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html img="/corsi/immagini/filtro.elettrostatico.webp" alt="Schema di un filtro elettrostatico: l'aria passa fra fili carichi negativamente e lastre cariche positivamente, sulle quali restano attaccate le particelle" titolo="I filtri elettrostatici" %}
@@ -628,12 +628,57 @@ I panni cattura-polvere di tessuto sintetico si caricano strofinando le superfic
 {% include scorri-end.html %}
 {% include box-end.html %}
 
-Per rendere permanente la separazione delle cariche serve un passaggio in più, che puoi vedere nella seguente animazione. Prova sia con la bacchetta negativa sia con quella positiva.
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+{% capture _qPol %}[
+{"t":"Un conduttore polarizzato ha una carica totale diversa da zero.","ok":false,"s":"No: le sue cariche si sono solo ridistribuite, ma nel complesso resta neutro."},
+{"t":"Avvicinando una bacchetta carica negativamente a una sfera metallica neutra, gli elettroni della sfera si spostano sul lato più lontano dalla bacchetta.","ok":true,"s":"Sì: sono respinti dalla bacchetta, che ha carica dello stesso segno."},
+{"t":"Durante la polarizzazione alcune cariche passano dalla bacchetta al conduttore.","ok":false,"s":"No: nella polarizzazione nessuna carica passa da un corpo all'altro, e i due corpi non si toccano nemmeno."},
+{"t":"Se si allontana la bacchetta, la polarizzazione scompare.","ok":true,"s":"Sì: senza il corpo carico vicino, le cariche del conduttore tornano a distribuirsi in modo uniforme."}
+]{% endcapture %}
+{% include quiz.html domande=_qPol id="q-polarizzazione" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Avvicini una bacchetta carica **positivamente** a una sfera metallica neutra, senza toccarla. Come si distribuiscono le cariche sulla sfera?
+{% capture _oPolPos %}[
+{"v":"a","t":"Il lato vicino alla bacchetta diventa negativo, quello lontano positivo"},
+{"v":"b","t":"Il lato vicino alla bacchetta diventa positivo, quello lontano negativo"},
+{"v":"c","t":"Tutta la sfera diventa negativa"},
+{"v":"d","t":"Niente: la sfera è neutra e la bacchetta non la tocca"}
+]{% endcapture %}
+{% include mcq.html id="mcq-polarizzazione-positiva" opts=_oPolPos ok="a" s="La bacchetta positiva attira gli elettroni liberi della sfera, che si ammassano sul lato vicino: lì c'è un eccesso di elettroni, cioè carica negativa. Sul lato lontano restano più protoni che elettroni, cioè carica positiva. I protoni non si spostano, e la sfera nel complesso resta neutra." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un palloncino strofinato sui capelli resta attaccato al muro, anche se il muro è neutro. Perché?
+{% capture _oMuro %}[
+{"v":"a","t":"Perché il palloncino cede la sua carica al muro, e da quel momento i due corpi si attraggono"},
+{"v":"b","t":"Perché il palloncino polarizza il muro: nella parte vicina si avvicinano le cariche di segno opposto, che lo attirano più di quanto le altre, più lontane, lo respingano"},
+{"v":"c","t":"Perché il muro è sempre carico, anche se non ce ne accorgiamo"},
+{"v":"d","t":"Perché lo strofinio rende il palloncino un po' appiccicoso"}
+]{% endcapture %}
+{% include mcq.html id="mcq-palloncino-muro" opts=_oMuro ok="b" s="Il muro è un isolante, ma le sue molecole si polarizzano: in ognuna le cariche di segno opposto a quelle del palloncino si spostano un pochino verso di lui. Le cariche attratte sono un po' più vicine al palloncino di quelle respinte, e la forza elettrica diminuisce con la distanza: vince l'attrazione. È lo stesso motivo per cui un pettine strofinato attira dei pezzettini di carta." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Il pettine strofinato piega il filo d'acqua del rubinetto. Se al posto del pettine usi una bacchetta carica con il segno **opposto**, che cosa fa il filo d'acqua?
+{% capture _oAcqua %}[
+{"v":"a","t":"Si piega dalla parte opposta, allontanandosi dalla bacchetta"},
+{"v":"b","t":"Si piega ancora verso la bacchetta"},
+{"v":"c","t":"Resta dritto"}
+]{% endcapture %}
+{% include mcq.html id="mcq-acqua-segno" opts=_oAcqua ok="b" s="Il corpo carico polarizza l'acqua in ogni caso: dalla parte vicina si avvicinano sempre le cariche di segno opposto al suo. Cambiando il segno della bacchetta si invertono anche le cariche della polarizzazione, ma quelle attratte restano più vicine di quelle respinte: un corpo neutro viene sempre attratto, qualunque sia il segno del corpo carico." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
+### L'Elettrizzazione per induzione
+
+Abbiamo visto che la polarizzazione non elettrizza il corpo in modo permanente. Per rendere permanente la separazione delle cariche serve un passaggio in più, che puoi vedere nella seguente animazione. Prova sia con la bacchetta negativa sia con quella positiva.
 
 {% include lab-virtuali/induzione-permanente-lab.html %}
 
 {% include margin-note.html testo="Il collegamento a terra" %}
-Osserviamo che se, mentre il corpo carico resta vicino, colleghiamo il conduttore a terra con un filo, alcuni elettroni si spostano attraverso il filo (mentre i protoni rimangono fermi, come al solito). Se poi stacchiamo il collegamento a terra *prima* di allontanare il corpo carico, il conduttore resta con una carica netta permanente. Questo fenomeno consiste nell'<definizione>elettrizzazione per induzione</definizione>.
+Osserviamo che se, mentre il corpo carico resta vicino, colleghiamo il conduttore a terra con un filo, alcuni elettroni si spostano attraverso il filo (mentre i protoni rimangono fermi, come al solito). Se poi stacchiamo il collegamento a terra *prima* di allontanare il corpo carico, il conduttore resta con una carica netta permanente. Questo fenomeno si chiama dunque <definizione>elettrizzazione per induzione</definizione>.
 {% include margin-note-end.html %}
 
 
@@ -665,15 +710,15 @@ L'elettrizzazione per induzione è il fenomeno per cui, **collegando a terra** u
 
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qInd %}[
-{"t":"Un conduttore polarizzato ha una carica totale diversa da zero.","ok":false,"s":"No: le sue cariche si sono solo ridistribuite, ma nel complesso resta neutro."},
-{"t":"Avvicinando una bacchetta carica negativamente a una sfera metallica neutra, gli elettroni della sfera si spostano sul lato più lontano dalla bacchetta.","ok":true,"s":"Sì: sono respinti dalla bacchetta, che ha carica dello stesso segno."},
-{"t":"Durante la polarizzazione alcune cariche passano dalla bacchetta al conduttore.","ok":false,"s":"No: nella polarizzazione nessuna carica passa da un corpo all'altro, e i due corpi non si toccano nemmeno."},
-{"t":"Se si allontana la bacchetta, la polarizzazione scompare.","ok":true,"s":"Sì: senza il corpo carico vicino, le cariche del conduttore tornano a distribuirsi in modo uniforme."},
-{"t":"Nell'elettrizzazione per induzione, se si allontana la bacchetta prima di staccare il collegamento a terra, il conduttore resta carico.","ok":false,"s":"No: allontanata la bacchetta, gli elettroni tornano dalla terra al conduttore, che torna neutro. Il collegamento a terra va staccato prima di allontanare il corpo carico."}
+{"t":"Nell'elettrizzazione per induzione, se si allontana la bacchetta prima di staccare il collegamento a terra, il conduttore resta carico.","ok":false,"s":"No: allontanata la bacchetta, gli elettroni tornano dalla terra al conduttore, che torna neutro. Il collegamento a terra va staccato prima di allontanare il corpo carico."},
+{"t":"Avvicinando una bacchetta negativa e collegando la sfera a terra, la sfera diventa positiva perché dalla terra salgono dei protoni.","ok":false,"s":"No: i protoni restano sempre fermi nei nuclei. La bacchetta negativa respinge gli elettroni, e alcuni scendono nel terreno: la sfera resta con meno elettroni che protoni, cioè positiva."}
 ]{% endcapture %}
 {% include quiz.html domande=_qInd id="q-induzione" senza_esempi="true" %}
-
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
 Questa volta avviciniamo a una sfera metallica neutra una bacchetta carica **positivamente**. Colleghiamo la sfera a terra, poi stacchiamo il collegamento e infine allontaniamo la bacchetta. Che carica ha la sfera?
 {% capture _oInd %}[
 {"v":"a","t":"Positiva, come nell'esempio visto sopra"},
@@ -681,15 +726,28 @@ Questa volta avviciniamo a una sfera metallica neutra una bacchetta carica **pos
 {"v":"c","t":"Nessuna: torna neutra"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-induzione-positiva" opts=_oInd ok="b" s="La bacchetta positiva attira gli elettroni: mentre la sfera è collegata a terra, degli elettroni salgono dalla terra verso la sfera. Staccato il collegamento, quegli elettroni restano sulla sfera, che quindi è carica negativamente: il segno è sempre opposto a quello del corpo che induce." %}
-
-Un palloncino strofinato sui capelli resta attaccato al muro, anche se il muro è neutro. Perché?
-{% capture _oMuro %}[
-{"v":"a","t":"Perché il palloncino cede la sua carica al muro, e da quel momento i due corpi si attraggono"},
-{"v":"b","t":"Perché il palloncino polarizza il muro: nella parte vicina si avvicinano le cariche di segno opposto, che lo attirano più di quanto le altre, più lontane, lo respingano"},
-{"v":"c","t":"Perché il muro è sempre carico, anche se non ce ne accorgiamo"},
-{"v":"d","t":"Perché lo strofinio rende il palloncino un po' appiccicoso"}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Vuoi caricare per induzione una sfera metallica neutra, appoggiata su un sostegno isolante. In quale ordine devi fare le operazioni?
+{% capture _oOrd %}[
+{"v":"a","t":"Collego la sfera a terra, avvicino la bacchetta, allontano la bacchetta, stacco il collegamento"},
+{"v":"b","t":"Avvicino la bacchetta, collego la sfera a terra, stacco il collegamento, allontano la bacchetta"},
+{"v":"c","t":"Avvicino la bacchetta, collego la sfera a terra, allontano la bacchetta, stacco il collegamento"},
+{"v":"d","t":"Tocco la sfera con la bacchetta, poi la collego a terra"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-palloncino-muro" opts=_oMuro ok="b" s="Il muro è un isolante, ma le sue molecole si polarizzano: in ognuna le cariche di segno opposto a quelle del palloncino si spostano un pochino verso di lui. Le cariche attratte sono un po' più vicine al palloncino di quelle respinte, e la forza elettrica diminuisce con la distanza: vince l'attrazione. È lo stesso motivo per cui un pettine strofinato attira dei pezzettini di carta." %}
+{% include mcq.html id="mcq-induzione-ordine" opts=_oOrd ok="b" s="Prima la bacchetta deve polarizzare la sfera; poi, con il collegamento a terra, alcuni elettroni passano fra la sfera e il terreno. Il collegamento va staccato mentre la bacchetta è ancora vicina: se la allontanassi prima, gli elettroni tornerebbero indietro e la sfera ritornerebbe neutra. Toccare la sfera con la bacchetta, invece, è elettrizzazione per contatto." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Nell'elettroforo di Volta, appoggiata la teglia sul vassoio carico, la tocchi con un dito prima di sollevarla. A che cosa serve il dito?
+{% capture _oDito %}[
+{"v":"a","t":"A scaricare il vassoio, che altrimenti darebbe la scossa"},
+{"v":"b","t":"A strofinare la teglia, che così si carica"},
+{"v":"c","t":"A collegare la teglia a terra: attraverso il corpo passano degli elettroni fra la teglia e il terreno"},
+{"v":"d","t":"A niente: la teglia si caricherebbe lo stesso"}
+]{% endcapture %}
+{% include mcq.html id="mcq-elettroforo-dito" opts=_oDito ok="c" s="Il nostro corpo è un conduttore, e il dito fa da collegamento a terra. Il vassoio polarizza la teglia, e mentre la tocchi degli elettroni passano fra la teglia e il terreno. Togli il dito prima di sollevare la teglia, e la teglia resta carica: è l'elettrizzazione per induzione. Senza il dito la teglia si polarizzerebbe soltanto, e una volta sollevata tornerebbe neutra." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 ### Come misurare la carica: l'elettroscopio a foglie
@@ -737,11 +795,47 @@ Prova tu stesso: trascina uno strumento dal menu fino all'elettroscopio e osserv
 
 
 {% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
 {% capture _qElettr %}[
 {"t":"Un elettroscopio a foglie può aprirsi anche solo avvicinando un corpo carico, senza toccarlo.","ok":true,"s":"Vero, grazie all'induzione — ma in questo caso le foglioline si richiudono se il corpo viene allontanato."},
-{"t":"L'angolo di apertura delle foglioline dell'elettroscopio non dipende dalla quantità di carica presente.","ok":false,"s":"Falso: più carica è presente, più le foglioline si respingono e si aprono."}
+{"t":"L'angolo di apertura delle foglioline dell'elettroscopio non dipende dalla quantità di carica presente.","ok":false,"s":"Falso: più carica è presente, più le foglioline si respingono e si aprono."},
+{"t":"Se avvicino una bacchetta carica alla sferetta senza toccarla, l'elettroscopio nel suo complesso resta neutro.","ok":true,"s":"Vero: le cariche si spostano da una parte all'altra del metallo, ma nessuna entra o esce. Per questo, allontanando la bacchetta, tutto torna come prima."},
+{"t":"Quando tocco la sferetta con una bacchetta di vetro carica positivamente, alcuni protoni passano dalla bacchetta all'elettroscopio.","ok":false,"s":"Falso: i protoni stanno nei nuclei e non si muovono. Sono gli elettroni dell'elettroscopio a passare sulla bacchetta, e l'elettroscopio resta con più protoni che elettroni, cioè carico positivamente."}
 ]{% endcapture %}
 {% include quiz.html id="qgfElettr" domande=_qElettr senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Avvicini alla sferetta, senza toccarla, una bacchetta di plastica carica negativamente. Che cosa succede dentro il metallo dell'elettroscopio?
+{% capture _oElInd %}[
+{"v":"a","t":"Gli elettroni liberi, respinti dalla bacchetta, scendono verso le foglioline: le foglioline diventano negative, la sferetta resta positiva, e le foglioline si respingono"},
+{"v":"b","t":"I protoni, attratti dalla bacchetta, salgono verso la sferetta, e le foglioline restano negative"},
+{"v":"c","t":"Alcuni elettroni saltano dalla bacchetta alla sferetta attraverso l'aria, e caricano le foglioline"},
+{"v":"d","t":"Non succede niente finché la bacchetta non tocca la sferetta"}
+]{% endcapture %}
+{% include mcq.html id="mcq-elettr-induzione" opts=_oElInd ok="a" s="Nel metallo si muovono solo gli elettroni liberi. Quelli respinti dalla bacchetta negativa si allontanano il più possibile, cioè fino alle foglioline, che diventano negative e si respingono. In alto restano protoni scoperti: la sferetta è positiva." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+A che cosa serve la campana di vetro che racchiude le foglioline?
+{% capture _oElVetro %}[
+{"v":"a","t":"A proteggere le foglioline, leggerissime, dalle correnti d'aria, che altrimenti le muoverebbero anche senza carica"},
+{"v":"b","t":"A conservare la carica: il vetro è un conduttore e la trattiene"},
+{"v":"c","t":"Ad amplificare la carica, come una lente"},
+{"v":"d","t":"A collegare le foglioline a terra"}
+]{% endcapture %}
+{% include mcq.html id="mcq-elettr-vetro" opts=_oElVetro ok="a" s="Le foglioline sono così sottili che basterebbe un soffio per muoverle: senza la campana non sapremmo se si aprono per la carica o per l'aria. Il vetro, poi, è isolante, quindi non porta via la carica." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Perché l'asta metallica attraversa un tappo isolante, e non un tappo di metallo?
+{% capture _oElTappo %}[
+{"v":"a","t":"Perché con un tappo di metallo la carica potrebbe scappare verso il contenitore e il resto dello strumento, e le foglioline si richiuderebbero"},
+{"v":"b","t":"Perché il metallo è troppo pesante per stare sopra il vetro"},
+{"v":"c","t":"Perché il tappo isolante produce carica quando lo si tocca"},
+{"v":"d","t":"Non fa differenza: il tappo serve solo a chiudere la campana"}
+]{% endcapture %}
+{% include mcq.html id="mcq-elettr-tappo" opts=_oElTappo ok="a" s="La carica deve restare sul conduttore formato da sferetta, asta e foglioline. Il tappo isolante lo separa dal resto: le cariche non possono attraversarlo, e l'elettroscopio resta carico." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
 {% include box-end.html %}
 
 
@@ -783,6 +877,16 @@ Questo è vero anche quando le due cariche sono molto diverse: una carica grande
 {% include quiz.html domande=_qDirF id="q-dir-forza" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
+Che cosa vuol dire che la forza elettrica è una <em>forza centrale</em>?
+{% capture _oCentrale %}[
+{"v":"a","t":"Che la forza parte dal centro della carica che la esercita"},
+{"v":"b","t":"Che la forza ha come direzione la retta che congiunge i centri delle due cariche"},
+{"v":"c","t":"Che la forza è più intensa al centro della carica"},
+{"v":"d","t":"Che la forza agisce solo fra cariche che si trovano una al centro dell'altra"}
+]{% endcapture %}
+{% include mcq.html id="mcq-forza-centrale" opts=_oCentrale ok="b" s="«Centrale» riguarda la direzione della forza, non il punto da cui si disegna la freccia: la retta su cui giace la forza passa per i due centri. La forza che $q_1$ esercita su $q_2$ è applicata a $q_2$, e non parte da $q_1$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
 Una carica negativa $Q_1$ si trova a sinistra di una carica positiva $Q_2$. In che verso è la forza che $Q_1$ esercita su $Q_2$?
 {% capture _oDirF %}[
 {"v":"a","t":"verso sinistra, cioè verso $Q_1$"},
@@ -791,6 +895,19 @@ Una carica negativa $Q_1$ si trova a sinistra di una carica positiva $Q_2$. In c
 {"v":"d","t":"dipende da quale delle due cariche è più grande"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-dir-forza" opts=_oDirF ok="a" s="Le cariche hanno segno opposto, quindi si attraggono: la forza su $Q_2$ punta verso $Q_1$, cioè verso sinistra, lungo la retta che congiunge i centri. Il valore delle cariche cambia solo il modulo della forza, non il suo verso." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Un compagno ha disegnato così le forze fra una carica di $2\ \text{C}$ e una carica di $1\ \mu\text{C}$. Qual è l'errore?
+
+{% include figure/forze-coulomb-errore-figura.html %}
+
+{% capture _oErrF %}[
+{"v":"a","t":"Le due frecce dovrebbero essere lunghe uguali: le due forze hanno lo stesso modulo, anche se le cariche sono molto diverse"},
+{"v":"b","t":"La freccia più lunga dovrebbe essere quella sulla carica grande, perché la carica grande sente una forza maggiore"},
+{"v":"c","t":"Le due frecce dovrebbero puntare una verso l'altra, perché le cariche si attraggono"},
+{"v":"d","t":"Le frecce dovrebbero essere perpendicolari alla retta che congiunge le cariche"}
+]{% endcapture %}
+{% include mcq.html id="mcq-errore-frecce" opts=_oErrF ok="a" s="Per il terzo principio della dinamica, $\vec F_{2\to1} = -\vec F_{1\to2}$: stesso modulo, stessa direzione, versi opposti. Che una carica sia molto più grande dell'altra non cambia le cose: le due forze sono comunque uguali in modulo. Le cariche sono tutte e due positive, quindi i versi (si respingono) sono giusti." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Nell'atomo di idrogeno il protone attrae l'elettrone esattamente con la stessa intensità con cui l'elettrone attrae il protone.

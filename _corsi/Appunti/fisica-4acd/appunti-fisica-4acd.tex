@@ -1,0 +1,188 @@
+\documentclass[11pt]{report}
+\input{../../../latex/preamble.tex}
+
+\begin{document}
+
+\tableofcontents
+
+\chapter{L'energia}
+
+\section{Scaletta: quattro ore di preparazione alla verifica}
+
+Tutti gli esercizi con il nome (pallavolista, canguro, slittino\dots) sono nella sezione \lette{Esercizi simili alla verifica} del capitolo Energia sul sito: i ragazzi li ritrovano lì con l'indizio e la casella per la risposta. Sempre $g=\SI{10}{\metre\per\second\squared}$.
+
+\subsection*{Gli errori su cui lavoro in tutte e quattro le ore}
+\begin{enumerate}
+  \item Non vedono che l'energia \textbf{si trasforma}: se so quanto sale chi salta, so con che velocità si è staccato da terra (e viceversa).
+  \item Non usano il \textbf{teorema dell'energia cinetica}: se conosco il lavoro, conosco la velocità. Quasi nessuno lo sapeva enunciare.
+  \item Non hanno capito che se $v$ raddoppia $K$ quadruplica, se triplica $K$ diventa nove volte, se si dimezza $K$ diventa un quarto.
+\end{enumerate}
+
+\textbf{All'inizio della prima ora} scrivo in un angolo della lavagna, e lo lascio lì tutte e quattro le ore, le tre domande che ci faremo in ogni problema:
+\begin{enumerate}
+  \item che energia c'è all'inizio? E alla fine?
+  \item chi compie lavoro? Con che segno?
+  \item quella che manca, dov'è finita?
+\end{enumerate}
+Dico che l'ultima ora è una simulazione di verifica, da fare da soli.
+
+%==================================================================
+\subsection*{Prima ora --- Il salto: dall'altezza alla velocità}
+
+\paragraph{1. $v$ raddoppia, $K$\dots? (5--15')}
+\begin{enumerate}
+  \item Domanda a voto, dieci secondi per pensare: un ciclista passa da \SI{10}{\kilo\metre\per\hour} a \SI{20}{\kilo\metre\per\hour}. La sua energia cinetica raddoppia? Alzate la mano.
+  \item Tabella alla lavagna con un corpo di \SI{2}{\kilogram}, così $K=v^2$ e i conti si fanno a mente:
+  \begin{center}
+  \begin{tabular}{c|ccccc}
+    $v$ (\si{\metre\per\second}) & 1 & 2 & 3 & 4 & $\tfrac12$ \\ \hline
+    $K$ (\si{\joule}) & 1 & 4 & 9 & 16 & $\tfrac14$
+  \end{tabular}
+  \end{center}
+  Faccio dire a loro la regola: \lette{velocità per $2$, energia per $4$; velocità per $3$, energia per $9$; velocità diviso $2$, energia diviso $4$}. Lascio la tabella alla lavagna.
+  \item Due minuti, solo a parole: lo spazio di frenata. I freni tolgono all'auto tutta la sua $K$; se vado al doppio della velocità, $K$ è quattro volte tanto, quindi con gli stessi freni mi servono \textbf{quattro volte} i metri. Ecco perché in città si va piano.
+\end{enumerate}
+
+\paragraph{2. La pallavolista, insieme (15--28')}
+Il baricentro sale di \SI{0.45}{\metre}, $m=\SI{70}{\kilogram}$.
+\begin{enumerate}
+  \item Disegno la ragazza in due momenti: allo stacco e nel punto più alto. Accanto a ciascuno una barra: allo stacco tutta $K$, in alto tutta $U$. Le due barre sono alte uguali.
+  \item $U=mgh$ [\SI{315}{\joule}]; poi scrivo $\tfrac12 mv^2=mgh$ e faccio notare che \textbf{la massa si semplifica}: $v=\sqrt{2gh}$ [\SI{3}{\metre\per\second}].
+  \item Domanda a voto: un gatto e una tigre si staccano da terra alla stessa velocità. Chi arriva più in alto? [alla stessa altezza: la massa non c'entra].
+\end{enumerate}
+
+\paragraph{3. Da soli (28--40')}
+\begin{enumerate}
+  \item Il canguro, (a) e (b): $m=\SI{50}{\kilogram}$, sale di \SI{1.8}{\metre}. [$U=\SI{900}{\joule}$, $v=\SI{6}{\metre\per\second}$]
+  \item Al contrario: lancio una palla in alto a \SI{8}{\metre\per\second}. Fino a che altezza sale? Non do la massa apposta: se la chiedono, rispondo che non serve. [$h=\frac{v^2}{2g}=\SI{3.2}{\metre}$]
+\end{enumerate}
+
+\paragraph{4. A metà strada: la pigna (40--48')}
+Pigna di \SI{0.5}{\kilogram} da \SI{20}{\metre}. La faccio io, guidando, con tre barre $U$/$K$ disegnate a \SI{20}{\metre}, a \SI{5}{\metre} e a terra: la somma è sempre \SI{100}{\joule}.\\
+{}[$E=\SI{100}{\joule}$; a terra $v=\SI{20}{\metre\per\second}$; a \SI{5}{\metre}: $U=\SI{25}{\joule}$, $K=\SI{75}{\joule}$]
+
+\paragraph{Compiti (48--50')}
+Il pinguino (a) e (b); il canguro (c); il bonus del balcone (le due palline lanciate in su e in giù).
+
+%==================================================================
+\subsection*{Seconda ora --- Il teorema dell'energia cinetica}
+
+\paragraph{1. Correzione lampo (0--5')}
+Solo il pinguino (b) [\SI{8}{\metre\per\second}] e il balcone [stessa velocità, \SI{20}{\metre\per\second}: il verso del lancio non compare in $K$].
+
+\paragraph{2. L'enunciato (5--12')}
+Lo detto e lo faccio copiare, poi lo chiedo a tre di loro a parole loro:
+\begin{center}
+\lette{Il lavoro totale compiuto su un corpo è uguale alla variazione della sua energia cinetica}: $L_{\text{tot}}=K_f-K_i$.
+\end{center}
+Insisto su \lette{totale}: è il lavoro di tutte le forze insieme. Dico che in verifica la domanda \lette{quale teorema usi?} vale punti.
+
+\paragraph{3. Il carrello, insieme (12--20')}
+$m=\SI{25}{\kilogram}$, fermo, spinto con \SI{40}{\newton} per \SI{5}{\metre}, senza attrito.\\
+$L=F\,s$ [\SI{200}{\joule}] $\to$ parte da fermo, quindi $K_f=L$ $\to$ $v$ [\SI{4}{\metre\per\second}]. Scrivo a grandi lettere il passaggio: \textbf{conosco il lavoro, quindi conosco la velocità}.
+
+\paragraph{4. Lo slittino, da soli e poi alla lavagna (20--35')}
+$m=\SI{8}{\kilogram}$, tirato con \SI{50}{\newton} per \SI{20}{\metre}, attrito \SI{30}{\newton}.
+\begin{enumerate}
+  \item lavoro del ragazzo e dell'attrito [\SI{1000}{\joule}, \SI{-600}{\joule}: l'attrito va contro il moto];
+  \item lavoro totale [\SI{400}{\joule}];
+  \item velocità finale [\SI{10}{\metre\per\second}];
+  \item aggiungo io: quanta energia è diventata calore? [\SI{600}{\joule}, nella neve e nello slittino che si scaldano].
+\end{enumerate}
+Qualcuno userà \SI{1000}{\joule} e troverà circa \SI{15.8}{\metre\per\second}: lo scrivo accanto e chiedo quale delle due è giusta, e perché.
+
+\paragraph{5. Frenare, insieme (35--47')}
+L'auto di \SI{1000}{\kilogram} a \SI{20}{\metre\per\second} che si ferma in \SI{40}{\metre}.\\
+{}[$K=\SI{200000}{\joule}$, $L=\SI{-200000}{\joule}$ perché $K_f=0$, forza frenante \SI{5000}{\newton}]\\
+Poi la domanda che lega alla prima ora: e se andasse a \SI{40}{\metre\per\second}, con gli stessi freni? [$K$ quattro volte, quindi \SI{160}{\metre}]
+
+\paragraph{Compiti (47--50')}
+Il curling e il ghepardo.
+
+%==================================================================
+\subsection*{Terza ora --- L'energia che manca, e la potenza}
+
+\paragraph{1. Correzione lampo (0--5')}
+Curling (c) [forza d'attrito \SI{3}{\newton}].
+
+\paragraph{2. Lo sciatore, insieme (5--17')}
+$m=\SI{60}{\kilogram}$, dislivello \SI{20}{\metre}, in fondo va a \SI{10}{\metre\per\second}.
+\begin{enumerate}
+  \item senza attrito [\SI{20}{\metre\per\second}];
+  \item energia persa [$U=\SI{12000}{\joule}$, $K=\SI{3000}{\joule}$, persi \SI{9000}{\joule}];
+  \item aggiungo io: che percentuale ha perso? [\SI{75}{\percent}].
+\end{enumerate}
+Trappola da far cadere apposta: la velocità è la metà di quella ideale, quindi \lette{ha perso metà dell'energia}? No: $K$ è \textbf{un quarto}. È di nuovo la tabella della prima ora.
+
+\paragraph{3. Da soli (17--25')}
+La palla che rimbalza da \SI{2}{\metre} a \SI{1.5}{\metre}, $m=\SI{0.5}{\kilogram}$: calore e percentuale. [\SI{2.5}{\joule}, \SI{25}{\percent}]
+
+\paragraph{4. Teoria a voto (25--32')}
+Per ognuna: vero o falso, poi uno spiega perché.
+\begin{enumerate}
+  \item Un corpo fermo non può avere energia meccanica. [falso: può avere energia potenziale]
+  \item Una forza che agisce su un corpo che si sposta compie sempre lavoro. [falso: se è perpendicolare allo spostamento, no]
+  \item Un'auto viaggia a velocità costante: il lavoro totale su di essa è nullo. [vero: $\Delta K=0$; il motore compie lavoro positivo, l'attrito negativo, e si compensano]
+  \item Che cos'è un sistema isolato? Che cosa succede alla sua energia meccanica?
+\end{enumerate}
+
+\paragraph{5. La potenza (32--47')}
+\begin{enumerate}
+  \item \textbf{Insieme}: la gru, \SI{200}{\kilogram} sollevati di \SI{15}{\metre} in \SI{10}{\second}. [\SI{30000}{\joule}, \SI{3000}{\watt}]. Che cosa vuol dire \SI{3}{\kilo\watt}? [\SI{3000}{\joule} ogni secondo]
+  \item \textbf{Insieme}: un montacarichi di \SI{300}{\kilogram} sale a velocità costante di \SI{12}{\metre} in \SI{20}{\second}. Quanto vale la forza che lo tira? La velocità è costante, quindi la forza è uguale al peso. [\SI{3000}{\newton}, \SI{36000}{\joule}, \SI{1800}{\watt}]
+  \item \textbf{Da soli}: lo stambecco, \SI{600}{\metre} di dislivello in 20 minuti. Trappola: i minuti vanno trasformati in secondi. [\SI{360000}{\joule}, \SI{300}{\watt}]
+\end{enumerate}
+
+\paragraph{Compiti (47--50')}
+Il vaso e lo sciatore, poi rileggere l'enunciato dei due teoremi: la prossima volta si fa da soli.
+
+%==================================================================
+\subsection*{Quarta ora --- Simulazione di verifica}
+
+\paragraph{Da soli, come in verifica (0--30')}
+Detto alla lavagna (o su un foglio stampato), $g=\SI{10}{\metre\per\second\squared}$. Calcolatrice sì.
+\begin{enumerate}
+  \item Rispondi brevemente.
+  \begin{enumerate}
+    \item Enuncia il teorema dell'energia cinetica.
+    \item Se la velocità di un'auto si dimezza, che cosa succede alla sua energia cinetica? [diventa un quarto]
+    \item Vero o falso? Spiega perché: un vaso fermo su un davanzale ha energia meccanica. [vero, energia potenziale]
+  \end{enumerate}
+  \item Un tuffatore di \SI{50}{\kilogram} si lascia cadere da fermo da una piattaforma alta \SI{5}{\metre}.
+  \begin{enumerate}
+    \item Quanta energia potenziale gravitazionale ha in cima? [\SI{2500}{\joule}]
+    \item Trascurando l'aria, con che velocità entra in acqua? [\SI{10}{\metre\per\second}]
+    \item Con che velocità passa a metà altezza? [$K=\SI{1250}{\joule}$, $v=\sqrt{50}\approx\SI{7.1}{\metre\per\second}$, non \SI{5}{\metre\per\second}!]
+    \item In realtà entra in acqua a \SI{9}{\metre\per\second}. Quanta energia ha dissipato l'aria? Che percentuale? [$K=\SI{2025}{\joule}$, \SI{475}{\joule}, \SI{19}{\percent}]
+  \end{enumerate}
+  \item Alla partenza di una gara di bob, l'equipaggio spinge il bob di \SI{200}{\kilogram}, inizialmente fermo, con una forza di \SI{700}{\newton} per \SI{20}{\metre}. Sul ghiaccio agisce una forza di attrito di \SI{200}{\newton}.
+  \begin{enumerate}
+    \item Quanto lavoro compie l'equipaggio? E l'attrito? [\SI{14000}{\joule}, \SI{-4000}{\joule}]
+    \item Con che velocità si muove il bob alla fine della spinta? Quale teorema usi? [$L_{\text{tot}}=\SI{10000}{\joule}$, \SI{10}{\metre\per\second}, teorema dell'energia cinetica]
+    \item La spinta dura \SI{5}{\second}. Quale potenza sviluppa l'equipaggio? [\SI{2800}{\watt}]
+  \end{enumerate}
+  \item[4.] \emph{Per aggiungere punti.} Un gatto salta da terra su un tavolo alto \SI{0.8}{\metre}.
+  \begin{enumerate}
+    \item Con che velocità minima deve staccarsi da terra? [\SI{4}{\metre\per\second}]
+    \item Una tigre che si stacca alla stessa velocità arriverebbe più in alto, più in basso o alla stessa altezza? [stessa: la massa si semplifica]
+    \item E se il gatto si staccasse a velocità doppia? [quattro volte più in alto, \SI{3.2}{\metre}]
+  \end{enumerate}
+\end{enumerate}
+
+\paragraph{Correzione (30--48')}
+Non correggo tutto: solo i punti che toccano i tre errori, facendo venire alla lavagna chi ha sbagliato.
+\begin{itemize}
+  \item 1(b) e 4(c): la tabella $v\to K$;
+  \item 2(b) e 2(c): $K\leftrightarrow U$; a metà altezza la velocità \textbf{non} è la metà;
+  \item 3(b): lavoro totale, non quello dell'equipaggio.
+\end{itemize}
+Il resto lo do corretto per casa (soluzioni fra parentesi qui sopra).
+
+\paragraph{Saluti (48--50')}
+Per il ripasso a casa: la sezione \lette{Esercizi simili alla verifica} del sito, almeno i problemi non ancora fatti in classe.
+
+%==================================================================
+\subsection*{Se resto indietro: che cosa tagliare}
+Nell'ordine: la palla lanciata a \SI{8}{\metre\per\second} (1.3), il carrello (lo faccio a voce in due minuti prima dello slittino), la palla che rimbalza (3.3), lo stambecco (per casa). \textbf{Non} tagliare la tabella $v\to K$, lo slittino e la simulazione: sono i tre errori.
+
+\end{document}

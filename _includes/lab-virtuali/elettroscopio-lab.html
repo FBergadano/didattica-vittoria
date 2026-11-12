@@ -3,7 +3,9 @@ Animazione: un elettroscopio a foglie, verso cui si può trascinare uno
 strumento carico da un menu (isolante o conduttore, con vari segni/quantità
 di carica) per osservare come si aprono le foglioline sia per contatto sia
 per semplice avvicinamento (induzione), e come si richiudono allontanando lo
-strumento. Nessun parametro.
+strumento. Disegno in 3D (vaso di vetro cilindrico, base, foglioline come
+lamine d'oro illuminate): trascinando sullo sfondo si ruota l'elettroscopio
+attorno al suo asse. Nessun parametro.
 {% endcomment %}
 <div id="eosx1" class="eosx-widget">
 
@@ -43,7 +45,7 @@ strumento. Nessun parametro.
   </div>
 
   <p class="eosx-meter">Elettroscopio: <span class="eosx-state">neutro</span></p>
-  <p class="eosx-caption">Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare.</p>
+  <p class="eosx-caption">Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare. Trascinando sullo sfondo, giri l'elettroscopio.</p>
 
   <div class="eosx-actions-row">
     <button class="eosx-btn-rev eosx-reset">↺ Ricomincia</button>
@@ -115,7 +117,8 @@ strumento. Nessun parametro.
   box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
   width: 340px; max-width: 66vw; flex: 0 0 auto;
 }
-.eosx-canvas-wrap canvas { display:block; width:100%; height:auto; touch-action:none; }
+.eosx-canvas-wrap canvas { display:block; width:100%; height:auto; touch-action:none; cursor:grab; }
+.eosx-canvas-wrap canvas:active { cursor:grabbing; }
 
 .eosx-meter { text-align:center; font-size:.78rem; color: var(--ex-text2); margin: .7rem 0 0; position:relative; z-index:1; }
 .eosx-state { color: var(--ex-amber); font-weight:600; }
@@ -150,13 +153,23 @@ strumento. Nessun parametro.
 
   var cv = $('.eosx-app'), ctx = cv.getContext('2d');
   var W = cv.width, H = cv.height;
+  // nitido anche sugli schermi ad alta densità: coordinate logiche W×H
+  var DPR = Math.min(window.devicePixelRatio || 1, 2.5);
+  cv.width = Math.round(W*DPR); cv.height = Math.round(H*DPR);
+
+  // ─── vista 3D: rotazione attorno all'asse verticale, leggera vista dall'alto ──
+  var yaw = 0.8, SINP = 0.24;          // SINP: schiacciamento delle ellissi (vista un po' dall'alto)
+  var rotDrag = null;
+  var LIGHT = (function(){ var l=[-0.55,0.55,0.65], n=Math.hypot(l[0],l[1],l[2]); return [l[0]/n,l[1]/n,l[2]/n]; })();
   var stateEl = $('.eosx-state'), caption = $('.eosx-caption');
 
   // ─── geometria dell'elettroscopio ──────────────────────────────────────
   var CX = 110;
   var STOPPER_TOP = 34, STOPPER_BOT = 50, STOPPER_W = 30;
   var KNOB_R = 11, KNOB_Y = STOPPER_TOP - KNOB_R + 3; // la sfera "esce" appena dal tappo
-  var JAR_TOP = 44, JAR_BOT = 192, JAR_L = 58, JAR_R = 162;
+  var JAR_TOP = 46, JAR_BOT = 196, JAR_L = 58, JAR_R = 162;
+  var JAR_RX = (JAR_R-JAR_L)/2, JAR_RY = JAR_RX*SINP;
+  var LEAF_W = 17;
   var ROD_W = 8;
   var PIVOT_Y = 56, LEAF_LEN = 108;
   var MAX_ANGLE_PARTIAL = 15*Math.PI/180, MAX_ANGLE_FULL = 31*Math.PI/180;
@@ -215,6 +228,14 @@ strumento. Nessun parametro.
       }
     });
   })();
+  // direzione (sullo schermo) di una fogliolina che si apre di un angolo a:
+  // si apre nel piano verticale che contiene u = (cos yaw, 0, sin yaw)
+  function leafDir(side, a){
+    var dx = side*Math.sin(a)*Math.cos(yaw);
+    var dz = side*Math.sin(a)*Math.sin(yaw);
+    var dy = Math.cos(a) + dz*SINP;
+    return { x:dx, y:dy, z:dz };
+  }
   function armPoint(arm, s, leafAngle){
     if(s <= ROD_FRAC){
       var t = s/ROD_FRAC;
@@ -222,12 +243,11 @@ strumento. Nessun parametro.
     }
     var side = arm==='left' ? -1 : 1;
     var t = (s-ROD_FRAC)/(1-ROD_FRAC);
-    var rot = side*leafAngle;
-    var lx = side*0.5*t, ly = LEAF_LEN*t;
+    var d = leafDir(side, leafAngle);
     return {
-      x: CX + lx*Math.cos(rot) - ly*Math.sin(rot),
-      y: PIVOT_Y + lx*Math.sin(rot) + ly*Math.cos(rot),
-      rot: rot
+      x: CX + LEAF_LEN*t*d.x,
+      y: PIVOT_Y + LEAF_LEN*t*d.y,
+      rot: Math.atan2(-d.x, d.y)
     };
   }
   function biasedS(s0, bias){
@@ -353,33 +373,143 @@ strumento. Nessun parametro.
     return res;
   }
 
+  // ─── disegno 3D dell'elettroscopio ──────────────────────────────────────
+  function ell(x,y,rx,ry,a0,a1){ ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,a0,a1); }
+  function drawBase(){
+    var bx = CX, top = JAR_BOT+2, h = 13, rx = JAR_RX+14, ry = rx*SINP;
+    // ombra sul tavolo
+    ctx.save(); ctx.filter = 'blur(4px)';
+    ell(bx+6, top+h+ry*0.6, rx*1.05, ry*1.1, 0, Math.PI*2); ctx.fillStyle='rgba(0,0,0,0.55)'; ctx.fill();
+    ctx.restore();
+    // fianco del basamento
+    var g = ctx.createLinearGradient(bx-rx,0,bx+rx,0);
+    g.addColorStop(0,'#3a2414'); g.addColorStop(.3,'#7a4a26'); g.addColorStop(.55,'#5e391d'); g.addColorStop(1,'#24160c');
+    ctx.beginPath();
+    ctx.ellipse(bx, top, rx, ry, 0, 0, Math.PI);
+    ctx.lineTo(bx-rx, top+h);
+    ctx.ellipse(bx, top+h, rx, ry, 0, Math.PI, 0, true);
+    ctx.closePath(); ctx.fillStyle=g; ctx.fill();
+    // faccia superiore
+    var g2 = ctx.createLinearGradient(bx-rx, top-ry, bx+rx, top+ry);
+    g2.addColorStop(0,'#9a6438'); g2.addColorStop(.5,'#7d4f2a'); g2.addColorStop(1,'#4d2f17');
+    ell(bx, top, rx, ry, 0, Math.PI*2); ctx.fillStyle=g2; ctx.fill();
+    ctx.strokeStyle='rgba(255,220,170,0.18)'; ctx.lineWidth=1; ctx.stroke();
+  }
+  function drawJarBack(){
+    // interno del vetro: parete posteriore un po' più scura, fondo ellittico
+    var g = ctx.createLinearGradient(CX-JAR_RX,0,CX+JAR_RX,0);
+    g.addColorStop(0,'rgba(120,200,215,0.10)'); g.addColorStop(.5,'rgba(120,200,215,0.03)'); g.addColorStop(1,'rgba(120,200,215,0.12)');
+    ctx.beginPath();
+    ctx.ellipse(CX, JAR_TOP, JAR_RX, JAR_RY, 0, Math.PI, 0);
+    ctx.lineTo(CX+JAR_RX, JAR_BOT);
+    ctx.ellipse(CX, JAR_BOT, JAR_RX, JAR_RY, 0, 0, Math.PI);
+    ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+    // bordo posteriore del fondo e del coperchio (si vedono attraverso il vetro)
+    ell(CX, JAR_BOT, JAR_RX, JAR_RY, Math.PI, Math.PI*2);
+    ctx.strokeStyle='rgba(150,220,230,0.22)'; ctx.lineWidth=1.2; ctx.stroke();
+    ell(CX, JAR_BOT, JAR_RX-3, JAR_RY-1, 0, Math.PI*2);
+    ctx.fillStyle='rgba(150,220,230,0.05)'; ctx.fill();
+  }
+  function cylinderV(x, y0, y1, r, c0, c1, c2){
+    var g = ctx.createLinearGradient(x-r,0,x+r,0);
+    g.addColorStop(0,c0); g.addColorStop(.35,c1); g.addColorStop(1,c2);
+    ctx.fillStyle = g; ctx.fillRect(x-r, y0, 2*r, y1-y0);
+  }
+  function drawRodInside(){
+    cylinderV(CX, JAR_TOP-2, PIVOT_Y, ROD_W/2, '#8a6423','#f0d9a0','#5e4214');
+    // piastrina a cui sono attaccate le foglioline (orientata con la vista)
+    var ux = Math.cos(yaw), uz = Math.sin(yaw);
+    var hw = 5, hh = 5;
+    var px = hw*ux, py = hw*uz*SINP;
+    ctx.beginPath();
+    ctx.moveTo(CX-px, PIVOT_Y-hh-py); ctx.lineTo(CX+px, PIVOT_Y-hh+py);
+    ctx.lineTo(CX+px, PIVOT_Y+2+py);  ctx.lineTo(CX-px, PIVOT_Y+2-py);
+    ctx.closePath();
+    ctx.fillStyle = '#c9973f'; ctx.fill();
+    ctx.strokeStyle='rgba(90,60,15,0.6)'; ctx.lineWidth=.8; ctx.stroke();
+  }
+  function drawLeaf(side, d){
+    // lamina d'oro: larga LEAF_W nella direzione v = (−sin yaw, 0, cos yaw)
+    var vx = -Math.sin(yaw), vy = Math.cos(yaw)*SINP;
+    var len = LEAF_LEN;
+    var tx = CX + d.x*len, ty = PIVOT_Y + d.y*len;
+    var w0 = LEAF_W/2, w1 = LEAF_W*0.42;
+    // illuminazione: normale della lamina = direzione di apertura u (± lato)
+    var n = [Math.cos(yaw)*side, 0, Math.sin(yaw)*side];
+    var lam = Math.abs(n[0]*LIGHT[0]+n[1]*LIGHT[1]+n[2]*LIGHT[2]);
+    var k = 0.78 + 0.32*lam;
+    function sh(r,g,b){ return 'rgb('+Math.round(r*k)+','+Math.round(g*k)+','+Math.round(b*k)+')'; }
+    var g = ctx.createLinearGradient(CX, PIVOT_Y, tx, ty);
+    g.addColorStop(0, sh(255,236,170)); g.addColorStop(.45, sh(232,176,70)); g.addColorStop(1, sh(176,118,40));
+    // leggera ondulazione: le foglie d'oro non sono mai perfettamente piatte
+    var mx = (CX+tx)/2 + vx*1.5, my = (PIVOT_Y+ty)/2 + vy*1.5;
+    ctx.beginPath();
+    ctx.moveTo(CX - vx*w0, PIVOT_Y - vy*w0);
+    ctx.quadraticCurveTo(mx - vx*w0, my - vy*w0, tx - vx*w1, ty - vy*w1);
+    ctx.lineTo(tx + vx*w1, ty + vy*w1);
+    ctx.quadraticCurveTo(mx + vx*w0, my + vy*w0, CX + vx*w0, PIVOT_Y + vy*w0);
+    ctx.closePath();
+    ctx.fillStyle = g; ctx.fill();
+    ctx.strokeStyle = 'rgba(120,80,20,0.55)'; ctx.lineWidth = .6; ctx.stroke();
+    // riflesso
+    ctx.save(); ctx.globalAlpha = 0.25 + 0.5*lam;
+    ctx.beginPath(); ctx.moveTo(CX, PIVOT_Y+4); ctx.quadraticCurveTo(mx, my, tx, ty-3);
+    ctx.strokeStyle = 'rgba(255,250,225,0.8)'; ctx.lineWidth = 1; ctx.stroke(); ctx.restore();
+  }
+  function drawJarFront(){
+    // riflessi verticali sul vetro
+    var g = ctx.createLinearGradient(CX-JAR_RX,0,CX+JAR_RX,0);
+    g.addColorStop(0,'rgba(255,255,255,0.00)');
+    g.addColorStop(.12,'rgba(255,255,255,0.16)');
+    g.addColorStop(.2,'rgba(255,255,255,0.02)');
+    g.addColorStop(.78,'rgba(255,255,255,0.00)');
+    g.addColorStop(.86,'rgba(255,255,255,0.09)');
+    g.addColorStop(1,'rgba(255,255,255,0.00)');
+    ctx.fillStyle = g;
+    ctx.fillRect(CX-JAR_RX, JAR_TOP, 2*JAR_RX, JAR_BOT-JAR_TOP);
+    // pareti laterali e bordo anteriore del fondo
+    ctx.strokeStyle='rgba(150,225,235,0.45)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(CX-JAR_RX, JAR_TOP); ctx.lineTo(CX-JAR_RX, JAR_BOT); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(CX+JAR_RX, JAR_TOP); ctx.lineTo(CX+JAR_RX, JAR_BOT); ctx.stroke();
+    ell(CX, JAR_BOT, JAR_RX, JAR_RY, 0, Math.PI); ctx.stroke();
+    // coperchio: disco di ebanite con il bordo d'ottone
+    var gl = ctx.createLinearGradient(CX-JAR_RX, JAR_TOP-JAR_RY, CX+JAR_RX, JAR_TOP+JAR_RY);
+    gl.addColorStop(0,'#3d342e'); gl.addColorStop(.5,'#241e1a'); gl.addColorStop(1,'#120e0c');
+    ctx.beginPath();
+    ctx.ellipse(CX, JAR_TOP, JAR_RX+2, JAR_RY+0.5, 0, 0, Math.PI);
+    ctx.lineTo(CX-JAR_RX-2, JAR_TOP-4);
+    ctx.ellipse(CX, JAR_TOP-4, JAR_RX+2, JAR_RY+0.5, 0, Math.PI, 0, true);
+    ctx.closePath(); ctx.fillStyle = '#7a5a20'; ctx.fill();
+    ell(CX, JAR_TOP-4, JAR_RX+2, JAR_RY+0.5, 0, Math.PI*2); ctx.fillStyle = gl; ctx.fill();
+    ctx.strokeStyle='rgba(232,190,110,0.55)'; ctx.lineWidth=1; ctx.stroke();
+  }
+  function drawStopperAndKnob(){
+    // tappo isolante: cilindretto
+    var sx = CX, r = STOPPER_W/2, ry = r*SINP, y0 = STOPPER_TOP+2, y1 = JAR_TOP-4;
+    var g = ctx.createLinearGradient(sx-r,0,sx+r,0);
+    g.addColorStop(0,'#1a1411'); g.addColorStop(.35,'#5a4a40'); g.addColorStop(1,'#0e0a08');
+    ctx.beginPath();
+    ctx.ellipse(sx, y1, r, ry, 0, 0, Math.PI);
+    ctx.lineTo(sx-r, y0);
+    ctx.ellipse(sx, y0, r, ry, 0, Math.PI, 0, true);
+    ctx.closePath(); ctx.fillStyle = g; ctx.fill();
+    ell(sx, y0, r, ry, 0, Math.PI*2); ctx.fillStyle = '#4a3d35'; ctx.fill();
+    // asta che esce dal tappo
+    cylinderV(CX, KNOB_Y, y0, ROD_W/2-1, '#8a6423','#f0d9a0','#5e4214');
+    // sferetta d'ottone con riflesso e ombra propria
+    sphere(CX,KNOB_Y,KNOB_R,'#fff6d8','#d2a24a','#5e4214');
+    ctx.save(); ctx.globalAlpha=.8;
+    ell(CX-KNOB_R*0.38, KNOB_Y-KNOB_R*0.42, KNOB_R*0.28, KNOB_R*0.18, 0, Math.PI*2);
+    ctx.fillStyle='#fffdf2'; ctx.fill(); ctx.restore();
+  }
+
   function draw(){
+    ctx.setTransform(DPR,0,0,DPR,0,0);
     ctx.clearRect(0,0,W,H);
     var t = performance.now()/1000;
 
     // lana (fissa, sempre visibile, elettroni sempre orbitanti)
     drawWool(WOOL_X, WOOL_Y, t);
-
-    // vetro dell'elettroscopio
-    ctx.save();
-    roundRect(JAR_L,JAR_TOP,JAR_R-JAR_L,JAR_BOT-JAR_TOP,12);
-    ctx.fillStyle = 'rgba(111,211,217,0.06)'; ctx.fill();
-    ctx.strokeStyle = 'rgba(111,211,217,0.35)'; ctx.lineWidth=1.6; ctx.stroke();
-    ctx.restore();
-
-    // asta interna (dal tappo al perno delle foglioline, visibile dentro il vetro)
-    var rodGrad = ctx.createLinearGradient(CX-ROD_W/2,0,CX+ROD_W/2,0);
-    rodGrad.addColorStop(0,'#f0d9a0'); rodGrad.addColorStop(.5,'#c9973f'); rodGrad.addColorStop(1,'#8a6423');
-    ctx.fillStyle = rodGrad;
-    ctx.fillRect(CX-ROD_W/2, JAR_TOP-4, ROD_W, PIVOT_Y-(JAR_TOP-4));
-
-    // tappo, ben incastrato sopra il vetro (nessuno spazio vuoto)
-    ctx.fillStyle = '#2b2420';
-    roundRect(CX-STOPPER_W/2, STOPPER_TOP, STOPPER_W, STOPPER_BOT-STOPPER_TOP, 4);
-    ctx.fill();
-
-    // sferetta, che spunta appena dal tappo
-    sphere(CX,KNOB_Y,KNOB_R,'#fdf0c8','#c9973f','#7a5a20');
 
     // strumento attualmente trascinato: calcola contatto/collisione
     var contact = null, dragTool = null;
@@ -387,8 +517,7 @@ strumento. Nessun parametro.
       dragTool = tools[drag.id];
       contact = computeContact(dragTool, drag.x, drag.y);
       // strofinio "dal vivo": mentre la bacchetta è sulla lana, lo scambio
-      // di carica è visibile in tempo reale (si vede la lana "spogliarsi"
-      // o "arricchirsi" di elettroni proprio mentre la si strofina)
+      // di carica è visibile in tempo reale
       if(dragTool.type==='rod' && contact.touchingWool){
         rubRod(dragTool);
       }
@@ -406,20 +535,16 @@ strumento. Nessun parametro.
     var maxA = (permanent || dragTouchedSign) ? MAX_ANGLE_FULL : MAX_ANGLE_PARTIAL;
     if(contact && contact.touchingKnob) maxA = MAX_ANGLE_FULL;
     var angle = maxA * Math.abs(eBias);
-    [-1,1].forEach(function(side){
-      ctx.save();
-      ctx.translate(CX,PIVOT_Y);
-      ctx.rotate(side*angle);
-      var leafGrad = ctx.createLinearGradient(0,0,side*8,0);
-      leafGrad.addColorStop(0,'#fff3c4'); leafGrad.addColorStop(.6,'#e8983a'); leafGrad.addColorStop(1,'#b87333');
-      ctx.beginPath();
-      ctx.moveTo(0,0);
-      ctx.lineTo(side*3,LEAF_LEN);
-      ctx.lineTo(side*-2,LEAF_LEN);
-      ctx.closePath();
-      ctx.fillStyle = leafGrad; ctx.fill();
-      ctx.restore();
-    });
+
+    drawBase();
+    drawJarBack();
+    drawRodInside();
+    // le due foglioline, prima quella più lontana
+    var leaves = [-1,1].map(function(side){ return { side:side, d:leafDir(side, Math.max(angle,0.012)) }; });
+    leaves.sort(function(p,q){ return p.d.z - q.d.z; });
+    leaves.forEach(function(L){ drawLeaf(L.side, L.d); });
+    drawJarFront();
+    drawStopperAndKnob();
 
     // "+" della sferetta (sopra tutto il resto, sempre in vista)
     sign(CX,KNOB_Y,'+', '#5a3d10', 10);
@@ -560,6 +685,18 @@ strumento. Nessun parametro.
       caption.textContent = 'Trascina fino alla sferetta dell\'elettroscopio' + (drag.id.indexOf('rod')===0 ? ', oppure sulla lana per caricarla.' : '.');
     });
   });
+  cv.addEventListener('pointerdown', function(e){
+    if(drag) return;
+    e.preventDefault();
+    rotDrag = { x0:e.clientX, yaw0:yaw };
+    try { cv.setPointerCapture(e.pointerId); } catch(err){}
+  });
+  cv.addEventListener('pointermove', function(e){
+    if(!rotDrag) return;
+    var rect = cv.getBoundingClientRect();
+    yaw = rotDrag.yaw0 + (e.clientX-rotDrag.x0)/rect.width*Math.PI*1.4;
+  });
+  ['pointerup','pointercancel'].forEach(function(ev){ cv.addEventListener(ev, function(){ rotDrag = null; }); });
   window.addEventListener('pointermove', function(e){
     if(!drag) return;
     var p = clientToCanvas(e.clientX, e.clientY);
@@ -582,7 +719,7 @@ strumento. Nessun parametro.
       } else if(contact.nearKnob){
         caption.textContent = 'Per induzione le foglioline si aprono; si richiuderanno se allontani la sfera senza averla toccata.';
       } else {
-        caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare.';
+        caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare. Trascinando sullo sfondo, giri l\'elettroscopio.';
       }
     } else if(tool.type==='rod'){
       if(contact.touchingWool){
@@ -595,7 +732,7 @@ strumento. Nessun parametro.
       } else if(!tool.charged){
         caption.textContent = 'Questa bacchetta non è ancora carica: trascinala prima sul panno di lana per strofinarla.';
       } else {
-        caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare.';
+        caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare. Trascinando sullo sfondo, giri l\'elettroscopio.';
       }
     }
     // la lana, appena lo strumento viene rilasciato, torna sempre alle
@@ -611,7 +748,7 @@ strumento. Nessun parametro.
     tools.rodplastic.charged = false; tools.rodplastic.sign = null; tools.rodplastic.slots.forEach(function(s){ s.n=1; });
     woolSlots.forEach(function(s){ s.n=1; });
     updateBadges();
-    caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare.';
+    caption.textContent = 'Trascina una sfera o una bacchetta (prima strofinala sulla lana) fino alla sferetta; trascina il dito per scaricare. Trascinando sullo sfondo, giri l\'elettroscopio.';
   });
 
   updateBadges();

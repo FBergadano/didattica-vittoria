@@ -48,6 +48,9 @@
   - data: 2026-11-09
     capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
     esercizi: [1, 2, 3]
+  - data: 2026-11-17
+    capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
+    esercizi: [4, 5]
 
 "4ACD":
   - data: 2026-10-23
@@ -78,4 +81,4 @@
     esercizi: [2, 3]
   - data: 2026-11-11
     capitolo: gravitazione-elettromagnetismo/02_Elettrostatica
-    esercizi: [4, 5]
+    esercizi: [4, 5, 6]
