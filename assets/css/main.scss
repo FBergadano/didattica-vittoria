@@ -1127,7 +1127,10 @@ html, body { overflow-x: clip; }
 @media (max-width: 600px) {
   // Topbar: nascondi breadcrumb e pulsante PDF
   .breadcrumb { display: none; }
-  #pdf-btn    { display: none; }
+  // PDF anche sul cellulare, con l'etichetta corta
+  .pdf-lungo  { display: none; }
+  #pdf-btn    { padding: 4px 10px; font-size: 0.75rem; white-space: nowrap; }
+  .topbar-right { gap: 0.5rem; }
   .topbar     { padding: 0 0.85rem; }
 
   // Spaziature ridotte

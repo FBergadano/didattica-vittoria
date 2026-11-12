@@ -18,7 +18,7 @@ a un fermo meccanico). Nessun parametro.
   <div class="coulx-stage">
     <div class="coulx-canvas-wrap">
       <canvas class="coulx-app" width="400" height="480"></canvas>
-      <p class="coulx-canvas-cap">L'asta ruota avvicinandosi o allontanandosi dalla sferetta fissa, a seconda dei segni scelti (rotazione amplificata per essere visibile)</p>
+      <p class="coulx-canvas-cap">L'asta ruota avvicinandosi o allontanandosi dalla sferetta fissa, a seconda dei segni scelti (rotazione amplificata per essere visibile). Trascinando sull'immagine, giri la bilancia.</p>
     </div>
 
     <div class="coulx-sidebar">
@@ -123,9 +123,10 @@ a un fermo meccanico). Nessun parametro.
   border:1px solid rgba(184,115,51,0.22); border-radius:6px;
   background: var(--clx-surface); overflow:hidden;
   box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
-  width: 260px; max-width:100%; flex:none;
+  width: 290px; max-width:100%; flex:none;
 }
-.coulx-canvas-wrap canvas { display:block; width:100%; height:auto; }
+.coulx-canvas-wrap canvas { display:block; width:100%; height:auto; touch-action:none; cursor:grab; }
+.coulx-canvas-wrap canvas:active { cursor:grabbing; }
 .coulx-canvas-cap { font-size:.72rem; color: var(--clx-text2); text-align:center; padding:.4rem .5rem .55rem; font-style:italic; }
 
 .coulx-sidebar {
@@ -386,11 +387,33 @@ a un fermo meccanico). Nessun parametro.
   });
 
   // ─── Proiezione 3D ──────────────────────────────────────────────────────
+  // Coordinate logiche 400×480; il canvas reale è più fitto (schermi ad alta
+  // densità). Trascinando sull'immagine si gira la bilancia attorno al filo.
   var AZIMUTH = 20 * Math.PI / 180;
-  var TILT = 24 * Math.PI / 180;
-  var FOCAL = 1.6;
-  var PXM = 720;
-  var CX = 200, CY = 400;
+  var TILT = 15 * Math.PI / 180;
+  var FOCAL = 1.8;
+  var PXM = 740;
+  var CX = 200, CY = 405;
+  var CW = appCv.width, CH = appCv.height;
+  var DPR = Math.min(window.devicePixelRatio || 1, 2.5);
+  appCv.width = Math.round(CW * DPR); appCv.height = Math.round(CH * DPR);
+  var TUBE_DRAW = 0.10;            // tubo di vetro del filo (solo grafica)
+  var PLINTH_R = 0.205, PLINTH_H = 0.03;
+
+  (function () {
+    var rd = null;
+    appCv.addEventListener('pointerdown', function (e) {
+      e.preventDefault();
+      rd = { x0: e.clientX, a0: AZIMUTH };
+      try { appCv.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    appCv.addEventListener('pointermove', function (e) {
+      if (!rd) return;
+      var rect = appCv.getBoundingClientRect();
+      AZIMUTH = rd.a0 - (e.clientX - rd.x0) / rect.width * Math.PI * 1.4;
+    });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { appCv.addEventListener(ev, function () { rd = null; }); });
+  })();
 
   function rotY(p) {
     var c = Math.cos(AZIMUTH), s = Math.sin(AZIMUTH);
@@ -400,10 +423,11 @@ a un fermo meccanico). Nessun parametro.
     var c = Math.cos(TILT), s = Math.sin(TILT);
     return { x: p.x, y: p.y * c - p.z * s, z: p.y * s + p.z * c };
   }
+  function rot(x, y, z) { return rotX(rotY({ x: x, y: y, z: z })); }
   function project(x, y, z) {
-    var p = rotX(rotY({ x: x, y: y, z: z }));
+    var p = rot(x, y, z);
     var persp = FOCAL / (FOCAL + p.z);
-    return { sx: CX + p.x * persp * PXM, sy: CY - p.y * persp * PXM, scale: persp };
+    return { sx: CX + p.x * persp * PXM, sy: CY - p.y * persp * PXM, scale: persp, z: p.z };
   }
   function circlePts(radius, y, n) {
     var pts = [];
@@ -417,49 +441,60 @@ a un fermo meccanico). Nessun parametro.
     ctx.beginPath();
     pts.forEach(function (p, i) { i === 0 ? ctx.moveTo(p.sx, p.sy) : ctx.lineTo(p.sx, p.sy); });
   }
-  // Colore della sferetta a seconda del segno della carica: ambra per il
-  // positivo, blu per il negativo (stessa convenzione usata nel resto del capitolo).
-  function sphereColors(sign) {
-    return sign > 0 ? ['#ffdca0', '#a9701e'] : ['#bfdbfe', '#1e3a8a'];
+  // metà anteriore (front=true) o posteriore di una circonferenza orizzontale
+  function halfCircle(radius, y, front, n) {
+    n = n || 64;
+    for (var i = 0; i < n; i++) {
+      var a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2, am = (a0 + a1) / 2;
+      var isFront = rot(Math.cos(am), 0, Math.sin(am)).z < 0;
+      if (isFront !== front) continue;
+      var p0 = project(radius * Math.cos(a0), y, radius * Math.sin(a0));
+      var p1 = project(radius * Math.cos(a1), y, radius * Math.sin(a1));
+      appCtx.beginPath(); appCtx.moveTo(p0.sx, p0.sy); appCtx.lineTo(p1.sx, p1.sy); appCtx.stroke();
+    }
   }
+  // sfera lucida: sfumatura, ombra propria, riflesso
   function sphereAt(ctx, proj, radiusM, colInner, colOuter) {
     var rpx = radiusM * PXM * proj.scale;
     var g = ctx.createRadialGradient(
-      proj.sx - rpx * 0.35, proj.sy - rpx * 0.4, rpx * 0.1,
+      proj.sx - rpx * 0.38, proj.sy - rpx * 0.42, rpx * 0.05,
       proj.sx, proj.sy, rpx
     );
-    g.addColorStop(0, colInner);
+    g.addColorStop(0, '#ffffff');
+    g.addColorStop(0.18, colInner);
     g.addColorStop(1, colOuter);
     ctx.beginPath();
     ctx.arc(proj.sx, proj.sy, rpx, 0, Math.PI * 2);
     ctx.fillStyle = g;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.35)';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(0,0,0,.4)';
+    ctx.lineWidth = 1;
     ctx.stroke();
+    ctx.save(); ctx.globalAlpha = 0.85;
+    ctx.beginPath();
+    ctx.ellipse(proj.sx - rpx * 0.36, proj.sy - rpx * 0.42, rpx * 0.26, rpx * 0.16, -0.5, 0, Math.PI * 2);
+    ctx.fillStyle = '#fffdf4'; ctx.fill(); ctx.restore();
     return rpx;
   }
-  // Piattino: disco verticale (perpendicolare alla base), piantato all'estremità del bilancere.
+  // Piattino: disco verticale di carta, piantato all'estremità del bilancere.
   function verticalPlateAt(ctx, cx3, cy3, cz3, radialX, radialZ, radiusM, color) {
     var pts = [];
-    for (var i = 0; i <= 24; i++) {
-      var a = (i / 24) * Math.PI * 2;
-      var px = cx3 + radialX * radiusM * Math.cos(a);
-      var py = cy3 + radiusM * Math.sin(a);
-      var pz = cz3 + radialZ * radiusM * Math.cos(a);
-      pts.push(project(px, py, pz));
+    for (var i = 0; i <= 28; i++) {
+      var a = (i / 28) * Math.PI * 2;
+      pts.push(project(cx3 + radialX * radiusM * Math.cos(a), cy3 + radiusM * Math.sin(a), cz3 + radialZ * radiusM * Math.cos(a)));
     }
+    var c = project(cx3, cy3, cz3);
     pathThrough(ctx, pts);
     ctx.closePath();
-    ctx.fillStyle = color;
+    var g = ctx.createLinearGradient(c.sx - 12, c.sy - 12, c.sx + 12, c.sy + 12);
+    g.addColorStop(0, '#fbf8ef'); g.addColorStop(1, color);
+    ctx.fillStyle = g;
     ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,.3)';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(60,50,30,.55)';
+    ctx.lineWidth = 1;
     ctx.stroke();
   }
 
-  // Direzione della luce (nel piano orizzontale XZ), usata sia per le pareti
-  // laterali del disco sia per il riflesso sulla faccia superiore.
   var LIGHT_X = -0.7, LIGHT_Z = 0.71;
   function lerpColor(c1, c2, t) {
     var r1 = parseInt(c1.slice(1, 3), 16), g1 = parseInt(c1.slice(3, 5), 16), b1 = parseInt(c1.slice(5, 7), 16);
@@ -467,36 +502,16 @@ a un fermo meccanico). Nessun parametro.
     var r = Math.round(r1 + (r2 - r1) * t), g = Math.round(g1 + (g2 - g1) * t), b = Math.round(b1 + (b2 - b1) * t);
     return 'rgb(' + r + ',' + g + ',' + b + ')';
   }
-  function drawDisc(y0, y1, radius, colSideDark, colSideLight, colTopDark, colTopLight) {
-    var n = 40;
+  // cilindro pieno (basamento, coperchio, testa di torsione): fianco illuminato e faccia superiore
+  function drawDisc(y0, y1, radius, colSideDark, colSideLight, colTopDark, colTopLight, topAlpha) {
+    var n = 48;
     var top = circlePts(radius, y1, n);
     var bot = circlePts(radius, y0, n);
-    ctx_strokeQuadStrip(bot, top, colSideDark, colSideLight, n);
-    pathThrough(appCtx, bot); appCtx.closePath();
-    appCtx.fillStyle = colSideDark; appCtx.fill();
-    pathThrough(appCtx, top); appCtx.closePath();
-    var cx = 0, cy = 0;
-    top.forEach(function (p) { cx += p.sx; cy += p.sy; });
-    cx /= top.length; cy /= top.length;
-    var rpx = radius * PXM;
-    var g = appCtx.createRadialGradient(
-      cx + LIGHT_X * rpx * 0.35, cy - LIGHT_Z * rpx * 0.2, rpx * 0.08,
-      cx, cy, rpx * 1.1
-    );
-    g.addColorStop(0, colTopLight);
-    g.addColorStop(1, colTopDark);
-    appCtx.fillStyle = g;
-    appCtx.fill();
-    appCtx.strokeStyle = 'rgba(0,0,0,.3)';
-    appCtx.lineWidth = 1.5;
-    appCtx.stroke();
-  }
-  function ctx_strokeQuadStrip(bot, top, colorDark, colorLight, n) {
-    for (var i = 0; i < bot.length - 1; i++) {
-      var midAngle = ((i + 0.5) / n) * Math.PI * 2;
-      var nx = Math.cos(midAngle), nz = Math.sin(midAngle);
-      var b = (nx * LIGHT_X + nz * LIGHT_Z + 1) / 2;
-      appCtx.fillStyle = lerpColor(colorDark, colorLight, b);
+    for (var i = 0; i < n; i++) {
+      var am = ((i + 0.5) / n) * Math.PI * 2;
+      if (rot(Math.cos(am), 0, Math.sin(am)).z > 0) continue;   // il retro non si vede
+      var b = (Math.cos(am) * LIGHT_X + Math.sin(am) * LIGHT_Z + 1) / 2;
+      appCtx.fillStyle = lerpColor(colSideDark, colSideLight, b);
       appCtx.beginPath();
       appCtx.moveTo(bot[i].sx, bot[i].sy);
       appCtx.lineTo(bot[i + 1].sx, bot[i + 1].sy);
@@ -504,147 +519,211 @@ a un fermo meccanico). Nessun parametro.
       appCtx.lineTo(top[i].sx, top[i].sy);
       appCtx.closePath();
       appCtx.fill();
+      appCtx.strokeStyle = appCtx.fillStyle; appCtx.lineWidth = 0.6; appCtx.stroke();
+    }
+    pathThrough(appCtx, top); appCtx.closePath();
+    var cx = 0, cy = 0;
+    top.forEach(function (p) { cx += p.sx; cy += p.sy; });
+    cx /= top.length; cy /= top.length;
+    var rpx = radius * PXM;
+    var g = appCtx.createRadialGradient(cx - rpx * 0.3, cy - rpx * 0.12, rpx * 0.05, cx, cy, rpx * 1.1);
+    g.addColorStop(0, colTopLight);
+    g.addColorStop(1, colTopDark);
+    appCtx.save();
+    if (topAlpha != null) appCtx.globalAlpha = topAlpha;
+    appCtx.fillStyle = g;
+    appCtx.fill();
+    appCtx.restore();
+    appCtx.strokeStyle = 'rgba(255,230,180,.35)';
+    appCtx.lineWidth = 1;
+    appCtx.stroke();
+  }
+  // parete di vetro: dietro (front=false) un velo azzurrino, davanti i riflessi
+  function glassWall(y0, y1, R, front) {
+    var n = 56;
+    for (var i = 0; i < n; i++) {
+      var a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2, am = (a0 + a1) / 2;
+      var nr = rot(Math.cos(am), 0, Math.sin(am));
+      var isFront = nr.z < 0;
+      if (isFront !== front) continue;
+      var fres = Math.pow(1 - Math.abs(nr.z), 2.5);
+      var alpha, col;
+      if (front) {
+        alpha = 0.02 + 0.2 * fres + 0.3 * Math.exp(-Math.pow((nr.x + 0.58) / 0.09, 2)) + 0.14 * Math.exp(-Math.pow((nr.x - 0.74) / 0.06, 2));
+        col = '255,255,255';
+      } else {
+        alpha = 0.05 + 0.12 * fres;
+        col = '140,205,220';
+      }
+      var p00 = project(R * Math.cos(a0), y0, R * Math.sin(a0)), p01 = project(R * Math.cos(a1), y0, R * Math.sin(a1));
+      var p10 = project(R * Math.cos(a0), y1, R * Math.sin(a0)), p11 = project(R * Math.cos(a1), y1, R * Math.sin(a1));
+      appCtx.fillStyle = 'rgba(' + col + ',' + alpha.toFixed(3) + ')';
+      appCtx.beginPath();
+      appCtx.moveTo(p00.sx, p00.sy); appCtx.lineTo(p01.sx, p01.sy);
+      appCtx.lineTo(p11.sx, p11.sy); appCtx.lineTo(p10.sx, p10.sy);
+      appCtx.closePath(); appCtx.fill();
+    }
+    // bordi: dietro tenui, davanti più marcati; i due contorni laterali
+    appCtx.strokeStyle = front ? 'rgba(170,230,240,.55)' : 'rgba(150,215,230,.22)';
+    appCtx.lineWidth = front ? 1.3 : 1;
+    halfCircle(R, y0, front); halfCircle(R, y1, front);
+    if (front) {
+      var bot = circlePts(R, y0, 90), top = circlePts(R, y1, 90), iMin = 0, iMax = 0;
+      bot.forEach(function (p, i) { if (p.sx < bot[iMin].sx) iMin = i; if (p.sx > bot[iMax].sx) iMax = i; });
+      [iMin, iMax].forEach(function (i) {
+        appCtx.beginPath(); appCtx.moveTo(bot[i].sx, bot[i].sy); appCtx.lineTo(top[i].sx, top[i].sy); appCtx.stroke();
+      });
     }
   }
-  function drawGlass(y0, y1, radius) {
-    var top = circlePts(radius, y1, 32);
-    var bot = circlePts(radius, y0, 32);
-    appCtx.strokeStyle = 'rgba(200,225,235,.2)';
-    appCtx.lineWidth = 1.3;
-    for (var i = 0; i < top.length; i += 8) {
-      appCtx.beginPath();
-      appCtx.moveTo(bot[i].sx, bot[i].sy);
-      appCtx.lineTo(top[i].sx, top[i].sy);
-      appCtx.stroke();
+  // scala graduata attorno al bilancere (una striscia di carta incollata al vetro)
+  function drawScale(front) {
+    appCtx.strokeStyle = front ? 'rgba(240,222,180,.8)' : 'rgba(240,222,180,.3)';
+    appCtx.lineWidth = front ? 1.6 : 1.1;
+    halfCircle(RING_R * 0.995, ROD_Y, front, 72);
+    for (var i = 0; i < 72; i++) {
+      var a = (i / 72) * Math.PI * 2;
+      if ((rot(Math.cos(a), 0, Math.sin(a)).z < 0) !== front) continue;
+      var r1 = RING_R - (i % 6 === 0 ? 0.016 : 0.008);
+      var p1 = project(r1 * Math.cos(a), ROD_Y, r1 * Math.sin(a));
+      var p2 = project(RING_R * Math.cos(a), ROD_Y, RING_R * Math.sin(a));
+      appCtx.beginPath(); appCtx.moveTo(p1.sx, p1.sy); appCtx.lineTo(p2.sx, p2.sy); appCtx.stroke();
     }
-    pathThrough(appCtx, bot); appCtx.closePath(); appCtx.stroke();
-    pathThrough(appCtx, top); appCtx.closePath(); appCtx.stroke();
+  }
+  function line3(a, b, color, width) {
+    appCtx.strokeStyle = color; appCtx.lineWidth = width; appCtx.lineCap = 'round';
+    appCtx.beginPath(); appCtx.moveTo(a.sx, a.sy); appCtx.lineTo(b.sx, b.sy); appCtx.stroke();
+  }
+  // asta del bilancere: bacchetta di gommalacca, con una linea di luce
+  function rodSegment(a, b) {
+    line3(a, b, '#5a3412', 5.5);
+    line3(a, b, '#a8682c', 3.5);
+    appCtx.save(); appCtx.translate(0, -1);
+    line3(a, b, 'rgba(255,214,160,.65)', 1.1);
+    appCtx.restore();
   }
 
   function drawApparatus() {
-    var W = appCv.width, H = appCv.height;
+    var W = CW, H = CH;
+    appCtx.setTransform(DPR, 0, 0, DPR, 0, 0);
     appCtx.clearRect(0, 0, W, H);
-    var bg = appCtx.createRadialGradient(W / 2, H * 0.35, 0, W / 2, H / 2, W * 1.1);
-    bg.addColorStop(0, '#161210');
+    var bg = appCtx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H / 2, W * 1.05);
+    bg.addColorStop(0, '#1b1612');
     bg.addColorStop(1, '#0a0c10');
     appCtx.fillStyle = bg;
     appCtx.fillRect(0, 0, W, H);
 
-    drawDisc(0, BASE_H, BASE_R, '#3a2812', '#7a5530', '#6e4a28', '#c9a06a');
-    drawGlass(BASE_H, BASE_H + GLASS_H, GLASS_R);
+    // ombra sul tavolo e basamento di legno
+    var sh = circlePts(PLINTH_R * 1.06, -PLINTH_H, 48);
+    appCtx.save(); appCtx.filter = 'blur(6px)';
+    appCtx.translate(7, 6); pathThrough(appCtx, sh); appCtx.closePath();
+    appCtx.fillStyle = 'rgba(0,0,0,.6)'; appCtx.fill(); appCtx.restore();
+    drawDisc(-PLINTH_H, 0, PLINTH_R, '#24160c', '#7a4a26', '#4d2f17', '#9a6438');
+    // fondo di ebanite con il bordo d'ottone, su cui poggia il vetro
+    drawDisc(0, BASE_H, BASE_R + 0.006, '#5e4214', '#e0b866', '#15110e', '#4a3d33');
 
-    // scala graduata, fissa, attorno al bilancere: stesso diametro della gabbia
-    var ring = circlePts(RING_R, ROD_Y, 60);
-    pathThrough(appCtx, ring);
-    appCtx.strokeStyle = 'rgba(232,213,176,.55)';
-    appCtx.lineWidth = 2;
-    appCtx.stroke();
-    for (var i = 0; i < 60; i++) {
-      var a = (i / 60) * Math.PI * 2;
-      var r1 = RING_R - (i % 5 === 0 ? 0.014 : 0.008);
-      var p1 = project(r1 * Math.cos(a), ROD_Y, r1 * Math.sin(a));
-      var p2 = project(RING_R * Math.cos(a), ROD_Y, RING_R * Math.sin(a));
-      appCtx.beginPath();
-      appCtx.moveTo(p1.sx, p1.sy);
-      appCtx.lineTo(p2.sx, p2.sy);
-      appCtx.stroke();
-    }
-
-    var lidTopY = BASE_H + GLASS_H + LID_H;
-    var knobY = lidTopY + TUBE_H;
+    var glassTop = BASE_H + GLASS_H;
+    var lidTopY = glassTop + LID_H;
+    var knobY = lidTopY + TUBE_DRAW;
     var Mx = D_M * Math.cos(THETA_M), Mz = D_M * Math.sin(THETA_M);
 
-    // filo di supporto della carica fissa: dal perno sul tappo giù fino a Q
-    var pPegTop = project(Mx, lidTopY, Mz);
-    var pMFix = project(Mx, ROD_Y, Mz);
-    appCtx.strokeStyle = 'rgba(225,225,232,.9)';
-    appCtx.lineWidth = 2.2;
-    appCtx.beginPath();
-    appCtx.moveTo(pPegTop.sx, pPegTop.sy);
-    appCtx.lineTo(pMFix.sx, pMFix.sy);
-    appCtx.stroke();
+    glassWall(BASE_H, glassTop, GLASS_R, false);
+    drawScale(false);
 
-    // filo di sospensione del bilancere: dal tappo (vicino alla manopola) fino al centro
-    var pivotTop = project(0, knobY, 0);
-    var pivot = project(0, ROD_Y, 0);
-    appCtx.beginPath();
-    appCtx.moveTo(pivotTop.sx, pivotTop.sy);
-    appCtx.lineTo(pivot.sx, pivot.sy);
-    appCtx.stroke();
-
-    // bilancere: carica mobile q su un lato, piattino verticale sull'altro
+    // ── interno, dal più lontano al più vicino ──
     var angle = state.angle;
     var mPos = { x: LR * Math.cos(angle), y: ROD_Y, z: LR * Math.sin(angle) };
     var platePos = { x: -mPos.x, y: ROD_Y, z: -mPos.z };
     var pm = project(mPos.x, mPos.y, mPos.z);
     var pPlateCenter = project(platePos.x, platePos.y, platePos.z);
-
-    appCtx.strokeStyle = '#c87c3a';
-    appCtx.lineWidth = 6;
-    appCtx.lineCap = 'round';
-    appCtx.beginPath();
-    appCtx.moveTo(pPlateCenter.sx, pPlateCenter.sy);
-    appCtx.lineTo(pm.sx, pm.sy);
-    appCtx.stroke();
-
-    appCtx.beginPath();
-    appCtx.arc(pivot.sx, pivot.sy, 4.5, 0, Math.PI * 2);
-    appCtx.fillStyle = '#e8d5b0';
-    appCtx.fill();
-
+    var pivotTop = project(0, knobY, 0);
+    var pivot = project(0, ROD_Y, 0);
+    var pPegTop = project(Mx, lidTopY, Mz);
+    var pMFix = project(Mx, ROD_Y, Mz);
     var radialLen = Math.sqrt(platePos.x * platePos.x + platePos.z * platePos.z) || 1;
     var radialX = platePos.x / radialLen, radialZ = platePos.z / radialLen;
-    verticalPlateAt(appCtx, platePos.x, platePos.y, platePos.z, radialX, radialZ, Rm_VIS * 1.5, '#d8d8d8');
+    var balls = ballStyle();
 
-    var qCol = sphereColors(state.qsign), QCol = sphereColors(state.Qsign);
-    sphereAt(appCtx, pm, Rm_VIS, qCol[0], qCol[1]);
-    sphereAt(appCtx, pMFix, RM_VIS, QCol[0], QCol[1]);
+    var items = [
+      { z: pMFix.z, draw: function () {
+          line3(pPegTop, pMFix, 'rgba(225,225,232,.85)', 1.4);
+          sphereAt(appCtx, pMFix, RM_VIS, balls.M[0], balls.M[1]);
+          if (balls.Msign) signOn(pMFix, balls.Msign, 15);
+        } },
+      { z: 0, draw: function () {
+          line3(pivotTop, pivot, 'rgba(235,235,242,.9)', 1.1);
+        } },
+      { z: pm.z / 2, draw: function () { rodSegment(pivot, pm); } },
+      { z: pPlateCenter.z / 2, draw: function () { rodSegment(pivot, pPlateCenter); } },
+      { z: pPlateCenter.z, draw: function () {
+          verticalPlateAt(appCtx, platePos.x, platePos.y, platePos.z, radialX, radialZ, Rm_VIS * 1.6, '#cfc8b6');
+        } },
+      { z: pm.z, draw: function () {
+          sphereAt(appCtx, pm, Rm_VIS, balls.m[0], balls.m[1]);
+          if (balls.msign) signOn(pm, balls.msign, 12);
+        } }
+    ];
+    items.sort(function (a, b) { return b.z - a.z; });
+    items.forEach(function (it) { it.draw(); });
+    // morsetto al centro del bilancere
+    appCtx.beginPath(); appCtx.arc(pivot.sx, pivot.sy, 3.2, 0, Math.PI * 2);
+    appCtx.fillStyle = '#e8c878'; appCtx.fill();
+    appCtx.strokeStyle = 'rgba(60,40,10,.7)'; appCtx.lineWidth = 0.8; appCtx.stroke();
 
-    appCtx.font = '700 15px Georgia, serif';
-    appCtx.textAlign = 'center';
-    appCtx.textBaseline = 'middle';
-    appCtx.fillStyle = state.qsign > 0 ? '#7a2f0a' : '#0f2050';
-    appCtx.fillText(state.qsign > 0 ? '+' : '–', pm.sx, pm.sy);
-    appCtx.fillStyle = state.Qsign > 0 ? '#7a2f0a' : '#0f2050';
-    appCtx.fillText(state.Qsign > 0 ? '+' : '–', pMFix.sx, pMFix.sy);
-    appCtx.textBaseline = 'alphabetic';
-
+    // nomi delle sfere
     appCtx.font = 'italic 16px Georgia, serif';
-    appCtx.fillStyle = '#c7ccd4';
-    appCtx.fillText('q', pm.sx, pm.sy - Rm_VIS * PXM * pm.scale - 10);
-    appCtx.fillStyle = '#e8983a';
-    appCtx.fillText('Q', pMFix.sx, pMFix.sy - RM_VIS * PXM * pMFix.scale - 12);
+    appCtx.textAlign = 'left';
+    appCtx.fillStyle = '#d6dae0';
+    appCtx.fillText(balls.mLabel, pm.sx + Rm_VIS * PXM * pm.scale + 4, pm.sy - Rm_VIS * PXM * pm.scale - 2);
+    appCtx.fillStyle = '#f0a54a';
+    appCtx.fillText(balls.MLabel, pMFix.sx + RM_VIS * PXM * pMFix.scale + 4, pMFix.sy - RM_VIS * PXM * pMFix.scale - 2);
+    appCtx.textAlign = 'center';
 
     // linea tratteggiata "r", solo nello scenario di studio della distanza
     if (scenario === 'r') {
       appCtx.save();
       appCtx.setLineDash([7, 6]);
-      appCtx.strokeStyle = '#6fd3d9';
-      appCtx.lineWidth = 2;
-      appCtx.beginPath();
-      appCtx.moveTo(pMFix.sx, pMFix.sy);
-      appCtx.lineTo(pm.sx, pm.sy);
-      appCtx.stroke();
+      line3(pMFix, pm, '#6fd3d9', 2);
       appCtx.restore();
       appCtx.font = 'italic 16px Georgia, serif';
       appCtx.fillStyle = '#6fd3d9';
-      appCtx.textAlign = 'center';
       appCtx.fillText('r', (pMFix.sx + pm.sx) / 2, (pMFix.sy + pm.sy) / 2 - 9);
     }
 
-    var topRim = circlePts(GLASS_R, BASE_H + GLASS_H, 32);
-    pathThrough(appCtx, topRim); appCtx.closePath();
-    appCtx.strokeStyle = 'rgba(200,225,235,.4)'; appCtx.lineWidth = 1.3; appCtx.stroke();
+    drawScale(true);
+    glassWall(BASE_H, glassTop, GLASS_R, true);
 
-    drawDisc(BASE_H + GLASS_H, lidTopY, LID_R, '#3a2812', '#7a5530', '#6e4a28', '#c9a06a');
+    // coperchio: lastra di vetro con il bordo d'ottone
+    drawDisc(glassTop, lidTopY, LID_R + 0.004, '#5e4214', '#e0b866', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 0);
+    var lidTop = circlePts(LID_R, lidTopY, 48);
+    pathThrough(appCtx, lidTop); appCtx.closePath();
+    appCtx.fillStyle = 'rgba(170,220,235,.10)'; appCtx.fill();
+    appCtx.strokeStyle = 'rgba(240,210,140,.8)'; appCtx.lineWidth = 1.4; appCtx.stroke();
 
-    // perno sul tappo, dove è fissato il filo della carica fissa (visibile dall'alto)
-    var pPeg = project(Mx, lidTopY + 0.008, Mz);
-    sphereAt(appCtx, pPeg, 0.012, '#d8dce0', '#6a6f75');
+    // perno sul coperchio, dove è fissato il filo della sfera fissa
+    sphereAt(appCtx, project(Mx, lidTopY + 0.008, Mz), 0.011, '#f0d9a0', '#6b4a14');
 
-    drawGlass(lidTopY, knobY, TUBE_R);
-    var pKnob = project(0, knobY + KNOB_R * 0.6, 0);
-    sphereAt(appCtx, pKnob, KNOB_R, '#e8b060', '#8a5a20');
+    // tubo di vetro del filo e testa di torsione d'ottone
+    drawDisc(lidTopY, lidTopY + 0.008, TUBE_R + 0.008, '#5e4214', '#e0b866', '#8a6423', '#f0d9a0');
+    glassWall(lidTopY + 0.008, knobY, TUBE_R, false);
+    line3(project(0, lidTopY, 0), pivotTop, 'rgba(235,235,242,.9)', 1.1);
+    glassWall(lidTopY + 0.008, knobY, TUBE_R, true);
+    drawDisc(knobY, knobY + 0.022, TUBE_R + 0.012, '#5e4214', '#e8c070', '#8a6423', '#f6e2b0');
+    drawDisc(knobY + 0.022, knobY + 0.034, 0.012, '#5e4214', '#e8c070', '#8a6423', '#f6e2b0');
+    sphereAt(appCtx, project(0, knobY + 0.034 + KNOB_R * 0.45, 0), KNOB_R * 0.55, '#e8b060', '#6b4a14');
+  }
+
+  // Colore della sferetta a seconda del segno della carica: ambra per il
+  // positivo, blu per il negativo (stessa convenzione usata nel resto del capitolo).
+  function ballStyle() {
+    function c(s) { return s > 0 ? ['#ffcf8a', '#9a4a12'] : ['#bfdbfe', '#1e3a8a']; }
+    return { m: c(state.qsign), M: c(state.Qsign), msign: state.qsign, Msign: state.Qsign, mLabel: 'q', MLabel: 'Q' };
+  }
+  function signOn(p, s, size) {
+    appCtx.font = '700 ' + size + 'px Georgia, serif';
+    appCtx.textAlign = 'center'; appCtx.textBaseline = 'middle';
+    appCtx.fillStyle = s > 0 ? '#5a1f05' : '#0b1a45';
+    appCtx.fillText(s > 0 ? '+' : '–', p.sx, p.sy + 1);
+    appCtx.textBaseline = 'alphabetic';
   }
 
   function loop() {
