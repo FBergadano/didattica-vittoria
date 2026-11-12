@@ -81,4 +81,7 @@
     esercizi: [2, 3]
   - data: 2026-11-11
     capitolo: gravitazione-elettromagnetismo/02_Elettrostatica
-    esercizi: [4, 5, 6]
+    esercizi: [4, 5]
+  - data: 2026-11-18
+    capitolo: gravitazione-elettromagnetismo/02_Elettrostatica
+    esercizi: [6, 7]
