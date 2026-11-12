@@ -376,7 +376,7 @@ Nessun parametro.
   // densità). Trascinando sull'immagine si gira la bilancia attorno al filo.
   var AZIMUTH = 20 * Math.PI / 180;
   var TILT = 15 * Math.PI / 180;
-  var FOCAL = 1.8;
+  var FOCAL = 60;   // proiezione quasi parallela: niente deformazioni
   var PXM = 740;
   var CX = 200, CY = 405;
   var CW = appCv.width, CH = appCv.height;
@@ -525,32 +525,44 @@ Nessun parametro.
   }
   // parete di vetro: dietro (front=false) un velo azzurrino, davanti i riflessi
   function glassWall(y0, y1, R, front) {
-    var n = 56;
+    // Ogni spicchio della parete è diviso in fasce verticali: i riflessi sono
+    // strisce che seguono la curvatura del vetro e sfumano verso il basso.
+    // Davanti (front) il riflesso principale sta a sinistra, verso la luce;
+    // sulla parete di dietro, vista attraverso il vetro, se ne vede uno più
+    // debole dal lato opposto (la luce riflessa dall'interno del cilindro).
+    var n = 64, m = 8;
     for (var i = 0; i < n; i++) {
       var a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2, am = (a0 + a1) / 2;
       var nr = rot(Math.cos(am), 0, Math.sin(am));
       var isFront = nr.z < 0;
       if (isFront !== front) continue;
-      var fres = Math.pow(1 - Math.abs(nr.z), 2.5);
-      var alpha, col;
+      var fres = Math.pow(1 - Math.abs(nr.z), 3);
+      var base, spec, col;
       if (front) {
-        alpha = 0.02 + 0.2 * fres + 0.3 * Math.exp(-Math.pow((nr.x + 0.58) / 0.09, 2)) + 0.14 * Math.exp(-Math.pow((nr.x - 0.74) / 0.06, 2));
+        base = 0.012 + 0.05 * fres;
+        spec = 0.13 * Math.exp(-Math.pow((nr.x + 0.62) / 0.07, 2)) + 0.05 * Math.exp(-Math.pow((nr.x + 0.42) / 0.03, 2));
         col = '255,255,255';
       } else {
-        alpha = 0.05 + 0.12 * fres;
-        col = '140,205,220';
+        base = 0.03 + 0.05 * fres;
+        spec = 0.06 * Math.exp(-Math.pow((nr.x - 0.55) / 0.09, 2));
+        col = front ? '255,255,255' : '160,215,228';
       }
-      var p00 = project(R * Math.cos(a0), y0, R * Math.sin(a0)), p01 = project(R * Math.cos(a1), y0, R * Math.sin(a1));
-      var p10 = project(R * Math.cos(a0), y1, R * Math.sin(a0)), p11 = project(R * Math.cos(a1), y1, R * Math.sin(a1));
-      appCtx.fillStyle = 'rgba(' + col + ',' + alpha.toFixed(3) + ')';
-      appCtx.beginPath();
-      appCtx.moveTo(p00.sx, p00.sy); appCtx.lineTo(p01.sx, p01.sy);
-      appCtx.lineTo(p11.sx, p11.sy); appCtx.lineTo(p10.sx, p10.sy);
-      appCtx.closePath(); appCtx.fill();
+      for (var j = 0; j < m; j++) {
+        var v = (j + 0.5) / m;                       // 0 = in alto, 1 = in basso
+        var ya = y1 - (y1 - y0) * j / m, yb = y1 - (y1 - y0) * (j + 1) / m;
+        var alpha = base + spec * (1 - 0.75 * v);
+        var p00 = project(R * Math.cos(a0), yb, R * Math.sin(a0)), p01 = project(R * Math.cos(a1), yb, R * Math.sin(a1));
+        var p10 = project(R * Math.cos(a0), ya, R * Math.sin(a0)), p11 = project(R * Math.cos(a1), ya, R * Math.sin(a1));
+        appCtx.fillStyle = 'rgba(' + col + ',' + alpha.toFixed(3) + ')';
+        appCtx.beginPath();
+        appCtx.moveTo(p00.sx, p00.sy); appCtx.lineTo(p01.sx, p01.sy);
+        appCtx.lineTo(p11.sx, p11.sy); appCtx.lineTo(p10.sx, p10.sy);
+        appCtx.closePath(); appCtx.fill();
+      }
     }
     // bordi: dietro tenui, davanti più marcati; i due contorni laterali
-    appCtx.strokeStyle = front ? 'rgba(170,230,240,.55)' : 'rgba(150,215,230,.22)';
-    appCtx.lineWidth = front ? 1.3 : 1;
+    appCtx.strokeStyle = front ? 'rgba(170,230,240,.38)' : 'rgba(150,215,230,.16)';
+    appCtx.lineWidth = 1;
     halfCircle(R, y0, front); halfCircle(R, y1, front);
     if (front) {
       var bot = circlePts(R, y0, 90), top = circlePts(R, y1, 90), iMin = 0, iMax = 0;
@@ -560,18 +572,26 @@ Nessun parametro.
       });
     }
   }
-  // scala graduata attorno al bilancere (una striscia di carta incollata al vetro)
+  // scala graduata: una striscia di carta incollata sulla parete di vetro,
+  // all'altezza del bilancere (si legge dove punta l'asta)
   function drawScale(front) {
-    appCtx.strokeStyle = front ? 'rgba(240,222,180,.8)' : 'rgba(240,222,180,.3)';
-    appCtx.lineWidth = front ? 1.6 : 1.1;
-    halfCircle(RING_R * 0.995, ROD_Y, front, 72);
-    for (var i = 0; i < 72; i++) {
-      var a = (i / 72) * Math.PI * 2;
-      if ((rot(Math.cos(a), 0, Math.sin(a)).z < 0) !== front) continue;
-      var r1 = RING_R - (i % 6 === 0 ? 0.016 : 0.008);
-      var p1 = project(r1 * Math.cos(a), ROD_Y, r1 * Math.sin(a));
-      var p2 = project(RING_R * Math.cos(a), ROD_Y, RING_R * Math.sin(a));
-      appCtx.beginPath(); appCtx.moveTo(p1.sx, p1.sy); appCtx.lineTo(p2.sx, p2.sy); appCtx.stroke();
+    var R = GLASS_R * 1.003, y0 = ROD_Y - 0.009, y1 = ROD_Y + 0.009, n = 72;
+    for (var i = 0; i < n; i++) {
+      var a0 = (i / n) * Math.PI * 2, a1 = ((i + 1) / n) * Math.PI * 2, am = (a0 + a1) / 2;
+      if ((rot(Math.cos(am), 0, Math.sin(am)).z < 0) !== front) continue;
+      var p00 = project(R * Math.cos(a0), y0, R * Math.sin(a0)), p01 = project(R * Math.cos(a1), y0, R * Math.sin(a1));
+      var p10 = project(R * Math.cos(a0), y1, R * Math.sin(a0)), p11 = project(R * Math.cos(a1), y1, R * Math.sin(a1));
+      appCtx.fillStyle = front ? 'rgba(236,224,196,.22)' : 'rgba(236,224,196,.10)';
+      appCtx.beginPath();
+      appCtx.moveTo(p00.sx, p00.sy); appCtx.lineTo(p01.sx, p01.sy);
+      appCtx.lineTo(p11.sx, p11.sy); appCtx.lineTo(p10.sx, p10.sy);
+      appCtx.closePath(); appCtx.fill();
+      // tacche verticali: una ogni 5°, più lunga ogni 30°
+      var yt = (i % 6 === 0) ? y1 : ROD_Y;
+      var q0 = project(R * Math.cos(a0), y0, R * Math.sin(a0)), q1 = project(R * Math.cos(a0), yt, R * Math.sin(a0));
+      appCtx.strokeStyle = front ? 'rgba(70,50,25,.75)' : 'rgba(200,180,140,.3)';
+      appCtx.lineWidth = 0.8;
+      appCtx.beginPath(); appCtx.moveTo(q0.sx, q0.sy); appCtx.lineTo(q1.sx, q1.sy); appCtx.stroke();
     }
   }
   function line3(a, b, color, width) {
@@ -677,24 +697,28 @@ Nessun parametro.
     drawScale(true);
     glassWall(BASE_H, glassTop, GLASS_R, true);
 
-    // coperchio: lastra di vetro con il bordo d'ottone
-    drawDisc(glassTop, lidTopY, LID_R + 0.004, '#5e4214', '#e0b866', 'rgba(0,0,0,0)', 'rgba(0,0,0,0)', 0);
-    var lidTop = circlePts(LID_R, lidTopY, 48);
-    pathThrough(appCtx, lidTop); appCtx.closePath();
-    appCtx.fillStyle = 'rgba(170,220,235,.10)'; appCtx.fill();
-    appCtx.strokeStyle = 'rgba(240,210,140,.8)'; appCtx.lineWidth = 1.4; appCtx.stroke();
+    // coperchio: disco di ebanite con il bordo d'ottone (come l'elettroscopio)
+    drawDisc(glassTop, glassTop + 0.006, LID_R + 0.005, '#5e4214', '#d8ae5c', '#3a2c12', '#7a5a20');
+    drawDisc(glassTop + 0.006, lidTopY, LID_R, '#0e0a08', '#3d342e', '#120e0c', '#4a3f38');
 
-    // perno sul coperchio, dove è fissato il filo della sfera fissa
-    sphereAt(appCtx, project(Mx, lidTopY + 0.008, Mz), 0.011, '#f0d9a0', '#6b4a14');
+    // perno d'ottone sul coperchio, da cui pende il filo della sfera fissa
+    sphereAt(appCtx, project(Mx, lidTopY + 0.006, Mz), 0.008, '#f0d9a0', '#6b4a14');
 
-    // tubo di vetro del filo e testa di torsione d'ottone
-    drawDisc(lidTopY, lidTopY + 0.008, TUBE_R + 0.008, '#5e4214', '#e0b866', '#8a6423', '#f0d9a0');
-    glassWall(lidTopY + 0.008, knobY, TUBE_R, false);
-    line3(project(0, lidTopY, 0), pivotTop, 'rgba(235,235,242,.9)', 1.1);
-    glassWall(lidTopY + 0.008, knobY, TUBE_R, true);
-    drawDisc(knobY, knobY + 0.022, TUBE_R + 0.012, '#5e4214', '#e8c070', '#8a6423', '#f6e2b0');
-    drawDisc(knobY + 0.022, knobY + 0.034, 0.012, '#5e4214', '#e8c070', '#8a6423', '#f6e2b0');
-    sphereAt(appCtx, project(0, knobY + 0.034 + KNOB_R * 0.45, 0), KNOB_R * 0.55, '#e8b060', '#6b4a14');
+    // tubo di vetro del filo, con la ghiera d'ottone alla base
+    drawDisc(lidTopY, lidTopY + 0.010, TUBE_R + 0.007, '#5e4214', '#e0b866', '#8a6423', '#f0d9a0');
+    glassWall(lidTopY + 0.010, knobY, TUBE_R, false);
+    line3(project(0, lidTopY + 0.010, 0), pivotTop, 'rgba(235,235,242,.9)', 1.1);
+    glassWall(lidTopY + 0.010, knobY, TUBE_R, true);
+    // testa di torsione: tamburo d'ottone graduato e manopola
+    drawDisc(knobY, knobY + 0.018, TUBE_R + 0.016, '#5e4214', '#e8c070', '#9a7028', '#f6e2b0');
+    for (var t = 0; t < 36; t++) {
+      var at = (t / 36) * Math.PI * 2;
+      if (rot(Math.cos(at), 0, Math.sin(at)).z > 0) continue;
+      var rr = TUBE_R + 0.016, rk = rr - (t % 3 === 0 ? 0.007 : 0.004);
+      var k0 = project(rk * Math.cos(at), knobY + 0.018, rk * Math.sin(at)), k1 = project(rr * Math.cos(at), knobY + 0.018, rr * Math.sin(at));
+      line3(k0, k1, 'rgba(70,45,10,.8)', 0.7);
+    }
+    drawDisc(knobY + 0.018, knobY + 0.034, 0.010, '#4a3410', '#d8ae5c', '#8a6423', '#f0d9a0');
   }
 
   // massa piccola m (piombo, grigia) e massa grande M (ottone)
