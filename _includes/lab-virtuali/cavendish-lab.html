@@ -406,7 +406,7 @@ Nessun parametro.
   }
   function rotX(p) {
     var c = Math.cos(TILT), s = Math.sin(TILT);
-    return { x: p.x, y: p.y * c - p.z * s, z: p.y * s + p.z * c };
+    return { x: p.x, y: p.y * c + p.z * s, z: -p.y * s + p.z * c };
   }
   function rot(x, y, z) { return rotX(rotY({ x: x, y: y, z: z })); }
   function project(x, y, z) {
