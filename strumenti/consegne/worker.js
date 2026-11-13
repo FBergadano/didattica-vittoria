@@ -11,6 +11,9 @@
 //                       docente (dubbi, foto, schemi, risposte). Vedi LEGGIMI.md.
 //    DOCENTE_URL      — Variable facoltativa: indirizzo della pagina del docente,
 //                       aggiunto in fondo a ogni notifica.
+//    RESEND_KEY       — Secret facoltativo: chiave di resend.com, per mandare al docente
+//                       un'email con il testo di ogni dubbio e di ogni osservazione.
+//    EMAIL_DOCENTE    — Secret: l'indirizzo a cui arrivano quelle email.
 //
 //  Nel database non ci sono nomi: solo codici (es. GIUR) scelti dal docente.
 //  I PIN sono salvati solo come impronta (HMAC), mai in chiaro.
@@ -49,10 +52,19 @@ const SCHEMA = [
      classe TEXT NOT NULL, codice TEXT NOT NULL, pagina TEXT, titolo TEXT, ts INTEGER NOT NULL,
      tipo TEXT NOT NULL, dim INTEGER NOT NULL, dati TEXT NOT NULL)`,
   `CREATE INDEX IF NOT EXISTS schemi_classe ON schemi (classe, ts)`,
+  // osservazioni (critiche, proposte…): se lo studente le nasconde, codice e/o classe
+  // NON vengono salvati (restano NULL), e per le anonime l'orario è solo il giorno
+  `CREATE TABLE IF NOT EXISTS osservazioni (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     classe TEXT, codice TEXT, testo TEXT NOT NULL, ts INTEGER NOT NULL,
+     letta INTEGER NOT NULL DEFAULT 0)`,
+  // quante osservazioni ha mandato oggi ogni studente (contro gli abusi): la chiave è
+  // un'impronta (HMAC) del giorno, della classe e del codice, senza legame con i messaggi
+  `CREATE TABLE IF NOT EXISTS limiti (k TEXT PRIMARY KEY, n INTEGER NOT NULL)`,
 ];
 
 const MAX_ERRORI_PIN = 8, BLOCCO_MS = 15 * 60 * 1000;
-const MAX_DUBBI_GIORNO = 20;
+const MAX_DUBBI_GIORNO = 20, MAX_OSS_GIORNO = 10;
 const MAX_FOTO_GIORNO = 40, MAX_FOTO_B64 = 1400000; // ~1 MB per foto (il telefono le riduce a ~300 KB)
 const MAX_SCHEMI_GIORNO = 30, MAX_MAPPA = 400000;
 const RE_CLASSE = /^[A-Za-z0-9][A-Za-z0-9 _-]{0,15}$/, RE_CODICE = /^[A-Z]{2,12}$/;
@@ -86,6 +98,7 @@ export default {
         case '/risposte':    return await risposte(corpo, env, cors, ctx);
         case '/dubbi':       return await nuovoDubbio(corpo, env, cors, ctx);
         case '/miei-dubbi':  return await mieiDubbi(corpo, env, cors);
+        case '/osservazione': return await nuovaOsservazione(corpo, env, cors, ctx);
         case '/foto':        return await nuovaFoto(corpo, env, cors, ctx);
         case '/mie-foto':    return await mieFoto(corpo, env, cors);
         case '/foto-elimina': return await eliminaFoto(corpo, env, cors);
@@ -241,8 +254,36 @@ async function nuovoDubbio(c, env, cors, ctx) {
   await env.DB.prepare('INSERT INTO dubbi (classe, codice, pagina, sezione, ancora, testo, ts) VALUES (?, ?, ?, ?, ?, ?, ?)')
     .bind(st.classe, st.codice, str(c.pagina, 200), str(c.sezione, 120), str(c.ancora, 120), testo.trim(), ora).run();
   const t = testo.trim();
-  notifica(env, ctx, `❓ Nuovo dubbio da ${st.codice} (${st.classe})` + (c.pagina ? ` — ${nomePagina(str(c.pagina, 200))}` : '') +
-    (c.sezione ? `, «${str(c.sezione, 120)}»` : '') + `\n\n${t.length > 400 ? t.slice(0, 400) + '…' : t}`);
+  const dove = (c.pagina ? ` — ${nomePagina(str(c.pagina, 200))}` : '') + (c.sezione ? `, «${str(c.sezione, 120)}»` : '');
+  notifica(env, ctx, `❓ Nuovo dubbio da ${st.codice} (${st.classe})` + dove + `\n\n${t.length > 400 ? t.slice(0, 400) + '…' : t}`);
+  email(env, ctx, `Dubbio da ${st.codice} (${st.classe})`, `Dubbio da ${st.codice} (${st.classe})${dove}\n\n${t}`);
+  return json({ ok: true }, 200, cors);
+}
+
+// Osservazione: critiche, proposte, commenti sulla didattica o sul rapporto con il prof.
+// Con nascondi_codice / nascondi_classe il dato non arriva nemmeno nel database.
+async function nuovaOsservazione(c, env, cors, ctx) {
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  const testo = str(c.testo, 4000);
+  if (!testo || !testo.trim()) return json({ errore: 'vuoto' }, 400, cors);
+  const ora = Date.now(), oggi = new Date(ora + 2 * 3600 * 1000).toISOString().slice(0, 10);
+  const k = oggi + '|' + await hmac(env, `oss|${oggi}|${st.classe}|${st.codice}`);
+  const n = await env.DB.prepare('SELECT n FROM limiti WHERE k = ?').bind(k).first();
+  if (n && n.n >= MAX_OSS_GIORNO) return json({ errore: 'troppi' }, 429, cors);
+  const senzaCodice = !!c.nascondi_codice, senzaClasse = !!c.nascondi_classe;
+  const classe = senzaClasse ? null : st.classe, codice = senzaCodice ? null : st.codice;
+  // un'osservazione anonima porta solo il giorno, non l'ora: l'orario potrebbe dire chi era collegato
+  const ts = senzaCodice ? Date.parse(oggi + 'T12:00:00Z') : ora;
+  await env.DB.batch([
+    env.DB.prepare('INSERT INTO osservazioni (classe, codice, testo, ts) VALUES (?, ?, ?, ?)').bind(classe, codice, testo.trim(), ts),
+    env.DB.prepare('INSERT INTO limiti (k, n) VALUES (?, 1) ON CONFLICT(k) DO UPDATE SET n = n + 1').bind(k),
+    env.DB.prepare('DELETE FROM limiti WHERE k < ?').bind(oggi),
+  ]);
+  const chi = (codice || 'anonimo') + (classe ? ` (${classe})` : codice ? '' : ', classe nascosta');
+  const t = testo.trim();
+  notifica(env, ctx, `💬 Nuova osservazione da ${chi}\n\n${t.length > 400 ? t.slice(0, 400) + '…' : t}`);
+  email(env, ctx, `Osservazione da ${chi}`, `Osservazione da ${chi}\n\n${t}`);
   return json({ ok: true }, 200, cors);
 }
 
@@ -307,6 +348,17 @@ function notifica(env, ctx, testo, chiave, finestra) {
       await telegram(env, chat.v, testo + (env.DOCENTE_URL ? '\n\n' + env.DOCENTE_URL : ''));
     } catch (e) {}
   })());
+}
+// email al docente (resend.com): parte in background, solo se RESEND_KEY ed EMAIL_DOCENTE ci sono
+function email(env, ctx, oggetto, testo) {
+  if (!env.RESEND_KEY || !env.EMAIL_DOCENTE || !ctx) return;
+  ctx.waitUntil(fetch('https://api.resend.com/emails', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + env.RESEND_KEY },
+    body: JSON.stringify({
+      from: env.EMAIL_MITTENTE || 'Didattica Vittoria <onboarding@resend.dev>', to: [env.EMAIL_DOCENTE],
+      subject: oggetto, text: testo + (env.DOCENTE_URL ? '\n\n— ' + env.DOCENTE_URL : ''),
+    }),
+  }).catch(() => {}));
 }
 function telegram(env, chat, testo) {
   return fetch(`https://api.telegram.org/bot${env.TELEGRAM_TOKEN}/sendMessage`, {
@@ -432,6 +484,26 @@ async function docente(p, url, c, env, cors, ctx) {
       if (c.elimina) await DB.prepare('DELETE FROM dubbi WHERE id = ?').bind(id).run();
       return json({ ok: true }, 200, cors);
     }
+    case '/docente/osservazioni': { // tutte le classi: un'osservazione può non avere classe
+      const r = await DB.prepare('SELECT * FROM osservazioni ORDER BY letta, ts DESC LIMIT 500').all();
+      return json({ osservazioni: r.results }, 200, cors);
+    }
+    case '/docente/osservazione': {
+      const id = Number(c.id);
+      if (c.letta !== undefined) await DB.prepare('UPDATE osservazioni SET letta = ? WHERE id = ?').bind(c.letta ? 1 : 0, id).run();
+      if (c.elimina) await DB.prepare('DELETE FROM osservazioni WHERE id = ?').bind(id).run();
+      return json({ ok: true }, 200, cors);
+    }
+    case '/docente/email': { // prova dell'email
+      if (!env.RESEND_KEY || !env.EMAIL_DOCENTE) return json({ errore: 'mancano i secret RESEND_KEY ed EMAIL_DOCENTE' }, 400, cors);
+      if (c.azione !== 'prova') return json({ attiva: true }, 200, cors);
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + env.RESEND_KEY },
+        body: JSON.stringify({ from: env.EMAIL_MITTENTE || 'Didattica Vittoria <onboarding@resend.dev>', to: [env.EMAIL_DOCENTE], subject: 'Prova: le email funzionano', text: 'Da ora ti scrivo qui quando arriva un dubbio o un\'osservazione.' }),
+      });
+      if (!r.ok) return json({ errore: 'resend.com ha risposto: ' + (await r.text()).slice(0, 300) }, 400, cors);
+      return json({ ok: true }, 200, cors);
+    }
     case '/docente/foto': { // elenco delle foto di una classe (senza le immagini)
       const r = await DB.prepare('SELECT id, codice, compito, ts, dim FROM foto WHERE classe = ? ORDER BY ts DESC').bind(q('classe')).all();
       return json({ foto: r.results }, 200, cors);
@@ -485,13 +557,14 @@ async function docente(p, url, c, env, cors, ctx) {
     }
     case '/docente/novita': { // ciò che è arrivato dopo un certo istante (per gli avvisi nella pagina del docente)
       const da = Number(q('da')) || 0;
-      const [d, f, s, r] = await DB.batch([
+      const [d, f, s, r, o] = await DB.batch([
         DB.prepare('SELECT classe, codice, ts FROM dubbi WHERE ts > ? ORDER BY ts DESC LIMIT 50').bind(da),
         DB.prepare('SELECT classe, codice, ts FROM foto WHERE ts > ? ORDER BY ts DESC LIMIT 50').bind(da),
         DB.prepare('SELECT classe, codice, ts FROM schemi WHERE ts > ? ORDER BY ts DESC LIMIT 50').bind(da),
         DB.prepare('SELECT classe, codice, pagina, MAX(ricevuto) AS ts FROM risposte WHERE ricevuto > ? GROUP BY classe, codice, pagina ORDER BY ts DESC LIMIT 50').bind(da),
+        DB.prepare('SELECT id, classe, codice FROM osservazioni WHERE id > ? ORDER BY id DESC LIMIT 50').bind(Number(q('oss')) || 0),
       ]);
-      return json({ ora: Date.now(), dubbi: d.results, foto: f.results, schemi: s.results, risposte: r.results }, 200, cors);
+      return json({ ora: Date.now(), dubbi: d.results, foto: f.results, schemi: s.results, risposte: r.results, osservazioni: o.results }, 200, cors);
     }
     case '/docente/cancella': { // cancella risposte, dubbi e foto più vecchi di una data
       const prima = Number(c.prima_di);
@@ -500,7 +573,8 @@ async function docente(p, url, c, env, cors, ctx) {
       const b = await DB.prepare('DELETE FROM dubbi WHERE ts < ?').bind(prima).run();
       const f = await DB.prepare('DELETE FROM foto WHERE ts < ?').bind(prima).run();
       const g = await DB.prepare('DELETE FROM schemi WHERE ts < ?').bind(prima).run();
-      return json({ ok: true, risposte: a.meta.changes, dubbi: b.meta.changes, foto: f.meta.changes, schemi: g.meta.changes }, 200, cors);
+      const o = await DB.prepare('DELETE FROM osservazioni WHERE ts < ?').bind(prima).run();
+      return json({ ok: true, risposte: a.meta.changes, dubbi: b.meta.changes, foto: f.meta.changes, schemi: g.meta.changes, osservazioni: o.meta.changes }, 200, cors);
     }
   }
   return json({ errore: 'percorso sconosciuto' }, 404, cors);

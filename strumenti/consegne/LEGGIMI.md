@@ -1,4 +1,4 @@
-# Consegna dei compiti e dubbi: come attivarla
+# Consegna dei compiti, dubbi e osservazioni: come attivarla
 
 ## Come funziona
 
@@ -14,11 +14,20 @@
 - Sempre dalla finestrella 👤 può mandarti un **dubbio**: viene allegata in
   automatico la pagina e la sezione che sta leggendo. La tua risposta la
   ritrova nella stessa finestrella (con un pallino rosso sul pulsante).
+- Nella stessa sezione, «Dubbi e osservazioni», può mandarti anche
+  un'**osservazione**: critiche, proposte, commenti sulle lezioni, sui
+  compiti, sulle verifiche o sul rapporto con te. Con due pulsanti può
+  nascondere il codice e/o la classe: il dato nascosto **non arriva sul
+  server** (nel database la colonna resta vuota), e per un'osservazione senza
+  codice si salva solo il giorno, non l'ora. Le leggi nella scheda
+  **Osservazioni** della tua pagina, per tutte le classi insieme. I dubbi,
+  invece, portano sempre il codice (devi sapere a chi rispondere).
 - Tu apri **`/consegna/docente/`** con la tua password: per ogni classe una
   tabella studenti × lezioni (esercizi fatti, giusti, tempo fra la prima e
   l'ultima risposta, ritardi), il dettaglio risposta per risposta, i
   risultati domanda per domanda, i dubbi da leggere e a cui rispondere.
-- Nessuna mail.
+- Per ogni dubbio e ogni osservazione può arrivarti un'**email** con il testo
+  (vedi «Email» qui sotto).
 
 ### Privacy
 
@@ -144,3 +153,28 @@ Per spegnerle: **Scollega**, nella stessa scheda.
 Nella scheda Dati c'è anche «Mostrami gli avvisi del browser»: mentre la pagina
 del docente è aperta, ogni minuto controlla le novità e le mostra con un avviso
 del computer (funziona anche senza Telegram).
+
+## Email per dubbi e osservazioni
+
+Per ogni dubbio e ogni osservazione la Worker ti manda un'email con il testo
+(oltre all'eventuale Telegram). Le spedisce **resend.com** (gratis fino a 100
+email al giorno). Si attiva una volta sola:
+
+1. Registrati su <https://resend.com> **con l'indirizzo a cui vuoi ricevere le
+   email** (fulvio.bergadano@vittoriaweb.it): senza un dominio tuo, Resend
+   spedisce solo all'indirizzo del proprio account, dal mittente
+   `onboarding@resend.dev`.
+2. In Resend: **API Keys → Create API Key** (permesso «Sending access»), e
+   copia la chiave (`re_...`).
+3. Da questa cartella:
+   ```bash
+   npx wrangler@4 secret put RESEND_KEY      # incolla la chiave re_...
+   npx wrangler@4 secret put EMAIL_DOCENTE   # scrivi l'indirizzo dell'account Resend
+   npx wrangler@4 deploy
+   ```
+4. Nella pagina del docente, scheda **Dati** → «Email per dubbi e
+   osservazioni» → **Manda una prova**. Se non arriva, guarda nello spam (e,
+   se serve, segna il mittente come affidabile).
+
+L'indirizzo è un secret e non un `[vars]` di `wrangler.toml` perché questa
+cartella è pubblica su GitHub.

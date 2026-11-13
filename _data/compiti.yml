@@ -44,6 +44,9 @@
   - data: 2026-11-13
     capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
     esercizi: [2]
+  - data: 2026-11-16
+    capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
+    esercizi: [3,4,5]
 "3B":
   - data: 2026-11-09
     capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
@@ -73,7 +76,7 @@
     esercizi: [2, 3]
   - data: 2026-10-30
     capitolo: gravitazione-elettromagnetismo/01_Gravitazione
-    esercizi: [4,5]
+    esercizi: [4,5,6,7,8]
 
 
 "5ACD":

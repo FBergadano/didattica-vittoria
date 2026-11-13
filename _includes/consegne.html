@@ -6,8 +6,10 @@ Aggiunge alla barra in alto un pulsante 👤 che apre una finestrella con:
     prof lo azzera dalla sua pagina);
   - lo stato dell'invio delle risposte e i prossimi compiti della classe
     (da _data/compiti.yml);
-  - "Hai un dubbio?": una domanda per il prof, con allegata la pagina e la
-    sezione che si sta leggendo, e le risposte del prof ai dubbi già inviati.
+  - "Dubbi e osservazioni": un dubbio per il prof (con allegata la pagina e
+    la sezione che si sta leggendo, e le risposte del prof ai dubbi già
+    inviati), oppure un'osservazione (critiche, proposte…) che si può mandare
+    nascondendo il codice e/o la classe: in quel caso non arrivano al server.
 Parametro facoltativo: inline=true mostra la finestrella dentro la pagina
 (usato da consegna/index.html) invece che dal pulsante.
 Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra nulla.
@@ -49,6 +51,13 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
 #cons-panel .cons-dubbio .cons-meta { color: #6b7280; font-size: .74rem; }
 #cons-panel .cons-dubbio.cons-nuovo { border-color: #15803d; }
 #cons-panel .cons-file { display: inline-block; }
+#cons-panel .cons-tipo, #cons-panel .cons-nasc { display: flex; gap: .4rem; flex-wrap: wrap; margin: .2rem 0 .45rem; }
+#cons-panel .cons-tipo button, #cons-panel .cons-nasc button { flex: 1 1 auto; border: 1px solid #cbd5e0; background: #fff; color: #374151; border-radius: 999px;
+  padding: .3rem .6rem; font: inherit; font-size: .8rem; cursor: pointer; }
+#cons-panel .cons-tipo button.on { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+#cons-panel .cons-nasc button.on { background: #1f2937; border-color: #1f2937; color: #fff; }
+#cons-panel .cons-invito { font-size: .82rem; color: #374151; margin: 0 0 .4rem; }
+#cons-panel .cons-garanzia { font-size: .78rem; color: #374151; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: .4rem .55rem; margin-top: .45rem; }
 #cons-panel .cons-file input { display: none; }
 #cons-panel .cons-anteprime { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
 #cons-panel .cons-anteprime div { position: relative; width: 64px; height: 64px; border-radius: 6px; overflow: hidden; border: 1px solid #cbd5e0; }
@@ -177,14 +186,10 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       '<label>Argomento dello schema</label><input type="text" class="cons-stitolo" maxlength="120" placeholder="es. La gravitazione">' +
       '<div style="margin-top:.6rem"><label class="cons-b cons-file">📎 Invia un PDF o una foto<input type="file" accept="application/pdf,image/*" class="cons-sinput"></label></div>' +
       '<div class="cons-msg cons-smsg"></div><ul class="cons-inviate cons-schemi"></ul>';
-    // dubbi
-    var sez = sezioneVisibile();
-    h += '<h4>Hai un dubbio?</h4>' +
-      '<textarea class="cons-testo" maxlength="2000" placeholder="Scrivi qui la tua domanda…"></textarea>' +
-      '<div class="cons-hint">' + (sez ? 'Verrà allegato il punto che stai leggendo: «' + esc(sez.t) + '».' : 'La leggerò nella mia pagina e ti risponderò qui.') + '</div>' +
-      '<button class="cons-b" data-az="dubbio">Invia il dubbio</button><div class="cons-msg cons-dmsg"></div>' +
-      '<div class="cons-miei"></div>';
+    // dubbi e osservazioni
+    h += '<h4>Dubbi e osservazioni</h4><div class="cons-messaggi"></div><div class="cons-miei"></div>';
     panel.innerHTML = h;
+    messaggi();
     stato(); mostraDubbi(); mostraAnteprime(); mostraFoto(); mostraSchemi();
   }
 
@@ -344,13 +349,30 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
       var n = C.inCoda();
       if (!confirm(n ? 'Hai ' + n + ' risposte che non mi sono ancora arrivate: se esci partiranno solo quando rientri. Vuoi uscire?' : 'Vuoi uscire? Per consegnare dovrai rientrare con codice e PIN.')) return;
       C.salvaAccesso(null); disegna();
+    } else if (az === 'tipo') {
+      salvaBozza(); tipoMsg = b.dataset.t; messaggi();
+    } else if (az === 'nasc') {
+      salvaBozza();
+      if (b.dataset.n === 'codice') nascCodice = !nascCodice; else nascClasse = !nascClasse;
+      messaggi();
+    } else if (az === 'oss') {
+      var ao = C.accesso(), to = panel.querySelector('.cons-messaggi .cons-testo'), testoO = to.value.trim();
+      if (!testoO) return msg('.cons-omsg', 'Scrivi prima la tua osservazione.', 'err');
+      b.disabled = true;
+      C.chiama('/osservazione', { token: ao.token, testo: testoO, nascondi_codice: nascCodice, nascondi_classe: nascClasse }).then(function() {
+        to.value = ''; bozza.oss = ''; b.disabled = false; msg('.cons-omsg', '😊 L\'ho ricevuta. Grazie!', 'ok');
+      }).catch(function(err) {
+        b.disabled = false;
+        msg('.cons-omsg', err.codice === 'troppi' ? 'Hai già inviato molte osservazioni oggi: riprova domani.' : err.status === 404 ? 'Il server non è ancora pronto per le osservazioni: riprova fra qualche giorno.' : 'Non riesco a inviarla: controlla la connessione e riprova.', 'err');
+        if (err.status === 401) { C.salvaAccesso(null); disegna(); }
+      });
     } else if (az === 'dubbio') {
       var a = C.accesso(), ta = panel.querySelector('.cons-testo'), testo = ta.value.trim();
       if (!testo) return msg('.cons-dmsg', 'Scrivi prima la tua domanda.', 'err');
       var s = sezioneVisibile();
       b.disabled = true;
       C.chiama('/dubbi', { token: a.token, pagina: C.pagina, sezione: s ? s.t : null, ancora: s ? s.id : null, testo: testo }).then(function() {
-        ta.value = ''; b.disabled = false; msg('.cons-dmsg', '😊 L\'ho ricevuto! Ti risponderò qui.', 'ok'); caricaDubbi();
+        ta.value = ''; bozza.dubbio = ''; b.disabled = false; msg('.cons-dmsg', '😊 L\'ho ricevuto! Ti risponderò qui.', 'ok'); caricaDubbi();
       }).catch(function(err) {
         b.disabled = false;
         msg('.cons-dmsg', err.codice === 'troppi' ? 'Hai già inviato molti dubbi oggi: riprova domani.' : 'Non riesco a inviarlo: controlla la connessione e riprova.', 'err');
@@ -359,6 +381,36 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     }
   });
   panel.addEventListener('keydown', function(e) { if (e.key === 'Enter' && e.target.matches('.cons-pin, .cons-codice')) { var b = panel.querySelector('[data-az="entra"]'); if (b) b.click(); } });
+
+  // ── dubbi e osservazioni ──
+  // tipoMsg: 'dubbio' (sempre con il codice: devo sapere a chi rispondere) oppure 'oss'
+  var tipoMsg = 'dubbio', nascCodice = false, nascClasse = false, bozza = { dubbio: '', oss: '' };
+  function messaggi() {
+    var box = panel.querySelector('.cons-messaggi'); if (!box) return;
+    var a = C.accesso() || {}, h = '<div class="cons-tipo">' +
+      '<button type="button" data-az="tipo" data-t="dubbio" class="' + (tipoMsg === 'dubbio' ? 'on' : '') + '">❓ Un dubbio</button>' +
+      '<button type="button" data-az="tipo" data-t="oss" class="' + (tipoMsg === 'oss' ? 'on' : '') + '">💬 Un\'osservazione</button></div>';
+    if (tipoMsg === 'dubbio') {
+      var sez = sezioneVisibile();
+      h += '<textarea class="cons-testo" maxlength="2000" placeholder="Scrivi qui la tua domanda…">' + esc(bozza.dubbio) + '</textarea>' +
+        '<div class="cons-hint">' + (sez ? 'Verrà allegato il punto che stai leggendo: «' + esc(sez.t) + '».' : 'La leggerò nella mia pagina e ti risponderò qui.') +
+        ' Un dubbio non è anonimo: devo sapere a chi rispondere.</div>' +
+        '<button class="cons-b" data-az="dubbio">Invia il dubbio</button><div class="cons-msg cons-dmsg"></div>';
+    } else {
+      var garanzia = nascCodice && nascClasse ? 'Non saprò né chi sei né da quale classe scrivi: il tuo codice e la tua classe non arrivano nemmeno sul server, e dell\'orario vedrò solo il giorno.'
+        : nascCodice ? 'Non saprò chi sei: il tuo codice non arriva nemmeno sul server, e dell\'orario vedrò solo il giorno. Vedrò solo che scrivi dalla ' + esc(a.classe || 'tua classe') + '.'
+        : nascClasse ? 'Il tuo codice lo vedrò, la classe no. Se vuoi restare anonimo, nascondi anche il codice.'
+        : 'Vedrò il tuo codice (' + esc(a.codice || '') + ') e la tua classe. Se preferisci, nascondili con i due pulsanti qui sopra.';
+      h += '<p class="cons-invito">Qui puoi scrivermi quello che pensi delle lezioni, dei compiti, delle verifiche, di come gestisco la classe, o del rapporto fra me e voi: critiche, proposte, cose che funzionano e cose che non funzionano. Mi sono davvero utili, quindi scrivimi senza timori, anche in forma anonima.</p>' +
+        '<div class="cons-nasc"><button type="button" data-az="nasc" data-n="codice" class="' + (nascCodice ? 'on' : '') + '">' + (nascCodice ? '🙈 Codice nascosto' : 'Nascondi il mio codice') + '</button>' +
+        '<button type="button" data-az="nasc" data-n="classe" class="' + (nascClasse ? 'on' : '') + '">' + (nascClasse ? '🙈 Classe nascosta' : 'Nascondi la mia classe') + '</button></div>' +
+        '<textarea class="cons-testo" maxlength="4000" placeholder="Scrivi qui…">' + esc(bozza.oss) + '</textarea>' +
+        '<div class="cons-garanzia">🔒 ' + garanzia + ' Nel sito, comunque, non c\'è mai il tuo nome: solo il codice.</div>' +
+        '<button class="cons-b" data-az="oss">Invia l\'osservazione</button><div class="cons-msg cons-omsg"></div>';
+    }
+    box.innerHTML = h;
+  }
+  function salvaBozza() { var t = panel.querySelector('.cons-messaggi .cons-testo'); if (t) bozza[tipoMsg] = t.value; }
 
   // sezione del capitolo che lo studente sta leggendo (l'ultimo titolo sopra la metà alta dello schermo)
   function sezioneVisibile() {

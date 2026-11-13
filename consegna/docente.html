@@ -113,7 +113,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
 <body>
 
 <header>
-  <h1>Consegne e dubbi</h1>
+  <h1>Consegne, dubbi e osservazioni</h1>
   <select id="classe" hidden></select>
   <nav class="schede" id="schede" hidden>
     <button data-s="compiti" class="on">Compiti</button>
@@ -121,6 +121,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     <button data-s="foto">Foto</button>
     <button data-s="schemi">Schemi</button>
     <button data-s="dubbi">Dubbi<span id="nd"></span></button>
+    <button data-s="osservazioni">Osservazioni<span id="no"></span></button>
     <button data-s="studenti">Studenti</button>
     <button data-s="dati">Dati</button>
   </nav>
@@ -148,6 +149,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   <section id="s-foto" hidden></section>
   <section id="s-schemi" hidden></section>
   <section id="s-dubbi" hidden></section>
+  <section id="s-osservazioni" hidden></section>
   <section id="s-studenti" hidden></section>
   <section id="s-dati" hidden></section>
 </main>
@@ -213,7 +215,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   function ordineEs(x) { x = String(x || ''); return x.charAt(0) === 'R' ? 1000 + (+x.slice(1) || 0) : (+x || 1e9); }
 
   // ───────── stato ─────────
-  var studenti = [], classe = null, righe = [], dubbi = [], foto = [], schemi = [], scheda = 'compiti';
+  var studenti = [], classe = null, righe = [], dubbi = [], foto = [], schemi = [], osservazioni = [], ossId = 0, scheda = 'compiti';
   function chiaveCompito(c) { return String(c.data).slice(0, 10) + '|' + [].concat(c.capitolo || []).join(','); }
   function fotoDi(c, codice) { var k = chiaveCompito(c); return foto.filter(function(f) { return f.compito === k && (!codice || f.codice === codice); }); }
   // carica le immagini (una richiesta per foto) dentro gli <img data-foto="id">
@@ -272,7 +274,8 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       }),
       chiama('/docente/dubbi?classe=' + encodeURIComponent(classe)).then(function(j) { dubbi = j.dubbi || []; }),
       chiama('/docente/foto?classe=' + encodeURIComponent(classe)).then(function(j) { foto = j.foto || []; }).catch(function() { foto = []; }),
-      chiama('/docente/schemi?classe=' + encodeURIComponent(classe)).then(function(j) { schemi = j.schemi || []; }).catch(function() { schemi = null; })
+      chiama('/docente/schemi?classe=' + encodeURIComponent(classe)).then(function(j) { schemi = j.schemi || []; }).catch(function() { schemi = null; }),
+      caricaOsservazioni()
     ]).then(mostra).catch(function(e) { if (e.message !== 'accesso') alert('Errore: ' + e.message); });
   }
   $$('#schede button').forEach(function(b) { b.onclick = function() { scheda = b.dataset.s; mostra(); }; });
@@ -281,7 +284,9 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     $$('main > section').forEach(function(s) { s.hidden = s.id !== 's-' + scheda; });
     var aperti = dubbi.filter(function(d) { return !d.risolto; }).length;
     $('#nd').innerHTML = aperti ? '<span class="badge">' + aperti + '</span>' : '';
-    ({ compiti: vistaCompiti, tutte: vistaTutte, foto: vistaFoto, schemi: vistaSchemi, dubbi: vistaDubbi, studenti: vistaStudenti, dati: vistaDati })[scheda]();
+    var nuove = (osservazioni || []).filter(function(o) { return !o.letta; }).length;
+    $('#no').innerHTML = nuove ? '<span class="badge">' + nuove + '</span>' : '';
+    ({ compiti: vistaCompiti, tutte: vistaTutte, foto: vistaFoto, schemi: vistaSchemi, dubbi: vistaDubbi, osservazioni: vistaOsservazioni, studenti: vistaStudenti, dati: vistaDati })[scheda]();
   }
 
   // ───────── compiti ─────────
@@ -539,6 +544,36 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     });
   }
 
+  // ───────── osservazioni (di tutte le classi; codice e classe possono mancare) ─────────
+  function caricaOsservazioni() {
+    return chiama('/docente/osservazioni').then(function(j) {
+      osservazioni = j.osservazioni || [];
+      osservazioni.forEach(function(o) { ossId = Math.max(ossId, o.id); });
+    }).catch(function() { osservazioni = null; });
+  }
+  function vistaOsservazioni() {
+    var sec = $('#s-osservazioni');
+    if (osservazioni === null) { sec.innerHTML = '<div class="card">Il server non gestisce ancora le osservazioni: va aggiornata la Worker (<code>npx wrangler@4 deploy</code>).</div>'; return; }
+    var h = '<p class="nota">Critiche, proposte e commenti degli studenti, di tutte le classi. Chi ha scelto di nascondere il codice o la classe non ha lasciato quel dato nemmeno sul server; per le osservazioni anonime c\'è solo il giorno, non l\'ora.</p>';
+    if (!osservazioni.length) { sec.innerHTML = h + '<div class="card">Nessuna osservazione.</div>'; return; }
+    sec.innerHTML = h + osservazioni.map(function(o) {
+      var chi = o.codice ? '<b>' + esc(o.codice) + '</b>' : '<b>anonimo</b>', cl = o.classe ? esc(o.classe) : 'classe nascosta';
+      var quando = o.codice ? ora(o.ts) : new Date(o.ts).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
+      return '<div class="dubbio' + (o.letta ? '' : ' aperto') + '" data-id="' + o.id + '"><div class="meta">' + chi + ' · ' + cl + ' · ' + quando + (o.letta ? ' · ✓ letta' : '') + '</div>' +
+        '<div class="q">' + esc(o.testo) + '</div><div class="az"><button data-a="letta">' + (o.letta ? 'Segna come da leggere' : 'Segna come letta') + '</button>' +
+        '<button class="peric" data-a="elimina">Elimina</button></div></div>';
+    }).join('');
+    $$('.dubbio button', sec).forEach(function(b) {
+      b.onclick = function() {
+        var box = b.closest('.dubbio'), id = +box.dataset.id, o = osservazioni.filter(function(x) { return x.id === id; })[0], corpo = { id: id };
+        if (b.dataset.a === 'letta') corpo.letta = !o.letta;
+        else { if (!confirm('Eliminare questa osservazione?')) return; corpo.elimina = true; }
+        b.disabled = true;
+        chiama('/docente/osservazione', corpo).then(caricaOsservazioni).then(mostra).catch(function(e) { b.disabled = false; if (e.message !== 'accesso') alert('Errore: ' + e.message); });
+      };
+    });
+  }
+
   // ───────── studenti ─────────
   function vistaStudenti() {
     var sec = $('#s-studenti'), mie = studenti.filter(function(s) { return s.classe === classe; });
@@ -589,13 +624,14 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     document.addEventListener('visibilitychange', function() { if (!document.hidden) { nNovita = 0; document.title = TITOLO; } });
   }
   function controllaNovita() {
-    chiama('/docente/novita?da=' + daNovita).then(function(j) {
+    chiama('/docente/novita?da=' + daNovita + '&oss=' + ossId).then(function(j) {
       daNovita = j.ora || Date.now();
       var righe = [];
       (j.dubbi || []).forEach(function(x) { righe.push('❓ dubbio da ' + x.codice + ' (' + x.classe + ')'); });
       var f = {}; (j.foto || []).forEach(function(x) { f[x.codice + ' (' + x.classe + ')'] = 1; });
       Object.keys(f).forEach(function(k) { righe.push('📷 foto da ' + k); });
       (j.schemi || []).forEach(function(x) { righe.push('🗺 schema da ' + x.codice + ' (' + x.classe + ')'); });
+      (j.osservazioni || []).forEach(function(x) { ossId = Math.max(ossId, x.id); righe.push('💬 osservazione da ' + (x.codice || 'anonimo') + (x.classe ? ' (' + x.classe + ')' : '')); });
       var r = {}; (j.risposte || []).forEach(function(x) { r[x.codice + ' (' + x.classe + ')'] = 1; });
       Object.keys(r).forEach(function(k) { righe.push('✏️ risposte da ' + k); });
       if (!righe.length) return;
@@ -603,6 +639,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       if (document.hidden) document.title = '(' + nNovita + ') ' + TITOLO;
       if (avvisiOn() && window.Notification && Notification.permission === 'granted')
         new Notification('Consegne: novità', { body: righe.slice(0, 6).join('\n') + (righe.length > 6 ? '\n…' : ''), tag: 'lv-consegne' });
+      if ((j.osservazioni || []).length) caricaOsservazioni().then(mostra);
       if ((j.dubbi || []).length) chiama('/docente/dubbi?classe=' + encodeURIComponent(classe)).then(function(x) { dubbi = x.dubbi || []; mostra(); }).catch(function() {});
     }).catch(function() {});
   }
@@ -616,8 +653,13 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       else if (!st.collegato) h += '<p class="nota">Il bot c\'è. Per collegarlo: apri il tuo bot su Telegram, scrivigli <b>/start</b>, poi premi qui.</p><p><button class="pri" data-tg="collega">Collega Telegram</button> <span class="nota" id="tgmsg"></span></p>';
       else h += '<p class="nota">✓ Attive: ti scrivo quando arrivano un dubbio, delle foto, uno schema, o le prime risposte del giorno di uno studente su una pagina.</p><p><button data-tg="prova">Manda una prova</button> <button class="peric" data-tg="scollega">Scollega</button> <span class="nota" id="tgmsg"></span></p>';
       h += '<hr style="border:none;border-top:1px solid var(--bordo);margin:.8rem 0"><b>Avvisi nel browser</b><p class="nota">Mentre questa pagina è aperta (anche in un\'altra scheda), ogni minuto controllo le novità: il numero compare nel titolo della scheda e, se lo permetti, in un avviso.</p>' +
-        '<label style="display:flex;gap:.4rem;align-items:center"><input type="checkbox" id="avvisi"' + (avvisiOn() ? ' checked' : '') + '> Mostrami gli avvisi del browser</label>';
+        '<label style="display:flex;gap:.4rem;align-items:center"><input type="checkbox" id="avvisi"' + (avvisiOn() ? ' checked' : '') + '> Mostrami gli avvisi del browser</label>' +
+        '<hr style="border:none;border-top:1px solid var(--bordo);margin:.8rem 0"><b>Email per dubbi e osservazioni</b><p class="nota" id="emstato">…</p>';
       box.innerHTML = h;
+      chiama('/docente/email', {}).then(function() {
+        $('#emstato').innerHTML = '✓ Attive: per ogni dubbio e ogni osservazione ti arriva un\'email con il testo. <button data-em>Manda una prova</button> <span id="emmsg"></span>';
+        $('[data-em]').onclick = function() { var b = this; b.disabled = true; chiama('/docente/email', { azione: 'prova' }).then(function() { $('#emmsg').textContent = '✓ Inviata: controlla la posta.'; b.disabled = false; }).catch(function(e) { $('#emmsg').textContent = e.message; b.disabled = false; }); };
+      }).catch(function() { $('#emstato').innerHTML = 'Non ancora attive: istruzioni in <code>strumenti/consegne/LEGGIMI.md</code>, paragrafo «Email».'; });
       $$('[data-tg]', box).forEach(function(b) {
         b.onclick = function() {
           b.disabled = true;
@@ -637,14 +679,14 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
 
   function vistaDati() {
     var sec = $('#s-dati');
-    sec.innerHTML = '<div class="card" id="notifiche"></div><div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte, le foto e i dubbi arrivati prima della data scelta. ' +
+    sec.innerHTML = '<div class="card" id="notifiche"></div><div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte, le foto, i dubbi e le osservazioni arrivati prima della data scelta. ' +
       'Conviene farlo a fine quadrimestre: sul server resta solo ciò che serve.</p>' +
       '<p>Cancella tutto ciò che è precedente al <input type="date" id="primadi"> <button class="peric" id="cancella">Cancella</button> <span id="canmsg" class="nota"></span></p></div>';
     $('#cancella').onclick = function() {
       var v = $('#primadi').value; if (!v) return;
       var t = giorno(v).getTime();
       if (!confirm('Cancellare definitivamente risposte e dubbi precedenti al ' + bella(giorno(v)) + ' ' + v.slice(0, 4) + '?')) return;
-      chiama('/docente/cancella', { prima_di: t }).then(function(j) { $('#canmsg').textContent = '✓ Cancellati ' + j.risposte + ' risposte, ' + (j.foto || 0) + ' foto, ' + j.dubbi + ' dubbi e ' + (j.schemi || 0) + ' schemi.'; });
+      chiama('/docente/cancella', { prima_di: t }).then(function(j) { $('#canmsg').textContent = '✓ Cancellati ' + j.risposte + ' risposte, ' + (j.foto || 0) + ' foto, ' + j.dubbi + ' dubbi, ' + (j.schemi || 0) + ' schemi e ' + (j.osservazioni || 0) + ' osservazioni.'; });
     };
     vistaNotifiche();
   }
