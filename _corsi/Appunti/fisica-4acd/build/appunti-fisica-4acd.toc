@@ -1,0 +1,23 @@
+\xpg@aux {}{italian}
+\contentsline {chapter}{\numberline {1}L'energia}{2}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Scaletta: quattro ore di preparazione alla verifica}{2}{section.1.1}%
+\contentsline {paragraph}{1. $v$ raddoppia, $K$\dots ? (5--15')}{2}{paragraph*.1}%
+\contentsline {paragraph}{2. La pallavolista, insieme (15--28')}{3}{paragraph*.2}%
+\contentsline {paragraph}{3. Da soli (28--40')}{3}{paragraph*.3}%
+\contentsline {paragraph}{4. A metà strada: la pigna (40--48')}{3}{paragraph*.4}%
+\contentsline {paragraph}{Compiti (48--50')}{4}{paragraph*.5}%
+\contentsline {paragraph}{1. Correzione lampo (0--5')}{4}{paragraph*.6}%
+\contentsline {paragraph}{2. L'enunciato (5--12')}{4}{paragraph*.7}%
+\contentsline {paragraph}{3. Il carrello, insieme (12--20')}{4}{paragraph*.8}%
+\contentsline {paragraph}{4. Lo slittino, da soli e poi alla lavagna (20--35')}{4}{paragraph*.9}%
+\contentsline {paragraph}{5. Frenare, insieme (35--47')}{5}{paragraph*.10}%
+\contentsline {paragraph}{Compiti (47--50')}{5}{paragraph*.11}%
+\contentsline {paragraph}{1. Correzione lampo (0--5')}{5}{paragraph*.12}%
+\contentsline {paragraph}{2. Lo sciatore, insieme (5--17')}{5}{paragraph*.13}%
+\contentsline {paragraph}{3. Da soli (17--25')}{5}{paragraph*.14}%
+\contentsline {paragraph}{4. Teoria a voto (25--32')}{6}{paragraph*.15}%
+\contentsline {paragraph}{5. La potenza (32--47')}{6}{paragraph*.16}%
+\contentsline {paragraph}{Compiti (47--50')}{6}{paragraph*.17}%
+\contentsline {paragraph}{Da soli, come in verifica (0--30')}{6}{paragraph*.18}%
+\contentsline {paragraph}{Correzione (30--48')}{7}{paragraph*.19}%
+\contentsline {paragraph}{Saluti (48--50')}{8}{paragraph*.20}%
