@@ -1,0 +1,219 @@
+{% comment %}
+Simulatore delle linee del campo gravitazionale, gemello di quello del campo
+elettrico (linee-campo-elettrico-lab.html), con la Terra e la Luna al posto
+delle sfere (ritagliate da earth-moon-field.webp: terra-ritaglio.webp,
+luna-ritaglio.webp).
+- I corpi si trascinano con il mouse/dito; sotto la figura i pulsanti −/+
+  cambiano la massa di ciascuno (da 1 a 9 unità). Il numero di linee che entra
+  in un corpo è proporzionale alla sua massa, e il corpo si ingrandisce.
+- Le linee si calcolano seguendo punto per punto la direzione del campo totale
+  (somma dei campi dei singoli corpi) e sono tutte entranti.
+- Clic in un punto vuoto: compaiono il vettore campo di ciascun corpo (g_T
+  rosso, g_L viola), la loro somma g_tot (verde) con la regola del
+  parallelogramma e la retta tangente alla linea di campo. Le frecce sono in
+  scala: se si aumenta la massa, si allungano.
+In stampa il simulatore sparisce e resta una figura fissa.
+
+Parametri:
+  id   — ID univoco (default "lcgWidget")
+  modo — "una": solo la Terra, senza pulsanti di scelta (al posto della figura
+         della singola massa); altrimenti pulsanti «Solo la Terra» /
+         «Terra e Luna», e si parte da Terra e Luna
+{% endcomment %}
+{% assign _gid = include.id | default: "lcgWidget" %}
+<div class="lcg-widget" id="{{ _gid }}" data-modo="{{ include.modo }}">
+{% unless include.modo == "una" %}<div class="lcg-ctrl">
+  <button type="button" data-p="una">Solo la Terra</button>
+  <button type="button" data-p="due">Terra e Luna</button>
+</div>{% endunless %}
+<canvas class="lcg-canvas" aria-label="Linee del campo gravitazionale generate dalla Terra{% unless include.modo == 'una' %} e dalla Luna{% endunless %}: si possono spostare e cambiarne la massa"></canvas>
+<div class="lcg-val"></div>
+<p class="lcg-hint">{% if include.modo == "una" %}Cambia la massa con i pulsanti −/+ e guarda quante linee entrano. Clicca in un punto qualsiasi per vedere lì il vettore campo gravitazionale.{% else %}Trascina la Terra e la Luna per spostarle e cambiane la massa con i pulsanti −/+. Clicca in un punto vuoto per vedere i vettori campo in quel punto: il campo di ciascun corpo, la loro somma e la retta tangente alla linea di campo.{% endif %}</p>
+</div>
+<div class="lcg-stampa">
+{% if include.modo == "una" %}{% include figure/figura-linee-di-campo.html %}{% else %}<img src="{{ '/corsi/immagini/earth-moon-field.webp' | relative_url }}" alt="Linee del campo gravitazionale della Terra e della Luna" style="max-width:420px;width:100%;display:block;margin:0 auto">{% endif %}
+</div>
+<style>
+.lcg-widget { margin: 1.4rem auto; max-width: 560px; text-align: center; }
+.lcg-ctrl { display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap; margin-bottom: .35rem; }
+.lcg-ctrl button { padding: .28rem .7rem; border-radius: 999px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .84rem; font-family: "Atkinson Hyperlegible", sans-serif; color: #334155; }
+.lcg-ctrl button.on { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
+.lcg-canvas { width: 100%; height: auto; display: block; border-radius: 8px; touch-action: none; cursor: crosshair; background: #0b1020; }
+.lcg-val { display: flex; gap: .3rem 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: .35rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .86rem; color: #334155; }
+.lcg-val span { display: inline-flex; align-items: center; gap: .3rem; }
+.lcg-val i { font-family: Georgia, serif; font-weight: 600; }
+.lcg-val b { display: inline-block; min-width: 1.4em; text-align: center; }
+.lcg-val button { width: 1.7em; height: 1.7em; padding: 0; border-radius: 50%; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .9rem; line-height: 1; }
+.lcg-val button:disabled { opacity: .35; cursor: default; }
+.lcg-widget p.lcg-hint { text-align: center; font-size: .82rem; font-style: italic; color: #64748b; margin: .3rem 0 0; }
+.lcg-stampa { display: none; }
+@media print { .lcg-widget { display: none; } .lcg-stampa { display: block; } }
+</style>
+<script>
+(function(){
+  var root = document.getElementById('{{ _gid }}'); if (!root) return;
+  var cv = root.querySelector('canvas'), UNA = root.dataset.modo === 'una';
+  var W = 560, H = UNA ? 320 : 340, S = 2, ctx = cv.getContext('2d'), NL = 5;   // NL: linee per ogni unità di massa
+  cv.width = W * S; cv.height = H * S;
+  var IMG = { T: new Image(), L: new Image() };
+  IMG.T.src = '{{ "/corsi/immagini/terra-ritaglio.webp" | relative_url }}';
+  IMG.L.src = '{{ "/corsi/immagini/luna-ritaglio.webp" | relative_url }}';
+  IMG.T.onload = IMG.L.onload = function(){ draw(); };
+  var B = [], drag = null, probe = null;
+  var PRESET = {
+    una: [{ k: 'T', x: 280, y: H / 2, v: 3 }],
+    due: [{ k: 'T', x: 370, y: 170, v: 6 }, { k: 'L', x: 160, y: 170, v: 1 }]
+  };
+  function rad(b){ return 9 * Math.cbrt(b.v) + 6; }   // il corpo cresce con la massa
+  function field(x, y){
+    var gx = 0, gy = 0;
+    B.forEach(function(b){ var dx = b.x - x, dy = b.y - y, r2 = dx * dx + dy * dy, r = Math.sqrt(r2); gx += b.v * dx / (r2 * r); gy += b.v * dy / (r2 * r); });
+    return [gx, gy];
+  }
+  // segue la linea all'indietro (lontano dai corpi) a partire da (x, y)
+  function trace(x, y){
+    var pts = [[x, y]], h = 2.5;
+    for (var i = 0; i < 1000; i++) {
+      var e = field(x, y), m = Math.hypot(e[0], e[1]); if (m === 0) break;
+      var mx = x - h * .5 * e[0] / m, my = y - h * .5 * e[1] / m;      // metodo del punto medio
+      var e2 = field(mx, my), m2 = Math.hypot(e2[0], e2[1]); if (m2 === 0) break;
+      var nx = x - h * e2[0] / m2, ny = y - h * e2[1] / m2;
+      if (pts.length > 2) {   // vicino al punto di campo nullo la linea si fermerebbe a oscillare
+        var p = pts[pts.length - 2]; if (Math.hypot(nx - p[0], ny - p[1]) < h * .5) break;
+      }
+      x = nx; y = ny; pts.push([x, y]);
+      if (x < -60 || x > W + 60 || y < -60 || y > H + 60) break;
+    }
+    return pts.reverse();   // verso del campo: entrante nel corpo
+  }
+  function lines(){
+    var L = [];
+    B.forEach(function(b){
+      var o = B.filter(function(p){ return p !== b; })[0], a0 = o ? Math.atan2(o.y - b.y, o.x - b.x) : 0, n = NL * b.v, R = rad(b);
+      for (var k = 0; k < n; k++) {
+        var a = a0 + 2 * Math.PI * (k + .5) / n;
+        L.push(trace(b.x + R * 1.03 * Math.cos(a), b.y + R * 1.03 * Math.sin(a)));
+      }
+    });
+    return L;
+  }
+  function corpo(b){
+    var R = rad(b), im = IMG[b.k];
+    ctx.save();
+    ctx.shadowColor = b.k === 'T' ? 'rgba(125,180,255,.55)' : 'rgba(230,230,240,.45)'; ctx.shadowBlur = 10;
+    ctx.beginPath(); ctx.arc(b.x, b.y, R, 0, 6.283); ctx.fillStyle = b.k === 'T' ? '#2f5d8c' : '#9ca3af'; ctx.fill();
+    ctx.restore();
+    if (im.complete && im.naturalWidth) { ctx.save(); ctx.beginPath(); ctx.arc(b.x, b.y, R, 0, 6.283); ctx.clip(); ctx.drawImage(im, b.x - R, b.y - R, 2 * R, 2 * R); ctx.restore(); }
+    if (!UNA) {
+      ctx.font = 'italic bold 14px Georgia, serif'; ctx.textAlign = 'center'; ctx.fillStyle = '#e2e8f0';
+      ctx.fillText(b.k === 'T' ? 'Terra' : 'Luna', b.x, b.y - R - 8);
+    }
+  }
+  function draw(){
+    ctx.setTransform(S, 0, 0, S, 0, 0); ctx.fillStyle = '#0b1020'; ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = '#818cf8'; ctx.fillStyle = '#a5b4fc'; ctx.lineWidth = 1.4;
+    lines().forEach(function(p){
+      if (p.length < 3) return;
+      ctx.beginPath(); ctx.moveTo(p[0][0], p[0][1]); p.forEach(function(q){ ctx.lineTo(q[0], q[1]); }); ctx.stroke();
+      // freccetta a metà della parte visibile della linea
+      var vis = p.filter(function(q){ return q[0] > 0 && q[0] < W && q[1] > 0 && q[1] < H; });
+      var i = p.indexOf(vis[Math.floor(vis.length * .45)]); if (i < 1 || i >= p.length - 1) return;
+      var a = Math.atan2(p[i + 1][1] - p[i - 1][1], p[i + 1][0] - p[i - 1][0]), x = p[i][0], y = p[i][1];
+      ctx.beginPath(); ctx.moveTo(x + 6 * Math.cos(a), y + 6 * Math.sin(a));
+      ctx.lineTo(x - 5 * Math.cos(a - .5), y - 5 * Math.sin(a - .5)); ctx.lineTo(x - 5 * Math.cos(a + .5), y - 5 * Math.sin(a + .5)); ctx.closePath(); ctx.fill();
+    });
+    B.forEach(corpo);
+    if (probe) vettori(probe[0], probe[1]);
+  }
+  function freccia(x0, y0, x1, y1, col, w){
+    var a = Math.atan2(y1 - y0, x1 - x0); if (Math.hypot(x1 - x0, y1 - y0) < 4) return;
+    ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = w;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - 8 * Math.cos(a), y1 - 8 * Math.sin(a)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 - 11 * Math.cos(a - .42), y1 - 11 * Math.sin(a - .42)); ctx.lineTo(x1 - 11 * Math.cos(a + .42), y1 - 11 * Math.sin(a + .42)); ctx.closePath(); ctx.fill();
+  }
+  // etichetta del vettore: «g» con il pedice (T, L, tot) e la freccetta sopra
+  function etichetta(sub, x, y, x0, y0, col){
+    ctx.textBaseline = 'middle';
+    ctx.font = 'italic bold 15px Georgia, serif'; var wg = ctx.measureText('g').width;
+    ctx.font = 'italic 11px Georgia, serif'; var ws = sub ? ctx.measureText(sub).width + 1 : 0, w = wg + ws;
+    var dx = x >= x0 ? 7 : -7 - w, tx = x + dx, ty = y + (y >= y0 ? 9 : -9);
+    ctx.fillStyle = 'rgba(11,16,32,.8)'; ctx.fillRect(tx - 2, ty - 15, w + 4, 26);
+    ctx.textAlign = 'left'; ctx.fillStyle = col;
+    ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillText('g', tx, ty);
+    if (sub) { ctx.font = 'italic 11px Georgia, serif'; ctx.fillText(sub, tx + wg + 1, ty + 5); }
+    ctx.strokeStyle = col; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(tx, ty - 11); ctx.lineTo(tx + 9, ty - 11); ctx.lineTo(tx + 6.5, ty - 13); ctx.moveTo(tx + 9, ty - 11); ctx.lineTo(tx + 6.5, ty - 9); ctx.stroke();
+    ctx.textBaseline = 'alphabetic';
+  }
+  // vettori campo nel punto (x, y): uno per corpo, la somma e la tangente.
+  // Scala fissa (le frecce si allungano se la massa cresce), ridotta solo se una freccia uscirebbe troppo.
+  function vettori(x, y){
+    var gs = B.map(function(b){ var dx = b.x - x, dy = b.y - y, r = Math.hypot(dx, dy); return [b.v * dx / (r * r * r), b.v * dy / (r * r * r)]; });
+    var tx = 0, ty = 0; gs.forEach(function(g){ tx += g[0]; ty += g[1]; });
+    var mt = Math.hypot(tx, ty), mx = mt; gs.forEach(function(g){ mx = Math.max(mx, Math.hypot(g[0], g[1])); });
+    var K = mx > 0 ? Math.min(250000, 120 / mx) : 0;
+    if (mt > 0) {
+      var ux = tx / mt, uy = ty / mt;
+      ctx.setLineDash([6, 5]); ctx.strokeStyle = 'rgba(251,191,36,.75)'; ctx.lineWidth = 1.3;
+      ctx.beginPath(); ctx.moveTo(x - ux * 900, y - uy * 900); ctx.lineTo(x + ux * 900, y + uy * 900); ctx.stroke(); ctx.setLineDash([]);
+    }
+    var cols = B.map(function(b){ return b.k === 'T' ? '#f87171' : '#c4b5fd'; }), tips = gs.map(function(g){ return [x + g[0] * K, y + g[1] * K]; });
+    if (gs.length === 2) {
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 1.3;
+      tips.forEach(function(p, k){ var o = tips[1 - k]; ctx.beginPath(); ctx.moveTo(p[0], p[1]); ctx.lineTo(p[0] + o[0] - x, p[1] + o[1] - y); ctx.stroke(); });
+      ctx.setLineDash([]);
+    }
+    tips.forEach(function(p, k){ freccia(x, y, p[0], p[1], cols[k], 3); });
+    if (gs.length === 2) freccia(x, y, x + tx * K, y + ty * K, '#4ade80', 3.6);
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(x, y, 3.5, 0, 6.283); ctx.fill();
+    if (gs.length === 2) {
+      tips.forEach(function(p, k){ etichetta(B[k].k, p[0], p[1], x, y, cols[k]); });
+      etichetta('tot', x + tx * K, y + ty * K, x, y, '#4ade80');
+    } else etichetta('', tips[0][0], tips[0][1], x, y, cols[0]);
+  }
+  function preset(n){
+    B = PRESET[n].map(function(b){ return { k: b.k, x: b.x, y: b.y, v: b.v }; });
+    root.querySelectorAll('.lcg-ctrl button').forEach(function(b){ b.classList.toggle('on', b.dataset.p === n); });
+    if (probe && B.some(function(b){ return Math.hypot(probe[0] - b.x, probe[1] - b.y) < rad(b) + 8; })) probe = null;
+    valori(); draw();
+  }
+  // controlli della massa di ciascun corpo (da 1 a 9 unità)
+  var box = root.querySelector('.lcg-val');
+  function valori(){
+    box.innerHTML = '';
+    B.forEach(function(b){
+      var sp = document.createElement('span'), m = document.createElement('button'), p = document.createElement('button'), v = document.createElement('b'), n = document.createElement('i');
+      n.textContent = UNA ? 'massa' : (b.k === 'T' ? 'Terra' : 'Luna'); m.textContent = '−'; p.textContent = '+'; m.type = p.type = 'button';
+      v.textContent = b.v; m.disabled = b.v <= 1; p.disabled = b.v >= 9;
+      m.setAttribute('aria-label', 'diminuisci la massa'); p.setAttribute('aria-label', 'aumenta la massa');
+      function cambia(d){
+        b.v = Math.max(1, Math.min(9, b.v + d));
+        if (probe && Math.hypot(probe[0] - b.x, probe[1] - b.y) < rad(b) + 6) probe = null;
+        valori(); draw();
+      }
+      m.onclick = function(){ cambia(-1); }; p.onclick = function(){ cambia(1); };
+      sp.appendChild(n); sp.appendChild(m); sp.appendChild(v); sp.appendChild(p); box.appendChild(sp);
+    });
+  }
+  function pt(e){ var r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * W / r.width, (e.clientY - r.top) * H / r.height]; }
+  cv.addEventListener('pointerdown', function(e){
+    var p = pt(e), hit = null;
+    B.forEach(function(b){ if (Math.hypot(p[0] - b.x, p[1] - b.y) < rad(b) + 6) hit = b; });
+    if (!hit) {
+      if (B.every(function(b){ return Math.hypot(p[0] - b.x, p[1] - b.y) > rad(b) + 8; })) { probe = p; draw(); }
+      return;
+    }
+    if (UNA) return;   // con un solo corpo, la Terra resta al centro
+    e.preventDefault(); drag = { b: hit }; cv.setPointerCapture(e.pointerId);
+  });
+  cv.addEventListener('pointermove', function(e){
+    if (!drag) return; var p = pt(e), R = rad(drag.b);
+    var x = Math.max(R, Math.min(W - R, p[0])), y = Math.max(R, Math.min(H - R, p[1]));
+    if (B.every(function(b){ return b === drag.b || Math.hypot(x - b.x, y - b.y) > R + rad(b) + 4; }) && !(probe && Math.hypot(x - probe[0], y - probe[1]) < R + 8)) { drag.b.x = x; drag.b.y = y; draw(); }
+  });
+  function up(){ drag = null; }
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  root.querySelectorAll('.lcg-ctrl button').forEach(function(b){ b.addEventListener('click', function(){ preset(b.dataset.p); }); });
+  preset(UNA ? 'una' : 'due');
+})();
+</script>

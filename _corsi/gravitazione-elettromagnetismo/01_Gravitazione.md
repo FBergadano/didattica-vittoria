@@ -602,6 +602,58 @@ Prova a sommare i campi con il simulatore: sposta le masse e il punto $P$, e cam
 
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-campo-grav" tipo="campo" fisica="grav" %}
 
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+Due masse uguali, $M_1 = M_2$, sono a una certa distanza fra loro. C'è un punto in cui il campo gravitazionale totale è nullo? Dove?
+{% capture _oGN1 %}[
+{"v":"a","t":"sì, a metà strada fra le due masse"},
+{"v":"b","t":"sì, ma fuori dal segmento che le unisce"},
+{"v":"c","t":"no: i due campi si sommano sempre"},
+{"v":"d","t":"no: il campo è nullo solo lontanissimo dalle masse"}
+]{% endcapture %}
+{% include mcq.html id="mcq-g-nullo-uguali" opts=_oGN1 ok="a" s="A metà strada le due masse sono alla stessa distanza, quindi i loro campi hanno lo stesso modulo; ciascuno punta verso la propria massa, cioè in versi opposti. La somma è zero." %}
+{% include spoiler.html testo="Indizio" %}
+Prova a generare un campo nullo con l'animazione qui sopra.
+{% include spoiler-end.html %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Ora le masse sono diverse: $M_1 = 1\ \text{kg}$ e $M_2 = 4\ \text{kg}$, a $3\ \text m$ l'una dall'altra. Dove si annulla il campo gravitazionale?
+{% capture _oGN2 %}[
+{"v":"a","t":"a metà strada, a $1{,}5\\ \\text m$ da ciascuna"},
+{"v":"b","t":"fra le due, a $1\\ \\text m$ da $M_1$"},
+{"v":"c","t":"fra le due, a $1\\ \\text m$ da $M_2$"},
+{"v":"d","t":"fuori dal segmento, dalla parte di $M_1$"}
+]{% endcapture %}
+{% include mcq.html id="mcq-g-nullo-diverse" opts=_oGN2 ok="b" s="Fra le due masse i campi hanno versi opposti; perché si annullino devono avere lo stesso modulo. $M_2$ è quattro volte $M_1$, e il campo va come $1/r^2$: bisogna stare a distanza doppia da $M_2$. A $1\ \text m$ da $M_1$ e $2\ \text m$ da $M_2$: $G\dfrac{1\ \text{kg}}{(1\ \text m)^2} = G\dfrac{4\ \text{kg}}{(2\ \text m)^2}$. Il punto sta vicino alla massa più piccola." %}
+{% include spoiler.html testo="Indizio" %}
+Prova a generare un campo nullo con l'animazione qui sopra.
+{% include spoiler-end.html %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _qGN %}[
+{"t":"Con due masse, il punto in cui il campo è nullo sta sempre sul segmento che le unisce.","ok":true,"s":"Sì: fuori dal segmento i due campi puntano tutti e due dalla stessa parte, verso le masse, e si sommano. Solo fra le due hanno versi opposti."},
+{"t":"Il punto in cui il campo è nullo è più vicino alla massa più grande.","ok":false,"s":"No, alla più piccola: per compensare la massa più grande bisogna starle più lontani."},
+{"t":"Se raddoppio tutte e due le masse, il punto in cui il campo è nullo si sposta.","ok":false,"s":"No: raddoppiano entrambi i campi, e dove prima erano uguali lo sono ancora."}
+]{% endcapture %}
+{% include quiz.html domande=_qGN id="q-g-nullo" senza_esempi="true" %}
+{% include spoiler.html testo="Indizio" %}
+Prova a generare un campo nullo con l'animazione qui sopra.
+{% include spoiler-end.html %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% include calc-margin.html id="calcGN" %}
+La massa della Terra è circa $81$ volte quella della Luna, e la distanza fra i loro centri è circa $384\,000\ \text{km}$. Un'astronave va dalla Terra alla Luna: in un punto del viaggio il campo gravitazionale totale è nullo. Dove?
+
+{% include fill-multi.html testo="Il campo è nullo a [345600|345 600] km dal centro della Terra, cioè a [38400|38 400] km dal centro della Luna." s="Il campo della Terra deve essere uguale a quello della Luna: $G\dfrac{81\,M_L}{r_T^2} = G\dfrac{M_L}{r_L^2}$, quindi $r_T^2 = 81\,r_L^2$, cioè $r_T = 9\,r_L$. La distanza Terra-Luna va divisa in $9 + 1 = 10$ parti: $9$ dalla parte della Terra e $1$ dalla parte della Luna. $r_L = 384\,000\ \text{km} : 10 = 38\,400\ \text{km}$, $r_T = 345\,600\ \text{km}$." %}
+{% include spoiler.html testo="Indizio" %}
+Prova a generare un campo nullo con l'animazione qui sopra.
+{% include spoiler-end.html %}
+<div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
 
 ## Le linee di campo
 
@@ -631,9 +683,9 @@ Osserva come si costruisce una linea di campo a partire dai vettori: si dispongo
 {% include lab-virtuali/linea-tangente-lab.html %}
 
 {% include margin-note.html testo="Il caso di una singola massa sferica" %}
-Nel caso di una singola massa sferica che genera il campo, poiché il vettore $\vec g$ indica sempre verso la massa, le linee si disegnano così:
+Nel caso di una singola massa sferica che genera il campo, poiché il vettore $\vec g$ indica sempre verso la massa, le linee si disegnano così (prova a cambiare la massa, e a cliccare in un punto per vedere lì il vettore $\vec g$):
 
-{% include figure/figura-linee-di-campo.html %}
+{% include lab-virtuali/linee-campo-gravitazionale-lab.html id="lcg-una" modo="una" %}
 
 Da questa immagine notiamo alcune proprietà importanti delle linee di campo <u>generate da una singola massa</u>.
 
@@ -643,46 +695,21 @@ Da questa immagine notiamo alcune proprietà importanti delle linee di campo <u>
 3. Le linee di campo hanno sempre verso **entrante** nella massa che genera il campo.
 {% include margin-note-end.html %}
 
-
-{% capture _r %}La massa esploratrice comincia a muoversi <strong>verso il centro di $M$</strong>, lungo una retta (la linea di campo che passa per quel punto), e lo fa <strong>sempre più velocemente</strong>: avvicinandosi a $M$ il campo diventa più intenso, quindi anche l'accelerazione aumenta.{% endcapture %}
-{% include risposta-aperta.html id="ra-prev-caduta1" tipo="prevedi"
-   domanda="Lasci ferma una massa esploratrice vicino a una massa $M$. Che traiettoria seguirà? Si muoverà a velocità costante oppure no?"
-   risposta=_r %}
-
-{% include margin-note.html testo="Un'altra interpretazione delle linee di campo" %}
-Le linee di campo hanno anche un altro significato molto intuitivo: sono le traiettorie che seguirebbe una <definizione>massa esploratrice</definizione> lasciata cadere, da ferma, in un punto qualsiasi del campo. Provalo tu stesso: trascina la massa esploratrice (pallina grigia) in un punto qualsiasi attorno alla massa $M$ e lasciala andare — osserva come "cade" muovendosi sempre più velocemente (proprio come ci si aspetta, avvicinandosi a $M$), seguendo esattamente una linea di campo.
-{% include margin-note-end.html %}
-
-{% include lab-virtuali/traiettoria-campo-singolo-lab.html %}
-
-
 ### Linee di campo in presenza di più masse
 
 {% include margin-note.html testo="Dal principio di sovrapposizione degli effetti alle linee di campo in presenza di più masse" %}
 Cosa succede se il campo è generato da **più masse insieme**, come ad esempio nel sistema Terra-Luna? Come abbiamo appena visto, il campo totale in ogni punto è la somma vettoriale dei campi generati da ciascuna massa. Le linee di campo, però, non sono più delle semplici rette radiali: si incurvano, perché in ogni punto risentono dell'attrazione di **entrambe** le masse, apparendo quindi come nella seguente immagine.
 
-Prova tu stesso a verificare che questa è la forma delle linee di campo secondo la definizione data prima: clicca in un punto qualsiasi dell'immagine (fuori dai due corpi) per vedere comparire i due vettori $\vec g_T$ e $\vec g_L$ generati da Terra e Luna in quel punto, la loro somma $\vec g_{tot}$ secondo la regola del parallelogramma, e la retta tangente alla linea di campo risultante in quel punto.
+Prova tu stesso a verificare che questa è la forma delle linee di campo secondo la definizione data prima: clicca in un punto qualsiasi dell'immagine (fuori dai due corpi) per vedere comparire i due vettori $\vec g_T$ e $\vec g_L$ generati da Terra e Luna in quel punto, la loro somma $\vec g_{tot}$ secondo la regola del parallelogramma, e la retta tangente alla linea di campo risultante in quel punto. Puoi anche spostare la Terra e la Luna e cambiarne la massa.
 {% include margin-note-end.html %}
 
-{% include lab-virtuali/campo-terra-luna-lab.html %}
-
-{% capture _r %}No: la traiettoria in generale <strong>si incurva</strong>. In ogni punto la pallina risente dell'attrazione di <strong>entrambe</strong> le masse, quindi il campo totale non punta più verso un unico centro, e le linee di campo (e con esse la traiettoria) non sono più rette. Solo lungo la retta che congiunge i centri di Terra e Luna la caduta resta rettilinea.{% endcapture %}
-{% include risposta-aperta.html id="ra-prev-caduta2" tipo="prevedi"
-   domanda="E se le masse sono due, come la Terra e la Luna? Lasciata ferma in un punto qualsiasi, la pallina cadrà ancora lungo una retta?"
-   risposta=_r %}
-
-{% include margin-note.html testo="Le linee di campo come traiettorie" %}
-Anche in questo caso possiamo pensare alle linee di campo come alle traiettorie di una massa esploratrice lasciata cadere, da ferma, in un punto qualsiasi. Prova tu stesso, questa volta con due masse (una grande, come la Terra, e una piccola, come la Luna): la pallina non cadrà più lungo una semplice retta, ma seguirà un percorso curvo, deciso dall'attrazione combinata delle due masse.
-{% include margin-note-end.html %}
-
-{% include lab-virtuali/traiettoria-campo-doppio-lab.html %}
+{% include lab-virtuali/linee-campo-gravitazionale-lab.html id="lcg-due" %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qLineeCampo %}[
 {"t":"Due linee di campo possono incrociarsi.","ok":false,"s":"No: nel punto d'incrocio il campo dovrebbe avere due direzioni diverse, mentre in ogni punto il vettore $\\vec g$ è uno solo."},
 {"t":"In una piccola zona vicino alla superficie terrestre le linee di campo sono quasi parallele ed equidistanti, quindi il campo è quasi lo stesso in tutti i punti.","ok":true,"s":"Sì: su distanze piccole rispetto al raggio terrestre la curvatura delle linee non si vede, e la loro densità resta la stessa. Per questo a scuola si usa $g = 9{,}81\\ \\text{N/kg}$ ovunque."},
-{"t":"Le linee di campo sono qualcosa che esiste davvero nello spazio, come dei fili invisibili.","ok":false,"s":"No: sono un modo di disegnare il campo. Quello che esiste è il campo, cioè il vettore $\\vec g$ in ogni punto."},
-{"t":"Se il campo è generato da una sola massa, una massa esploratrice lasciata ferma cade lungo la linea di campo che passa per il suo punto di partenza.","ok":true,"s":"Sì: con una sola massa le linee sono rette che puntano verso il centro, e la caduta avviene proprio lungo di esse."}
+{"t":"Le linee di campo sono qualcosa che esiste davvero nello spazio, come dei fili invisibili.","ok":false,"s":"No: sono un modo di disegnare il campo. Quello che esiste è il campo, cioè il vettore $\\vec g$ in ogni punto."}
 ]{% endcapture %}
 {% include quiz.html domande=_qLineeCampo id="q-linee-campo" senza_esempi="true" %}
 {% include box-end.html %}
@@ -996,7 +1023,7 @@ Quando il campo è generato da più masse, come nel sistema Terra-Luna, le super
 {"t":"Le linee di campo gravitazionale sono sempre uscenti dalla massa che le genera.","ok":false,"s":"No: sono sempre entranti, perché la forza gravitazionale è attrattiva."},
 {"t":"Più le linee di campo sono fitte in un punto, più il campo è intenso in quel punto.","ok":true,"s":"Sì: la concentrazione delle linee di campo misura proprio l'intensità del campo."},
 {"t":"Le superfici equipotenziali sono sempre perpendicolari alle linee di campo.","ok":true,"s":"Sì, in ogni punto: spostandosi lungo una superficie equipotenziale non si compie lavoro."},
-{"t":"Se il campo è generato da due masse (come nel sistema Terra-Luna), la traiettoria di caduta di una massa esploratrice è sempre una retta.","ok":false,"s":"No: si incurva, perché in ogni punto risente dell'attrazione di entrambe le masse."},
+{"t":"Se il campo è generato da due masse (come nel sistema Terra-Luna), le linee di campo sono ancora tutte rette.","ok":false,"s":"No: si incurvano, perché in ogni punto il campo è la somma dei campi delle due masse, e non punta più verso un unico centro."},
 {"t":"Per una singola massa sferica, le superfici equipotenziali sono piani paralleli fra loro.","ok":false,"s":"No: sono sfere concentriche alla massa, non piani."},
 {"t":"Il campo gravitazionale generato da più masse in uno stesso punto si ottiene sommando vettorialmente i singoli campi.","ok":true,"s":"Sì, per il principio di sovrapposizione degli effetti, con la regola del parallelogramma."}
 ]{% endcapture %}

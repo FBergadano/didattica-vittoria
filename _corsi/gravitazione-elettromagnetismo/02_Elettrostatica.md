@@ -1590,6 +1590,43 @@ E se le due cariche sono opposte, $+Q$ e $-Q$? Quanto vale il campo nel punto a 
 ]{% endcapture %}
 {% include mcq.html id="mcq-campo-opposte" opts=_oCE3 ok="b" s="Il campo di $+Q$ si allontana da $+Q$, cioè va verso $-Q$; il campo di $-Q$ punta verso $-Q$. Hanno lo stesso modulo e lo stesso verso: si sommano, e il campo totale è il doppio, diretto verso la carica negativa." %}
 {% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Ora le due cariche sono diverse: $q_1 = +1\ \mu\text C$ e $q_2 = +4\ \mu\text C$, a $3\ \text m$ l'una dall'altra. C'è un punto, sulla retta che le unisce, in cui il campo elettrico totale è nullo? Dove?
+{% capture _oCN1 %}[
+{"v":"a","t":"sì, a metà strada fra le due"},
+{"v":"b","t":"sì, fra le due cariche, a $1\\ \\text m$ da $q_1$"},
+{"v":"c","t":"sì, fra le due cariche, a $1\\ \\text m$ da $q_2$"},
+{"v":"d","t":"no, in nessun punto"}
+]{% endcapture %}
+{% include mcq.html id="mcq-campo-nullo-uguali" opts=_oCN1 ok="b" s="Fra le due cariche i campi hanno versi opposti: ciascuno si allontana dalla propria carica. Perché si annullino devono avere lo stesso modulo, e dato che $q_2$ è quattro volte $q_1$, il punto deve essere più vicino a $q_1$. Il campo va come $1/r^2$: per compensare un fattore $4$ basta una distanza doppia. A $1\ \text m$ da $q_1$ e $2\ \text m$ da $q_2$ i due campi sono uguali, $k\cdot\dfrac{1\ \mu\text C}{(1\ \text m)^2} = k\cdot\dfrac{4\ \mu\text C}{(2\ \text m)^2}$, e la loro somma è zero. Fuori dal segmento, invece, i due campi hanno lo stesso verso e non si annullano mai." %}
+{% include spoiler.html testo="Indizio" %}
+Prova a generare un campo nullo con l'animazione qui sopra.
+{% include spoiler-end.html %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Cambiamo il segno della carica più piccola: $q_1 = -1\ \mu\text C$ e $q_2 = +4\ \mu\text C$, sempre a $3\ \text m$. Adesso dove si annulla il campo?
+{% capture _oCN2 %}[
+{"v":"a","t":"fra le due cariche, a $1\\ \\text m$ da $q_1$, come prima"},
+{"v":"b","t":"fuori dal segmento, dalla parte di $q_2$, a $3\\ \\text m$ da $q_2$"},
+{"v":"c","t":"fuori dal segmento, dalla parte di $q_1$, a $3\\ \\text m$ da $q_1$"},
+{"v":"d","t":"in nessun punto"}
+]{% endcapture %}
+{% include mcq.html id="mcq-campo-nullo-opposte" opts=_oCN2 ok="c" s="Fra le due cariche i campi hanno ora lo stesso verso (quello di $q_2$ si allontana da $q_2$, quello di $q_1$ punta verso $q_1$): si sommano e non possono annullarsi. Bisogna uscire dal segmento, dove i versi sono opposti, e dalla parte della carica più piccola, $q_1$: solo lì si può essere abbastanza lontani da $q_2$ da compensare il fattore $4$. Serve di nuovo una distanza doppia: a $3\ \text m$ da $q_1$ si è a $6\ \text m$ da $q_2$, e $k\cdot\dfrac{1\ \mu\text C}{(3\ \text m)^2} = k\cdot\dfrac{4\ \mu\text C}{(6\ \text m)^2}$." %}
+{% include spoiler.html testo="Indizio" %}
+Prova a generare un campo nullo con l'animazione qui sopra.
+{% include spoiler-end.html %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+{% capture _qCN %}[
+{"t":"Con due cariche dello stesso segno, il campo si annulla in un punto fra le due, più vicino alla carica più piccola.","ok":true,"s":"Sì: fra le due i campi hanno versi opposti, e per avere lo stesso modulo bisogna stare più vicini alla carica più piccola. Se le cariche sono uguali, il punto è proprio a metà."},
+{"t":"Con due cariche opposte e uguali in valore, $+Q$ e $-Q$, c'è un punto della retta che le unisce in cui il campo è nullo.","ok":false,"s":"No: fra le due i campi hanno lo stesso verso e si sommano; fuori dal segmento hanno versi opposti, ma si è sempre più vicini a una delle due cariche, che vince. Il campo si annulla solo all'infinito."},
+{"t":"Con due cariche di segno opposto e valore diverso, il punto in cui il campo è nullo sta fuori dal segmento, dalla parte della carica più grande.","ok":false,"s":"No, dalla parte della più piccola: per compensare la carica più grande bisogna starle più lontani."}
+]{% endcapture %}
+{% include quiz.html domande=_qCN id="q-campo-nullo" senza_esempi="true" %}
+{% include spoiler.html testo="Indizio" %}
+Prova a generare un campo nullo con l'animazione qui sopra.
+{% include spoiler-end.html %}
+{% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
 
