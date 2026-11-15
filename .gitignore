@@ -10,3 +10,6 @@ verifiche/
 
 # cache locale di Wrangler (strumento di Cloudflare)
 .wrangler/
+
+# chiavi segrete: mai nel repository
+*API key*
