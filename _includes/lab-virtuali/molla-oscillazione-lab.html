@@ -1,14 +1,14 @@
 {% comment %}
-Animazione: si trascina una massa azzurra allontanandola da una massa gialla
-fissa, poi la si rilascia e la si osserva accelerare tornando indietro,
-attratta gravitazionalmente. Un pulsante permette di visualizzare, al posto
+Animazione: si trascina la Luna allontanandola dalla Terra (fissa), poi la si
+rilascia e la si osserva accelerare tornando indietro, attratta
+gravitazionalmente (immagini: terra-ritaglio.webp, luna-ritaglio.webp). Un pulsante permette di visualizzare, al posto
 dei vettori forza, una molla che si allunga e si comprime, per suggerire
 l'analogia fra energia potenziale gravitazionale ed elastica. Nessun
 parametro.
 {% endcomment %}
 <div class="vdrag-widget" id="springOsc">
-<p class="vdrag-hint">Trascina la massa azzurra per allontanarla dalla massa gialla (fissa), poi lasciala andare: osserva come accelera tornando indietro. Con il pulsante puoi mostrare la molla al posto dei vettori forza.</p>
-<svg id="springOsc-svg" viewBox="0 0 390 180" width="100%" style="max-width:360px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Animazione interattiva: trascina la massa azzurra e rilasciala per vederla accelerare verso la massa gialla, fissa">
+<p class="vdrag-hint">Trascina la Luna per allontanarla dalla Terra, poi lasciala andare: osserva come accelera tornando indietro. Con il pulsante puoi mostrare la molla al posto dei vettori forza.</p>
+<svg id="springOsc-svg" viewBox="0 0 390 180" width="100%" style="max-width:360px;height:auto;display:block;margin:0 auto;touch-action:none;" role="img" aria-label="Animazione interattiva: trascina la Luna e rilasciala per vederla accelerare verso la Terra">
 <defs>
   <radialGradient id="springOscM" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="55%" stop-color="#fde68a"/><stop offset="100%" stop-color="#fbbf24"/></radialGradient>
   <radialGradient id="springOscm" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#f0f9ff"/><stop offset="55%" stop-color="#7dd3fc"/><stop offset="100%" stop-color="#38bdf8"/></radialGradient>
@@ -30,8 +30,12 @@ parametro.
   <rect id="springOsc-gaugeFill" x="340" y="145" width="20" height="0" rx="4" fill="#16a34a"/>
 </g>
 
-<circle id="springOsc-M" cx="90" cy="90" r="26" fill="url(#springOscM)"/>
-<circle id="springOsc-m" cx="136" cy="90" r="20" fill="url(#springOscm)" style="cursor:grab;touch-action:none;"/>
+<clipPath id="springOscDisco" clipPathUnits="objectBoundingBox"><circle cx=".5" cy=".5" r=".5"/></clipPath>
+<circle cx="90" cy="90" r="31" fill="#1e3a8a" opacity=".18"/>
+<image id="springOsc-M" href="{{ '/corsi/immagini/terra-ritaglio.webp' | relative_url }}" x="61" y="61" width="58" height="58" clip-path="url(#springOscDisco)" preserveAspectRatio="xMidYMid slice"/>
+<image id="springOsc-m" href="{{ '/corsi/immagini/luna-ritaglio.webp' | relative_url }}" x="123" y="77" width="26" height="26" clip-path="url(#springOscDisco)" preserveAspectRatio="xMidYMid slice" style="cursor:grab;touch-action:none;"/>
+<text x="90" y="136" text-anchor="middle" font-size="11" fill="#475569">Terra</text>
+<text id="springOsc-lblm" x="136" y="118" text-anchor="middle" font-size="11" fill="#475569">Luna</text>
 </svg>
 <div class="vdrag-actions">
 <button class="vdrag-reset" id="springOsc-toggle">Mostra molla</button>
@@ -54,13 +58,14 @@ parametro.
     vectorsGroup.style.display=springVisible?'none':'';
     toggleBtn.textContent=springVisible?'Mostra vettori forza':'Mostra molla';
   });
-  var Rm=20, RM=26;
+  var Rm=13, RM=29;
+  var lblm=document.getElementById('springOsc-lblm');
   var MIN_DIST=RM+Rm, STRETCH_REF=150;
   var AMP_MAX=13, AMP_MIN=3.5;
   var GAUGE_H=110, GAUGE_BOTTOM=145;
   var X_MIN=20, X_MAX=270, Y_MIN=20, Y_MAX=160;
   var Mx=90, My=90;
-  var xm=136, ym=90;
+  var xm=90+RM+Rm+4, ym=90;
   var dragging=false, animId=null;
 
   function springPath(p0x,p0y,p1x,p1y,amp,n,lead){
@@ -81,7 +86,8 @@ parametro.
   }
 
   function render(){
-    m.setAttribute('cx',xm); m.setAttribute('cy',ym);
+    m.setAttribute('x',xm-Rm); m.setAttribute('y',ym-Rm);
+    lblm.setAttribute('x',xm); lblm.setAttribute('y',ym+Rm+14);
 
     var dist=Math.hypot(xm-Mx,ym-My);
     var stretchFrac=Math.max(0,Math.min(1,(dist-MIN_DIST)/STRETCH_REF));

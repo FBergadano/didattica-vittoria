@@ -1,0 +1,69 @@
+{% comment %}
+Animazione (in loop, senza didascalia): la formula dell'energia potenziale
+gravitazionale ricavata dalle unità di misura.
+In alto: J = N · m (l'energia si misura in joule, cioè newton per metro).
+Sotto, colonna per colonna, ogni unità diventa una grandezza: J → U,
+N → F, m → r. Poi compare il segno meno (in arancio), F diventa G·Mm/r²,
+la r si semplifica con una delle due del denominatore e il risultato
+U = −G·Mm/r viene incorniciato.
+Lo studente può mettere in pausa, ricominciare e scegliere la velocità
+(motore: formula-anim-engine.html). Nessun parametro.
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+<div class="fa-wrap"><canvas id="cv-u-unita"></canvas></div>
+<script>
+(function(){
+FormulaAnim.create({id:'cv-u-unita',W:420,H:178,cycle:13,still:11,draw:function(A,t){
+  var p=A.p,L=A.L,mix=A.mix,ctx=A.ctx,I={it:true};
+  var Y1=58,Y2=140,yb=Y2-8,yn=yb-7,yd=yb+21;
+  var cU=120,cEq=152,cMeno=178,cF=212,cDot=244,cR=268;
+  function lbl(txt,x,al){
+    if(al<=0.01)return;ctx.globalAlpha=al*A.G;ctx.fillStyle='#64748b';
+    ctx.font='italic 12px Georgia,serif';ctx.textAlign='center';ctx.fillText(txt,x,Y1-30);ctx.globalAlpha=1;
+  }
+  function bar(x0,x1,al,col){
+    if(al<=0.01)return;ctx.globalAlpha=al*A.G;ctx.strokeStyle=col;ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(x0,yb);ctx.lineTo(x1,yb);ctx.stroke();ctx.globalAlpha=1;
+  }
+  // riga delle unità: J = N · m
+  var a1=p(t,0.2,0.8);
+  lbl('energia',cU,a1);lbl('forza',cF,a1);lbl('lunghezza',cR,a1);
+  var hJ=p(t,1.1,1.5)*(1-p(t,2.4,2.8)),hN=p(t,2.4,2.8)*(1-p(t,3.7,4.1)),hm=p(t,3.7,4.1)*(1-p(t,5.0,5.4));
+  A.tok('J',cU,Y1,a1,mix(A.DARK,A.OR,hJ));
+  A.tok('=',cEq,Y1,a1,A.DARK);
+  A.tok('N',cF,Y1,a1,mix(A.DARK,A.OR,hN));
+  A.tok('·',cDot,Y1,a1,A.DARK);
+  A.tok('m',cR,Y1,a1,mix(A.DARK,A.OR,hm));
+  // frecce dall'unità alla grandezza
+  A.arc(cU,Y1+8,cU-16,(Y1+Y2)/2,cU,Y2-26,hJ);
+  A.arc(cF,Y1+8,cF-16,(Y1+Y2)/2,cF,Y2-26,hN);
+  A.arc(cR,Y1+8,cR+16,(Y1+Y2)/2,cR,Y2-26,hm);
+  // riga delle grandezze: U = − F · r
+  var aU=p(t,1.6,2.1),aF=p(t,2.9,3.4),aR=p(t,4.2,4.7),aM=p(t,5.6,6.1);
+  var pS=p(t,6.6,7.4);                          // F diventa G·Mm/r²
+  var hX=p(t,7.9,8.3),pX=p(t,8.4,8.9);          // la r si semplifica con una del denominatore
+  var gone=1-p(t,9.2,9.7);
+  var box=p(t,10.0,10.6),ink=mix(A.DARK,A.TEAL,box);
+  A.tok('U',cU,Y2,aU,ink,I);
+  A.tok('=',cEq,Y2,aU,ink);
+  A.tok('−',cMeno,Y2,aM,box>0?ink:mix(A.OR,A.DARK,p(t,6.2,6.6)));
+  A.tok('F',cF,Y2,aF*(1-pS),mix(A.DARK,A.OR,p(t,6.2,6.6)),I);
+  // G·Mm/r² al posto di F
+  var xG=cF-14,xq=cF+28;
+  A.tok('G',xG,Y2,pS,ink,I);
+  A.tok('M',xq-11,yn,pS,ink,{it:true,size:22});
+  A.tok('m',xq+11,yn,pS,ink,{it:true,size:22});
+  bar(xq-24,xq+24,pS,ink);
+  var cr=mix(ink,A.OR,hX*gone);
+  A.tok('r',xq,yd,pS,cr,{it:true,size:22});
+  A.tok('2',xq+10,yd-10,pS*gone,A.mix(A.DARK,A.OR,hX),{size:13});
+  A.slash(xq+10,yd-7,pX,pS*gone);
+  // · r  si spostano a destra per far posto alla frazione, poi si semplificano
+  var sh=pS*40;
+  A.tok('·',cDot+sh,Y2,aR*gone,ink);
+  A.tok('r',cR+sh,Y2,aR*gone,mix(A.DARK,A.OR,hX),I);
+  A.slash(cR+sh,Y2+2,pX,gone);
+  A.box(cU-24,Y2-44,(xq+38)-(cU-24),64,box);
+}});
+})();
+</script>

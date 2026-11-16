@@ -613,11 +613,11 @@ body.accessible-font #font-toggle { background: $cyan; color: #fff; }
   &::-webkit-scrollbar { display: none; }
 }
 .scorri-slide {
-  flex: 0 0 100%; scroll-snap-align: start; margin: 0;
+  flex: 0 0 100%; min-width: 0; scroll-snap-align: start; margin: 0;
   display: flex; flex-direction: column; align-items: center;
   img { max-width: 100%; max-height: 240px; object-fit: contain; border-radius: 8px; background: #fff; }
 }
-.scorri-text { width: 100%; margin-top: .5rem; p { margin: .3rem 0; } }
+.scorri-text { width: 100%; min-width: 0; margin-top: .5rem; p { margin: .3rem 0; } }
 .scorri-nav {
   order: -1;   // i pulsanti stanno in cima, sopra le slide
   display: flex; justify-content: center; align-items: center; gap: .6rem; margin: 0 0 .7rem;
@@ -1298,6 +1298,18 @@ cit em, cit i { font-style: normal; }
 // non c'è spazio per stare fianco a fianco, la calcolatrice passa SOTTO al
 // contenuto anziché sopra, pur restando prima nel markup (serve per il float).
 @media (max-width: 600px) {
+  // su telefono la calcolatrice non sta mai a fianco del testo: il float le
+  // riservava 196px e gli esercizi a slide (che non possono scorrere attorno
+  // a un float) restavano schiacciati in una striscia e tagliati
+  .calc-wrap { float: none; clear: none; width: auto; margin: 0 0 .6rem; text-align: right; }
+  .calc-wrap .calc-outer { max-width: 260px; margin-left: auto; }
+  // tabelle delle misure: celle strette, così 5–6 colonne stanno sullo
+  // schermo senza doverle scorrere di lato (e senza nascondere valori)
+  .chapter-prose table { font-size: .86rem; }
+  .chapter-prose table th, .chapter-prose table td { padding: .4rem .3rem; }
+  // riquadri: meno margine interno, più spazio per tabelle e slide
+  .box { padding: .9rem .75rem; }
+  .chapter-prose table th:first-child, .chapter-prose table td:first-child { padding-left: .2rem; }
   .calc-flow { display: flex; flex-direction: column; }
   .calc-flow .calc-wrap { float: none; clear: none; order: 2; width: 100%; max-width: 240px; margin: .8rem auto 0; text-align: center; }
   .calc-flow .calc-flow-body { order: 1; }
@@ -2176,7 +2188,8 @@ cit em, cit i { font-style: normal; }
 // tabella delle misurazioni: tocca il più piccolo e il più grande (misure-clic.html)
 .mclic-widget { margin: .6rem 0; overflow-x: auto; }
 .mclic-tab { border-collapse: collapse; font-size: .92rem; margin: 0 auto; }
-.mclic-tab th, .mclic-tab td { border: 1px solid #cbd5e1; padding: .3rem .5rem; text-align: center; }
+// (con .chapter-prose davanti, altrimenti vince l'imbottitura larga delle tabelle del testo)
+.mclic-tab th, .mclic-tab td, .chapter-prose .mclic-tab th, .chapter-prose .mclic-tab td { border: 1px solid #cbd5e1; padding: .3rem .5rem; text-align: center; }
 .mclic-tab th { background: #f1f5f9; font-weight: 600; }
 .mclic-v { font: inherit; border: 1.5px solid #67e8f9; background: #fff; border-radius: 6px; padding: .2rem .55rem; cursor: pointer; min-width: 3.4em; }
 .mclic-v:hover:not(:disabled) { background: #cffafe; }
@@ -2185,6 +2198,13 @@ cit em, cit i { font-style: normal; }
 .mclic-v.max { background: #fee2e2; border-color: #dc2626; }
 .mclic-v.min::after { content: " min"; font-size: .7em; color: #2563eb; }
 .mclic-v.max::after { content: " max"; font-size: .7em; color: #dc2626; }
+// telefono: celle e pulsanti stretti, così tutti i valori stanno sullo schermo
+// (qui sotto, dopo le regole di base, altrimenti queste vincono)
+@media (max-width: 600px) {
+  .mclic-tab { font-size: .84rem; }
+  .chapter-prose .mclic-tab th, .chapter-prose .mclic-tab td { padding: .25rem .15rem; }
+  .mclic-v { min-width: 0; padding: .2rem .25rem; }
+}
 .mclic-v.no { animation: mclic-no .5s; border-color: #dc2626; }
 @keyframes mclic-no { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .mclic-msg { text-align: center; font-size: .88rem; margin: .5rem 0 0; }
@@ -2333,3 +2353,9 @@ cit em, cit i { font-style: normal; }
 /* Due figure affiancate (una sotto l'altra sul telefono) */
 .fig-coppia { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 0 1.5rem; }
 .fig-coppia > .fig-block { flex: 1 1 200px; max-width: 260px; margin-left: 0; margin-right: 0; }
+
+// ── Due simulatori affiancati (es. sovrapposizione per U e per V) ──────
+// uno accanto all'altro sugli schermi larghi, uno sotto l'altro sul telefono
+.sim-affiancati { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; margin: 1rem 0; }
+.sim-affiancati > * { min-width: 0; margin-top: 0 !important; margin-bottom: 0 !important; }
+@media (max-width: 1100px) { .sim-affiancati { grid-template-columns: 1fr; } }

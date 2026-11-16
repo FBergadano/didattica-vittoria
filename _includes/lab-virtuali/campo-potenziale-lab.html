@@ -1,0 +1,57 @@
+{% comment %}
+Animazione (in loop, senza didascalia): dal campo al potenziale, sostituendo
+pezzo per pezzo. In alto c'è una formula del campo; sotto, colonna per
+colonna, ogni pezzo viene sostituito dal suo analogo "energetico"
+(g → V, F → U, N → J); quello che non cambia (la massa m, il kg) scende
+uguale, in grigio. Alla fine la nuova formula viene incorniciata.
+
+Parametri:
+  id   — ID univoco (obbligatorio se ce n'è più d'una nella pagina)
+  tipo — "formula": g = F/m  →  V = U/m
+         "unita":   [g] = N/kg  →  [V] = J/kg
+Lo studente può mettere in pausa, ricominciare e scegliere la velocità
+(motore: formula-anim-engine.html).
+
+Esempi:
+  {% include lab-virtuali/campo-potenziale-lab.html id="cp-formula" tipo="formula" %}
+  {% include lab-virtuali/campo-potenziale-lab.html id="cp-unita" tipo="unita" %}
+{% endcomment %}
+{% include lab-virtuali/formula-anim-engine.html %}
+{% assign _cpid = include.id | default: "cp" %}
+<div class="fa-wrap"><canvas id="cv-{{ _cpid }}"></canvas></div>
+<script>
+(function(){
+var UNITA='{{ include.tipo }}'==='unita';
+FormulaAnim.create({id:'cv-{{ _cpid }}',W:420,H:190,cycle:9.5,still:7.5,draw:function(A,t){
+  var p=A.p,mix=A.mix,ctx=A.ctx,I={it:true},GR='#94a3b8';
+  var Y1=62,Y2=152;
+  var xL=UNITA?150:165,xEq=UNITA?198:200,xF=UNITA?248:240;
+  // [ ] attorno al simbolo, per le unità
+  function sim(s,x,y,al,col){
+    A.tok(s,x,y,al,col,I);
+    if(UNITA){A.tok('[',x-15,y,al,col);A.tok(']',x+15,y,al,col);}
+  }
+  function riga(Y,al,sx,num,den,cSx,cNum,cDen,aSx,aNum,aDen,itNum,itDen){
+    var yb=Y-8,yn=yb-7,yd=yb+21;
+    sim(sx,xL,Y,aSx,cSx);
+    A.tok('=',xEq,Y,al,cSx===GR?A.DARK:A.DARK);
+    A.tok(num,xF,yn,aNum,cNum,{it:itNum,size:22});
+    if(al>0.01){ctx.globalAlpha=al*A.G;ctx.strokeStyle=A.DARK;ctx.lineWidth=1.6;
+      ctx.beginPath();ctx.moveTo(xF-20,yb);ctx.lineTo(xF+20,yb);ctx.stroke();ctx.globalAlpha=1;}
+    A.tok(den,xF,yd,aDen,cDen,{it:itDen,size:22});
+  }
+  var a1=p(t,0.2,0.8);
+  var h1=p(t,1.1,1.5)*(1-p(t,2.5,2.9)),h2=p(t,2.5,2.9)*(1-p(t,3.9,4.3)),h3=p(t,3.9,4.3)*(1-p(t,5.1,5.5));
+  var n1=UNITA?'N':'F',d1=UNITA?'kg':'m',n2=UNITA?'J':'U';
+  riga(Y1,a1,'g',n1,d1,mix(A.DARK,A.OR,h1),mix(A.DARK,A.OR,h2),mix(A.DARK,GR,h3),a1,a1,a1,!UNITA,!UNITA);
+  // frecce dall'alto in basso
+  A.arc(xL,Y1+10,xL-18,(Y1+Y2)/2-6,xL,Y2-28,h1);
+  A.arc(xF,Y1-24,xF+46,(Y1+Y2)/2-20,xF+6,Y2-44,h2);
+  A.arc(xF,Y1+22,xF-30,(Y1+Y2)/2+6,xF,Y2-6,h3,GR);
+  var aV=p(t,1.6,2.1),aU=p(t,3.0,3.5),am=p(t,4.4,4.9);
+  var box=p(t,5.9,6.5),ink=mix(A.DARK,A.TEAL,box);
+  riga(Y2,aV,'V',n2,d1,ink,ink,box>0?ink:mix(GR,A.DARK,p(t,5.2,5.7)),aV,aU,am,!UNITA,!UNITA);
+  A.box(xL-(UNITA?32:26),Y2-46,(xF+32)-(xL-(UNITA?32:26)),66,box);
+}});
+})();
+</script>

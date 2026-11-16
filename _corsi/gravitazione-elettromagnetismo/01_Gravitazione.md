@@ -24,7 +24,7 @@ Di mirar queste valli?
 </cit>
 
 {% include box-obiettivi.html %}
-Scopri la legge con cui due masse qualsiasi si attraggono, dalla mela che cade alla Luna che gira attorno alla Terra, e impari a calcolare quanto vale questa forza. Poi cambi punto di vista: studi come una massa modifica lo spazio intorno a sé, cioè il campo gravitazionale, e impari a disegnarlo con le linee di campo. Passi quindi all'energia, con l'energia potenziale, il potenziale e le superfici equipotenziali. Il capitolo si chiude con il moto di una massa in un campo: la forza peso e l'accelerazione di gravità.
+Scopri la legge con cui due masse qualsiasi si attraggono, dalla mela che cade alla Luna che gira attorno alla Terra, e impari a calcolare quanto vale questa forza. Poi cambi punto di vista: studi come una massa modifica lo spazio intorno a sé, cioè il campo gravitazionale, e impari a disegnarlo con le linee di campo. Passi quindi all'energia, con l'energia potenziale e il potenziale: due grandezze scalari che prendono il posto della forza e del campo e che, quando le masse sono tante, si sommano molto più facilmente. Il capitolo si chiude con il moto di una massa in un campo: la forza peso e l'accelerazione di gravità.
 {% include box-end.html %}
 
 
@@ -716,80 +716,67 @@ Prova tu stesso a verificare che questa è la forma delle linee di campo secondo
 
 # Energia Gravitazionale
 
-{% include margin-note.html testo="Il problema della descrizione vettoriale" %}
-Finora abbiamo descritto la gravità nel linguaggio delle forze e dei campi. In teoria, questo linguaggio può descrivere anche un sistema di molte masse, ma per farlo ha bisogno di sommare vettorialmente tutti i campi e tutte le forze. E questo non è facile: sommare vettorialmente tante forze può essere un problema difficile.
+{% include margin-note.html testo="Il problema dei vettori" %}
+Finora abbiamo descritto la gravità con due grandezze, la forza $\vec F$ e il campo $\vec g$, e tutte e due sono vettori. Finché le masse sono una o due va tutto bene, ma quando diventano tante il principio di sovrapposizione degli effetti ci costringe a sommare un vettore dopo l'altro con la regola del parallelogramma: un lavoro lungo, in cui è facilissimo sbagliare. E nota che il problema riguarda <u markdown="span">**sia** la forza **sia** il campo</u>.
 {% include margin-note-end.html %}
 
-{% include margin-note.html testo="Una descrizione alternativa: l'energia" %}
-Possiamo però sostituire il linguaggio delle forze e dei campi con un altro del tutto analogo, dove le grandezze non sono vettoriali ma scalari: quello dell'<definizione>energia</definizione>. È una descrizione molto ricca ed elegante, che ci permetterà di collegare in modo naturale grandezze apparentemente lontane fra loro, come la velocità di un corpo immerso in un campo gravitazionale e la distanza dalla massa che genera il campo (vedi la <a href="#moto-di-una-massa-in-un-campo-gravitazionale">sezione sul moto di una massa in un campo gravitazionale</a>).
+{% include margin-note.html testo="Un equivalente scalare per la forza e uno per il campo" %}
+Ci serve quindi un equivalente scalare (cioè una grandezza fatta solo di un numero, senza direzione né verso) per tutte e due. Al posto della forza fra due masse parleremo di <definizione>energia potenziale gravitazionale</definizione> fra due masse, che indicheremo con $U$. E siccome anche il campo è un vettore, ci servirà un suo analogo scalare: è il <definizione>potenziale gravitazionale</definizione>, che indicheremo con $V$ e di cui ci occuperemo più sotto.
 {% include margin-note-end.html %}
+
+| | Due masse | Una sola massa |
+|---|:---:|:---:|
+| **Vettori** | forza $\vec F$ | campo $\vec g$ |
+| **Scalari** | energia potenziale $U$ | potenziale $V$ |
 
 ## Energia potenziale gravitazionale
-{% include margin-note.html testo="Perché possiamo parlare di energia potenziale?"%}
-Abbiamo detto che la forza gravitazionale è una forza **centrale**. La proprietà fondamentale delle forze centrali è quella di <u markdown="span">poter definire un'energia potenziale</u> (cosa che non vale per tutte le forze in generale). Quindi ha senso parlare di <definizione>energia potenziale gravitazionale</definizione>.
-{% include margin-note-end.html %}
 
-{% include margin-note.html testo="Comprendere cos'è l'energia potenziale" %}
-Quando due masse si trovano a una certa distanza, c'è dell'energia "immagazzinata" tra loro, come se fossero connesse da una molla in tensione: se lasciamo che si avvicinino spontaneamente, attratte dalla gravità, questa energia si sprigiona sotto forma di **energia cinetica**. L'energia immagazzinata da due masse per effetti della forza di gravità corrisponde all'**energia potenziale gravitazionale**.
+{% include margin-note.html testo="Due masse legate da una molla" %}
+Cominciamo da $U$. Due masse che si attraggono si comportano un po' come se fossero legate da una molla: se le allontani, la molla si allunga e immagazzina energia; se le lasci andare, la molla le riporta l'una verso l'altra, e l'energia immagazzinata si trasforma in energia cinetica. L'energia immagazzinata fra due masse a causa della gravità è proprio l'energia potenziale gravitazionale.
 {% include margin-note-end.html %}
 
 {% include lab-virtuali/molla-oscillazione-lab.html %}
 
-{% include margin-note.html testo="Calcolare l'energia potenziale" %}
-Per calcolare quanta energia è immagazzinata tra due masse $M$ ed $m$ a distanza $r,$ immaginiamo di partire da due masse inizialmente a contatto e di allontanarle fino alla distanza che ci interessa. Il lavoro che dobbiamo compiere per allontanarle, vincendo la loro attrazione reciproca, <u markdown="span">si trasforma interamente in **energia potenziale gravitazionale**</u>. Quindi per calcolare l'energia potenziale dobbiamo calcolare il lavoro compiuto.
-
-
-Osserva l'animazione seguente: allontanando le due masse di un tratto $r$, la forza gravitazionale (attrattiva) si oppone sempre allo spostamento, come una molla in tensione.
-
-{% include lab-virtuali/molla-separazione-lab.html %}
-
-Il lavoro fatto dalla forza gravitazionale mentre le due masse si allontanano di un tratto $r$ è 
-
-$$L = -F \times \text{spostamento} = -G\frac{Mm}{r^2} \times r = -G\frac{Mm}{r^{\cancel{2}}} \times \cancel{r} = -G\frac{Mm}{r}.$$
-
-- Nel primo passaggio scriviamo semplicemente lavoro = forza per spostamento, <u>con il segno meno perché la forza si oppone al moto</u>.
-- Nel secondo passaggio sostituiamo il modulo della forza gravitazionale, $F = G\dfrac{Mm}{r^2}$ e identifichiamo la distanza percorsa con $r$.
-- Nel terzo passaggio notiamo che una delle due $r$ si semplifica con una delle due potenze di $r$ al denominatore.
-
-Questo lavoro <u>si trasforma interamente in energia potenziale gravitazionale</u>, che indichiamo con $U$:
-
-$$U = -G\frac{Mm}{r}.$$
-
+{% include margin-note.html testo="U cresce con la distanza…" %}
+La prima cosa che la molla ci fa capire è che <u markdown="span">l'energia potenziale deve **aumentare** man mano che aumenta la distanza fra le due masse</u>: più allontani la Luna, più la molla si allunga, e più energia c'è da restituire quando la lasci andare.
 {% include margin-note-end.html %}
 
-{% include margin-note.html testo="Perché, in generale, U è negativa" %}
-Il segno meno ha un significato fisico preciso: indica che le due masse sono "legate" dalla reciproca attrazione. Più sono vicine, più $U$ è negativa (più energia servirebbe per separarle); allontanandosi, $U$ cresce, avvicinandosi a zero — che raggiunge solo a distanza infinita.
+{% include margin-note.html testo="…ma a distanza infinita deve valere zero" %}
+Però, se due masse sono infinitamente lontane, non si attraggono più: non c'è più nessuna molla, e non ha nessun senso dire che fra loro c'è dell'energia immagazzinata. Quindi, <u markdown="span">quando $r$ diventa molto, molto grande, $U$ si deve avvicinare a **zero**</u>.
+
+Mettiamo insieme le due cose: allontanando le masse $U$ cresce sempre, e alla fine (a distanza infinita) arriva a zero. Prima di arrivarci, allora, non può che essere più piccola di zero: <u markdown="span">l'unica possibilità è che $U$ sia **negativa**</u>!
+{% include margin-note-end.html %}
+
+{% include figure/figura-u-negativa.html %}
+
+{% include margin-note.html testo="La formula dalle unità di misura" %}
+Come si calcola, allora, $U$? Ci aiutano le unità di misura. $U$ è un'energia, quindi si misura in joule, e il joule corrisponde a un newton per un metro: $\text J = \text N\cdot\text m$. Perciò <u markdown="span">la formula di $U$ deve essere una **forza** moltiplicata per una **lunghezza**</u>.
+
+La forza ce l'abbiamo già: è la forza gravitazionale fra le due masse, $F=G\dfrac{Mm}{r^2}$. E la lunghezza più naturale è la distanza $r$ fra le due masse. Se poi ci mettiamo davanti un segno meno, perché sappiamo che $U$ deve essere negativa, otteniamo:
+{% include margin-note-end.html %}
+
+{% include lab-virtuali/u-dalle-unita-lab.html %}
+
+$$U = -F\cdot r = -G\frac{Mm}{r^{\cancel 2}}\cdot\cancel r = -G\frac{Mm}{r}.$$
+
+{% include margin-note.html testo="La formula fa quello che volevamo" %}
+Controlliamo che vada bene. Se $r$ aumenta, la frazione $\dfrac{Mm}{r}$ diventa sempre più piccola: $U$, che è negativa, si avvicina a zero, cioè aumenta. E quando $r$ è enorme, $U$ è praticamente zero. È proprio quello che volevamo.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="Un'espressione equivalente per U" %}
-Possiamo riscrivere questa stessa formula usando direttamente il campo gravitazionale $g$, al posto della sua espressione $G\,M/r^2$:
+Possiamo scrivere $U$ anche usando il campo gravitazionale. Siccome $g = F/m$, la forza è $F = mg$, e quindi $U = -F\cdot r = -mgr$. Ecco che le due scritture sono la stessa identica formula:
+{% include margin-note-end.html %}
 
 {% include lab-virtuali/u-mgr-lab.html %}
 
 $$U = -mgr = -G\frac{Mm}{r}.$$
 
-Le due scritture sono **la stessa identica formula**: nella prima usiamo direttamente $g$ (il campo generato da $M$ alla distanza $r$), nella seconda sostituiamo $g = G\,M/r^2$.
-{% include margin-note-end.html %}
-
-
-{% include margin-note.html testo="L'unità di misura di U" %}
-Essendo un'energia, $U$ si misura in joule. Verifichiamolo a partire dalla formula, ricordando che $G$ si misura in $\text N\cdot\text m^2/\text{kg}^2$: questa volta, per arrivare al risultato, serve anche qualche semplificazione.
-
-{% capture _ua_energiapot %}{"lhs":{"s":"U"},
- "rhs":[{"o":"−","drop":true},{"s":"G","u":"N·m²/kg²"},{"o":"·"},{"f":[[{"s":"M","u":"kg"},{"o":"·"},{"s":"m","u":"kg"}],[{"s":"r","u":"m"}]]}],
- "passi":[[{"f":[["N",{"o":"·"},"m",{"o":"·"},{"t":"m","x":true},{"o":"·"},{"t":"kg","x":true},{"o":"·"},{"t":"kg","x":true}],[{"t":"kg","x":true},{"o":"·"},{"t":"kg","x":true},{"o":"·"},{"t":"m","x":true}]]}],
-          ["N",{"o":"·"},"m"],["J"]]}{% endcapture %}
-{% include lab-virtuali/unita-anim.html id="ua-energiapot" dati=_ua_energiapot %}
-
-Quindi:
-
-$$[U]=[G]\cdot\frac{[M]\cdot[m]}{[r]}=\frac{\text N\cdot\text m^2}{\text{kg}^2}\cdot\frac{\text{kg}\cdot\text{kg}}{\text m}=\text N\cdot\text m=\text J.$$
-{% include margin-note-end.html %}
-
 {% include box-imp.html testo="Energia potenziale gravitazionale" %}
-- **L'energia potenziale gravitazionale** è uno <u markdown="span">scalare</u> che esprime l'energia immagazzinata da una massa $m$ a causa della sua posizione nel campo gravitazionale generato da una massa $M$.
-- **Formula:** $U = -mgr = -G\dfrac{Mm}{r}$.
-- **Unità di misura:** essendo un'energia, si misura in joule (simbolo J).
+L'energia potenziale gravitazionale fra due masse $M$ ed $m$ a distanza $r$ è uno <u markdown="span">**scalare**</u> e vale
+
+$$U = -G\frac{Mm}{r} = -mgr.$$
+
+È sempre negativa, aumenta quando le masse si allontanano e vale zero solo a distanza infinita. Si misura in joule (J).
 {% include box-end.html %}
 
 {% include unisci.html %}
@@ -836,59 +823,37 @@ Una sonda di $500\ \text{kg}$, a $r = 6{,}8\times10^{6}\ \text{m}$ dal centro di
 {% include box-end.html %}
 {% include unisci-end.html %}
 
-### Sovrapposizione degli effetti per l'energia potenziale
-
-In presenza di più masse, il principio di sovrapposizione degli effetti, per l'energia potenziale, ci dice la seguente cosa.
-
-{% include box-imp.html testo="Il principio di sovrapposizione degli effetti per l'energia potenziale" %}
-In presenza di più masse, ogni massa contribuisce all'energia potenziale di $m$ <u markdown="span">esattamente come se tutte le altre non ci fossero</u>. L'energia potenziale totale è data dalla somma di tutti i contributi:
-
-$$U_{tot} = U_1+U_2 + \cdots$$
-
-{% include box-end.html %}
-
-Mentre la forza e il campo sono vettori e perciò richiedevano una somma vettoriale, l'energia potenziale è **scalare**, pertanto <u markdown="span">la somma delle energie potenziali è una normale somma algebrica</u>.  
-Prova con il simulatore: sposta le masse e la massa $m$, cambiane i valori, aggiungi o togli masse. I conti si aggiornano da soli.
-
-{% include lab-virtuali/sovrapposizione-lab.html id="sov-energia-grav" tipo="energia" fisica="grav" aggiungi="true" %}
-
 ## Potenziale gravitazionale
 
-{% include margin-note.html testo="Cosa stiamo cercando" %}
-Esattamente come abbiamo discusso nella sezione sul campo gravitazionale, è importante ricercare quantità che descrivano non l'interazione tra due masse ma <u markdown="span">una proprietà di **una singola** massa</u>. Ricerchiamo cioè l'analogo del campo gravitazionale (che è una proprietà di **una singola** massa) per l'energia. Questa grandezza è ciò che chiamiamo <definizione>potenziale gravitazionale</definizione> (simbolo $V$).
+{% include margin-note.html testo="Il potenziale sta a U come il campo sta a F" %}
+Passiamo ora a $V$. Come ti ho anticipato, il potenziale sta all'energia potenziale come il campo sta alla forza: $\vec F$ e $U$ riguardano due masse, mentre $\vec g$ e $V$ una sola. E allora, per trovare le formule del potenziale, non serve nessun conto nuovo: <u markdown="span">basta prendere le formule del campo e mettere $V$ al posto di $g$ e $U$ al posto di $F$</u>. Dalla formula $g = F/m$ otteniamo così
 {% include margin-note-end.html %}
 
-| | Forza $\vec F$ | Campo $\vec g$ | Energia potenziale $U$ | Potenziale $V$ |
-|---|:---:|:---:|:---:|:---:|
-| **Dipende da** | due masse| una singola massa | due masse | una singola massa |
+{% include lab-virtuali/campo-potenziale-lab.html id="cp-formula" tipo="formula" %}
 
+$$V = \frac{U}{m}.$$
 
-{% include margin-note.html testo="Come ottenere l'equazione per V" %}
-Ricordi come siamo passati dalla forza gravitazionale $\vec F$ al campo gravitazionale $\vec g$? Abbiamo semplicemente tolto la massa esploratrice $m$, dividendo per essa: $\vec g = \vec F / m$. Possiamo fare esattamente la stessa cosa con l'energia potenziale: <u markdown="span">togliendo la massa esploratrice $m$ dall'energia potenziale gravitazionale $U$, otteniamo **il potenziale** $V$</u>:
+{% include margin-note.html testo="Togliere la massa esploratrice" %}
+Esattamente come per il campo, quindi, il potenziale si ottiene <u markdown="span">togliendo la massa esploratrice $m$ dall'energia potenziale</u>, cioè dividendo per $m$:
+{% include margin-note-end.html %}
 
 {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-pot" da="U" a="V" meno="true" fine="gr" %}
 
-$$V = \frac{U}{m} = -gr = -G\frac{M}{r}.$$
+$$V = \frac{U}{m} = -G\frac{M}{r} = -gr.$$
 
-Anche qui, le tre scritture sono la stessa identica formula (basta sostituire le espressioni di $U$ e di $g$ per rendersene conto).
-{% include margin-note-end.html %}
-
-{% include margin-note.html testo="Energia potenziale vs. potenziale" %}
-Non confondere le due grandezze: l'<u markdown="span">energia potenziale $U$ **dipende** dalla massa esploratrice $m$</u> (quanta più massa esploratrice metti, tanta più energia immagazzini), mentre <u markdown="span">il potenziale $V$ **non dipende** da $m$</u> (proprio come il campo $\vec g$), ma dipende solo dalla massa che genera il campo e dalla distanza da essa.
+{% include margin-note.html testo="Energia potenziale e potenziale" %}
+Non confondere le due grandezze: <u markdown="span">l'energia potenziale $U$ **dipende** dalla massa esploratrice $m$</u> (più massa metti, più energia immagazzini), mentre <u markdown="span">il potenziale $V$ **non dipende** da $m$</u>, proprio come il campo $\vec g$: dipende solo dalla massa $M$ che lo genera e dalla distanza da essa.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="L'unità di misura di V" %}
-Analizziamo l'unità di misura di $V$: essendo il rapporto fra un'energia (J) e una massa (kg), il potenziale gravitazionale si misura in J/kg.
+Lo stesso scambio funziona anche con le unità di misura. Il campo si misura in N/kg: se al posto di $g$ mettiamo $V$, e al posto del newton (l'unità della forza) mettiamo il joule (l'unità dell'energia), troviamo l'unità del potenziale.
+{% include margin-note-end.html %}
 
-
-<!-- 
-{% capture _ua_potenziale %}{"lhs":{"s":"V"},
- "rhs":[{"f":[[{"s":"U","u":"J"}],[{"s":"m","u":"kg"}]]}]}{% endcapture %}
-{% include lab-virtuali/unita-anim.html id="ua-potenziale" dati=_ua_potenziale %}
+{% include lab-virtuali/campo-potenziale-lab.html id="cp-unita" tipo="unita" %}
 
 Quindi:
 
-$$[V]=\frac{[U]}{[m]}=\frac{\text J}{\text{kg}}.$$ -->
+$$[V] = \frac{\text J}{\text{kg}}.$$
 
 <div class="iex-nested">
 {% include unit-derive.html id="ud-V" testo="Trova l'unità di misura di V"
@@ -897,12 +862,13 @@ $$[V]=\frac{[U]}{[m]}=\frac{\text J}{\text{kg}}.$$ -->
    denominatore_simboli="m" denominatore_corrette="kg"
    opzioni="J|kg|N|m" %}
 </div>
-{% include margin-note-end.html %}
 
 {% include box-imp.html testo="Potenziale gravitazionale" %}
-- **Il potenziale gravitazionale** è l'energia potenziale gravitazionale "per unità di massa esploratrice" — non dipende da $m$, proprio come il campo $\vec g$ non dipende da $m$.
-- **Formula:** $V = \dfrac{U}{m} = -gr = -G\dfrac{M}{r}$, indipendente dalla massa $m$.
-- **Unità di misura:** J/kg.
+Il potenziale gravitazionale generato da una massa $M$ a distanza $r$ è uno <u markdown="span">**scalare**</u> e vale
+
+$$V = \frac{U}{m} = -G\frac{M}{r} = -gr.$$
+
+Come il campo, non dipende dalla massa esploratrice $m$. Si misura in J/kg.
 {% include box-end.html %}
 
 {% capture _r %}L'energia potenziale $U$ riguarda <strong>due</strong> masse: è l'energia immagazzinata dalla coppia $M$–$m$, e raddoppia se raddoppio $m$ (si misura in J). Il potenziale $V=U/m$ è invece una proprietà del <strong>solo punto</strong> dello spazio attorno a $M$: dice quanta energia potenziale avrebbe <em>ogni chilogrammo</em> posto lì, e non dipende da $m$ (si misura in J/kg). Esempio: in un punto in cui $V=-10\ \text{J/kg}$, una massa di $3\ \text{kg}$ ha $U=-30\ \text J$, una di $5\ \text{kg}$ ha $U=-50\ \text J$, ma il potenziale è lo stesso per entrambe.{% endcapture %}
@@ -954,84 +920,36 @@ In un punto $P$ un satellite di $1\,200\ \text{kg}$ ha un'energia potenziale gra
 {% include box-end.html %}
 {% include unisci-end.html %}
 
-### Sovrapposizione degli effetti per il potenziale 
-Esattamente come per l'energia potenziale, in presenza di più masse si può calcolare un potenziale totale in modo molto semplice. 
-<!-- Ogni massa genera un potenziale <u markdown="span">esattamente come se le altre non ci fossero</u> e il potenziale totale è dato <u markdown="span">dalla somma di ciascun potenziale</u>. -->
+## Sovrapposizione degli effetti per l'energia potenziale e per il potenziale
 
-{% include box-imp.html testo="Il principio di sovrapposizione degli effetti per il potenziale" %}
-
-In presenza di più masse, ciascuna di esse genera un potenziale <u markdown="span">esattamente come se le altre non ci fossero</u>. Il potenziale totale è dato dalla somma algebrica di tutti i contributi. In formule,
-
-$$V_{tot} = V_1+V_2 + \cdots$$
-
-{% include box-end.html %}
-
-Come per l'energia potenziale, anche qui la somma è puramente algebrica, senza bisogno di alcuna regola del parallelogramma.  
-Prova con il simulatore: sposta le masse e il punto $P$, cambia i valori delle masse, aggiungine o toglile.
-
-{% include lab-virtuali/sovrapposizione-lab.html id="sov-potenziale-grav" tipo="potenziale" fisica="grav" aggiungi="true" %}
-
-
-
-## Superfici equipotenziali
-
-{% include margin-note.html testo="Cosa cerchiamo: un modo grafico per rappresentare il potenziale" %}
-Abbiamo compreso che il potenziale gravitazionale è sostanzialmente l'analogo energetico del campo. Ci chiediamo allora se, così come è possibile rappresentare il campo con delle linee, sia possibile in qualche modo rappresentare graficamente il potenziale.  
-In effetti, è possibile rappresentare graficamente il potenziale disegnando delle superfici che prendono il nome di <definizione>superfici equipotenziali</definizione>.  
-(Naturalmente, quando si disegna su un foglio, tali superfici verranno rappresentate da delle linee.)
+{% include margin-note.html testo="Una somma normale, senza parallelogramma" %}
+Ed ecco perché abbiamo fatto tutta questa strada. Anche per l'energia potenziale e per il potenziale vale il principio di sovrapposizione degli effetti, ma siccome $U$ e $V$ sono scalari, i contributi delle varie masse <u markdown="span">si sommano con una **normale somma algebrica**</u>, senza nessuna regola del parallelogramma.
 {% include margin-note-end.html %}
 
-{% include box-imp.html testo="Superfici equipotenziali"%}
-Le superfici equipotenziali sono il luogo dei punti in cui il potenziale assume <u markdown="span">lo **stesso** valore costante</u>. Inoltre, esse sono, in ogni punto, <u markdown="span">**perpendicolari** alle linee di campo.
+{% include box-imp.html testo="Il principio di sovrapposizione degli effetti per U e per V" %}
+In presenza di più masse, ciascuna contribuisce all'energia potenziale di $m$ (e al potenziale in un punto $P$) <u markdown="span">esattamente come se le altre non ci fossero</u>. L'energia potenziale totale e il potenziale totale sono le somme algebriche dei singoli contributi:
+
+$$U_{tot} = U_1 + U_2 + \cdots \qquad\qquad V_{tot} = V_1 + V_2 + \cdots$$
 {% include box-end.html %}
 
-Prova tu a tracciare le superfici equipotenziali di una massa $M$: intorno a essa ci sono dei punti, ciascuno con il valore del potenziale gravitazionale in quel punto.
+Nei due simulatori qui sotto, a sinistra c'è l'energia potenziale della massa $m$, a destra il potenziale nel punto $P$. Sposta le masse, cambiane i valori, aggiungine o toglile: i conti si aggiornano da soli.
 
-{% include esercizi/traccia-equipotenziale.html %}
+<div class="sim-affiancati">
+{% include lab-virtuali/sovrapposizione-lab.html id="sov-energia-grav" tipo="energia" fisica="grav" aggiungi="true" titolo="Energia potenziale" %}
+{% include lab-virtuali/sovrapposizione-lab.html id="sov-potenziale-grav" tipo="potenziale" fisica="grav" aggiungi="true" titolo="Potenziale" %}
+</div>
 
-### Le superfici equipotenziali di una singola massa sferica
+{% include spoiler.html testo="Poiché il potenziale assomiglia al campo, esiste un equivalente delle linee di campo per il potenziale?" %}
+Sì: il campo si disegna con le linee di campo, il potenziale con le <definizione>superfici equipotenziali</definizione>. Sono le superfici formate da tutti i punti in cui il potenziale ha lo stesso valore (disegnate su un foglio, diventano delle linee).
 
-{% capture _r %}Da $V=-G\dfrac{M}{r}$ si vede che il potenziale dipende <strong>solo dalla distanza</strong> $r$ dal centro di $M$. Tutti i punti alla stessa distanza dal centro hanno quindi lo stesso potenziale: le superfici equipotenziali sono <strong>sfere</strong> centrate in $M$ (sul foglio, circonferenze).{% endcapture %}
-{% include risposta-aperta.html id="ra-prev-equip" tipo="prevedi"
-   domanda="Guardando la formula $V=-G\dfrac{M}{r}$, che forma ti aspetti per le superfici equipotenziali di una singola massa sferica? Perché?"
-   risposta=_r %}
-
-Poiché il potenziale gravitazionale $V$ generato da una singola massa sferica $M$ dipende solo dalla distanza $r$ da essa ($V = -G\frac{M}{r}$), tutti i punti a distanza $r$ da $M$ hanno lo stesso potenziale. L'insieme di questi punti forma quindi una sfera. Pertanto, le superfici equipotenziali per una singola massa sferica sono semplicemente sfere concentriche a $M$.
+Per una sola massa sferica è facile capire che forma hanno. Il potenziale $V = -G\dfrac{M}{r}$ dipende solo dalla distanza $r$ dal centro, quindi tutti i punti alla stessa distanza hanno lo stesso potenziale: le superfici equipotenziali sono sfere concentriche al pianeta. Nell'animazione le sfere sono disegnate a passi uguali di potenziale; cambiando pianeta vedi che, più la massa è grande, più le sfere (e insieme a loro le linee di campo) si addensano vicino alla superficie. Nota anche che <u markdown="span">le superfici equipotenziali sono, in ogni punto, **perpendicolari** alle linee di campo</u>.
 
 {% include lab-virtuali/equipotenziali-sfera-3d-lab.html %}
 
-Dovendole rappresentare su un foglio, esse diventano delle circonferenze, come nella seguente figura.
-
-{% include figure/figura-equipotenziali-sfera.html %}
-
-
-
-
-### Le superfici equipotenziali in presenza di più masse
-Quando il campo è generato da più masse, come nel sistema Terra-Luna, le superfici equipotenziali non sono più sfere: si deformano, avvicinandosi maggiormente dove il campo è più intenso — esattamente come succede per le linee di campo.
+Con più masse, come nel sistema Terra-Luna, le superfici si deformano, ma restano sempre perpendicolari alle linee di campo. Clicca in un punto per leggere il potenziale della Terra, quello della Luna e la loro somma.
 
 {% include lab-virtuali/equipotenziali-terra-luna-lab.html %}
-
-<!-- {% include box-imp.html testo="Superfici equipotenziali" %}
-- **Le superfici equipotenziali** sono l'insieme dei punti dello spazio che hanno lo stesso potenziale gravitazionale.
-- **Per una singola massa:** sono sfere concentriche alla massa che genera il campo.
-- **Proprietà fondamentale:** sono sempre perpendicolari alle linee di campo.
-{% include box-end.html %} -->
-
-{% include box-ex.html testo="Verifica Subito!" %}
-{% capture _qcampo %}[
-{"t":"Le linee di campo gravitazionale sono sempre uscenti dalla massa che le genera.","ok":false,"s":"No: sono sempre entranti, perché la forza gravitazionale è attrattiva."},
-{"t":"Più le linee di campo sono fitte in un punto, più il campo è intenso in quel punto.","ok":true,"s":"Sì: la concentrazione delle linee di campo misura proprio l'intensità del campo."},
-{"t":"Le superfici equipotenziali sono sempre perpendicolari alle linee di campo.","ok":true,"s":"Sì, in ogni punto: spostandosi lungo una superficie equipotenziale non si compie lavoro."},
-{"t":"Se il campo è generato da due masse (come nel sistema Terra-Luna), le linee di campo sono ancora tutte rette.","ok":false,"s":"No: si incurvano, perché in ogni punto il campo è la somma dei campi delle due masse, e non punta più verso un unico centro."},
-{"t":"Per una singola massa sferica, le superfici equipotenziali sono piani paralleli fra loro.","ok":false,"s":"No: sono sfere concentriche alla massa, non piani."},
-{"t":"Il campo gravitazionale generato da più masse in uno stesso punto si ottiene sommando vettorialmente i singoli campi.","ok":true,"s":"Sì, per il principio di sovrapposizione degli effetti, con la regola del parallelogramma."}
-]{% endcapture %}
-{% include quiz.html domande=_qcampo
-   id="q-campo" senza_esempi="true" %}
-{% include box-end.html %}
-
-
+{% include spoiler-end.html %}
 
 ### Confronto tra le formule
 
@@ -1166,13 +1084,32 @@ Non dipende dalla massa $m$ inserita nel campo.
 
 {% include box-end.html %}
 
-Nel 1971, durante la missione Apollo 15, l'astronauta David Scott fece un esperimento sulla Luna, dove non c'è aria: lasciò cadere nello stesso istante un martello e una piuma.
+{% include box-note.html testo="Il martello e la piuma" %}
+{% include scorri.html %}
+{% include scorri-slide.html titolo="Sulla Luna, con l'Apollo 15" %}
+{% include video.html id="Oo8TaPVsn9Y" %}
+Nel 1971, durante la missione Apollo 15, l'astronauta David Scott fece un esperimento in diretta televisiva dalla Luna, dove non c'è aria. Teneva in una mano un martello e nell'altra una piuma di falco, e li lasciò cadere nello stesso istante: toccarono il suolo insieme. E Scott commentò: «Questo dimostra che il signor Galileo aveva ragione».
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="Nella camera a vuoto più grande del mondo" %}
+{% include video.html id="E43-CfukEgs" %}
+Sulla Terra la piuma arriva dopo il martello, ma solo perché l'aria la frena. Se l'aria si toglie, succede la stessa cosa che sulla Luna. Nel video (in inglese) il fisico Brian Cox è in una base della NASA, in Ohio, dentro la camera a vuoto più grande del mondo: lascia cadere una palla da bowling e delle piume, prima con l'aria e poi dopo che l'aria è stata pompata fuori.
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="La moneta e la piuma nel tubo" %}
+{% include video.html id="AV-qyDnZx0A" %}
+Lo stesso esperimento si può fare in laboratorio, in piccolo. In un tubo di vetro ci sono una moneta e una piuma: con l'aria dentro, capovolgendo il tubo la moneta arriva in fondo molto prima. Poi con una pompa si toglie l'aria dal tubo, e moneta e piuma cadono insieme.
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="Galileo e la torre di Pisa" %}
+{% include figure/galileo-pisa-figura.html %}
+Il primo a capire che tutti i corpi cadono allo stesso modo fu Galileo Galilei. Si racconta che, quando insegnava a Pisa, verso il 1590, sia salito sulla torre pendente e abbia lasciato cadere insieme due sfere di peso molto diverso, davanti a professori e studenti: arrivarono a terra praticamente nello stesso istante. Fino ad allora tutti, seguendo Aristotele, erano convinti che un corpo più pesante cadesse più in fretta di uno leggero.
 
-{% include video.html id="Oo8TaPVsn9Y" didascalia="Apollo 15, 1971: David Scott lascia cadere sulla Luna un martello e una piuma, che toccano il suolo nello stesso istante." %}
+Forse l'esperimento non è mai stato fatto davvero così: lo racconta solo un suo allievo, Vincenzo Viviani, molti anni dopo. Ma a Galileo la torre non serviva, perché aveva anche un ragionamento. Lega una pietra pesante a una leggera: se la leggera cadesse più lentamente, frenerebbe la pesante, e le due insieme cadrebbero più piano della pesante da sola. Però le due insieme pesano più della pesante da sola, quindi dovrebbero cadere più in fretta! Le due cose non possono essere vere insieme: l'unica possibilità è che tutti i corpi cadano allo stesso modo.
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
 
 {% capture _r %}L'accelerazione di un corpo in un campo gravitazionale è $\vec a=\vec g$, e il campo $\vec g$ dipende solo dalla massa del pianeta e dalla distanza dal suo centro, <strong>non dalla massa del corpo che cade</strong>. Il martello è attratto con una forza molto più grande, ma ha anche una massa molto più grande: le due cose si compensano esattamente. Sulla Terra la piuma arriva dopo solo perché l'aria la frena; nel vuoto (o sulla Luna) arrivano insieme.{% endcapture %}
 {% include risposta-aperta.html id="ra-spiega-martello" tipo="spiega"
-   domanda="Nel video, il martello e la piuma toccano il suolo insieme. Usando $\vec a=\vec g$, spiega perché."
+   domanda="Nel video dell'Apollo 15, il martello e la piuma toccano il suolo insieme. Usando $\vec a=\vec g$, spiega perché."
    risposta=_r %}
 
 {% include box-ricorda.html testo="Dall'accelerazione al campo" %}
@@ -1823,7 +1760,6 @@ Una massa esploratrice $m$ si trova vicino a una massa $M$. Trascina ogni grande
 {"t":"Il campo gravitazionale nel punto in cui si trova $m$","c":1},
 {"t":"Il potenziale gravitazionale nel punto in cui si trova $m$","c":1},
 {"t":"L'accelerazione con cui $m$ cade","c":1},
-{"t":"La forma delle superfici equipotenziali","c":1},
 {"t":"La velocità con cui $m$ arriva al suolo","c":1}
 ]{% endcapture %}
 {% include sort.html id="sortEsploratrice" dati=_s_esploratrice col0="Dipende da m" col1="Non dipende da m" %}
@@ -1832,30 +1768,8 @@ Una massa esploratrice $m$ si trova vicino a una massa $M$. Trascina ogni grande
 {% include ex.html diff=3 %}
 Due punti si trovano entrambi a distanza $r$ dal centro di una massa sferica $M$, ma in direzioni diverse rispetto a essa. Confronta, nei due punti: il potenziale gravitazionale $V$, e il vettore campo gravitazionale $\vec g$.
 {% include ex-sol.html %}
-Il potenziale $V=-GM/r$ dipende **solo** dalla distanza $r$: essendo la stessa nei due punti, il potenziale è **identico** (i due punti si trovano infatti sulla stessa superficie equipotenziale, una sfera di raggio $r$).  
+Il potenziale $V=-GM/r$ dipende **solo** dalla distanza $r$: essendo la stessa nei due punti, il potenziale è **identico**.  
 Il vettore campo $\vec g$, invece, ha lo stesso **modulo** nei due punti (dipende anch'esso solo da $r$), ma **direzione diversa**: punta sempre verso il centro di $M$, quindi in due punti diversi della stessa sfera punta in due direzioni diverse. Questo è un buon esempio della differenza fra una grandezza scalare ($V$) e una vettoriale ($\vec g$).
-{% include ex-sol-end.html %}
-
-### Le superfici equipotenziali
-
-{% include ex.html diff=1 %}
-Perché, muovendosi lungo una superficie equipotenziale, non si compie mai lavoro?
-{% include ex-sol.html %}
-Su una superficie equipotenziale il potenziale $V$ (e quindi l'energia potenziale $U$) non cambia, per definizione. Se l'energia potenziale non cambia, la forza gravitazionale non ha compiuto lavoro: le superfici equipotenziali sono infatti sempre perpendicolari alle linee di campo, e uno spostamento perpendicolare alla forza corrisponde sempre a lavoro nullo.
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=2 %}
-Due superfici equipotenziali diverse (cioè corrispondenti a due valori diversi del potenziale) possono intersecarsi?
-{% include ex-sol.html %}
-No. Nei punti di intersezione il potenziale dovrebbe assumere contemporaneamente **due valori diversi** (uno per ciascuna superficie). Ma il potenziale associa a ogni punto dello spazio **un solo** numero: il ragionamento è lo stesso dell'esercizio sulle linee di campo che non possono incrociarsi, con uno scalare al posto di un vettore.
-{% include ex-sol-end.html %}
-
-{% include ex.html diff=3 %}
-Attorno a una massa sferica $M$ di raggio $R$ si disegnano le superfici equipotenziali corrispondenti a valori di $V$ **equispaziati**: $V_0$, $\tfrac34V_0$, $\tfrac12V_0$, $\tfrac14V_0$, dove $V_0=-GM/R$ è il potenziale sulla superficie. Queste sfere concentriche sono equidistanti fra loro? Se no, dove sono più fitte?
-{% include ex-sol.html %}
-Da $V=-GM/r$ si ricava $r=-GM/V$: il raggio è inversamente proporzionale a $V$. Ai valori $V_0,\ \tfrac34V_0,\ \tfrac12V_0,\ \tfrac14V_0$ corrispondono quindi i raggi $R,\ \tfrac43R,\ 2R,\ 4R$.
-
-Le distanze fra una sfera e la successiva sono $\tfrac13R$, $\tfrac23R$, $2R$: sempre più grandi. Le superfici equipotenziali (disegnate a salti di potenziale uguali) **non** sono equidistanti: sono **più fitte vicino alla massa**, dove il campo è più intenso, e sempre più rade allontanandosi, proprio come le linee di campo.
 {% include ex-sol-end.html %}
 
 ### Forza peso e accelerazione gravitazionale

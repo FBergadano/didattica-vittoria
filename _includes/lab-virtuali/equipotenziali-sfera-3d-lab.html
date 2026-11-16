@@ -1,203 +1,249 @@
 {% comment %}
-Animazione: vista tridimensionale delle superfici equipotenziali (sfere
-concentriche) attorno a una singola massa sferica M, analoga alla figura
-statica 2D subito sopra (figura-equipotenziali-sfera.html), ma qui lo
-studente può trascinare la scena (mouse o touch) per ruotarla. Ogni sfera ha
-un colore diverso (più scuro verso l'interno) per mostrare che il potenziale
-è costante su tutta quella superficie: cambia solo passando da una sfera
-all'altra, non muovendosi sulla stessa. M è disegnata correttamente annidata
-dentro i gusci (non sempre in primo piano): le linee del guscio più vicine
-all'osservatore vengono ridisegnate sopra M, quelle più lontane restano
-sotto, in base al segno della loro coordinata z dopo la rotazione — lo stesso
-trucco "pittore" usato per l'opacità delle linee stesse.
-Disegnata con un wireframe (meridiani + paralleli) più un riempimento
-sferico trasparente (la sagoma di una sfera è sempre un cerchio, qualunque
-sia la rotazione, quindi non serve alcun motore 3D per disegnarla) su un
-<canvas>, in puro JavaScript (nessuna libreria esterna). Nessun parametro.
+Animazione: le superfici equipotenziali (sfere concentriche) attorno a un
+pianeta, in tre dimensioni: lo studente trascina la scena per ruotarla.
+Il pianeta si sceglie con i pulsanti −/+ (dalla Luna a Giove, in ordine di
+massa, gli stessi corpi disegnati in linee-campo-gravitazionale-lab.html,
+da cui è copiato il disegno dei pianeti).
+- Le sfere sono disegnate a passi UGUALI di potenziale (V = −1, −2, −3 …
+  in unità arbitrarie), quindi hanno raggio r = (massa)/k: più il pianeta è
+  pesante, più ce ne sono e più si addensano vicino alla superficie.
+- Ci sono anche le linee di campo (radiali, entranti), in numero
+  proporzionale alla massa, come nel simulatore delle linee di campo: si
+  vede che le une sono perpendicolari alle altre.
+Wireframe (meridiani + paralleli) e riempimento trasparente su <canvas>,
+in puro JavaScript; il pianeta è disegnato fra la metà lontana e la metà
+vicina delle linee (trucco del "pittore"). Nessun parametro.
 {% endcomment %}
+<style>
+.eqp3d-ctrl { display: flex; justify-content: center; align-items: center; gap: .5rem; margin-top: .5rem; flex-wrap: wrap; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .9rem; color: #334155; }
+.eqp3d-ctrl button { width: 1.8em; height: 1.8em; padding: 0; border-radius: 50%; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .95rem; line-height: 1; }
+.eqp3d-ctrl button:disabled { opacity: .35; cursor: default; }
+.eqp3d-nome { min-width: 5.5em; text-align: center; font-weight: 700; }
+</style>
 <div class="vdrag-widget" id="eqp3d">
-<p class="vdrag-hint">Trascina con il mouse (o il dito, su touch-screen) per ruotare la scena.</p>
-<canvas id="eqp3d-canvas" style="display:block;margin:0 auto;max-width:320px;width:100%;aspect-ratio:1/1;cursor:grab;touch-action:none;background:#f8fafc;border-radius:10px;"></canvas>
-<div class="vdrag-actions">
-<button class="vdrag-reset" id="eqp3d-reset">&#8635; Reimposta vista</button>
+<p class="vdrag-hint">Trascina per ruotare la scena. Con i pulsanti cambi pianeta: le superfici sono disegnate a passi uguali di potenziale.</p>
+<canvas id="eqp3d-canvas" style="display:block;margin:0 auto;max-width:340px;width:100%;aspect-ratio:1/1;cursor:grab;touch-action:none;background:#0b1020;border-radius:10px;"></canvas>
+<div class="eqp3d-ctrl">
+<button type="button" id="eqp3d-meno" aria-label="Pianeta meno pesante">−</button>
+<span class="eqp3d-nome" id="eqp3d-nome">Terra</span>
+<button type="button" id="eqp3d-piu" aria-label="Pianeta più pesante">+</button>
+<button type="button" class="vdrag-reset" id="eqp3d-reset" style="width:auto;border-radius:6px;padding:0 .6rem;">&#8635; Vista</button>
 </div>
 </div>
 
 <script>
 (function(){
-  var wrap=document.getElementById('eqp3d');
   var canvas=document.getElementById('eqp3d-canvas');
   if(!canvas) return;
-  var resetBtn=document.getElementById('eqp3d-reset');
   var ctx=canvas.getContext('2d');
-
-  var CSS_SIZE=320;
-  var dpr=window.devicePixelRatio||1;
+  var IMG = { T: new Image(), L: new Image() };
+  IMG.T.src = '{{ "/corsi/immagini/terra-ritaglio.webp" | relative_url }}';
+  IMG.L.src = '{{ "/corsi/immagini/luna-ritaglio.webp" | relative_url }}';
+  IMG.T.onload = IMG.L.onload = function(){ draw(); };
+  var W=340, H=340, dpr=window.devicePixelRatio||1;
   function sizeCanvas(){
-    var rect=canvas.getBoundingClientRect();
-    var size=rect.width||CSS_SIZE;
+    var size=canvas.getBoundingClientRect().width||340;
     canvas.width=size*dpr; canvas.height=size*dpr;
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    W=size; H=size;
+    ctx.setTransform(dpr,0,0,dpr,0,0); W=size; H=size;
   }
-  var W=CSS_SIZE, H=CSS_SIZE;
-
-  // Tre sfere concentriche (superfici equipotenziali V1<V2<V3<0) attorno a M:
-  // un colore diverso per ciascuna (più scuro/intenso verso l'interno, dove
-  // il potenziale è più negativo), per mostrare a colpo d'occhio che il
-  // potenziale è lo stesso in ogni punto di una stessa sfera.
-  var SHELLS=[
-    {R:46, line:'rgba(15,118,110,', fill:'rgba(15,118,110,0.10)'},
-    {R:68, line:'rgba(8,145,178,',  fill:'rgba(8,145,178,0.08)'},
-    {R:90, line:'rgba(56,189,248,', fill:'rgba(56,189,248,0.06)'}
+  // a ogni valore della massa (1…9) un corpo diverso, in ordine di massa
+  // reale; nome, pedice del vettore, colori (chiaro, medio, scuro) e alone
+  var P = [null,
+    { n: 'Luna',     s: 'L',  img: 'L', alo: '230,230,240' },
+    { n: 'Mercurio', s: 'Me', c: ['#e4ddd2', '#9a9084', '#4a4239'], alo: '220,210,200' },
+    { n: 'Marte',    s: 'Ma', c: ['#f7b27a', '#c4552c', '#5e1e0e'], alo: '255,150,100' },
+    { n: 'Venere',   s: 'V',  c: ['#fff6d2', '#e6c16a', '#8a6420'], alo: '255,230,160' },
+    { n: 'Terra',    s: 'T',  img: 'T', alo: '125,180,255' },
+    { n: 'Urano',    s: 'U',  c: ['#e6fcff', '#82d8e2', '#25707e'], alo: '150,230,240' },
+    { n: 'Nettuno',  s: 'N',  c: ['#a9ccff', '#3a66d8', '#10245e'], alo: '110,150,255' },
+    { n: 'Saturno',  s: 'S',  c: ['#fff1c8', '#dcb46a', '#7a5622'], alo: '255,225,160' },
+    { n: 'Giove',    s: 'G',  c: ['#fdebd0', '#d2a06a', '#6e4420'], alo: '255,210,160' }
   ];
-  var SCALE=1.35; // px per unità di raggio, applicato dopo la proiezione
+  function cerchio(x, y, R){ ctx.beginPath(); ctx.arc(x, y, R, 0, 6.283); }
+  // fasce orizzontali ondulate (Giove, Saturno, Venere), già dentro il ritaglio del disco
+  function fasce(x, y, R, lista){
+    lista.forEach(function(f){
+      ctx.fillStyle = f[2]; ctx.beginPath();
+      var y0 = y + f[0] * R, y1 = y + f[1] * R;
+      ctx.moveTo(x - R, y0);
+      for (var t = -1; t <= 1.001; t += .1) ctx.lineTo(x + t * R, y0 + Math.sin(t * 7 + f[0] * 9) * R * .025);
+      for (t = 1; t >= -1.001; t -= .1) ctx.lineTo(x + t * R, y1 + Math.sin(t * 6 + f[1] * 8) * R * .025);
+      ctx.closePath(); ctx.fill();
+    });
+  }
+  function macchia(x, y, rx, ry, col, rot){ ctx.fillStyle = col; ctx.beginPath(); ctx.ellipse(x, y, rx, ry, rot || 0, 0, 6.283); ctx.fill(); }
+  // anello di Saturno: metà dietro (prima del pianeta) o metà davanti (dopo)
+  function anello(x, y, R, davanti){
+    ctx.save(); ctx.translate(x, y); ctx.rotate(-.32);
+    [[2.15, 'rgba(214,190,140,.75)', 3.2], [1.8, 'rgba(240,222,180,.9)', 4.2], [1.5, 'rgba(190,160,110,.7)', 2.4]].forEach(function(a){
+      ctx.strokeStyle = a[1]; ctx.lineWidth = a[2] * R / 20;
+      ctx.beginPath(); ctx.ellipse(0, 0, a[0] * R, a[0] * R * .3, 0, davanti ? 0 : Math.PI, davanti ? Math.PI : 2 * Math.PI); ctx.stroke();
+    });
+    ctx.restore();
+  }
+  function dettagli(k, x, y, R){
+    if (k === 'Mercurio') {
+      [[-.35, -.2, .2], [.3, .25, .16], [.05, .5, .12], [.45, -.35, .11], [-.4, .4, .1], [.1, -.55, .09]].forEach(function(c){
+        macchia(x + c[0] * R, y + c[1] * R, c[2] * R, c[2] * R, 'rgba(70,60,52,.35)');
+        macchia(x + c[0] * R - c[2] * R * .25, y + c[1] * R - c[2] * R * .25, c[2] * R * .6, c[2] * R * .6, 'rgba(255,250,240,.18)');
+      });
+    } else if (k === 'Marte') {
+      macchia(x - .25 * R, y + .05 * R, .45 * R, .2 * R, 'rgba(110,35,15,.45)', .3);
+      macchia(x + .35 * R, y + .35 * R, .3 * R, .14 * R, 'rgba(110,35,15,.4)', -.4);
+      macchia(x, y - .92 * R, .42 * R, .16 * R, 'rgba(255,255,255,.9)');
+    } else if (k === 'Venere') {
+      fasce(x, y, R, [[-.55, -.38, 'rgba(255,255,240,.35)'], [-.1, .08, 'rgba(180,130,50,.22)'], [.3, .5, 'rgba(255,255,240,.3)']]);
+    } else if (k === 'Urano') {
+      fasce(x, y, R, [[-.2, -.12, 'rgba(255,255,255,.15)'], [.25, .32, 'rgba(255,255,255,.12)']]);
+    } else if (k === 'Nettuno') {
+      fasce(x, y, R, [[-.45, -.36, 'rgba(160,200,255,.3)'], [.15, .24, 'rgba(20,40,120,.35)']]);
+      macchia(x - .2 * R, y + .3 * R, .24 * R, .13 * R, 'rgba(10,25,80,.7)');
+      macchia(x + .15 * R, y - .2 * R, .2 * R, .04 * R, 'rgba(255,255,255,.75)');
+    } else if (k === 'Saturno') {
+      fasce(x, y, R, [[-.7, -.5, 'rgba(160,120,60,.35)'], [-.25, -.12, 'rgba(255,245,215,.4)'], [.15, .32, 'rgba(170,125,60,.35)'], [.55, .7, 'rgba(150,110,55,.35)']]);
+    } else if (k === 'Giove') {
+      fasce(x, y, R, [[-.75, -.6, 'rgba(150,95,50,.55)'], [-.42, -.22, 'rgba(170,105,55,.6)'], [-.05, .08, 'rgba(255,245,225,.45)'], [.18, .38, 'rgba(160,98,50,.6)'], [.6, .72, 'rgba(150,95,50,.5)']]);
+      macchia(x + .3 * R, y + .27 * R, .22 * R, .12 * R, '#c2462a');
+      macchia(x + .3 * R, y + .27 * R, .13 * R, .065 * R, '#e0784e');
+    }
+  }
+  function corpo(b){
+    var R = rad(b), pl = P[b.v], x = b.x, y = b.y, im = pl.img ? IMG[pl.img] : null;
+    if (pl.n === 'Saturno') anello(x, y, R, false);
+    ctx.save(); ctx.shadowColor = 'rgba(' + pl.alo + ',.5)'; ctx.shadowBlur = 10;
+    cerchio(x, y, R); ctx.fillStyle = pl.c ? pl.c[1] : (pl.img === 'T' ? '#2f5d8c' : '#9ca3af'); ctx.fill();
+    ctx.restore();
+    if (im) { if (im.complete && im.naturalWidth) { ctx.save(); cerchio(x, y, R); ctx.clip(); ctx.drawImage(im, x - R, y - R, 2 * R, 2 * R); ctx.restore(); } }
+    else {
+      // come la Terra e la Luna dell'immagine: colore pieno, luce dall'alto a sinistra, bordo scuro
+      ctx.save(); cerchio(x, y, R); ctx.clip();
+      var g = ctx.createRadialGradient(x - .4 * R, y - .45 * R, R * .05, x, y, R * 1.05);
+      g.addColorStop(0, pl.c[0]); g.addColorStop(.45, pl.c[1]); g.addColorStop(1, pl.c[2]);
+      ctx.fillStyle = g; ctx.fillRect(x - R, y - R, 2 * R, 2 * R);
+      dettagli(pl.n, x, y, R);
+      var h = ctx.createRadialGradient(x - .42 * R, y - .45 * R, 0, x - .42 * R, y - .45 * R, R * .75);
+      h.addColorStop(0, 'rgba(255,255,255,.45)'); h.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = h; ctx.fillRect(x - R, y - R, 2 * R, 2 * R);
+      var o = ctx.createRadialGradient(x - .3 * R, y - .3 * R, R * .55, x - .1 * R, y - .1 * R, R * 1.15);
+      o.addColorStop(0, 'rgba(0,0,0,0)'); o.addColorStop(1, 'rgba(0,0,20,.55)');
+      ctx.fillStyle = o; ctx.fillRect(x - R, y - R, 2 * R, 2 * R);
+      ctx.restore();
+    }
+    if (pl.n === 'Saturno') anello(x, y, R, true);
+  }
 
+  var v=5;                                   // la Terra
+  var KP=1.6;                               // il pianeta, più grande che nel simulatore delle linee
+  function rad(b){ var m = (typeof b === 'number') ? b : b.v; return KP * (9 * Math.cbrt(m) + 6); }
+  var A_POT=34;                              // r_k = A_POT·v/k (in px, prima della scala)
+  var shells=[], rays=[];
   function genSphereLines(R, latRings, lonMeridians, seg){
     var lines=[];
     for(var li=1; li<latRings; li++){
-      var phi=-Math.PI/2 + Math.PI*li/latRings;
-      var y=R*Math.sin(phi), r=R*Math.cos(phi);
-      var ring=[];
-      for(var k=0;k<=seg;k++){
-        var th=2*Math.PI*k/seg;
-        ring.push({x:r*Math.cos(th), y:y, z:r*Math.sin(th)});
-      }
+      var phi=-Math.PI/2 + Math.PI*li/latRings, y=R*Math.sin(phi), r=R*Math.cos(phi), ring=[];
+      for(var k=0;k<=seg;k++){ var th=2*Math.PI*k/seg; ring.push({x:r*Math.cos(th), y:y, z:r*Math.sin(th)}); }
       lines.push(ring);
     }
     for(var mi=0; mi<lonMeridians; mi++){
-      var th2=Math.PI*mi/lonMeridians;
-      var merid=[];
-      for(var k2=0;k2<=seg;k2++){
-        var phi2=2*Math.PI*k2/seg;
-        merid.push({x:R*Math.cos(phi2)*Math.cos(th2), y:R*Math.sin(phi2), z:R*Math.cos(phi2)*Math.sin(th2)});
-      }
+      var th2=Math.PI*mi/lonMeridians, merid=[];
+      for(var k2=0;k2<=seg;k2++){ var phi2=2*Math.PI*k2/seg; merid.push({x:R*Math.cos(phi2)*Math.cos(th2), y:R*Math.sin(phi2), z:R*Math.cos(phi2)*Math.sin(th2)}); }
       lines.push(merid);
     }
     return lines;
   }
-
-  SHELLS.forEach(function(shell){ shell.lines=genSphereLines(shell.R,5,8,40); });
-
-  var yaw=0.5, pitch=0.32; // vista iniziale a tre quarti
+  function build(){
+    var Rp=rad(v), RMAX=150;
+    shells=[];
+    for(var k=1;k<40;k++){
+      var r=A_POT*v/k;
+      if(r>RMAX) continue;
+      if(r<Rp*1.1) break;
+      shells.push({R:r,k:k});
+    }
+    // colore: più scuro (più intenso) verso l'interno, dove il potenziale è più negativo
+    shells.forEach(function(s,i){
+      var f=shells.length>1?i/(shells.length-1):0;  // 0 = la più esterna
+      var c=[Math.round(125-95*f),Math.round(211-80*f),Math.round(252-40*f)];
+      s.col='rgba('+c.join(',')+',';
+      s.lines=genSphereLines(s.R,4,6,40);
+    });
+    // linee di campo: n proporzionale alla massa, distribuite sulla sfera (spirale di Fibonacci)
+    rays=[]; var n=3*v, ga=Math.PI*(3-Math.sqrt(5));
+    for(var i=0;i<n;i++){
+      var y=1-2*(i+.5)/n, rr=Math.sqrt(1-y*y), th=ga*i;
+      rays.push({x:rr*Math.cos(th), y:y, z:rr*Math.sin(th)});
+    }
+    document.getElementById('eqp3d-nome').textContent=P[v].n;
+    document.getElementById('eqp3d-meno').disabled=(v<=1);
+    document.getElementById('eqp3d-piu').disabled=(v>=9);
+  }
+  var yaw=0.5, pitch=0.32;
   function rotate(p){
     var cy=Math.cos(yaw), sy=Math.sin(yaw);
     var x1=p.x*cy + p.z*sy, z1=-p.x*sy + p.z*cy, y1=p.y;
     var cx2=Math.cos(pitch), sx2=Math.sin(pitch);
-    var y2=y1*cx2 - z1*sx2, z2=y1*sx2 + z1*cx2;
-    return {x:x1, y:y2, z:z2};
+    return {x:x1, y:y1*cx2 - z1*sx2, z:y1*sx2 + z1*cx2};
   }
-
-  // Disegna i segmenti di TUTTI i gusci il cui z medio (dopo la rotazione)
-  // soddisfa "front" (true = solo quelli più vicini all'osservatore, da
-  // disegnare sopra M; false = quelli più lontani, da disegnare sotto M).
-  function drawWireframe(cx,cy,front){
-    SHELLS.forEach(function(shell){
-      shell.lines.forEach(function(line){
+  var SC=1;
+  function seg(cx,cy,p1,p2){ ctx.beginPath(); ctx.moveTo(cx+p1.x*SC, cy-p1.y*SC); ctx.lineTo(cx+p2.x*SC, cy-p2.y*SC); ctx.stroke(); }
+  function drawShells(cx,cy,front){
+    shells.forEach(function(s){
+      s.lines.forEach(function(line){
         for(var i=0;i<line.length-1;i++){
-          var p1=rotate(line[i]), p2=rotate(line[i+1]);
-          var avgZ=(p1.z+p2.z)/2;
-          var isFront=avgZ>=0;
-          if(isFront!==front) continue;
-          var t=Math.max(0,Math.min(1,(avgZ/shell.R+1)/2));
-          var alpha=0.15+0.6*t;
-          ctx.strokeStyle=shell.line+alpha.toFixed(2)+')';
-          ctx.lineWidth=0.7+0.9*t;
-          ctx.beginPath();
-          ctx.moveTo(cx+p1.x*SCALE, cy-p1.y*SCALE);
-          ctx.lineTo(cx+p2.x*SCALE, cy-p2.y*SCALE);
-          ctx.stroke();
+          var p1=rotate(line[i]), p2=rotate(line[i+1]), z=(p1.z+p2.z)/2;
+          if((z>=0)!==front) continue;
+          var t=Math.max(0,Math.min(1,(z/s.R+1)/2));
+          ctx.strokeStyle=s.col+(0.10+0.45*t).toFixed(2)+')'; ctx.lineWidth=0.6+0.7*t;
+          seg(cx,cy,p1,p2);
         }
       });
     });
   }
-
-  function drawMass(cx,cy){
-    var g=ctx.createRadialGradient(cx-5,cy-6,2,cx,cy,15);
-    g.addColorStop(0,'#fffbeb'); g.addColorStop(0.55,'#fde68a'); g.addColorStop(1,'#fbbf24');
-    ctx.beginPath(); ctx.arc(cx,cy,14,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
-    ctx.font='bold 12px sans-serif'; ctx.fillStyle='#92400e'; ctx.textAlign='center';
-    ctx.fillText('M',cx,cy+4);
-  }
-
-  function drawLegend(){
-    var x0=8, y0=H-30, sw=10;
-    var labels=['V₁','V₂','V₃'];
-    ctx.font='11px sans-serif'; ctx.textBaseline='middle';
-    var x=x0;
-    for(var i=0;i<SHELLS.length;i++){
-      ctx.fillStyle=SHELLS[i].line+'0.9)';
-      ctx.fillRect(x,y0-4,sw,sw);
-      ctx.fillStyle='#475569'; ctx.textAlign='left';
-      ctx.fillText(labels[i], x+sw+3, y0+1);
-      x+=sw+3+18+(i<2?10:0);
-    }
-    ctx.fillText('(più scuro = più negativo)', x0, y0+16);
-  }
-
-  // Etichette r1,r2,r3: ancorate a un punto fisso sull'equatore di ciascun
-  // guscio (nel sistema di riferimento dell'OGGETTO), così ruotano insieme
-  // alla scena invece di restare fisse sullo schermo.
-  var R_LABELS=['r₁','r₂','r₃'];
-  function drawRadiusLabels(cx,cy){
-    ctx.font='bold 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
-    SHELLS.forEach(function(shell,i){
-      var p=rotate({x:shell.R, y:0, z:0});
-      var sx=cx+p.x*SCALE, sy=cy-p.y*SCALE;
-      var alpha=0.75+0.25*Math.max(0,Math.min(1,(p.z/shell.R+1)/2));
-      ctx.lineWidth=2.5; ctx.strokeStyle='rgba(255,255,255,'+alpha.toFixed(2)+')';
-      ctx.strokeText(R_LABELS[i], sx, sy);
-      ctx.fillStyle=shell.line+alpha.toFixed(2)+')';
-      ctx.fillText(R_LABELS[i], sx, sy);
+  function drawRays(cx,cy,front){
+    var Rp=rad(v), R1=Rp*1.03, R2=158;
+    rays.forEach(function(u){
+      var q=rotate(u);
+      if((q.z>=0)!==front) return;
+      var al=front?0.85:0.35;
+      var a={x:q.x*R2,y:q.y*R2}, b={x:q.x*R1,y:q.y*R1};
+      ctx.strokeStyle='rgba(165,180,252,'+al+')'; ctx.lineWidth=1.1;
+      seg(cx,cy,a,b);
+      // freccetta verso il pianeta
+      var m={x:q.x*(R1+0.55*(R2-R1)),y:q.y*(R1+0.55*(R2-R1))};
+      var dx=-q.x, dy=q.y, l=Math.hypot(dx,dy); if(l<0.15) return; dx/=l; dy/=l;
+      var X=cx+m.x*SC, Y=cy-m.y*SC;
+      ctx.fillStyle='rgba(165,180,252,'+al+')'; ctx.beginPath();
+      ctx.moveTo(X+5*dx,Y+5*dy); ctx.lineTo(X-4*dx-3*dy,Y-4*dy+3*dx); ctx.lineTo(X-4*dx+3*dy,Y-4*dy-3*dx); ctx.closePath(); ctx.fill();
     });
   }
-
   function draw(){
     ctx.clearRect(0,0,W,H);
+    SC=W/340;
     var cx=W/2, cy=H/2;
-    // Sagoma piena e semitrasparente di ciascuna sfera: la proiezione di una
-    // sfera è sempre un cerchio, qualunque sia la rotazione, quindi basta
-    // disegnare le tre più grandi per prime e le più piccole sopra.
-    for(var s=SHELLS.length-1; s>=0; s--){
-      ctx.beginPath();
-      ctx.arc(cx,cy,SHELLS[s].R*SCALE,0,Math.PI*2);
-      ctx.fillStyle=SHELLS[s].fill;
-      ctx.fill();
+    for(var s=0; s<shells.length; s++){
+      ctx.beginPath(); ctx.arc(cx,cy,shells[s].R*SC,0,Math.PI*2);
+      ctx.fillStyle=shells[s].col+'0.05)'; ctx.fill();
     }
-    drawWireframe(cx,cy,false); // linee sulla faccia lontana: sotto M
-    drawMass(cx,cy);
-    drawWireframe(cx,cy,true);  // linee sulla faccia vicina: sopra M
-    drawRadiusLabels(cx,cy);
-    drawLegend();
+    drawRays(cx,cy,false);
+    drawShells(cx,cy,false);
+    ctx.save(); ctx.translate(cx,cy); ctx.scale(SC,SC); corpo({x:0,y:0,v:v}); ctx.restore();
+    drawShells(cx,cy,true);
+    drawRays(cx,cy,true);
+    ctx.font='12px sans-serif'; ctx.fillStyle='#cbd5e1'; ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+    ctx.fillText(shells.length===1?'1 superficie equipotenziale':shells.length+' superfici equipotenziali',8,H-10);
   }
-
   var dragging=false, lastX=0, lastY=0;
-  function onDown(e){
-    dragging=true; canvas.style.cursor='grabbing';
-    lastX=e.clientX; lastY=e.clientY;
-    canvas.setPointerCapture(e.pointerId);
-  }
-  function onMove(e){
-    if(!dragging) return;
-    e.preventDefault();
-    var dx=e.clientX-lastX, dy=e.clientY-lastY;
-    lastX=e.clientX; lastY=e.clientY;
-    yaw += dx*0.012;
-    pitch = Math.max(-1.4, Math.min(1.4, pitch + dy*0.012));
-    draw();
-  }
-  function onUp(){ dragging=false; canvas.style.cursor='grab'; }
-
-  canvas.addEventListener('pointerdown', onDown);
-  canvas.addEventListener('pointermove', onMove);
-  window.addEventListener('pointerup', onUp);
-
-  resetBtn.addEventListener('click', function(){
-    yaw=0.5; pitch=0.32; draw();
+  canvas.addEventListener('pointerdown',function(e){ dragging=true; canvas.style.cursor='grabbing'; lastX=e.clientX; lastY=e.clientY; canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener('pointermove',function(e){
+    if(!dragging) return; e.preventDefault();
+    yaw+=(e.clientX-lastX)*0.012; pitch=Math.max(-1.4,Math.min(1.4,pitch+(e.clientY-lastY)*0.012));
+    lastX=e.clientX; lastY=e.clientY; draw();
   });
-
-  window.addEventListener('resize', function(){ sizeCanvas(); draw(); });
-  sizeCanvas();
-  draw();
+  window.addEventListener('pointerup',function(){ dragging=false; canvas.style.cursor='grab'; });
+  document.getElementById('eqp3d-reset').addEventListener('click',function(){ yaw=0.5; pitch=0.32; draw(); });
+  document.getElementById('eqp3d-meno').addEventListener('click',function(){ if(v>1){ v--; build(); draw(); } });
+  document.getElementById('eqp3d-piu').addEventListener('click',function(){ if(v<9){ v++; build(); draw(); } });
+  window.addEventListener('resize',function(){ sizeCanvas(); draw(); });
+  sizeCanvas(); build(); draw();
 })();
 </script>

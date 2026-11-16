@@ -113,21 +113,12 @@ mo = g.box(320, Y, 260, HB,
   '**Moto in un campo**\n'
   'forza peso: $\\vec F = m\\,\\vec g$\n'
   'accelerazione: $\\vec a = \\vec g$ (non dipende da $m$)', 'giallo')
-li = g.box(590, Y, 195, HB,
+li = g.box(590, Y, 400, HB,
   '**Linee di campo**\n'
   'in ogni punto tangenti a $\\vec g$\n'
   'più fitte dove il campo è più intenso\n'
   'entrano nella massa', 'azzurro')
-g.dis(645, Y + HB - 92, 86, 86, svg('0 0 90 90', sfera(45, 45, 9) + radiali(45, 45, 44, 13, 8, True, '#0284c7')))
-eq = g.box(795, Y, 195, HB,
-  '**Superfici equipotenziali**\n'
-  'punti con lo stesso $V$\n'
-  'per una massa: sfere concentriche\n'
-  'sempre $\\perp$ alle linee di campo', 'azzurro')
-g.dis(850, Y + HB - 92, 86, 86, svg('0 0 90 90', sfera(45, 45, 7)
-  + ''.join(f'<circle cx="45" cy="45" r="{r}" fill="none" stroke="#0284c7" stroke-width="1.3" stroke-dasharray="4 3"/>' for r in (18, 30, 42))
-  + ''.join(f'<line x1="{45+9*math.cos(a):.1f}" y1="{45+9*math.sin(a):.1f}" x2="{45+44*math.cos(a):.1f}" y2="{45+44*math.sin(a):.1f}" stroke="#94a3b8" stroke-width="1"/>' for a in [k*math.pi/4 for k in range(8)])))
-g.fr(li, eq, '$\\perp$', 'linea', 'azzurro')
+g.dis(880, Y + HB - 100, 96, 96, svg('0 0 90 90', sfera(45, 45, 9) + radiali(45, 45, 44, 13, 8, True, '#0284c7')))
 g.salva('gravitazione')
 
 def carica(cx, cy, r, segno, size=12):
