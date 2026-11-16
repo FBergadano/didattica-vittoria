@@ -338,7 +338,6 @@ Scrivere $x = \bar x \pm I_x$ non vuol dire che la grandezza vale esattamente $\
 Una misura $x = \bar x \pm I_x$ è <definizione>compatibile</definizione> con un valore se quel valore è compreso fra $\bar x - I_x$ e $\bar x + I_x$; altrimenti è <definizione>non compatibile</definizione>.
 {% include box-end.html %}
 
-Se un compagno misura lo stesso banco con un metro più preciso del nostro e trova $75{,}4\ \text{cm}$, la nostra misura è compatibile con il suo valore, perché $75{,}4$ sta fra $74{,}9$ e $75{,}5$. Se invece trovasse $75{,}8\ \text{cm}$, la nostra misura non sarebbe compatibile, e uno dei due avrebbe sbagliato qualcosa.
 
 Vediamo tutta la procedura su un esempio in cui conosciamo il <definizione>valore vero</definizione> della grandezza misurata, dove per *"valore vero"* si intende il risultato di una misurazione molto precisa, in cui quindi l'incertezza è molto ridotta (ma l'incertezza non può mai scomparire del tutto). Così potremo anche controllare se la nostra misura è compatibile con il valore vero.
 
