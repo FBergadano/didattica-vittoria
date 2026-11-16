@@ -329,14 +329,13 @@ $$x = \bar{x} \pm I_x.$$
 
 {% include margin-note.html testo="Il risultato di una misura è un intervallo" %}
 
-Scrivere $x = \bar x \pm I_x$ non vuol dire che la grandezza vale esattamente $\bar x$: vuol dire che il suo valore vero <u markdown="span">sta **fra $\bar x - I_x$ e $\bar x + I_x$**</u>. Se per esempio misuriamo l'altezza di un banco e scriviamo $h = (75{,}2 \pm 0{,}3)\ \text{cm}$, stiamo dicendo che il banco è alto fra $75{,}2 - 0{,}3 = 74{,}9\ \text{cm}$ e $75{,}2 + 0{,}3 = 75{,}5\ \text{cm}$. Il risultato di una misura, quindi, non è un numero solo, ma un intervallo di valori.
+Scrivere $x = \bar x \pm I_x$ non vuol dire che la grandezza vale esattamente $\bar x$: vuol dire che il suo valore è compreso **fra $\bar x - I_x$ e $\bar x + I_x$**. Se per esempio misuriamo l'altezza di un banco e scriviamo $h = (75{,}2 \pm 0{,}3)\ \text{cm}$, stiamo dicendo che il banco è alto fra $75{,}2 - 0{,}3 = 74{,}9\ \text{cm}$ e $75{,}2 + 0{,}3 = 75{,}5\ \text{cm}$.   
+<u markdown="span">Il risultato di una misura, quindi, **non** è un numero solo, ma **un** ***intervallo*** **di valori**</u>.
 
 {% include margin-note-end.html %}
 
 {% include box-def.html testo="Misure compatibili" %}
 Una misura $x = \bar x \pm I_x$ è <definizione>compatibile</definizione> con un valore se quel valore è compreso fra $\bar x - I_x$ e $\bar x + I_x$; altrimenti è <definizione>non compatibile</definizione>.
-
-Due misure della stessa grandezza sono <definizione>compatibili fra loro</definizione> se i loro intervalli hanno almeno un punto in comune.
 {% include box-end.html %}
 
 Se un compagno misura lo stesso banco con un metro più preciso del nostro e trova $75{,}4\ \text{cm}$, la nostra misura è compatibile con il suo valore, perché $75{,}4$ sta fra $74{,}9$ e $75{,}5$. Se invece trovasse $75{,}8\ \text{cm}$, la nostra misura non sarebbe compatibile, e uno dei due avrebbe sbagliato qualcosa.
@@ -462,7 +461,7 @@ Anna e Bruno misurano la stessa matita con lo stesso righello. Anna ottiene $(17
 {"v":"c","t":"No: due persone diverse ottengono sempre risultati diversi"},
 {"v":"d","t":"Non si può dire senza conoscere la vera lunghezza della matita"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-matita" opts=_o ok="b" s="Se la lunghezza vera stesse in entrambi gli intervalli, i due intervalli dovrebbero avere almeno un punto in comune. Non ce l'hanno: le due misure non sono compatibili fra loro, e qualcosa non torna." %}
+{% include mcq.html id="mcq-matita" opts=_o ok="b" s="Se la lunghezza vera stesse in entrambi gli intervalli, i due intervalli dovrebbero avere almeno un punto in comune. Non ce l'hanno: qualcosa non torna." %}
 
 {% capture _qComp %}[
 {"t":"Una misura con un'incertezza più piccola è sempre più vicina al valore vero.","ok":false,"s":"No: pensa alla tessera sanitaria misurata in fretta: $(85{,}0 \\pm 0{,}5)\\ \\text{mm}$ aveva un'incertezza più piccola, ma non era compatibile con il valore vero."},
