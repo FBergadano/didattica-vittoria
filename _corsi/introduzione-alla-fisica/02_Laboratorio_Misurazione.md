@@ -316,16 +316,32 @@ Alla fine si considera come incertezza globale $I_x$ <u markdown="span">la **som
 
 {% include box-imp.html testo="Valore medio e incertezza" %}
 **Valore medio:**
-$$\bar{x} = \frac{x_1 + x_2 + \cdots + x_N}{N}$$
+$$
+\bar{x} = \frac{x_1 + x_2 + \cdots + x_N}{N}.
+$$
 
 **Incertezza:**
 $$I_x = \text{i.s.} + \frac{x_\text{max} - x_\text{min}}{2}.$$
 
 Il risultato della misura si riporta nella forma:
-$$x = \bar{x} \pm I_x$$
+$$x = \bar{x} \pm I_x.$$
 {% include box-end.html %}
 
-Vediamo tutta la procedura su un esempio in cui conosciamo il valore vero della grandezza misurata.
+{% include margin-note.html testo="Il risultato di una misura è un intervallo" %}
+
+Scrivere $x = \bar x \pm I_x$ non vuol dire che la grandezza vale esattamente $\bar x$: vuol dire che il suo valore vero <u markdown="span">sta **fra $\bar x - I_x$ e $\bar x + I_x$**</u>. Se per esempio misuriamo l'altezza di un banco e scriviamo $h = (75{,}2 \pm 0{,}3)\ \text{cm}$, stiamo dicendo che il banco è alto fra $75{,}2 - 0{,}3 = 74{,}9\ \text{cm}$ e $75{,}2 + 0{,}3 = 75{,}5\ \text{cm}$. Il risultato di una misura, quindi, non è un numero solo, ma un intervallo di valori.
+
+{% include margin-note-end.html %}
+
+{% include box-def.html testo="Misure compatibili" %}
+Una misura $x = \bar x \pm I_x$ è <definizione>compatibile</definizione> con un valore se quel valore è compreso fra $\bar x - I_x$ e $\bar x + I_x$; altrimenti è <definizione>non compatibile</definizione>.
+
+Due misure della stessa grandezza sono <definizione>compatibili fra loro</definizione> se i loro intervalli hanno almeno un punto in comune.
+{% include box-end.html %}
+
+Se un compagno misura lo stesso banco con un metro più preciso del nostro e trova $75{,}4\ \text{cm}$, la nostra misura è compatibile con il suo valore, perché $75{,}4$ sta fra $74{,}9$ e $75{,}5$. Se invece trovasse $75{,}8\ \text{cm}$, la nostra misura non sarebbe compatibile, e uno dei due avrebbe sbagliato qualcosa.
+
+Vediamo tutta la procedura su un esempio in cui conosciamo il <definizione>valore vero</definizione> della grandezza misurata, dove per *"valore vero"* si intende il risultato di una misurazione molto precisa, in cui quindi l'incertezza è molto ridotta (ma l'incertezza non può mai scomparire del tutto). Così potremo anche controllare se la nostra misura è compatibile con il valore vero.
 
 {% include box-esempio.html testo="Esempio: la larghezza della tessera sanitaria" %}
 La tessera sanitaria, come le carte di credito, ha dimensioni fissate da una norma internazionale: è larga $85{,}60\ \text{mm}$. Le tessere vengono controllate in fabbrica con strumenti precisi al centesimo di millimetro, molto più precisi di un righello; possiamo quindi considerare $85{,}60\ \text{mm}$ come il valore vero della larghezza.
@@ -356,12 +372,12 @@ quindi l'incertezza totale è $I_\ell = 0{,}5\ \text{mm} + 0{,}5\ \text{mm} = 1{
 
 $$\ell = (85{,}5 \pm 1{,}0)\ \text{mm}.$$
 
-Questo significa che la larghezza della tessera dovrebbe essere compresa fra $85{,}5 - 1{,}0 = 84{,}5\ \text{mm}$ e $85{,}5 + 1{,}0 = 86{,}5\ \text{mm}$. <u markdown="span">Il valore vero, $85{,}60\ \text{mm}$, è effettivamente compreso in questo intervallo</u>.
+Questo significa che la larghezza della tessera dovrebbe essere compresa fra $85{,}5 - 1{,}0 = 84{,}5\ \text{mm}$ e $85{,}5 + 1{,}0 = 86{,}5\ \text{mm}$. <u markdown="span">Il valore vero, $85{,}60\ \text{mm}$, è effettivamente compreso in questo intervallo</u>: la nostra misura è **compatibile** con il valore vero.
 {% include box-end.html %}
 
 {% include margin-note.html testo="Incertezza sottostimata e sovrastimata" %}
 
-Supponiamo invece di aver misurato la tessera una sola volta, di aver letto $85\ \text{mm}$ e di aver considerato soltanto l'incertezza strumentale. Avremmo scritto $\ell = (85{,}0 \pm 0{,}5)\ \text{mm}$, cioè una larghezza compresa fra $84{,}5$ e $85{,}5\ \text{mm}$, e il valore vero, $85{,}60\ \text{mm}$, <u markdown="span">sarebbe rimasto **fuori** dall'intervallo</u>. Lo strumento è lo stesso di prima, ma <u markdown="span">l'incertezza dichiarata è **troppo piccola**</u>, perché con una sola misurazione non abbiamo potuto stimare la semidispersione.
+Supponiamo invece di aver misurato la tessera una sola volta, di aver letto $85\ \text{mm}$ e di aver considerato soltanto l'incertezza strumentale. Avremmo scritto $\ell = (85{,}0 \pm 0{,}5)\ \text{mm}$, cioè una larghezza compresa fra $84{,}5$ e $85{,}5\ \text{mm}$, e il valore vero, $85{,}60\ \text{mm}$, <u markdown="span">sarebbe rimasto **fuori** dall'intervallo</u>: la misura non sarebbe stata compatibile con il valore vero. Lo strumento è lo stesso di prima, ma <u markdown="span">l'incertezza dichiarata è **troppo piccola**</u>, perché con una sola misurazione non abbiamo potuto stimare la semidispersione.
 
 Può succedere anche il contrario. Se avessimo scritto $\ell = (85{,}5 \pm 3)\ \text{mm}$, il valore vero sarebbe certamente compreso nell'intervallo, ma l'intervallo, da $82{,}5$ a $88{,}5\ \text{mm}$, sarebbe molto più largo del necessario.
 
@@ -369,12 +385,8 @@ Può succedere anche il contrario. Se avessimo scritto $\ell = (85{,}5 \pm 3)\ \
 
 {% include figure/compatibilita-tessera-figura.html %}
 
-{% include box-def.html testo="Misure compatibili" %}
-Una misura $x = \bar x \pm I_x$ è <definizione>compatibile</definizione> con un valore se quel valore è compreso fra $\bar x - I_x$ e $\bar x + I_x$; altrimenti è <definizione>non compatibile</definizione>.
-
+{% include box-def.html testo="Incertezza sottostimata e sovrastimata" %}
 Se una misura non è compatibile con il valore vero, si è sbagliato qualcosa nella misurazione oppure l'incertezza è stata <definizione>sottostimata</definizione>, cioè dichiarata più piccola di quanto fosse davvero. Un'incertezza <definizione>sovrastimata</definizione>, invece, è più grande del necessario: la misura resta compatibile, ma è poco utile.
-
-Due misure della stessa grandezza sono <definizione>compatibili fra loro</definizione> se i loro intervalli hanno almeno un punto in comune.
 {% include box-end.html %}
 
 {% include unisci.html %}
