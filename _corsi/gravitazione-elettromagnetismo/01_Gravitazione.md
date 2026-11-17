@@ -742,7 +742,7 @@ La prima cosa che la molla ci fa capire è che <u markdown="span">l'energia pote
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="…ma a distanza infinita deve valere zero" %}
-Però, se due masse sono infinitamente lontane, non si attraggono più: non c'è più nessuna molla, e non ha nessun senso dire che fra loro c'è dell'energia immagazzinata. Quindi, <u markdown="span">quando $r$ diventa molto, molto grande, $U$ si deve avvicinare a **zero**</u>.
+Però, se due masse sono infinitamente lontane, non si attraggono più: è come se la molla fosse rotta, o se non ci fosse più alcuna molla, e non ha nessun senso dire che fra loro c'è dell'energia immagazzinata. Quindi, <u markdown="span">quando $r$ diventa molto, molto grande, $U$ si deve avvicinare a **zero**</u>.
 
 Mettiamo insieme le due cose: allontanando le masse $U$ cresce sempre, e alla fine (a distanza infinita) arriva a zero. Prima di arrivarci, allora, non può che essere più piccola di zero: <u markdown="span">l'unica possibilità è che $U$ sia **negativa**</u>!
 {% include margin-note-end.html %}
@@ -939,6 +939,8 @@ Nei due simulatori qui sotto, a sinistra c'è l'energia potenziale della massa $
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-potenziale-grav" tipo="potenziale" fisica="grav" aggiungi="true" titolo="Potenziale" %}
 </div>
 
+{% include esercizi/esercizio-energia-potenziale.html %}
+
 {% include spoiler.html testo="Poiché il potenziale assomiglia al campo, esiste un equivalente delle linee di campo per il potenziale?" %}
 Sì: il campo si disegna con le linee di campo, il potenziale con le <definizione>superfici equipotenziali</definizione>. Sono le superfici formate da tutti i punti in cui il potenziale ha lo stesso valore (disegnate su un foglio, diventano delle linee).
 
@@ -953,57 +955,109 @@ Con più masse, come nel sistema Terra-Luna, le superfici si deformano, ma resta
 
 ### Confronto tra le formule
 
-Richiamiamo le quattro formule trovate finora in questo capitolo:
+{% include margin-note.html testo="Quattro formule simili, ma non uguali" %}
+Ecco, una accanto all'altra, le quattro formule che abbiamo trovato in questo capitolo:
+{% include margin-note-end.html %}
 
 <div style="text-align:center;margin:.8rem 0;">
-<div style="color:#dc2626;">$$F = G\,\frac{m_1 m_2}{r^2} \qquad\qquad g = G\,\frac{M}{r^2}$$</div>
+<div style="color:#dc2626;">$$F = G\,\frac{Mm}{r^2} \qquad\qquad g = G\,\frac{M}{r^2}$$</div>
 <div style="color:#6366f1;">$$U = -G\,\frac{Mm}{r} \qquad\qquad V = -G\,\frac{M}{r}$$</div>
 </div>
 
-{% include margin-note.html testo="Vettori o scalari?" %}
-<u markdown="span">La forza $\vec F$ e il campo $\vec g$ sono grandezze **vettoriali**</u>: per descriverle servono modulo, direzione e verso. <u markdown="span">L'energia potenziale $U$ e il potenziale $V$, invece, sono grandezze **scalari**</u>: bastano un numero e un'unità di misura, senza alcuna direzione. È uno dei motivi per cui il linguaggio dell'energia è così comodo da usare: sommare scalari è molto più semplice che sommare vettori.
-{% include margin-note-end.html %}
+Si somigliano molto, ma non si comportano tutte allo stesso modo. Nel prossimo esercizio sei tu a doverle confrontare: guarda bene le formule (c'è un segno meno? la $r$ è al quadrato?) e rispondi alle domande, una slide alla volta.
 
-{% include margin-note.html testo="Chi aumenta e chi diminuisce?" %}
-C'è poi un'altra differenza importante, che riguarda **come** queste grandezze dipendono dalla distanza $r$: forza e campo (in rosso) sono inversamente proporzionali al **quadrato** della distanza, mentre l'energia potenziale e il potenziale (in indaco) sono inversamente proporzionali alla distanza stessa. Inoltre, l'energia potenziale e il potenziale hanno un **segno meno** nella formula, che significa che <u markdown="span">quando $r$ aumenta esse **aumentano** (si avvicinano a zero e perciò diventano meno negative)</u>. Al contrario, campo e forza non hanno un segno meno, quindi <u markdown="span">quando $r$ aumenta esse **diminuiscono** (si avvicinano a zero)</u>.
-{% include margin-note-end.html %}
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html titolo="1. Vettori o scalari?" %}
+Quali di queste grandezze sono vettori, e quali scalari?
 
-{% include margin-note.html testo="Chi cambia più velocemente?" %}
-Poiché, allontanandosi, $1/r$ diminuisce molto più lentamente di $1/r^2$, <u markdown="span">l'energia potenziale e il potenziale cambiano molto più lentamente con la distanza, rispetto a forza e campo</u> — come si vede confrontando i due grafici:
-{% include margin-note-end.html %}
+{% capture _sConfrNat %}[
+{"t":"La forza gravitazionale","c":0},
+{"t":"Il campo gravitazionale","c":0},
+{"t":"L'energia potenziale gravitazionale","c":1},
+{"t":"Il potenziale gravitazionale","c":1}
+]{% endcapture %}
+{% include sort.html id="sort-confr-natura" dati=_sConfrNat col0="Vettori" col1="Scalari" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="2. Il segno" %}
+Che segno hanno queste grandezze, a qualunque distanza $r$? (Per la forza e il campo, che sono vettori, si intende il loro modulo.)
 
-{% include figure/figura-confronto-decadimento.html %}
+{% capture _sConfrSegno %}[
+{"t":"Il modulo della forza","c":0},
+{"t":"Il modulo del campo","c":0},
+{"t":"L'energia potenziale","c":1},
+{"t":"Il potenziale","c":1}
+]{% endcapture %}
+{% include sort.html id="sort-confr-segno" dati=_sConfrSegno col0="Sempre positivo" col1="Sempre negativo" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="3. Allontanando le masse" %}
+Che cosa succede a ogni grandezza quando la distanza $r$ aumenta?
 
+{% capture _sConfrCresce %}[
+{"t":"Il modulo della forza","c":0},
+{"t":"Il modulo del campo","c":0},
+{"t":"L'energia potenziale","c":1},
+{"t":"Il potenziale","c":1}
+]{% endcapture %}
+{% include sort.html id="sort-confr-cresce" dati=_sConfrCresce col0="Diminuisce" col1="Aumenta" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="4. Velocemente o lentamente?" %}
+Raddoppiando la distanza $r$, che cosa succede al valore di ogni grandezza?
 
+{% capture _sConfrVel %}[
+{"t":"Il modulo della forza","c":0},
+{"t":"Il modulo del campo","c":0},
+{"t":"L'energia potenziale","c":1},
+{"t":"Il potenziale","c":1}
+]{% endcapture %}
+{% include sort.html id="sort-confr-vel" dati=_sConfrVel col0="Diventa un quarto: cambia velocemente" col1="Si dimezza: cambia lentamente" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="5. Il grafico" %}
+Quale di questi quattro grafici ha l'andamento di ciascuna grandezza, in funzione di $r$?
+
+{% include figure/figura-quattro-grafici.html %}
+
+{% include fill.html prima="Il modulo della forza, $F$: grafico" tipo="drop" opts="A|B|C|D" ok="A" dopo="." s="È positivo e scende velocemente, come $1/r^2$." %}
+{% include fill.html prima="Il modulo del campo, $g$: grafico" tipo="drop" opts="A|B|C|D" ok="A" dopo="." s="Come la forza: anche $g$ va come $1/r^2$." %}
+{% include fill.html prima="L'energia potenziale, $U$: grafico" tipo="drop" opts="A|B|C|D" ok="B" dopo="." s="È negativa, quindi sta sotto l'asse, e sale lentamente verso zero, come $-1/r$." %}
+{% include fill.html prima="Il potenziale, $V$: grafico" tipo="drop" opts="A|B|C|D" ok="B" dopo="." s="Come l'energia potenziale: anche $V$ va come $-1/r$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="6. Il segno meno" %}
+Allontanando le masse, $r$ aumenta e la frazione $\dfrac{Mm}{r}$ diventa più piccola. Perché, allora, l'energia potenziale $U = -G\dfrac{Mm}{r}$ aumenta?
+
+{% capture _oConfrMeno %}[
+{"v":"a","t":"Per il segno meno: un numero negativo che si avvicina a zero diventa più grande"},
+{"v":"b","t":"Perché, allontanandosi, la costante $G$ aumenta"},
+{"v":"c","t":"Non è vero: anche $U$ diminuisce, come la frazione"},
+{"v":"d","t":"Perché, allontanandosi, la massa $m$ aumenta"}
+]{% endcapture %}
+{% include mcq.html id="mcq-confr-meno" opts=_oConfrMeno ok="a" s="Per esempio, $-2$ è più grande di $-4$: se la frazione passa da $4$ a $2$, $U$ passa da $-4$ a $-2$ (in qualche unità), cioè aumenta. $G$ e le masse, invece, non cambiano." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="7. Con tante masse" %}
+Ci sono dieci masse. Per quali grandezze il totale si calcola con una normale somma algebrica, senza la regola del parallelogramma?
+
+{% capture _oConfrSomma %}[
+{"v":"a","t":"Per la forza e il campo"},
+{"v":"b","t":"Per l'energia potenziale e il potenziale"},
+{"v":"c","t":"Per tutte e quattro"},
+{"v":"d","t":"Per nessuna: con dieci masse il principio di sovrapposizione non vale più"}
+]{% endcapture %}
+{% include mcq.html id="mcq-confr-somma" opts=_oConfrSomma ok="b" s="L'energia potenziale e il potenziale sono scalari, quindi si sommano come normali numeri (con il loro segno). La forza e il campo sono vettori, e vanno sommati con la regola del parallelogramma. Il principio di sovrapposizione vale sempre, con quante masse si vuole." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
+
+{% include spoiler.html testo="La tabella riassuntiva (aprila dopo aver risposto)" %}
 
 | | Forza $\vec F$ | Campo $\vec g$ | Energia potenziale $U$ | Potenziale $V$ |
 |---|:---:|:---:|:---:|:---:|
 | **Natura** | vettore | vettore | scalare | scalare |
-|**Segno**|positivo|positivo|negativo|negativo|
-| **Dipendenza da $r$** | $1/r^2$ (decresce velocemente) | $1/r^2$ (decresce velocemente) | $-1/r$ (cresce lentamente) | $-1/r$ (cresce lentamente)  |
+| **Segno** | positivo (il modulo) | positivo (il modulo) | negativo | negativo |
+| **Quando $r$ aumenta** | diminuisce | diminuisce | aumenta | aumenta |
+| **Come cambia** | velocemente, come $1/r^2$ | velocemente, come $1/r^2$ | lentamente, come $-1/r$ | lentamente, come $-1/r$ |
+| **Grafico** | A | A | B | B |
 
-
-
-{% include unisci.html %}
-{% include box-ex.html testo="Verifica Subito!" %}
-{% capture _qenergia %}[
-{"t":"L'energia potenziale gravitazionale si misura in joule (J).","ok":true,"s":"Sì, essendo un'energia."},
-{"t":"L'energia potenziale gravitazionale $U$ dipende dalla massa esploratrice $m$.","ok":true,"s":"Sì: infatti $U = -mgr$, e $m$ compare esplicitamente nella formula."},
-{"t":"Il potenziale gravitazionale si misura in joule (J).","ok":false,"s":"No: si misura in J/kg, perché è un'energia potenziale divisa per una massa."},
-{"t":"Il lavoro necessario per sollevare un oggetto di massa $m$ per un tratto $r$, vicino alla superficie terrestre, vale $mgr$.","ok":true,"s":"Sì, a patto che $r$ sia piccolo rispetto al raggio terrestre, così che $g$ sia costante."},
-{"t":"Il potenziale gravitazionale $V$ dipende dalla massa esploratrice $m$.","ok":false,"s":"No: proprio come il campo $\\vec g$, il potenziale $V = U/m$ non dipende da $m$, ma solo dalla massa che genera il campo e dalla distanza."},
-{"t":"Il potenziale gravitazionale è sempre negativo, qualunque sia la distanza $r$ (finita).","ok":true,"s":"Sì: $V=-GM/r$ è negativo per qualunque distanza $r$, per quanto grande: si avvicina a zero solo quando $r$ diventa enorme, senza mai raggiungerlo esattamente a nessuna distanza finita."},
-{"t":"A parità di distanza, l'energia potenziale gravitazionale fra due masse più pesanti è, in valore assoluto, maggiore di quella fra due masse più leggere.","ok":true,"s":"Sì: $|U|=GMm/r$ è direttamente proporzionale al prodotto delle masse."},
-{"t":"Il potenziale gravitazionale $V$ e il campo gravitazionale $\\vec g$ dipendono nello stesso modo dalla distanza $r$.","ok":false,"s":"No: $\\vec g$ dipende da $1/r^2$, mentre $V$ dipende da $1/r$ — proprio come forza ed energia potenziale."},
-{"t":"Se più masse generano energia potenziale (o potenziale) nello stesso punto, bisogna sommare i singoli contributi vettorialmente, con la regola del parallelogramma, come per la forza e il campo.","ok":false,"s":"No: l'energia potenziale e il potenziale sono scalari, quindi si sommano con una semplice somma algebrica — niente parallelogramma."},
-{"t":"Ogni massa contribuisce all'energia potenziale (o al potenziale) di un punto esattamente come se le altre masse non ci fossero.","ok":true,"s":"Sì: è il principio di sovrapposizione degli effetti, valido per l'energia potenziale e per il potenziale esattamente come per forza e campo."}
-]{% endcapture %}
-{% include quiz.html domande=_qenergia
-   id="q-energia" senza_esempi="true" %}
-{% include box-end.html %}
-
-{% include esercizi/esercizio-energia-potenziale.html %}
-{% include unisci-end.html %}
+{% include spoiler-end.html %}
 
 ## Moto di una massa in un campo gravitazionale
 
