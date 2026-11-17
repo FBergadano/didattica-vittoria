@@ -1,0 +1,160 @@
+{% comment %}
+Esercizio guidato: lo studente costruisce un esempio numerico che mostra la
+differenza fra potenziale V ed energia potenziale U, in tre passi.
+ 1. Sceglie i numeri: il potenziale V in un punto P (negativo, in J/kg) e due
+    masse m₁, m₂ (diverse) da mettere, una alla volta, in P.
+ 2. Scrive la formula di U toccando i simboli (U = m·V o U = V·m).
+ 3. Calcola U₁ e U₂ (con la calcolatrice); se i conti sono giusti compare la
+    frase conclusiva: V è lo stesso, U cambia con la massa.
+Salva i valori nel browser e comunica l'esito (_lvSave con ok), così nella
+pagina del docente risulta giusto/sbagliato. Pensato per stare dentro una
+slide di un Verifica Subito; funziona anche su telefono.
+
+Parametri: id (univoco, default "esuv").
+{% endcomment %}
+{% assign _eid = include.id | default: "esuv" %}
+<style>
+.esuv-widget { margin: .4rem 0; }
+.esuv-passo { margin: .9rem 0; padding-top: .6rem; border-top: 1px dashed #cbd5e1; }
+.esuv-passo:first-of-type { border-top: none; padding-top: 0; }
+.esuv-passo.spento { opacity: .4; pointer-events: none; }
+.esuv-tit { font-weight: 700; margin: 0 0 .4rem; }
+.esuv-righe { display: flex; flex-wrap: wrap; gap: .5rem 1.2rem; align-items: center; }
+.esuv-righe label { white-space: nowrap; }
+.esuv-righe input { width: 5.5em; padding: .2rem .35rem; border: 1px solid #67e8f9; border-radius: 6px; font: inherit; }
+.esuv-sym { font-family: Georgia, serif; font-style: italic; }
+.esuv-formula { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; margin: .3rem 0 .5rem; }
+.esuv-scritta { min-width: 7em; min-height: 2.1em; padding: .2rem .6rem; border: 1.5px solid #67e8f9; border-radius: 8px; background: #fff;
+  font-family: Georgia, serif; font-size: 1.25rem; display: inline-flex; align-items: center; gap: .25rem; }
+.esuv-scritta .vuoto { color: #94a3b8; font-size: .85rem; font-family: inherit; font-style: italic; }
+.esuv-tasti { display: flex; flex-wrap: wrap; gap: .35rem; }
+.esuv-tasti button { min-width: 2.4em; height: 2.3em; border: 1px solid #94a3b8; border-radius: 8px; background: #f8fafc; cursor: pointer;
+  font-family: Georgia, serif; font-size: 1.1rem; color: #1e293b; }
+.esuv-tasti button.it { font-style: italic; }
+.esuv-tasti button.canc { font-family: inherit; font-size: .95rem; }
+.esuv-btn { margin-top: .45rem; background: #0e7490; color: #fff; border: none; border-radius: 6px; padding: .3rem .8rem; cursor: pointer; font: inherit; font-size: .9rem; }
+.esuv-fb { margin-top: .35rem; font-size: .92rem; }
+.esuv-fb.ok { color: #15803d; }
+.esuv-fb.err { color: #b91c1c; }
+.esuv-fine { margin-top: .6rem; padding: .6rem .8rem; background: #ecfdf5; border-left: 3px solid #10b981; border-radius: 6px; display: none; }
+</style>
+<div class="esuv-widget" id="{{ _eid }}">
+<div class="esuv-passo" data-p="1">
+<p class="esuv-tit">1. Scegli i numeri</p>
+<p>In un punto $P$, vicino a un pianeta, il potenziale gravitazionale vale $V$. In $P$ metti prima una massa $m_1$, poi una massa $m_2$. Scegli tu i tre valori.</p>
+<div class="esuv-righe">
+<label><span class="esuv-sym">V</span> = <input type="text" inputmode="decimal" class="esuv-V"> J/kg</label>
+<label><span class="esuv-sym">m</span><sub>1</sub> = <input type="text" inputmode="decimal" class="esuv-m1"> kg</label>
+<label><span class="esuv-sym">m</span><sub>2</sub> = <input type="text" inputmode="decimal" class="esuv-m2"> kg</label>
+</div>
+<button type="button" class="esuv-btn esuv-ok1">Fatto</button>
+<div class="esuv-fb esuv-fb1"></div>
+</div>
+
+<div class="esuv-passo spento" data-p="2">
+<p class="esuv-tit">2. Scrivi la formula</p>
+<p>Con quale formula calcoli l'energia potenziale di una massa $m$ messa in $P$? Scrivila toccando i simboli.</p>
+<div class="esuv-formula"><span style="font-family:Georgia,serif;font-style:italic;font-size:1.25rem;">U</span> <span style="font-size:1.25rem;">=</span> <span class="esuv-scritta"></span></div>
+<div class="esuv-tasti">
+<button type="button" class="it" data-s="m">m</button>
+<button type="button" class="it" data-s="V">V</button>
+<button type="button" class="it" data-s="g">g</button>
+<button type="button" class="it" data-s="r">r</button>
+<button type="button" data-s="·">·</button>
+<button type="button" data-s="÷">÷</button>
+<button type="button" data-s="−">−</button>
+<button type="button" class="canc" data-s="⌫" aria-label="Cancella l'ultimo simbolo">⌫</button>
+</div>
+<button type="button" class="esuv-btn esuv-ok2">Verifica la formula</button>
+<div class="esuv-fb esuv-fb2"></div>
+</div>
+
+<div class="esuv-passo spento" data-p="3">
+<p class="esuv-tit">3. Fai i conti</p>
+{% capture _calcid %}calc-{{ _eid }}{% endcapture %}{% include calc-margin.html id=_calcid %}
+<p>Calcola l'energia potenziale delle due masse, una alla volta, nel punto $P$.</p>
+<div class="esuv-righe">
+<label><span class="esuv-sym">U</span><sub>1</sub> = <input type="text" inputmode="decimal" class="esuv-U1"> J</label>
+<label><span class="esuv-sym">U</span><sub>2</sub> = <input type="text" inputmode="decimal" class="esuv-U2"> J</label>
+</div>
+<button type="button" class="esuv-btn esuv-ok3">Verifica i conti</button>
+<div class="esuv-fb esuv-fb3"></div>
+<div style="clear:both"></div>
+</div>
+<div class="esuv-fine"></div>
+</div>
+<script>
+(function(){
+  var W=document.getElementById('{{ _eid }}'); if(!W) return;
+  var ID='{{ _eid }}';
+  function q(s){ return W.querySelector(s); }
+  function num(s){ s=(s||'').trim().replace(/\s+/g,'').replace('−','-').replace(',','.'); return /^[-+]?\d*\.?\d+(e[-+]?\d+)?$/i.test(s)?parseFloat(s):NaN; }
+  function fmt(x){ var r=Math.round(x*1000)/1000; return String(r).replace('.',','); }
+  function fb(n,ok,txt){ var f=q('.esuv-fb'+n); f.className='esuv-fb esuv-fb'+n+(ok?' ok':' err'); f.innerHTML=txt; }
+  function accendi(n){ W.querySelector('.esuv-passo[data-p="'+n+'"]').classList.remove('spento'); }
+  var V,m1,m2,seq=[];
+
+  function passo1(silenzioso){
+    V=num(q('.esuv-V').value); m1=num(q('.esuv-m1').value); m2=num(q('.esuv-m2').value);
+    if(isNaN(V)||isNaN(m1)||isNaN(m2)){ if(!silenzioso) fb(1,false,'Scrivi un numero in tutte e tre le caselle.'); return false; }
+    if(V>=0){ if(!silenzioso) fb(1,false,'Attenzione: il potenziale gravitazionale è sempre negativo. Scegli un valore di $V$ minore di zero.'); typeset(); return false; }
+    if(m1<=0||m2<=0){ if(!silenzioso) fb(1,false,'Le masse devono essere positive.'); return false; }
+    if(m1===m2){ if(!silenzioso) fb(1,false,'Scegli due masse diverse, altrimenti non si vede la differenza.'); return false; }
+    fb(1,true,'Bene: ora in $P$ il potenziale vale '+fmt(V).replace('-','−')+' J/kg.'); typeset(); accendi(2); return true;
+  }
+  q('.esuv-ok1').onclick=function(){ passo1(false); };
+
+  var scritta=q('.esuv-scritta');
+  function disegna(){
+    if(!seq.length){ scritta.innerHTML='<span class="vuoto">tocca i simboli</span>'; return; }
+    scritta.innerHTML=seq.map(function(s){ return /^[a-zA-Z]$/.test(s)?'<i>'+s+'</i>':'<span>'+s+'</span>'; }).join('');
+  }
+  W.querySelectorAll('.esuv-tasti button').forEach(function(b){
+    b.onclick=function(){ var s=b.dataset.s; if(s==='⌫') seq.pop(); else if(seq.length<8) seq.push(s); disegna(); };
+  });
+  disegna();
+  function formulaGiusta(){ var f=seq.join(''); return f==='m·V'||f==='V·m'; }
+  function passo2(silenzioso){
+    if(!seq.length){ if(!silenzioso) fb(2,false,'Scrivi la formula toccando i simboli.'); return false; }
+    if(formulaGiusta()){ fb(2,true,'Esatto: da $V = U/m$, moltiplicando per $m$ si ottiene $U = m\\,V$.'); typeset(); accendi(3); return true; }
+    var f=seq.join('');
+    var msg=(f==='V÷m'||f==='m÷V')?'No: dividendo ottieni il potenziale, non l\'energia potenziale. Parti da $V = U/m$ e isola $U$.':
+            (f.indexOf('−')>=0)?'Il segno meno non serve: è già dentro $V$, che è negativo.':
+            'Non è la formula giusta. Parti da $V = U/m$ e isola $U$.';
+    if(!silenzioso) fb(2,false,msg); typeset(); return false;
+  }
+  q('.esuv-ok2').onclick=function(){ passo2(false); };
+
+  function vicino(a,b){ return Math.abs(a-b)<=Math.max(0.01*Math.abs(b),1e-9); }
+  function passo3(silenzioso){
+    var U1=num(q('.esuv-U1').value), U2=num(q('.esuv-U2').value);
+    if(isNaN(U1)||isNaN(U2)){ if(!silenzioso) fb(3,false,'Scrivi un numero in tutte e due le caselle.'); return null; }
+    var e1=m1*V, e2=m2*V, ok=vicino(U1,e1)&&vicino(U2,e2);
+    if(ok){
+      fb(3,true,'✓ Esatto!');
+      var fine=q('.esuv-fine'); fine.style.display='block';
+      fine.innerHTML='Ecco il tuo esempio. Nel punto $P$ il potenziale è sempre lo stesso, $V = '+fmt(V).replace(',','{,}')+'\\ \\text{J/kg}$, qualunque massa ci metti: dipende solo dal pianeta e dalla distanza. L\'energia potenziale invece cambia con la massa: $U_1 = '+fmt(e1).replace(',','{,}')+'\\ \\text J$ per $m_1 = '+fmt(m1).replace(',','{,}')+'\\ \\text{kg}$ e $U_2 = '+fmt(e2).replace(',','{,}')+'\\ \\text J$ per $m_2 = '+fmt(m2).replace(',','{,}')+'\\ \\text{kg}$. E si misura in joule, non in J/kg.';
+      typeset();
+    } else {
+      var w=[]; if(!vicino(U1,e1)) w.push('$U_1$'); if(!vicino(U2,e2)) w.push('$U_2$');
+      fb(3,false,'Controlla '+w.join(' e ')+': moltiplica la massa per il potenziale, e ricorda che il risultato è negativo.'); typeset();
+    }
+    return ok;
+  }
+  q('.esuv-ok3').onclick=function(){
+    if(!passo1(true)||!formulaGiusta()) return;
+    var ok=passo3(false); if(ok===null) return;
+    if(ok&&window._shoot) _shoot(q('.esuv-ok3'));
+    if(window._lvSave) _lvSave('esuv',ID,{V:q('.esuv-V').value,m1:q('.esuv-m1').value,m2:q('.esuv-m2').value,f:seq.slice(),U1:q('.esuv-U1').value,U2:q('.esuv-U2').value,ok:ok});
+  };
+  function typeset(){ if(window.MathJax&&MathJax.typesetPromise) MathJax.typesetPromise([W]).catch(function(){}); }
+
+  // ripristino di quanto fatto in una visita precedente
+  var s=window._lvLoad?_lvLoad('esuv',ID):null;
+  if(s){
+    q('.esuv-V').value=s.V||''; q('.esuv-m1').value=s.m1||''; q('.esuv-m2').value=s.m2||'';
+    seq=s.f||[]; disegna(); q('.esuv-U1').value=s.U1||''; q('.esuv-U2').value=s.U2||'';
+    if(passo1(true)&&passo2(true)) passo3(true);
+  }
+})();
+</script>

@@ -1120,16 +1120,8 @@ Due cariche puntiformi $q_1 = +2\times10^{-6}\ \text C$ e $q_2 = -3\times10^{-6}
 <div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-Isola le altre grandezze della legge di Coulomb. Per ciascuna, cerca la sequenza più breve di mosse, poi appuntala sul quaderno in un punto facile da ritrovare: ti servirà spesso.
+Nel prossimo esercizio conosci la forza e devi trovare la distanza: prima isola $r$ nella legge di Coulomb.
 
-{% include invert.html id="inv-coulomb-Qa" variabili="F|k|Qa|Qb|r" etichette="F|k|\lvert q_1\rvert|\lvert q_2\rvert|r"
-   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qa" %}
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html %}
-{% include invert.html id="inv-coulomb-Qb" variabili="F|k|Qa|Qb|r" etichette="F|k|\lvert q_1\rvert|\lvert q_2\rvert|r"
-   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qb" %}
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html %}
 {% include invert.html id="inv-coulomb-r" variabili="F|k|Qa|Qb|r" etichette="F|k|\lvert q_1\rvert|\lvert q_2\rvert|r"
    sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="r" radice="1" %}
 {% include scorri-slide-end.html %}
@@ -1139,6 +1131,12 @@ Due cariche puntiformi, $q_1 = +2\times10^{-6}\ \text C$ e $q_2 = +3\times10^{-6
 
 {% include fill-multi.html testo="$r =$ [0,2|0.2|0,20] m" s="Isolando $r$ nella legge di Coulomb: $r^2 = k_{\text{olio}}\dfrac{\lvert q_1\cdot q_2\rvert}{F} = 4\times10^{9}\cdot\dfrac{2\times10^{-6}\cdot3\times10^{-6}}{0{,}6}\ \text m^2 = \dfrac{24\times10^{-3}}{0{,}6}\ \text m^2 = 0{,}04\ \text m^2$, quindi $r = \sqrt{0{,}04}\ \text m = 0{,}2\ \text m = 20\ \text{cm}$. Attenzione a usare la $k$ dell'olio, non quella del vuoto!" %}
 <div style="clear:both"></div>
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Nel prossimo esercizio conosci la forza e devi trovare una carica: isola $\lvert q_1\rvert$ nella legge di Coulomb.
+
+{% include invert.html id="inv-coulomb-Qa" variabili="F|k|Qa|Qb|r" etichette="F|k|\lvert q_1\rvert|\lvert q_2\rvert|r"
+   sinistra="F" destra="k*Qa*Qb/r/r" obiettivo="Qa" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 {% include calc-margin.html id="calcEl6" %}

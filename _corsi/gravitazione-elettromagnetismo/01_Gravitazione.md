@@ -794,8 +794,6 @@ Con $r$ in ascissa, che forma ha il grafico di $U$?
 {% capture _o_mcqgeenergia %}[{"v":"a","t":"Una curva sopra l'asse $r$, che scende verso zero"},{"v":"b","t":"Una curva sotto l'asse $r$, che sale verso zero senza mai raggiungerlo"},{"v":"c","t":"Una retta che scende sotto l'asse $r$"},{"v":"d","t":"Una retta orizzontale"}]{% endcapture %}
 {% include mcq.html id="mcqgeenergia" opts=_o_mcqgeenergia ok="b" s="Per il segno meno, $U$ è sempre negativa: la curva sta sotto l'asse. Allontanandosi, $U$ cresce (diventa meno negativa) e si avvicina a zero, il valore che ha a distanza infinita." %}
 
-{% include esercizi/invert-energia-potenziale.html %}
-
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include calc-margin.html id="calcUNum" %}
 {% include scorri.html %}
@@ -803,6 +801,11 @@ Con $r$ in ascissa, che forma ha il grafico di $U$?
 Un satellite di $1\,000\ \text{kg}$ orbita a $r = 7{,}0\times10^{6}\ \text{m}$ dal centro della Terra. Calcola la sua energia potenziale gravitazionale, in joule. Usa $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$ e $G = 6{,}67\times10^{-11}\ \text{N}\cdot\text{m}^2/\text{kg}^2$.
 
 {% include sci.html prima="$U =$" coeff="-5.69" exp="10" tol="1" s="$U = -G\dfrac{M_\oplus m}{r} = -6{,}67\times10^{-11}\cdot\dfrac{5{,}97\times10^{24}\cdot 1\,000}{7{,}0\times10^{6}}\ \text J \approx -5{,}69\times10^{10}\ \text J$" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="Isola il campo" %}
+Nel prossimo esercizio conosci l'energia potenziale e devi trovare il campo: prima isola $g$ nella formula $U = -mgr$.
+
+{% include invert.html id="inv-en1-g" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="g" negativo="1" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="Il campo dall'energia potenziale" %}
 Una sonda di $500\ \text{kg}$, a $r = 6{,}8\times10^{6}\ \text{m}$ dal centro di Marte, ha un'energia potenziale gravitazionale $U = -6{,}3\times10^{9}\ \text{J}$. Usa la formula $U = -mgr$ per ricavare il campo gravitazionale di Marte in quel punto.
@@ -855,14 +858,6 @@ Quindi:
 
 $$[V] = \frac{\text J}{\text{kg}}.$$
 
-<div class="iex-nested">
-{% include unit-derive.html id="ud-V" testo="Trova l'unità di misura di V"
-   variabile="V"
-   numeratore_simboli="U" numeratore_corrette="J"
-   denominatore_simboli="m" denominatore_corrette="kg"
-   opzioni="J|kg|N|m" %}
-</div>
-
 {% include box-imp.html testo="Potenziale gravitazionale" %}
 Il potenziale gravitazionale generato da una massa $M$ a distanza $r$ è uno <u markdown="span">**scalare**</u> e vale
 
@@ -871,10 +866,21 @@ $$V = \frac{U}{m} = -G\frac{M}{r} = -gr.$$
 Come il campo, non dipende dalla massa esploratrice $m$. Si misura in J/kg.
 {% include box-end.html %}
 
-{% capture _r %}L'energia potenziale $U$ riguarda <strong>due</strong> masse: è l'energia immagazzinata dalla coppia $M$–$m$, e raddoppia se raddoppio $m$ (si misura in J). Il potenziale $V=U/m$ è invece una proprietà del <strong>solo punto</strong> dello spazio attorno a $M$: dice quanta energia potenziale avrebbe <em>ogni chilogrammo</em> posto lì, e non dipende da $m$ (si misura in J/kg). Esempio: in un punto in cui $V=-10\ \text{J/kg}$, una massa di $3\ \text{kg}$ ha $U=-30\ \text J$, una di $5\ \text{kg}$ ha $U=-50\ \text J$, ma il potenziale è lo stesso per entrambe.{% endcapture %}
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html titolo="La differenza, a parole" %}
+{% capture _r %}L'energia potenziale $U$ riguarda <strong>due</strong> masse: è l'energia immagazzinata dalla coppia $M$–$m$, e raddoppia se raddoppio $m$ (si misura in J). Il potenziale $V=U/m$ è invece una proprietà del <strong>solo punto</strong> dello spazio attorno a $M$: dice quanta energia potenziale avrebbe <em>ogni chilogrammo</em> posto lì, e non dipende da $m$ (si misura in J/kg).{% endcapture %}
 {% include risposta-aperta.html id="ra-spiega-UV" tipo="spiega"
-   domanda="Qual è la differenza fra energia potenziale $U$ e potenziale $V$? Spiegala con un esempio numerico inventato da te."
+   domanda="Qual è la differenza fra l'energia potenziale $U$ e il potenziale $V$? Spiegala con parole tue."
    risposta=_r %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="Un esempio numerico" %}
+Ora costruisci tu un esempio con dei numeri, che faccia vedere questa differenza.
+
+{% include esercizi/esempio-numerico-uv.html id="esuv-grav" %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
 
 {% include unisci.html %}
 Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
@@ -890,8 +896,6 @@ Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
 Leggi sul grafico di $V$ con $r$ in ascissa: quando $r$ raddoppia, che cosa succede a $V$?
 {% capture _o_mcqgepotenziale %}[{"v":"a","t":"Raddoppia"},{"v":"b","t":"Diventa un quarto"},{"v":"c","t":"Si dimezza (restando negativo)"},{"v":"d","t":"Resta uguale"}]{% endcapture %}
 {% include mcq.html id="mcqgepotenziale" opts=_o_mcqgepotenziale ok="c" s="$V=-G\,M/r$ è inversamente proporzionale a $r$, non a $r^2$: a distanza doppia il valore si dimezza. Per esempio da $-62{,}5$ MJ/kg a $-31{,}3$ MJ/kg." %}
-
-{% include esercizi/invert-potenziale.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include calc-margin.html id="calcVNum" %}
@@ -909,6 +913,10 @@ In un punto $P$ un satellite di $1\,200\ \text{kg}$ ha un'energia potenziale gra
 {% include scorri-end.html %}
 <div style="clear:both"></div>
 {% include box-end.html %}
+
+Nella prossima domanda conosci il potenziale e devi trovare l'energia potenziale: isola $U$ nella formula $V = U/m$.
+
+{% include invert.html id="inv-pot1-U" variabili="V|U|m" sinistra="V" destra="U/m" obiettivo="U" %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qVTeoria %}[

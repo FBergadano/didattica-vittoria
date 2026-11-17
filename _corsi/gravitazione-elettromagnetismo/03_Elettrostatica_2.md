@@ -97,8 +97,6 @@ Leggi sul grafico di $U$ con $r$ in ascissa: quando $r$ raddoppia, che cosa succ
 {% capture _o_mcqgeenergiael %}[{"v":"a","t":"Raddoppia"},{"v":"b","t":"Diventa un quarto"},{"v":"c","t":"Si dimezza"},{"v":"d","t":"Resta uguale"}]{% endcapture %}
 {% include mcq.html id="mcqgeenergiael" opts=_o_mcqgeenergiael ok="c" s="$U = k\,Q\,q/r$ è inversamente proporzionale a $r$, non a $r^2$ come la forza: a distanza doppia l'energia si dimezza." %}
 
-{% include esercizi/invert-energia-elettrica.html %}
-
 {% include box-ex.html testo="Verifica Subito!" %}
 Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 
@@ -267,8 +265,6 @@ Con $r$ in ascissa, il potenziale $V$ di una carica positiva arriva a zero a una
 {% capture _o_mcqgepotenzialeel %}[{"v":"a","t":"Sì, a qualche metro dalla carica"},{"v":"b","t":"No: scende verso zero ma non lo raggiunge mai; vale zero solo a distanza infinita"},{"v":"c","t":"No: resta sempre uguale"},{"v":"d","t":"Sì, e poi diventa negativo"}]{% endcapture %}
 {% include mcq.html id="mcqgepotenzialeel" opts=_o_mcqgepotenzialeel ok="b" s="$V = k\,Q/r$ è positivo per ogni $r$ e diminuisce allontanandosi, avvicinandosi a zero senza mai toccarlo: per convenzione $V=0$ solo a distanza infinita." %}
 
-{% include esercizi/invert-potenziale-elettrico.html %}
-
 {% include box-ex.html testo="Verifica Subito!" %}
 Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 
@@ -325,6 +321,11 @@ Se in quel punto mettiamo invece una carica $q = -3\times10^{-6}\ \text C$, che 
 {"v":"d","t":"cambiano sia il potenziale sia l'energia potenziale"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-potenziale-segno" opts=_oVseg ok="b" s="Il potenziale non dipende dalla carica di prova: resta $6000\ \text V$. Cambia invece $U = q\,V = -3\times10^{-6}\cdot 6000\ \text J = -18\times10^{-3}\ \text J$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Nel prossimo esercizio conosci il potenziale e devi trovare la distanza: prima isola $r$ nella formula del potenziale.
+
+{% include invert.html id="inv-potel-r" variabili="V|k|Q|r" etichette="V|k|Q|r" sinistra="V" destra="k*Q/r" obiettivo="r" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 {% include calc-margin.html id="calcEl16" %}

@@ -1,9 +1,11 @@
 {% comment %}
 Animazione (in loop, senza didascalia): dal campo al potenziale, sostituendo
-pezzo per pezzo. In alto c'è una formula del campo; sotto, colonna per
-colonna, ogni pezzo viene sostituito dal suo analogo "energetico"
-(g → V, F → U, N → J); quello che non cambia (la massa m, il kg) scende
+pezzo per pezzo. A sinistra c'è una formula del campo; a destra, sulla
+stessa riga, ogni pezzo viene sostituito dal suo analogo "energetico"
+(g → V, F → U, N → J); quello che non cambia (la massa m, il kg) passa
 uguale, in grigio. Alla fine la nuova formula viene incorniciata.
+Su schermi stretti (riquadro largo meno di 440 px) le due formule stanno
+una sotto l'altra, perché affiancate sarebbero troppo piccole.
 
 Parametri:
   id   — ID univoco (obbligatorio se ce n'è più d'una nella pagina)
@@ -18,40 +20,54 @@ Esempi:
 {% endcomment %}
 {% include lab-virtuali/formula-anim-engine.html %}
 {% assign _cpid = include.id | default: "cp" %}
-<div class="fa-wrap"><canvas id="cv-{{ _cpid }}"></canvas></div>
+<div class="fa-wrap" style="max-width:560px;"><canvas id="cv-{{ _cpid }}"></canvas></div>
 <script>
 (function(){
 var UNITA='{{ include.tipo }}'==='unita';
-FormulaAnim.create({id:'cv-{{ _cpid }}',W:420,H:190,cycle:9.5,still:7.5,draw:function(A,t){
+var cv=document.getElementById('cv-{{ _cpid }}');
+var ORIZ=((cv&&cv.parentNode.getBoundingClientRect().width)||560)>=440;
+FormulaAnim.create({id:'cv-{{ _cpid }}',W:ORIZ?560:420,H:ORIZ?140:190,cycle:9.5,still:7.5,draw:function(A,t){
   var p=A.p,mix=A.mix,ctx=A.ctx,I={it:true},GR='#94a3b8';
-  var Y1=62,Y2=152;
-  var xL=UNITA?150:165,xEq=UNITA?198:200,xF=UNITA?248:240;
-  // [ ] attorno al simbolo, per le unità
+  // posizioni: formula del campo (1) e formula del potenziale (2)
+  var o1,o2,Y1,Y2;
+  if(ORIZ){o1=UNITA?60:75;o2=UNITA?330:345;Y1=Y2=78;}
+  else{o1=o2=UNITA?150:165;Y1=62;Y2=152;}
+  var dEq=UNITA?48:35,dF=UNITA?98:75;          // distanze dal simbolo all'uguale e alla frazione
   function sim(s,x,y,al,col){
     A.tok(s,x,y,al,col,I);
     if(UNITA){A.tok('[',x-15,y,al,col);A.tok(']',x+15,y,al,col);}
   }
-  function riga(Y,al,sx,num,den,cSx,cNum,cDen,aSx,aNum,aDen,itNum,itDen){
-    var yb=Y-8,yn=yb-7,yd=yb+21;
-    sim(sx,xL,Y,aSx,cSx);
-    A.tok('=',xEq,Y,al,cSx===GR?A.DARK:A.DARK);
-    A.tok(num,xF,yn,aNum,cNum,{it:itNum,size:22});
-    if(al>0.01){ctx.globalAlpha=al*A.G;ctx.strokeStyle=A.DARK;ctx.lineWidth=1.6;
+  function riga(x0,Y,sx,num,den,cSx,cNum,cDen,aSx,aNum,aDen){
+    var yb=Y-8,yn=yb-7,yd=yb+21,xF=x0+dF;
+    sim(sx,x0,Y,aSx,cSx);
+    A.tok('=',x0+dEq,Y,aSx,A.DARK);
+    A.tok(num,xF,yn,aNum,cNum,{it:!UNITA,size:22});
+    if(aSx>0.01){ctx.globalAlpha=aSx*A.G;ctx.strokeStyle=A.DARK;ctx.lineWidth=1.6;
       ctx.beginPath();ctx.moveTo(xF-20,yb);ctx.lineTo(xF+20,yb);ctx.stroke();ctx.globalAlpha=1;}
-    A.tok(den,xF,yd,aDen,cDen,{it:itDen,size:22});
+    A.tok(den,xF,yd,aDen,cDen,{it:!UNITA,size:22});
   }
   var a1=p(t,0.2,0.8);
   var h1=p(t,1.1,1.5)*(1-p(t,2.5,2.9)),h2=p(t,2.5,2.9)*(1-p(t,3.9,4.3)),h3=p(t,3.9,4.3)*(1-p(t,5.1,5.5));
   var n1=UNITA?'N':'F',d1=UNITA?'kg':'m',n2=UNITA?'J':'U';
-  riga(Y1,a1,'g',n1,d1,mix(A.DARK,A.OR,h1),mix(A.DARK,A.OR,h2),mix(A.DARK,GR,h3),a1,a1,a1,!UNITA,!UNITA);
-  // frecce dall'alto in basso
-  A.arc(xL,Y1+10,xL-18,(Y1+Y2)/2-6,xL,Y2-28,h1);
-  A.arc(xF,Y1-24,xF+46,(Y1+Y2)/2-20,xF+6,Y2-44,h2);
-  A.arc(xF,Y1+22,xF-30,(Y1+Y2)/2+6,xF,Y2-6,h3,GR);
+  riga(o1,Y1,'g',n1,d1,mix(A.DARK,A.OR,h1),mix(A.DARK,A.OR,h2),mix(A.DARK,GR,h3),a1,a1,a1);
+  var xF1=o1+dF,xF2=o2+dF,yb1=Y1-8,yb2=Y2-8;
+  if(ORIZ){
+    // freccia fra le due formule e archi che passano sopra (o sotto, per il denominatore)
+    var xa=(xF1+o2)/2+6;
+    A.tok('→',xa,Y1,p(t,0.6,1.0),'#94a3b8',{size:24});
+    A.arc(o1,Y1-24,(o1+o2)/2,-6,o2,Y2-24,h1);
+    A.arc(xF1,yb1-26,(xF1+xF2)/2,2,xF2,yb2-26,h2);
+    A.arc(xF1,yb1+30,(xF1+xF2)/2,136,xF2,yb2+30,h3,GR);
+  }else{
+    A.arc(o1,Y1+10,o1-18,(Y1+Y2)/2-6,o1,Y2-28,h1);
+    A.arc(xF1,Y1-24,xF1+46,(Y1+Y2)/2-20,xF1+6,Y2-44,h2);
+    A.arc(xF1,Y1+22,xF1-30,(Y1+Y2)/2+6,xF1,Y2-6,h3,GR);
+  }
   var aV=p(t,1.6,2.1),aU=p(t,3.0,3.5),am=p(t,4.4,4.9);
   var box=p(t,5.9,6.5),ink=mix(A.DARK,A.TEAL,box);
-  riga(Y2,aV,'V',n2,d1,ink,ink,box>0?ink:mix(GR,A.DARK,p(t,5.2,5.7)),aV,aU,am,!UNITA,!UNITA);
-  A.box(xL-(UNITA?32:26),Y2-46,(xF+32)-(xL-(UNITA?32:26)),66,box);
+  riga(o2,Y2,'V',n2,d1,ink,ink,box>0?ink:mix(GR,A.DARK,p(t,5.2,5.7)),aV,aU,am);
+  var bx=o2-(UNITA?32:26);
+  A.box(bx,Y2-46,(xF2+32)-bx,66,box);
 }});
 })();
 </script>

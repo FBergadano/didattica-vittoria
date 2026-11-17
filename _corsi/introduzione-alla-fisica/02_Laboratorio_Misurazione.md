@@ -373,20 +373,6 @@ $$\ell = (85{,}5 \pm 1{,}0)\ \text{mm}.$$
 Questo significa che la larghezza della tessera dovrebbe essere compresa fra $85{,}5 - 1{,}0 = 84{,}5\ \text{mm}$ e $85{,}5 + 1{,}0 = 86{,}5\ \text{mm}$. <u markdown="span">Il valore vero, $85{,}60\ \text{mm}$, è effettivamente compreso in questo intervallo</u>: la nostra misura è **compatibile** con il valore vero.
 {% include box-end.html %}
 
-{% include margin-note.html testo="Incertezza sottostimata e sovrastimata" %}
-
-Supponiamo invece di aver misurato la tessera una sola volta, di aver letto $85\ \text{mm}$ e di aver considerato soltanto l'incertezza strumentale. Avremmo scritto $\ell = (85{,}0 \pm 0{,}5)\ \text{mm}$, cioè una larghezza compresa fra $84{,}5$ e $85{,}5\ \text{mm}$, e il valore vero, $85{,}60\ \text{mm}$, <u markdown="span">sarebbe rimasto **fuori** dall'intervallo</u>: la misura non sarebbe stata compatibile con il valore vero. Lo strumento è lo stesso di prima, ma <u markdown="span">l'incertezza dichiarata è **troppo piccola**</u>, perché con una sola misurazione non abbiamo potuto stimare la semidispersione.
-
-Può succedere anche il contrario. Se avessimo scritto $\ell = (85{,}5 \pm 3)\ \text{mm}$, il valore vero sarebbe certamente compreso nell'intervallo, ma l'intervallo, da $82{,}5$ a $88{,}5\ \text{mm}$, sarebbe molto più largo del necessario.
-
-{% include margin-note-end.html %}
-
-{% include figure/compatibilita-tessera-figura.html %}
-
-{% include box-def.html testo="Incertezza sottostimata e sovrastimata" %}
-Se una misura non è compatibile con il valore vero, si è sbagliato qualcosa nella misurazione oppure l'incertezza è stata <definizione>sottostimata</definizione>, cioè dichiarata più piccola di quanto fosse davvero. Un'incertezza <definizione>sovrastimata</definizione>, invece, è più grande del necessario: la misura resta compatibile, ma è poco utile.
-{% include box-end.html %}
-
 {% include unisci.html %}
 {% include box-ex.html testo="Prova tu!" %}
 {% include calc-margin.html id="calcMatita" %}
@@ -436,16 +422,6 @@ Un compagno misura la stessa matita con un calibro, molto più preciso del righe
 ]{% endcapture %}
 {% include mcq.html id="mcq-matita-comp" opts=_oComp ok="a" s="L'intervallo va da $12{,}4 - 0{,}15 = 12{,}25\ \text{cm}$ a $12{,}4 + 0{,}15 = 12{,}55\ \text{cm}$, e $12{,}52\ \text{cm}$ ci sta dentro. Che il valore medio sia diverso dal valore vero è normale: per questo si dichiara l'incertezza." %}
 {% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="7. La misura fatta in fretta" %}
-Un altro compagno appoggia il righello una volta sola, legge $12{,}3\ \text{cm}$ e scrive $\ell = (12{,}3 \pm 0{,}05)\ \text{cm}$. Che cosa si può dire della sua misura, confrontandola con il valore vero $12{,}52\ \text{cm}$?
-{% capture _oFretta %}[
-{"v":"a","t":"È compatibile, ed è più precisa della tua"},
-{"v":"b","t":"Non è compatibile: l'intervallo va da $12{,}25$ a $12{,}35\\ \\text{cm}$. Ha sottostimato l'incertezza, perché con una sola misurazione non ha potuto stimare la semidispersione"},
-{"v":"c","t":"Non è compatibile, perché ha usato un righello diverso dal tuo"},
-{"v":"d","t":"Non si può dire, perché ha fatto una sola misurazione"}
-]{% endcapture %}
-{% include mcq.html id="mcq-matita-fretta" opts=_oFretta ok="b" s="L'intervallo da $12{,}25$ a $12{,}35\ \text{cm}$ non contiene $12{,}52\ \text{cm}$. Il righello era lo stesso: l'incertezza dichiarata è più piccola di quella vera, cioè è sottostimata. Ha un'incertezza più piccola della tua, ma il suo intervallo non contiene il valore vero." %}
-{% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 <div style="clear:both"></div>
 {% include box-end.html %}
@@ -456,18 +432,11 @@ Un altro compagno appoggia il righello una volta sola, legge $12{,}3\ \text{cm}$
 Anna e Bruno misurano la stessa matita con lo stesso righello. Anna ottiene $(17{,}5 \pm 0{,}1)\ \text{cm}$, Bruno $(17{,}9 \pm 0{,}1)\ \text{cm}$. Uno dei due ha sbagliato?
 {% capture _o %}[
 {"v":"a","t":"No: la differenza fra le due misure è piccola"},
-{"v":"b","t":"Sì: gli intervalli $17{,}4$–$17{,}6\\ \\text{cm}$ e $17{,}8$–$18{,}0\\ \\text{cm}$ non si sovrappongono, quindi almeno uno dei due ha sbagliato la misura o ne ha sottostimato l'incertezza"},
+{"v":"b","t":"Sì: gli intervalli $17{,}4$–$17{,}6\\ \\text{cm}$ e $17{,}8$–$18{,}0\\ \\text{cm}$ non si sovrappongono, quindi almeno uno dei due ha sbagliato qualcosa nella misura"},
 {"v":"c","t":"No: due persone diverse ottengono sempre risultati diversi"},
 {"v":"d","t":"Non si può dire senza conoscere la vera lunghezza della matita"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-matita" opts=_o ok="b" s="Se la lunghezza vera stesse in entrambi gli intervalli, i due intervalli dovrebbero avere almeno un punto in comune. Non ce l'hanno: qualcosa non torna." %}
-
-{% capture _qComp %}[
-{"t":"Una misura con un'incertezza più piccola è sempre più vicina al valore vero.","ok":false,"s":"No: pensa alla tessera sanitaria misurata in fretta: $(85{,}0 \\pm 0{,}5)\\ \\text{mm}$ aveva un'incertezza più piccola, ma non era compatibile con il valore vero."},
-{"t":"Se dichiaro un'incertezza enorme, la mia misura sarà quasi sempre compatibile con il valore vero.","ok":true,"s":"Sì, ma l'incertezza sarà sovrastimata e la misura dirà pochissimo: dire che una matita è lunga fra 5 e 20 cm è corretto, ma non serve a molto."},
-{"t":"Se una misura non è compatibile con il valore vero, è sempre colpa dello strumento.","ok":false,"s":"No: spesso lo strumento va benissimo, ma l'incertezza è stata sottostimata, per esempio facendo una sola misurazione, oppure si è sbagliata la lettura."}
-]{% endcapture %}
-{% include quiz.html domande=_qComp id="q-compatibili" senza_esempi="true" %}
 {% include box-end.html %}
 {% include unisci-end.html %}
 
@@ -941,7 +910,7 @@ e voi mi calcolate la semidispersione come
 $$ s=\frac{12.4-11.9}{2} \ \text{cm}. $$
 - Cosa significa scrivere $x = \bar{x} \pm I_x$?
 - Cos'è l'incertezza relativa percentuale? Come si calcola e a cosa serve?
-- Quando una misura è compatibile con un valore? Quando un'incertezza è sottostimata o sovrastimata?
+- Quando una misura è compatibile con un valore?
 - Perché nella differenza $z = x - y$ le incertezze *assolute* si sommano (e non si sottraggono)?
 - Perché nel prodotto e nel quoziente si sommano le incertezze *relative*?
 - Perché nella propagazione dell'incertezza su $S = \pi(d/2)^2$ compare un fattore 2?
