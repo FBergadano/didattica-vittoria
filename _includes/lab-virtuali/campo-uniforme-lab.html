@@ -9,7 +9,8 @@ si allargano in due lastre piane sempre più larghe, finché le lastre escono
 dal riquadro: le linee del campo elettrico, all'inizio curve come quelle di
 due cariche opposte, diventano parallele ed equidistanti (a metà strada si
 vedono ancora i bordi, dove le linee si incurvano).
-Il pianeta è la Terra (immagine terra-ritaglio.webp).
+Il pianeta è la Terra: foto «Blue Marble» dell'Apollo 17 (NASA, pubblico dominio),
+terra-foto.webp, 2000 px; quando l'ingrandimento la sgranerebbe, sfuma in un mare liscio.
 
 Parametri (facoltativi):
   id   — ID univoco (default "culLab")
@@ -34,7 +35,7 @@ Parametri (facoltativi):
 (function(){
   var root = document.getElementById('{{ _culid }}'); if (!root) return;
   var SOLO = root.dataset.solo === 'pianeta';
-  var TERRA = new Image(); TERRA.onload = function(){ draw(); }; TERRA.src = '{{ "/corsi/immagini/terra-ritaglio.webp" | relative_url }}';
+  var TERRA = new Image(); TERRA.onload = function(){ draw(); }; TERRA.src = '{{ "/corsi/immagini/terra-foto.webp" | relative_url }}';
   var cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), sl = root.querySelector('input');
   var W = SOLO ? 310 : 620, H = 290, S = 2; cv.width = W * S; cv.height = H * S;
   var PW = 290, PH = 240, PY = 10;                 // i due pannelli: sinistra x 10..300, destra x 320..610
@@ -60,8 +61,13 @@ Parametri (facoltativi):
     al.addColorStop(0, 'rgba(125,180,255,.55)'); al.addColorStop(1, 'rgba(125,180,255,0)');
     ctx.fillStyle = al; ctx.beginPath(); ctx.arc(px, py, sc + ha, 0, 6.2832); ctx.fill();
     ctx.save(); ctx.beginPath(); ctx.arc(px, py, sc, 0, 6.2832); ctx.clip();
-    ctx.fillStyle = '#2f5d8c'; ctx.fillRect(px - sc, py - sc, 2 * sc, 2 * sc);
-    if (TERRA.complete && TERRA.naturalWidth) ctx.drawImage(TERRA, px - sc, py - sc, 2 * sc, 2 * sc);
+    // sotto la foto, una superficie liscia (mare, più chiaro verso il bordo per l'atmosfera):
+    // quando ci si avvicina molto la foto sfuma, così l'ingrandimento non la sgrana
+    var mare = ctx.createRadialGradient(px, py, Math.max(0, sc - 90), px, py, sc);
+    mare.addColorStop(0, '#1b4a86'); mare.addColorStop(.75, '#2c64a8'); mare.addColorStop(1, '#7fb0e6');
+    ctx.fillStyle = mare; ctx.fillRect(px - sc, py - sc, 2 * sc, 2 * sc);
+    var aF = Math.max(0, Math.min(1, (2600 - sc) / 1600));   // foto piena fino a 1000 px di raggio (la sua risoluzione)
+    if (aF > 0 && TERRA.complete && TERRA.naturalWidth) { ctx.globalAlpha = aF; ctx.drawImage(TERRA, px - sc, py - sc, 2 * sc, 2 * sc); ctx.globalAlpha = 1; }
     ctx.restore();
     // vettori del campo su una griglia (lunghezza proporzionale a 1/r²)
     var step = 34;
