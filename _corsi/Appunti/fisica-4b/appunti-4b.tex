@@ -1,0 +1,151 @@
+% !TEX program = xelatex
+\documentclass[11pt]{report}
+\input{../../../latex/preamble.tex}
+
+\begin{document}
+\chapter{La Teoria della Gravitazione}
+
+
+\section*{Esercizi su $U$ e $V$}
+
+Esercizi da fare in classe dopo aver introdotto l'energia potenziale
+$U = -G\dfrac{Mm}{r}$ e il potenziale $V = \dfrac{U}{m} = -G\dfrac{M}{r}$.
+Non usano l'energia meccanica (che quest'anno non faccio): l'energia
+da fornire è sempre la variazione $\Delta U = U_\text{fin} - U_\text{in}$.
+Sono in ordine di difficoltà più o meno crescente; i primi due sono
+di riscaldamento, gli ultimi sono quelli che fanno discutere.
+
+Dati utili: $G = \SI{6.67e-11}{N.m^2/kg^2}$, $M_\oplus = \SI{5.97e24}{kg}$,
+$R_\oplus = \SI{6371}{km}$, $M_L = \SI{7.35e22}{kg}$, distanza Terra--Luna
+$d = \SI{3.84e8}{m}$, $M_\odot = \SI{1.99e30}{kg}$, distanza Terra--Sole
+$\SI{1.50e11}{m}$.
+
+\subsection*{1. Che cosa succede se\dots}
+Due masse sono a distanza $r$ e hanno energia potenziale $U$. Quanto vale
+l'energia potenziale se
+\begin{enumerate*}[label=\alph*)]
+  \item la distanza triplica;
+  \item una delle due masse raddoppia;
+  \item entrambe le masse raddoppiano e anche la distanza raddoppia?
+\end{enumerate*}
+E il potenziale $V$ generato da una delle due, nei tre casi?
+
+\emph{Soluzione.} a) $U/3$; b) $2U$; c) $2U$ (il numeratore si quadruplica,
+il denominatore raddoppia). Per $V$ conta solo la massa che lo genera:
+a) $V/3$; b) $V$ oppure $2V$, a seconda di quale massa raddoppia; c) $V$.
+\emph{Da far notare:} con la forza, nel caso c), il risultato sarebbe stato
+lo stesso $F$, perché lì la distanza è al quadrato.
+
+\subsection*{2. Stesso potenziale, energie diverse}
+La Stazione Spaziale Internazionale ($\SI{4.2e5}{kg}$) orbita a
+$\SI{400}{km}$ di quota; dentro c'è un astronauta di $\SI{80}{kg}$.
+Calcolate il potenziale gravitazionale della Terra alla quota della
+Stazione, e l'energia potenziale della Stazione e dell'astronauta.
+
+\emph{Soluzione.} $r = \SI{6.77e6}{m}$,
+$V = -G\dfrac{M_\oplus}{r} \approx \SI{-5.88e7}{J/kg}$, uguale per tutti e due.
+$U_\text{ISS} = mV \approx \SI{-2.5e13}{J}$, $U_\text{astronauta}
+\approx \SI{-4.7e9}{J}$. È l'esercizio che fa vedere meglio la differenza
+fra $U$ (della coppia) e $V$ (del punto).
+
+\subsection*{3. Il primo gradino costa di più}
+Quanta energia bisogna fornire a un satellite di $\SI{1000}{kg}$ per
+portarlo dalla superficie terrestre a distanza $2R_\oplus$ dal centro? E da
+$2R_\oplus$ a $3R_\oplus$? E dalla superficie fino a distanza infinita?
+Perché il secondo tratto, lungo quanto il primo, costa meno?
+
+\emph{Soluzione.} Conviene scrivere tutto in funzione di
+$G\dfrac{M_\oplus m}{R_\oplus} \approx \SI{6.25e10}{J}$:
+$\Delta U_{R\to2R} = \tfrac12 \cdot \SI{6.25e10}{J} \approx \SI{3.1e10}{J}$,
+$\Delta U_{2R\to3R} = \tfrac16 \cdot \SI{6.25e10}{J} \approx \SI{1.0e10}{J}$,
+$\Delta U_{R\to\infty} \approx \SI{6.25e10}{J}$. Il primo tratto da solo
+costa metà di tutto il viaggio fino all'infinito: lì la forza da vincere è
+più grande. Bella domanda finale: \emph{la somma di infiniti gradini sempre
+più economici dà un numero finito?} Sì: $\tfrac12+\tfrac16+\tfrac1{12}+\dots = 1$.
+
+\subsection*{4. Da dove viene $mgh$}
+Usando $U = -G\dfrac{M_\oplus m}{r}$, calcolate quanta energia serve per
+sollevare un oggetto di $\SI{1}{kg}$ di un metro, dalla superficie
+terrestre. Confrontate con $mgh$.
+
+\emph{Soluzione.} $\Delta U = GM_\oplus m\left(\dfrac1{R_\oplus}-\dfrac1{R_\oplus+\SI{1}{m}}\right)
+\approx \SI{9.81}{J}$, praticamente $mgh = \SI{9.8}{J}$. \emph{Attenzione:}
+con la calcolatrice la differenza fra $1/R_\oplus$ e $1/(R_\oplus+1)$ si perde
+negli arrotondamenti; si può far scrivere
+$\dfrac1{R}-\dfrac1{R+h} = \dfrac{h}{R(R+h)} \approx \dfrac{h}{R^2}$, e allora
+$\Delta U \approx m\,\dfrac{GM_\oplus}{R_\oplus^2}\,h = mgh$. Spiega perché $mgh$
+funziona solo per dislivelli piccoli (collegamento con il campo uniforme
+vicino alla superficie).
+
+\subsection*{5. Il potenziale del Sole}
+Calcolate il potenziale gravitazionale generato dal Sole nel punto in cui si
+trova la Terra, e confrontatelo con il potenziale generato dalla Terra sulla
+sua superficie. Il Sole ``conta'' di più? Allora perché non ci accorgiamo
+della sua attrazione?
+
+\emph{Soluzione.} $V_\odot \approx \SI{-8.9e8}{J/kg}$, contro
+$V_\oplus \approx \SI{-6.3e7}{J/kg}$: quello del Sole è circa 14 volte più
+grande. Ma il campo del Sole qui è $g_\odot \approx \SI{5.9e-3}{N/kg}$,
+contro $\SI{9.8}{N/kg}$ della Terra: il potenziale del Sole è grande ma
+\emph{quasi uguale} in tutti i punti vicino a noi, e per spostarci di poco
+conta la variazione del potenziale, non il suo valore. (In più, cadiamo
+attorno al Sole insieme alla Terra.) Ottimo per discutere che il valore di
+$V$ in sé non si ``sente''.
+
+\subsection*{6. A metà strada fra la Terra e la Luna}
+Calcolate il potenziale nel punto a metà strada fra la Terra e la Luna.
+Quanto contribuisce la Luna? Poi: il campo totale è nullo a circa il
+$\SI{90}{\%}$ della distanza Terra--Luna, partendo dalla Terra. Quanto vale
+lì il potenziale? È zero anche lui?
+
+\emph{Soluzione.} A metà strada ($\SI{1.92e8}{m}$ da entrambe):
+$V_\oplus \approx \SI{-2.07e6}{J/kg}$, $V_L \approx \SI{-2.55e4}{J/kg}$,
+$V \approx \SI{-2.10e6}{J/kg}$: la Luna conta poco più dell'$\SI{1}{\%}$.
+Nel punto di campo nullo ($\SI{3.46e8}{m}$ dalla Terra):
+$V_\oplus \approx \SI{-1.15e6}{J/kg}$, $V_L \approx \SI{-1.28e5}{J/kg}$,
+$V \approx \SI{-1.28e6}{J/kg}$, per niente zero. Campo nullo non vuol dire
+potenziale nullo: il campo è una somma di vettori che si possono annullare,
+il potenziale è una somma di numeri tutti negativi.
+
+\subsection*{7. Quattro masse ai vertici di un quadrato}
+Quattro masse di $\SI{1000}{kg}$ sono ai vertici di un quadrato di lato
+$\SI{2}{m}$. Quanto valgono il campo gravitazionale e il potenziale nel
+centro del quadrato? E se si toglie una delle quattro masse?
+
+\emph{Soluzione.} Nel centro il campo è nullo (i quattro vettori si
+annullano a due a due), il potenziale no:
+$V = -4G\dfrac{M}{a/\sqrt2} \approx \SI{-1.9e-7}{J/kg}$. Togliendo una massa,
+$V$ diventa i $\tfrac34$ (\SI{-1.4e-7}{J/kg}), mentre il campo non è più
+nullo: punta verso la massa opposta a quella tolta. Stesso messaggio
+dell'esercizio 6, ma senza conti difficili.
+
+\subsection*{8. Trovare la massa di Marte}
+Una sonda misura sulla superficie di Marte un potenziale gravitazionale di
+$\SI{-12.6}{MJ/kg}$. Il raggio di Marte è $\SI{3390}{km}$. Quanto vale la
+massa di Marte? Quanta energia serve per portare all'infinito una sonda di
+$\SI{500}{kg}$ dalla superficie?
+
+\emph{Soluzione.} $M = -\dfrac{V R}{G} \approx \SI{6.4e23}{kg}$ (circa un
+decimo della Terra). $\Delta U = 0 - mV = \SI{6.3e9}{J}$. Esercizio utile
+per isolare una grandezza da $V = -GM/r$, con il segno.
+
+\subsection*{9. Costruire un triangolo di masse}
+Tre sfere di $\SI{10}{kg}$ sono ai vertici di un triangolo equilatero di
+lato $\SI{1}{m}$. Quanta energia bisogna fornire per allontanarle tutte
+all'infinito? (Suggerimento: quante \emph{coppie} di masse ci sono?)
+
+\emph{Soluzione.} L'energia potenziale va contata per coppie: le coppie sono
+tre, quindi $U = -3G\dfrac{m^2}{a} \approx \SI{-2.0e-8}{J}$, e servono
+$\SI{2.0e-8}{J}$. Domanda di rilancio: e con quattro masse ai vertici di un
+quadrato? (Sei coppie: quattro lati e due diagonali.) È il passaggio dalla
+``energia di una coppia'' all'energia di un sistema, e prepara l'energia
+elettrostatica di più cariche.
+
+\section*{Domande ricorrenti degli studenti}
+\begin{itemize}
+  \item \emph{Perché l'energia potenziale è negativa? Un'energia negativa non
+  ha senso.} Conta solo la differenza; lo zero l'abbiamo messo all'infinito.
+  Vedi l'esercizio 5.
+\end{itemize}
+
+\end{document}
