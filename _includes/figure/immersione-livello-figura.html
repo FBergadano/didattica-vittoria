@@ -1,36 +1,56 @@
 {% comment %}
-Figura statica: due disegni affiancati (prima/dopo l'immersione) che illustrano il metodo della variazione di livello per misurare il volume di un corpo irregolare. Nessun parametro.
+Figura statica: due bicchieri cilindrici disegnati in prospettiva, prima e dopo aver immerso il sasso
+(metodo della variazione di livello). Prima: il sasso è sul tavolo, l'acqua arriva a h_i; sono indicati
+h_i e il diametro D. Dopo: il sasso è sul fondo, l'acqua arriva a h_f; la linea tratteggiata è il livello
+di prima e la quota arancione è Δh. Nessun parametro.
 {% endcomment %}
-<div style="display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;margin:1.5rem 0;">
+<svg viewBox="0 0 500 328" xmlns="http://www.w3.org/2000/svg" style="max-width:540px;width:100%;display:block;margin:1.2rem auto;" role="img" aria-label="Il livello dell'acqua prima e dopo aver immerso il sasso">
+<defs>
+<linearGradient id="imliv-vetro" x1="0" x2="1" y1="0" y2="0">
+ <stop offset="0" stop-color="#cbd5e1" stop-opacity="0.55"/><stop offset="0.18" stop-color="#ffffff" stop-opacity="0.15"/>
+ <stop offset="0.75" stop-color="#e2e8f0" stop-opacity="0.1"/><stop offset="1" stop-color="#94a3b8" stop-opacity="0.5"/></linearGradient>
+<linearGradient id="imliv-acqua" x1="0" x2="1" y1="0" y2="0">
+ <stop offset="0" stop-color="#60a5fa" stop-opacity="0.75"/><stop offset="0.35" stop-color="#93c5fd" stop-opacity="0.6"/>
+ <stop offset="1" stop-color="#3b82f6" stop-opacity="0.75"/></linearGradient>
+<radialGradient id="imliv-sasso" cx="0.35" cy="0.3" r="0.8">
+ <stop offset="0" stop-color="#d1d5db"/><stop offset="0.6" stop-color="#8b8f97"/><stop offset="1" stop-color="#52565e"/></radialGradient>
+<radialGradient id="imliv-ombra" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000" stop-opacity="0.22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<marker id="imliv-fr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 Z" fill="#334155"/></marker>
+</defs>
+<line x1="20" y1="252" x2="480" y2="252" stroke="#d6d3d1" stroke-width="2"/>
+<ellipse cx="130" cy="255" rx="69" ry="14" fill="url(#imliv-ombra)"/>
+<path d="M 75,240 A 55 11 0 0 0 185,240 L 185,245 A 55 11 0 0 1 75,245 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+<path d="M 75,60 A 55 11 0 0 1 185,60" fill="none" stroke="#94a3b8" stroke-width="1.6"/>
 
-<figure style="text-align:center;flex:0 0 auto;">
-<svg width="130" height="185" viewBox="0 0 130 185" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="15" width="90" height="155" fill="none" stroke="#6b7280" stroke-width="2.5" rx="2"/>
-  <rect x="21" y="85" width="88" height="84" fill="#bfdbfe" opacity="0.75"/>
-  <line x1="21" y1="85" x2="109" y2="85" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="5,2"/>
-  <text x="115" y="89" font-size="11" fill="#374151" font-style="italic">h<tspan font-size="8" baseline-shift="sub">i</tspan></text>
-  <line x1="20" y1="7" x2="110" y2="7" stroke="#374151" stroke-width="1.5"/>
-  <text x="58" y="5" font-size="11" fill="#374151" font-style="italic">d</text>
-  <circle cx="65" cy="60" r="16" fill="#9ca3af" opacity="0.8"/>
-  <text x="33" y="135" font-size="10" fill="#374151">acqua</text>
+<path d="M 75.0,170 L 75,240 A 55 11 0 0 0 185,240 L 185.0,170 A 55.0 11 0 0 1 75.0,170 Z" fill="url(#imliv-acqua)"/>
+<ellipse cx="130" cy="170" rx="55.0" ry="11" fill="#dbeafe" fill-opacity="0.85" stroke="#3b82f6" stroke-width="1.4"/>
+<path d="M 75,60 L 75,240 A 55 11 0 0 0 185,240 L 185,60 A 55 11 0 0 1 75,60 Z" fill="url(#imliv-vetro)" stroke="#475569" stroke-width="2"/>
+<path d="M 75,60 A 55 11 0 0 0 185,60" fill="none" stroke="#475569" stroke-width="2"/>
+<path d="M 87.1,77 L 87.1,234" stroke="#fff" stroke-opacity="0.7" stroke-width="5" stroke-linecap="round"/>
+<path d="M 178.4,81 L 178.4,226" stroke="#fff" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
+<text x="130" y="212" font-size="17" fill="#1e3a8a" text-anchor="middle" font-family="Georgia,serif">acqua</text>
+<ellipse cx="228" cy="246" rx="28" ry="5" fill="url(#imliv-ombra)"/><g transform="translate(228,229) scale(1)"><path d="M -24,-2 C -26,-14 -9,-21 4,-19 C 17,-17 27,-9 25,3 C 23,14 9,18 -4,17 C -17,16 -23,9 -24,-2 Z" fill="url(#imliv-sasso)" stroke="#374151" stroke-width="1.4"/><path d="M -12,-12 C -6,-15 2,-15 7,-13" fill="none" stroke="#fff" stroke-opacity="0.45" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="5" r="1.6" fill="#374151" opacity="0.5"/><circle cx="-8" cy="8" r="1.2" fill="#374151" opacity="0.4"/></g>
+<ellipse cx="360" cy="255" rx="69" ry="14" fill="url(#imliv-ombra)"/>
+<path d="M 305,240 A 55 11 0 0 0 415,240 L 415,245 A 55 11 0 0 1 305,245 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+<path d="M 305,60 A 55 11 0 0 1 415,60" fill="none" stroke="#94a3b8" stroke-width="1.6"/>
+<g transform="translate(360,221) scale(1)"><path d="M -24,-2 C -26,-14 -9,-21 4,-19 C 17,-17 27,-9 25,3 C 23,14 9,18 -4,17 C -17,16 -23,9 -24,-2 Z" fill="url(#imliv-sasso)" stroke="#374151" stroke-width="1.4"/><path d="M -12,-12 C -6,-15 2,-15 7,-13" fill="none" stroke="#fff" stroke-opacity="0.45" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="5" r="1.6" fill="#374151" opacity="0.5"/><circle cx="-8" cy="8" r="1.2" fill="#374151" opacity="0.4"/></g>
+<path d="M 305.0,140 L 305,240 A 55 11 0 0 0 415,240 L 415.0,140 A 55.0 11 0 0 1 305.0,140 Z" fill="url(#imliv-acqua)"/>
+<ellipse cx="360" cy="140" rx="55.0" ry="11" fill="#dbeafe" fill-opacity="0.85" stroke="#3b82f6" stroke-width="1.4"/>
+<path d="M 305,60 L 305,240 A 55 11 0 0 0 415,240 L 415,60 A 55 11 0 0 1 305,60 Z" fill="url(#imliv-vetro)" stroke="#475569" stroke-width="2"/>
+<path d="M 305,60 A 55 11 0 0 0 415,60" fill="none" stroke="#475569" stroke-width="2"/>
+<path d="M 317.1,77 L 317.1,234" stroke="#fff" stroke-opacity="0.7" stroke-width="5" stroke-linecap="round"/>
+<path d="M 408.4,81 L 408.4,226" stroke="#fff" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
+<path d="M 305,170 A 55 11 0 0 0 415,170" fill="none" stroke="#1e40af" stroke-width="1.3" stroke-dasharray="5,4"/>
+<line x1="59" y1="240" x2="59" y2="170" stroke="#334155" stroke-width="1.5" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
+<text x="53" y="210.0" font-size="21" font-style="italic" fill="#0f172a" text-anchor="end" font-family="Georgia,serif">h<tspan font-size="14" dy="4">i</tspan></text>
+<line x1="289" y1="240" x2="289" y2="140" stroke="#334155" stroke-width="1.5" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
+<text x="283" y="195.0" font-size="21" font-style="italic" fill="#0f172a" text-anchor="end" font-family="Georgia,serif">h<tspan font-size="14" dy="4">f</tspan></text>
+<line x1="417" y1="140" x2="435" y2="140" stroke="#94a3b8" stroke-width="1"/><line x1="417" y1="170" x2="435" y2="170" stroke="#94a3b8" stroke-width="1"/>
+<line x1="429" y1="170" x2="429" y2="140" stroke="#c2410c" stroke-width="1.5" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
+<text x="437" y="161.0" font-size="21" fill="#c2410c" font-family="Georgia,serif">Δ<tspan font-style="italic">h</tspan></text>
+<line x1="75" y1="257" x2="75" y2="284" stroke="#94a3b8" stroke-width="1"/><line x1="185" y1="257" x2="185" y2="284" stroke="#94a3b8" stroke-width="1"/>
+<line x1="75" y1="278" x2="185" y2="278" stroke="#334155" stroke-width="1.5" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
+<text x="130" y="272" font-size="21" font-style="italic" fill="#0f172a" text-anchor="middle" font-family="Georgia,serif">D</text>
+<text x="155" y="320" font-size="17" fill="#475569" text-anchor="middle" font-family="Georgia,serif">Prima dell'immersione</text>
+<text x="360" y="320" font-size="17" fill="#475569" text-anchor="middle" font-family="Georgia,serif">Dopo l'immersione</text>
 </svg>
-<figcaption style="font-size:0.85rem;color:#6b7280;">Prima dell'immersione</figcaption>
-</figure>
-
-<figure style="text-align:center;flex:0 0 auto;">
-<svg width="130" height="185" viewBox="0 0 130 185" xmlns="http://www.w3.org/2000/svg">
-  <rect x="20" y="15" width="90" height="155" fill="none" stroke="#6b7280" stroke-width="2.5" rx="2"/>
-  <rect x="21" y="65" width="88" height="104" fill="#bfdbfe" opacity="0.75"/>
-  <line x1="21" y1="65" x2="109" y2="65" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="5,2"/>
-  <line x1="21" y1="85" x2="109" y2="85" stroke="#93c5fd" stroke-width="1" stroke-dasharray="3,3"/>
-  <text x="115" y="69" font-size="11" fill="#374151" font-style="italic">h<tspan font-size="8" baseline-shift="sub">f</tspan></text>
-  <text x="115" y="89" font-size="11" fill="#93c5fd" font-style="italic">h<tspan font-size="8" baseline-shift="sub">i</tspan></text>
-  <line x1="109" y1="65" x2="109" y2="85" stroke="#374151" stroke-width="1.5" marker-start="none"/>
-  <text x="112" y="76" font-size="10" fill="#374151">Δh</text>
-  <circle cx="65" cy="130" r="16" fill="#9ca3af" opacity="0.8"/>
-  <text x="33" y="105" font-size="10" fill="#374151">acqua</text>
-</svg>
-<figcaption style="font-size:0.85rem;color:#6b7280;">Dopo l'immersione</figcaption>
-</figure>
-
-</div>

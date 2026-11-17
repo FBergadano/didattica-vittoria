@@ -9,26 +9,34 @@ si allargano in due lastre piane sempre più larghe, finché le lastre escono
 dal riquadro: le linee del campo elettrico, all'inizio curve come quelle di
 due cariche opposte, diventano parallele ed equidistanti (a metà strada si
 vedono ancora i bordi, dove le linee si incurvano).
-Nessun parametro.
+Il pianeta è la Terra (immagine terra-ritaglio.webp).
+
+Parametri (facoltativi):
+  id   — ID univoco (default "culLab")
+  solo — "pianeta" per mostrare soltanto il pannello della Terra, più grande
+         (per la forza peso, nella gravitazione)
 {% endcomment %}
-<div class="cul-widget" id="culLab">
-<canvas class="cul-canvas" aria-label="Simulatore: avvicinandosi alla superficie di un pianeta il campo gravitazionale diventa uniforme, come quello fra due lastre cariche"></canvas>
+{% assign _culid = include.id | default: "culLab" %}<div class="cul-widget{% if include.solo == "pianeta" %} cul-solo{% endif %}" id="{{ _culid }}" data-solo="{{ include.solo }}">
+<canvas class="cul-canvas" aria-label="Simulatore: avvicinandosi alla superficie della Terra il campo gravitazionale diventa uniforme{% if include.solo != "pianeta" %}, come quello fra due lastre cariche{% endif %}"></canvas>
 <div class="cul-ctrl">
-  <label>Avvicinati alla superficie del pianeta <input type="range" min="0" max="100" value="0"></label>
+  <label>Avvicinati alla superficie della Terra <input type="range" min="0" max="100" value="0"></label>
 </div>
 </div>
 <style>
 .cul-widget { margin: 1.4rem auto; max-width: 620px; text-align: center; }
 .cul-canvas { width: 100%; height: auto; display: block; border-radius: 8px; }
 .cul-ctrl { margin: .4rem 0; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .85rem; color: #334155; }
+.cul-widget.cul-solo { max-width: 400px; }
 .cul-ctrl input { width: 220px; vertical-align: middle; accent-color: var(--accent, #0f766e); }
 @media print { .cul-widget { display: none; } }
 </style>
 <script>
 (function(){
-  var root = document.getElementById('culLab'); if (!root) return;
+  var root = document.getElementById('{{ _culid }}'); if (!root) return;
+  var SOLO = root.dataset.solo === 'pianeta';
+  var TERRA = new Image(); TERRA.onload = function(){ draw(); }; TERRA.src = '{{ "/corsi/immagini/terra-ritaglio.webp" | relative_url }}';
   var cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), sl = root.querySelector('input');
-  var W = 620, H = 290, S = 2; cv.width = W * S; cv.height = H * S;
+  var W = SOLO ? 310 : 620, H = 290, S = 2; cv.width = W * S; cv.height = H * S;
   var PW = 290, PH = 240, PY = 10;                 // i due pannelli: sinistra x 10..300, destra x 320..610
   function arrow(x0, y0, x1, y1, col, w){
     var a = Math.atan2(y1 - y0, x1 - x0), d = Math.hypot(x1 - x0, y1 - y0); if (d < 3) return;
@@ -47,21 +55,27 @@ Nessun parametro.
     ctx.save(); ctx.beginPath(); ctx.rect(X0, PY, PW, PH); ctx.clip();
     // il pianeta
     var px = CX, py = CY + cy * sc;
-    var g = ctx.createRadialGradient(px - sc * .3, py - sc * .3, sc * .1, px, py, sc);
-    g.addColorStop(0, '#93c5fd'); g.addColorStop(1, '#1d4ed8');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(px, py, sc, 0, 6.2832); ctx.fill();
+    // la Terra: un alone d'atmosfera e l'immagine ritagliata nel disco (finché non è caricata, un disco blu)
+    var ha = Math.min(sc * .06, 10) + 3, al = ctx.createRadialGradient(px, py, sc, px, py, sc + ha);
+    al.addColorStop(0, 'rgba(125,180,255,.55)'); al.addColorStop(1, 'rgba(125,180,255,0)');
+    ctx.fillStyle = al; ctx.beginPath(); ctx.arc(px, py, sc + ha, 0, 6.2832); ctx.fill();
+    ctx.save(); ctx.beginPath(); ctx.arc(px, py, sc, 0, 6.2832); ctx.clip();
+    ctx.fillStyle = '#2f5d8c'; ctx.fillRect(px - sc, py - sc, 2 * sc, 2 * sc);
+    if (TERRA.complete && TERRA.naturalWidth) ctx.drawImage(TERRA, px - sc, py - sc, 2 * sc, 2 * sc);
+    ctx.restore();
     // vettori del campo su una griglia (lunghezza proporzionale a 1/r²)
     var step = 34;
     for (var gx = X0 + step / 2; gx < X0 + PW; gx += step) for (var gy = PY + step / 2; gy < PY + PH; gy += step) {
       var wx = (gx - CX) / sc, wy = cy - (gy - CY) / sc, r = Math.hypot(wx, wy);
-      if (r < 1.02) continue;
       var len = Math.min(26, 24 / (r * r));
+      if ((r - 1) * sc - 3 < len) continue;   // il vettore entrerebbe nel pianeta: non lo disegno
       arrow(gx, gy, gx - wx / r * len, gy + wy / r * len, '#0f766e', 1.6);
     }
     ctx.restore();
     ctx.fillStyle = '#334155'; ctx.font = 'italic 13px Georgia, serif'; ctx.textAlign = 'center';
-    ctx.fillText(u < .5 ? 'un pianeta e il suo campo gravitazionale' : 'vicino alla superficie: il campo è uniforme', CX, PY + PH + 20);
+    ctx.fillText(u < .5 ? 'la Terra e il suo campo gravitazionale' : 'vicino alla superficie: il campo è uniforme', CX, PY + PH + 20);
     ctx.font = 'italic bold 15px Georgia, serif'; ctx.fillStyle = '#0f766e'; ctx.textAlign = 'left'; ctx.fillText('g', X0 + 8, PY + 20);
+    if (SOLO) return;
     // destra: due cariche puntiformi che, avvicinandosi al pianeta, si allargano in due lastre
     var X1 = 320; panel(X1);
     var XC = X1 + PW / 2, T = PY + 72, B = PY + PH - 72, hw = 4 * Math.pow(175, u) - 4, N = 41 + Math.round(hw / 5);   // semilarghezza delle lastre: alla fine escono dal riquadro

@@ -19,7 +19,7 @@ Ma tutto questo Alice non lo sa.
 </cit>
 
 {% include box-obiettivi.html %}
-Scopri perché nessuna misura è perfetta e come si dichiara quanto è precisa: l'incertezza strumentale, la semidispersione, l'incertezza relativa. Impari quando una misura è compatibile con il valore vero. Impari come si propagano le incertezze quando metti insieme più misure in un calcolo. Poi metti tutto in pratica in un'attività di laboratorio: misurare la densità di un sasso con un bicchiere d'acqua.
+Scopri perché nessuna misura è perfetta e come si dichiara quanto è precisa: l'incertezza strumentale, la semidispersione, l'incertezza relativa. Impari quando una misura è compatibile con il valore vero. Impari come si propagano le incertezze quando metti insieme più misure in un calcolo. Poi metti tutto in pratica in un'attività di laboratorio: misurare la densità di un sasso con un bicchiere d'acqua. Infine ti prepari all'interrogazione con alcuni esercizi.
 {% include box-end.html %}
 
 <section id="cap1" class="chapter-section">
@@ -638,10 +638,7 @@ Per ogni grandezza calcolata, quali incertezze si sommano?
 <div class="prose" markdown="1">
 
 ## Regole dell'attività
-- L'attività di laboratorio deve essere svolta a casa e documentata con fotografie dove richiesto. Infine, si dovrà compilare un modulo sull'attività, come specificato più avanti. Il modulo dovrà essere salvato **in formato pdf** e inviato <u>alla mail</u>
-<div style="text-align:center">
-<a href="mailto:fulvio.bergadano@vittoriaweb.it">fulvio.bergadano@vittoriaweb.it</a>
-</div>
+- L'attività di laboratorio deve essere svolta a casa e documentata con fotografie dove richiesto. Infine, dovrete compilare il [modulo della relazione](#cap-relazione) e consegnarlo **direttamente qui sul sito**, come spiegato più avanti.
 - Potete utilizzare l'Intelligenza Artificiale, tranne nella parte di **Discussione**, come specificato.
 - Potete lavorare in gruppo (o con l'aiuto di un genitore/parente/amico), ma ciascuno di voi deve eseguire *le proprie* misurazioni. Infatti, ciascuno di voi dovrà misurare la densità di un oggetto differente. Tale oggetto deve essere unico per ciascuno studente.
 - Dopo la consegna della relazione ci sarà un'interrogazione che verterà sulla relazione stessa (vedi sotto, parte 3). Anche se avete lavorato in gruppo, all'interrogazione siete tenuti a sapere <u>tutto</u> quello che avete scritto.
@@ -655,14 +652,14 @@ Per ogni grandezza calcolata, quali incertezze si sommano?
 
 L'obiettivo è quello di farvi toccare con mano la precisione della Fisica sperimentale.
 
-Durante l'esperienza, dovrete determinare la densità $d$ di un corpo irregolare (un sasso o simile) usando strumenti reperibili a casa.
+Durante l'esperienza, dovrete determinare la densità $d$ di un corpo irregolare (un sasso o simile) usando strumenti reperibili a casa. L'importante è che il corpo non galleggi nell'acqua.
 
 {% include margin-note-end.html %}
 
 {% include box-def.html testo="Densità" %}
 La densità di un corpo è il rapporto tra la sua massa e il suo volume. Essa si calcola dunque con la formula
 $$d = \frac{m}{V}$$
-Si misura in kg/m³ (o in g/cm³ o in g/L in unità pratiche, dove “L” è il litro e corrisponde a 1 dm³).
+Si misura in kg/m³ (o in g/cm³ o in g/ℓ in unità pratiche, dove “ℓ” è il litro e corrisponde a 1 dm³).
 {% include box-end.html %}
 
 {% include margin-note.html testo="Il volume si misura con l'acqua" %}
@@ -680,7 +677,6 @@ Il problema è misurare il **volume** di un corpo irregolare, di cui non possiam
 - Acqua
 - Un righello millimetrato
 - Una bilancia (anche da cucina va bene)
-- Un filo sottile (per calare il sasso delicatamente)
 - Uno smartphone per le fotografie
 
 ### Perché serve un bicchiere cilindrico
@@ -709,19 +705,19 @@ Fotografa tutti gli strumenti che utilizzerai prima di iniziare. La foto deve es
 
 {% include margin-note.html testo="Almeno tre misure del diametro" %}
 
-Misura il **diametro interno** $d$ del bicchiere con il righello. Ripeti la misurazione almeno **3 volte**, spostando il righello in posizioni leggermente diverse. Fai una foto del righello sul diametro del bicchiere.
+Misura il **diametro interno** $D$ del bicchiere con il righello. Ripeti la misurazione almeno **3 volte**, spostando il righello in posizioni leggermente diverse. Fai una foto del righello sul diametro del bicchiere.
 
 Calcola l'incertezza strumentale i.s. del righello.
 
 Poi calcola:
 
-$$\bar{d} = \frac{d_1 + d_2 + d_3}{3}, \qquad s_d = \frac{d_\text{max} - d_\text{min}}{2}$$
+$$\bar{D} = \frac{D_1 + D_2 + D_3}{3}, \qquad s_D = \frac{D_\text{max} - D_\text{min}}{2}$$
 
 (naturalmente, può essere che ti venga sempre lo stesso valore tutte e tre le volte).
 
 Quindi, calcola 
 
-$$I_d = \text{i.s.} + s_d, \qquad i_d = \frac{I_d}{\bar d} \times 100\%.$$
+$$I_D = \text{i.s.} + s_D, \qquad i_D = \frac{I_D}{\bar D} \times 100\%.$$
 
 {% include margin-note-end.html %}
 
@@ -733,7 +729,7 @@ $$I_d = \text{i.s.} + s_d, \qquad i_d = \frac{I_d}{\bar d} \times 100\%.$$
 
 L'area di base $S$ del bicchiere si calcola come l'area di un cerchio:
 
-$$S = \pi \!\left(\frac{\bar{d}}{2}\right)^2$$
+$$S = \pi \!\left(\frac{\bar{D}}{2}\right)^2$$
 
 Dopo aver calcolato $S$ sarà necessario anche stimare l'incertezza su $S$. Qui ci è utile il precedente teorema (vedi [qui](#propagazione-degli-errori)), che ci dice che se 
 
@@ -741,7 +737,7 @@ $$z = x^n$$
 
 allora $i_z = n \cdot i_x$. Nel nostro caso, quindi,
 
-$$i_S = 2\,i_d.$$
+$$i_S = 2\,i_D.$$
 
 {% include margin-note-end.html %}
 
@@ -824,7 +820,7 @@ $$z=\bar{h}_f - \bar{h}_i, \qquad I_z = I_{h_f} + I_{h_i}, \qquad i_z = \frac{I_
 
 $$V_\text{sasso} = S \cdot z$$
 
-$$i_V = i_S + i_z = 2\,i_d + i_z, \qquad I_V = V_\text{sasso} \cdot \frac{i_V}{100}$$
+$$i_V = i_S + i_z = 2\,i_D + i_z, \qquad I_V = V_\text{sasso} \cdot \frac{i_V}{100}$$
 
 **Densità** (quoziente: le incertezze relative si sommano):
 
@@ -867,15 +863,13 @@ In questa sezione puoi **soltanto guadagnare punti**, non perderli. Rifletti lib
 
 ### Come consegnare
 
-Compila il modulo qui sotto, poi clicca **Stampa modulo** in fondo. Nel dialogo di stampa scegli "Salva come PDF" come destinazione e invia il file a:
+{% include margin-note.html testo="Si consegna dal sito" %}
 
-<div style="text-align:center;margin:0.5rem 0;">
-<a href="mailto:fulvio.bergadano@vittoriaweb.it">fulvio.bergadano@vittoriaweb.it</a>
-</div>
+Prima di tutto entrate con il pulsante 👤 in alto, con il vostro codice e il PIN. Poi compilate il modulo qui sotto: quello che scrivete resta salvato in questo browser, quindi potete lavorarci in più volte, purché dallo stesso telefono o computer. Le foto aggiungetele fase per fase con i pulsanti del modulo.
 
-**Oggetto della mail:** `Relazione densità – [Nome Cognome] – [Classe]`
+Quando avete finito, premete **Invia al prof** in fondo al modulo. Se vi accorgete di un errore, correggete e reinviate: io vedo soltanto l'ultima versione.
 
-*In alternativa: compila su carta, fotografa ogni pagina e allega le foto alla mail.*
+{% include margin-note-end.html %}
 
 ### Modulo
 
@@ -913,9 +907,184 @@ $$ s=\frac{12.4-11.9}{2} \ \text{cm}. $$
 - Quando una misura è compatibile con un valore?
 - Perché nella differenza $z = x - y$ le incertezze *assolute* si sommano (e non si sottraggono)?
 - Perché nel prodotto e nel quoziente si sommano le incertezze *relative*?
-- Perché nella propagazione dell'incertezza su $S = \pi(d/2)^2$ compare un fattore 2?
+- Perché nella propagazione dell'incertezza su $S = \pi(D/2)^2$ compare un fattore 2?
 
 **Attenzione!** Questa lista di domande sono solo esempi per aiutarvi a comprendere la tipologia. Chiaramente, potrei farvi domande non contenute in questa lista.
+{% include box-end.html %}
+
+### Esercizi per prepararsi all'interrogazione
+
+Qui sotto trovate qualche esercizio sulle domande che vi farò. Partiamo dagli strumenti e dalla semidispersione.
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcInt1" %}
+{% include scorri.html %}
+{% include scorri-slide.html titolo="1. Incertezza ed errore" %}
+Qual è la differenza fra incertezza ed errore?
+{% capture _oIntErr %}[
+{"v":"a","t":"Nessuna: sono due nomi per lo sbaglio che si fa quando si misura"},
+{"v":"b","t":"Un errore si può evitare, per esempio leggendo con attenzione la tacca giusta; l'incertezza c'è sempre, anche quando si misura benissimo"},
+{"v":"c","t":"L'incertezza c'è solo con gli strumenti analogici, l'errore solo con quelli digitali"},
+{"v":"d","t":"L'errore si calcola con la semidispersione, l'incertezza no"}
+]{% endcapture %}
+{% include mcq.html id="mcq-int-errore" opts=_oIntErr ok="b" s="Leggere la tacca sbagliata o dimenticare di azzerare la bilancia sono errori: con un po' di attenzione si evitano. L'incertezza invece non si elimina mai: possiamo solo dichiarare quanto è grande." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="2. La bilancia da cucina" %}
+Pesate un sasso sulla bilancia digitale da cucina e il display mostra $248\ \text{g}$. Quanto vale l'incertezza strumentale?
+
+{% include num.html id="numIntBil" valore="0.5" unit="g" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="3. Il termometro digitale" %}
+Il termometro digitale segna $36{,}8\ ^\circ\text{C}$. Quanto vale l'incertezza strumentale?
+
+{% include num.html id="numIntTerm" valore="0.05" unit="°C" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="4. Il più piccolo e il più grande" %}
+Misurate cinque volte la larghezza di un libro con un righello millimetrato. Toccate il valore più piccolo e poi il più grande.
+
+{% include misure-clic.html id="mc-int-libro" valori="12,1|12,4|11,9|12,3|12,1" unita="cm" simbolo="\ell" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="5. La semidispersione" %}
+Con le misurazioni del libro, $12{,}1$, $12{,}4$, $11{,}9$, $12{,}3$ e $12{,}1\ \text{cm}$, quanto vale la semidispersione $s_\ell$?
+
+{% include num.html id="numIntSemi" valore="0.25" unit="cm" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="6. Il significato di ±" %}
+Il valore medio delle misurazioni del libro è $12{,}16\ \text{cm}$ e l'incertezza totale è $0{,}05\ \text{cm} + 0{,}25\ \text{cm} = 0{,}3\ \text{cm}$. Che cosa vuol dire scrivere $\ell = (12{,}2 \pm 0{,}3)\ \text{cm}$?
+{% capture _oIntPm %}[
+{"v":"a","t":"Che il libro è largo esattamente $12{,}2\\ \\text{cm}$"},
+{"v":"b","t":"Che la larghezza del libro sta fra $11{,}9$ e $12{,}5\\ \\text{cm}$"},
+{"v":"c","t":"Che la larghezza è $12{,}2\\ \\text{cm}$ oppure $0{,}3\\ \\text{cm}$"},
+{"v":"d","t":"Che il libro è largo $12{,}5\\ \\text{cm}$"}
+]{% endcapture %}
+{% include mcq.html id="mcq-int-pm" opts=_oIntPm ok="b" s="Il valore medio è la stima migliore, ma la larghezza può essere un po' più piccola o un po' più grande: da $12{,}2 - 0{,}3 = 11{,}9\ \text{cm}$ a $12{,}2 + 0{,}3 = 12{,}5\ \text{cm}$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="7. Compatibile?" %}
+Con un calibro, molto più preciso, la larghezza del libro risulta $12{,}45\ \text{cm}$. La vostra misura, $(12{,}2 \pm 0{,}3)\ \text{cm}$, è compatibile con questo valore?
+{% capture _oIntComp %}[
+{"v":"a","t":"Sì, perché $12{,}45\\ \\text{cm}$ sta fra $11{,}9$ e $12{,}5\\ \\text{cm}$"},
+{"v":"b","t":"No, perché $12{,}45\\ \\text{cm}$ è diverso da $12{,}2\\ \\text{cm}$"},
+{"v":"c","t":"No, perché la differenza fra i due valori è più grande della semidispersione"}
+]{% endcapture %}
+{% include mcq.html id="mcq-int-comp" opts=_oIntComp ok="a" s="Per la compatibilità conta l'intervallo, non il valore medio: $12{,}45\ \text{cm}$ sta dentro l'intervallo da $11{,}9$ a $12{,}5\ \text{cm}$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+<div style="clear:both"></div>
+{% include box-end.html %}
+
+Adesso rifacciamo i conti dell'esperimento, con le misure di un vostro compagno.
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcInt2" %}
+Un compagno ha misurato il diametro interno del bicchiere, $\bar D = 8{,}0\ \text{cm}$, l'altezza dell'acqua prima e dopo aver messo il sasso, $\bar h_i = 6{,}0\ \text{cm}$ e $\bar h_f = 7{,}2\ \text{cm}$, e la massa del sasso, $m = 162\ \text{g}$.
+
+{% include scorri.html %}
+{% include scorri-slide.html titolo="1. L'area di base" %}
+Quanto vale l'area di base $S = \pi\left(\dfrac{\bar D}{2}\right)^2$ del bicchiere?
+
+{% include num.html id="numIntS" valore="50.27" unit="cm²" tol="1" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="2. Di quanto sale l'acqua" %}
+Di quanto è salito il livello dell'acqua, cioè quanto vale $z = \bar h_f - \bar h_i$?
+
+{% include num.html id="numIntZ" valore="1.2" unit="cm" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="3. Il volume del sasso" %}
+Quanto vale il volume del sasso, $V_\text{sasso} = S \cdot z$?
+
+{% include num.html id="numIntV" valore="60.3" unit="cm³" tol="2" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="4. La densità" %}
+Quanto vale la densità del sasso, $d = \dfrac{m}{V_\text{sasso}}$?
+
+{% include num.html id="numIntD" valore="2.69" unit="g/cm³" tol="3" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="5. Un bicchiere sbagliato" %}
+Se il bicchiere fosse a tronco di cono, più largo in alto che sul fondo, e il compagno avesse calcolato lo stesso $V_\text{sasso} = S \cdot z$ con l'area del fondo, che cosa succederebbe?
+{% capture _oIntCono %}[
+{"v":"a","t":"Il volume calcolato sarebbe più piccolo di quello vero, quindi la densità risulterebbe troppo grande"},
+{"v":"b","t":"Il volume calcolato sarebbe più grande di quello vero, quindi la densità risulterebbe troppo piccola"},
+{"v":"c","t":"Non cambierebbe niente, perché conta solo di quanto sale l'acqua"}
+]{% endcapture %}
+{% include mcq.html id="mcq-int-cono" opts=_oIntCono ok="a" s="L'acqua sale nella parte alta del bicchiere, che è più larga del fondo: lo stesso dislivello $z$ corrisponde a più acqua di quella che si ottiene con $S \cdot z$. Il volume calcolato è troppo piccolo e, dividendo la massa per un numero troppo piccolo, la densità viene troppo grande." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+<div style="clear:both"></div>
+{% include box-end.html %}
+
+Infine, le incertezze. Sono le stesse misure di prima, con le loro incertezze.
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include calc-margin.html id="calcInt3" %}
+Il compagno ha trovato $I_D = 0{,}1\ \text{cm}$, $I_{h_i} = 0{,}1\ \text{cm}$ e $I_{h_f} = 0{,}1\ \text{cm}$; la sua bilancia arriva fino al grammo. Le misure sono quelle dell'esercizio precedente: $\bar D = 8{,}0\ \text{cm}$, $z = 1{,}2\ \text{cm}$, $V_\text{sasso} = 60{,}3\ \text{cm}^3$, $m = 162\ \text{g}$, $d = 2{,}69\ \text{g/cm}^3$.
+
+{% include scorri.html %}
+{% include scorri-slide.html titolo="1. L'incertezza relativa sul diametro" %}
+Quanto vale l'incertezza relativa percentuale $i_D$ sul diametro?
+
+{% include num.html id="numIntiD" valore="1.25" unit="%" tol="2" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="2. L'incertezza relativa sull'area" %}
+Quanto vale l'incertezza relativa percentuale $i_S$ sull'area di base?
+
+{% include num.html id="numIntiS" valore="2.5" unit="%" tol="2" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="3. L'incertezza sul dislivello" %}
+Quanto vale l'incertezza assoluta $I_z$ sul dislivello $z = \bar h_f - \bar h_i$?
+
+{% include num.html id="numIntIz" valore="0.2" unit="cm" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="4. L'incertezza relativa sul dislivello" %}
+Quanto vale l'incertezza relativa percentuale $i_z$?
+
+{% include num.html id="numIntiz" valore="16.7" unit="%" tol="2" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="5. L'incertezza relativa sul volume" %}
+Quanto vale l'incertezza relativa percentuale $i_V$ sul volume del sasso?
+
+{% include num.html id="numIntiV" valore="19.2" unit="%" tol="2" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="6. L'incertezza relativa sulla densità" %}
+Quanto vale l'incertezza relativa percentuale $i_d$ sulla densità? Ricordate che serve anche l'incertezza relativa sulla massa.
+
+{% include num.html id="numIntid" valore="19.5" unit="%" tol="3" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="7. Il risultato" %}
+Come si scrive il risultato della misura della densità?
+{% capture _oIntRis %}[
+{"v":"a","t":"$d = (2{,}7 \\pm 0{,}5)\\ \\text{g/cm}^3$"},
+{"v":"b","t":"$d = (2{,}7 \\pm 19{,}5)\\ \\text{g/cm}^3$"},
+{"v":"c","t":"$d = (0{,}5 \\pm 2{,}7)\\ \\text{g/cm}^3$"},
+{"v":"d","t":"$d = (2{,}7 \\pm 0{,}2)\\ \\text{g/cm}^3$"}
+]{% endcapture %}
+{% include mcq.html id="mcq-int-ris" opts=_oIntRis ok="a" s="$I_d = \dfrac{2{,}69\ \text{g/cm}^3 \cdot 19{,}5}{100} \approx 0{,}5\ \text{g/cm}^3$. Il $19{,}5$ è un'incertezza relativa, in percento: non si può scrivere dopo il $\pm$." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html titolo="8. Chi pesa di più?" %}
+Quale misura ha contribuito di più all'incertezza sulla densità, e come si potrebbe ridurla?
+{% capture _oIntPeso %}[
+{"v":"a","t":"La massa: serve una bilancia più precisa"},
+{"v":"b","t":"Il diametro: bisogna misurarlo più volte"},
+{"v":"c","t":"Il dislivello $z$: con un sasso più grande, o un bicchiere più stretto, l'acqua salirebbe di più e la sua incertezza relativa sarebbe più piccola"},
+{"v":"d","t":"Nessuna: tutte contribuiscono allo stesso modo"}
+]{% endcapture %}
+{% include mcq.html id="mcq-int-peso" opts=_oIntPeso ok="c" s="$i_z \approx 16{,}7\%$, contro il $2{,}5\%$ dell'area e lo $0{,}3\%$ della massa. L'incertezza assoluta su $z$ resta $0{,}2\ \text{cm}$ comunque, ma se l'acqua sale di più diventa una parte più piccola del dislivello." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+<div style="clear:both"></div>
+{% include box-end.html %}
+
+Per chiudere, qualche domanda di ragionamento, come quelle che vi farò all'interrogazione.
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% capture _qInt %}[
+{"t":"Se ripeto tre volte una misura e trovo sempre lo stesso valore, l'incertezza è zero.","ok":false,"s":"No: la semidispersione è zero, ma resta l'incertezza strumentale."},
+{"t":"Nella differenza $z = h_f - h_i$ le incertezze assolute si sottraggono, come i valori.","ok":false,"s":"No, si sommano: nel caso peggiore $h_f$ è un po' troppo grande e $h_i$ un po' troppo piccolo, e i due sbagli si accumulano."},
+{"t":"In $S = \\pi(D/2)^2$ l'incertezza relativa su $S$ è il doppio di quella su $D$.","ok":true,"s":"Sì: $(D/2)^2$ è un prodotto di due fattori uguali, e nel prodotto le incertezze relative si sommano. Il $\\pi$ e il $2$ sono numeri esatti e non aggiungono incertezza."},
+{"t":"Un'incertezza relativa dell'$1\\%$ indica una misura più precisa di una con il $10\\%$, anche se le due misure riguardano grandezze diverse.","ok":true,"s":"Sì: l'incertezza relativa serve proprio a confrontare la precisione di misure diverse."},
+{"t":"Il metodo funziona anche con un tappo di sughero, che galleggia.","ok":false,"s":"No: il sughero resta in parte fuori dall'acqua, e il livello sale solo per la parte immersa."},
+{"t":"Per misurare il diametro interno conviene appoggiare il righello sul bordo del bicchiere, passando per il centro.","ok":true,"s":"Sì: la corda più lunga del cerchio è il diametro, ed è quella che passa per il centro."}
+]{% endcapture %}
+{% include quiz.html domande=_qInt id="q-interrogazione" senza_esempi="true" %}
 {% include box-end.html %}
 
 </div>

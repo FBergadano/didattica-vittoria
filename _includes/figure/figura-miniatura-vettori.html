@@ -1,5 +1,5 @@
 {% comment %}
-Figura statica: miniatura di due vettori disegnati orizzontalmente. Nessun parametro.
+Figura statica: miniatura di due vettori disegnati orizzontalmente, fra la Luna e la Terra. Nessun parametro.
 {% endcomment %}
 <div style="text-align:center;margin:.4rem 0 .2rem;">
 <svg viewBox="0 0 240 100" width="220" height="92" style="display:block;margin:0 auto;" role="img" aria-label="Miniatura del disegno dei vettori, orizzontale">
@@ -14,8 +14,8 @@ Figura statica: miniatura di due vettori disegnati orizzontalmente. Nessun param
   <marker id="dvArrowPurpleMini" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#7c3aed"/></marker>
 </defs>
 <g transform="translate(128,50) scale(0.5) translate(-266,-100)">
-  <circle cx="100" cy="100" r="28" fill="url(#sphAzzurraMini)"/>
-  <circle cx="400" cy="100" r="60" fill="url(#sphRosaMini)"/>
+  <clipPath id="mvCpL"><circle cx="100" cy="100" r="28"/></clipPath><circle cx="100" cy="100" r="30" fill="#94a3b8" opacity=".35"/><image href="{{ "/corsi/immagini/luna-ritaglio.webp" | relative_url }}" x="72" y="72" width="56" height="56" clip-path="url(#mvCpL)" preserveAspectRatio="xMidYMid slice"/>
+  <clipPath id="mvCpT"><circle cx="400" cy="100" r="60"/></clipPath><circle cx="400" cy="100" r="62" fill="#7db4ff" opacity=".35"/><image href="{{ "/corsi/immagini/terra-ritaglio.webp" | relative_url }}" x="340" y="40" width="120" height="120" clip-path="url(#mvCpT)" preserveAspectRatio="xMidYMid slice"/>
   <line x1="100" y1="100" x2="222" y2="100" stroke="#dc2626" stroke-width="3.5" marker-end="url(#dvArrowRedMini)"/>
   <line x1="400" y1="100" x2="278" y2="100" stroke="#7c3aed" stroke-width="3.5" marker-end="url(#dvArrowPurpleMini)"/>
 </g>

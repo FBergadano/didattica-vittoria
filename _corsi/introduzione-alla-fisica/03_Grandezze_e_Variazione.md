@@ -57,7 +57,7 @@ Per ciascuna delle seguenti, decidi: è una **grandezza unitaria** oppure no?
 {"t":"Il prezzo al chilo delle mele (€/kg)","ok":true,"s":"È un rapporto tra costo totale e massa: è una grandezza unitaria."},
 {"t":"La popolazione di una città","ok":false,"s":"È un numero totale di persone, non un rapporto tra due grandezze."},
 {"t":"Il numero totale di pagine di un libro","ok":false,"s":"Non è un rapporto tra due grandezze, è solo un conteggio totale."},
-{"t":"Il consumo di carburante di un'automobile (km/L)","ok":true,"s":"È lo spazio percorso per ogni litro di carburante: una grandezza unitaria."}
+{"t":"Il consumo di carburante di un'automobile (km/ℓ)","ok":true,"s":"È lo spazio percorso per ogni litro di carburante: una grandezza unitaria."}
 ]{% endcapture %}
 {% include quiz.html domande=_q label_si="Una grandezza unitaria" label_no="Non una grandezza unitaria" id="q-gu" %}
 
@@ -199,7 +199,7 @@ La massa $m$ si misura in chilogrammi (kg), il volume $V$ in metri cubi (m³). S
 
 $$[d] = \frac{\text{kg}}{\text{m}^3},$$
 
-cioè la densità si misura in kg/m³ (o, in unità pratiche, g/cm³ o g/L).
+cioè la densità si misura in kg/m³ (o, in unità pratiche, g/cm³ o g/ℓ).
 {% include box-end.html %}
 
 {% include box-blue.html testo="L'area e il volume" %}
@@ -228,7 +228,7 @@ Per ciascuna delle seguenti, decidi: vero o falso (oppure completa, dove richies
 {% capture _q3 %}[
 {"t":"Se $x = y \\times z$, con $y$ misurato in metri e $z$ in secondi, allora $x$ si misura in m/s.","ok":false,"s":"In un prodotto le unità si moltiplicano, non si dividono: $x$ si misura in m·s (metri per secondo), non m/s."},
 {"t":"Se lo stipendio si misura in € e il tempo in ore, qual è l'unità di misura dello stipendio orario?","tipo":"fill","opts":["€/h","h/€","€·h"],"ok":"€/h","s":"Stipendio orario = stipendio ÷ tempo, quindi l'unità è €, l'unità del tempo, cioè €/h."},
-{"t":"Se il prezzo della benzina è in € e il volume in litri, il prezzo al litro si misura in €/L.","ok":true,"s":"Prezzo al litro = prezzo ÷ volume, quindi l'unità è €/L."},
+{"t":"Se il prezzo della benzina è in € e il volume in litri, il prezzo al litro si misura in €/ℓ.","ok":true,"s":"Prezzo al litro = prezzo ÷ volume, quindi l'unità è €/ℓ."},
 {"t":"La densità, definita come massa diviso volume, si misura in m³/kg.","ok":false,"s":"Al contrario: densità = massa ÷ volume, quindi si misura in kg/m³, non m³/kg."},
 {"t":"Se il prezzo è in € e la massa in kg, il prezzo al chilo si misura in €/kg.","ok":true,"s":"Prezzo al chilo = prezzo ÷ massa, quindi l'unità è €/kg."},
 {"t":"Se $x = y/z$ e sia $y$ che $z$ si misurano in kg, allora $x$ è un numero puro, cioè un numero senza unità.","ok":true,"s":"kg/kg = 1: le unità uguali al numeratore e al denominatore si semplificano, come nei numeri."}
@@ -294,7 +294,7 @@ Per ciascuna delle seguenti, decidi: è un'ipotesi plausibile oppure no?
 {"t":"L'unità kg/m³ suggerisce che la grandezza sia definita come una massa divisa per un volume.","ok":true,"s":"Sì: è esattamente il caso della densità."},
 {"t":"Data un'unità del tipo $A/B$, quella che abbiamo ipotizzato è l'unica formula possibile: non ci sono altre possibilità.","ok":false,"s":"No: dall'unità possiamo solo formulare un'ipotesi plausibile, non una certezza. Formule diverse potrebbero produrre la stessa unità."},
 {"t":"L'unità pagine/giorno suggerisce che la grandezza sia definita come un numero di pagine lette diviso un numero di giorni.","ok":true,"s":"Sì: è un possibile ritmo di lettura."},
-{"t":"L'unità km/L suggerisce che la grandezza sia definita come uno spazio percorso diviso un volume di carburante.","ok":true,"s":"Sì: è il consumo di un'automobile."}
+{"t":"L'unità km/ℓ suggerisce che la grandezza sia definita come uno spazio percorso diviso un volume di carburante.","ok":true,"s":"Sì: è il consumo di un'automobile."}
 ]{% endcapture %}
 {% include quiz.html domande=_q4 label_si="Un'ipotesi plausibile" label_no="Un'ipotesi non plausibile" id="q-ipotizza" senza_esempi=true %}
 
@@ -403,7 +403,7 @@ cioè circa $88$ cm³ — un cubetto di lato poco più di $4$ cm.
 
 Per le piume:
 
-$$V_{\text{piume}} = \frac{1}{50} = 2\times 10^{-2}\ \text{m}^3 = 20\ \text{L},$$
+$$V_{\text{piume}} = \frac{1}{50} = 2\times 10^{-2}\ \text{m}^3 = 20\ \ell,$$
 
 cioè un volume più di $200$ volte più grande di quello del piombo, a parità di massa: ecco perché un chilo di piume sembra un mucchio enorme, mentre un chilo di piombo sta in una mano.
 {% include spoiler-end.html %}
@@ -445,7 +445,7 @@ Per ciascuna delle seguenti, decidi: vero o falso?
 
 {% capture _q7 %}[
 {"t":"Se una grandezza diminuisce, la sua variazione $\\Delta x$ è positiva.","ok":false,"s":"No: se il valore finale è minore di quello iniziale, la differenza è negativa."},
-{"t":"Se un serbatoio contiene 30 L d'acqua e viene svuotato fino a 10 L, la sua variazione è $\\Delta x = 10 - 30 = -20$ L.","ok":true,"s":"Corretto: valore finale (10) meno valore iniziale (30), negativa perché l'acqua è diminuita."},
+{"t":"Se un serbatoio contiene 30 ℓ d'acqua e viene svuotato fino a 10 ℓ, la sua variazione è $\\Delta x = 10 - 30 = -20$ ℓ.","ok":true,"s":"Corretto: valore finale (10) meno valore iniziale (30), negativa perché l'acqua è diminuita."},
 {"t":"Se una grandezza aumenta, la sua variazione $\\Delta x$ è positiva.","ok":true,"s":"Sì: $\\Delta x$ = valore finale − valore iniziale, e se il valore finale è maggiore, la differenza è positiva."},
 {"t":"$\\Delta x$ si calcola sempre come valore iniziale meno valore finale.","ok":false,"s":"Al contrario: si calcola come valore finale meno valore iniziale."},
 {"t":"Se un conto in banca passa da 100 € a 80 €, la variazione è $\\Delta x = +20$ €.","ok":false,"s":"Errore di segno: $\\Delta x = 80 - 100 = -20$ €, negativa perché il saldo è diminuito."}
@@ -517,7 +517,7 @@ Per ciascuna delle seguenti, decidi: vero o falso?
 Un serbatoio contiene $V=80$ L d'acqua. Dopo $4$ minuti ne contiene $52$ L. Calcola $\text{var}_{V,t}$ per il livello dell'acqua.
 
 {% include spoiler.html testo="Mostra la soluzione" %}
-$$\Delta V = 52 - 80 = -28\ \text{L}, \qquad \Delta t = 4\ \text{min}.$$
+$$\Delta V = 52 - 80 = -28\ \ell, \qquad \Delta t = 4\ \text{min}.$$
 
 $$\text{var}_{V,t} = \frac{\Delta V}{\Delta t} = \frac{-28}{4} = -7\ \text{L/min},$$
 

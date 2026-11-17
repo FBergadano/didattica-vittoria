@@ -1,5 +1,11 @@
 {% comment %}
-Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo densità, autovalutazione, foto) con pulsante di stampa. Nessun parametro.
+Modulo della relazione di laboratorio (misure, calcolo della densità, commento, autovalutazione,
+foto) che lo studente consegna direttamente sul sito, dopo essere entrato con il pulsante 👤
+(codice + PIN: nessun nome). Quello che scrive resta salvato nel browser mentre lavora.
+«Invia al prof»: le foto vanno al server una per una (/foto, compito "relazione-densita"),
+poi il modulo intero come schema di tipo "relazione" (/schema): il docente lo apre dalla
+scheda «Schemi e relazioni» della sua pagina. Si può reinviare: resta l'ultima versione.
+Nessun parametro.
 {% endcomment %}
 <style>
 .rl-card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:.9rem 1.1rem;margin:.7rem 0;break-inside:avoid;}
@@ -15,11 +21,17 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 .rl-res{background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:.8rem 1rem;margin:.5rem 0;break-inside:avoid;}
 .rl-stars span{font-size:22px;cursor:pointer;opacity:.3;color:#f59e0b;user-select:none;}
 .rl-stars span.on{opacity:1;}
-/* «Stampa modulo» stampa solo il modulo; la stampa del capitolo lo lascia al suo posto */
+.rl-phwrap figure{position:relative;margin:0;}
+.rl-phwrap figure button{position:absolute;top:2px;right:2px;border:none;border-radius:50%;width:22px;height:22px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;cursor:pointer;line-height:22px;padding:0;}
+.rl-phwrap .rl-ph-ok{width:110px;height:85px;border-radius:4px;border:1px dashed #86efac;background:#f0fdf4;color:#15803d;font:12px Georgia,serif;display:flex;align-items:center;justify-content:center;text-align:center;}
+.rl-invio{text-align:center;margin:1.2rem 0;}
+.rl-btn{padding:.55rem 2rem;background:#1a4d6a;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:15px;font-family:Georgia,serif;}
+.rl-btn:disabled{opacity:.6;cursor:wait;}
+.rl-msg{margin-top:.5rem;font:14px Georgia,serif;min-height:1.2em;}
+.rl-msg.ok{color:#15803d;}.rl-msg.err{color:#b91c1c;}
+.rl-ultimo{font:12px Georgia,serif;color:#6b7280;margin-top:.2rem;}
+@media (max-width:600px){.rl-in.wl{width:100%;}.rl-card{padding:.7rem .7rem;}}
 @media print{
-  html.rl-solo-modulo body,html.rl-solo-modulo body *{visibility:hidden!important;}
-  html.rl-solo-modulo #rl-form,html.rl-solo-modulo #rl-form *{visibility:visible!important;}
-  html.rl-solo-modulo #rl-form{position:absolute;top:0;left:0;width:100%;padding:1rem 2rem;box-sizing:border-box;background:white;}
   .rl-np{display:none!important;visibility:hidden!important;}
   .rl-in{border-bottom:1px solid #aaa!important;}
   .rl-sel{border-bottom:1px solid #aaa!important;}
@@ -30,10 +42,9 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 
 <div class="rl-card">
 <b>Dati</b>
-<div class="rl-row">Nome e Cognome: <input class="rl-in wl" id="rl-nome" type="text"></div>
-<div class="rl-row">Classe: <input class="rl-in" id="rl-classe" type="text" style="width:55px"> &emsp; Data: <input class="rl-in wm" id="rl-data" type="date"></div>
+<div class="rl-row rl-np">Chi consegna: <span id="rl-chi" style="font-family:monospace;font-weight:bold;"></span></div>
+<div class="rl-row">Data: <input class="rl-in wm" id="rl-data" type="text" placeholder="gg/mm/aaaa"></div>
 </div>
-
 <div class="rl-card">
 <b><span class="rl-badge">Fase 0</span> Strumenti</b>
 <div class="rl-row">Strumenti utilizzati:</div>
@@ -48,9 +59,9 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 
 <div class="rl-card">
 <b><span class="rl-badge">Fase 1</span> Diametro del bicchiere</b>
-<div class="rl-row">$d_1$ = <input class="rl-in" id="d1" type="text"> &ensp; $d_2$ = <input class="rl-in" id="d2" type="text"> &ensp; $d_3$ = <input class="rl-in" id="d3" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
-<div class="rl-row">$\bar{d}$ = <input class="rl-in" id="d_m" type="text"> &ensp; $s_d$ = <input class="rl-in" id="d_s" type="text"> &ensp; $I_d$ = <input class="rl-in" id="d_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
-<div class="rl-row">$i_d$ = <input class="rl-in" id="d_r" type="text"> %</div>
+<div class="rl-row">$D_1$ = <input class="rl-in" id="d1" type="text"> &ensp; $D_2$ = <input class="rl-in" id="d2" type="text"> &ensp; $D_3$ = <input class="rl-in" id="d3" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$\bar{D}$ = <input class="rl-in" id="d_m" type="text"> &ensp; $s_D$ = <input class="rl-in" id="d_s" type="text"> &ensp; $I_D$ = <input class="rl-in" id="d_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
+<div class="rl-row">$i_D$ = <input class="rl-in" id="d_r" type="text"> %</div>
 <div class="rl-row rl-np" style="margin-top:.3rem;">Foto: <input type="file" accept="image/*" multiple onchange="rlPh(this,'rlph1')"></div>
 <div class="rl-phwrap" id="rlph1"></div>
 </div>
@@ -72,8 +83,8 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 
 <div class="rl-card">
 <b><span class="rl-badge">Fase 4</span> Volume iniziale dell'acqua</b>
-<div class="rl-row">$V_i$ = <input class="rl-in" id="Vi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select></div>
-<div class="rl-row">$I_{V_i}$ = <input class="rl-in" id="DVi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select> &ensp; $i_{V_i}$ = <input class="rl-in" id="eVi_v" type="text"> %</div>
+<div class="rl-row">$V_i$ = <input class="rl-in" id="Vi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mℓ</option></select></div>
+<div class="rl-row">$I_{V_i}$ = <input class="rl-in" id="DVi_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mℓ</option></select> &ensp; $i_{V_i}$ = <input class="rl-in" id="eVi_v" type="text"> %</div>
 </div>
 
 <div class="rl-card">
@@ -84,8 +95,8 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 <div class="rl-row">$\bar{h}_f$ = <input class="rl-in" id="hf_m" type="text"> &ensp; $s_{h_f}$ = <input class="rl-in" id="hf_s" type="text"> &ensp; $I_{h_f}$ = <input class="rl-in" id="hf_e" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select></div>
 <div class="rl-row">$i_{h_f}$ = <input class="rl-in" id="hf_r" type="text"> %</div>
 <div class="rl-row">$z$ = <input class="rl-in" id="z_v" type="text"> &ensp; $I_z$ = <input class="rl-in" id="Dz_v" type="text"> <select class="rl-sel"><option>mm</option><option>cm</option></select> &ensp; $i_z$ = <input class="rl-in" id="ez_v" type="text"> %</div>
-<div class="rl-row">$V_s$ = <input class="rl-in" id="Vs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select></div>
-<div class="rl-row">$I_{V_s}$ = <input class="rl-in" id="DVs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mL</option></select> &ensp; $i_{V_s}$ = <input class="rl-in" id="eVs_v" type="text"> %</div>
+<div class="rl-row">$V_s$ = <input class="rl-in" id="Vs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mℓ</option></select></div>
+<div class="rl-row">$I_{V_s}$ = <input class="rl-in" id="DVs_v" type="text"> <select class="rl-sel"><option>mm³</option><option>cm³</option><option>mℓ</option></select> &ensp; $i_{V_s}$ = <input class="rl-in" id="eVs_v" type="text"> %</div>
 </div>
 
 <div class="rl-card">
@@ -119,32 +130,162 @@ Modulo di consegna della relazione (dati identificativi, tabella misure, calcolo
 <div class="rl-stars" id="st3" style="margin:.1rem 0 0 .3rem;" onclick="rlStar(event,'st3')"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
 </div>
 
-<div style="text-align:center;margin:1.2rem 0;" class="rl-np">
-<button onclick="rlStampaModulo()" style="padding:.5rem 2rem;background:#1a4d6a;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:Georgia,serif;">&#128424; Stampa modulo</button>
+<div class="rl-invio rl-np">
+<button type="button" id="rl-invia" class="rl-btn">📤 Invia al prof</button>
+<div id="rl-msg" class="rl-msg"></div>
+<div id="rl-ultimo" class="rl-ultimo"></div>
 </div>
 
 </div>
 <script>
 (function(){
-var di=document.getElementById('rl-data');if(di&&!di.value)di.value=new Date().toISOString().slice(0,10);
+var CHIAVE='rl-densita', COMPITO='relazione-densita';
+var form=document.getElementById('rl-form');
+function get(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+function put(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+var sels=form.querySelectorAll('select');
+for(var i=0;i<sels.length;i++)sels[i].id='rl-sel-'+i;
+
+// schema del modulo, letto PRIMA che MathJax trasformi le formule: per ogni riquadro il titolo,
+// e per ogni riga i pezzi di testo (con le $formule$) e le caselle da riempire
+var sezioni=[];
+[].forEach.call(form.querySelectorAll('.rl-card,.rl-res'),function(card){
+  if(card.querySelector('#rl-invia'))return;
+  var b=card.querySelector('b'),sez={titolo:(b?b.textContent:'').replace(/\s+/g,' ').trim(),righe:[],foto:null};
+  [].forEach.call(card.children,function(el){
+    if(el.classList.contains('rl-row')&&!el.classList.contains('rl-np')){
+      var parti=[];
+      (function giu(n){[].forEach.call(n.childNodes,function(c){
+        if(c.nodeType===3){if(c.textContent.trim())parti.push({t:c.textContent.replace(/\s+/g,' ')});}
+        else if(c.tagName==='INPUT'||c.tagName==='SELECT')parti.push({c:c.id});
+        else if(c.tagName==='EM')parti.push({t:'$'+c.textContent+'$'});
+        else if(c.nodeType===1&&c.id!=='rl-chi')giu(c);
+      });})(el);
+      if(parti.length)sez.righe.push(parti);
+    }else if(el.tagName==='TEXTAREA'){sez.righe.push([{c:el.id,lungo:1}]);}
+    else if(el.classList.contains('rl-stars')){sez.righe.push([{t:(el.previousElementSibling||{}).textContent||''},{c:el.id,stelle:1}]);}
+    else if(el.classList.contains('rl-phwrap')){sez.foto=el.id;}
+  });
+  sezioni.push(sez);
+});
+
+// ── bozza nel browser ──
+function valore(id){
+  var el=document.getElementById(id);if(!el)return '';
+  if(el.classList.contains('rl-stars'))return el.querySelectorAll('span.on').length;
+  return el.value;
+}
+function salva(){
+  var o={};
+  [].forEach.call(form.querySelectorAll('input[id]:not([type=file]),select[id],textarea[id]'),function(el){o[el.id]=el.value;});
+  [].forEach.call(form.querySelectorAll('.rl-stars'),function(el){o[el.id]=el.querySelectorAll('span.on').length;});
+  put(CHIAVE,o);
+}
+var bozza=get(CHIAVE,{});
+Object.keys(bozza).forEach(function(id){
+  var el=document.getElementById(id);if(!el)return;
+  if(el.classList.contains('rl-stars'))[].forEach.call(el.querySelectorAll('span'),function(s,i){s.classList.toggle('on',i<bozza[id]);});
+  else el.value=bozza[id];
+});
+var di=document.getElementById('rl-data');
+if(di&&!di.value){var o=new Date();di.value=('0'+o.getDate()).slice(-2)+'/'+('0'+(o.getMonth()+1)).slice(-2)+'/'+o.getFullYear();}
+form.addEventListener('input',salva);form.addEventListener('change',salva);
+
+// ── chi consegna ──
+function chi(){
+  var C=window.LVC,a=C&&C.accesso&&C.accesso(),el=document.getElementById('rl-chi');
+  el.textContent=a?(a.codice+' ('+a.classe+')'):'— entra con il pulsante 👤 in alto (codice e PIN) per poter consegnare';
+  el.style.fontFamily=a?'monospace':'Georgia,serif';el.style.fontWeight=a?'bold':'normal';
+}
+chi();window.addEventListener('focus',chi);document.addEventListener('click',function(){setTimeout(chi,300);});
+
+// ── foto: ridotte subito (lato lungo 1600 px), tenute qui finché non le invii ──
+var attesa={},inviate=get(CHIAVE+'-foto',{});
+function riduci(file){
+  return new Promise(function(ok,ko){
+    var img=new Image(),u=URL.createObjectURL(file);
+    img.onload=function(){
+      var k=Math.min(1,1600/Math.max(img.naturalWidth,img.naturalHeight));
+      var cv=document.createElement('canvas');cv.width=Math.round(img.naturalWidth*k);cv.height=Math.round(img.naturalHeight*k);
+      var g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,cv.width,cv.height);g.drawImage(img,0,0,cv.width,cv.height);
+      URL.revokeObjectURL(u);
+      var q=0.75,d=cv.toDataURL('image/jpeg',q);
+      while(d.length>1000000&&q>0.35){q-=0.1;d=cv.toDataURL('image/jpeg',q);}
+      ok(d);
+    };
+    img.onerror=function(){URL.revokeObjectURL(u);ko(new Error('immagine'));};
+    img.src=u;
+  });
+}
+function disegnaFoto(wid){
+  var w=document.getElementById(wid);if(!w)return;
+  var h=(inviate[wid]||[]).map(function(id,i){return '<figure><div class="rl-ph-ok">📷 già<br>inviata</div><button type="button" data-via="'+wid+'|'+i+'" title="Togli">✕</button></figure>';}).join('');
+  h+=(attesa[wid]||[]).map(function(d,i){return '<figure><img class="rl-ph" src="'+d+'" alt=""><button type="button" data-tog="'+wid+'|'+i+'" title="Togli">✕</button></figure>';}).join('');
+  w.innerHTML=h;
+}
+sezioni.forEach(function(s){if(s.foto)disegnaFoto(s.foto);});
 window.rlPh=function(inp,wid){
-  var w=document.getElementById(wid);
-  Array.from(inp.files).forEach(function(f){var r=new FileReader();r.onload=function(e){var i=document.createElement('img');i.src=e.target.result;i.className='rl-ph';w.appendChild(i);};r.readAsDataURL(f);});
-  inp.value='';
+  var files=[].slice.call(inp.files);inp.value='';
+  files.reduce(function(p,f){return p.then(function(){return riduci(f).then(function(d){(attesa[wid]=attesa[wid]||[]).push(d);disegnaFoto(wid);});});},Promise.resolve())
+    .catch(function(){messaggio('Non riesco ad aprire una delle foto.','err');});
 };
+form.addEventListener('click',function(e){
+  var b=e.target.closest('[data-tog],[data-via]');if(!b)return;
+  if(b.dataset.tog){var p=b.dataset.tog.split('|');attesa[p[0]].splice(+p[1],1);disegnaFoto(p[0]);}
+  else{
+    if(!confirm('Togliere questa foto? Non la vedrò più.'))return;
+    var q=b.dataset.via.split('|'),id=inviate[q[0]].splice(+q[1],1)[0];put(CHIAVE+'-foto',inviate);disegnaFoto(q[0]);
+    var C=window.LVC,a=C&&C.accesso&&C.accesso();if(a)C.chiama('/foto-elimina',{token:a.token,id:id}).catch(function(){});
+  }
+});
 window.rlStar=function(ev,cid){
   if(ev.target.tagName!=='SPAN')return;
   var stars=document.getElementById(cid).querySelectorAll('span');
-  var idx=Array.from(stars).indexOf(ev.target);
-  stars.forEach(function(s,i){s.classList.toggle('on',i<=idx);});
+  var idx=[].indexOf.call(stars,ev.target);
+  [].forEach.call(stars,function(s,i){s.classList.toggle('on',i<=idx);});
+  salva();
 };
+
+// ── invio ──
+function messaggio(t,tipo){var m=document.getElementById('rl-msg');m.textContent=t;m.className='rl-msg '+(tipo||'');}
+function quando(ts){var d=new Date(ts);return d.toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'})+', '+d.getHours()+':'+('0'+d.getMinutes()).slice(-2);}
+function ultimo(){var u=get(CHIAVE+'-inviata',0);document.getElementById('rl-ultimo').textContent=u?'Ultimo invio: '+quando(u)+'. Puoi correggere e reinviare: vedrò l\'ultima versione.':'';}
+ultimo();
+function pulito(v){return String(v==null?'':v).replace(/[$\\]/g,'').slice(0,4000);}
+document.getElementById('rl-invia').addEventListener('click',function(){
+  var C=window.LVC,a=C&&C.accesso&&C.accesso(),btn=this;
+  if(!C||!C.chiama){messaggio('Le consegne non sono attive: scrivimi.','err');return;}
+  if(!a){messaggio('Prima entra con il pulsante 👤 in alto (codice e PIN), poi premi di nuovo «Invia al prof».','err');return;}
+  btn.disabled=true;
+  var coda=[];Object.keys(attesa).forEach(function(w){attesa[w].forEach(function(d){coda.push({w:w,d:d});});});
+  var tot=coda.length,fatte=0;
+  (function prossima(){
+    if(coda.length){
+      var x=coda[0];messaggio('Invio la foto '+(fatte+1)+' di '+tot+'…');
+      return C.chiama('/foto',{token:a.token,compito:COMPITO,immagine:x.d}).then(function(j){
+        coda.shift();fatte++;(inviate[x.w]=inviate[x.w]||[]).push(j.id);put(CHIAVE+'-foto',inviate);
+        attesa[x.w].splice(attesa[x.w].indexOf(x.d),1);disegnaFoto(x.w);prossima();
+      }).catch(errore);
+    }
+    messaggio('Invio il modulo…');
+    var dati={v:1,sezioni:sezioni.map(function(s){
+      return {titolo:s.titolo,foto:s.foto?(inviate[s.foto]||[]).slice():[],
+        righe:s.righe.map(function(r){return r.map(function(p){
+          if(p.t!=null)return {t:p.t};
+          var v=valore(p.c);return p.stelle?{stelle:+v||0}:p.lungo?{testo:pulito(v)}:{v:pulito(v)};
+        });})};
+    })};
+    C.chiama('/schema',{token:a.token,pagina:C.pagina||location.pathname,titolo:'Relazione: la densità del sasso',tipo:'relazione',dati:JSON.stringify(dati)}).then(function(){
+      btn.disabled=false;put(CHIAVE+'-inviata',Date.now());ultimo();
+      messaggio('😊 L\'ho ricevuta!'+(fatte?' (con '+fatte+(fatte===1?' foto nuova)':' foto nuove)'):''),'ok');
+    }).catch(errore);
+  })();
+  function errore(err){
+    btn.disabled=false;
+    var t={troppi:'Hai già inviato troppe volte oggi: riprova domani.',troppe:'Hai già inviato troppe foto oggi: riprova domani.',grande:'Una foto è troppo grande.',formato:'Il server non accetta ancora le relazioni: avvisami.'}[err.codice];
+    if(err.status===401){t='Il tuo accesso è scaduto: rientra con il pulsante 👤 e reinvia.';C.salvaAccesso&&C.salvaAccesso(null);chi();}
+    messaggio(t||'Non riesco a inviarla: controlla la connessione e riprova. Quello che hai scritto resta salvato qui.','err');
+  }
+});
 })();
-</script>
-<script>
-function rlStampaModulo(){
-  var h=document.documentElement;
-  h.classList.add('rl-solo-modulo');
-  window.addEventListener('afterprint',function f(){h.classList.remove('rl-solo-modulo');window.removeEventListener('afterprint',f);});
-  window.print();
-}
 </script>

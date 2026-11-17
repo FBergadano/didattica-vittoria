@@ -1,23 +1,43 @@
 {% comment %}
-Figura statica: confronto fra un bicchiere cilindrico (adatto al metodo della variazione di livello) e uno a tronco di cono (non adatto). Nessun parametro.
+Figura statica: confronto, in prospettiva, fra un bicchiere cilindrico (adatto al metodo della
+variazione di livello) e uno a tronco di cono (non adatto), entrambi con un po' d'acqua. Nessun parametro.
 {% endcomment %}
-<svg viewBox="0 0 320 185" xmlns="http://www.w3.org/2000/svg" style="max-width:340px;width:100%;display:block;margin:0.5rem auto;">
-  <rect x="50" y="99" width="60" height="51" fill="#bfdbfe" opacity="0.6"/>
-  <rect x="50" y="58" width="60" height="92" fill="none" stroke="#475569" stroke-width="2.5"/>
-  <ellipse cx="80" cy="58" rx="30" ry="6" fill="#f0f9ff" stroke="#475569" stroke-width="2"/>
-  <ellipse cx="80" cy="99" rx="30" ry="5" fill="#7dd3fc" opacity="0.8"/>
-  <ellipse cx="80" cy="150" rx="30" ry="5" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <rect x="55" y="64" width="6" height="68" rx="3" fill="white" opacity="0.3"/>
-  <circle cx="124" cy="78" r="14" fill="#22c55e" stroke="white" stroke-width="1.5"/>
-  <text x="124" y="85" font-size="18" fill="white" text-anchor="middle" font-family="Arial,sans-serif">&#10003;</text>
-  <text x="80" y="173" font-size="12" fill="#15803d" text-anchor="middle" font-family="Georgia,serif" font-weight="bold">cilindrico</text>
-  <path d="M218,108 L262,108 L255,150 L225,150 Z" fill="#bfdbfe" opacity="0.6"/>
-  <path d="M210,58 L270,58 L255,150 L225,150 Z" fill="none" stroke="#475569" stroke-width="2.5"/>
-  <ellipse cx="240" cy="58" rx="30" ry="6" fill="#f0f9ff" stroke="#475569" stroke-width="2"/>
-  <ellipse cx="240" cy="108" rx="22" ry="5" fill="#7dd3fc" opacity="0.8"/>
-  <ellipse cx="240" cy="150" rx="15" ry="4" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
-  <line x1="216" y1="65" x2="221" y2="140" stroke="white" stroke-width="5" stroke-linecap="round" opacity="0.22"/>
-  <circle cx="240" cy="30" r="14" fill="#ef4444" stroke="white" stroke-width="1.5"/>
-  <text x="240" y="37" font-size="18" fill="white" text-anchor="middle" font-family="Arial,sans-serif">&#10005;</text>
-  <text x="240" y="173" font-size="12" fill="#dc2626" text-anchor="middle" font-family="Georgia,serif" font-weight="bold">tronco di cono</text>
+<svg viewBox="0 0 360 242" xmlns="http://www.w3.org/2000/svg" style="max-width:380px;width:100%;display:block;margin:0.8rem auto;" role="img" aria-label="Bicchiere cilindrico sì, a tronco di cono no">
+<defs>
+<linearGradient id="bcil-vetro" x1="0" x2="1" y1="0" y2="0">
+ <stop offset="0" stop-color="#cbd5e1" stop-opacity="0.55"/><stop offset="0.18" stop-color="#ffffff" stop-opacity="0.15"/>
+ <stop offset="0.75" stop-color="#e2e8f0" stop-opacity="0.1"/><stop offset="1" stop-color="#94a3b8" stop-opacity="0.5"/></linearGradient>
+<linearGradient id="bcil-acqua" x1="0" x2="1" y1="0" y2="0">
+ <stop offset="0" stop-color="#60a5fa" stop-opacity="0.75"/><stop offset="0.35" stop-color="#93c5fd" stop-opacity="0.6"/>
+ <stop offset="1" stop-color="#3b82f6" stop-opacity="0.75"/></linearGradient>
+<radialGradient id="bcil-sasso" cx="0.35" cy="0.3" r="0.8">
+ <stop offset="0" stop-color="#d1d5db"/><stop offset="0.6" stop-color="#8b8f97"/><stop offset="1" stop-color="#52565e"/></radialGradient>
+<radialGradient id="bcil-ombra" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000" stop-opacity="0.22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+<marker id="bcil-fr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 Z" fill="#334155"/></marker>
+</defs>
+<line x1="10" y1="198" x2="350" y2="198" stroke="#d6d3d1" stroke-width="2"/>
+<ellipse cx="95" cy="198" rx="52" ry="12" fill="url(#bcil-ombra)"/>
+<path d="M 57,185 A 38 9 0 0 0 133,185 L 133,190 A 38 9 0 0 1 57,190 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+<path d="M 57,40 A 38 9 0 0 1 133,40" fill="none" stroke="#94a3b8" stroke-width="1.6"/>
+
+<path d="M 57.0,115 L 57,185 A 38 9 0 0 0 133,185 L 133.0,115 A 38.0 9 0 0 1 57.0,115 Z" fill="url(#bcil-acqua)"/>
+<ellipse cx="95" cy="115" rx="38.0" ry="9" fill="#dbeafe" fill-opacity="0.85" stroke="#3b82f6" stroke-width="1.4"/>
+<path d="M 57,40 L 57,185 A 38 9 0 0 0 133,185 L 133,40 A 38 9 0 0 1 57,40 Z" fill="url(#bcil-vetro)" stroke="#475569" stroke-width="2"/>
+<path d="M 57,40 A 38 9 0 0 0 133,40" fill="none" stroke="#475569" stroke-width="2"/>
+<path d="M 65.36,55 L 65.36,179" stroke="#fff" stroke-opacity="0.7" stroke-width="5" stroke-linecap="round"/>
+<path d="M 128.44,59 L 128.44,171" stroke="#fff" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
+<ellipse cx="265" cy="198" rx="40" ry="12" fill="url(#bcil-ombra)"/>
+<path d="M 239,185 A 26 9 0 0 0 291,185 L 291,190 A 26 9 0 0 1 239,190 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
+<path d="M 219,40 A 46 9 0 0 1 311,40" fill="none" stroke="#94a3b8" stroke-width="1.6"/>
+
+<path d="M 229.3448275862069,115 L 239,185 A 26 9 0 0 0 291,185 L 300.6551724137931,115 A 35.6551724137931 9 0 0 1 229.3448275862069,115 Z" fill="url(#bcil-acqua)"/>
+<ellipse cx="265" cy="115" rx="35.6551724137931" ry="9" fill="#dbeafe" fill-opacity="0.85" stroke="#3b82f6" stroke-width="1.4"/>
+<path d="M 219,40 L 239,185 A 26 9 0 0 0 291,185 L 311,40 A 46 9 0 0 1 219,40 Z" fill="url(#bcil-vetro)" stroke="#475569" stroke-width="2"/>
+<path d="M 219,40 A 46 9 0 0 0 311,40" fill="none" stroke="#475569" stroke-width="2"/>
+<path d="M 229.12,55 L 244.72,179" stroke="#fff" stroke-opacity="0.7" stroke-width="5" stroke-linecap="round"/>
+<path d="M 305.48,59 L 287.88,171" stroke="#fff" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
+<circle cx="145" cy="30" r="13" fill="#16a34a"/><path d="M -6,0 L -2,5 L 7,-5" transform="translate(145,30)" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="323" cy="30" r="13" fill="#dc2626"/><path d="M -5,-5 L 5,5 M 5,-5 L -5,5" transform="translate(323,30)" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="95" y="230" font-size="18" font-weight="bold" fill="#15803d" text-anchor="middle" font-family="Georgia,serif">cilindrico</text>
+<text x="265" y="230" font-size="18" font-weight="bold" fill="#b91c1c" text-anchor="middle" font-family="Georgia,serif">tronco di cono</text>
 </svg>

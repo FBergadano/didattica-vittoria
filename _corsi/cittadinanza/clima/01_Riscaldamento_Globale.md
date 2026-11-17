@@ -171,7 +171,7 @@ Su queste frasi non c'è una risposta giusta. Scegli da che parte stai e scrivi 
 Foote mise un termometro in ciascuno dei due cilindri e li espose al sole. Quello con la CO₂ si scaldò di più e poi, all'ombra, si raffreddò più lentamente.
 {% include margin-note-end.html %}
 
-Questo esperimento lo prepara il gruppo 1 e lo fa in classe, durante la sua lezione. Vi servono due bottiglie di plastica trasparente uguali da 1,5 L, due termometri digitali da cucina, bicarbonato e aceto (oppure acqua frizzante), del nastro adesivo, un cronometro e una lampada alogena o a incandescenza. Le lampade a LED non vanno bene, perché emettono pochissimo infrarosso.
+Questo esperimento lo prepara il gruppo 1 e lo fa in classe, durante la sua lezione. Vi servono due bottiglie di plastica trasparente uguali da 1,5 ℓ, due termometri digitali da cucina, bicarbonato e aceto (oppure acqua frizzante), del nastro adesivo, un cronometro e una lampada alogena o a incandescenza. Le lampade a LED non vanno bene, perché emettono pochissimo infrarosso.
 
 1. Fissa un termometro dentro ciascuna bottiglia, alla stessa altezza.
 2. Riempi una bottiglia di CO₂: fai reagire bicarbonato e aceto in un barattolo e porta il gas nella bottiglia con un tubo, oppure lascia sgasare dell'acqua frizzante in una bottiglia chiusa. L'altra resta piena d'aria. Chiudi entrambe.

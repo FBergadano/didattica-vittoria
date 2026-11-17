@@ -219,7 +219,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
   function mostraSchemi() {
     var ul = panel.querySelector('.cons-schemi'); if (!ul) return;
     ul.innerHTML = mieiSchemi.length ? '<li><b>Già inviati: ' + mieiSchemi.length + '</b></li>' + mieiSchemi.map(function(f) {
-      var ico = f.tipo === 'mappa' ? '🗺' : f.tipo === 'application/pdf' ? '📄' : '📷';
+      var ico = f.tipo === 'relazione' ? '📝' : f.tipo === 'mappa' ? '🗺' : f.tipo === 'application/pdf' ? '📄' : '📷';
       return '<li><span>' + ico + ' ' + esc(f.titolo || CAPITOLI[f.pagina] || 'schema') + ' · ' + quando(f.ts) + '</span><button class="cons-link" data-az="schema-elimina" data-id="' + f.id + '">elimina</button></li>';
     }).join('') : '';
   }

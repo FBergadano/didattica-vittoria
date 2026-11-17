@@ -63,7 +63,9 @@ npx wrangler@4 secret put DOCENTE_PASSWORD    # imposta/cambia la password del d
 Per **cambiare la password** del docente basta rilanciare l'ultimo comando.
 Per **aggiornare la Worker** dopo una modifica a `worker.js`: `npx wrangler@4 deploy`.
 (Gli «Schemi per l'interrogazione» richiedono la Worker aggiornata a ottobre 2026:
-finché non è pubblicata, il sito risponde agli studenti che il server non è pronto.)
+finché non è pubblicata, il sito risponde agli studenti che il server non è pronto.
+Lo stesso vale per le **relazioni di laboratorio** compilate sul sito, aggiunte a novembre
+2026: arrivano nella scheda «Schemi e relazioni», con le foto dentro.)
 
 ## Metodo dal pannello di Cloudflare
 

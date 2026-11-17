@@ -377,13 +377,14 @@ async function nuovoSchema(c, env, cors, ctx) {
   if (n.n >= MAX_SCHEMI_GIORNO) return json({ errore: 'troppi' }, 429, cors);
   const pagina = str(c.pagina, 200) || '', titolo = str(c.titolo, 200) || '';
   let tipo, dati;
-  if (c.tipo === 'mappa') {
+  if (c.tipo === 'mappa' || c.tipo === 'relazione') {
+    // schema costruito sul sito, o relazione di laboratorio compilata sul sito (dati JSON)
     dati = String(c.dati || '');
     if (dati.length > MAX_MAPPA) return json({ errore: 'grande' }, 413, cors);
     try { JSON.parse(dati); } catch (e) { return json({ errore: 'formato' }, 400, cors); }
-    tipo = 'mappa';
-    // dello schema di un capitolo tengo solo l'ultima versione inviata
-    await env.DB.prepare("DELETE FROM schemi WHERE classe = ? AND codice = ? AND pagina = ? AND tipo = 'mappa'").bind(st.classe, st.codice, pagina).run();
+    tipo = c.tipo;
+    // dello schema (o della relazione) di un capitolo tengo solo l'ultima versione inviata
+    await env.DB.prepare('DELETE FROM schemi WHERE classe = ? AND codice = ? AND pagina = ? AND tipo = ?').bind(st.classe, st.codice, pagina, tipo).run();
   } else {
     const m = /^data:(application\/pdf|image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/.exec(String(c.file || ''));
     if (!m) return json({ errore: 'formato' }, 400, cors);
@@ -391,8 +392,9 @@ async function nuovoSchema(c, env, cors, ctx) {
     tipo = m[1]; dati = m[2];
   }
   const r = await env.DB.prepare('INSERT INTO schemi (classe, codice, pagina, titolo, ts, tipo, dim, dati) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
-    .bind(st.classe, st.codice, pagina, titolo, ora, tipo, tipo === 'mappa' ? dati.length : Math.round(dati.length * 3 / 4), dati).run();
-  notifica(env, ctx, `🗺 ${st.codice} (${st.classe}) ha inviato uno schema per l'interrogazione` + (titolo ? `: ${titolo}` : ''), `s|${st.classe}|${st.codice}|${pagina}|${titolo}`, 5 * 60 * 1000);
+    .bind(st.classe, st.codice, pagina, titolo, ora, tipo, (tipo === 'mappa' || tipo === 'relazione') ? dati.length : Math.round(dati.length * 3 / 4), dati).run();
+  notifica(env, ctx, tipo === 'relazione' ? `📝 ${st.codice} (${st.classe}) ha consegnato la relazione` + (titolo ? `: ${titolo.replace(/^Relazione:\s*/, '')}` : '')
+    : `🗺 ${st.codice} (${st.classe}) ha inviato uno schema per l'interrogazione` + (titolo ? `: ${titolo}` : ''), `s|${st.classe}|${st.codice}|${pagina}|${titolo}`, 5 * 60 * 1000);
   return json({ ok: true, id: r.meta.last_row_id }, 200, cors);
 }
 async function mieiSchemi(c, env, cors) {
@@ -524,7 +526,7 @@ async function docente(p, url, c, env, cors, ctx) {
     case '/docente/schema': { // uno schema, con i dati
       const f = await DB.prepare('SELECT id, codice, pagina, titolo, ts, tipo, dati FROM schemi WHERE id = ?').bind(Number(q('id'))).first();
       if (!f) return json({ errore: 'non trovato' }, 404, cors);
-      return json(f.tipo === 'mappa' ? f : { ...f, dati: undefined, src: 'data:' + f.tipo + ';base64,' + f.dati }, 200, cors);
+      return json((f.tipo === 'mappa' || f.tipo === 'relazione') ? f : { ...f, dati: undefined, src: 'data:' + f.tipo + ';base64,' + f.dati }, 200, cors);
     }
     case '/docente/schema-elimina': {
       await DB.prepare('DELETE FROM schemi WHERE id = ?').bind(Number(c.id)).run();

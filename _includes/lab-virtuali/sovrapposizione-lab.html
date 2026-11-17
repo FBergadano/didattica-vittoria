@@ -9,6 +9,8 @@ aggiornano da soli (distanze, formula e risultato di ciascun contributo, somma).
 Forza e campo sono vettori: si disegnano solo le frecce (in scala fra loro), il
 parallelogramma e la somma, senza conti; energia potenziale e potenziale sono
 scalari: si sommano i numeri, e si possono aggiungere o togliere masse/cariche.
+Le masse sono disegnate come pianeti, uno diverso per ciascuna (M₁ la Terra,
+M₂ Marte, M₃ Giove, M₄ la Luna, M₅ Nettuno, M₆ Venere); le cariche come sfere ±.
 
 Parametri:
   id       — ID univoco (obbligatorio)
@@ -58,6 +60,16 @@ window.SovLab = window.SovLab || (function(){
   var NS = 'http://www.w3.org/2000/svg', CELL = 40, OX = 26, OY = 30, NX = 10, NY = 6;
   var SUB = ['₀','₁','₂','₃','₄','₅','₆','₇','₈','₉'];
   var COLS = ['#dc2626', '#7c3aed', '#ea580c', '#db2777', '#0891b2', '#65a30d'];
+  // masse gravitazionali disegnate come pianeti: uno diverso per ogni sorgente (M₁ Terra, M₂ Marte, …)
+  var IMG_T = '{{ "/corsi/immagini/terra-ritaglio.webp" | relative_url }}', IMG_L = '{{ "/corsi/immagini/luna-ritaglio.webp" | relative_url }}';
+  var PIANETI = [
+    { n: 'Terra', img: IMG_T },
+    { n: 'Marte', c: ['#f7b27a', '#c4552c', '#5e1e0e'], macchie: [[-.25, .05, .45, .2, 'rgba(110,35,15,.45)'], [.35, .35, .3, .14, 'rgba(110,35,15,.4)'], [0, -.92, .42, .16, 'rgba(255,255,255,.9)']] },
+    { n: 'Giove', c: ['#fdebd0', '#d2a06a', '#6e4420'], bande: [[-.75, -.6, 'rgba(150,95,50,.55)'], [-.42, -.22, 'rgba(170,105,55,.6)'], [-.05, .08, 'rgba(255,245,225,.45)'], [.18, .38, 'rgba(160,98,50,.6)'], [.6, .72, 'rgba(150,95,50,.5)']], macchie: [[.3, .27, .22, .12, '#c2462a']] },
+    { n: 'Luna', img: IMG_L },
+    { n: 'Nettuno', c: ['#a9ccff', '#3a66d8', '#10245e'], bande: [[-.45, -.36, 'rgba(160,200,255,.3)'], [.15, .24, 'rgba(20,40,120,.35)']], macchie: [[-.2, .3, .24, .13, 'rgba(10,25,80,.7)']] },
+    { n: 'Venere', c: ['#fff6d2', '#e6c16a', '#8a6420'], bande: [[-.55, -.38, 'rgba(255,255,240,.35)'], [-.1, .08, 'rgba(180,130,50,.22)'], [.3, .5, 'rgba(255,255,240,.3)']] }
+  ];
   var GRAD = [['#fffbeb','#fde68a','#fbbf24'], ['#f0fdfa','#99f6e4','#5eead4'], ['#fff7ed','#fed7aa','#fb923c'], ['#fdf2f8','#fbcfe8','#f472b6'], ['#ecfeff','#a5f3fc','#22d3ee'], ['#f7fee7','#d9f99d','#a3e635']];
 
   function el(tag, attrs, parent){ var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
@@ -154,6 +166,23 @@ window.SovLab = window.SovLab || (function(){
     }
 
     // ── disegno
+    // un pianeta: immagine ritagliata (Terra, Luna) oppure sfumatura con bande e macchie, poi luce e ombra
+    function pianeta(g, x, y, R, k, cid){
+      var p = PIANETI[k], defs = svg.querySelector('defs');
+      var cp = el('clipPath', { id: cid }, defs); el('circle', { cx: x, cy: y, r: R }, cp);
+      el('circle', { cx: x, cy: y, r: R + 1.5, fill: p.img ? '#334155' : p.c[1], opacity: .25 }, g);
+      if (p.img) {
+        var im = el('image', { x: x - R, y: y - R, width: 2 * R, height: 2 * R, 'clip-path': 'url(#' + cid + ')', preserveAspectRatio: 'xMidYMid slice' }, g);
+        im.setAttribute('href', p.img); im.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', p.img);
+      } else {
+        el('circle', { cx: x, cy: y, r: R, fill: 'url(#' + root.id + 'pl' + k + ')' }, g);
+        var gc = el('g', { 'clip-path': 'url(#' + cid + ')' }, g);
+        (p.bande || []).forEach(function(b){ el('rect', { x: x - R, y: y + b[0] * R, width: 2 * R, height: (b[1] - b[0]) * R, fill: b[2] }, gc); });
+        (p.macchie || []).forEach(function(m){ el('ellipse', { cx: x + m[0] * R, cy: y + m[1] * R, rx: m[2] * R, ry: m[3] * R, fill: m[4] }, gc); });
+        el('circle', { cx: x, cy: y, r: R, fill: 'url(#' + root.id + 'luce)' }, g);
+      }
+      var t = el('title', {}, g); t.textContent = p.n;
+    }
     function px(x){ return OX + CELL * x; } function py(y){ return OY + CELL * y; }
     function draw(){
       svg.innerHTML = '';
@@ -167,6 +196,13 @@ window.SovLab = window.SovLab || (function(){
       [['P', '#fff1f2', '#fecdd3', '#fda4af'], ['N', '#eff6ff', '#bfdbfe', '#93c5fd'], ['T', '#f8fafc', '#e2e8f0', '#cbd5e1']].forEach(function(g){
         var rg = el('radialGradient', { id: root.id + 'g' + g[0], cx: '35%', cy: '30%', r: '70%' }, defs);
         [0, 55, 100].forEach(function(o, j){ el('stop', { offset: o + '%', 'stop-color': g[j + 1] }, rg); }); });
+      if (!EL) {
+        PIANETI.forEach(function(p, k){ if (!p.c) return;
+          var rg = el('radialGradient', { id: root.id + 'pl' + k, cx: '30%', cy: '28%', r: '78%' }, defs);
+          [0, 45, 100].forEach(function(o, j){ el('stop', { offset: o + '%', 'stop-color': p.c[j] }, rg); }); });
+        var lu = el('radialGradient', { id: root.id + 'luce', cx: '30%', cy: '28%', r: '75%' }, defs);
+        [[0, 'rgba(255,255,255,.4)'], [45, 'rgba(255,255,255,0)'], [75, 'rgba(0,0,20,0)'], [100, 'rgba(0,0,20,.5)']].forEach(function(o){ el('stop', { offset: o[0] + '%', 'stop-color': o[1] }, lu); });
+      }
       for (var i = 0; i <= NX; i++) el('line', { x1: px(i), y1: py(0), x2: px(i), y2: py(NY), stroke: '#e2e8f0', 'stroke-width': 1 }, svg);
       for (var j = 0; j <= NY; j++) el('line', { x1: px(0), y1: py(j), x2: px(NX), y2: py(j), stroke: '#e2e8f0', 'stroke-width': 1 }, svg);
       // scala
@@ -205,8 +241,9 @@ window.SovLab = window.SovLab || (function(){
       srcs.forEach(function(s){
         var g = el('g', { 'class': 'sov-drag' }, svg), R, fill, stroke, txt;
         if (EL) { R = 11 + Math.abs(s.v) * .9; fill = 'url(#' + root.id + 'g' + (s.v > 0 ? 'P' : 'N') + ')'; stroke = s.v > 0 ? '#9f1239' : '#1e3a8a'; txt = s.v > 0 ? '+' : '−'; }
-        else { R = 9 + Math.sqrt(s.v) * 2.3; fill = 'url(#' + root.id + 'g' + ((s.id - 1) % GRAD.length) + ')'; stroke = 'rgba(15,23,42,.35)'; txt = ''; }
-        el('circle', { cx: px(s.x), cy: py(s.y), r: R, fill: fill, stroke: stroke, 'stroke-width': 1.2 }, g);
+        else { R = 9 + Math.sqrt(s.v) * 2.3; stroke = 'rgba(15,23,42,.35)'; txt = ''; }
+        if (EL) el('circle', { cx: px(s.x), cy: py(s.y), r: R, fill: fill, stroke: stroke, 'stroke-width': 1.2 }, g);
+        else pianeta(g, px(s.x), py(s.y), R, (s.id - 1) % PIANETI.length, root.id + 'c' + s.id);
         if (txt) { var tt = el('text', { x: px(s.x), y: py(s.y) + 5, 'text-anchor': 'middle', 'font-size': 19, 'font-weight': 700, fill: stroke }, g); tt.textContent = txt; }
         var nm = el('text', { x: px(s.x), y: py(s.y) - R - 4, 'text-anchor': 'middle', 'font-size': 16, 'font-weight': 600, 'font-style': 'italic', fill: EL ? stroke : '#475569' }, g);
         nm.textContent = SN + SUB[s.id];

@@ -76,6 +76,13 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   .schemi td, .schemi th { border-bottom: 1px solid var(--bordo); padding: .4rem .5rem; text-align: left; }
   .schemi th { font-size: .8rem; color: var(--testo2); }
   .schemi td.cod { font-weight: 700; letter-spacing: .05em; }
+  .relaz .rz-sez { border: 1px solid var(--bordo); border-radius: 8px; padding: .5rem .8rem; margin: .6rem 0; background: #fff; }
+  .relaz h3 { font-size: .95rem; margin: 0 0 .3rem; color: #1e3a5f; }
+  .relaz .rz-riga { margin: .2rem 0; }
+  .relaz .rz-riga b { color: #1e40af; }
+  .relaz .rz-testo { white-space: pre-wrap; background: #f8fafc; border-radius: 6px; padding: .4rem .6rem; margin: .3rem 0; }
+  .relaz .rz-vuoto { color: var(--muto); font-weight: normal; }
+  .relaz .rz-stelle { color: #f59e0b; } .relaz .rz-stelle i { color: #e2e8f0; font-style: normal; }
   .schemi td.az { white-space: nowrap; text-align: right; }
   .schemi button { padding: .15rem .55rem; font-size: .8rem; }
   #modale .testa { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
@@ -119,7 +126,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     <button data-s="compiti" class="on">Compiti</button>
     <button data-s="tutte">Tutte le risposte</button>
     <button data-s="foto">Foto</button>
-    <button data-s="schemi">Schemi</button>
+    <button data-s="schemi">Schemi e relazioni</button>
     <button data-s="dubbi">Dubbi<span id="nd"></span></button>
     <button data-s="osservazioni">Osservazioni<span id="no"></span></button>
     <button data-s="studenti">Studenti</button>
@@ -466,7 +473,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     foto.forEach(function(f) { var k = f.compito || ''; if (!gruppi[k]) { gruppi[k] = []; ordine.push(k); } gruppi[k].push(f); });
     var tit = {}; (COMPITI[classe] || []).forEach(function(c) { tit[chiaveCompito(c)] = 'Compito per ' + bella(giorno(c.data)) + ' — ' + titoloCompito(c); });
     sec.innerHTML = ordine.map(function(k) {
-      var t = k ? (tit[k] || 'Compito per ' + bella(giorno(k)) + ' (non più nel calendario)') : 'Non legate a un compito';
+      var t = !k ? 'Non legate a un compito' : /^relazione/.test(k) ? 'Foto delle relazioni di laboratorio (le vedi anche dentro la relazione, scheda «Schemi e relazioni»)' : (tit[k] || 'Compito per ' + bella(giorno(k)) + ' (non più nel calendario)');
       return '<div class="card"><b>' + esc(t) + '</b> · ' + gruppi[k].length + ' foto' + fotoHtml(gruppi[k], true) + '</div>';
     }).join('');
     caricaImmagini(sec);
@@ -482,9 +489,9 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   function vistaSchemi() {
     var sec = $('#s-schemi');
     if (schemi === null) { sec.innerHTML = '<div class="card">Il server non gestisce ancora gli schemi: va aggiornata la Worker (<code>npx wrangler@4 deploy</code> in <code>strumenti/consegne</code>).</div>'; return; }
-    if (!schemi.length) { sec.innerHTML = '<div class="card">Nessuno schema dalla classe <b>' + esc(classe) + '</b>.</div>'; return; }
-    var tipo = function(t) { return t === 'mappa' ? '🗺 schema dal sito' : t === 'application/pdf' ? '📄 PDF' : '📷 foto'; };
-    sec.innerHTML = '<div class="card"><p class="nota" style="margin-top:0">Gli schemi che gli studenti mi hanno mandato per l\'interrogazione, dal più recente. Di uno schema costruito sul sito resta solo l\'ultima versione inviata per ogni capitolo.</p>' +
+    if (!schemi.length) { sec.innerHTML = '<div class="card">Nessuno schema e nessuna relazione dalla classe <b>' + esc(classe) + '</b>.</div>'; return; }
+    var tipo = function(t) { return t === 'relazione' ? '📝 relazione dal sito' : t === 'mappa' ? '🗺 schema dal sito' : t === 'application/pdf' ? '📄 PDF' : '📷 foto'; };
+    sec.innerHTML = '<div class="card"><p class="nota" style="margin-top:0">Gli schemi per l\'interrogazione e le relazioni di laboratorio che gli studenti mi hanno mandato, dal più recente. Di uno schema o di una relazione compilati sul sito resta solo l\'ultima versione inviata per ogni capitolo.</p>' +
       '<table class="schemi"><tr><th>Codice</th><th>Argomento</th><th>Tipo</th><th>Inviato</th><th></th></tr>' +
       schemi.map(function(f) {
         return '<tr><td class="cod">' + esc(f.codice) + '</td><td>' + esc(f.titolo || CAPITOLI[f.pagina] || f.pagina || '') + '</td><td>' + tipo(f.tipo) + '</td><td>' + ora(f.ts) + '</td>' +
@@ -508,6 +515,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
         return;
       }
       var testa = '<div class="testa"><div><h2>' + tit + '</h2></div><div>' + (f.tipo === 'mappa' ? '<button class="pri" data-stampa>🖨 Stampa / PDF</button> ' : '') + '<button data-chiudi>Chiudi ✕</button></div></div>';
+      if (f.tipo === 'relazione') { apriRelazione(f, tit); return; }
       if (f.tipo !== 'mappa') { apriModale(testa + '<img class="grande" src="' + f.src + '" alt="">'); return; }
       apriModale(testa + '<div class="mp-anteprima" style="margin-top:.6rem"></div>');
       $('#modale .box').classList.add('largo');
@@ -515,6 +523,39 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       var v = new Mappa.Vista($('#modale .mp-anteprima'), dati);
       $('[data-stampa]').onclick = function() { Mappa.stampa(v, f.codice + ' — ' + (f.titolo || CAPITOLI[f.pagina] || '') + ' (inviato ' + ora(f.ts) + ')'); };
     }).catch(function(e) { if (e.message !== 'accesso') alert('Errore: ' + e.message); });
+  }
+
+  // relazione di laboratorio compilata sul sito: riquadro per riquadro, con i valori in grassetto e le foto.
+  // Le formule delle etichette passano a MathJax solo se sono fatte di lettere, cifre, indici e \bar:
+  // il testo scritto dallo studente non viene mai interpretato.
+  function apriRelazione(f, tit) {
+    var dati = {}; try { dati = JSON.parse(f.dati); } catch (e) {}
+    function testo(t) {
+      return String(t).split(/(\$[^$]*\$)/).map(function(p) {
+        var m = /^\$([^$]*)\$$/.exec(p);
+        if (m && /^[A-Za-z0-9_{},.^ ]*$/.test(m[1].replace(/\\bar/g, ''))) return '\\(' + esc(m[1]) + '\\)';
+        return esc(p.replace(/[$\\]/g, '')); // niente \( … \) inventati dallo studente
+      }).join('');
+    }
+    var h = '<div class="testa"><div><h2>' + tit + '</h2></div><button data-chiudi>Chiudi ✕</button></div><div class="relaz">';
+    (dati.sezioni || []).forEach(function(s) {
+      h += '<div class="rz-sez"><h3>' + esc(String(s.titolo || '').replace(/[$\\]/g, '')) + '</h3>';
+      (s.righe || []).forEach(function(r) {
+        var lungo = r.length === 1 && r[0].testo != null;
+        if (lungo) { h += '<div class="rz-testo tex2jax_ignore">' + (r[0].testo ? esc(r[0].testo) : '<span class="rz-vuoto">(vuoto)</span>') + '</div>'; return; }
+        h += '<div class="rz-riga">' + r.map(function(p) {
+          if (p.t != null) return testo(p.t);
+          if (p.stelle != null) return ' <span class="rz-stelle">' + '★★★★★'.slice(0, p.stelle) + '<i>' + '★★★★★'.slice(p.stelle) + '</i></span>';
+          return ' <b class="tex2jax_ignore">' + (p.v ? esc(p.v) : '<span class="rz-vuoto">—</span>') + '</b> ';
+        }).join('') + '</div>';
+      });
+      if (s.foto && s.foto.length) h += '<div class="fotos">' + s.foto.map(function(id) { return '<figure><img data-foto="' + (+id) + '" alt="foto"></figure>'; }).join('') + '</div>';
+      h += '</div>';
+    });
+    apriModale(h + '</div>');
+    var box = $('#modale .box'); box.classList.add('largo');
+    caricaImmagini(box);
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([box]).catch(function() {});
   }
 
   // ───────── dubbi ─────────

@@ -38,18 +38,18 @@ La bilancia che userai in laboratorio segna $523\ \text g$. Qual è la sua incer
 {% include scorri-slide-end.html %}
 
 {% include scorri-slide.html titolo="Il cilindro graduato" %}
-<svg class="strum-fig" viewBox="0 0 120 170" width="110" aria-label="Un cilindro graduato con una tacca ogni 2 mL">
+<svg class="strum-fig" viewBox="0 0 120 170" width="110" aria-label="Un cilindro graduato con una tacca ogni 2 mℓ">
 <path d="M40 10 L80 10 L80 150 L95 160 L25 160 L40 150 Z" fill="#f0f9ff" stroke="#0369a1" stroke-width="1.5"/>
 <rect x="41" y="70" width="38" height="79" fill="#bae6fd"/>
 {% for k in (0..10) %}{% assign yy = k | times: 12 | plus: 26 %}{% assign m5 = k | modulo: 5 %}<line x1="{% if m5 == 0 %}60{% else %}68{% endif %}" y1="{{ yy }}" x2="80" y2="{{ yy }}" stroke="#0c4a6e" stroke-width="1"/>{% endfor %}
 <text x="36" y="30" font-size="10" text-anchor="end" fill="#0c4a6e" font-family="Arial">20</text>
 <text x="36" y="90" font-size="10" text-anchor="end" fill="#0c4a6e" font-family="Arial">10</text>
 <text x="36" y="148" font-size="10" text-anchor="end" fill="#0c4a6e" font-family="Arial">0</text>
-<text x="100" y="30" font-size="10" fill="#0c4a6e" font-family="Arial">mL</text>
+<text x="100" y="30" font-size="10" fill="#0c4a6e" font-family="Arial">mℓ</text>
 </svg>
-Il cilindro graduato ha una tacca ogni $2\ \text{mL}$. Qual è la sua incertezza strumentale?
+Il cilindro graduato ha una tacca ogni $2\ \text{m}\ell$. Qual è la sua incertezza strumentale?
 
-{% include num.html id="numIsCilindro" valore="1" unit="mL" %}
+{% include num.html id="numIsCilindro" valore="1" unit="mℓ" %}
 {% include scorri-slide-end.html %}
 
 {% include scorri-slide.html titolo="La bilancia a lancetta" %}

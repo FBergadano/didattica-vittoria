@@ -763,18 +763,10 @@ $$U = -F\cdot r = -G\frac{Mm}{r^{\cancel 2}}\cdot\cancel r = -G\frac{Mm}{r}.$$
 Controlliamo che vada bene. Se $r$ aumenta, la frazione $\dfrac{Mm}{r}$ diventa sempre più piccola: $U$, che è negativa, si avvicina a zero, cioè aumenta. E quando $r$ è enorme, $U$ è praticamente zero. È proprio quello che volevamo.
 {% include margin-note-end.html %}
 
-{% include margin-note.html testo="Un'espressione equivalente per U" %}
-Possiamo scrivere $U$ anche usando il campo gravitazionale. Siccome $g = F/m$, la forza è $F = mg$, e quindi $U = -F\cdot r = -mgr$. Ecco che le due scritture sono la stessa identica formula:
-{% include margin-note-end.html %}
-
-{% include lab-virtuali/u-mgr-lab.html %}
-
-$$U = -mgr = -G\frac{Mm}{r}.$$
-
 {% include box-imp.html testo="Energia potenziale gravitazionale" %}
 L'energia potenziale gravitazionale fra due masse $M$ ed $m$ a distanza $r$ è uno <u markdown="span">**scalare**</u> e vale
 
-$$U = -G\frac{Mm}{r} = -mgr.$$
+$$U = -G\frac{Mm}{r}.$$
 
 È sempre negativa, aumenta quando le masse si allontanano e vale zero solo a distanza infinita. Si misura in joule (J).
 {% include box-end.html %}
@@ -796,23 +788,9 @@ Con $r$ in ascissa, che forma ha il grafico di $U$?
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include calc-margin.html id="calcUNum" %}
-{% include scorri.html %}
-{% include scorri-slide.html titolo="L'energia potenziale di un satellite" %}
 Un satellite di $1\,000\ \text{kg}$ orbita a $r = 7{,}0\times10^{6}\ \text{m}$ dal centro della Terra. Calcola la sua energia potenziale gravitazionale, in joule. Usa $M_\oplus = 5{,}97\times10^{24}\ \text{kg}$ e $G = 6{,}67\times10^{-11}\ \text{N}\cdot\text{m}^2/\text{kg}^2$.
 
 {% include sci.html prima="$U =$" coeff="-5.69" exp="10" tol="1" s="$U = -G\dfrac{M_\oplus m}{r} = -6{,}67\times10^{-11}\cdot\dfrac{5{,}97\times10^{24}\cdot 1\,000}{7{,}0\times10^{6}}\ \text J \approx -5{,}69\times10^{10}\ \text J$" %}
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Isola il campo" %}
-Nel prossimo esercizio conosci l'energia potenziale e devi trovare il campo: prima isola $g$ nella formula $U = -mgr$.
-
-{% include invert.html id="inv-en1-g" variabili="U|m|g|r" sinistra="U" destra="m*g*r" obiettivo="g" negativo="1" %}
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html titolo="Il campo dall'energia potenziale" %}
-Una sonda di $500\ \text{kg}$, a $r = 6{,}8\times10^{6}\ \text{m}$ dal centro di Marte, ha un'energia potenziale gravitazionale $U = -6{,}3\times10^{9}\ \text{J}$. Usa la formula $U = -mgr$ per ricavare il campo gravitazionale di Marte in quel punto.
-
-{% include num.html id="numgDaU" valore="1.85" unit="N/kg" tol="1.5" %}
-{% include scorri-slide-end.html %}
-{% include scorri-end.html %}
 <div style="clear:both"></div>
 {% include box-end.html %}
 
@@ -840,9 +818,9 @@ $$V = \frac{U}{m}.$$
 Esattamente come per il campo, quindi, il potenziale si ottiene <u markdown="span">togliendo la massa esploratrice $m$ dall'energia potenziale</u>, cioè dividendo per $m$:
 {% include margin-note-end.html %}
 
-{% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-pot" da="U" a="V" meno="true" fine="gr" %}
+{% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-pot" da="U" a="V" meno="true" %}
 
-$$V = \frac{U}{m} = -G\frac{M}{r} = -gr.$$
+$$V = \frac{U}{m} = -G\frac{M}{r}.$$
 
 {% include margin-note.html testo="Energia potenziale e potenziale" %}
 Non confondere le due grandezze: <u markdown="span">l'energia potenziale $U$ **dipende** dalla massa esploratrice $m$</u> (più massa metti, più energia immagazzini), mentre <u markdown="span">il potenziale $V$ **non dipende** da $m$</u>, proprio come il campo $\vec g$: dipende solo dalla massa $M$ che lo genera e dalla distanza da essa.
@@ -861,11 +839,12 @@ $$[V] = \frac{\text J}{\text{kg}}.$$
 {% include box-imp.html testo="Potenziale gravitazionale" %}
 Il potenziale gravitazionale generato da una massa $M$ a distanza $r$ è uno <u markdown="span">**scalare**</u> e vale
 
-$$V = \frac{U}{m} = -G\frac{M}{r} = -gr.$$
+$$V = \frac{U}{m} = -G\frac{M}{r}.$$
 
 Come il campo, non dipende dalla massa esploratrice $m$. Si misura in J/kg.
 {% include box-end.html %}
 
+{% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include scorri.html %}
 {% include scorri-slide.html titolo="La differenza, a parole" %}
@@ -882,7 +861,6 @@ Ora costruisci tu un esempio con dei numeri, che faccia vedere questa differenza
 {% include scorri-end.html %}
 {% include box-end.html %}
 
-{% include unisci.html %}
 Esplora tu stesso come cambia $V$ al variare di $M$ o di $r$.
 
 {% include graph-explorer.html id="ge-potenziale"
@@ -1021,14 +999,14 @@ Raddoppiando la distanza $r$, che cosa succede al valore di ogni grandezza?
 {% include sort.html id="sort-confr-vel" dati=_sConfrVel col0="Diventa un quarto: cambia velocemente" col1="Si dimezza: cambia lentamente" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="5. Il grafico" %}
-Quale di questi quattro grafici ha l'andamento di ciascuna grandezza, in funzione di $r$?
+Quale dei due grafici ha l'andamento di ciascuna grandezza, in funzione di $r$?
 
-{% include figure/figura-quattro-grafici.html %}
+{% include figure/figura-due-grafici.html %}
 
-{% include fill.html prima="Il modulo della forza, $F$: grafico" tipo="drop" opts="A|B|C|D" ok="A" dopo="." s="È positivo e scende velocemente, come $1/r^2$." %}
-{% include fill.html prima="Il modulo del campo, $g$: grafico" tipo="drop" opts="A|B|C|D" ok="A" dopo="." s="Come la forza: anche $g$ va come $1/r^2$." %}
-{% include fill.html prima="L'energia potenziale, $U$: grafico" tipo="drop" opts="A|B|C|D" ok="B" dopo="." s="È negativa, quindi sta sotto l'asse, e sale lentamente verso zero, come $-1/r$." %}
-{% include fill.html prima="Il potenziale, $V$: grafico" tipo="drop" opts="A|B|C|D" ok="B" dopo="." s="Come l'energia potenziale: anche $V$ va come $-1/r$." %}
+{% include fill.html prima="Il modulo della forza, $F$: grafico" tipo="drop" opts="A|B" ok="A" dopo="." s="È positivo, quindi sta sopra l'asse, e scende verso zero allontanandosi." %}
+{% include fill.html prima="Il modulo del campo, $g$: grafico" tipo="drop" opts="A|B" ok="A" dopo="." s="Come la forza: anche $g$ va come $1/r^2$." %}
+{% include fill.html prima="L'energia potenziale, $U$: grafico" tipo="drop" opts="A|B" ok="B" dopo="." s="È negativa, quindi sta sotto l'asse, e sale verso zero allontanandosi." %}
+{% include fill.html prima="Il potenziale, $V$: grafico" tipo="drop" opts="A|B" ok="B" dopo="." s="Come l'energia potenziale: anche $V$ va come $-1/r$." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="6. Il segno meno" %}
 Allontanando le masse, $r$ aumenta e la frazione $\dfrac{Mm}{r}$ diventa più piccola. Perché, allora, l'energia potenziale $U = -G\dfrac{Mm}{r}$ aumenta?
@@ -1056,6 +1034,7 @@ Ci sono dieci masse. Per quali grandezze il totale si calcola con una normale so
 {% include box-end.html %}
 
 {% include spoiler.html testo="La tabella riassuntiva (aprila dopo aver risposto)" %}
+{% capture _gr2 %}{% include figure/grafico-mini.html tipo="r2" %}{% endcapture %}{% capture _gr1 %}{% include figure/grafico-mini.html tipo="r1" %}{% endcapture %}{% assign _gr2 = _gr2 | strip_newlines %}{% assign _gr1 = _gr1 | strip_newlines %}
 
 | | Forza $\vec F$ | Campo $\vec g$ | Energia potenziale $U$ | Potenziale $V$ |
 |---|:---:|:---:|:---:|:---:|
@@ -1063,7 +1042,7 @@ Ci sono dieci masse. Per quali grandezze il totale si calcola con una normale so
 | **Segno** | positivo (il modulo) | positivo (il modulo) | negativo | negativo |
 | **Quando $r$ aumenta** | diminuisce | diminuisce | aumenta | aumenta |
 | **Come cambia** | velocemente, come $1/r^2$ | velocemente, come $1/r^2$ | lentamente, come $-1/r$ | lentamente, come $-1/r$ |
-| **Grafico** | A | A | B | B |
+| **Grafico** | {{ _gr2 }} | {{ _gr2 }} | {{ _gr1 }} | {{ _gr1 }} |
 
 {% include spoiler-end.html %}
 
@@ -1090,6 +1069,12 @@ La forza peso $\vec F = m\vec g$ è la forza che sperimenta una massa $m$ immers
 Spesso si parla di forza peso in relazione ai pianeti (anche se la forza peso è un concetto più generale). In particolare, per un pianeta di forma sferica, il modulo di $\vec g$ sulla superficie del pianeta è sostanzialmente costante su tutta la superficie (in quanto ogni punto si trova alla stessa distanza dal centro). Ad esempio, per la Terra, il valore è circa $g_{\text{Terra}}\approx 9,8 \ \text{m/s}^2$; per la Luna è circa $g_{\text{Luna}}\approx 1,5 \ \text{m/s}^2$.  
 Nella realtà, nessun pianeta è perfettamente sferico, quindi il valore di $g$ cambia (anche se di poco) sulla superficie del pianeta.
 {% include margin-note-end.html %}
+
+{% include margin-note.html testo="Vicino alla superficie g è costante" %}
+Ma allora perché, quando lanciamo un sasso, disegniamo $\vec g$ sempre uguale, dritto verso il basso, come se non puntasse verso il centro della Terra? Perché noi ci muoviamo in una regione piccolissima rispetto al pianeta. Avvicinati alla superficie con il cursore e guarda i vettori del campo: da lontano convergono verso il centro e sono più corti man mano che ci si allontana, ma da vicino diventano <u>paralleli e tutti uguali</u>. In una regione piccola vicino alla superficie, il campo gravitazionale è praticamente costante.
+{% include margin-note-end.html %}
+
+{% include lab-virtuali/campo-uniforme-lab.html id="cul-peso" solo="pianeta" %}
 
 {% include box-warn.html testo="Massa e peso non sono la stessa cosa" %}
 

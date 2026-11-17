@@ -1,5 +1,5 @@
 {% comment %}
-Figura statica: il vettore campo gravitazionale in un punto a distanza r da una massa M. Nessun parametro.
+Figura statica: il vettore campo gravitazionale in un punto a distanza r da una massa M (disegnata come la Terra). Nessun parametro.
 {% endcomment %}
 <div class="fig-block">
 <svg viewBox="0 0 380 180" width="100%" style="max-width:340px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Vettore campo gravitazionale in un punto a distanza r dalla massa M">
@@ -12,9 +12,8 @@ Figura statica: il vettore campo gravitazionale in un punto a distanza r da una 
   <line x1="70" y1="90" x2="280" y2="90" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4 4"/>
   <text x="175" y="80" text-anchor="middle" font-size="14" fill="#64748b">r</text>
 
-  <circle cx="70" cy="90" r="40" fill="url(#gvecM)"/>
-  <ellipse cx="58" cy="76" rx="12" ry="8" fill="#fff" opacity=".5"/>
-  <text x="70" y="96" text-anchor="middle" font-size="16" font-weight="600" fill="#92400e">M</text>
+  <clipPath id="gvecCpT"><circle cx="70" cy="90" r="40"/></clipPath><circle cx="70" cy="90" r="42" fill="#7db4ff" opacity=".35"/><image href="{{ "/corsi/immagini/terra-ritaglio.webp" | relative_url }}" x="30" y="50" width="80" height="80" clip-path="url(#gvecCpT)" preserveAspectRatio="xMidYMid slice"/>
+  <text x="70" y="40" text-anchor="middle" font-size="16" font-weight="600" font-style="italic" fill="#1e40af">M</text>
 
   <circle cx="280" cy="90" r="5" fill="#475569"/>
   <text x="280" y="112" text-anchor="middle" font-size="13" fill="#475569">P</text>

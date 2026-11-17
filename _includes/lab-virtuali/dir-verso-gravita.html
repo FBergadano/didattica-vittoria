@@ -1,6 +1,6 @@
 {% comment %}
 Animazione (una volta, quando la figura entra nello schermo; pulsante «Rivedi»):
-la forza gravitazionale fra due masse diverse m1 e m2.
+la forza gravitazionale fra due masse diverse m1 (la Luna) e m2 (la Terra).
 Compaiono in ordine: le due masse; la retta tratteggiata che passa per i centri;
 i due vettori; la scritta «la direzione è la retta che congiunge i centri» con
 i centri segnati e «⇒ forza centrale»; le frecce verdi del verso attrattivo;
@@ -37,12 +37,10 @@ Nessun parametro.
 
   <!-- 1. le masse -->
   <g class="gvd-s" data-t="0">
-    <circle cx="108" cy="88" r="28" fill="url(#gvdAzz)"/>
-    <ellipse cx="105.6" cy="74.1" rx="9" ry="6" fill="#fff" opacity=".55"/>
-    <text x="60" y="80" text-anchor="middle" font-size="18" font-weight="600" fill="#0369a1">m&#8321;</text>
-    <circle cx="354" cy="260" r="60" fill="url(#gvdOro)"/>
-    <ellipse cx="348.6" cy="229.4" rx="18" ry="12" fill="#fff" opacity=".5"/>
-    <text x="440" y="236" text-anchor="middle" font-size="20" font-weight="600" fill="#92400e">m&#8322;</text>
+    <clipPath id="gvdCpL"><circle cx="108" cy="88" r="28"/></clipPath><circle cx="108" cy="88" r="30" fill="#94a3b8" opacity=".35"/><image href="{{ "/corsi/immagini/luna-ritaglio.webp" | relative_url }}" x="80" y="60" width="56" height="56" clip-path="url(#gvdCpL)" preserveAspectRatio="xMidYMid slice"/>
+    <text x="60" y="80" text-anchor="middle" font-size="18" font-weight="600" fill="#475569">m&#8321;</text>
+    <clipPath id="gvdCpT"><circle cx="354" cy="260" r="60"/></clipPath><circle cx="354" cy="260" r="62" fill="#7db4ff" opacity=".35"/><image href="{{ "/corsi/immagini/terra-ritaglio.webp" | relative_url }}" x="294" y="200" width="120" height="120" clip-path="url(#gvdCpT)" preserveAspectRatio="xMidYMid slice"/>
+    <text x="440" y="236" text-anchor="middle" font-size="20" font-weight="600" fill="#1e40af">m&#8322;</text>
   </g>
 
   <!-- 2. la retta che passa per i centri -->
