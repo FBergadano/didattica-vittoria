@@ -695,7 +695,7 @@ In entrambi i casi, il conduttore si carica con il segno **opposto** a quello de
 {% include scorri.html %}
 {% include scorri-slide.html titolo="L'elettroforo di Volta" %}
 {% include video.html id="IyuFKc3eF5w" %}
-Nel 1775 [Alessandro Volta](https://it.wikipedia.org/wiki/Alessandro_Volta) inventò l'<definizione>elettroforo</definizione>, uno strumento per produrre carica a volontà, che puoi costruire anche tu: ti servono un vassoio di plastica (o di polistirolo), una teglia di alluminio e un bicchiere di plastica incollato al centro della teglia, come manico isolante. Strofina il vassoio con la lana, appoggiaci sopra la teglia tenendola per il manico, tocca la teglia con un dito, poi solleva la teglia: ora è carica, e avvicinandole un dito scocca una piccola scintilla. La teglia si è caricata per induzione: il vassoio carico ha polarizzato la teglia, e il dito ha fatto da collegamento a terra. Puoi ripetere l'operazione tantissime volte, senza strofinare di nuovo il vassoio.
+Nel 1775 [Alessandro Volta](https://it.wikipedia.org/wiki/Alessandro_Volta) inventò l'<definizione>elettroforo</definizione>, uno strumento per produrre carica a volontà, che puoi costruire anche tu: ti servono un vassoio di plastica (o di polistirolo), una teglia di alluminio e un bicchiere di plastica incollato al centro della teglia, come manico isolante. Strofina il vassoio con la lana, appoggiaci sopra la teglia tenendola per il manico, tocca la teglia con un dito, poi solleva la teglia: ora è carica, e avvicinandole un dito scocca una piccola scintilla. La teglia si è caricata per induzione: il vassoio carico ha polarizzato la teglia, e il dito ha fatto da collegamento a terra. Puoi ripetere l'operazione tantissime volte, senza strofinare di nuovo il vassoio. Trovi come costruirlo nella scheda «L'elettroforo di Volta fai da te», subito dopo questo riquadro.
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="Il pozzo di Faraday" %}
 {% include video.html id="sXwPTpwix90" %}
@@ -707,6 +707,11 @@ Un esperimento ideato da [Michael Faraday](https://it.wikipedia.org/wiki/Michael
 {% include box-imp.html testo="Elettrizzazione per induzione" %}
 L'elettrizzazione per induzione è il fenomeno per cui, **collegando a terra** un conduttore polarizzato da un corpo carico vicino, alcuni elettroni passano fra il conduttore e il terreno: <u>scendono nel terreno</u> se il corpo carico è negativo, <u>salgono dal terreno</u> se è positivo. Staccato il collegamento, il conduttore resta carico con il segno **opposto** a quello del corpo carico.
 {% include box-end.html %}
+
+{% include box-lab.html id="lab-elettroforo" titolo="L'elettroforo di Volta fai da te"
+   testo="Costruisci l'elettroforo di Volta con un vecchio CD, della stagnola e un bicchiere di plastica, e prendi la scossa tutte le volte che vuoi. Bastano 10 minuti, e se lo porti a scuola funzionante guadagni 0,5 punti."
+   link="/corsi/gravitazione-elettromagnetismo/laboratorio/elettroforo-fai-da-te/"
+   img="/corsi/immagini/elettroforo-di-volta-fai-da-te/finito.webp" %}
 
 
 {% include box-ex.html testo="Verifica Subito!" %}

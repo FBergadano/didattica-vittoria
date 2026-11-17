@@ -6,11 +6,13 @@ Parametri:
   testo  — una o due righe di presentazione (HTML ammesso)
   link   — indirizzo della scheda, dalla root del sito (es. "/corsi/.../elettroscopio-fai-da-te/")
   img    — foto (opzionale)
+  id     — ancora del riquadro (opzionale, default "lab-casa"; serve se nella
+           pagina ce n'è più di uno)
 Esempio:
   {% include box-lab.html titolo="Elettroscopio a foglie fai da te"
      testo="Costruiscine uno con materiali da cucina." link="/corsi/..." img="/corsi/immagini/....webp" %}
 {% endcomment %}
-<aside class="lab-casa" id="lab-casa">
+<aside class="lab-casa" id="{{ include.id | default: 'lab-casa' }}">
   {% if include.img %}<a href="{{ include.link | relative_url }}" class="lab-casa-img"><img src="{{ include.img | relative_url }}" alt="{{ include.titolo }}" loading="lazy"></a>{% endif %}
   <div class="lab-casa-txt">
     <p class="lab-casa-lbl">🔧 Laboratorio a casa</p>

@@ -26,7 +26,7 @@ Per l'elettroscopio:
 {% include lista-materiali.html id="mat-elettroscopio"
    voci="un barattolo di vetro con il tappo di plastica (va benissimo quello del burro d'arachidi)|della carta stagnola|una vite, abbastanza lunga da attraversare il tappo e scendere un po' nel barattolo|un pezzetto di filo di rame (o di fil di ferro)" %}
 
-Non serve per forza una vite: va bene qualunque oggetto di **materiale conduttore** che si riesca a far passare attraverso il tappo, come un chiodo o una graffetta grossa raddrizzata.
+Non devi per forza usare proprio questi oggetti: più sotto trovi un elenco di alternative, una per ogni pezzo.
 
 Per caricarlo:
 
@@ -109,6 +109,42 @@ Quando il tuo elettroscopio funziona, fai queste tre prove, una dopo l'altra. Pr
 - **Le foglioline toccano il vetro?** Devono pendere libere.
 - **La penna è abbastanza carica?** Strofinala più a lungo e con più energia, sempre sulla lana.
 {% include box-end.html %}
+
+## Con altri materiali
+
+Ogni pezzo dell'elettroscopio ha un compito preciso, e qualunque oggetto che faccia lo stesso lavoro va bene. Ecco che cosa deve fare ciascun pezzo, e con che cosa lo puoi sostituire.
+
+**Il contenitore** serve solo a riparare le foglioline dagli spifferi, e deve essere **isolante** e possibilmente trasparente, per vedere che cosa succede dentro:
+
+- un barattolo di vetro, come il mio;
+- una bottiglietta di plastica dell'acqua: puoi forare il tappo e far passare di lì il conduttore, oppure tagliarla a metà e usare la parte di sotto, chiusa con un cartoncino;
+- un vasetto di plastica trasparente, come quelli della frutta o della marmellata;
+- un bicchiere di plastica trasparente, chiuso in alto con un cartoncino o capovolto su un pezzo di polistirolo;
+- un barattolo di plastica delle caramelle o delle spezie.
+
+Un contenitore di metallo (una lattina, un barattolo di latta) non va bene: è un conduttore, e scherma le foglioline.
+
+**Il tappo** deve tenere fermo il conduttore senza toccarlo con niente di metallico: oltre a un tappo di plastica va bene un cartoncino, un pezzo di polistirolo, un tappo di sughero, oppure un po' di plastilina che chiude l'imboccatura.
+
+**Il conduttore** che attraversa il tappo deve essere di **metallo**, abbastanza lungo da scendere dentro al contenitore:
+
+- una vite o un chiodo;
+- una graffetta grossa raddrizzata;
+- un pezzo di filo di rame un po' spesso, o di fil di ferro;
+- un pezzo di gruccia di metallo (senza la vernice sulla parte che tocca le foglioline);
+- un ago da maglia di metallo.
+
+In cima al conduttore, fuori dal contenitore, puoi aggiungere una **pallina di stagnola** appallottolata ben stretta: fa da sferetta, come negli elettroscopi veri, ed è più facile da toccare con la penna.
+
+**Le foglioline** devono essere conduttrici e il più possibile **leggere**:
+
+- la carta stagnola, tagliata in strisce sottili;
+- la carta argentata dei cioccolatini o delle gomme da masticare (solo se è proprio metallo: deve strapparsi come la stagnola, non allungarsi come la plastica);
+- la carta velina o la carta delle sigarette funzionano anche loro, ma meno bene, perché conducono poco: se l'aria è secca, le foglioline si aprono comunque, solo più piano.
+
+**Per fissare le foglioline** al conduttore, al posto del filo di rame va bene un pezzetto di scotch (le foglioline devono comunque toccare il metallo), una graffetta piegata o semplicemente la stagnola stretta e attorcigliata attorno alla vite.
+
+**Per caricarlo**, oltre alla BIC strofinata sulla lana, puoi usare un palloncino strofinato sui capelli, un righello o un pettine di plastica, una cannuccia, o un tubo di PVC strofinato con la lana.
 
 ## Una sfida: positiva o negativa?
 
