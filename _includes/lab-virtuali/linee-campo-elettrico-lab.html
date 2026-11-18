@@ -1,6 +1,9 @@
 {% comment %}
 Simulatore delle linee del campo elettrico. Pulsanti per le disposizioni
-(una carica positiva, una negativa, due cariche opposte, due cariche uguali);
+(una carica positiva, una negativa, due cariche opposte, due cariche uguali,
+e, per confronto, una massa e due masse: linee del campo gravitazionale, che
+entrano sempre nelle masse; le masse non cambiano segno e il vettore si
+chiama g);
 le cariche si trascinano con il mouse/dito e un clic (senza trascinare) ne
 cambia il segno. Le linee vengono ricalcolate a ogni modifica: partono dalle
 cariche positive e finiscono su quelle negative (o vanno all'infinito), con
@@ -30,15 +33,18 @@ Parametri (facoltativi; il simulatore si può includere più volte nella pagina)
   <button data-p="neg">una carica −</button>
   <button data-p="dip">+ e −</button>
   <button data-p="ug">+ e +</button>
-</div>
+{% unless include.equi == "true" %}  <button data-p="m1" class="lce-massa">una massa</button>
+  <button data-p="m2" class="lce-massa">due masse</button>
+{% endunless %}</div>
 <canvas class="lce-canvas" aria-label="Linee del campo elettrico generate da una o due cariche, che si possono spostare e cambiare di segno"></canvas>
 <div class="lce-val"></div>
-<p class="lce-hint">Trascina le cariche per spostarle; clicca su una carica per cambiarne il segno. {% if include.equi == "true" %}Le linee arancioni sono le superfici equipotenziali. Clicca in un punto vuoto per vedere il potenziale generato lì da ciascuna carica e il potenziale totale (ogni unità di carica vale $1\times10^{-6}\ \text C$, e tutta la figura è larga circa $5{,}6\ \text m$).{% else %}Clicca in un punto vuoto per vedere i vettori campo in quel punto: il campo di ciascuna carica, la loro somma e la retta tangente alla linea di campo.{% endif %}</p>
+<p class="lce-hint">Trascina le cariche{% unless include.equi == "true" %} (o le masse){% endunless %} per spostarle; clicca su una carica per cambiarne il segno. {% if include.equi == "true" %}Le linee arancioni sono le superfici equipotenziali. Clicca in un punto vuoto per vedere il potenziale generato lì da ciascuna carica e il potenziale totale (ogni unità di carica vale $1\times10^{-6}\ \text C$, e tutta la figura è larga circa $5{,}6\ \text m$).{% else %}Clicca in un punto vuoto per vedere i vettori campo in quel punto: il campo di ciascuna carica, la loro somma e la retta tangente alla linea di campo.{% endif %}</p>
 </div>
 <style>
 .lce-widget { margin: 1.4rem auto; max-width: 560px; text-align: center; }
 .lce-ctrl { display: flex; gap: .4rem; justify-content: center; flex-wrap: wrap; margin-bottom: .35rem; }
 .lce-ctrl button { padding: .28rem .7rem; border-radius: 999px; border: 1px solid #94a3b8; background: #f8fafc; cursor: pointer; font-size: .84rem; font-family: "Atkinson Hyperlegible", sans-serif; color: #334155; }
+.lce-ctrl button.lce-massa { border-color: #64748b; background: #f1f5f9; }
 .lce-ctrl button.on { background: var(--accent, #0f766e); border-color: var(--accent, #0f766e); color: #fff; }
 .lce-canvas { width: 100%; height: auto; display: block; border-radius: 8px; touch-action: none; cursor: crosshair; }
 .lce-val { display: flex; gap: .3rem 1.2rem; justify-content: center; flex-wrap: wrap; margin-top: .35rem; font-family: "Atkinson Hyperlegible", sans-serif; font-size: .86rem; color: #334155; }
@@ -61,11 +67,16 @@ Parametri (facoltativi; il simulatore si può includere più volte nella pagina)
     pos: [{ x: 280, y: 170, v: 2 }],
     neg: [{ x: 280, y: 170, v: -2 }],
     dip: [{ x: 190, y: 170, v: 2 }, { x: 370, y: 170, v: -2 }],
-    ug:  [{ x: 190, y: 170, v: 2 }, { x: 370, y: 170, v: 2 }]
+    ug:  [{ x: 190, y: 170, v: 2 }, { x: 370, y: 170, v: 2 }],
+    m1:  [{ x: 280, y: 170, v: 2, m: 1 }],
+    m2:  [{ x: 190, y: 170, v: 2, m: 1 }, { x: 370, y: 170, v: 2, m: 1 }]
   };
+  // "carica efficace": una massa attira sempre, come una carica negativa per il campo
+  function ef(q){ return q.m ? -q.v : q.v; }
+  function MAS(){ return Q.length && Q[0].m; }
   function field(x, y){
     var ex = 0, ey = 0;
-    Q.forEach(function(q){ var dx = x - q.x, dy = y - q.y, r2 = dx * dx + dy * dy, r = Math.sqrt(r2); ex += q.v * dx / (r2 * r); ey += q.v * dy / (r2 * r); });
+    Q.forEach(function(q){ var dx = x - q.x, dy = y - q.y, r2 = dx * dx + dy * dy, r = Math.sqrt(r2); ex += ef(q) * dx / (r2 * r); ey += ef(q) * dy / (r2 * r); });
     return [ex, ey];
   }
   // segue la linea di campo a partire da (x, y); dir = +1 nel verso del campo, −1 al contrario
@@ -90,13 +101,23 @@ Parametri (facoltativi; il simulatore si può includere più volte nella pagina)
       var o = Q.filter(function(p){ return p !== q; })[0], a0 = o ? Math.atan2(o.y - q.y, o.x - q.x) : 0, n = NL * Math.abs(q.v);
       for (var k = 0; k < n; k++) {
         var a = a0 + 2 * Math.PI * (k + .5) / n, x0 = q.x + R * 1.05 * Math.cos(a), y0 = q.y + R * 1.05 * Math.sin(a);
-        if (q.v > 0) L.push(trace(x0, y0, 1).pts);
-        else { var t = trace(x0, y0, -1); if (!t.end || t.end.v < 0) L.push(t.pts.reverse()); } // le linee che arrivano da una positiva sono già disegnate
+        if (ef(q) > 0) L.push(trace(x0, y0, 1).pts);
+        else { var t = trace(x0, y0, -1); if (!t.end || ef(t.end) < 0) L.push(t.pts.reverse()); } // le linee che arrivano da una positiva sono già disegnate
       }
     });
     return L;
   }
   function ball(q){
+    if (q.m) {
+      var gm = ctx.createRadialGradient(q.x - R * .35, q.y - R * .4, 1, q.x, q.y, R);
+      gm.addColorStop(0, '#f8fafc'); gm.addColorStop(1, '#94a3b8');
+      ctx.fillStyle = gm; ctx.beginPath(); ctx.arc(q.x, q.y, R, 0, 6.283); ctx.fill();
+      ctx.strokeStyle = '#334155'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.fillStyle = '#334155'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(String(q.v), q.x, q.y + 1); ctx.textBaseline = 'alphabetic';
+      ctx.font = 'italic bold 14px Georgia, serif'; ctx.fillText('M' + (Q.length > 1 ? (Q.indexOf(q) ? '₂' : '₁') : ''), q.x, q.y - R - 8);
+      return;
+    }
     var pos = q.v > 0, g = ctx.createRadialGradient(q.x - R * .35, q.y - R * .4, 1, q.x, q.y, R);
     g.addColorStop(0, pos ? '#fff1f2' : '#eff6ff'); g.addColorStop(1, pos ? '#fda4af' : '#93c5fd');
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, R, 0, 6.283); ctx.fill();
@@ -188,7 +209,7 @@ Parametri (facoltativi; il simulatore si può includere più volte nella pagina)
   }
   // vettori campo nel punto (x, y): uno per carica, la somma (regola del parallelogramma) e la tangente
   function vettori(x, y){
-    var es = Q.map(function(q){ var dx = x - q.x, dy = y - q.y, r = Math.hypot(dx, dy); return [q.v * dx / (r * r * r), q.v * dy / (r * r * r)]; });
+    var es = Q.map(function(q){ var dx = x - q.x, dy = y - q.y, r = Math.hypot(dx, dy); return [ef(q) * dx / (r * r * r), ef(q) * dy / (r * r * r)]; });
     var tx = 0, ty = 0; es.forEach(function(e){ tx += e[0]; ty += e[1]; });
     var mt = Math.hypot(tx, ty), mx = mt; es.forEach(function(e){ mx = Math.max(mx, Math.hypot(e[0], e[1])); });
     var K = mx > 0 ? 68 / mx : 0;   // la freccia più lunga è di 68 px: le frecce restano in scala fra loro
@@ -206,13 +227,14 @@ Parametri (facoltativi; il simulatore si può includere più volte nella pagina)
     tips.forEach(function(p, k){ freccia(x, y, p[0], p[1], cols[k], 3); });
     if (es.length === 2) freccia(x, y, x + tx * K, y + ty * K, '#16a34a', 3.6);
     ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.arc(x, y, 4, 0, 6.283); ctx.fill();
+    var V = MAS() ? 'g' : 'E';
     if (es.length === 2) {
-      tips.forEach(function(p, k){ etichetta('E' + (k ? '₂' : '₁'), p[0], p[1], x, y, cols[k]); });
-      etichetta('Eₜₒₜ', x + tx * K, y + ty * K, x, y, '#16a34a');
-    } else etichetta('E', tips[0][0], tips[0][1], x, y, cols[0]);
+      tips.forEach(function(p, k){ etichetta(V + (k ? '₂' : '₁'), p[0], p[1], x, y, cols[k]); });
+      etichetta(V + 'ₜₒₜ', x + tx * K, y + ty * K, x, y, '#16a34a');
+    } else etichetta(V, tips[0][0], tips[0][1], x, y, cols[0]);
   }
   function preset(n){
-    Q = PRESET[n].map(function(q){ return { x: q.x, y: q.y, v: q.v }; });
+    Q = PRESET[n].map(function(q){ return { x: q.x, y: q.y, v: q.v, m: q.m }; });
     root.querySelectorAll('.lce-ctrl button').forEach(function(b){ b.classList.toggle('on', b.dataset.p === n); });
     valori(); draw();
   }
@@ -222,9 +244,10 @@ Parametri (facoltativi; il simulatore si può includere più volte nella pagina)
     box.innerHTML = '';
     Q.forEach(function(q, i){
       var sp = document.createElement('span'), m = document.createElement('button'), p = document.createElement('button'), b = document.createElement('b'), n = document.createElement('i');
-      n.textContent = Q.length > 1 ? 'Q' + (i ? '₂' : '₁') + ' =' : 'Q ='; m.textContent = '−'; p.textContent = '+'; m.type = p.type = 'button';
-      b.textContent = (q.v > 0 ? '+' : '−') + Math.abs(q.v); m.disabled = q.v <= -3; p.disabled = q.v >= 3;
-      function cambia(d){ q.v += d; if (q.v === 0) q.v += d; q.v = Math.max(-3, Math.min(3, q.v)); spegni(); valori(); draw(); }
+      var L = q.m ? 'M' : 'Q';
+      n.textContent = Q.length > 1 ? L + (i ? '₂' : '₁') + ' =' : L + ' ='; m.textContent = '−'; p.textContent = '+'; m.type = p.type = 'button';
+      b.textContent = q.m ? String(q.v) : (q.v > 0 ? '+' : '−') + Math.abs(q.v); m.disabled = q.v <= (q.m ? 1 : -3); p.disabled = q.v >= 3;
+      function cambia(d){ q.v += d; if (q.v === 0) q.v += d; q.v = Math.max(q.m ? 1 : -3, Math.min(3, q.v)); spegni(); valori(); draw(); }
       m.onclick = function(){ cambia(-1); }; p.onclick = function(){ cambia(1); };
       sp.appendChild(n); sp.appendChild(m); sp.appendChild(b); sp.appendChild(p); box.appendChild(sp);
     });
@@ -248,7 +271,7 @@ Parametri (facoltativi; il simulatore si può includere più volte nella pagina)
     var x = Math.max(R, Math.min(W - R, p[0])), y = Math.max(R, Math.min(H - R, p[1]));
     if (Q.every(function(q){ return q === drag.q || Math.hypot(x - q.x, y - q.y) > 2 * R + 4; }) && !(probe && Math.hypot(x - probe[0], y - probe[1]) < R + 10)) { drag.q.x = x; drag.q.y = y; draw(); }
   });
-  function up(){ if (!drag) return; if (!drag.moved) { drag.q.v = -drag.q.v; spegni(); valori(); draw(); } drag = null; }
+  function up(){ if (!drag) return; if (!drag.moved && !drag.q.m) { drag.q.v = -drag.q.v; spegni(); valori(); draw(); } drag = null; }
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
   root.querySelectorAll('.lce-ctrl button').forEach(function(b){ b.addEventListener('click', function(){ preset(b.dataset.p); }); });
   preset('dip');

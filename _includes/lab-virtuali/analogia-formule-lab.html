@@ -13,6 +13,10 @@ freccia curva che parte dal simbolo gravitazionale e arriva a quello elettrico
   tipo="potenziale" V = −G·M/r   →  V = k·Q/r: come sopra.
   tipo="campo"      vettori: g = F/m  →  E = F/q (la forza resta la forza, la
                     massa esploratrice diventa la carica di prova).
+  tipo="modulocampo" g = G·M/r²  →  E = k·|Q|/r²: alla fine si illumina il
+                    valore assoluto (il modulo è positivo anche se Q < 0).
+  tipo="unitacampo" [g] = N/kg  →  [E] = N/C: il newton resta, il kilogrammo
+                    diventa il coulomb.
 Parametri: id (univoco), tipo. Lo studente può mettere in pausa, ricominciare
 e scegliere la velocità (motore: formula-anim-engine.html).
 {% endcomment %}
@@ -46,6 +50,20 @@ var D={
     eb:[50,82], nota:'Stessa formula: il campo è la forza divisa per l\'oggetto che lo esplora. Al posto della massa esploratrice m c\'è la carica di prova q.',
     lab:['campo gravitazionale','campo elettrico'], costruisci:true
   },
+  modulocampo:{
+    g:[{t:'g',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'G',x:56,k:'C'},{t:'M',x:94,r:'n',k:'a'},{t:'r',x:94,r:'d',k:'r',e:'2'}],
+    gb:[78,112],
+    e:[{t:'E',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'k',x:56,k:'C'},{t:'Q',x:98,r:'n',k:'a'},{t:'r',x:98,r:'d',k:'r',e:'2'}],
+    eb:[76,122], abs:[84,113], nota:'Stessa forma, con k al posto di G e la carica Q al posto della massa M. In più, il valore assoluto: il modulo è sempre positivo, anche se Q è negativa.',
+    lab:['modulo del campo gravitazionale','modulo del campo elettrico'], costruisci:true
+  },
+  unitacampo:{
+    g:[{t:'[',x:-13,k:'p1',ri:1},{t:'g',x:0,k:'U'},{t:']',x:13,k:'p2',ri:1},{t:'=',x:44,k:'eq'},{t:'N',x:84,r:'n',k:'a',ri:1},{t:'kg',x:84,r:'d',k:'b',ri:1}],
+    gb:[66,102],
+    e:[{t:'[',x:-13,k:'p1',ri:1},{t:'E',x:0,k:'U'},{t:']',x:13,k:'p2',ri:1},{t:'=',x:44,k:'eq'},{t:'N',x:84,r:'n',k:'a',ri:1},{t:'C',x:84,r:'d',k:'b',ri:1}],
+    eb:[70,98], nota:'Il campo è la forza divisa per l\'oggetto che lo esplora: il newton resta, e al posto del kilogrammo della massa c\'è il coulomb della carica.',
+    lab:['unità del campo gravitazionale','unità del campo elettrico'], costruisci:true
+  },
   potenziale:{
     g:[{t:'V',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'−',x:54,k:'meno',up:1},{t:'G',x:80,k:'C'},{t:'M',x:118,r:'n',k:'a'},{t:'r',x:118,r:'d',k:'r'}],
     gb:[104,132],
@@ -74,7 +92,7 @@ FormulaAnim.create({id:'cv-{{ _afid }}',W:W,H:H,cycle:TEND+6,still:TEND+3.2,draw
   ctx.globalAlpha=(D.costruisci?p(t,T0-.4,T0):pL)*A.G; ctx.fillText(D.lab[1],EX-8,24); ctx.globalAlpha=1;
   function bar(X,b,al){ if(al<=.01)return; ctx.globalAlpha=al*A.G; ctx.strokeStyle=DARK; ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(X+b[0],yb); ctx.lineTo(X+b[1],yb); ctx.stroke(); ctx.globalAlpha=1; }
   function sym(s,X,al,col){
-    var big=!s.r; A.tok(s.t,X+s.x,yy(s),al,col,{it:s.t!=='='&&s.t!=='−',size:big?30:25,vec:!!s.v});
+    var big=!s.r; A.tok(s.t,X+s.x,yy(s),al,col,{it:!s.ri&&s.t!=='='&&s.t!=='−',size:big?30:25,vec:!!s.v});
     if (s.e) A.tok(s.e,X+s.x+11,yy(s)-12,al,col,{size:15});
   }
   // a sinistra: la formula gravitazionale, sempre visibile
@@ -92,7 +110,7 @@ FormulaAnim.create({id:'cv-{{ _afid }}',W:W,H:H,cycle:TEND+6,still:TEND+3.2,draw
     sym(s,EX,al,colOf(s.k));
   });
   bar(EX,D.eb,D.costruisci?p(t,when('a')+.7,when('a')+.95):pL);
-  if (D.abs) { var ca=mix(DARK,A.RED,pX); A.tok('|',EX+D.abs[0],yn,pL,ca,{size:27}); A.tok('|',EX+D.abs[1],yn,pL,ca,{size:27}); }
+  if (D.abs) { var ca=mix(DARK,A.RED,pX); var aa=D.costruisci?p(t,when('a')+.7,when('a')+.95):pL; A.tok('|',EX+D.abs[0],yn,aa,ca,{size:27}); A.tok('|',EX+D.abs[1],yn,aa,ca,{size:27}); }
   // frecce curve: dal simbolo gravitazionale al suo corrispondente elettrico
   pairs.forEach(function(k,i){
     var tk=when(k), s1=find(D.g,k), s2=find(D.e,k); if (!s1||!s2) return;

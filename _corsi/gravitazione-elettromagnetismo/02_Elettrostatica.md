@@ -1341,15 +1341,8 @@ Il campo elettrico corrisponde alla forza per unità di carica:
 $$\vec E = \frac{\vec F}{q}, \qquad\text{cioè}\qquad \vec F = q\,\vec E.$$
 
 Siccome $\vec F = q\,\vec E$:
-- se $q$ è **positiva**, $\vec F$ ed $\vec E$ hanno lo **stesso verso**;
-- se $q$ è **negativa**, $\vec F$ ed $\vec E$ hanno **verso opposto**.
-{% include box-end.html %}
-
-{% include box-imp.html testo="Un trucco per ricordare il verso del campo" %}
-- Se la carica che genera il campo è **positiva**, il campo **esce** dalla carica.
-- Se la carica che genera il campo è **negativa**, il campo **entra** nella carica.
-
-È il verso in cui verrebbe spinta una carica positiva messa lì: respinta dalla carica positiva, attratta da quella negativa.
+- se la carica che genera il campo è **positiva** allora il campo è **uscente** (cioè punta lontano dalla carica);
+- se la carica che genera il campo è **negativa** allora il campo è **entrante** (cioè punta verso la carica).
 {% include box-end.html %}
 
 Prova tu: scegli il segno della carica e clicca in diversi punti attorno a lei. In ogni punto compare il vettore campo.
@@ -1402,13 +1395,9 @@ Passiamo ora al modulo. Se prendiamo i moduli dei due membri di $\vec E = \dfrac
    posizioni="alto|alto|basso"
 %}
 
-La forza fra la carica $Q$ che genera il campo e la carica di prova $q$ la conosciamo già: è data dalla legge di Coulomb,
+Per scrivere il modulo in funzione della carica $Q$ che genera il campo e della distanza $r$, ragioniamo ancora per analogia. Così come per il campo gravitazionale avevamo ottenuto che $g = G\,\dfrac{M}{r^2}$, allo stesso modo per il campo elettrico otteniamo che
 
-$$F = k\,\frac{\lvert Q\cdot q\rvert}{r^2}.$$
-
-Come per il campo gravitazionale, dividiamo per $\lvert q\rvert$, e la carica di prova sparisce:
-
-{% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-campo-e" da="F" a="E" esp="2" cost="k" sorg="Q" espl="q" abs="true" %}
+{% include lab-virtuali/analogia-formule-lab.html id="an-modulo-campo" tipo="modulocampo" %}
 
 Otteniamo così il modulo del campo elettrico generato dalla carica $Q$:
 
@@ -1422,7 +1411,11 @@ Otteniamo così il modulo del campo elettrico generato dalla carica $Q$:
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="L'unità di misura del campo elettrico è il N/C" %}
-Dalla formula $E = F/\lvert q\rvert$, l'unità di misura del campo elettrico è quella della forza divisa per quella della carica.
+Anche l'unità di misura si ricava per analogia. Il campo gravitazionale, forza divisa per massa, si misura in N/kg; il campo elettrico è una forza divisa per una carica, quindi
+
+{% include lab-virtuali/analogia-formule-lab.html id="an-unita-campo" tipo="unitacampo" %}
+
+Ricavala anche tu dalla formula $E = F/\lvert q\rvert$:
 
 <div class="iex-nested">
 {% include unit-derive.html id="ud-E" testo="Trova l'unità di misura di E"
@@ -1438,7 +1431,7 @@ $$[E] = \frac{[F]}{[q]} = \frac{\text N}{\text C}.$$
 {% include margin-note-end.html %}
 
 {% include box-imp.html testo="Il modulo del campo elettrico generato da una carica Q" %}
-Il campo elettrico generato da una carica $Q$, a distanza $r$ dal suo centro, ha **modulo**
+Il **modulo** del campo elettrico generato da una carica $Q$, a distanza $r$ dal suo centro è
 
 $$E = k\,\dfrac{\lvert Q\rvert}{r^2} = \dfrac{F}{\lvert q\rvert}.$$
 
@@ -1646,7 +1639,13 @@ Le linee del campo elettrico si definiscono esattamente come quelle del campo gr
 {% include risposta-aperta.html id="ra-prev-linee-e" tipo="prevedi"
    domanda="Ripensa alle linee del campo gravitazionale di una massa. Come saranno le linee del campo elettrico di una carica positiva? E di una carica negativa?" risposta=_rLinee %}
 
-Verifica la tua previsione con il simulatore, poi prova con due cariche, uguali o opposte.
+{% include box-ricorda.html testo="Le linee del campo gravitazionale" %}
+Le linee del campo gravitazionale **entrano** sempre nelle masse, perché $\vec g$ punta sempre verso la massa che lo genera. Con due masse, le linee entrano in entrambe e si piegano nella zona fra le due.
+
+{% include figure/mini-linee-masse.html %}
+{% include box-end.html %}
+
+Verifica la tua previsione con il simulatore, poi prova con due cariche, uguali o opposte. Per confronto, con gli ultimi due pulsanti puoi vedere anche le linee del campo gravitazionale di una massa e di due masse.
 
 {% include lab-virtuali/linee-campo-elettrico-lab.html %}
 
@@ -1742,8 +1741,7 @@ Il campo elettrico è (quasi) uniforme fra due lastre piane parallele cariche co
 {% include scorri-slide.html %}
 {% capture _qUnif %}[
 {"t":"In un campo uniforme le linee di campo sono parallele ed equidistanti.","ok":true,"s":"Sì: stessa direzione ovunque vuol dire linee parallele, stessa intensità vuol dire linee ugualmente fitte."},
-{"t":"Fra due lastre cariche, il campo elettrico va dalla lastra negativa a quella positiva.","ok":false,"s":"No: come sempre, le linee di campo escono dalle cariche positive ed entrano in quelle negative."},
-{"t":"Il campo gravitazionale della Terra è uniforme anche se lo guardiamo dallo spazio, su tutto il pianeta.","ok":false,"s":"No: su tutto il pianeta il campo punta sempre verso il centro, quindi cambia direzione da un punto all'altro, e diminuisce allontanandosi. È uniforme solo in una regione piccola rispetto al raggio terrestre."}
+{"t":"Fra due lastre cariche, il campo elettrico va dalla lastra negativa a quella positiva.","ok":false,"s":"No: come sempre, le linee di campo escono dalle cariche positive ed entrano in quelle negative."}
 ]{% endcapture %}
 {% include quiz.html domande=_qUnif id="q-campo-uniforme" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
@@ -1756,6 +1754,28 @@ Fra due lastre cariche con segni opposti, dove il campo elettrico è più intens
 {"v":"d","t":"è uguale in tutti i punti (lontano dai bordi)"}
 ]{% endcapture %}
 {% include mcq.html id="mcq-campo-uniforme-dove" opts=_oUnif ok="d" s="Fra le lastre il campo è uniforme: stesso modulo, stessa direzione e stesso verso in ogni punto, a qualunque distanza dalle lastre. Cambia solo vicino ai bordi, dove le linee si incurvano." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Una sola lastra piana, molto grande e carica positivamente, genera un campo uniforme da **tutte e due** le parti: perpendicolare alla lastra, e diretto lontano da lei, sia a destra sia a sinistra. Una lastra negativa fa lo stesso, ma con il campo diretto verso di lei.
+
+Ora mettiamo una lastra positiva e, accanto e parallela, una negativa con la stessa quantità di carica. Usa il principio di sovrapposizione: che cosa succede?
+{% capture _oLas1 %}[
+{"v":"a","t":"fra le lastre i due campi hanno lo stesso verso e si sommano; fuori hanno verso opposto e si annullano"},
+{"v":"b","t":"fra le lastre i due campi si annullano; fuori si sommano"},
+{"v":"c","t":"i due campi si sommano dappertutto, dentro e fuori"},
+{"v":"d","t":"i due campi si annullano dappertutto, perché le cariche totali si compensano"}
+]{% endcapture %}
+{% include mcq.html id="mcq-lastre-opposte" opts=_oLas1 ok="a" s="Fra le lastre il campo della lastra positiva si allontana da lei, quindi punta verso la negativa; quello della lastra negativa punta verso di lei, cioè nello stesso verso. I due campi si sommano. Fuori, per esempio a sinistra della lastra positiva, il campo della positiva punta a sinistra (lontano da lei), quello della negativa punta a destra (verso di lei): stesso modulo, verso opposto, e si annullano. Ecco perché il campo uniforme sta tutto fra le lastre." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Adesso le due lastre sono cariche **tutte e due positivamente**, con la stessa quantità di carica. Ragiona come prima, disegnando su un foglio le frecce dei due campi a sinistra, in mezzo e a destra delle lastre. Che campo trovi?
+{% capture _oLas2 %}[
+{"v":"a","t":"lo stesso di prima: uniforme fra le lastre, nullo fuori"},
+{"v":"b","t":"nullo fra le lastre; fuori, il campo è il doppio di quello di una lastra sola, e si allontana dalle lastre"},
+{"v":"c","t":"doppio fra le lastre e doppio anche fuori"},
+{"v":"d","t":"nullo dappertutto"}
+]{% endcapture %}
+{% include mcq.html id="mcq-lastre-uguali" opts=_oLas2 ok="b" s="In mezzo, il campo della lastra di sinistra punta verso destra (lontano da lei), quello della lastra di destra punta verso sinistra (lontano da lei): stesso modulo, verso opposto, e si annullano. Fuori, per esempio a destra di tutte e due, entrambi i campi puntano verso destra, lontano dalle lastre, e si sommano. È il contrario di quello che succede con le lastre di segno opposto: una carica di prova messa fra due lastre uguali non sente nessuna forza." %}
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
