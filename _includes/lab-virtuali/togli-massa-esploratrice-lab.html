@@ -17,7 +17,8 @@ Parametri:
   cost — costante (default "G"; per il campo elettrico "k")
   sorg — simbolo della sorgente (default "M"; per le cariche "Q")
   espl — simbolo dell'oggetto esploratore (default "m"; per le cariche "q")
-  abs  — "true" per scrivere il valore assoluto: |Q·q| → |Q| (legge di Coulomb)
+  abs  — "true" per scrivere il valore assoluto: |Q·q| → |Q| (legge di Coulomb),
+         dividendo per |q|
 
 Esempi:
   {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-campo" da="F" a="g" esp="2" %}
@@ -59,6 +60,7 @@ FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:FINE?15.5:11.5,still:F
   A.tok(DA,xl,L(Y,yn,pDv),1-pY,colX,{it:true,size:L(26,22,pDv)});
   bar(xl-13,xl+13,pDv*(1-pY),colX);
   A.tok(ES,xl,yd,pDv*(1-pY),mix(A.OR,colX,p(t,3.0,3.5)),{it:true,size:22});
+  if(ABS){var cl=mix(A.OR,colX,p(t,3.0,3.5));A.tok('|',xl-9,yd,pDv*(1-pY),cl,{size:22});A.tok('|',xl+9,yd,pDv*(1-pY),cl,{size:22});}
   A.tok(AA,xl,Y,pY,box>0?ink:mix(A.OR,A.DARK,p(t,6.8,7.2)),I);
   // uguale, meno, G
   var x=104+OX;
@@ -74,6 +76,7 @@ FormulaAnim.create({id:'cv-{{ _tmid }}',W:420,H:104,cycle:FINE?15.5:11.5,still:F
   var xr=L(xf,xf-10,pDv);xr=L(xr,xf,pC);
   rk(ESP?xr-4:xr,1,ink);
   A.tok(ES,xf+13,yd,pDv*mAl,A.OR,{it:true,size:22});A.slash(xf+13,yd+2,pX,mAl);
+  if(ABS){A.tok('|',xf+4,yd,pDv*mAl,A.OR,{size:22});A.tok('|',xf+22,yd,pDv*mAl,A.OR,{size:22});}
   var xEnd=xf+(ABS?38:32);
   if(FINE){
     // continua: = −G·M/r  →  = −G·M/r² · r  →  = −g r

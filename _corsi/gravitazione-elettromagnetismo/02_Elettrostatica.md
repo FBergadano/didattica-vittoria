@@ -1273,9 +1273,10 @@ La forza elettrica è enormemente più intensa di quella gravitazionale. Eppure 
 # Il Campo Elettrico
 
 {% include margin-note.html testo="Perché ci serve il campo elettrico" %}
-Esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u> o, equivalentemente, <u markdown="span">cosa c'è ***attorno*** a una singola carica</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, nel 1831, per spiegare i suoi esperimenti sull'elettromagnetismo; il campo gravitazionale arrivò molto tempo più tardi, con Einstein, nel 1915).
+Esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u> o, equivalentemente, <u markdown="span">cosa c'è ***attorno*** a una singola carica</u>. 
 {% include margin-note-end.html %}
 
+Per fortuna, poiché abbiamo visto che la forza elettrica esibisce la stessa struttura matematica della forza gravitazionale, possiamo ricavare l'espressione del campo elettrico solo per analogia con il campo gravitazionale, senza bisogno di ripetere tutti i nostri ragionamenti. Ecco quindi un piccolo riquadro per ricordare il campo gravitazionale.
 
 {% include box-ricorda.html testo="Il campo gravitazionale, in breve" %}
 Una massa $M$ modifica lo spazio attorno a sé, come una biglia pesante deforma un telo elastico; un'altra massa, posata sul telo, si muove seguendo quella deformazione.
@@ -1299,23 +1300,20 @@ Questa modificazione dello spazio è il campo gravitazionale $\vec g$:
 - si rappresenta con le linee di campo.
 {% include box-end.html %}
 
-{% include margin-note.html testo="Dalla gravità alle cariche" %}
-Per le cariche elettriche vale tutto questo, quasi parola per parola: basta sostituire la massa con la carica, e la legge di gravitazione universale con la legge di Coulomb. Possiamo quindi utilizzare tutto quello che abbiamo imparato nel capitolo precedente sulla teoria della gravitazione, senza doverlo derivare nuovamente.
-{% include margin-note-end.html %}
 
 
 {% include margin-note.html testo="Il telo, per le cariche" %}
-Anche una carica modifica lo spazio attorno a sé. C'è però una differenza: le masse si attraggono sempre, quindi il telo si infossa sempre. Con le cariche, invece, la forza può essere attrattiva o repulsiva. Immagina di posare sul telo una pallina con carica positiva: una carica negativa sarebbe per lei una **buca**, in cui la pallina rotola dentro; una carica positiva sarebbe invece una **gobba**, da cui la pallina rotola via.
+Anche una carica modifica lo spazio attorno a sé. C'è però una differenza: le masse si attraggono sempre, quindi il telo si infossa sempre. Con le cariche, invece, la forza può essere attrattiva o repulsiva, quindi l'immagine del telo si complica leggermente. Puoi vederla riassunta con la seguente animazione.
 {% include margin-note-end.html %}
 
 {% include lab-virtuali/telo-cariche-lab.html %}
 
 {% include box-imp.html testo="Il campo elettrico" %}
-La modificazione dello spazio prodotta da una carica si chiama <definizione>campo elettrico</definizione> e si indica con $\vec E$. È una grandezza **vettoriale**: <u>associa a ogni punto dello spazio un vettore</u>, che dice con quale intensità, in quale direzione e in quale verso viene spinta una carica posta in quel punto.
+La modificazione dello spazio prodotta da una carica si chiama <definizione>campo elettrico</definizione> e si indica con $\vec E$. È una grandezza **vettoriale**: <u>associa a ogni punto dello spazio un vettore</u>, che dice con quale intensità, in quale direzione e in quale verso verrebbe spinta una carica positiva posta in quel punto.
 {% include box-end.html %}
 
 {% include margin-note.html testo="La carica di prova" %}
-La carica $q$ che usiamo per "sentire" il campo si chiama <definizione>carica di prova</definizione>. Essa ha lo stesso ruolo che la massa esploratrice aveva per il campo gravitazionale (clicca [qui]({{ '/corsi/gravitazione-elettromagnetismo/01_Gravitazione/' | relative_url }}#massa-esploratrice) per rivederlo). Per convenzione si sceglie **positiva** e molto **piccola**: piccola, così che il campo che lei genera sia piccolo rispetto a quello che vogliamo misurare. E, come per la massa esploratrice, <u markdown="span">il campo **non dipende** da $q$</u>.
+La carica $q$ che usiamo per "sentire" il campo si chiama <definizione>carica di prova</definizione>. Essa ha lo stesso ruolo che la massa esploratrice aveva per il campo gravitazionale. Per convenzione, si sceglie che la carica di prova sia molto **piccola**, così che il campo che lei genera sia trascurabile rispetto a quello che vogliamo misurare. E, come per la massa esploratrice, <u markdown="span">il campo elettrico **non dipende** dalla carica di prova</u>.
 {% include margin-note-end.html %}
 
 ## Il vettore campo elettrico
@@ -1328,12 +1326,14 @@ Sappiamo che il campo elettrico $\vec E$ è una quantità vettoriale e che i vet
 
 
 {% include margin-note.html testo="Il verso del campo elettrico" %}
-Per il campo gravitazionale avevamo scelto che $\vec g$ avesse lo stesso verso della forza gravitazionale sulla massa esploratrice. Per il campo elettrico facciamo lo stesso, con la carica di prova al posto della massa esploratrice.
+Per il campo gravitazionale avevamo scelto che $\vec g$ avesse lo stesso verso della forza gravitazionale sulla massa esploratrice. Per il campo elettrico facciamo lo stesso, con la carica di prova al posto della massa esploratrice. Ma attenzione: la carica di prova può essere positiva o negativa, e il campo ha il verso della forza su una carica di prova **positiva**.
 {% include margin-note-end.html %}
 
 Così come per il campo gravitazionale avevamo ottenuto che $\vec g = \dfrac{\vec F}{m}$, allo stesso modo per il campo elettrico otteniamo che
 
 {% include lab-virtuali/analogia-formule-lab.html id="an-campo" tipo="campo" %}
+
+dove, chiaramente, nel caso di $\vec g$ la forza $\vec F$ è quella gravitazionale; nel caso di $\vec E$ è quella elettrica.
 
 {% include box-imp.html testo="Il vettore campo elettrico" %}
 Il campo elettrico corrisponde alla forza per unità di carica:
@@ -1345,15 +1345,11 @@ Siccome $\vec F = q\,\vec E$:
 - se $q$ è **negativa**, $\vec F$ ed $\vec E$ hanno **verso opposto**.
 {% include box-end.html %}
 
-{% include box-warn.html testo="Su una carica negativa, la forza è opposta al campo" %}
-Con la gravità questo problema non c'era: la massa è sempre positiva, quindi $\vec F = m\,\vec g$ ha sempre lo stesso verso di $\vec g$. Con le cariche, invece, bisogna guardare ogni volta il segno di $q$: su un elettrone, per esempio, <u markdown="span">la forza ha **verso opposto** al campo</u>.
-{% include box-end.html %}
-
 {% include box-imp.html testo="Un trucco per ricordare il verso del campo" %}
 - Se la carica che genera il campo è **positiva**, il campo **esce** dalla carica.
 - Se la carica che genera il campo è **negativa**, il campo **entra** nella carica.
 
-È il verso della forza su una carica di prova positiva: respinta dalla carica positiva, attratta da quella negativa.
+È il verso in cui verrebbe spinta una carica positiva messa lì: respinta dalla carica positiva, attratta da quella negativa.
 {% include box-end.html %}
 
 Prova tu: scegli il segno della carica e clicca in diversi punti attorno a lei. In ogni punto compare il vettore campo.
@@ -1364,8 +1360,8 @@ Prova tu: scegli il segno della carica e clicca in diversi punti attorno a lei. 
 {% include scorri.html %}
 {% include scorri-slide.html %}
 {% capture _qCampoDir %}[
-{"t":"Il campo elettrico generato da una carica positiva punta lontano dalla carica.","ok":true,"s":"Sì: una carica di prova positiva verrebbe respinta."},
-{"t":"Il campo elettrico generato da una carica negativa punta verso la carica.","ok":true,"s":"Sì: una carica di prova positiva verrebbe attratta dalla carica negativa, quindi il campo punta verso di essa."},
+{"t":"Il campo elettrico generato da una carica positiva punta lontano dalla carica.","ok":true,"s":"Sì: una carica positiva messa lì verrebbe respinta."},
+{"t":"Il campo elettrico generato da una carica negativa punta verso la carica.","ok":true,"s":"Sì: una carica positiva messa lì verrebbe attratta dalla carica negativa, quindi il campo punta verso di essa."},
 {"t":"Su un elettrone la forza elettrica ha lo stesso verso del campo.","ok":false,"s":"No: l'elettrone ha carica negativa, quindi $\\vec F = q\\vec E$ ha verso opposto al campo."}
 ]{% endcapture %}
 {% include quiz.html domande=_qCampoDir id="q-campo-dir" senza_esempi="true" %}
@@ -1396,13 +1392,13 @@ Nello stesso punto $P$ dell'esercizio precedente, dove il campo punta verso dest
 ### Il modulo del vettore campo elettrico
 
 {% include margin-note.html testo="Dal vettore al modulo: togliamo la carica di prova" %}
-Passiamo ora al modulo. Se prendiamo i moduli dei due membri di $\vec E = \dfrac{\vec F}{q}$ (ricordando che la carica di prova $q$ è positiva), otteniamo
+Passiamo ora al modulo. Se prendiamo i moduli dei due membri di $\vec E = \dfrac{\vec F}{q}$, otteniamo
 
 {% include eq-annotated.html
    id="fce2"
-   formula="E = \dfrac{F}{q}"
+   formula="E = \dfrac{F}{|q|}"
    frammenti="E|F|q"
-   etichette="modulo del campo elettrico (N/C)|modulo della forza elettrica fra la carica $Q$ che genera il campo e la carica $q$ (N)|carica di prova (C)"
+   etichette="modulo del campo elettrico (N/C)|modulo della forza elettrica fra la carica $Q$ che genera il campo e la carica $q$ (N)|modulo della carica di prova (C)"
    posizioni="alto|alto|basso"
 %}
 
@@ -1410,7 +1406,7 @@ La forza fra la carica $Q$ che genera il campo e la carica di prova $q$ la conos
 
 $$F = k\,\frac{\lvert Q\cdot q\rvert}{r^2}.$$
 
-Come per il campo gravitazionale, dividiamo per $q$, e la carica di prova sparisce:
+Come per il campo gravitazionale, dividiamo per $\lvert q\rvert$, e la carica di prova sparisce:
 
 {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-campo-e" da="F" a="E" esp="2" cost="k" sorg="Q" espl="q" abs="true" %}
 
@@ -1426,7 +1422,7 @@ Otteniamo così il modulo del campo elettrico generato dalla carica $Q$:
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="L'unità di misura del campo elettrico è il N/C" %}
-Dalla formula $E = F/q$, l'unità di misura del campo elettrico è quella della forza divisa per quella della carica.
+Dalla formula $E = F/\lvert q\rvert$, l'unità di misura del campo elettrico è quella della forza divisa per quella della carica.
 
 <div class="iex-nested">
 {% include unit-derive.html id="ud-E" testo="Trova l'unità di misura di E"
@@ -1444,7 +1440,7 @@ $$[E] = \frac{[F]}{[q]} = \frac{\text N}{\text C}.$$
 {% include box-imp.html testo="Il modulo del campo elettrico generato da una carica Q" %}
 Il campo elettrico generato da una carica $Q$, a distanza $r$ dal suo centro, ha **modulo**
 
-$$E = k\,\dfrac{\lvert Q\rvert}{r^2} = \dfrac{F}{q}.$$
+$$E = k\,\dfrac{\lvert Q\rvert}{r^2} = \dfrac{F}{\lvert q\rvert}.$$
 
 Si misura in N/C, e **non dipende** dalla carica di prova $q$: dipende solo da $Q$ (che lo genera) e da $r$ (il punto in cui lo si misura).
 {% include box-end.html %}
@@ -1470,8 +1466,8 @@ Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
 {% include scorri.html %}
 {% include scorri-slide.html %}
 {% capture _qCampoE %}[
-{"t":"Il campo elettrico si misura in N/C.","ok":true,"s":"Sì: $E = F/q$, quindi newton diviso coulomb."},
-{"t":"Il campo elettrico generato da una carica $Q$ dipende dal valore della carica di prova $q$.","ok":false,"s":"No: se raddoppia $q$, raddoppia anche la forza, e il rapporto $E = F/q$ resta lo stesso. Il campo dipende solo da $Q$ e dalla distanza."},
+{"t":"Il campo elettrico si misura in N/C.","ok":true,"s":"Sì: $E = F/\\lvert q\\rvert$, quindi newton diviso coulomb."},
+{"t":"Il campo elettrico generato da una carica $Q$ dipende dal valore della carica di prova $q$.","ok":false,"s":"No: se raddoppia $q$, raddoppia anche la forza, e il rapporto $E = F/\\lvert q\\rvert$ resta lo stesso. Il campo dipende solo da $Q$ e dalla distanza."},
 {"t":"Se la carica che genera il campo raddoppia, anche il campo raddoppia.","ok":true,"s":"Sì: il campo è direttamente proporzionale a $\\lvert Q\\rvert$."},
 {"t":"Raddoppiando la distanza dalla carica, il campo diventa la metà.","ok":false,"s":"No: il campo è inversamente proporzionale al quadrato della distanza, quindi diventa un quarto."}
 ]{% endcapture %}
@@ -1527,7 +1523,7 @@ Una carica $Q = -4\times10^{-9}\ \text C$ è nel vuoto. Quanto vale il campo ele
 
 {% include fill-multi.html testo="Il modulo del campo è $E =$ [900] N/C." s="$r = 20\ \text{cm} = 0{,}2\ \text m$, quindi $E = 9\times10^{9}\cdot\dfrac{4\times10^{-9}}{(0{,}2)^2}\ \text{N/C} = \dfrac{36}{0{,}04}\ \text{N/C} = 900\ \text{N/C}$." %}
 
-{% include fill.html prima="In quel punto, il vettore campo elettrico punta" tipo="drop" opts="verso la carica Q|lontano dalla carica Q" ok="verso la carica Q" dopo="." s="La carica Q è negativa: una carica di prova positiva verrebbe attratta da lei, quindi il campo punta verso Q." %}
+{% include fill.html prima="In quel punto, il vettore campo elettrico punta" tipo="drop" opts="verso la carica Q|lontano dalla carica Q" ok="verso la carica Q" dopo="." s="La carica Q è negativa: una carica positiva messa lì verrebbe attratta da lei, quindi il campo punta verso Q." %}
 <div style="clear:both"></div>
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
@@ -1543,7 +1539,7 @@ Abbiamo visto il caso della forza elettrica tra due cariche e il caso del campo 
 
 
 {% include box-imp.html testo="Principio di sovrapposizione degli effetti" %}
-In presenza di più cariche vale lo stesso <definizione>principio di sovrapposizione degli effetti</definizione> già visto per la gravitazione: ogni carica esercita la propria forza, e genera il proprio campo, <u markdown="span">**esattamente come se le altre non ci fossero**</u>. La forza totale su una carica $q$ è la somma *vettoriale* delle singole forze, e il campo totale in un punto è la somma *vettoriale* dei singoli campi:
+In presenza di più cariche vale il <definizione>principio di sovrapposizione degli effetti</definizione>: ogni carica esercita la propria forza, e genera il proprio campo, <u markdown="span">**esattamente come se le altre non ci fossero**</u>. La forza totale su una carica $q$ è la somma *vettoriale* delle singole forze, e il campo totale in un punto è la somma *vettoriale* dei singoli campi:
 
 $$\vec F_{tot} = \vec F_1 + \vec F_2 + \dots \qquad\qquad \vec E_{tot} = \vec E_1 + \vec E_2 + \dots$$
 
@@ -2052,7 +2048,7 @@ Vero o falso?
 
 {% include tf.html q="Le linee di campo escono dalle cariche negative." ok=false s="No: escono dalle cariche positive ed entrano in quelle negative." %}
 {% include tf.html q="Dove le linee di campo sono più fitte, il campo è più intenso." ok=true s="Sì: la densità delle linee misura l'intensità del campo." %}
-{% include tf.html q="Il campo elettrico in un punto dipende dalla carica di prova che ci mettiamo." ok=false s="No: raddoppiando la carica di prova raddoppia la forza, e il rapporto E = F/q resta lo stesso." %}
+{% include tf.html q="Il campo elettrico in un punto dipende dalla carica di prova che ci mettiamo." ok=false s="No: raddoppiando la carica di prova raddoppia la forza, e il rapporto E = F/|q| resta lo stesso." %}
 {% include ex-end.html %}
 
 {% include ex.html diff=1 %}
@@ -2061,7 +2057,7 @@ Quanto vale il campo elettrico a $2\ \text m$ da una carica $Q = +8\times10^{-6}
 
 {% include fill-multi.html testo="$E =$ [18000|18 000] N/C" s="$E = k\dfrac{\lvert Q\rvert}{r^2} = 9\times10^{9}\cdot\dfrac{8\times10^{-6}}{4}\ \text{N/C} = 18\,000\ \text{N/C}$." %}
 
-{% include fill.html prima="Il campo punta" tipo="drop" opts="verso la carica|lontano dalla carica" ok="lontano dalla carica" dopo="." s="La carica è positiva: una carica di prova positiva ne sarebbe respinta." %}
+{% include fill.html prima="Il campo punta" tipo="drop" opts="verso la carica|lontano dalla carica" ok="lontano dalla carica" dopo="." s="La carica è positiva: una carica positiva messa lì ne sarebbe respinta." %}
 <div style="clear:both"></div>
 {% include ex-end.html %}
 
