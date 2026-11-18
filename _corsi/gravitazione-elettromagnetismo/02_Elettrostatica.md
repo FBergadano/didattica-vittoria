@@ -848,7 +848,7 @@ Perché l'asta metallica attraversa un tappo isolante, e non un tappo di metallo
 
 {% include margin-note.html testo="Una nuova forza: la forza elettrica" %}
 Abbiamo quindi compreso che le cariche elettriche interagiscono tra loro, allontanandosi quando hanno lo stesso segno e avvicinandosi quando hanno segno opposto.  
-Questo rivela la presenza di un nuovo tipo di forza, che si chiama **forza elettrica**. Nei termini della Fisica, diciamo che questa è una forza <u>repulsiva quando le due cariche hanno segno uguale</u> ed è <u>attrattiva quando le cariche hanno segno opposto</u>.
+Questo rivela la presenza di un nuovo tipo di forza, che si chiama **forza elettrica**. Nei termini della Fisica, diciamo che questa è una forza <u markdown="span">**repulsiva** quando le due cariche hanno segno uguale</u> ed è <u markdown="span">**attrattiva** quando le cariche hanno segno opposto</u>.
 {% include margin-note-end.html %}
 
 ### Direzione e verso della forza elettrica
