@@ -1,0 +1,188 @@
+{% comment %}
+Animazione: il telo elastico, per le masse e per le cariche. Un telo disegnato
+in prospettiva, con al centro una massa, una carica negativa o una carica
+positiva (tre pulsanti). Con la massa e con la carica negativa il telo si
+infossa (una buca), con la carica positiva si solleva (una gobba): il telo
+cambia forma con una breve transizione. Poi sul telo viene posata una
+pallina, una piccola massa nel primo caso e una piccola carica positiva negli
+altri due, che rotola lungo il telo: dentro la buca, oppure giù dalla gobba,
+fino a uscire dal telo. "Ripeti" la posa di nuovo. La forma del telo è
+proporzionale a 1/r (smussata al centro), come l'energia potenziale.
+Parametri: id (opzionale, default "tcl").
+{% endcomment %}
+{% assign _id = include.id | default: "tcl" %}
+<div class="tcl" id="{{ _id }}">
+  <div class="tcl-btns" role="group" aria-label="Che cosa c'è al centro del telo">
+    <button type="button" data-k="m">Una massa</button>
+    <button type="button" data-k="n">Una carica negativa</button>
+    <button type="button" data-k="p">Una carica positiva</button>
+  </div>
+  <canvas aria-label="Il telo deformato da una massa o da una carica, con una pallina che rotola"></canvas>
+  <p class="tcl-cap" aria-live="polite"></p>
+  <button type="button" class="tcl-rip">↺ Posa di nuovo la pallina</button>
+</div>
+<style>
+.tcl { max-width: 560px; margin: 1.4rem auto; font-family: "Atkinson Hyperlegible", sans-serif; text-align: center; }
+.tcl-btns { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; margin-bottom: .5rem; }
+.tcl-btns button, .tcl-rip { font: inherit; font-size: .9rem; padding: .35rem .8rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; color: #1f2937; cursor: pointer; }
+.tcl-btns button.on[data-k="m"] { background: #57534e; border-color: #57534e; color: #fff; }
+.tcl-btns button.on[data-k="n"] { background: #2563eb; border-color: #2563eb; color: #fff; }
+.tcl-btns button.on[data-k="p"] { background: #dc2626; border-color: #dc2626; color: #fff; }
+.tcl canvas { width: 100%; height: auto; display: block; border-radius: 10px; background: linear-gradient(#f8fafc, #eef2f7); }
+.tcl .tcl-cap { text-align: center; hyphens: none; margin: .5rem 0 .4rem; font-size: .95rem; color: #374151; min-height: 2.6em; }
+.tcl-rip { font-size: .85rem; }
+@media print { .tcl-btns, .tcl-rip { display: none; } }
+</style>
+<script>
+(function () {
+  var box = document.getElementById('{{ _id }}');
+  if (!box) return;
+  var cv = box.querySelector('canvas'), ctx = cv.getContext('2d');
+  var cap = box.querySelector('.tcl-cap');
+  var W = 560, H = 330, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = W * DPR; cv.height = H * DPR; ctx.scale(DPR, DPR);
+
+  var PHI = 44 * Math.PI / 180, SY = Math.sin(PHI), SZ = Math.cos(PHI);
+  var S = 235, CX = W / 2, CY = H / 2 + 22;
+  var A = 0.11, C = 0.2, H0 = 1 / Math.sqrt(1 + C * C);
+  var N = 28, R_BALL = 0.045, R_SRC = 0.1;
+
+  var TESTI = {
+    m: 'Una massa infossa il telo: una pallina, che è anch\'essa una massa, rotola nella <b>buca</b>.',
+    n: 'Per una pallina con carica positiva, una carica negativa è una <b>buca</b>: la pallina rotola dentro.',
+    p: 'Per una pallina con carica positiva, un\'altra carica positiva è una <b>gobba</b>: la pallina rotola via.'
+  };
+  var COL = { m: '#57534e', n: '#2563eb', p: '#dc2626' };
+
+  var tipo = 'n', s = -1, sDa = -1, sA = -1, tMorph = 1;   // s: -1 buca, +1 gobba
+  var ball = null, raf = null, tPrev = 0;
+
+  function h(x, y) {
+    var r2 = x * x + y * y;
+    return s * A * (1 / Math.sqrt(r2 + C * C) - H0);
+  }
+  function P(x, y, z) { return [CX + x * S, CY + y * S * SY - z * S * SZ]; }
+
+  function sfera(x, y, z, r, col, segno, alpha) {
+    var p = P(x, y, z + r), rr = r * S;
+    ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha;
+    var g = ctx.createRadialGradient(p[0] - rr * .35, p[1] - rr * .35, rr * .1, p[0], p[1], rr);
+    g.addColorStop(0, '#ffffff'); g.addColorStop(.25, col); g.addColorStop(1, '#111827');
+    ctx.beginPath(); ctx.arc(p[0], p[1], rr, 0, 2 * Math.PI); ctx.fillStyle = g; ctx.fill();
+    if (segno) {
+      ctx.fillStyle = '#fff'; ctx.font = 'bold ' + Math.round(rr * 1.3) + 'px "Atkinson Hyperlegible", sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(segno, p[0], p[1] + 1);
+    }
+    ctx.restore();
+  }
+
+  function disegnaSorgente() {
+    sfera(0, 0, h(0, 0) - (s > 0 ? R_SRC * 0.6 : R_SRC * 1.1), R_SRC, COL[tipo], tipo === 'm' ? '' : (tipo === 'n' ? '−' : '+'));
+  }
+  function disegnaPallina() {
+    if (!ball || ball.a <= 0) return;
+    var col = tipo === 'm' ? '#78716c' : '#dc2626';
+    sfera(ball.x, ball.y, h(ball.x, ball.y) + ball.z, R_BALL, col, tipo === 'm' ? '' : '+', ball.a);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    var d = 2 / N;
+    for (var j = 0; j < N; j++) {
+      var y0 = -1 + j * d, y1 = y0 + d, yc = (y0 + y1) / 2;
+      for (var i = 0; i < N; i++) {
+        var x0 = -1 + i * d, x1 = x0 + d;
+        var z00 = h(x0, y0), z10 = h(x1, y0), z11 = h(x1, y1), z01 = h(x0, y1);
+        var nx = -((z10 - z00) + (z11 - z01)) / (2 * d), ny = -((z01 - z00) + (z11 - z10)) / (2 * d);
+        var nl = Math.sqrt(nx * nx + ny * ny + 1);
+        var luce = (nx * -0.45 + ny * -0.55 + 0.7) / nl;
+        var L = Math.max(0, Math.min(1, 0.2 + 0.85 * luce));
+        var a = P(x0, y0, z00), b = P(x1, y0, z10), c = P(x1, y1, z11), e = P(x0, y1, z01);
+        ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(c[0], c[1]); ctx.lineTo(e[0], e[1]); ctx.closePath();
+        ctx.fillStyle = 'rgb(' + Math.round(110 + 135 * L) + ',' + Math.round(150 + 100 * L) + ',' + Math.round(165 + 88 * L) + ')';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(15,118,110,.28)'; ctx.lineWidth = .7; ctx.stroke();
+      }
+    }
+    if (ball && ball.y > 0) { disegnaSorgente(); disegnaPallina(); } else { disegnaPallina(); disegnaSorgente(); }
+  }
+
+  function posa() {
+    ball = { x: 0.52, y: 0.34, vx: 0, vy: 0, z: 0.45, vz: 0, a: 0, fermo: false };
+    avvia();
+  }
+
+  function passo(dt) {
+    if (tMorph < 1) {
+      tMorph = Math.min(1, tMorph + dt / 0.9);
+      var e = tMorph < .5 ? 2 * tMorph * tMorph : 1 - Math.pow(-2 * tMorph + 2, 2) / 2;
+      s = sDa + (sA - sDa) * e;
+      if (tMorph >= 1) posa();
+      return true;
+    }
+    if (!ball) return false;
+    if (ball.z > 0 || ball.vz > 0) {                  // la pallina scende sul telo
+      ball.a = Math.min(1, ball.a + dt / 0.25);
+      ball.vz -= 3 * dt; ball.z += ball.vz * dt;
+      if (ball.z <= 0) { ball.z = 0; ball.vz = 0; }
+      return true;
+    }
+    var sub = 8, q = dt / sub;
+    for (var k = 0; k < sub; k++) {
+      var e2 = 1e-3;
+      var gx = (h(ball.x + e2, ball.y) - h(ball.x - e2, ball.y)) / (2 * e2);
+      var gy = (h(ball.x, ball.y + e2) - h(ball.x, ball.y - e2)) / (2 * e2);
+      var att = s < 0 ? 1.6 : 0.2;
+      ball.vx += (-9 * gx - att * ball.vx) * q;
+      ball.vy += (-9 * gy - att * ball.vy) * q;
+      ball.x += ball.vx * q; ball.y += ball.vy * q;
+      var rr = Math.sqrt(ball.x * ball.x + ball.y * ball.y), rMin = R_SRC + R_BALL;
+      if (s < 0 && rr < rMin) {                     // si ferma a contatto con la sorgente
+        ball.x *= rMin / rr; ball.y *= rMin / rr; ball.vx = ball.vy = 0; ball.fermo = true; return false;
+      }
+    }
+    var m = Math.max(Math.abs(ball.x), Math.abs(ball.y));
+    if (m > 1) ball.a = Math.max(0, 1 - (m - 1) / 0.12);
+    var v = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+    var r = Math.sqrt(ball.x * ball.x + ball.y * ball.y);
+    if (ball.a <= 0) { ball.fermo = true; return false; }
+    return true;
+  }
+
+  function frame(t) {
+    var dt = Math.min(0.04, (t - tPrev) / 1000 || 0); tPrev = t;
+    var ancora = passo(dt);
+    draw();
+    raf = ancora ? requestAnimationFrame(frame) : null;
+  }
+  function avvia() { if (!raf) { tPrev = performance.now(); raf = requestAnimationFrame(frame); } }
+
+  function scegli(k) {
+    tipo = k; sDa = s; sA = k === 'p' ? 1 : -1; tMorph = 0; ball = null;
+    box.querySelectorAll('.tcl-btns button').forEach(function (b) { b.classList.toggle('on', b.dataset.k === k); });
+    cap.innerHTML = TESTI[k];
+    avvia();
+  }
+
+  box.querySelectorAll('.tcl-btns button').forEach(function (b) {
+    b.addEventListener('click', function () { scegli(b.dataset.k); });
+  });
+  box.querySelector('.tcl-rip').addEventListener('click', function () { if (tMorph >= 1) posa(); });
+
+  // parte quando il riquadro entra nello schermo
+  tipo = 'n'; s = -1; sDa = -1; sA = -1; tMorph = 1;
+  box.querySelector('.tcl-btns button[data-k="n"]').classList.add('on');
+  cap.innerHTML = TESTI.n; draw();
+  var partito = false;
+  function controlla() {
+    if (partito) return;
+    var r = cv.getBoundingClientRect(), hV = window.innerHeight || 800;
+    if (r.top < hV * 0.8 && r.bottom > hV * 0.2) {
+      partito = true; document.removeEventListener('scroll', controlla, true); clearInterval(tm); posa();
+    }
+  }
+  document.addEventListener('scroll', controlla, { capture: true, passive: true });
+  var tm = setInterval(controlla, 700);
+  controlla();
+})();
+</script>

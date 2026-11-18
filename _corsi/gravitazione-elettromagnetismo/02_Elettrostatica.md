@@ -12,7 +12,7 @@ Le leggi naturali non sono esterne alle cose. Sono anzi l'armonia del moto, imma
 </cit>
 
 {% include box-obiettivi.html %}
-Scopri che la materia è piena di cariche elettriche, perché in alcuni materiali possono muoversi e in altri no, e in quanti modi un corpo può caricarsi: per strofinio, per contatto, per induzione. Impari la legge di Coulomb, che dice con quale forza due cariche si attraggono o si respingono, e la confronti con la gravitazione. Infine introduci il campo elettrico e impari a rappresentarlo con le linee di campo, fino al campo uniforme fra due lastre.
+Scopri che la materia è piena di cariche elettriche, perché in alcuni materiali possono muoversi e in altri no, e in quanti modi un corpo può caricarsi: per strofinio, per contatto, per induzione. Impari la legge di Coulomb, che dice con quale forza due cariche si attraggono o si respingono, e la confronti con la gravitazione. Infine introduci il campo elettrico, scopri come si sommano le forze e i campi di più cariche con il principio di sovrapposizione, e impari a rappresentarlo con le linee di campo, fino al campo uniforme fra due lastre.
 {% include box-end.html %}
  
 
@@ -1270,40 +1270,6 @@ La forza elettrica è enormemente più intensa di quella gravitazionale. Eppure 
 {% include box-end.html %}
 
 
-### In presenza di più cariche
-
-{% include margin-note.html testo="Più cariche insieme" %}
-Finora abbiamo considerato solo due cariche. Ma cosa succede se su una carica $q$ agiscono contemporaneamente **più** cariche, ciascuna con la propria forza elettrica?
-{% include margin-note-end.html %}
-
-
-{% include box-imp.html testo="Principio di sovrapposizione degli effetti" %}
-In presenza di più cariche, vale lo stesso <definizione>principio di sovrapposizione degli effetti</definizione> già visto per la forza gravitazionale: ogni carica esercita su $q$ la propria forza elettrica <u markdown="span">**esattamente come se le altre non ci fossero**</u>. La forza totale su $q$ è la somma *vettoriale* di tutte queste forze:
-
-$$\vec F_{tot} = \vec F_1 + \vec F_2 + \dots$$
-
-{% include box-end.html %}
-
-{% include margin-note.html testo="Le forze si sommano come vettori" %}
-Poiché le forze sono vettori, <u markdown="span">per sommarle non basta sommarne i moduli: vanno sommate **come vettori**</u>, con la stessa regola del parallelogramma già vista per la somma di due vettori qualsiasi. L'unica accortezza in più, rispetto al caso gravitazionale, è che ogni singola forza può essere sia repulsiva sia attrattiva, a seconda del segno delle cariche coinvolte. Nel simulatore seguente puoi spostare le cariche e cambiarne valore e segno: guarda come cambiano le due forze su $q$, e la loro somma.
-{% include margin-note-end.html %}
-
-
-{% include lab-virtuali/sovrapposizione-lab.html id="sov-forza-elet" tipo="forza" fisica="elet" %}
-
-{% include margin-note.html testo="I moduli delle singole forze" %}
-Nella regola del parallelogramma, i moduli di $\vec F_1$ e $\vec F_2$ (rappresentati dalla lunghezza delle frecce) si ottengono con la legge di Coulomb:
-
-$$
-F_1 = k \frac{|Q_1\cdot q|}{r_1^2}, \qquad\qquad F_2 = k \frac{|Q_2\cdot q|}{r_2^2} 
-$$
-{% include margin-note-end.html %}
-
-
-Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta con le forze elettriche: ricorda che ogni forza può essere repulsiva o attrattiva, a seconda dei segni.
-
-{% include esercizi/parallelogramma-coulomb.html %}
-
 # Il Campo Elettrico
 
 {% include margin-note.html testo="Perché ci serve il campo elettrico" %}
@@ -1334,13 +1300,15 @@ Questa modificazione dello spazio è il campo gravitazionale $\vec g$:
 {% include box-end.html %}
 
 {% include margin-note.html testo="Dalla gravità alle cariche" %}
-Per le cariche elettriche vale tutto questo, quasi parola per parola: basta sostituire la massa con la carica, e la legge di gravitazione universale con la legge di Coulomb. Possiamo quindi andare veloci, fermandoci solo sulle cose che cambiano.
+Per le cariche elettriche vale tutto questo, quasi parola per parola: basta sostituire la massa con la carica, e la legge di gravitazione universale con la legge di Coulomb. Possiamo quindi utilizzare tutto quello che abbiamo imparato nel capitolo precedente sulla teoria della gravitazione, senza doverlo derivare nuovamente.
 {% include margin-note-end.html %}
 
 
 {% include margin-note.html testo="Il telo, per le cariche" %}
 Anche una carica modifica lo spazio attorno a sé. C'è però una differenza: le masse si attraggono sempre, quindi il telo si infossa sempre. Con le cariche, invece, la forza può essere attrattiva o repulsiva. Immagina di posare sul telo una pallina con carica positiva: una carica negativa sarebbe per lei una **buca**, in cui la pallina rotola dentro; una carica positiva sarebbe invece una **gobba**, da cui la pallina rotola via.
 {% include margin-note-end.html %}
+
+{% include lab-virtuali/telo-cariche-lab.html %}
 
 {% include box-imp.html testo="Il campo elettrico" %}
 La modificazione dello spazio prodotta da una carica si chiama <definizione>campo elettrico</definizione> e si indica con $\vec E$. È una grandezza **vettoriale**: <u>associa a ogni punto dello spazio un vettore</u>, che dice con quale intensità, in quale direzione e in quale verso viene spinta una carica posta in quel punto.
@@ -1349,17 +1317,87 @@ La modificazione dello spazio prodotta da una carica si chiama <definizione>camp
 ## Il vettore campo elettrico
 
 {% include margin-note.html testo="Modulo, direzione e verso" %}
-Sappiamo che il campo elettrico $\vec E$ è una quantità vettoriale e che i vettori hanno tre caratteristiche: modulo, direzione e verso. Cominciamo studiando il modulo del vettore, poi analizzeremo la direzione e il verso.
+Sappiamo che il campo elettrico $\vec E$ è una quantità vettoriale e che i vettori hanno tre caratteristiche: modulo, direzione e verso. Questa volta cominciamo dalla direzione e dal verso, che ci portano subito alla formula del vettore $\vec E$; poi ne studieremo il modulo.
 {% include margin-note-end.html %}
+
+### Direzione e verso del vettore campo elettrico
+
+{% include margin-note.html testo="La carica di prova" %}
+La carica $q$ che usiamo per "sentire" il campo si chiama <definizione>carica di prova</definizione>: ha lo stesso ruolo della massa esploratrice. Per convenzione si sceglie **positiva** e molto **piccola**: piccola, perché con la sua forza non deve spostare le cariche che generano il campo che vogliamo misurare. E, come per la massa esploratrice, <u markdown="span">il campo **non dipende** da $q$</u>: se raddoppia la carica di prova, raddoppia anche la forza, e il loro rapporto resta lo stesso.
+{% include margin-note-end.html %}
+
+{% include margin-note.html testo="Il verso del campo elettrico" %}
+Per il campo gravitazionale avevamo scelto che $\vec g$ avesse il verso della forza sulla massa esploratrice. Allo stesso modo, si sceglie che <u markdown="span">$\vec E$ abbia la direzione e il verso della forza che agirebbe sulla carica di prova, che è **positiva**</u>. Quindi il campo generato da una carica positiva si allontana da essa, mentre quello generato da una carica negativa punta verso di essa:
+
+{% include figure/figura-vettore-campo-e.html %}
+{% include margin-note-end.html %}
+
+
+{% include box-imp.html testo="Il vettore campo elettrico" %}
+Il **vettore** campo elettrico si ottiene dividendo il **vettore** forza elettrica sulla carica di prova $q$ per la carica $q$ stessa:
+
+$$\vec E = \frac{\vec F}{q}, \qquad\text{cioè}\qquad \vec F = q\,\vec E.$$
+
+Poiché la carica di prova è positiva, $\vec E$ ha la stessa direzione e lo stesso verso di $\vec F$.
+
+Il campo generato da una carica **positiva** punta **lontano** da essa; quello generato da una carica **negativa** punta **verso** di essa.
+{% include box-end.html %}
+
+{% include box-warn.html testo="Su una carica negativa, la forza è opposta al campo" %}
+Qui c'è una differenza importante rispetto alla gravità. La massa è sempre positiva, quindi $\vec F = m\,\vec g$ ha sempre lo stesso verso di $\vec g$. La carica, invece, può essere negativa: se in un punto mettiamo una carica negativa, per esempio un elettrone, <u markdown="span">la forza $\vec F = q\,\vec E$ ha **verso opposto** al campo</u>. Il campo ci dice in che verso verrebbe spinta una carica positiva; una carica negativa va nel verso contrario.
+{% include box-end.html %}
+
+{% include box-ex.html testo="Verifica Subito!" %}
+{% include scorri.html %}
+{% include scorri-slide.html %}
+{% capture _qCampoDir %}[
+{"t":"Il campo elettrico generato da una carica positiva punta lontano dalla carica.","ok":true,"s":"Sì: una carica di prova positiva verrebbe respinta."},
+{"t":"Il campo elettrico generato da una carica negativa punta verso la carica.","ok":true,"s":"Sì: una carica di prova positiva verrebbe attratta dalla carica negativa, quindi il campo punta verso di essa."},
+{"t":"Su un elettrone la forza elettrica ha lo stesso verso del campo.","ok":false,"s":"No: l'elettrone ha carica negativa, quindi $\\vec F = q\\vec E$ ha verso opposto al campo."}
+]{% endcapture %}
+{% include quiz.html domande=_qCampoDir id="q-campo-dir" senza_esempi="true" %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+In un punto $P$ c'è un campo elettrico, generato da altre cariche, e il vettore $\vec E$ in $P$ punta verso destra. Mettiamo in $P$ un elettrone. In che verso viene spinto l'elettrone?
+{% capture _oCE1 %}[
+{"v":"a","t":"verso destra, nello stesso verso del campo"},
+{"v":"b","t":"verso sinistra, nel verso opposto al campo"},
+{"v":"c","t":"non viene spinto: il campo agisce solo sulle cariche che lo generano"},
+{"v":"d","t":"dipende dalla massa dell'elettrone"}
+]{% endcapture %}
+{% include mcq.html id="mcq-campo-elettrone" opts=_oCE1 ok="b" s="La carica dell'elettrone è negativa, quindi la forza $\vec F = q\vec E$ ha verso opposto al campo: l'elettrone viene spinto verso sinistra. Il campo indica il verso in cui verrebbe spinta una carica positiva; una carica negativa va nel verso contrario. E il campo agisce proprio sulle cariche che <em>non</em> lo generano." %}
+{% include scorri-slide-end.html %}
+{% include scorri-slide.html %}
+Nello stesso punto $P$ dell'esercizio precedente, dove il campo punta verso destra, mettiamo prima un protone, poi, al suo posto, un elettrone. Confronta le due forze: quella sul protone e quella sull'elettrone.
+{% capture _oPE3 %}[
+{"v":"a","t":"sono uguali: stesso modulo e stesso verso"},
+{"v":"b","t":"hanno lo stesso modulo, ma versi opposti: sul protone verso destra, sull'elettrone verso sinistra"},
+{"v":"c","t":"sull'elettrone la forza è molto più piccola, perché la sua massa è molto più piccola"},
+{"v":"d","t":"hanno lo stesso verso, ma moduli diversi"}
+]{% endcapture %}
+{% include mcq.html id="mcq-protone-elettrone-campo" opts=_oPE3 ok="b" s="Il campo in $P$ è lo stesso. Le due cariche hanno lo stesso valore assoluto, $e$, quindi $F = \lvert q\rvert E$ è uguale; ma hanno segno opposto, quindi le forze hanno versi opposti: quella sul protone nel verso del campo, verso destra, quella sull'elettrone al contrario, verso sinistra. La massa non c'entra con la forza (c'entrerà con l'accelerazione)." %}
+{% include scorri-slide-end.html %}
+{% include scorri-end.html %}
+{% include box-end.html %}
 
 ### Il modulo del vettore campo elettrico
 
-{% include margin-note.html testo="Dalla forza al campo: togliamo la carica di prova" %}
-Come per il campo gravitazionale, partiamo dalla forza fra la carica $Q$ che genera il campo e un'altra carica $q$,
+{% include margin-note.html testo="Dal vettore al modulo: togliamo la carica di prova" %}
+Passiamo ora al modulo. Se prendiamo i moduli dei due membri di $\vec E = \dfrac{\vec F}{q}$ (ricordando che la carica di prova $q$ è positiva), otteniamo
 
-$$F = k\,\frac{\lvert Q\cdot q\rvert}{r^2},$$
+{% include eq-annotated.html
+   id="fce2"
+   formula="E = \dfrac{F}{q}"
+   frammenti="E|F|q"
+   etichette="modulo del campo elettrico (N/C)|modulo della forza elettrica fra la carica $Q$ che genera il campo e la carica $q$ (N)|carica di prova (C)"
+   posizioni="alto|alto|basso"
+%}
 
-e togliamo la carica $q$, cioè dividiamo per $q$:
+La forza fra la carica $Q$ che genera il campo e la carica di prova $q$ la conosciamo già: è data dalla legge di Coulomb,
+
+$$F = k\,\frac{\lvert Q\cdot q\rvert}{r^2}.$$
+
+Come per il campo gravitazionale, dividiamo per $q$, e la carica di prova sparisce:
 
 {% include lab-virtuali/togli-massa-esploratrice-lab.html id="tm-campo-e" da="F" a="E" esp="2" cost="k" sorg="Q" espl="q" abs="true" %}
 
@@ -1372,20 +1410,6 @@ Otteniamo così il modulo del campo elettrico generato dalla carica $Q$:
    etichette="modulo del campo elettrico|costante di Coulomb|valore assoluto della carica che genera il campo|quadrato della distanza dal centro della carica"
    posizioni="alto|basso|alto|basso"
 %}
-
-o, in modo del tutto equivalente,
-
-{% include eq-annotated.html
-   id="fce2"
-   formula="E = \dfrac{F}{q}"
-   frammenti="E|F|q"
-   etichette="modulo del campo elettrico (N/C)|modulo della forza elettrica fra la carica $Q$ che genera il campo e la carica $q$ (N)|carica di prova (C)"
-   posizioni="alto|alto|basso"
-%}
-{% include margin-note-end.html %}
-
-{% include margin-note.html testo="La carica di prova" %}
-La carica $q$ che usiamo per "sentire" il campo si chiama <definizione>carica di prova</definizione>: ha lo stesso ruolo della massa esploratrice. Per convenzione si sceglie **positiva** e molto **piccola**: piccola, perché con la sua forza non deve spostare le cariche che generano il campo che vogliamo misurare. E, come per la massa esploratrice, <u markdown="span">il campo **non dipende** da $q$</u>: se raddoppia la carica di prova, raddoppia anche la forza, e il loro rapporto resta lo stesso.
 {% include margin-note-end.html %}
 
 {% include margin-note.html testo="L'unità di misura del campo elettrico è il N/C" %}
@@ -1484,64 +1508,6 @@ Isola le altre grandezze nella formula del campo elettrico. Per ciascuna, cerca 
 {% include invert.html id="inv-campo-e-r" variabili="E|k|Q|r" etichette="E|k|\lvert Q\rvert|r"
    sinistra="E" destra="k*Q/r/r" obiettivo="r" radice="1" %}
 {% include scorri-slide-end.html %}
-{% include scorri-end.html %}
-{% include box-end.html %}
-{% include unisci-end.html %}
-
-
-### Direzione e verso del vettore campo elettrico
-
-{% include margin-note.html testo="Il verso del campo elettrico" %}
-Per il campo gravitazionale avevamo scelto che $\vec g$ avesse il verso della forza sulla massa esploratrice. Allo stesso modo, si sceglie che <u markdown="span">$\vec E$ abbia la direzione e il verso della forza che agirebbe sulla carica di prova, che è **positiva**</u>. Quindi il campo generato da una carica positiva si allontana da essa, mentre quello generato da una carica negativa punta verso di essa:
-
-{% include figure/figura-vettore-campo-e.html %}
-{% include margin-note-end.html %}
-
-
-{% include box-imp.html testo="Il vettore campo elettrico" %}
-Il **vettore** campo elettrico è legato al **vettore** forza elettrica sulla carica di prova $q$ dalla relazione
-
-$$\vec E = \frac{\vec F}{q}, \qquad\text{cioè}\qquad \vec F = q\,\vec E.$$
-
-Il campo generato da una carica **positiva** punta **lontano** da essa; quello generato da una carica **negativa** punta **verso** di essa.
-{% include box-end.html %}
-
-{% include box-warn.html testo="Su una carica negativa, la forza è opposta al campo" %}
-Qui c'è una differenza importante rispetto alla gravità. La massa è sempre positiva, quindi $\vec F = m\,\vec g$ ha sempre lo stesso verso di $\vec g$. La carica, invece, può essere negativa: se in un punto mettiamo una carica negativa, per esempio un elettrone, <u markdown="span">la forza $\vec F = q\,\vec E$ ha **verso opposto** al campo</u>. Il campo ci dice in che verso verrebbe spinta una carica positiva; una carica negativa va nel verso contrario.
-{% include box-end.html %}
-
-{% include box-ex.html testo="Verifica Subito!" %}
-Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
-
-{% include scorri.html %}
-{% include scorri-slide.html %}
-{% capture _qCampoDir %}[
-{"t":"Il campo elettrico generato da una carica positiva punta lontano dalla carica.","ok":true,"s":"Sì: una carica di prova positiva verrebbe respinta."},
-{"t":"Il campo elettrico generato da una carica negativa punta verso la carica.","ok":true,"s":"Sì: una carica di prova positiva verrebbe attratta dalla carica negativa, quindi il campo punta verso di essa."},
-{"t":"Su un elettrone la forza elettrica ha lo stesso verso del campo.","ok":false,"s":"No: l'elettrone ha carica negativa, quindi $\\vec F = q\\vec E$ ha verso opposto al campo."}
-]{% endcapture %}
-{% include quiz.html domande=_qCampoDir id="q-campo-dir" senza_esempi="true" %}
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html %}
-In un punto $P$ c'è un campo elettrico, generato da altre cariche, e il vettore $\vec E$ in $P$ punta verso destra. Mettiamo in $P$ un elettrone. In che verso viene spinto l'elettrone?
-{% capture _oCE1 %}[
-{"v":"a","t":"verso destra, nello stesso verso del campo"},
-{"v":"b","t":"verso sinistra, nel verso opposto al campo"},
-{"v":"c","t":"non viene spinto: il campo agisce solo sulle cariche che lo generano"},
-{"v":"d","t":"dipende dalla massa dell'elettrone"}
-]{% endcapture %}
-{% include mcq.html id="mcq-campo-elettrone" opts=_oCE1 ok="b" s="La carica dell'elettrone è negativa, quindi la forza $\vec F = q\vec E$ ha verso opposto al campo: l'elettrone viene spinto verso sinistra. Il campo indica il verso in cui verrebbe spinta una carica positiva; una carica negativa va nel verso contrario. E il campo agisce proprio sulle cariche che <em>non</em> lo generano." %}
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html %}
-Nello stesso punto $P$ dell'esercizio precedente, dove il campo punta verso destra, mettiamo prima un protone, poi, al suo posto, un elettrone. Confronta le due forze: quella sul protone e quella sull'elettrone.
-{% capture _oPE3 %}[
-{"v":"a","t":"sono uguali: stesso modulo e stesso verso"},
-{"v":"b","t":"hanno lo stesso modulo, ma versi opposti: sul protone verso destra, sull'elettrone verso sinistra"},
-{"v":"c","t":"sull'elettrone la forza è molto più piccola, perché la sua massa è molto più piccola"},
-{"v":"d","t":"hanno lo stesso verso, ma moduli diversi"}
-]{% endcapture %}
-{% include mcq.html id="mcq-protone-elettrone-campo" opts=_oPE3 ok="b" s="Il campo in $P$ è lo stesso. Le due cariche hanno lo stesso valore assoluto, $e$, quindi $F = \lvert q\rvert E$ è uguale; ma hanno segno opposto, quindi le forze hanno versi opposti: quella sul protone nel verso del campo, verso destra, quella sull'elettrone al contrario, verso sinistra. La massa non c'entra con la forza (c'entrerà con l'accelerazione)." %}
-{% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 {% include calc-margin.html id="calcEl11" %}
 Una carica $Q = -4\times10^{-9}\ \text C$ è nel vuoto. Quanto vale il campo elettrico a $20\ \text{cm}$ dal suo centro? Attenzione alle unità di misura!
@@ -1553,19 +1519,46 @@ Una carica $Q = -4\times10^{-9}\ \text C$ è nel vuoto. Quanto vale il campo ele
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 {% include box-end.html %}
+{% include unisci-end.html %}
 
-### In presenza di più cariche
 
-{% include margin-note.html testo="I campi si sommano" %}
-Anche per il campo elettrico vale il <definizione>principio di sovrapposizione degli effetti</definizione>, esattamente come per il campo gravitazionale.
+## Il principio di sovrapposizione degli effetti
+
+{% include margin-note.html testo="Più di due cariche" %}
+Abbiamo visto il caso della forza elettrica tra due cariche e il caso del campo elettrico generato da una carica sola. Ma noi viviamo in un universo che contiene un numero meravigliosamente enorme di cariche. Come facciamo a trattare la forza tra **più di due** cariche elettriche, e come possiamo trattare il campo elettrico in un punto dello spazio generato da **più di una** carica?
 {% include margin-note-end.html %}
 
 
-{% include box-imp.html testo="Sovrapposizione degli effetti (campo elettrico)" %}
-In presenza di più cariche, ciascuna genera il proprio campo <u>esattamente come se le altre non ci fossero</u>. Il campo totale in un punto è la somma vettoriale dei singoli campi:
+{% include box-imp.html testo="Principio di sovrapposizione degli effetti" %}
+In presenza di più cariche vale lo stesso <definizione>principio di sovrapposizione degli effetti</definizione> già visto per la gravitazione: ogni carica esercita la propria forza, e genera il proprio campo, <u markdown="span">**esattamente come se le altre non ci fossero**</u>. La forza totale su una carica $q$ è la somma *vettoriale* delle singole forze, e il campo totale in un punto è la somma *vettoriale* dei singoli campi:
 
-$$\vec E_{tot} = \vec E_1 + \vec E_2 + \cdots.$$
+$$\vec F_{tot} = \vec F_1 + \vec F_2 + \dots \qquad\qquad \vec E_{tot} = \vec E_1 + \vec E_2 + \dots$$
+
 {% include box-end.html %}
+
+### La somma delle forze
+
+{% include margin-note.html testo="Le forze si sommano come vettori" %}
+Poiché le forze sono vettori, <u markdown="span">per sommarle non basta sommarne i moduli: vanno sommate **come vettori**</u>, con la stessa regola del parallelogramma già vista per la somma di due vettori qualsiasi. L'unica accortezza in più, rispetto al caso gravitazionale, è che ogni singola forza può essere sia repulsiva sia attrattiva, a seconda del segno delle cariche coinvolte. Nel simulatore seguente puoi spostare le cariche e cambiarne valore e segno: guarda come cambiano le due forze su $q$, e la loro somma.
+{% include margin-note-end.html %}
+
+
+{% include lab-virtuali/sovrapposizione-lab.html id="sov-forza-elet" tipo="forza" fisica="elet" %}
+
+{% include margin-note.html testo="I moduli delle singole forze" %}
+Nella regola del parallelogramma, i moduli di $\vec F_1$ e $\vec F_2$ (rappresentati dalla lunghezza delle frecce) si ottengono con la legge di Coulomb:
+
+$$
+F_1 = k \frac{|Q_1\cdot q|}{r_1^2}, \qquad\qquad F_2 = k \frac{|Q_2\cdot q|}{r_2^2} 
+$$
+{% include margin-note-end.html %}
+
+
+Prova tu stesso a rinfrescare la regola del parallelogramma, questa volta con le forze elettriche: ricorda che ogni forza può essere repulsiva o attrattiva, a seconda dei segni.
+
+{% include esercizi/parallelogramma-coulomb.html %}
+
+### La somma dei campi
 
 Prova a sommare i campi con il simulatore: sposta le cariche e il punto $P$, e cambiane valore e segno. Ricorda che ogni campo si allontana dalla sua carica, se è positiva, e punta verso di lei, se è negativa.
 
