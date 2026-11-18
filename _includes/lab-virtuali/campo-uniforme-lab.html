@@ -8,7 +8,11 @@ A destra, nello stesso tempo, una carica positiva e una negativa puntiformi
 si allargano in due lastre piane sempre più larghe, finché le lastre escono
 dal riquadro: le linee del campo elettrico, all'inizio curve come quelle di
 due cariche opposte, diventano parallele ed equidistanti (a metà strada si
-vedono ancora i bordi, dove le linee si incurvano).
+vedono ancora i bordi, dove le linee si incurvano). Le linee che escono dalla
+faccia esterna della lastra positiva girano attorno ed entrano nella faccia
+esterna di quella negativa (disegno simmetrico); con lastre larghe fuori il
+campo si annulla e non ci sono più linee. Le cariche sono fili perpendicolari
+al foglio (campo ∝ 1/r), cioè le lastre sono lunghe anche in profondità.
 Il pianeta è la Terra: foto «Blue Marble» dell'Apollo 17 (NASA, pubblico dominio),
 terra-foto.webp, 2000 px; quando l'ingrandimento la sgranerebbe, sfuma in un mare liscio.
 
@@ -87,14 +91,17 @@ Parametri (facoltativi):
     var XC = X1 + PW / 2, T = PY + 72, B = PY + PH - 72, hw = 4 * Math.pow(175, u) - 4, N = 41 + Math.round(hw / 5);   // semilarghezza delle lastre: alla fine escono dal riquadro
     var Q = [];
     for (var i = 0; i < N; i++) { var xq = XC + hw * (N > 1 ? 2 * i / (N - 1) - 1 : 0); Q.push([xq, T, 1 / N], [xq, B, -1 / N]); }
+    // le lastre sono lunghe anche in profondità (fuori dal foglio): ogni "carica" è in realtà un filo
+    // perpendicolare al foglio, il cui campo va come 1/r. Così, con lastre larghe, il campo fra le lastre
+    // è uniforme e fuori si annulla, come per lastre vere
     function field(x, y){
       var ex = 0, ey = 0;
-      for (var k = 0; k < Q.length; k++) { var dx = x - Q[k][0], dy = y - Q[k][1], r2 = dx * dx + dy * dy + 1, r3 = r2 * Math.sqrt(r2); ex += Q[k][2] * dx / r3; ey += Q[k][2] * dy / r3; }
+      for (var k = 0; k < Q.length; k++) { var dx = x - Q[k][0], dy = y - Q[k][1], r2 = dx * dx + dy * dy + 1; ex += Q[k][2] * dx / r2; ey += Q[k][2] * dy / r2; }
       return [ex, ey];
     }
     function distNeg(x, y){ var cx = Math.max(XC - hw, Math.min(XC + hw, x)); return Math.hypot(x - cx, y - B); }
     // punti di partenza delle linee: attorno alla lastra positiva, distribuiti secondo il flusso del campo
-    var d = 7, per = 4 * hw + 2 * Math.PI * d, NS = 480 + Math.round(hw * 2), samp = [], tot = 0;
+    var d = 16, per = 4 * hw + 2 * Math.PI * d, NS = 480 + Math.round(hw * 2), samp = [], tot = 0;
     for (var k = 0; k < NS; k++) {
       var sArc = (k + .5) / NS * per, px, py, nx, ny;
       if (sArc < 2 * hw) { px = XC + hw - sArc; py = T - d; nx = 0; ny = -1; }
@@ -107,15 +114,27 @@ Parametri (facoltativi):
     var M = Math.round(16 * Math.max(1, (2 * hw + 14) / 250)), si = 0;   // con lastre larghe, più linee (ma si tracciano solo quelle visibili)
     for (var m = 0; m < M; m++) {
       var target = (m + .5) / M * tot; while (si < NS - 1 && samp[si][2] < target) si++;
-      var x = samp[si][0], y = samp[si][1], pts = [[x, y]];
+      var x = samp[si][0], y = samp[si][1], pts = [[Math.max(XC - hw, Math.min(XC + hw, x)), T], [x, y]], arriva = false;
       if (Math.abs(x - XC) > PW / 2 + 30) continue;
       for (var st = 0; st < 900; st++) {
         var E = field(x, y), e = Math.hypot(E[0], E[1]) || 1;
         x += 2.5 * E[0] / e; y += 2.5 * E[1] / e; pts.push([x, y]);
-        if (distNeg(x, y) < 6 || Math.abs(x - XC) > 700 || y < -500 || y > 800) break;
+        if (distNeg(x, y) < 6) { arriva = true; break; }
+        if (Math.abs(x - XC) > 700 || y < -500 || y > 800) break;
       }
+      if (!arriva && Math.abs(pts[1][0] - XC) > PW / 2 - 4) continue;   // linee esterne che partono fuori dal riquadro
       ctx.strokeStyle = '#0891b2'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]);
       for (var k2 = 1; k2 < pts.length; k2++) ctx.lineTo(pts[k2][0], pts[k2][1]); ctx.stroke();
+      // una linea che esce dal riquadro prima di arrivare alla lastra negativa ci arriva da fuori, girando
+      // attorno: per simmetria (le due lastre sono una lo specchio dell'altra, con il segno scambiato) la
+      // seconda metà è la sua immagine speculare, che entra nella lastra negativa dalla faccia esterna
+      if (!arriva) {
+        var sp = function(q){ return [q[0], T + B - q[1]]; };
+        ctx.beginPath(); var q0 = sp(pts[0]); ctx.moveTo(q0[0], q0[1]);
+        for (var k4 = 1; k4 < pts.length; k4++) { var q4 = sp(pts[k4]); ctx.lineTo(q4[0], q4[1]); } ctx.stroke();
+        var ib = Math.min(pts.length - 1, 30), m0 = sp(pts[ib]), m1 = sp(pts[Math.max(0, ib - 8)]);
+        arrow(m0[0], m0[1], m1[0], m1[1], '#0891b2', 1.4);
+      }
       // freccia: a metà fra le lastre per le linee che le collegano, vicino all'inizio per le altre
       var ia = -1; for (var k3 = 1; k3 < pts.length; k3++) if (pts[k3 - 1][1] < (T + B) / 2 && pts[k3][1] >= (T + B) / 2 && Math.abs(pts[k3][0] - XC) < PW / 2) { ia = k3; break; }
       if (ia < 0) ia = Math.min(pts.length - 1, 30);
