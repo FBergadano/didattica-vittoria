@@ -491,7 +491,7 @@ Quale di queste due misure è più precisa?
 {% include box-end.html %}
 {% include unisci-end.html %}
 
-### Propagazione degli errori
+### Propagazione dell'incertezza
 
 {% include margin-note.html testo="Anche le grandezze calcolate hanno un'incertezza" %}
 
@@ -521,7 +521,7 @@ L'area può quindi essere circa $60\ \text{cm}^2$ più grande o più piccola di 
 
 Queste regole valgono in generale, e sono riassunte nel seguente teorema.
 
-{% include box-thm.html testo="Teorema di propagazione degli errori" %}
+{% include box-thm.html testo="Teorema di propagazione dell'incertezza" %}
 Siano $x$ e $y$ due grandezze misurate con incertezze assolute $I_x$, $I_y$ e incertezze relative percentuali $i_x = (I_x/\bar{x})\times 100\%$, $i_y = (I_y/\bar{y})\times 100\%$.
 
 | Operazione | Incertezza da usare | Regola |
