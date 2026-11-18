@@ -1,0 +1,97 @@
+{% comment %}
+Figura interattiva: il vettore campo elettrico generato da una carica Q.
+Al centro c'è la carica; lo studente sceglie se è positiva o negativa. Ogni
+volta che clicca (o tocca) un punto, in quel punto compare il vettore campo:
+esce dalla carica se è positiva, entra se è negativa, ed è tanto più lungo
+quanto più il punto è vicino (lunghezza proporzionale a 1/r², con un massimo).
+Cambiando il segno della carica, tutti i vettori già disegnati si girano.
+"Cancella i vettori" li toglie. Nessuna risposta giusta o sbagliata.
+Parametri: id (opzionale, default "ccl").
+{% endcomment %}
+{% assign _id = include.id | default: "ccl" %}
+<div class="ccl" id="{{ _id }}">
+  <div class="ccl-btns" role="group" aria-label="Segno della carica che genera il campo">
+    <button type="button" data-s="1" class="on">Carica positiva</button>
+    <button type="button" data-s="-1">Carica negativa</button>
+    <button type="button" class="ccl-canc">Cancella i vettori</button>
+  </div>
+  <svg viewBox="0 0 600 320" role="img" aria-label="Clicca un punto per vedere il vettore campo elettrico in quel punto">
+    <defs>
+      <radialGradient id="{{ _id }}-gP" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="55%" stop-color="#fecdd3"/><stop offset="100%" stop-color="#fda4af"/></radialGradient>
+      <radialGradient id="{{ _id }}-gN" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#eff6ff"/><stop offset="55%" stop-color="#bfdbfe"/><stop offset="100%" stop-color="#93c5fd"/></radialGradient>
+      <marker id="{{ _id }}-fr" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto" markerUnits="strokeWidth"><path d="M0,0.3 L6.6,3.5 L0,6.7 L1.7,3.5 Z" fill="#0891b2"/></marker>
+    </defs>
+    <rect x="0" y="0" width="600" height="320" rx="10" fill="#f8fafc"/>
+    <g class="ccl-vett"></g>
+    <circle class="ccl-q" cx="300" cy="160" r="26" stroke-width="1.3"/>
+    <text class="ccl-qs" x="300" y="168" text-anchor="middle" font-size="24" font-weight="700"></text>
+    <text class="ccl-qt" x="300" y="208" text-anchor="middle" font-size="15" font-style="italic"></text>
+    <text class="ccl-hint" x="300" y="300" text-anchor="middle" font-size="14" fill="#64748b">Clicca in un punto qualsiasi: lì compare il vettore campo</text>
+  </svg>
+</div>
+<style>
+.ccl { max-width: 600px; margin: 1.2rem auto; font-family: "Atkinson Hyperlegible", sans-serif; }
+.ccl-btns { display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; margin-bottom: .5rem; }
+.ccl button { font: inherit; font-size: .9rem; padding: .35rem .8rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; color: #1f2937; cursor: pointer; }
+.ccl button.on[data-s="1"] { background: #dc2626; border-color: #dc2626; color: #fff; }
+.ccl button.on[data-s="-1"] { background: #2563eb; border-color: #2563eb; color: #fff; }
+.ccl svg { width: 100%; height: auto; display: block; cursor: crosshair; touch-action: manipulation; border-radius: 10px; border: 1px solid #e2e8f0; }
+.ccl-vett line { stroke: #0891b2; stroke-width: 2.4; }
+.ccl-vett circle { fill: #475569; }
+@media print { .ccl-btns, .ccl-hint { display: none; } }
+</style>
+<script>
+(function () {
+  var box = document.getElementById('{{ _id }}');
+  if (!box) return;
+  var svg = box.querySelector('svg'), g = box.querySelector('.ccl-vett');
+  var NS = 'http://www.w3.org/2000/svg', CX = 300, CY = 160, RQ = 26;
+  var segno = 1, punti = [];
+  var q = box.querySelector('.ccl-q'), qs = box.querySelector('.ccl-qs'), qt = box.querySelector('.ccl-qt'), hint = box.querySelector('.ccl-hint');
+
+  function carica() {
+    q.setAttribute('fill', 'url(#{{ _id }}-g' + (segno > 0 ? 'P' : 'N') + ')');
+    q.setAttribute('stroke', segno > 0 ? '#9f1239' : '#1e3a8a');
+    qs.textContent = segno > 0 ? '+' : '−';
+    qs.setAttribute('fill', segno > 0 ? '#9f1239' : '#1e3a8a');
+    qt.textContent = segno > 0 ? 'Q > 0' : 'Q < 0';
+    qt.setAttribute('fill', segno > 0 ? '#9f1239' : '#1e3a8a');
+  }
+
+  function el(tag, at) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); return e; }
+
+  function disegna() {
+    while (g.firstChild) g.removeChild(g.firstChild);
+    punti.forEach(function (p) {
+      var dx = p[0] - CX, dy = p[1] - CY, r = Math.sqrt(dx * dx + dy * dy);
+      var L = Math.max(22, Math.min(90, 1000000 / (r * r)));
+      if (segno < 0) L = Math.min(L, r - RQ - 10);     // verso la carica: non entra nel cerchio
+      var ux = dx / r * segno, uy = dy / r * segno;
+      g.appendChild(el('line', { x1: p[0], y1: p[1], x2: p[0] + ux * L, y2: p[1] + uy * L, 'marker-end': 'url(#{{ _id }}-fr)' }));
+      g.appendChild(el('circle', { cx: p[0], cy: p[1], r: 3.5 }));
+    });
+  }
+
+  svg.addEventListener('click', function (ev) {
+    var pt = svg.createSVGPoint(); pt.x = ev.clientX; pt.y = ev.clientY;
+    var m = svg.getScreenCTM(); if (!m) return;
+    var s = pt.matrixTransform(m.inverse());
+    var dx = s.x - CX, dy = s.y - CY;
+    if (Math.sqrt(dx * dx + dy * dy) < RQ + 24) return;
+    punti.push([s.x, s.y]); if (punti.length > 40) punti.shift();
+    hint.style.display = 'none';
+    disegna();
+  });
+
+  box.querySelectorAll('button[data-s]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      segno = +b.dataset.s;
+      box.querySelectorAll('button[data-s]').forEach(function (c) { c.classList.toggle('on', c === b); });
+      carica(); disegna();
+    });
+  });
+  box.querySelector('.ccl-canc').addEventListener('click', function () { punti = []; hint.style.display = ''; disegna(); });
+
+  carica();
+})();
+</script>

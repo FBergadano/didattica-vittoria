@@ -469,6 +469,7 @@ $$[g=\frac{\text N}{\text{kg}}.$$ -->
 </div>
 {% include margin-note-end.html %}
 
+<span id="massa-esploratrice"></span>
 {% include margin-note.html testo="Massa esploratrice"%}
 Inoltre, nonostante nella formula compaia la massa $m$, ricordiamo che il campo $g$ **non** dipende da essa (come visto prima, si semplifica con la $m$ contenuta in $F$). Infatti, il campo dipende solo dalla massa generatrice $M$ e dal punto $\vec r$ in cui si misura il campo.  
 Spesso però ci capiterà di introdurre, all'interno di un certo campo generato da una massa $M$ una seconda massa $m$, di modo da misurare la forza di attrazione, da cui poi si ottiene il campo secondo la formula appena data. Pertanto, questa massa è chiamata <definizione>massa esploratrice</definizione> (nel senso che “esplora” il campo). Spesso diremo che questa seconda massa è "piccola" rispetto alla prima, così da poter trascurare il campo che essa genera.

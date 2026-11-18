@@ -11,6 +11,8 @@ freccia curva che parte dal simbolo gravitazionale e arriva a quello elettrico
                     costruisce; ogni freccia, arrivando, fa comparire il simbolo
                     elettrico; alla fine il segno meno viene cancellato.
   tipo="potenziale" V = −G·M/r   →  V = k·Q/r: come sopra.
+  tipo="campo"      vettori: g = F/m  →  E = F/q (la forza resta la forza, la
+                    massa esploratrice diventa la carica di prova).
 Parametri: id (univoco), tipo. Lo studente può mettere in pausa, ricominciare
 e scegliere la velocità (motore: formula-anim-engine.html).
 {% endcomment %}
@@ -36,6 +38,13 @@ var D={
     e:[{t:'U',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'k',x:56,k:'C'},{t:'Q',x:94,r:'n',k:'a'},{t:'q',x:120,r:'n',k:'b'},{t:'r',x:107,r:'d',k:'r'}],
     eb:[78,136], nota:'Il segno meno sparisce: nella formula elettrica il segno di U lo danno le cariche.',
     lab:['energia potenziale gravitazionale','energia potenziale elettrica'], costruisci:true
+  },
+  campo:{
+    g:[{t:'g',x:0,k:'U',v:1},{t:'=',x:30,k:'eq',up:1},{t:'F',x:66,r:'n',k:'a',v:1},{t:'m',x:66,r:'d',k:'b'}],
+    gb:[50,82],
+    e:[{t:'E',x:0,k:'U',v:1},{t:'=',x:30,k:'eq',up:1},{t:'F',x:66,r:'n',k:'a',v:1},{t:'q',x:66,r:'d',k:'b'}],
+    eb:[50,82], nota:'Stessa formula: il campo è la forza divisa per l\'oggetto che lo esplora. Al posto della massa esploratrice m c\'è la carica di prova q.',
+    lab:['campo gravitazionale','campo elettrico'], costruisci:true
   },
   potenziale:{
     g:[{t:'V',x:0,k:'U'},{t:'=',x:28,k:'eq',up:1},{t:'−',x:54,k:'meno',up:1},{t:'G',x:80,k:'C'},{t:'M',x:118,r:'n',k:'a'},{t:'r',x:118,r:'d',k:'r'}],
@@ -65,7 +74,7 @@ FormulaAnim.create({id:'cv-{{ _afid }}',W:W,H:H,cycle:TEND+6,still:TEND+3.2,draw
   ctx.globalAlpha=(D.costruisci?p(t,T0-.4,T0):pL)*A.G; ctx.fillText(D.lab[1],EX-8,24); ctx.globalAlpha=1;
   function bar(X,b,al){ if(al<=.01)return; ctx.globalAlpha=al*A.G; ctx.strokeStyle=DARK; ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(X+b[0],yb); ctx.lineTo(X+b[1],yb); ctx.stroke(); ctx.globalAlpha=1; }
   function sym(s,X,al,col){
-    var big=!s.r; A.tok(s.t,X+s.x,yy(s),al,col,{it:s.t!=='='&&s.t!=='−',size:big?30:25});
+    var big=!s.r; A.tok(s.t,X+s.x,yy(s),al,col,{it:s.t!=='='&&s.t!=='−',size:big?30:25,vec:!!s.v});
     if (s.e) A.tok(s.e,X+s.x+11,yy(s)-12,al,col,{size:15});
   }
   // a sinistra: la formula gravitazionale, sempre visibile

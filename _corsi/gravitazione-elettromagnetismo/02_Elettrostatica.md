@@ -1314,38 +1314,50 @@ Anche una carica modifica lo spazio attorno a sé. C'è però una differenza: le
 La modificazione dello spazio prodotta da una carica si chiama <definizione>campo elettrico</definizione> e si indica con $\vec E$. È una grandezza **vettoriale**: <u>associa a ogni punto dello spazio un vettore</u>, che dice con quale intensità, in quale direzione e in quale verso viene spinta una carica posta in quel punto.
 {% include box-end.html %}
 
+{% include margin-note.html testo="La carica di prova" %}
+La carica $q$ che usiamo per "sentire" il campo si chiama <definizione>carica di prova</definizione>. Essa ha lo stesso ruolo che la massa esploratrice aveva per il campo gravitazionale (clicca [qui]({{ '/corsi/gravitazione-elettromagnetismo/01_Gravitazione/' | relative_url }}#massa-esploratrice) per rivederlo). Per convenzione si sceglie **positiva** e molto **piccola**: piccola, così che il campo che lei genera sia piccolo rispetto a quello che vogliamo misurare. E, come per la massa esploratrice, <u markdown="span">il campo **non dipende** da $q$</u>.
+{% include margin-note-end.html %}
+
 ## Il vettore campo elettrico
 
 {% include margin-note.html testo="Modulo, direzione e verso" %}
-Sappiamo che il campo elettrico $\vec E$ è una quantità vettoriale e che i vettori hanno tre caratteristiche: modulo, direzione e verso. Questa volta cominciamo dalla direzione e dal verso, che ci portano subito alla formula del vettore $\vec E$; poi ne studieremo il modulo.
+Sappiamo che il campo elettrico $\vec E$ è una quantità vettoriale e che i vettori hanno tre caratteristiche: modulo, direzione e verso. Questa volta cominciamo dalla direzione e dal verso, poi affrontiamo il modulo.
 {% include margin-note-end.html %}
 
 ### Direzione e verso del vettore campo elettrico
 
-{% include margin-note.html testo="La carica di prova" %}
-La carica $q$ che usiamo per "sentire" il campo si chiama <definizione>carica di prova</definizione>: ha lo stesso ruolo della massa esploratrice. Per convenzione si sceglie **positiva** e molto **piccola**: piccola, perché con la sua forza non deve spostare le cariche che generano il campo che vogliamo misurare. E, come per la massa esploratrice, <u markdown="span">il campo **non dipende** da $q$</u>: se raddoppia la carica di prova, raddoppia anche la forza, e il loro rapporto resta lo stesso.
-{% include margin-note-end.html %}
 
 {% include margin-note.html testo="Il verso del campo elettrico" %}
-Per il campo gravitazionale avevamo scelto che $\vec g$ avesse il verso della forza sulla massa esploratrice. Allo stesso modo, si sceglie che <u markdown="span">$\vec E$ abbia la direzione e il verso della forza che agirebbe sulla carica di prova, che è **positiva**</u>. Quindi il campo generato da una carica positiva si allontana da essa, mentre quello generato da una carica negativa punta verso di essa:
-
-{% include figure/figura-vettore-campo-e.html %}
+Per il campo gravitazionale avevamo scelto che $\vec g$ avesse lo stesso verso della forza gravitazionale sulla massa esploratrice. Per il campo elettrico facciamo lo stesso, con la carica di prova al posto della massa esploratrice.
 {% include margin-note-end.html %}
 
 
 {% include box-imp.html testo="Il vettore campo elettrico" %}
-Il **vettore** campo elettrico si ottiene dividendo il **vettore** forza elettrica sulla carica di prova $q$ per la carica $q$ stessa:
+Così come per il campo gravitazionale avevamo ottenuto che $\vec g = \dfrac{\vec F}{m}$, allo stesso modo per il campo elettrico otteniamo che
+
+{% include lab-virtuali/analogia-formule-lab.html id="an-campo" tipo="campo" %}
 
 $$\vec E = \frac{\vec F}{q}, \qquad\text{cioè}\qquad \vec F = q\,\vec E.$$
 
-Poiché la carica di prova è positiva, $\vec E$ ha la stessa direzione e lo stesso verso di $\vec F$.
-
-Il campo generato da una carica **positiva** punta **lontano** da essa; quello generato da una carica **negativa** punta **verso** di essa.
+Siccome $\vec F = q\,\vec E$:
+- se $q$ è **positiva**, $\vec F$ ed $\vec E$ hanno lo **stesso verso**;
+- se $q$ è **negativa**, $\vec F$ ed $\vec E$ hanno **verso opposto**.
 {% include box-end.html %}
 
 {% include box-warn.html testo="Su una carica negativa, la forza è opposta al campo" %}
-Qui c'è una differenza importante rispetto alla gravità. La massa è sempre positiva, quindi $\vec F = m\,\vec g$ ha sempre lo stesso verso di $\vec g$. La carica, invece, può essere negativa: se in un punto mettiamo una carica negativa, per esempio un elettrone, <u markdown="span">la forza $\vec F = q\,\vec E$ ha **verso opposto** al campo</u>. Il campo ci dice in che verso verrebbe spinta una carica positiva; una carica negativa va nel verso contrario.
+Con la gravità questo problema non c'era: la massa è sempre positiva, quindi $\vec F = m\,\vec g$ ha sempre lo stesso verso di $\vec g$. Con le cariche, invece, bisogna guardare ogni volta il segno di $q$: su un elettrone, per esempio, <u markdown="span">la forza ha **verso opposto** al campo</u>.
 {% include box-end.html %}
+
+{% include box-imp.html testo="Un trucco per ricordare il verso del campo" %}
+- Se la carica che genera il campo è **positiva**, il campo **esce** dalla carica.
+- Se la carica che genera il campo è **negativa**, il campo **entra** nella carica.
+
+È il verso della forza su una carica di prova positiva: respinta dalla carica positiva, attratta da quella negativa.
+{% include box-end.html %}
+
+Prova tu: scegli il segno della carica e clicca in diversi punti attorno a lei. In ogni punto compare il vettore campo.
+
+{% include lab-virtuali/campo-click-lab.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include scorri.html %}
