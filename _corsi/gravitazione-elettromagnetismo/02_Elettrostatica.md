@@ -1273,7 +1273,7 @@ La forza elettrica è enormemente più intensa di quella gravitazionale. Eppure 
 # Il Campo Elettrico
 
 {% include margin-note.html testo="Perché ci serve il campo elettrico" %}
-La legge di Coulomb ci dice ***quanto*** due cariche si attraggano. Ma, esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, nel 1831, per spiegare i suoi esperimenti sull'elettromagnetismo; il campo gravitazionale arrivò molto tempo più tardi, con Einstein, nella teoria della Relatività Generale del 1915).
+Esattamente come per il caso della forza gravitazionale, possiamo cambiare leggermente la nostra prospettiva e chiederci <u markdown="span">cosa ci sia ***nello spazio in mezzo*** a due cariche che si attraggono</u> o, equivalentemente, <u markdown="span">cosa c'è ***attorno*** a una singola carica</u>. Il primo che si pose questa domanda fu il fisico inglese [Michael Faraday](https://it.wikipedia.org/wiki/Michael_Faraday). La sua risposta si basa sul concetto di **campo vettoriale** che abbiamo già incontrato per la gravitazione (storicamente, il primo a inventare il concetto di campo fu proprio Faraday, nel 1831, per spiegare i suoi esperimenti sull'elettromagnetismo; il campo gravitazionale arrivò molto tempo più tardi, con Einstein, nel 1915).
 {% include margin-note-end.html %}
 
 
@@ -1331,11 +1331,12 @@ Sappiamo che il campo elettrico $\vec E$ è una quantità vettoriale e che i vet
 Per il campo gravitazionale avevamo scelto che $\vec g$ avesse lo stesso verso della forza gravitazionale sulla massa esploratrice. Per il campo elettrico facciamo lo stesso, con la carica di prova al posto della massa esploratrice.
 {% include margin-note-end.html %}
 
-
-{% include box-imp.html testo="Il vettore campo elettrico" %}
 Così come per il campo gravitazionale avevamo ottenuto che $\vec g = \dfrac{\vec F}{m}$, allo stesso modo per il campo elettrico otteniamo che
 
 {% include lab-virtuali/analogia-formule-lab.html id="an-campo" tipo="campo" %}
+
+{% include box-imp.html testo="Il vettore campo elettrico" %}
+Il campo elettrico corrisponde alla forza per unità di carica:
 
 $$\vec E = \frac{\vec F}{q}, \qquad\text{cioè}\qquad \vec F = q\,\vec E.$$
 
