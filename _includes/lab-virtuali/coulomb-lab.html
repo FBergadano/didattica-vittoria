@@ -3,7 +3,13 @@ Animazione interattiva della bilancia di torsione di Coulomb: la stessa
 simulazione della bilancia di Cavendish (capitolo precedente), ma con due
 sferette cariche invece di due masse. Si può scegliere il segno di ciascuna
 carica: se uguali le sferette si respingono, se opposte si attraggono (fino
-a un fermo meccanico). Nessun parametro.
+a un fermo meccanico). Quando il bilancere si è fermato, come faceva Coulomb
+si gira la testa di torsione finché la sferetta torna alla distanza di
+partenza r₀ (scelta in modo che con Q = 20 nC e q = 2 nC la forza valga
+esattamente 9,00 × 10⁻⁶ N): la forza si legge sempre a quella distanza, quindi
+raddoppiando una carica il valore mostrato raddoppia esattamente, raddoppiando
+entrambe quadruplica (e anche l'angolo di cui si gira la testa raddoppia o
+quadruplica). Nessun parametro.
 {% endcomment %}
 <div id="coulx1" class="coulx-widget">
 
@@ -23,6 +29,7 @@ a un fermo meccanico). Nessun parametro.
 
     <div class="coulx-sidebar">
       <p class="coulx-meter">Forza rilevata:<br><span class="coulx-fval">—</span> N</p>
+      <p class="coulx-stato">&nbsp;</p>
 
       <div class="coulx-panel coulx-panel-charge">
         <div class="coulx-controls">
@@ -137,6 +144,7 @@ a un fermo meccanico). Nessun parametro.
   text-align:center; font-size:.8rem; color: var(--clx-text2); line-height:1.4; margin:0;
 }
 .coulx-fval { color: var(--clx-amber); font-weight:600; }
+.coulx-stato { text-align:center; font-size:.74rem; color: var(--clx-text2); font-style:italic; line-height:1.35; margin:.25rem 0 .3rem; min-height:3.9em; }
 
 .coulx-panel { position:relative; z-index:1; }
 
@@ -217,7 +225,10 @@ a un fermo meccanico). Nessun parametro.
   var RING_R = GLASS_R;
   var THETA_M = Math.PI; // la carica fissa sta a sinistra
 
-  var THETA_INITIAL = THETA_M - 90 * Math.PI / 180; // condizione iniziale: 90° da Q
+  // Distanza di partenza (e di misura) r₀: con Q = 20 nC e q = 2 nC la forza vale 9,00 × 10⁻⁶ N.
+  // La sferetta parte da lì e, dopo l'equilibrio, ci viene riportata girando la testa di torsione.
+  var R_REF = Math.sqrt(K_COUL * 20 * NC * 2 * NC / 9e-6);   // ≈ 0,200 m
+  var THETA_INITIAL = THETA_M - Math.acos((D_M * D_M + LR * LR - R_REF * R_REF) / (2 * D_M * LR)); // circa 80° da Q
 
   // A differenza della gravità (sempre attrattiva), due cariche possono
   // respingersi (stesso segno) o attrarsi (segno opposto). Se si respingono,
@@ -251,7 +262,7 @@ a un fermo meccanico). Nessun parametro.
   // repulsione, scelta abbastanza morbida da rendere ben visibile la
   // crescita fra le quattro combinazioni ma abbastanza rigida da lasciare un
   // margine di sicurezza comodo anche per la coppia di cariche più forte.
-  var K_WIRE_ATTRACTIVE = 1.8e-5;
+  var K_WIRE_ATTRACTIVE = 2.44e-5;   // = 20 × quella della repulsione: la testa si gira di 2,5° invece di 50°
   var STEP = 8000, CONV_EPS = 1e-5;
 
   // ─── Scenario "dipendenza da r" ─────────────────────────────────────────
@@ -264,7 +275,8 @@ a un fermo meccanico). Nessun parametro.
   };
   var rMultiplier = 1;
 
-  var state = { Q: 20, q: 2, Qsign: 1, qsign: 1, angle: THETA_INITIAL, mode: 'manual' };
+  var state = { Q: 20, q: 2, Qsign: 1, qsign: 1, angle: THETA_INITIAL, mode: 'manual', head: 0, headTarget: 0 };
+  var ritorno = null;   // animazione del ritorno alla distanza r₀
   var scenario = 'charge';
 
   function signedQ() { return state.Q * state.Qsign * NC; }
@@ -311,10 +323,19 @@ a un fermo meccanico). Nessun parametro.
     if (x === 0) return '0';
     var e = Math.floor(Math.log10(Math.abs(x)));
     var mant = x / Math.pow(10, e);
-    return mant.toFixed(2) + ' × 10<sup>' + e + '</sup>';
+    return mant.toFixed(2).replace('.', ',') + ' × 10<sup>' + e + '</sup>';
   }
+  var statoEl = $('.coulx-stato');
+  var R_REF_TXT = (R_REF * 100).toFixed(1).replace('.', ',');
   function updateReadouts() {
     fValEl.innerHTML = fmtSci(force());
+    if (scenario === 'charge') {
+      var gg = Math.abs(state.headTarget) * 180 / Math.PI, gradi = gg < 20 ? gg.toFixed(1).replace('.', ',') : Math.round(gg);
+      statoEl.innerHTML = state.mode === 'dynamic' ? 'Il bilancere ruota fino all\'equilibrio…'
+        : state.mode === 'ritorno' ? 'Come faceva Coulomb: si gira la testa di torsione per riportare la sferetta alla distanza di partenza <em>r</em> = ' + R_REF_TXT + ' cm.'
+        : state.mode === 'misurato' ? 'Forza misurata alla distanza <em>r</em> = ' + R_REF_TXT + ' cm, dopo aver girato la testa di torsione di ' + gradi + '°.'
+        : Math.abs(state.angle - THETA_INITIAL) > 1e-6 ? 'Bilancere fermato.' : 'Distanza <em>r</em> = ' + R_REF_TXT + ' cm. Premi «Avvia».';
+    } else statoEl.innerHTML = '&nbsp;';
     if (scenario === 'r') rCurEl.textContent = (rDist(state.angle) * 100).toFixed(1).replace('.', ',');
   }
 
@@ -366,6 +387,7 @@ a un fermo meccanico). Nessun parametro.
       t.classList.add('active');
       scenario = t.dataset.scenario;
       if (rAnimId) { cancelAnimationFrame(rAnimId); rAnimId = null; }
+      state.head = 0; state.headTarget = 0;
       if (scenario === 'charge') {
         panelMass.style.display = '';
         panelR.style.display = 'none';
@@ -727,13 +749,16 @@ a un fermo meccanico). Nessun parametro.
     // testa di torsione: tamburo d'ottone graduato e manopola
     drawDisc(knobY, knobY + 0.018, TUBE_R + 0.016, '#5e4214', '#e8c070', '#9a7028', '#f6e2b0');
     for (var t = 0; t < 36; t++) {
-      var at = (t / 36) * Math.PI * 2;
+      var at = (t / 36) * Math.PI * 2 + state.head;   // la testa ruota insieme alle sue tacche
       if (rot(Math.cos(at), 0, Math.sin(at)).z > 0) continue;
       var rr = TUBE_R + 0.016, rk = rr - (t % 3 === 0 ? 0.007 : 0.004);
       var k0 = project(rk * Math.cos(at), knobY + 0.018, rk * Math.sin(at)), k1 = project(rr * Math.cos(at), knobY + 0.018, rr * Math.sin(at));
       line3(k0, k1, 'rgba(70,45,10,.8)', 0.7);
     }
     drawDisc(knobY + 0.018, knobY + 0.034, 0.010, '#4a3410', '#d8ae5c', '#8a6423', '#f0d9a0');
+    // indice rosso sulla testa: si vede di quanto è stata girata
+    var ah = state.head - Math.PI / 2, rh = TUBE_R + 0.016;
+    line3(project(0.010 * Math.cos(ah), knobY + 0.019, 0.010 * Math.sin(ah)), project(rh * Math.cos(ah), knobY + 0.019, rh * Math.sin(ah)), '#dc2626', 2.2);
   }
 
   // Colore della sferetta a seconda del segno della carica: ambra per il
@@ -750,6 +775,15 @@ a un fermo meccanico). Nessun parametro.
     appCtx.textBaseline = 'alphabetic';
   }
 
+  function fine() { playBtn.textContent = '▶ Avvia'; playBtn.classList.remove('active'); }
+  // equilibrio raggiunto: si gira la testa di torsione finché la sferetta torna a r₀. Lì il filo,
+  // torto di "head", bilancia il momento della forza elettrica: κ·head = momento elettrico a r₀
+  function avviaRitorno() {
+    var kWire = isRepulsive() ? K_WIRE_REPULSIVE : K_WIRE_ATTRACTIVE;
+    state.headTarget = -torqueElectric(THETA_INITIAL) / kWire;
+    state.mode = 'ritorno';
+    ritorno = { a0: state.angle, h0: state.head, t0: performance.now() };
+  }
   function loop() {
     if (state.mode === 'dynamic') {
       var kWire = isRepulsive() ? K_WIRE_REPULSIVE : K_WIRE_ATTRACTIVE;
@@ -757,28 +791,20 @@ a un fermo meccanico). Nessun parametro.
       var delta = net * STEP;
       var newAngle = state.angle + delta;
       if (newAngle >= ANGLE_NEAR) {
-        // fermo meccanico: cariche opposte si attraggono, il bilancere non
-        // può avvicinarsi oltre, per non far toccare le sfere.
-        state.angle = ANGLE_NEAR;
-        state.mode = 'manual';
-        playBtn.textContent = '▶ Avvia';
-        playBtn.classList.remove('active');
+        // fermo meccanico (con queste cariche non si raggiunge mai)
+        state.angle = ANGLE_NEAR; avviaRitorno();
       } else if (newAngle <= ANGLE_FAR) {
-        // margine di sicurezza (mai raggiunto in pratica): il bilancere non
-        // supera mai una rotazione così ampia prima di trovare l'equilibrio.
-        state.angle = ANGLE_FAR;
-        state.mode = 'manual';
-        playBtn.textContent = '▶ Avvia';
-        playBtn.classList.remove('active');
+        state.angle = ANGLE_FAR; avviaRitorno();
       } else if (Math.abs(delta) < CONV_EPS) {
-        // convergenza raggiunta: la forza smette di cambiare esattamente
-        // quando il bilancere smette di ruotare.
-        state.mode = 'manual';
-        playBtn.textContent = '▶ Avvia';
-        playBtn.classList.remove('active');
+        state.angle = newAngle; avviaRitorno();
       } else {
         state.angle = newAngle;
       }
+    } else if (state.mode === 'ritorno') {
+      var u = Math.min(1, (performance.now() - ritorno.t0) / 2200), e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+      state.angle = ritorno.a0 + (THETA_INITIAL - ritorno.a0) * e;
+      state.head = ritorno.h0 + (state.headTarget - ritorno.h0) * e;
+      if (u >= 1) { state.angle = THETA_INITIAL; state.mode = 'misurato'; fine(); }
     }
     updateReadouts();
     drawApparatus();
@@ -787,7 +813,7 @@ a un fermo meccanico). Nessun parametro.
 
   function selectChoice(btns, val, prop) {
     btns.forEach(function (b) { b.classList.toggle('active', +b.dataset.val === val); });
-    state[prop] = val;
+    state[prop] = val; azzera();
   }
   QBtns.forEach(function (b) {
     b.addEventListener('click', function () { selectChoice(QBtns, +b.dataset.val, 'Q'); });
@@ -798,7 +824,7 @@ a un fermo meccanico). Nessun parametro.
 
   function selectSign(btns, val, prop) {
     btns.forEach(function (b) { b.classList.toggle('active', +b.dataset.sign === val); });
-    state[prop] = val;
+    state[prop] = val; azzera();
   }
   QSignBtns.forEach(function (b) {
     b.addEventListener('click', function () { selectSign(QSignBtns, +b.dataset.sign, 'Qsign'); });
@@ -807,24 +833,18 @@ a un fermo meccanico). Nessun parametro.
     b.addEventListener('click', function () { selectSign(qSignBtns, +b.dataset.sign, 'qsign'); });
   });
 
+  function azzera() { state.mode = 'manual'; state.angle = THETA_INITIAL; state.head = 0; state.headTarget = 0; fine(); }
   playBtn.addEventListener('click', function () {
-    if (state.mode === 'dynamic') {
-      state.mode = 'manual';
-      playBtn.textContent = '▶ Avvia';
-      playBtn.classList.remove('active');
+    if (state.mode === 'dynamic' || state.mode === 'ritorno') {
+      state.mode = 'manual'; fine();
     } else {
+      azzera();
       state.mode = 'dynamic';
-      state.angle = THETA_INITIAL;
       playBtn.textContent = '⏸ Ferma';
       playBtn.classList.add('active');
     }
   });
-  resetBtn.addEventListener('click', function () {
-    state.mode = 'manual';
-    state.angle = THETA_INITIAL;
-    playBtn.textContent = '▶ Avvia';
-    playBtn.classList.remove('active');
-  });
+  resetBtn.addEventListener('click', azzera);
 
   updateReadouts();
   loop();

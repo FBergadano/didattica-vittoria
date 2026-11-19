@@ -937,7 +937,7 @@ Puoi ripetere l'esperienza di Coulomb con l'animazione qui sotto: è la stessa i
 Verifica con l'animazione che:
 
 - puoi scegliere il segno di ciascuna carica con i pulsanti "+"/"−": se i segni sono uguali le cariche si respingono e il bilancere si allontana dalla sferetta fissa, se sono opposti si attraggono e il bilancere si avvicina (fino a un fermo meccanico, per evitare che le sferette si tocchino) — proprio la stessa regola vista nel disegno di inizio paragrafo;
-- nello scenario "Dipendenza dalle cariche", premendo "Avvia" il bilancere ruota lentamente e si ferma in una posizione di equilibrio: aumentando la carica $Q$ oppure la carica $q$, l'angolo finale raggiunto (e quindi l'intensità della forza) è più grande;
+- nello scenario "Dipendenza dalle cariche", premendo "Avvia" il bilancere ruota lentamente e si ferma in una posizione di equilibrio; poi, come faceva Coulomb, si gira la testa di torsione finché la sferetta torna alla distanza di partenza, così che la forza si misuri sempre alla stessa distanza $r$: <u markdown="span">raddoppiando $Q$ oppure $q$ la forza raddoppia, raddoppiandole entrambe quadruplica</u> (e così fa anche l'angolo di cui si gira la testa di torsione);
 - nello scenario "Dipendenza da r", i pulsanti spostano davvero il bilancere alla nuova distanza (indicata dalla linea tratteggiata $r$): raddoppiando $r$ l'intensità della forza non si dimezza, ma diventa un quarto; triplicando $r$ diventa un nono; quadruplicando $r$ diventa un sedicesimo — <u markdown="span">proprio quello che significa dire che $F$ è inversamente proporzionale al **quadrato** della distanza</u>, verificabile confrontando il valore di $F$ prima e dopo ogni cambio.
 
 {% include margin-note.html testo="Dall'esperimento alla formula di Coulomb" %}
