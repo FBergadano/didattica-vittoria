@@ -946,11 +946,11 @@ Coulomb dedusse così che il modulo della forza elettrica fra due cariche è **d
    id="fel1"
    formula="F = k \dfrac{\lvert q_1 \cdot q_2 \rvert}{r^2}"
    frammenti="F|k|\lvert|q_1 \cdot q_2|r^2"
-   etichette="modulo della forza elettrica|costante di Coulomb|valore assoluto|prodotto delle cariche|quadrato della distanza fra i centri delle cariche"
+   etichette="modulo della forza elettrica|costante dielettrica del materiale|valore assoluto|prodotto delle cariche|quadrato della distanza fra i centri delle cariche"
    posizioni="alto|basso|alto|alto|basso"
 %}
 
-dove $k$ è detta <definizione>costante di Coulomb</definizione> e $r$ è la distanza fra i centri delle due cariche.
+dove $k$ è detta <definizione>costante di Coulomb</definizione>, e dipende dal materiale all'interno del quale sono immerse le cariche elettriche.
 {% include margin-note-end.html %}
 
 Confrontala con la legge di gravitazione universale: la legge di Coulomb si ottiene sostituendo un simbolo alla volta.
