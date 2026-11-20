@@ -92,16 +92,21 @@ Per caricarlo:
 
 ## Prova tu
 
-Quando il tuo elettroscopio funziona, fai queste tre prove, una dopo l'altra. Prima di ciascuna, scrivi che cosa prevedi; poi fai la prova, e scrivi che cosa hai osservato e come lo spieghi.
+Quando il tuo elettroscopio funziona, fai queste quattro prove, una dopo l'altra. Con le prime tre verifichi la polarizzazione, l'elettrizzazione per contatto e la scarica a terra; con la quarta, l'elettrizzazione per induzione. Prima di ciascuna, scrivi che cosa prevedi; poi fai la prova, e scrivi che cosa hai osservato e come lo spieghi.
+
+Mentre fai le prove, ti invito a guardare le foglioline con gli occhi della fisica: immagina gli elettroni e i protoni che ci sono dentro la stagnola e dentro la vite. I protoni restano fermi, nei nuclei degli atomi; molti elettroni del metallo, invece, sono liberi di muoversi, e si spostano in risposta alle cariche in più che si trovano sulla penna strofinata, attratti o respinti. Due foglioline che si allontanano l'una dall'altra ti stanno dicendo dove sono finiti quegli elettroni. (Io, personalmente, lo trovo molto affascinante!)
 
 {% include riflessione.html id="ra-edt-prova1" etichetta="🔮 Prevedi, poi prova"
-   domanda="<strong>Prova 1.</strong> Avvicina la penna carica alla testa della vite, <em>senza toccarla</em>, e poi allontanala. Che cosa succede alle foglioline?" %}
+   domanda="<strong>Prova 1: la polarizzazione.</strong> Avvicina la penna carica alla testa della vite, <em>senza toccarla</em>, e poi allontanala. Che cosa succede alle foglioline? Dove si trovano gli elettroni liberi della vite e delle foglioline mentre la penna è vicina, e dove tornano quando la allontani?" %}
 
 {% include riflessione.html id="ra-edt-prova2" etichetta="🔮 Prevedi, poi prova"
-   domanda="<strong>Prova 2.</strong> Carica di nuovo la penna e questa volta <em>tocca</em> la testa della vite (puoi anche strofinarcela sopra), poi allontanala. Che cosa succede alle foglioline?" %}
+   domanda="<strong>Prova 2: l'elettrizzazione per contatto.</strong> Carica di nuovo la penna e questa volta <em>tocca</em> la testa della vite (puoi anche strofinarcela sopra), poi allontanala. Che cosa succede alle foglioline? Che cosa è passato fra la penna e la vite, e perché le foglioline restano aperte anche dopo che hai allontanato la penna?" %}
 
 {% include riflessione.html id="ra-edt-prova3" etichetta="🔮 Prevedi, poi prova"
-   domanda="<strong>Prova 3.</strong> Con le foglioline aperte dopo la prova 2, tocca la testa della vite con un dito. Che cosa succede?" %}
+   domanda="<strong>Prova 3: la scarica.</strong> Con le foglioline aperte dopo la prova 2, tocca la testa della vite con un dito. Che cosa succede? Dove sono andate a finire le cariche in più?" %}
+
+{% include riflessione.html id="ra-edt-prova4" etichetta="🔮 Prevedi, poi prova"
+   domanda="<strong>Prova 4: l'elettrizzazione per induzione.</strong> Scarica l'elettroscopio toccando la vite con un dito. Ricarica la penna e avvicinala alla vite <em>senza toccarla</em>: le foglioline si aprono. Tenendo ferma la penna, tocca la vite con un dito dell'altra mano; poi togli il dito e, solo dopo, allontana la penna. Che cosa fanno le foglioline a ogni passaggio? Alla fine l'elettroscopio è carico? Riavvicina la penna: le foglioline si chiudono o si aprono di più? Che cosa ne deduci sul segno della carica rimasta sull'elettroscopio, rispetto a quella della penna?" %}
 
 {% include box-note.html testo="Se non funziona" %}
 - **L'aria è umida?** Con l'aria umida le cariche si disperdono in fretta: l'esperimento riesce molto meglio d'inverno, o in una stanza asciutta.
@@ -160,7 +165,7 @@ Puoi guadagnare fino a **0,5 punti** in più nella verifica, così:
 | | Che cosa mi mandi | Punti |
 |---|---|---|
 | 1 | Una foto e un breve video in cui il **tuo** elettroscopio funziona (le foglioline si aprono) | 0,25 |
-| 2 | Le tue risposte scritte: le due domande sulla costruzione (il tappo e il barattolo), che cosa hai osservato nelle tre prove, e la tua proposta per la sfida sul segno della carica | 0,25 |
+| 2 | Le tue risposte scritte: le due domande sulla costruzione (il tappo e il barattolo), che cosa hai osservato nelle quattro prove, e la tua proposta per la sfida sul segno della carica | 0,25 |
 
 Nel video basta che si vedano le mani e il barattolo: non serve inquadrare la faccia.
 

@@ -78,6 +78,11 @@ Nel video faccio tutti i passaggi, dallo strofinio alla scossa. Fallo partire qu
    didascalia="Strofino la base con la lana, appoggio il disco, lo tocco con un dito, lo sollevo e ci avvicino una nocca: negli ultimi secondi si sente il rumore della scintilla."
    larghezza="300px" controlli="true" %}
 
+Anche qui ti invito a fare i passaggi immaginando gli elettroni e i protoni. Nella base di plastica le cariche in più restano ferme dove le ha messe lo strofinio, perché la plastica è isolante; nella stagnola del disco, invece, gli elettroni liberi si muovono, attratti o respinti dalle cariche della base, e passano attraverso il tuo dito quando tocchi il disco. Ogni scossa è una piccola folla di elettroni che salta fra il disco e la tua nocca. (Io, personalmente, lo trovo molto affascinante!)
+
+{% include riflessione.html id="ra-eft-elettroni" etichetta="✏️ Spiegalo con parole tue"
+   domanda="Racconta un ciclo completo dell'elettroforo seguendo gli elettroni liberi della stagnola: dove si trovano quando appoggi il disco sulla base, che cosa fanno quando tocchi il disco con il dito, che cosa succede quando lo sollevi e quando avvicini la nocca." %}
+
 {% include riflessione.html id="ra-eft-dito" etichetta="✏️ Spiegalo con parole tue"
    domanda="A che cosa serve toccare il disco con un dito quando è appoggiato sulla base? Prova a saltare il passo 5: il disco, sollevato, dà ancora la scossa?" %}
 
