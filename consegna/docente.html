@@ -281,6 +281,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     if (!v) { var n = (prompt('Nome della nuova classe (es. 3B):') || '').trim(); if (!n) { $('#classe').value = classe || ''; return; }
       var o = document.createElement('option'); o.textContent = n; $('#classe').insertBefore(o, $('#classe').lastChild); $('#classe').value = n; v = n; scheda = 'studenti'; }
     classe = v; try { localStorage.setItem('lv-docente:classe', v); } catch (e) {}
+    avviso('Caricamento dei dati della classe ' + esc(classe) + '…');
     Promise.all([
       chiama('/docente/risposte?classe=' + encodeURIComponent(classe)).then(function(j) {
         righe = j.righe.map(function(r) { var o = {}; j.colonne.forEach(function(c, i) { o[c] = r[i]; }); return o; });
@@ -289,7 +290,13 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       chiama('/docente/foto?classe=' + encodeURIComponent(classe)).then(function(j) { foto = j.foto || []; }).catch(function() { foto = []; }),
       chiama('/docente/schemi?classe=' + encodeURIComponent(classe)).then(function(j) { schemi = j.schemi || []; }).catch(function() { schemi = null; }),
       caricaOsservazioni()
-    ]).then(mostra).catch(function(e) { if (e.message !== 'accesso') alert('Errore: ' + e.message); });
+    ]).then(function() { avviso(null); mostra(); }).catch(function(e) { if (e.message !== 'accesso') avviso('<b>Errore:</b> ' + esc(e.message || e) + '. Premi ↻ Aggiorna; se resta, mandami questo messaggio.', true); });
+  }
+  // riquadro in cima alla pagina per «caricamento…» ed errori (prima la pagina restava bianca)
+  function avviso(html, errore) {
+    var a = $('#avviso');
+    if (!a) { a = document.createElement('div'); a.id = 'avviso'; a.className = 'card'; $('main').insertBefore(a, $('main').firstChild); }
+    a.hidden = !html; a.innerHTML = html || ''; a.style.color = errore ? 'var(--err)' : '';
   }
   $$('#schede button').forEach(function(b) { b.onclick = function() { scheda = b.dataset.s; mostra(); }; });
   function mostra() {
@@ -299,7 +306,8 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     $('#nd').innerHTML = aperti ? '<span class="badge">' + aperti + '</span>' : '';
     var nuove = (osservazioni || []).filter(function(o) { return !o.letta; }).length;
     $('#no').innerHTML = nuove ? '<span class="badge">' + nuove + '</span>' : '';
-    ({ compiti: vistaCompiti, tutte: vistaTutte, foto: vistaFoto, schemi: vistaSchemi, dubbi: vistaDubbi, osservazioni: vistaOsservazioni, studenti: vistaStudenti, dati: vistaDati })[scheda]();
+    try { ({ compiti: vistaCompiti, tutte: vistaTutte, foto: vistaFoto, schemi: vistaSchemi, dubbi: vistaDubbi, osservazioni: vistaOsservazioni, studenti: vistaStudenti, dati: vistaDati })[scheda](); }
+    catch (e) { avviso('<b>Errore nel mostrare la scheda:</b> ' + esc(e.message) + (e.stack ? '<br><small>' + esc(String(e.stack).split('\n').slice(0, 3).join(' · ')) + '</small>' : '') + '<br>Mandami questo messaggio.', true); }
   }
 
   // ───────── compiti ─────────
