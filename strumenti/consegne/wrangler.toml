@@ -13,7 +13,8 @@ compatibility_date = "2024-09-01"
 enabled = false
 
 [vars]
-ORIGINE = "https://fbergadano.github.io"
+# indirizzi da cui il server accetta richieste: il sito e l'anteprima locale (jekyll serve)
+ORIGINE = "https://fbergadano.github.io,http://localhost:4000,http://127.0.0.1:4000"
 DOCENTE_URL = "https://fbergadano.github.io/didattica-vittoria/consegna/docente/"
 
 [[d1_databases]]

@@ -267,7 +267,13 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       if (lista.indexOf(prima) >= 0) sel.value = prima;
       cambiaClasse();
       avviaNovita();
-    }).catch(function(e) { if (e.message !== 'accesso') $('#pwmsg').textContent = 'Non riesco a contattare il server (' + e.message + ').'; $('#accesso').hidden = !pw() ? false : $('#accesso').hidden; });
+    }).catch(function(e) {
+      if (e.message === 'accesso') return;
+      // l'errore va mostrato: con la password salvata il riquadro d'accesso era nascosto e la pagina restava bianca
+      $('#accesso').hidden = false;
+      $('#pwmsg').textContent = 'Non riesco a contattare il server (' + e.message + ').' +
+        (/^(localhost|127\.)/.test(location.hostname) ? ' In anteprima locale serve la Worker aggiornata (npx wrangler@4 deploy), che accetta anche localhost.' : ' Controlla la connessione e premi Entra.');
+    });
   }
   $('#classe').onchange = cambiaClasse;
   function cambiaClasse() {
