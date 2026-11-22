@@ -645,11 +645,12 @@ function qDomande(lista) {
     if (!id || visti.has(id) || !['scala', 'griglia', 'scelta', 'aperta'].includes(tipo)) return null;
     visti.add(id);
     const q = { id, tipo, testo: str(d.testo, 600) || id, sezione: str(d.sezione, 200) || '' };
-    // domanda che compare solo se a un'altra domanda (a scelta, più in alto) si è scelta una certa opzione
+    // domanda che compare solo se a un'altra domanda (a scelta, più in alto) si è scelta una di certe opzioni
     if (d.se && d.se.id != null) {
-      const padre = out.find((x) => x.id === String(d.se.id) && x.tipo === 'scelta'), k = Number(d.se.opzione);
-      if (!padre || !Number.isInteger(k) || k < 0 || k >= padre.opzioni.length) return null;
-      q.se = { id: padre.id, opzione: k };
+      const padre = out.find((x) => x.id === String(d.se.id) && x.tipo === 'scelta');
+      const ks = [...new Set((Array.isArray(d.se.opzioni) ? d.se.opzioni : [d.se.opzione]).map(Number))];
+      if (!padre || !ks.length || ks.some((k) => !Number.isInteger(k) || k < 0 || k >= padre.opzioni.length)) return null;
+      q.se = { id: padre.id, opzioni: ks };
     }
     if (tipo === 'griglia') {
       q.righe = (Array.isArray(d.righe) ? d.righe : []).slice(0, 12).map((o) => str(o, 200));
@@ -669,6 +670,7 @@ function qDomande(lista) {
   return out;
 }
 // tiene solo le risposte valide per le domande del questionario
+function qCondizione(d, r) { const p = r[d.se.id]; return !!(p && p.scelte && p.scelte.some((k) => d.se.opzioni.includes(k))); }
 function qPulisci(domande, r) {
   const out = {};
   if (!r || typeof r !== 'object') return out;
@@ -677,7 +679,7 @@ function qPulisci(domande, r) {
     const v = r[d.id];
     if (v == null || v === '') continue;
     // domanda condizionata: vale solo se la condizione è soddisfatta (le domande condizionanti vengono prima)
-    if (d.se && !(out[d.se.id] && out[d.se.id].scelte.includes(d.se.opzione))) continue;
+    if (d.se && !qCondizione(d, out)) continue;
     if (d.tipo === 'scala') {
       const n = voto(d, v);
       if (n != null) out[d.id] = n;
@@ -793,9 +795,9 @@ function qEmail(s, domande, righe) {
     let etich, cond = '', aventi = righe;
     if (d.se) {
       const padre = domande.find((x) => x.id === d.se.id);
-      aventi = righe.filter((r) => r[d.se.id] && r[d.se.id].scelte.includes(d.se.opzione));
+      aventi = righe.filter((r) => qCondizione(d, r));
       etich = '↳';
-      cond = `solo per chi ha risposto «${padre.opzioni[d.se.opzione]}» alla domanda ${numeri[d.se.id]}: ${aventi.length}`;
+      cond = `solo per chi ha risposto ${d.se.opzioni.map((k) => '«' + padre.opzioni[k] + '»').join(' o ')} alla domanda ${numeri[d.se.id]}: ${aventi.length}`;
     } else { num++; numeri[d.id] = num; etich = num + '.'; }
     const vals = aventi.map((r) => r[d.id]).filter((v) => v != null);
     const salt = aventi.length - vals.length, saltTxt = salt ? `non ha risposto: ${salt}` : '';

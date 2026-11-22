@@ -202,16 +202,16 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
     if (!fs.dataset.se) return;
     var i = fs.dataset.se.indexOf(':'), pid = fs.dataset.se.slice(0, i).trim(), opz = fs.dataset.se.slice(i + 1).trim();
     var padre = DOMANDE.filter(function(x) { return x.dataset.id === pid && x.dataset.tipo === 'scelta'; })[0];
-    var k = padre ? opzioni(padre).indexOf(opz) : -1;
-    if (i < 0 || k < 0 || DOMANDE.indexOf(padre) > DOMANDE.indexOf(fs)) {
+    var ks = opz.split('|').map(function(o) { return padre ? opzioni(padre).indexOf(o.trim()) : -1; });
+    if (i < 0 || ks.indexOf(-1) >= 0 || DOMANDE.indexOf(padre) > DOMANDE.indexOf(fs)) {
       fs._seErr = true;
       fs.insertAdjacentHTML('beforeend', '<p class="qd-errore">⚠ Condizione se="' + esc(fs.dataset.se) + '" non valida: serve l\'id di una domanda a scelta più in alto e il testo esatto di una sua opzione.</p>');
-    } else fs._se = { padre: padre, opzione: k };
+    } else fs._se = { padre: padre, opzioni: ks };
   });
   function visibile(fs) {
     if (!fs._se) return true;
     var v = visibile(fs._se.padre) ? leggi(fs._se.padre) : null;
-    return !!(v && v.scelte.indexOf(fs._se.opzione) >= 0);
+    return !!(v && v.scelte.some(function(k) { return fs._se.opzioni.indexOf(k) >= 0; }));
   }
   function tutte() { var r = {}; DOMANDE.forEach(function(fs) { if (!visibile(fs)) return; var v = leggi(fs); if (v != null) r[fs.dataset.id] = v; }); return r; }
   function aggiorna() {
@@ -337,7 +337,7 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
     [].slice.call(form.querySelectorAll('h2, h3, .qd')).forEach(function(el) {
       if (!el.classList.contains('qd')) { sez = el.textContent.trim(); return; }
       var d = { id: el.dataset.id, tipo: el.dataset.tipo, testo: el.querySelector('.qd-t').textContent.trim(), sezione: sez };
-      if (el._se) d.se = { id: el._se.padre.dataset.id, opzione: el._se.opzione };
+      if (el._se) d.se = { id: el._se.padre.dataset.id, opzioni: el._se.opzioni };
       if (d.tipo === 'griglia') d.righe = [].slice.call(el.querySelectorAll('.qd-riga-t')).map(function(x) { return x.textContent.trim(); });
       if (d.tipo === 'scala' || d.tipo === 'griglia') { d.n = Number(el.dataset.n); d.da = Number(el.dataset.da); d.sinistra = el.dataset.sinistra; d.destra = el.dataset.destra; }
       if (d.tipo === 'scelta') { d.opzioni = [].slice.call(el.querySelectorAll('.qd-op:not(.qd-altro) span')).map(function(s) { return s.textContent.trim(); }); d.multipla = !!el.dataset.multipla; d.max = Number(el.dataset.max) || 0; d.altro = !!el.dataset.altro; }
