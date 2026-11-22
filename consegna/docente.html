@@ -29,6 +29,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   :root { --accent: #0f766e; --accent-light: #f0fdf4; --bordo: #e2e8f0; --testo2: #4a5568; --muto: #718096;
           --ok: #15803d; --ok-bg: #dcfce7; --meta-bg: #fef3c7; --meta: #92400e; --no-bg: #f1f5f9; --err: #dc2626; --err-bg: #fee2e2; }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; } /* senza questo le schede (display:flex) restavano visibili anche nascoste */
   body { margin: 0; font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: 15px; color: #1a202c; background: #fafaf8; }
   header { background: #fff; border-bottom: 1px solid var(--bordo); padding: .7rem 1.2rem; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center; }
   header h1 { font-size: 1.1rem; margin: 0; color: var(--accent); }
