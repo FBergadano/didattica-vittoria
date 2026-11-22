@@ -35,7 +35,7 @@ P.S. Per salvaguardare l'anonimato, non fare riferimenti personali che mi farebb
 
 {% include questionario/griglia.html id="lezioni-capisco" domanda="Quando faccio attenzione, trovo che la lezione sia chiara." righe="Matematica|Fisica" %}
 
-{% include questionario/griglia.html id="lezioni-fascino" domanda="Quando faccio attenzione, trovo che la lezione stimoli la mia curiosità, o la mia meraviglia." righe="Matematica|Fisica" %}
+{% include questionario/griglia.html id="lezioni-fascino" domanda="Quando faccio attenzione, trovo che la lezione stimoli la mia curiosità, che sia interessante." righe="Matematica|Fisica" %}
 
 {% include questionario/griglia.html id="lezioni-ritmo" domanda="Il ritmo delle lezioni è…" nota="3 = il ritmo giusto" righe="Matematica|Fisica" sinistra="Troppo lento" destra="Troppo veloce" %}
 
@@ -69,20 +69,28 @@ P.S. Per salvaguardare l'anonimato, non fare riferimenti personali che mi farebb
 
 {% include questionario/scala.html id="sito" domanda="Come valuti, in generale, la proposta del sito?" sinistra="Molto negativa" destra="Molto positiva" %}
 
-## Fisica: il prossimo capitolo
+{% include questionario/aperta.html id="sito-apprezzo" domanda="Che cosa apprezzi del sito?" %}
+
+{% include questionario/aperta.html id="sito-critica" domanda="Cosa consiglieresti per migliorare il sito?" %}
+
+## Fisica e Matematica: i prossimi capitoli
 
 {% include questionario/griglia.html id="fisica-proposta" domanda="Per il prossimo capitolo di Fisica, ho in mente di aggiungere, alla parte di teoria, anche due attività: un laboratorio da fare a scuola, durante due ore di lezione, e un'attività di cittadinanza sul Riscaldamento Globale. Valuta quanto ti interessa ciascuna delle due proposte." righe="Il laboratorio a scuola|L'attività di cittadinanza sul Riscaldamento Globale" sinistra="Per niente" destra="Moltissimo" %}
 
-{% include questionario/aperta.html id="fisica-idee" domanda="Hai dubbi o altre idee su queste proposte?" righe=2 %}
-
-## Matematica: il prossimo argomento
 
 {% include questionario/scala.html id="mate-sito" domanda="Per il prossimo argomento di Matematica, ho in mente di aggiungere al sito un capitolo, come quelli di Fisica, per studiare ed allenarsi direttamente da lì. Valuta quanto ti interessa la proposta." sinistra="Per niente" destra="Moltissimo" %}
 
-## Per finire
+{% include questionario/scala.html id="mate-cittadinanza" domanda="Per il prossimo argomento di Matematica, ho in mente di fare delle lezioni di Cittadinanza collegate all'argomento. Il tema sarà “Come può un singolo individuo cambiare una grande comunità”. Quanto ti interessa questa proposta?" sinistra="Per niente" destra="Moltissimo" %}
 
-{% include questionario/aperta.html id="finale-mantieni" domanda="C'è qualcosa delle mie lezioni che vorresti mantenere?" righe=3 %}
+{% include questionario/aperta.html id="fisica-idee" domanda="Hai dubbi o altre idee su queste proposte?" righe=2 %}
+
+## Conclusione
+
+{% include questionario/aperta.html id="finale-mantieni" domanda="C'è qualcosa delle mie lezioni che ti piace e vorresti mantenere?" righe=3 %}
 
 {% include questionario/aperta.html id="finale-prof" domanda="Se fossi tu il prof, che cosa cambieresti?" %}
 
+{% include questionario/aperta.html id="cosa-puoi-fare-tu" domanda="Cosa potresti fare tu per contribuire a migliorare la qualità delle lezioni, il nostro rapporto e il tuo apprendimento delle mie materie?" %}
+
 {% include questionario/aperta.html id="finale" domanda="C'è qualcosa che vorresti dirmi sulle lezioni, sulle verifiche, sulle valutazioni, sul sito, sul rapporto che abbiamo o su qualsiasi altra cosa?" %}
+

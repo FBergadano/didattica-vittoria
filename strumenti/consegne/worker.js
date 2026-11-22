@@ -889,6 +889,13 @@ async function qDocente(c, env, cors) {
     ]);
     return json({ ok: true, scadenza }, 200, cors);
   }
+  if (c.azione === 'domande') { // sostituisce le domande di un questionario aperto (le risposte già date restano)
+    if (!s || !s.aperto) return json({ errore: 'il questionario non è aperto' }, 400, cors);
+    const domande = qDomande(c.domande);
+    if (!domande) return json({ errore: 'domande non valide (due domande con lo stesso id?)' }, 400, cors);
+    await DB.prepare('UPDATE q_sessioni SET domande = ?, titolo = ? WHERE id = ?').bind(JSON.stringify(domande), str(c.titolo, 200), id).run();
+    return json({ ok: true, n: domande.length }, 200, cors);
+  }
   if (c.azione === 'chiudi') { // chiude subito (prima di mezzanotte) e manda l'email
     if (!s) return json({ errore: 'non è mai stato aperto' }, 400, cors);
     const r = await qChiudi(id, env);

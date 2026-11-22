@@ -347,7 +347,7 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
   }
   function doc(azione) {
     var corpo = { id: ID }; if (azione) corpo.azione = azione;
-    if (azione === 'apri') {
+    if (azione === 'apri' || azione === 'domande') {
       if (DOMANDE.some(function(fs) { return fs._seErr; })) return Promise.reject(new Error('Una domanda ha una condizione «se» sbagliata (è segnata in rosso nella pagina): correggi il file prima di aprire.'));
       corpo.titolo = TITOLO; corpo.classe = CLASSE; corpo.domande = struttura(); if (SCADENZA) corpo.scadenza = SCADENZA; }
     return post('/docente/questionario', corpo, { 'X-Docente': pw() }).then(function(j) {
@@ -367,6 +367,7 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
   function azione(a, domanda) {
     if (domanda && !confirm(domanda)) return;
     doc(a).then(function(j) {
+      if (a === 'domande') alert('Domande aggiornate: ora il server usa le ' + j.n + ' domande di questa pagina. Chi ha la pagina già aperta deve ricaricarla.');
       if (a === 'chiudi') alert(j.inviate != null ? 'Chiuso. Email partita con ' + j.inviate + ' risposte.' : 'Chiuso.');
       mostraDocente();
     }).catch(function(e) { if (e.message !== 'accesso') alert(e.message); });
@@ -383,7 +384,7 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
           '<div class="qdoc-url">' + esc(location.host + location.pathname) + '<div style="font-size:.9rem;font-weight:400;color:var(--testo2)">si entra con codice e PIN · classe ' + esc(s.classe) + '</div></div>' +
           '<div><div class="qdoc-num">' + s.ricevute + '</div><div style="color:var(--testo2)">' + (s.ricevute === 1 ? 'risposta' : 'risposte') + '</div></div></div>' +
           '<p style="text-align:center;color:var(--testo2);margin:.2rem 0">Si chiude da solo alla ' + fine(s.scadenza).replace('la ', '') + ' (fra ' + mancano(s.scadenza) + '): allora ti arriva l\'email.</p>' +
-          '<div class="qdoc-azioni"><button class="q-btn" id="qdoc-chiudi">Chiudi adesso e mandami le risposte</button><button class="q-btn peric" id="qdoc-annulla">Annulla (cancella tutto, niente email)</button><button class="q-link" id="qdoc-esci">esci</button></div>';
+          '<div class="qdoc-azioni"><button class="q-btn" id="qdoc-domande" title="Dopo aver cambiato il file .md e pubblicato il sito">Aggiorna le domande</button><button class="q-btn" id="qdoc-chiudi">Chiudi adesso e mandami le risposte</button><button class="q-btn peric" id="qdoc-annulla">Annulla (cancella tutto, niente email)</button><button class="q-link" id="qdoc-esci">esci</button></div>';
         giro = setInterval(mostraDocente, 5000);
       } else {
         if (s.esiste && !s.inviato) h += '<p style="color:var(--err)">Chiuso, ma l\'email non è ancora partita (' + s.ricevute + ' risposte in attesa). La Worker ci riprova ogni ora; puoi anche riprovare subito.</p><div class="qdoc-azioni"><button class="q-btn pri" id="qdoc-chiudi">Riprova l\'invio</button></div>';
@@ -395,6 +396,7 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
       var b;
       if ((b = document.getElementById('qdoc-apri'))) b.onclick = function() { azione('apri'); };
       if ((b = document.getElementById('qdoc-chiudi'))) b.onclick = function() { azione('chiudi', s.aperto ? 'Chiudere adesso? Nessuno potrà più rispondere o correggere.' : null); };
+      if ((b = document.getElementById('qdoc-domande'))) b.onclick = function() { azione('domande', 'Il server userà le domande che vedi in questa pagina. Le risposte già date alle domande rimaste restano; quelle alle domande tolte non compariranno nell\'email. Continuare?'); };
       if ((b = document.getElementById('qdoc-annulla'))) b.onclick = function() { azione('annulla', 'Cancellare tutte le risposte arrivate, senza mandare l\'email?'); };
       if ((b = document.getElementById('qdoc-esci'))) b.onclick = function() { try { sessionStorage.removeItem(PK); localStorage.removeItem(PK); } catch (e) {} location.href = location.pathname; };
     }).catch(function(e) { if (e.message !== 'accesso') pannello.innerHTML = '<h2>Pagina del docente</h2><p style="color:var(--err)">' + esc(e.message || 'Server non raggiungibile.') + '</p>'; });
