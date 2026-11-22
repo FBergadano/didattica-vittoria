@@ -180,3 +180,38 @@ email al giorno). Si attiva una volta sola:
 
 L'indirizzo è un secret e non un `[vars]` di `wrangler.toml` perché questa
 cartella è pubblica su GitHub.
+
+## Questionari anonimi
+
+Un questionario è una pagina in `questionari/` (es. `questionari/4acd.md`,
+layout `questionario`): l'introduzione in Markdown e le domande con
+`questionario/scala.html`, `questionario/scelta.html`, `questionario/aperta.html`
+(istruzioni nel commento in cima al file). Il campo `classe` del file dice
+chi può rispondere.
+
+In classe:
+
+1. Apri `/questionari/4acd/?docente` (stessa password della pagina del
+   docente) e premi **Apri il questionario**: compaiono un QR da proiettare
+   e il numero di risposte arrivate (mai il loro contenuto, mai chi).
+2. Gli studenti aprono la pagina, entrano con codice e PIN (se sono già
+   entrati sul sito con 👤 non serve) e rispondono. Fino a mezzanotte
+   possono correggere o ritirare la risposta, dallo stesso telefono.
+3. A mezzanotte (ora italiana) il questionario si chiude da solo e ti arriva
+   un'email (la stessa di dubbi e osservazioni: servono `RESEND_KEY` ed
+   `EMAIL_DOCENTE`) con le risposte domanda per domanda: grafici a barre e
+   media per le scale, risposte libere in ordine casuale, mescolate domanda
+   per domanda. Arrivano anche se la risposta è una sola. Subito dopo il
+   server cancella tutto. Puoi anche chiudere prima («Chiudi adesso e
+   mandami le risposte»).
+
+Anonimato: l'accesso serve solo a non far rispondere nessuno due volte, da
+nessun dispositivo. Il server tiene due tabelle separate, `q_partecipanti`
+(chi ha consegnato) e `q_risposte` (le risposte, senza codice), senza orari
+e senza nulla che le colleghi, nemmeno l'ordine di inserimento. Per le
+correzioni il telefono tiene una chiave a caso, di cui il server salva solo
+un'impronta: per questo si corregge solo dal telefono da cui si è consegnato.
+
+La chiusura a mezzanotte è fatta dal **Cron Trigger** in `wrangler.toml`
+(ogni ora, al minuto 1): dopo averlo aggiunto serve `npx wrangler@4 deploy`.
+Se l'email non parte, la Worker riprova ogni ora.

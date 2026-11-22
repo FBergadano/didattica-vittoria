@@ -1,0 +1,6 @@
+{% comment %}
+Domanda a risposta libera, per i questionari anonimi (layout questionario).
+  {% include questionario/aperta.html id="cambia" domanda="Se fossi tu il prof, che cosa cambieresti?"
+     suggerimento="Testo grigio nella casella (facoltativo)" %}
+{% endcomment %}
+<fieldset class="qd qd-aperta" data-id="{{ include.id }}" data-tipo="aperta"><legend class="qd-t">{{ include.domanda }}</legend>{% if include.nota %}<p class="qd-nota">{{ include.nota }}</p>{% endif %}<textarea name="q-{{ include.id }}" rows="{{ include.righe | default: 4 }}" maxlength="3000" placeholder="{{ include.suggerimento | escape }}"></textarea></fieldset>

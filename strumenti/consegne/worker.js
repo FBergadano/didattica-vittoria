@@ -61,6 +61,20 @@ const SCHEMA = [
   // quante osservazioni ha mandato oggi ogni studente (contro gli abusi): la chiave è
   // un'impronta (HMAC) del giorno, della classe e del codice, senza legame con i messaggi
   `CREATE TABLE IF NOT EXISTS limiti (k TEXT PRIMARY KEY, n INTEGER NOT NULL)`,
+  // questionari anonimi (vedi «Questionari anonimi» in LEGGIMI.md): nessun codice, nessun
+  // orario. Le risposte hanno come chiave un numero a caso (WITHOUT ROWID: nemmeno l'ordine
+  // in cui sono salvate dice chi ha risposto per primo) e si cancellano dopo l'email.
+  `CREATE TABLE IF NOT EXISTS q_sessioni (
+     id TEXT PRIMARY KEY, titolo TEXT, classe TEXT NOT NULL, domande TEXT NOT NULL,
+     aperto INTEGER NOT NULL DEFAULT 0, scadenza INTEGER NOT NULL, inviato INTEGER NOT NULL DEFAULT 0)`,
+  // chi ha già consegnato (per non rispondere due volte), in una tabella SEPARATA dalle
+  // risposte e senza nulla che le colleghi: niente orario, ordine alfabetico
+  `CREATE TABLE IF NOT EXISTS q_partecipanti (
+     qid TEXT NOT NULL, classe TEXT NOT NULL, codice TEXT NOT NULL, PRIMARY KEY (qid, classe, codice)) WITHOUT ROWID`,
+  // rid = impronta (HMAC) di una chiave a caso che sta solo sul telefono dello studente:
+  // serve a sostituire la risposta se la corregge, senza sapere di chi è
+  `CREATE TABLE IF NOT EXISTS q_risposte (
+     qid TEXT NOT NULL, rid TEXT NOT NULL, dati TEXT NOT NULL, PRIMARY KEY (qid, rid)) WITHOUT ROWID`,
 ];
 
 const MAX_ERRORI_PIN = 8, BLOCCO_MS = 15 * 60 * 1000;
@@ -72,6 +86,16 @@ const RE_CLASSE = /^[A-Za-z0-9][A-Za-z0-9 _-]{0,15}$/, RE_CODICE = /^[A-Z]{2,12}
 let pronto = null; // le tabelle si creano una volta sola per istanza
 
 export default {
+  // ogni ora (cron in wrangler.toml): chiude i questionari scaduti e manda l'email
+  async scheduled(ev, env, ctx) {
+    if (!env.DB) return;
+    await env.DB.batch(SCHEMA.map((s) => env.DB.prepare(s)));
+    const r = await env.DB.prepare('SELECT id FROM q_sessioni WHERE aperto = 1 AND scadenza <= ?').bind(Date.now()).all();
+    for (const { id } of r.results) await qChiudi(id, env).catch(() => {});
+    // un invio fallito si riprova all'ora successiva
+    const f = await env.DB.prepare('SELECT id FROM q_sessioni WHERE aperto = 0 AND inviato = 0').all();
+    for (const { id } of f.results) await qChiudi(id, env).catch(() => {});
+  },
   async fetch(req, env, ctx) {
     const cors = corsHeaders(req, env);
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
@@ -105,6 +129,8 @@ export default {
         case '/schema':      return await nuovoSchema(corpo, env, cors, ctx);
         case '/miei-schemi': return await mieiSchemi(corpo, env, cors);
         case '/schema-elimina': return await eliminaSchema(corpo, env, cors);
+        case '/questionario/stato': return await qStato(corpo, env, cors);
+        case '/questionario/invia': return await qInvia(corpo, env, cors);
       }
       return json({ errore: 'percorso sconosciuto' }, 404, cors);
     } catch (e) {
@@ -568,6 +594,7 @@ async function docente(p, url, c, env, cors, ctx) {
       ]);
       return json({ ora: Date.now(), dubbi: d.results, foto: f.results, schemi: s.results, risposte: r.results, osservazioni: o.results }, 200, cors);
     }
+    case '/docente/questionario': return await qDocente(c, env, cors);
     case '/docente/cancella': { // cancella risposte, dubbi e foto più vecchi di una data
       const prima = Number(c.prima_di);
       if (!isFinite(prima) || prima <= 0) return json({ errore: 'data non valida' }, 400, cors);
@@ -580,4 +607,248 @@ async function docente(p, url, c, env, cors, ctx) {
     }
   }
   return json({ errore: 'percorso sconosciuto' }, 404, cors);
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  Questionari anonimi (vedi «Questionari anonimi» in LEGGIMI.md).
+//  Il docente apre il questionario dalla pagina stessa (?docente) e manda
+//  l'elenco delle domande. Gli studenti entrano con codice e PIN (così
+//  nessuno risponde due volte, da nessun dispositivo), ma la risposta è
+//  salvata senza codice: il server sa CHI ha consegnato, non COSA. Si può
+//  correggere fino a mezzanotte (ora italiana), dallo stesso telefono. A mezzanotte il questionario
+//  si chiude, parte un'email con le risposte, domanda per domanda e in
+//  ordine casuale, e le risposte si cancellano dal server.
+// ═══════════════════════════════════════════════════════════════════════
+const RE_QID = /^[a-z0-9][a-z0-9-]{0,40}$/;
+function mescola(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = crypto.getRandomValues(new Uint32Array(1))[0] % (i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+// la prossima mezzanotte di Roma (ora legale compresa), in millisecondi
+function mezzanotteRoma(ora) {
+  const f = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit' });
+  const [a, m, g] = f.format(new Date(ora)).split('-').map(Number);
+  const utc = Date.UTC(a, m - 1, g + 1, 0, 0);             // mezzanotte "come se" fosse UTC
+  const roma = new Date(new Date(utc).toLocaleString('en-US', { timeZone: 'Europe/Rome' }));
+  const scarto = roma.getTime() - new Date(new Date(utc).toLocaleString('en-US', { timeZone: 'UTC' })).getTime();
+  return utc - scarto;
+}
+// controlla le domande mandate dalla pagina del docente
+function qDomande(lista) {
+  if (!Array.isArray(lista) || !lista.length || lista.length > 80) return null;
+  const visti = new Set(), out = [];
+  for (const d of lista) {
+    const id = str(d && d.id, 40), tipo = d && d.tipo;
+    if (!id || visti.has(id) || !['scala', 'scelta', 'aperta'].includes(tipo)) return null;
+    visti.add(id);
+    const q = { id, tipo, testo: str(d.testo, 600) || id, sezione: str(d.sezione, 200) || '' };
+    if (tipo === 'scala') {
+      q.n = Math.max(2, Math.min(11, Number(d.n) || 5)); q.da = Number(d.da) === 0 ? 0 : 1;
+      q.sinistra = str(d.sinistra, 80) || ''; q.destra = str(d.destra, 80) || '';
+    }
+    if (tipo === 'scelta') {
+      q.opzioni = (Array.isArray(d.opzioni) ? d.opzioni : []).slice(0, 20).map((o) => str(o, 200));
+      if (!q.opzioni.length) return null;
+      q.multipla = !!d.multipla; q.max = Math.max(0, Number(d.max) || 0); q.altro = !!d.altro;
+    }
+    out.push(q);
+  }
+  return out;
+}
+// tiene solo le risposte valide per le domande del questionario
+function qPulisci(domande, r) {
+  const out = {};
+  if (!r || typeof r !== 'object') return out;
+  for (const d of domande) {
+    const v = r[d.id];
+    if (v == null || v === '') continue;
+    if (d.tipo === 'scala') {
+      const n = Number(v);
+      if (Number.isInteger(n) && n >= d.da && n < d.da + d.n) out[d.id] = n;
+    } else if (d.tipo === 'aperta') {
+      const t = String(v).trim().slice(0, 3000);
+      if (t) out[d.id] = t;
+    } else if (d.tipo === 'scelta') {
+      let scelte = [...new Set((Array.isArray(v.scelte) ? v.scelte : []).map(Number))]
+        .filter((i) => Number.isInteger(i) && i >= 0 && i < d.opzioni.length);
+      if (!d.multipla) scelte = scelte.slice(0, 1);
+      else if (d.max) scelte = scelte.slice(0, d.max);
+      const altro = d.altro ? String(v.altro || '').trim().slice(0, 500) : '';
+      if (scelte.length || altro) out[d.id] = altro ? { scelte, altro } : { scelte };
+    }
+  }
+  return out;
+}
+
+async function qStato(c, env, cors) {
+  const id = str(c.id, 41);
+  const s = await env.DB.prepare('SELECT classe, aperto, scadenza FROM q_sessioni WHERE id = ?').bind(id).first();
+  const aperto = !!(s && s.aperto && s.scadenza > Date.now());
+  const out = { aperto, scadenza: aperto ? s.scadenza : null, classe: s ? s.classe : null };
+  if (aperto && c.token) {
+    const st = await studenteDa(c.token, env);
+    if (!st) out.accesso = false;
+    else {
+      out.accesso = true; out.classe_ok = st.classe === s.classe;
+      out.consegnato = !!(await env.DB.prepare('SELECT 1 FROM q_partecipanti WHERE qid = ? AND classe = ? AND codice = ?').bind(id, st.classe, st.codice).first());
+    }
+  }
+  return json(out, 200, cors);
+}
+
+async function qInvia(c, env, cors) {
+  const id = str(c.id, 41), DB = env.DB;
+  const s = await DB.prepare('SELECT * FROM q_sessioni WHERE id = ?').bind(id).first();
+  if (!s || !s.aperto || s.scadenza <= Date.now()) return json({ errore: 'chiuso' }, 409, cors);
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  if (st.classe !== s.classe) return json({ errore: 'classe' }, 403, cors);
+  const chiave = str(c.chiave, 64);
+  if (!chiave || chiave.length < 20) return json({ errore: 'chiave' }, 400, cors);
+  const rid = await hmac(env, `q|${id}|${chiave}`);
+  const [part, mia] = await DB.batch([
+    DB.prepare('SELECT 1 FROM q_partecipanti WHERE qid = ? AND classe = ? AND codice = ?').bind(id, st.classe, st.codice),
+    DB.prepare('SELECT 1 FROM q_risposte WHERE qid = ? AND rid = ?').bind(id, rid),
+  ]);
+  const haConsegnato = part.results.length > 0, correzione = haConsegnato && mia.results.length > 0;
+  // ha già consegnato, ma questa chiave non è la sua risposta: un altro dispositivo
+  if (haConsegnato && !correzione) return json({ errore: 'gia' }, 409, cors);
+  // chiave già usata da un altro studente (non succede mai, ma una risposta altrui non si tocca)
+  if (!haConsegnato && mia.results.length) return json({ errore: 'chiave' }, 409, cors);
+  const risposte = qPulisci(JSON.parse(s.domande), c.risposte);
+  if (!Object.keys(risposte).length) {  // tutto vuoto: la risposta si ritira (e si può rispondere di nuovo)
+    if (correzione) await DB.batch([
+      DB.prepare('DELETE FROM q_risposte WHERE qid = ? AND rid = ?').bind(id, rid),
+      DB.prepare('DELETE FROM q_partecipanti WHERE qid = ? AND classe = ? AND codice = ?').bind(id, st.classe, st.codice),
+    ]);
+    return json({ ok: true, ritirata: true }, 200, cors);
+  }
+  const ops = [DB.prepare('INSERT OR REPLACE INTO q_risposte (qid, rid, dati) VALUES (?, ?, ?)').bind(id, rid, JSON.stringify(risposte))];
+  if (!correzione) ops.push(DB.prepare('INSERT INTO q_partecipanti (qid, classe, codice) VALUES (?, ?, ?)').bind(id, st.classe, st.codice));
+  await DB.batch(ops);
+  return json({ ok: true, corretta: correzione }, 200, cors);
+}
+
+// chiude il questionario e manda l'email; se l'email parte, cancella le risposte
+async function qChiudi(id, env) {
+  const DB = env.DB;
+  await DB.prepare('UPDATE q_sessioni SET aperto = 0 WHERE id = ?').bind(id).run();
+  const s = await DB.prepare('SELECT * FROM q_sessioni WHERE id = ?').bind(id).first();
+  if (!s || s.inviato) return { ok: true };
+  const righe = (await DB.prepare('SELECT dati FROM q_risposte WHERE qid = ?').bind(id).all()).results.map((r) => JSON.parse(r.dati));
+  if (!env.RESEND_KEY || !env.EMAIL_DOCENTE) return { errore: 'mancano i secret RESEND_KEY ed EMAIL_DOCENTE' };
+  const e = righe.length ? qEmail(s, JSON.parse(s.domande), righe) : { testo: 'Non è arrivata nessuna risposta.' };
+  const corpo = { subject: `Questionario anonimo: ${s.titolo || id} (${righe.length} risposte)`, text: e.testo, ...(e.html ? { html: e.html } : {}) };
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + env.RESEND_KEY },
+    body: JSON.stringify({ from: env.EMAIL_MITTENTE || 'Didattica Vittoria <onboarding@resend.dev>', to: [env.EMAIL_DOCENTE], ...corpo }),
+  });
+  if (!r.ok) return { errore: 'resend.com ha risposto: ' + (await r.text()).slice(0, 300) };
+  await DB.batch([
+    DB.prepare('DELETE FROM q_risposte WHERE qid = ?').bind(id),
+    DB.prepare('DELETE FROM q_partecipanti WHERE qid = ?').bind(id),
+    DB.prepare('UPDATE q_sessioni SET inviato = 1 WHERE id = ?').bind(id),
+  ]);
+  return { ok: true, inviate: righe.length };
+}
+
+function qEmail(s, domande, righe) {
+  const N = righe.length, h = (x) => String(x).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+  const virgola = (x) => x.toFixed(1).replace('.', ',');
+  const nota = 'Le risposte di ogni domanda sono mescolate a caso, domanda per domanda: non si possono rimettere insieme le risposte di uno stesso studente. Dal server sono già state cancellate, insieme all\'elenco di chi ha risposto.';
+  const T = [s.titolo || s.id, `${N} risposte.`, nota, ''];
+  const H = [`<div style="font-family:Arial,sans-serif;max-width:720px;color:#1a202c">`,
+    `<h1 style="font-size:20px;margin:0 0 4px">${h(s.titolo || s.id)}</h1>`,
+    `<p style="color:#4a5568;margin:0 0 18px"><b>${N} risposte.</b> ${nota}</p>`];
+  const grigio = (t) => `<p style="color:#4a5568;font-size:13px;margin:4px 0">${t}</p>`;
+  let sez = null, num = 0;
+  for (const d of domande) {
+    if (d.sezione && d.sezione !== sez) {
+      sez = d.sezione;
+      T.push('', '═══ ' + sez.toUpperCase() + ' ═══', '');
+      H.push(`<h2 style="font-size:16px;color:#0f766e;border-bottom:2px solid #0f766e;padding-bottom:3px;margin:26px 0 10px">${h(sez)}</h2>`);
+    }
+    num++;
+    const vals = righe.map((r) => r[d.id]).filter((v) => v != null);
+    const salt = N - vals.length, saltTxt = salt ? `non ha risposto: ${salt}` : '';
+    T.push(`${num}. ${d.testo}`);
+    H.push(`<p style="font-weight:bold;margin:18px 0 6px">${num}. ${h(d.testo)}</p>`);
+    const barre = (conti, etichette) => {
+      const max = Math.max(1, ...conti);
+      H.push('<table style="border-collapse:collapse">');
+      conti.forEach((n, i) => {
+        T.push(`   ${etichette[i]}: ${'█'.repeat(Math.round(n / max * 20))} ${n}`);
+        H.push(`<tr><td style="padding:2px 8px 2px 0;color:#4a5568;font-size:13px">${h(etichette[i])}</td><td style="padding:2px 0;width:240px"><div style="background:#0f766e;height:12px;border-radius:3px;width:${Math.round(n / max * 100)}%;min-width:${n ? 3 : 0}px"></div></td><td style="padding:2px 0 2px 8px;font-size:13px">${n}</td></tr>`);
+      });
+      H.push('</table>');
+    };
+    const elenco = (testi) => {
+      T.push(...testi.map((t) => '   — ' + t.replace(/\n/g, '\n     ')));
+      H.push(`<ul style="margin:0;padding-left:20px">${testi.map((t) => `<li style="margin:6px 0;white-space:pre-wrap">${h(t)}</li>`).join('')}</ul>`);
+    };
+    if (d.tipo === 'scala') {
+      const conti = Array.from({ length: d.n }, (_, i) => vals.filter((v) => v === d.da + i).length);
+      barre(conti, conti.map((_, i) => String(d.da + i) + (i === 0 && d.sinistra ? ' (' + d.sinistra + ')' : i === d.n - 1 && d.destra ? ' (' + d.destra + ')' : '')));
+      const media = vals.length ? virgola(vals.reduce((a, b) => a + b, 0) / vals.length) : '–';
+      const riga = `media ${media}` + (saltTxt ? ' · ' + saltTxt : '');
+      T.push('   ' + riga); H.push(grigio(riga));
+    } else if (d.tipo === 'scelta') {
+      barre(d.opzioni.map((_, i) => vals.filter((v) => v.scelte.includes(i)).length), d.opzioni);
+      if (d.multipla) { T.push('   (più risposte possibili)'); H.push(grigio('più risposte possibili')); }
+      const altri = mescola(vals.map((v) => v.altro).filter(Boolean));
+      if (altri.length) { T.push('   Altro:'); H.push(grigio('Altro:')); elenco(altri); }
+      if (saltTxt) { T.push('   ' + saltTxt); H.push(grigio(saltTxt)); }
+    } else {
+      elenco(mescola(vals.slice()));
+      if (saltTxt) { T.push('   ' + saltTxt); H.push(grigio(saltTxt)); }
+    }
+    T.push('');
+  }
+  H.push('</div>');
+  return { testo: T.join('\n'), html: H.join('') };
+}
+
+async function qDocente(c, env, cors) {
+  const id = str(c.id, 41), DB = env.DB;
+  if (!RE_QID.test(id || '')) return json({ errore: 'nome del questionario non valido' }, 400, cors);
+  const s = await DB.prepare('SELECT titolo, classe, aperto, scadenza, inviato FROM q_sessioni WHERE id = ?').bind(id).first();
+  const ricevute = (await DB.prepare('SELECT COUNT(*) AS n FROM q_risposte WHERE qid = ?').bind(id).first()).n;
+  if (c.azione === 'apri') {
+    if (s && s.aperto) return json({ errore: 'è già aperto' }, 400, cors);
+    if (ricevute) return json({ errore: `ci sono ${ricevute} risposte non ancora spedite: premi «Chiudi e mandami le risposte»` }, 400, cors);
+    const domande = qDomande(c.domande);
+    if (!domande) return json({ errore: 'domande non valide (due domande con lo stesso id?)' }, 400, cors);
+    const classe = str(c.classe, 16);
+    if (!RE_CLASSE.test(classe || '')) return json({ errore: 'manca la classe (campo «classe» in cima al file .md)' }, 400, cors);
+    // scadenza: la mezzanotte alla fine del giorno scritto nel file (AAAA-MM-GG), altrimenti quella di oggi
+    let scadenza = mezzanotteRoma(Date.now());
+    if (c.scadenza) {
+      const g = /^\d{4}-\d{2}-\d{2}$/.test(String(c.scadenza)) ? Date.parse(c.scadenza + 'T12:00:00Z') : NaN;
+      if (!isFinite(g)) return json({ errore: 'scadenza non valida: scrivila come 2026-11-23' }, 400, cors);
+      scadenza = mezzanotteRoma(g);
+      if (scadenza <= Date.now()) return json({ errore: 'la scadenza è già passata' }, 400, cors);
+      if (scadenza > Date.now() + 31 * 24 * 3600 * 1000) return json({ errore: 'scadenza troppo lontana (al massimo un mese)' }, 400, cors);
+    }
+    await DB.batch([
+      DB.prepare('DELETE FROM q_partecipanti WHERE qid = ?').bind(id),
+      DB.prepare('INSERT OR REPLACE INTO q_sessioni (id, titolo, classe, domande, aperto, scadenza, inviato) VALUES (?, ?, ?, ?, 1, ?, 0)')
+        .bind(id, str(c.titolo, 200), classe, JSON.stringify(domande), scadenza),
+    ]);
+    return json({ ok: true, scadenza }, 200, cors);
+  }
+  if (c.azione === 'chiudi') { // chiude subito (prima di mezzanotte) e manda l'email
+    if (!s) return json({ errore: 'non è mai stato aperto' }, 400, cors);
+    const r = await qChiudi(id, env);
+    return json(r, r.errore ? 400 : 200, cors);
+  }
+  if (c.azione === 'annulla') { // chiude e butta via tutto, senza email
+    await DB.batch([DB.prepare('DELETE FROM q_risposte WHERE qid = ?').bind(id), DB.prepare('DELETE FROM q_partecipanti WHERE qid = ?').bind(id),
+      DB.prepare('UPDATE q_sessioni SET aperto = 0, inviato = 1 WHERE id = ?').bind(id)]);
+    return json({ ok: true }, 200, cors);
+  }
+  // stato: solo numeri, mai il contenuto delle risposte (la pagina può essere proiettata)
+  return json(s ? { esiste: true, aperto: !!s.aperto, classe: s.classe, scadenza: s.scadenza, ricevute, inviato: !!s.inviato } : { esiste: false }, 200, cors);
 }

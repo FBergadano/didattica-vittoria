@@ -1,0 +1,7 @@
+{% comment %}
+Domanda con una scala (es. da 1 a 5), per i questionari anonimi (layout questionario).
+  {% include questionario/scala.html id="ritmo" domanda="Il ritmo delle lezioni è adeguato."
+     sinistra="Per niente d'accordo" destra="Del tutto d'accordo" %}
+  n  — quante posizioni (default 5); da — 0 o 1 (default 1): da=0 n=11 dà la scala 0–10
+{% endcomment %}{% assign _n = include.n | default: 5 | plus: 0 %}{% assign _da = include.da | default: 1 | plus: 0 %}{% assign _fine = _da | plus: _n | minus: 1 %}{% assign _sx = include.sinistra | default: "Per niente d'accordo" %}{% assign _dx = include.destra | default: "Del tutto d'accordo" %}
+<fieldset class="qd qd-scala" data-id="{{ include.id }}" data-tipo="scala" data-n="{{ _n }}" data-da="{{ _da }}" data-sinistra="{{ _sx | escape }}" data-destra="{{ _dx | escape }}"><legend class="qd-t">{{ include.domanda }}</legend>{% if include.nota %}<p class="qd-nota">{{ include.nota }}</p>{% endif %}<div class="qd-gradini{% if _n > 7 %} qd-fitti{% endif %}">{% for i in (_da.._fine) %}<label><input type="radio" name="q-{{ include.id }}" value="{{ i }}"><span>{{ i }}</span></label>{% endfor %}</div><div class="qd-estremi"><span>{{ _sx }}</span><span>{{ _dx }}</span></div></fieldset>

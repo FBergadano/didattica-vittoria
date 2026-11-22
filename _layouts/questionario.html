@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+{% comment %}
+Questionario anonimo. Le domande stanno nel file .md (include in
+_includes/questionario/); qui c'è tutto il resto:
+  - per gli studenti: avviso sull'anonimato, accesso con codice e PIN (solo
+    per non rispondere due volte: la risposta parte senza codice), invio e
+    correzione fino a mezzanotte (dallo stesso telefono);
+  - per il docente (stesso indirizzo con ?docente): apri il questionario,
+    QR da proiettare, quante risposte sono arrivate (mai il loro contenuto),
+    chiusura anticipata.
+Niente pulsante 👤 e niente salvataggio automatico degli esercizi: in questa
+pagina le risposte non sono mai legate al codice dello studente.
+Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
+{% endcomment %}
+{% assign _qid = page.questionario | default: page.slug %}
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>{{ page.title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<script src="{{ '/assets/js/qrcode.min.js' | relative_url }}"></script>
+<style>
+  :root { --acc: #0f766e; --acc-chiaro: #f0fdfa; --bordo: #e2e8f0; --testo: #1a202c; --testo2: #4a5568; --muto: #718096;
+          --ok: #15803d; --ok-bg: #dcfce7; --err: #b91c1c; --err-bg: #fee2e2; --avv-bg: #fef3c7; --avv: #92400e; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fafaf8; color: var(--testo); font-family: "Source Serif 4", Georgia, serif; font-size: 18px; line-height: 1.6; }
+  button, input, textarea { font: inherit; }
+  .q-pagina { max-width: 720px; margin: 0 auto; padding: 1.5rem 16px 7rem; }
+  .q-sito { font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: .8rem; color: var(--muto); letter-spacing: .04em; text-transform: uppercase; }
+  h1 { font-size: 1.8rem; line-height: 1.25; margin: .3rem 0 .2rem; font-weight: 600; }
+  .q-sotto { color: var(--testo2); margin: 0 0 1.2rem; font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: .95rem; }
+  .q-ui { font-family: "Atkinson Hyperlegible", Arial, sans-serif; }
+  .q-riquadro { background: #fff; border: 1px solid var(--bordo); border-radius: 12px; padding: .9rem 1.1rem; margin: 0 0 1.2rem; }
+  .q-anonimo { border-left: 4px solid var(--acc); font-size: .92rem; }
+  .q-anonimo summary { cursor: pointer; font-weight: 700; color: var(--acc); }
+  .q-anonimo ul { margin: .5rem 0 0; padding-left: 1.2rem; }
+  .q-anonimo li { margin: .2rem 0; }
+  .q-stato { border-radius: 10px; padding: .7rem 1rem; margin: 0 0 1.2rem; font-size: .95rem; }
+  .q-stato.ok { background: var(--ok-bg); color: var(--ok); }
+  .q-stato.avv { background: var(--avv-bg); color: var(--avv); }
+  .q-stato.err { background: var(--err-bg); color: var(--err); }
+  .q-codice-in { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; margin-top: .5rem; }
+  .q-codice-in input { width: 7rem; font-size: 1.05rem; padding: .35rem .5rem; border: 2px solid var(--acc); border-radius: 8px; background: #fff; }
+  .q-codice-in input.cod { text-transform: uppercase; letter-spacing: .1em; font-weight: 700; }
+  .q-chi { font-size: .8rem; color: var(--muto); margin-left: .4rem; }
+  .q-btn { cursor: pointer; border: 1px solid #cbd5e0; background: #fff; border-radius: 10px; padding: .5rem 1rem; font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: .95rem; }
+  .q-btn.pri { background: var(--acc); border-color: var(--acc); color: #fff; font-weight: 700; }
+  .q-btn.peric { color: var(--err); border-color: #fca5a5; }
+  .q-btn:disabled { opacity: .45; cursor: default; }
+  .q-link { background: none; border: 0; padding: 0; color: var(--muto); text-decoration: underline; cursor: pointer; font-size: .85rem; font-family: "Atkinson Hyperlegible", Arial, sans-serif; }
+
+  /* testo del docente */
+  .q-corpo h2 { font-size: 1.3rem; margin: 2.2rem 0 .6rem; padding-bottom: .25rem; border-bottom: 2px solid var(--acc); color: var(--acc); font-weight: 600; }
+  .q-corpo h3 { font-size: 1.1rem; margin: 1.6rem 0 .5rem; }
+  .q-corpo > p { margin: .6rem 0; }
+
+  /* domande */
+  #q-form { counter-reset: qd; }
+  .qd { counter-increment: qd; background: #fff; border: 1px solid var(--bordo); border-radius: 12px; padding: .9rem 1.1rem 1rem; margin: 0 0 1rem; min-width: 0; position: relative; }
+  .qd.fatta { border-color: #99f6e4; }
+  .qd-t { padding: 0; font-weight: 600; line-height: 1.4; margin-bottom: .55rem; float: left; width: 100%; }
+  .qd-t::before { content: counter(qd) ". "; color: var(--acc); }
+  .qd-t + * { clear: both; }
+  .qd-nota { clear: both; margin: 0 0 .5rem; color: var(--muto); font-size: .85rem; font-family: "Atkinson Hyperlegible", Arial, sans-serif; }
+  .qd-gradini { clear: both; display: flex; gap: .4rem; justify-content: space-between; }
+  .qd-gradini label { flex: 1; max-width: 3.4rem; }
+  .qd-gradini input { position: absolute; opacity: 0; pointer-events: none; }
+  .qd-gradini span { display: flex; align-items: center; justify-content: center; height: 2.7rem; border: 2px solid #cbd5e0; border-radius: 10px; cursor: pointer; font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-weight: 700; color: var(--testo2); transition: background .15s, border-color .15s; }
+  .qd-gradini input:checked + span { background: var(--acc); border-color: var(--acc); color: #fff; }
+  .qd-gradini input:focus-visible + span { outline: 3px solid #5eead4; outline-offset: 2px; }
+  .qd-fitti { gap: .2rem; }
+  .qd-fitti span { height: 2.4rem; font-size: .85rem; border-radius: 7px; }
+  .qd-estremi { display: flex; justify-content: space-between; gap: 1rem; margin-top: .35rem; font-size: .8rem; color: var(--muto); font-family: "Atkinson Hyperlegible", Arial, sans-serif; }
+  .qd-estremi span:last-child { text-align: right; }
+  .qd-op { clear: both; display: flex; gap: .6rem; align-items: flex-start; padding: .45rem .6rem; margin: .25rem 0; border: 1px solid var(--bordo); border-radius: 9px; cursor: pointer; line-height: 1.4; }
+  .qd-op:has(input:checked) { background: var(--acc-chiaro); border-color: #5eead4; }
+  .qd-op input[type=radio], .qd-op input[type=checkbox] { margin-top: .3rem; accent-color: var(--acc); width: 1.05rem; height: 1.05rem; flex: none; }
+  .qd-altro { align-items: center; }
+  .qd-altro input { flex: 1; min-width: 0; border: 0; border-bottom: 1px solid #cbd5e0; padding: .15rem .2rem; background: transparent; }
+  .qd textarea { clear: both; display: block; width: 100%; border: 1px solid #cbd5e0; border-radius: 9px; padding: .55rem .7rem; resize: vertical; line-height: 1.5; }
+  .qd textarea:focus, .qd-altro input:focus { outline: 2px solid #5eead4; border-color: transparent; }
+  .qd-togli { position: absolute; right: .8rem; bottom: .3rem; }
+
+  /* barra in basso */
+  .q-barra { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,.96); border-top: 1px solid var(--bordo); padding: .6rem 16px; z-index: 5; }
+  .q-barra-in { max-width: 720px; margin: 0 auto; display: flex; gap: .8rem; align-items: center; justify-content: space-between; }
+  .q-conta { font-size: .85rem; color: var(--testo2); }
+  .q-conta b { color: var(--testo); }
+
+  /* pannello del docente */
+  #q-docente { display: none; border: 2px solid var(--acc); }
+  #q-docente h2 { margin: 0 0 .5rem; font-size: 1.1rem; color: var(--acc); }
+  .qdoc-proietta { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: center; text-align: center; padding: .8rem 0; }
+  .qdoc-qr { width: 230px; height: 230px; }
+  .qdoc-qr svg { width: 100%; height: 100%; }
+  .qdoc-url { font-size: 1.3rem; font-weight: 700; color: var(--acc); word-break: break-all; max-width: 22rem; }
+  .qdoc-num { font-size: 2.4rem; font-weight: 700; }
+  .qdoc-azioni { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }
+  .q-docente-on #q-docente { display: block; }
+  .q-docente-on .q-anonimo, .q-docente-on #q-stato { display: none; }
+  @media print { .q-barra, #q-docente, #q-stato, .qd-togli { display: none !important; } .qd { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<main class="q-pagina">
+  <div class="q-sito">{{ site.title }}{% if page.classe %} · {{ page.classe }}{% endif %}</div>
+  <h1>{{ page.title }}</h1>
+  {% if page.sottotitolo %}<p class="q-sotto">{{ page.sottotitolo }}</p>{% endif %}
+
+  <section id="q-docente" class="q-riquadro q-ui" aria-live="polite"></section>
+
+  <details class="q-riquadro q-anonimo q-ui" open>
+    <summary>È anonimo davvero</summary>
+    <ul>
+      <li>Per consegnare entri con codice e PIN, ma serve solo a evitare che qualcuno risponda due volte. Il server tiene due elenchi separati: chi ha consegnato, e le risposte, senza codice. Niente li collega, nemmeno l'ordine.</li>
+      <li>Il server non salva l'ora in cui rispondi né il tuo indirizzo internet.</li>
+      <li>Fino a mezzanotte non leggo niente, e non vedo chi ha risposto e chi no: solo quante risposte sono arrivate.</li>
+      <li>A mezzanotte mi arriva un'email con tutte le risposte insieme, mescolate a caso domanda per domanda, così non posso nemmeno rimettere insieme le risposte di una stessa persona. Subito dopo il server cancella tutto, anche l'elenco di chi ha consegnato.</li>
+      <li>Puoi saltare qualunque domanda, e fino a mezzanotte puoi tornare qui a correggere, dallo stesso telefono da cui hai consegnato.</li>
+    </ul>
+  </details>
+
+  <div id="q-stato" class="q-stato avv q-ui">Controllo se il questionario è aperto…</div>
+
+  <form id="q-form" class="q-corpo" autocomplete="off" onsubmit="return false">
+{{ content }}
+  </form>
+</main>
+
+<div class="q-barra q-ui">
+  <div class="q-barra-in">
+    <span class="q-conta" id="q-conta"></span>
+    <button type="button" class="q-btn pri" id="q-invia" disabled>Invia</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  var ID = {{ _qid | jsonify }}, TITOLO = {{ page.title | jsonify }}, CLASSE = {{ page.classe | default: "" | jsonify }}, SCADENZA = {{ page.scadenza | date: "%Y-%m-%d" | default: "" | jsonify }};
+  var URL = {{ site.consegne_url | default: "" | jsonify }}.replace(/\/+$/, '');
+  var form = document.getElementById('q-form'), statoEl = document.getElementById('q-stato');
+  var btn = document.getElementById('q-invia'), contaEl = document.getElementById('q-conta');
+  var DOMANDE = [].slice.call(form.querySelectorAll('.qd'));
+  var K = 'lv-q:' + ID + ':';
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(K + k); if (v === null) localStorage.removeItem(K + k); else localStorage.setItem(K + k, v); } catch (e) { return null; } }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function stato(cl, html) { statoEl.className = 'q-stato q-ui ' + cl; statoEl.innerHTML = html; }
+  function post(p, corpo, extra) {
+    return fetch(URL + p, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, extra || {}), body: JSON.stringify(corpo) })
+      .then(function(r) { return r.json().catch(function() { return {}; }).then(function(j) { j._status = r.status; return j; }); });
+  }
+  function orario(ts) { var d = new Date(ts); return d.getHours() + ':' + ('0' + d.getMinutes()).slice(-2); }
+  var GG = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'], MM = ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'];
+  // «la mezzanotte di lunedì 23 novembre» (il giorno che finisce a quella mezzanotte)
+  function fine(ts) { var d = new Date(ts - 60000); return 'la mezzanotte di ' + GG[d.getDay()] + ' ' + d.getDate() + ' ' + MM[d.getMonth()]; }
+  function mancano(ts) { var m = Math.max(0, Math.round((ts - Date.now()) / 60000)); return m >= 60 ? Math.floor(m / 60) + ' h ' + (m % 60) + ' min' : m + ' min'; }
+
+  // ───────── lettura e scrittura delle risposte ─────────
+  function leggi(fs) {
+    var t = fs.dataset.tipo, n = 'q-' + fs.dataset.id;
+    if (t === 'scala') { var c = fs.querySelector('input:checked'); return c ? Number(c.value) : null; }
+    if (t === 'aperta') { var v = fs.querySelector('textarea').value.trim(); return v || null; }
+    var scelte = [].slice.call(fs.querySelectorAll('input[name="' + n + '"]:checked')).map(function(i) { return Number(i.value); });
+    var a = fs.querySelector('input[name="' + n + '-altro"]'), altro = a ? a.value.trim() : '';
+    return scelte.length || altro ? { scelte: scelte, altro: altro } : null;
+  }
+  function scrivi(fs, v) {
+    var t = fs.dataset.tipo, n = 'q-' + fs.dataset.id;
+    if (v == null) return;
+    if (t === 'scala') { var i = fs.querySelector('input[value="' + v + '"]'); if (i) i.checked = true; }
+    else if (t === 'aperta') fs.querySelector('textarea').value = v;
+    else {
+      (v.scelte || []).forEach(function(k) { var i = fs.querySelector('input[name="' + n + '"][value="' + k + '"]'); if (i) i.checked = true; });
+      var a = fs.querySelector('input[name="' + n + '-altro"]'); if (a) a.value = v.altro || '';
+    }
+  }
+  function tutte() { var r = {}; DOMANDE.forEach(function(fs) { var v = leggi(fs); if (v != null) r[fs.dataset.id] = v; }); return r; }
+  function aggiorna() {
+    var fatte = 0;
+    DOMANDE.forEach(function(fs) {
+      var f = leggi(fs) != null; if (f) fatte++;
+      fs.classList.toggle('fatta', f);
+      var t = fs.querySelector('.qd-togli'); if (t) t.hidden = !f;
+    });
+    contaEl.innerHTML = '<b>' + fatte + '</b> domande su ' + DOMANDE.length;
+    return fatte;
+  }
+  // un pulsante per togliere la risposta (un pallino scelto non si può "deselezionare")
+  DOMANDE.forEach(function(fs) {
+    if (fs.dataset.tipo === 'aperta') return;
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'q-link qd-togli'; b.textContent = 'togli la risposta'; b.hidden = true;
+    b.onclick = function() { [].slice.call(fs.querySelectorAll('input')).forEach(function(i) { if (i.type === 'text') i.value = ''; else i.checked = false; }); cambiato(); };
+    fs.appendChild(b);
+  });
+  // con «max» non si possono scegliere più opzioni del dovuto
+  DOMANDE.forEach(function(fs) {
+    var max = Number(fs.dataset.max); if (!max) return;
+    fs.addEventListener('change', function(e) {
+      if (e.target.type !== 'checkbox') return;
+      if (fs.querySelectorAll('input[type=checkbox]:checked').length > max) { e.target.checked = false; }
+    });
+  });
+
+  // ───────── studente ─────────
+  // accesso: lo stesso del pulsante 👤 del sito (se è già entrato lì, non deve rifarlo)
+  var AK = 'lv-cons:accesso';
+  function accesso() { try { return JSON.parse(localStorage.getItem(AK) || 'null'); } catch (e) { return null; } }
+  function salvaAccesso(a) { try { if (a) localStorage.setItem(AK, JSON.stringify(a)); else localStorage.removeItem(AK); } catch (e) {} }
+  var sess = null, chi = null, aperto = false, inviato = false, modificato = false;
+  function salvaBozza() { if (sess && chi) ls('bozza', JSON.stringify({ sess: sess, chi: chi, r: tutte() })); }
+  function cambiato() { aggiorna(); salvaBozza(); if (inviato) { modificato = true; pulsante(); } }
+  form.addEventListener('input', cambiato); form.addEventListener('change', cambiato);
+  function pulsante() {
+    btn.disabled = !aperto || (inviato && !modificato);
+    btn.textContent = inviato ? (modificato ? 'Invia le correzioni' : 'Inviato ✓') : 'Invia';
+  }
+  function bloccaForm(si) { [].slice.call(form.querySelectorAll('input, textarea, button')).forEach(function(el) { el.disabled = si; }); }
+  // chiave a caso, solo su questo telefono: permette di correggere senza dire di chi è la risposta
+  function chiave() {
+    var n = 'chiave:' + sess + ':' + chi, k = ls(n);
+    if (!k) { var b = crypto.getRandomValues(new Uint8Array(24)); k = btoa(String.fromCharCode.apply(null, b)).replace(/[+/=]/g, ''); ls(n, k); }
+    return k;
+  }
+  function svuota() { DOMANDE.forEach(function(fs) { [].slice.call(fs.querySelectorAll('input')).forEach(function(i) { if (i.type === 'text') i.value = ''; else i.checked = false; }); var t = fs.querySelector('textarea'); if (t) t.value = ''; }); }
+  function esci() { salvaAccesso(null); location.reload(); }
+  function chiTxt() { return '<span class="q-chi">(sei entrato come ' + esc(chi) + ' · <button type="button" class="q-link" id="q-esci">esci</button>)</span>'; }
+  function collegaEsci() { var e = document.getElementById('q-esci'); if (e) e.onclick = esci; }
+  function chiediAccesso(msg) {
+    aperto = false; pulsante();
+    stato(msg ? 'err' : 'avv', (msg ? esc(msg) + ' ' : '') + 'Per consegnare entra con il tuo codice e il tuo PIN' + (CLASSE ? ' (classe ' + esc(CLASSE) + ')' : '') + '. Serve solo a non far rispondere nessuno due volte: le risposte partono senza codice.' +
+      '<div class="q-codice-in"><input id="q-cod" class="cod" maxlength="12" autocapitalize="characters" placeholder="codice" aria-label="Codice"><input id="q-pin" type="password" inputmode="numeric" maxlength="4" placeholder="PIN" aria-label="PIN"><button type="button" class="q-btn pri" id="q-entra">Entra</button></div>');
+    var go = function() {
+      var c = document.getElementById('q-cod').value.trim().toUpperCase(), p = document.getElementById('q-pin').value.trim();
+      if (!/^[A-Z]{2,12}$/.test(c)) return chiediAccesso('Il codice è fatto solo di lettere, per esempio GIUR.');
+      if (!/^\d{4}$/.test(p)) return chiediAccesso('Il PIN è di 4 cifre.');
+      post('/accedi', { classe: CLASSE, codice: c, pin: p }).then(function(j) {
+        if (j.token) { salvaAccesso({ token: j.token, classe: CLASSE, codice: c }); if (j.nuovo) alert('PIN registrato: ricordatelo!'); return controlla(); }
+        chiediAccesso({ codice: 'Questo codice non è nell\'elenco della classe.', pin: 'PIN sbagliato.', bloccato: 'Troppi tentativi sbagliati: riprova fra un quarto d\'ora.' }[j.errore] || 'Non riesco a entrare: riprova.');
+      }).catch(function() { chiediAccesso('Non riesco a collegarmi al server.'); });
+    };
+    document.getElementById('q-entra').onclick = go;
+    document.getElementById('q-pin').onkeydown = function(e) { if (e.key === 'Enter') go(); };
+  }
+  function controlla() {
+    var a = accesso();
+    post('/questionario/stato', { id: ID, token: a ? a.token : '' }).then(function(j) {
+      if (!j.aperto) { aperto = false; pulsante(); return stato('avv', 'Il questionario <b>non è aperto</b> in questo momento.'); }
+      if (!a || j.accesso === false) return chiediAccesso(a ? 'L\'accesso è scaduto.' : '');
+      chi = a.codice; sess = j.scadenza;
+      if (!j.classe_ok) { aperto = false; pulsante(); stato('err', 'Questo questionario è per la ' + esc(j.classe) + '.' + chiTxt()); return collegaEsci(); }
+      var mio = ls('inviato:' + sess + ':' + chi) === '1';
+      if (j.consegnato && !mio) {
+        aperto = false; pulsante(); bloccaForm(true);
+        stato('ok', '<b>Hai già consegnato</b>, da un altro telefono o computer: le correzioni si fanno da quello.' + chiTxt()); return collegaEsci();
+      }
+      aperto = true; inviato = !!j.consegnato; modificato = false;
+      try { var b = JSON.parse(ls('bozza') || 'null'); if (b && b.sess === sess && b.chi === chi) DOMANDE.forEach(function(fs) { scrivi(fs, b.r[fs.dataset.id]); }); else ls('bozza', null); } catch (e) {}
+      aggiorna(); pulsante();
+      stato('ok', (inviato ? '<b>Hai già risposto.</b> Puoi correggere fino a ' : '<b>Il questionario è aperto</b> fino a ') + fine(sess) + ' (mancano ' + mancano(sess) + ').' +
+        (inviato ? ' <button type="button" class="q-link" id="q-ritira">Ritira la mia risposta</button>' : '') + chiTxt());
+      collegaEsci();
+      var r = document.getElementById('q-ritira');
+      if (r) r.onclick = function() {
+        if (!confirm('Vuoi davvero ritirare tutte le tue risposte?')) return;
+        post('/questionario/invia', { id: ID, token: a.token, chiave: chiave(), risposte: {} }).then(function(j) {
+          if (!j.ok) return stato('err', 'Non sono riuscito a ritirarla: riprova.');
+          ls('inviato:' + sess + ':' + chi, null); ls('bozza', null); svuota(); controlla();
+        });
+      };
+    }).catch(function() { stato('err', 'Non riesco a collegarmi al server: controlla la connessione e ricarica la pagina.'); });
+  }
+  btn.onclick = function() {
+    var r = tutte(), a = accesso();
+    if (!Object.keys(r).length) return stato('avv', 'Non hai ancora risposto a nessuna domanda.');
+    var vuote = DOMANDE.length - Object.keys(r).length;
+    if (!inviato && vuote && !confirm('Hai lasciato ' + vuote + (vuote === 1 ? ' domanda' : ' domande') + ' senza risposta. Inviare lo stesso? (Puoi correggere fino a mezzanotte.)')) return;
+    btn.disabled = true; btn.textContent = 'Invio…';
+    post('/questionario/invia', { id: ID, token: a ? a.token : '', chiave: chiave(), risposte: r }).then(function(j) {
+      if (j.ok) {
+        inviato = true; modificato = false; ls('inviato:' + sess + ':' + chi, '1'); pulsante();
+        stato('ok', (j.corretta ? '<b>Correzioni salvate.</b> Grazie.' : '<b>Grazie, la tua risposta è arrivata.</b> Fino a mezzanotte puoi tornare su questa pagina, da questo telefono, e correggerla.') + chiTxt());
+        collegaEsci(); window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (j.errore === 'chiuso') { aperto = false; pulsante(); stato('err', 'Il questionario è già chiuso: la risposta non è stata salvata.'); }
+      else if (j.errore === 'accesso') chiediAccesso('L\'accesso è scaduto.');
+      else if (j.errore === 'gia') controlla();
+      else { pulsante(); stato('err', 'Qualcosa non ha funzionato (' + esc(j.errore || j._status) + '): riprova fra poco.'); }
+    }).catch(function() { pulsante(); stato('err', 'Non riesco a collegarmi al server: controlla la connessione e riprova. Le risposte restano qui.'); });
+  };
+
+  // ───────── docente (?docente) ─────────
+  var DOC = /[?&]docente\b/.test(location.search), PK = 'lv-docente:pw', pannello = document.getElementById('q-docente'), giro = null;
+  function pw() { try { return sessionStorage.getItem(PK) || localStorage.getItem(PK) || ''; } catch (e) { return ''; } }
+  function struttura() {
+    var sez = '', out = [];
+    [].slice.call(form.querySelectorAll('h2, h3, .qd')).forEach(function(el) {
+      if (!el.classList.contains('qd')) { sez = el.textContent.trim(); return; }
+      var d = { id: el.dataset.id, tipo: el.dataset.tipo, testo: el.querySelector('.qd-t').textContent.trim(), sezione: sez };
+      if (d.tipo === 'scala') { d.n = Number(el.dataset.n); d.da = Number(el.dataset.da); d.sinistra = el.dataset.sinistra; d.destra = el.dataset.destra; }
+      if (d.tipo === 'scelta') { d.opzioni = [].slice.call(el.querySelectorAll('.qd-op:not(.qd-altro) span')).map(function(s) { return s.textContent.trim(); }); d.multipla = !!el.dataset.multipla; d.max = Number(el.dataset.max) || 0; d.altro = !!el.dataset.altro; }
+      out.push(d);
+    });
+    return out;
+  }
+  function doc(azione) {
+    var corpo = { id: ID }; if (azione) corpo.azione = azione;
+    if (azione === 'apri') { corpo.titolo = TITOLO; corpo.classe = CLASSE; corpo.domande = struttura(); if (SCADENZA) corpo.scadenza = SCADENZA; }
+    return post('/docente/questionario', corpo, { 'X-Docente': pw() }).then(function(j) {
+      if (j._status === 401) { accessoDocente(j.errore === 'bloccato' ? 'Troppi tentativi: riprova fra un quarto d\'ora.' : 'Password sbagliata.'); throw new Error('accesso'); }
+      if (j.errore) throw new Error(j.errore);
+      return j;
+    });
+  }
+  function accessoDocente(msg) {
+    clearInterval(giro);
+    pannello.innerHTML = '<h2>Pagina del docente</h2>' + (msg ? '<p style="color:var(--err)">' + esc(msg) + '</p>' : '') +
+      '<p>La password è la stessa della pagina delle consegne.</p><div class="q-codice-in"><input type="password" id="qdoc-pw" style="width:14rem;letter-spacing:normal;text-transform:none;font-weight:400;text-align:left"><button class="q-btn pri" id="qdoc-entra">Entra</button></div>';
+    var go = function() { try { sessionStorage.setItem(PK, document.getElementById('qdoc-pw').value); } catch (e) {} mostraDocente(); };
+    document.getElementById('qdoc-entra').onclick = go;
+    document.getElementById('qdoc-pw').onkeydown = function(e) { if (e.key === 'Enter') go(); };
+  }
+  function azione(a, domanda) {
+    if (domanda && !confirm(domanda)) return;
+    doc(a).then(function(j) {
+      if (a === 'chiudi') alert(j.inviate != null ? 'Chiuso. Email partita con ' + j.inviate + ' risposte.' : 'Chiuso.');
+      mostraDocente();
+    }).catch(function(e) { if (e.message !== 'accesso') alert(e.message); });
+  }
+  function mostraDocente() {
+    if (!pw()) return accessoDocente();
+    doc().then(function(s) {
+      var h = '<h2>Pagina del docente · ' + DOMANDE.length + ' domande</h2>';
+      clearInterval(giro);
+      if (s.aperto) {
+        var link = location.origin + location.pathname;
+        var qr = qrcode(0, 'M'); qr.addData(link); qr.make();
+        h += '<div class="qdoc-proietta"><div><div class="qdoc-qr">' + qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true }) + '</div></div>' +
+          '<div class="qdoc-url">' + esc(location.host + location.pathname) + '<div style="font-size:.9rem;font-weight:400;color:var(--testo2)">si entra con codice e PIN · classe ' + esc(s.classe) + '</div></div>' +
+          '<div><div class="qdoc-num">' + s.ricevute + '</div><div style="color:var(--testo2)">' + (s.ricevute === 1 ? 'risposta' : 'risposte') + '</div></div></div>' +
+          '<p style="text-align:center;color:var(--testo2);margin:.2rem 0">Si chiude da solo alla ' + fine(s.scadenza).replace('la ', '') + ' (fra ' + mancano(s.scadenza) + '): allora ti arriva l\'email.</p>' +
+          '<div class="qdoc-azioni"><button class="q-btn" id="qdoc-chiudi">Chiudi adesso e mandami le risposte</button><button class="q-btn peric" id="qdoc-annulla">Annulla (cancella tutto, niente email)</button><button class="q-link" id="qdoc-esci">esci</button></div>';
+        giro = setInterval(mostraDocente, 5000);
+      } else {
+        if (s.esiste && !s.inviato) h += '<p style="color:var(--err)">Chiuso, ma l\'email non è ancora partita (' + s.ricevute + ' risposte in attesa). La Worker ci riprova ogni ora; puoi anche riprovare subito.</p><div class="qdoc-azioni"><button class="q-btn pri" id="qdoc-chiudi">Riprova l\'invio</button></div>';
+        else h += (s.esiste ? '<p>L\'ultima volta: chiuso, email inviata.</p>' : '') +
+          '<p>Quando lo apri, compare un QR da proiettare. Il questionario resta aperto fino a ' + (SCADENZA ? 'la mezzanotte del ' + SCADENZA.split('-').reverse().join('/') : 'mezzanotte di oggi') + '; allora ti arriva l\'email.</p>' +
+          '<div class="qdoc-azioni"><button class="q-btn pri" id="qdoc-apri">Apri il questionario</button><button class="q-link" id="qdoc-esci">esci</button></div>';
+      }
+      pannello.innerHTML = h;
+      var b;
+      if ((b = document.getElementById('qdoc-apri'))) b.onclick = function() { azione('apri'); };
+      if ((b = document.getElementById('qdoc-chiudi'))) b.onclick = function() { azione('chiudi', s.aperto ? 'Chiudere adesso? Nessuno potrà più rispondere o correggere.' : null); };
+      if ((b = document.getElementById('qdoc-annulla'))) b.onclick = function() { azione('annulla', 'Cancellare tutte le risposte arrivate, senza mandare l\'email?'); };
+      if ((b = document.getElementById('qdoc-esci'))) b.onclick = function() { try { sessionStorage.removeItem(PK); localStorage.removeItem(PK); } catch (e) {} location.href = location.pathname; };
+    }).catch(function(e) { if (e.message !== 'accesso') pannello.innerHTML = '<h2>Pagina del docente</h2><p style="color:var(--err)">' + esc(e.message || 'Server non raggiungibile.') + '</p>'; });
+  }
+
+  aggiorna();
+  if (!URL) { stato('err', 'Il server delle consegne non è configurato (consegne_url in _config.yml).'); return; }
+  if (DOC) { document.body.classList.add('q-docente-on'); mostraDocente(); return; }
+  controlla();
+})();
+</script>
+</body>
+</html>

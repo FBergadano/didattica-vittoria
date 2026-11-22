@@ -20,3 +20,7 @@ DOCENTE_URL = "https://fbergadano.github.io/didattica-vittoria/consegna/docente/
 binding = "DB"
 database_name = "consegne"
 database_id = "212c9a13-b8bf-4d55-a68e-c6c5adef4bb8"
+
+# ogni ora, al minuto 1: chiude i questionari anonimi scaduti (mezzanotte) e manda l'email
+[triggers]
+crons = ["1 * * * *"]
