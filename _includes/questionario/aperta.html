@@ -2,5 +2,7 @@
 Domanda a risposta libera, per i questionari anonimi (layout questionario).
   {% include questionario/aperta.html id="cambia" domanda="Se fossi tu il prof, che cosa cambieresti?"
      suggerimento="Testo grigio nella casella (facoltativo)" %}
+  se="id-domanda:Opzione" — compare solo se in quella domanda (a scelta, più in alto)
+     si è scelta quell'opzione; nella pagina e nell'email è senza numero, sotto la sua domanda
 {% endcomment %}
-<fieldset class="qd qd-aperta" data-id="{{ include.id }}" data-tipo="aperta"><legend class="qd-t">{{ include.domanda }}</legend>{% if include.nota %}<p class="qd-nota">{{ include.nota }}</p>{% endif %}<textarea name="q-{{ include.id }}" rows="{{ include.righe | default: 4 }}" maxlength="3000" placeholder="{{ include.suggerimento | escape }}"></textarea></fieldset>
+<fieldset class="qd qd-aperta{% if include.se %} qd-segue{% endif %}"{% if include.se %} data-se="{{ include.se | escape }}"{% endif %} data-id="{{ include.id }}" data-tipo="aperta"><legend class="qd-t">{{ include.domanda }}</legend>{% if include.nota %}<p class="qd-nota">{{ include.nota }}</p>{% endif %}<textarea name="q-{{ include.id }}" rows="{{ include.righe | default: 4 }}" maxlength="3000" placeholder="{{ include.suggerimento | escape }}"></textarea></fieldset>

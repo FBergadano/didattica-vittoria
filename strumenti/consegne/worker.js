@@ -642,10 +642,20 @@ function qDomande(lista) {
   const visti = new Set(), out = [];
   for (const d of lista) {
     const id = str(d && d.id, 40), tipo = d && d.tipo;
-    if (!id || visti.has(id) || !['scala', 'scelta', 'aperta'].includes(tipo)) return null;
+    if (!id || visti.has(id) || !['scala', 'griglia', 'scelta', 'aperta'].includes(tipo)) return null;
     visti.add(id);
     const q = { id, tipo, testo: str(d.testo, 600) || id, sezione: str(d.sezione, 200) || '' };
-    if (tipo === 'scala') {
+    // domanda che compare solo se a un'altra domanda (a scelta, più in alto) si è scelta una certa opzione
+    if (d.se && d.se.id != null) {
+      const padre = out.find((x) => x.id === String(d.se.id) && x.tipo === 'scelta'), k = Number(d.se.opzione);
+      if (!padre || !Number.isInteger(k) || k < 0 || k >= padre.opzioni.length) return null;
+      q.se = { id: padre.id, opzione: k };
+    }
+    if (tipo === 'griglia') {
+      q.righe = (Array.isArray(d.righe) ? d.righe : []).slice(0, 12).map((o) => str(o, 200));
+      if (!q.righe.length) return null;
+    }
+    if (tipo === 'scala' || tipo === 'griglia') {
       q.n = Math.max(2, Math.min(11, Number(d.n) || 5)); q.da = Number(d.da) === 0 ? 0 : 1;
       q.sinistra = str(d.sinistra, 80) || ''; q.destra = str(d.destra, 80) || '';
     }
@@ -662,12 +672,19 @@ function qDomande(lista) {
 function qPulisci(domande, r) {
   const out = {};
   if (!r || typeof r !== 'object') return out;
+  const voto = (d, x) => { const n = Number(x); return Number.isInteger(n) && n >= d.da && n < d.da + d.n ? n : null; };
   for (const d of domande) {
     const v = r[d.id];
     if (v == null || v === '') continue;
+    // domanda condizionata: vale solo se la condizione è soddisfatta (le domande condizionanti vengono prima)
+    if (d.se && !(out[d.se.id] && out[d.se.id].scelte.includes(d.se.opzione))) continue;
     if (d.tipo === 'scala') {
-      const n = Number(v);
-      if (Number.isInteger(n) && n >= d.da && n < d.da + d.n) out[d.id] = n;
+      const n = voto(d, v);
+      if (n != null) out[d.id] = n;
+    } else if (d.tipo === 'griglia') {
+      const g = {};
+      d.righe.forEach((_, i) => { const n = voto(d, v && v[i]); if (n != null) g[i] = n; });
+      if (Object.keys(g).length) out[d.id] = g;
     } else if (d.tipo === 'aperta') {
       const t = String(v).trim().slice(0, 3000);
       if (t) out[d.id] = t;
@@ -765,17 +782,26 @@ function qEmail(s, domande, righe) {
     `<p style="color:#4a5568;margin:0 0 18px"><b>${N} risposte.</b> ${nota}</p>`];
   const grigio = (t) => `<p style="color:#4a5568;font-size:13px;margin:4px 0">${t}</p>`;
   let sez = null, num = 0;
+  const numeri = {};
   for (const d of domande) {
     if (d.sezione && d.sezione !== sez) {
       sez = d.sezione;
       T.push('', '═══ ' + sez.toUpperCase() + ' ═══', '');
       H.push(`<h2 style="font-size:16px;color:#0f766e;border-bottom:2px solid #0f766e;padding-bottom:3px;margin:26px 0 10px">${h(sez)}</h2>`);
     }
-    num++;
-    const vals = righe.map((r) => r[d.id]).filter((v) => v != null);
-    const salt = N - vals.length, saltTxt = salt ? `non ha risposto: ${salt}` : '';
-    T.push(`${num}. ${d.testo}`);
-    H.push(`<p style="font-weight:bold;margin:18px 0 6px">${num}. ${h(d.testo)}</p>`);
+    // le domande condizionate non hanno numero: valgono solo per chi ha dato una certa risposta
+    let etich, cond = '', aventi = righe;
+    if (d.se) {
+      const padre = domande.find((x) => x.id === d.se.id);
+      aventi = righe.filter((r) => r[d.se.id] && r[d.se.id].scelte.includes(d.se.opzione));
+      etich = '↳';
+      cond = `solo per chi ha risposto «${padre.opzioni[d.se.opzione]}» alla domanda ${numeri[d.se.id]}: ${aventi.length}`;
+    } else { num++; numeri[d.id] = num; etich = num + '.'; }
+    const vals = aventi.map((r) => r[d.id]).filter((v) => v != null);
+    const salt = aventi.length - vals.length, saltTxt = salt ? `non ha risposto: ${salt}` : '';
+    T.push(`${etich} ${d.testo}`);
+    H.push(`<p style="font-weight:bold;margin:18px 0 6px${d.se ? ';margin-left:18px' : ''}">${etich} ${h(d.testo)}</p>`);
+    if (cond) { T.push('   (' + cond + ')'); H.push(grigio(cond)); }
     const barre = (conti, etichette) => {
       const max = Math.max(1, ...conti);
       H.push('<table style="border-collapse:collapse">');
@@ -789,12 +815,25 @@ function qEmail(s, domande, righe) {
       T.push(...testi.map((t) => '   — ' + t.replace(/\n/g, '\n     ')));
       H.push(`<ul style="margin:0;padding-left:20px">${testi.map((t) => `<li style="margin:6px 0;white-space:pre-wrap">${h(t)}</li>`).join('')}</ul>`);
     };
-    if (d.tipo === 'scala') {
-      const conti = Array.from({ length: d.n }, (_, i) => vals.filter((v) => v === d.da + i).length);
+    const scala = (vv) => {
+      const conti = Array.from({ length: d.n }, (_, i) => vv.filter((v) => v === d.da + i).length);
       barre(conti, conti.map((_, i) => String(d.da + i) + (i === 0 && d.sinistra ? ' (' + d.sinistra + ')' : i === d.n - 1 && d.destra ? ' (' + d.destra + ')' : '')));
-      const media = vals.length ? virgola(vals.reduce((a, b) => a + b, 0) / vals.length) : '–';
-      const riga = `media ${media}` + (saltTxt ? ' · ' + saltTxt : '');
+      return vv.length ? virgola(vv.reduce((a, b) => a + b, 0) / vv.length) : '–';
+    };
+    if (d.tipo === 'scala') {
+      const riga = `media ${scala(vals)}` + (saltTxt ? ' · ' + saltTxt : '');
       T.push('   ' + riga); H.push(grigio(riga));
+    } else if (d.tipo === 'griglia') {
+      const medie = [];
+      d.righe.forEach((nome, i) => {
+        T.push('   ▸ ' + nome); H.push(`<p style="margin:10px 0 3px;font-size:14px"><b>${h(nome)}</b></p>`);
+        const vv = vals.map((v) => v[i]).filter((x) => x != null), m = scala(vv);
+        medie.push(`${nome}: ${m}`);
+        const riga = `media ${m} · risposte ${vv.length}`;
+        T.push('     ' + riga); H.push(grigio(riga));
+      });
+      const riga = 'In sintesi (medie): ' + medie.join(' · ') + (saltTxt ? ' · ' + saltTxt : '');
+      T.push('   ' + riga); H.push(`<p style="font-size:13px;margin:6px 0;background:#f0fdfa;padding:4px 8px;border-radius:4px">${h(riga)}</p>`);
     } else if (d.tipo === 'scelta') {
       barre(d.opzioni.map((_, i) => vals.filter((v) => v.scelte.includes(i)).length), d.opzioni);
       if (d.multipla) { T.push('   (più risposte possibili)'); H.push(grigio('più risposte possibili')); }

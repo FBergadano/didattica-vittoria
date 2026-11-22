@@ -84,6 +84,18 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
   .qd textarea { clear: both; display: block; width: 100%; border: 1px solid #cbd5e0; border-radius: 9px; padding: .55rem .7rem; resize: vertical; line-height: 1.5; }
   .qd textarea:focus, .qd-altro input:focus { outline: 2px solid #5eead4; border-color: transparent; }
   .qd-togli { position: absolute; right: .8rem; bottom: .3rem; }
+  /* domanda che compare solo dopo una certa risposta: senza numero, attaccata alla sua domanda */
+  .qd-segue { counter-increment: none; margin: -.6rem 0 1rem 1.2rem; border-left: 3px solid #5eead4; border-top-left-radius: 0; }
+  .qd-segue .qd-t::before { content: "↳ "; }
+  .qd[hidden] { display: none; }
+  .qd-griglia .qd-estremi-su { clear: both; margin: 0 0 .3rem; }
+  .qd-riga { padding: .45rem 0 .55rem; border-top: 1px solid var(--bordo); }
+  .qd-riga-t { font-size: .95rem; margin-bottom: .3rem; }
+  .qd-errore { clear: both; color: var(--err); font-size: .85rem; font-family: "Atkinson Hyperlegible", Arial, sans-serif; }
+  .q-prova-anteprima { font-family: "Atkinson Hyperlegible", Arial, sans-serif; font-size: .9rem; }
+  .q-prova-anteprima h3 { margin: .2rem 0 .6rem; font-size: 1rem; color: var(--acc); }
+  .q-prova-anteprima dt { font-weight: 700; margin-top: .6rem; }
+  .q-prova-anteprima dd { margin: .15rem 0 0 1rem; white-space: pre-wrap; color: var(--testo2); }
 
   /* barra in basso */
   .q-barra { position: fixed; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,.96); border-top: 1px solid var(--bordo); padding: .6rem 16px; z-index: 5; }
@@ -163,6 +175,11 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
   function leggi(fs) {
     var t = fs.dataset.tipo, n = 'q-' + fs.dataset.id;
     if (t === 'scala') { var c = fs.querySelector('input:checked'); return c ? Number(c.value) : null; }
+    if (t === 'griglia') {
+      var g = {}, k = 0;
+      [].slice.call(fs.querySelectorAll('.qd-riga')).forEach(function(r) { var c = r.querySelector('input:checked'); if (c) { g[r.dataset.riga] = Number(c.value); k++; } });
+      return k ? g : null;
+    }
     if (t === 'aperta') { var v = fs.querySelector('textarea').value.trim(); return v || null; }
     var scelte = [].slice.call(fs.querySelectorAll('input[name="' + n + '"]:checked')).map(function(i) { return Number(i.value); });
     var a = fs.querySelector('input[name="' + n + '-altro"]'), altro = a ? a.value.trim() : '';
@@ -172,21 +189,42 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
     var t = fs.dataset.tipo, n = 'q-' + fs.dataset.id;
     if (v == null) return;
     if (t === 'scala') { var i = fs.querySelector('input[value="' + v + '"]'); if (i) i.checked = true; }
+    else if (t === 'griglia') Object.keys(v).forEach(function(r) { var i = fs.querySelector('input[name="' + n + '-' + r + '"][value="' + v[r] + '"]'); if (i) i.checked = true; });
     else if (t === 'aperta') fs.querySelector('textarea').value = v;
     else {
       (v.scelte || []).forEach(function(k) { var i = fs.querySelector('input[name="' + n + '"][value="' + k + '"]'); if (i) i.checked = true; });
       var a = fs.querySelector('input[name="' + n + '-altro"]'); if (a) a.value = v.altro || '';
     }
   }
-  function tutte() { var r = {}; DOMANDE.forEach(function(fs) { var v = leggi(fs); if (v != null) r[fs.dataset.id] = v; }); return r; }
+  // domande condizionate: se="id-domanda:Testo dell'opzione" (vedi gli include)
+  function opzioni(fs) { return [].slice.call(fs.querySelectorAll('.qd-op:not(.qd-altro) span')).map(function(x) { return x.textContent.trim(); }); }
+  DOMANDE.forEach(function(fs) {
+    if (!fs.dataset.se) return;
+    var i = fs.dataset.se.indexOf(':'), pid = fs.dataset.se.slice(0, i).trim(), opz = fs.dataset.se.slice(i + 1).trim();
+    var padre = DOMANDE.filter(function(x) { return x.dataset.id === pid && x.dataset.tipo === 'scelta'; })[0];
+    var k = padre ? opzioni(padre).indexOf(opz) : -1;
+    if (i < 0 || k < 0 || DOMANDE.indexOf(padre) > DOMANDE.indexOf(fs)) {
+      fs._seErr = true;
+      fs.insertAdjacentHTML('beforeend', '<p class="qd-errore">⚠ Condizione se="' + esc(fs.dataset.se) + '" non valida: serve l\'id di una domanda a scelta più in alto e il testo esatto di una sua opzione.</p>');
+    } else fs._se = { padre: padre, opzione: k };
+  });
+  function visibile(fs) {
+    if (!fs._se) return true;
+    var v = visibile(fs._se.padre) ? leggi(fs._se.padre) : null;
+    return !!(v && v.scelte.indexOf(fs._se.opzione) >= 0);
+  }
+  function tutte() { var r = {}; DOMANDE.forEach(function(fs) { if (!visibile(fs)) return; var v = leggi(fs); if (v != null) r[fs.dataset.id] = v; }); return r; }
   function aggiorna() {
-    var fatte = 0;
+    var fatte = 0, viste = 0;
     DOMANDE.forEach(function(fs) {
+      var vis = visibile(fs); fs.hidden = !vis;
+      if (!vis) return;
+      viste++;
       var f = leggi(fs) != null; if (f) fatte++;
       fs.classList.toggle('fatta', f);
       var t = fs.querySelector('.qd-togli'); if (t) t.hidden = !f;
     });
-    contaEl.innerHTML = '<b>' + fatte + '</b> domande su ' + DOMANDE.length;
+    contaEl.innerHTML = '<b>' + fatte + '</b> domande su ' + viste;
     return fatte;
   }
   // un pulsante per togliere la risposta (un pallino scelto non si può "deselezionare")
@@ -276,7 +314,7 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
   btn.onclick = function() {
     var r = tutte(), a = accesso();
     if (!Object.keys(r).length) return stato('avv', 'Non hai ancora risposto a nessuna domanda.');
-    var vuote = DOMANDE.length - Object.keys(r).length;
+    var vuote = DOMANDE.filter(visibile).length - Object.keys(r).length;
     if (!inviato && vuote && !confirm('Hai lasciato ' + vuote + (vuote === 1 ? ' domanda' : ' domande') + ' senza risposta. Inviare lo stesso? (Puoi correggere fino a mezzanotte.)')) return;
     btn.disabled = true; btn.textContent = 'Invio…';
     post('/questionario/invia', { id: ID, token: a ? a.token : '', chiave: chiave(), risposte: r }).then(function(j) {
@@ -299,7 +337,9 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
     [].slice.call(form.querySelectorAll('h2, h3, .qd')).forEach(function(el) {
       if (!el.classList.contains('qd')) { sez = el.textContent.trim(); return; }
       var d = { id: el.dataset.id, tipo: el.dataset.tipo, testo: el.querySelector('.qd-t').textContent.trim(), sezione: sez };
-      if (d.tipo === 'scala') { d.n = Number(el.dataset.n); d.da = Number(el.dataset.da); d.sinistra = el.dataset.sinistra; d.destra = el.dataset.destra; }
+      if (el._se) d.se = { id: el._se.padre.dataset.id, opzione: el._se.opzione };
+      if (d.tipo === 'griglia') d.righe = [].slice.call(el.querySelectorAll('.qd-riga-t')).map(function(x) { return x.textContent.trim(); });
+      if (d.tipo === 'scala' || d.tipo === 'griglia') { d.n = Number(el.dataset.n); d.da = Number(el.dataset.da); d.sinistra = el.dataset.sinistra; d.destra = el.dataset.destra; }
       if (d.tipo === 'scelta') { d.opzioni = [].slice.call(el.querySelectorAll('.qd-op:not(.qd-altro) span')).map(function(s) { return s.textContent.trim(); }); d.multipla = !!el.dataset.multipla; d.max = Number(el.dataset.max) || 0; d.altro = !!el.dataset.altro; }
       out.push(d);
     });
@@ -307,7 +347,9 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
   }
   function doc(azione) {
     var corpo = { id: ID }; if (azione) corpo.azione = azione;
-    if (azione === 'apri') { corpo.titolo = TITOLO; corpo.classe = CLASSE; corpo.domande = struttura(); if (SCADENZA) corpo.scadenza = SCADENZA; }
+    if (azione === 'apri') {
+      if (DOMANDE.some(function(fs) { return fs._seErr; })) return Promise.reject(new Error('Una domanda ha una condizione «se» sbagliata (è segnata in rosso nella pagina): correggi il file prima di aprire.'));
+      corpo.titolo = TITOLO; corpo.classe = CLASSE; corpo.domande = struttura(); if (SCADENZA) corpo.scadenza = SCADENZA; }
     return post('/docente/questionario', corpo, { 'X-Docente': pw() }).then(function(j) {
       if (j._status === 401) { accessoDocente(j.errore === 'bloccato' ? 'Troppi tentativi: riprova fra un quarto d\'ora.' : 'Password sbagliata.'); throw new Error('accesso'); }
       if (j.errore) throw new Error(j.errore);
@@ -347,7 +389,7 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
         if (s.esiste && !s.inviato) h += '<p style="color:var(--err)">Chiuso, ma l\'email non è ancora partita (' + s.ricevute + ' risposte in attesa). La Worker ci riprova ogni ora; puoi anche riprovare subito.</p><div class="qdoc-azioni"><button class="q-btn pri" id="qdoc-chiudi">Riprova l\'invio</button></div>';
         else h += (s.esiste ? '<p>L\'ultima volta: chiuso, email inviata.</p>' : '') +
           '<p>Quando lo apri, compare un QR da proiettare. Il questionario resta aperto fino a ' + (SCADENZA ? 'la mezzanotte del ' + SCADENZA.split('-').reverse().join('/') : 'mezzanotte di oggi') + '; allora ti arriva l\'email.</p>' +
-          '<div class="qdoc-azioni"><button class="q-btn pri" id="qdoc-apri">Apri il questionario</button><button class="q-link" id="qdoc-esci">esci</button></div>';
+          '<div class="qdoc-azioni"><button class="q-btn pri" id="qdoc-apri">Apri il questionario</button><a class="q-btn" href="' + location.pathname + '?prova">Provalo prima tu</a><button class="q-link" id="qdoc-esci">esci</button></div>';
       }
       pannello.innerHTML = h;
       var b;
@@ -358,7 +400,36 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
     }).catch(function(e) { if (e.message !== 'accesso') pannello.innerHTML = '<h2>Pagina del docente</h2><p style="color:var(--err)">' + esc(e.message || 'Server non raggiungibile.') + '</p>'; });
   }
 
+  // ───────── prova (?prova): si risponde come uno studente, ma niente parte ─────────
+  function anteprima() {
+    var h = '<h3>Così arriverebbe la tua risposta (nell\'email, mescolata con le altre)</h3><dl>', num = 0;
+    var sez = '';
+    [].slice.call(form.querySelectorAll('h2, h3, .qd')).forEach(function(el) {
+      if (!el.classList.contains('qd')) { sez = el.textContent.trim(); h += '<dt style="color:var(--acc);margin-top:1rem">' + esc(sez) + '</dt>'; return; }
+      if (!visibile(el)) return;
+      var et = el._se ? '↳' : (++num) + '.', v = leggi(el), t = el.dataset.tipo, txt;
+      if (v == null) txt = '— (senza risposta)';
+      else if (t === 'scala') txt = v + ' (da ' + el.dataset.da + ' = ' + el.dataset.sinistra + ' a ' + (Number(el.dataset.da) + Number(el.dataset.n) - 1) + ' = ' + el.dataset.destra + ')';
+      else if (t === 'griglia') txt = [].slice.call(el.querySelectorAll('.qd-riga-t')).map(function(x, i) { return x.textContent.trim() + ': ' + (v[i] != null ? v[i] : '—'); }).join('\n');
+      else if (t === 'aperta') txt = v;
+      else { var o = opzioni(el); txt = v.scelte.map(function(k) { return o[k]; }).concat(v.altro ? ['Altro: ' + v.altro] : []).join('\n'); }
+      h += '<dt>' + et + ' ' + esc(el.querySelector('.qd-t').textContent.trim()) + '</dt><dd>' + esc(txt) + '</dd>';
+    });
+    return h + '</dl>';
+  }
+  var PROVA = /[?&]prova\b/.test(location.search);
   aggiorna();
+  if (PROVA) {
+    ls = function() { return null; }; // in prova non si salva niente
+    aperto = true; pulsante(); btn.textContent = 'Anteprima';
+    stato('avv', '<b>Modalità di prova.</b> Puoi rispondere come uno studente e premere il pulsante in basso: vedrai che cosa arriverebbe nell\'email. Non viene inviato né salvato niente.');
+    btn.onclick = function() {
+      var box = document.getElementById('q-anteprima');
+      if (!box) { box = document.createElement('section'); box.id = 'q-anteprima'; box.className = 'q-riquadro q-prova-anteprima'; form.parentNode.appendChild(box); }
+      box.innerHTML = anteprima(); box.scrollIntoView({ behavior: 'smooth' });
+    };
+    return;
+  }
   if (!URL) { stato('err', 'Il server delle consegne non è configurato (consegne_url in _config.yml).'); return; }
   if (DOC) { document.body.classList.add('q-docente-on'); mostraDocente(); return; }
   controlla();

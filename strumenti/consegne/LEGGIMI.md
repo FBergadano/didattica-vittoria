@@ -185,9 +185,15 @@ cartella è pubblica su GitHub.
 
 Un questionario è una pagina in `questionari/` (es. `questionari/4acd.md`,
 layout `questionario`): l'introduzione in Markdown e le domande con
-`questionario/scala.html`, `questionario/scelta.html`, `questionario/aperta.html`
-(istruzioni nel commento in cima al file). Il campo `classe` del file dice
-chi può rispondere.
+`questionario/scala.html`, `questionario/griglia.html` (più voci, ognuna con
+il suo voto), `questionario/scelta.html`, `questionario/aperta.html`
+(istruzioni nel commento in cima al file). Con `se="id-domanda:Opzione"` una
+domanda compare solo dopo quella risposta. Il campo `classe` del file dice
+chi può rispondere; `scadenza: AAAA-MM-GG` fino a quale mezzanotte.
+
+Per vederlo e provarlo senza inviare niente: `/questionari/4acd/?prova`
+(anche in locale con `bundle exec jekyll serve`). Il pulsante «Anteprima»
+mostra che cosa arriverebbe nell'email.
 
 In classe:
 
