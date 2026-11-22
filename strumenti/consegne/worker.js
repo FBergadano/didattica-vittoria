@@ -85,11 +85,23 @@ const RE_CLASSE = /^[A-Za-z0-9][A-Za-z0-9 _-]{0,15}$/, RE_CODICE = /^[A-Z]{2,12}
 
 let pronto = null; // le tabelle si creano una volta sola per istanza
 
+async function preparaDB(env) {
+  const DB = env.DB;
+  // tabella dei questionari creata da una prima versione (con il codice alla lavagna e le
+  // risposte attese, senza classe e scadenza): si rifà da capo, dentro c'erano solo prove
+  const col = (await DB.prepare('PRAGMA table_info(q_sessioni)').all()).results.map((r) => r.name);
+  if (col.length && !(col.includes('classe') && col.includes('scadenza')))
+    await DB.batch(['q_sessioni', 'q_risposte', 'q_partecipanti'].map((t) => DB.prepare('DROP TABLE IF EXISTS ' + t)));
+  await DB.batch(SCHEMA.map((s) => DB.prepare(s)));
+  // database creati prima che esistesse la colonna "esercizio" (numero del Verifica Subito!/Prova tu!)
+  await DB.prepare('ALTER TABLE risposte ADD COLUMN esercizio TEXT').run().catch(() => {});
+}
+
 export default {
   // ogni ora (cron in wrangler.toml): chiude i questionari scaduti e manda l'email
   async scheduled(ev, env, ctx) {
     if (!env.DB) return;
-    await env.DB.batch(SCHEMA.map((s) => env.DB.prepare(s)));
+    await preparaDB(env);
     const r = await env.DB.prepare('SELECT id FROM q_sessioni WHERE aperto = 1 AND scadenza <= ?').bind(Date.now()).all();
     for (const { id } of r.results) await qChiudi(id, env).catch(() => {});
     // un invio fallito si riprova all'ora successiva
@@ -101,10 +113,7 @@ export default {
     if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
     try {
       if (!env.DB) return json({ errore: 'manca il database (binding DB)' }, 500, cors);
-      if (!pronto) pronto = env.DB.batch(SCHEMA.map((s) => env.DB.prepare(s)))
-        // database creati prima che esistesse la colonna "esercizio" (numero del Verifica Subito!/Prova tu!)
-        .then(() => env.DB.prepare('ALTER TABLE risposte ADD COLUMN esercizio TEXT').run().catch(() => {}))
-        .catch((e) => { pronto = null; throw e; });
+      if (!pronto) pronto = preparaDB(env).catch((e) => { pronto = null; throw e; });
       await pronto;
       const url = new URL(req.url);
       const p = url.pathname.replace(/\/+$/, '') || '/';

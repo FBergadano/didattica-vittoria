@@ -352,7 +352,7 @@ Server: strumenti/consegne/worker.js (sezione «Questionari anonimi»).
       corpo.titolo = TITOLO; corpo.classe = CLASSE; corpo.domande = struttura(); if (SCADENZA) corpo.scadenza = SCADENZA; }
     return post('/docente/questionario', corpo, { 'X-Docente': pw() }).then(function(j) {
       if (j._status === 401) { accessoDocente(j.errore === 'bloccato' ? 'Troppi tentativi: riprova fra un quarto d\'ora.' : 'Password sbagliata.'); throw new Error('accesso'); }
-      if (j.errore) throw new Error(j.errore);
+      if (j.errore) throw new Error(j.errore + (j.dettaglio ? ' (' + j.dettaglio + ')' : ''));
       return j;
     });
   }
