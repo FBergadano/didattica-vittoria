@@ -1,0 +1,359 @@
+\documentclass[aspectratio=169,12pt]{beamer}
+
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{TeX Gyre Heros}
+\usepackage{polyglossia}
+\setmainlanguage{italian}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{unicode-math}
+\setmathfont{TeX Gyre Pagella Math}
+\usefonttheme{serif}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{booktabs}
+\usepackage{cancel}
+
+% Colori
+\definecolor{blu}{HTML}{1D4ED8}
+\definecolor{rosso}{HTML}{DC2626}
+\definecolor{oro}{HTML}{B7791F}
+\definecolor{verde}{HTML}{15803D}
+\definecolor{grigio}{HTML}{64748B}
+\definecolor{seme}{HTML}{8A5A12}
+\setbeamercolor{frametitle}{fg=blu}
+\setbeamercolor{title}{fg=blu}
+\setbeamercolor{structure}{fg=blu}
+\setbeamercolor{block title}{fg=white,bg=blu}
+\setbeamercolor{block body}{bg=blu!6}
+\setbeamercolor{block title alerted}{fg=white,bg=rosso}
+\setbeamercolor{block body alerted}{bg=rosso!6}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\hfill\textcolor{grigio}{\footnotesize\insertframenumber}\hspace{1em}\vspace{0.6em}}
+
+
+% formule in display più vicine al testo, per far stare gli svolgimenti nella slide
+\makeatletter
+\g@addto@macro\normalsize{%
+  \setlength\abovedisplayskip{5pt}\setlength\belowdisplayskip{5pt}%
+  \setlength\abovedisplayshortskip{3pt}\setlength\belowdisplayshortskip{3pt}}
+\makeatother
+
+\newcommand{\virgola}{{,}}
+\newcommand{\no}{\textcolor{rosso}{\ \text{da scartare}}}
+\newcommand{\si}{\textcolor{verde}{\ \text{accettabile}}}
+
+\title{Trova l'errore}
+\subtitle{Equazioni frazionarie}
+\author{Prof.\ Fulvio Bergadano}
+\institute{Liceo Vittoria}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% ============================================================
+\begin{frame}{La ricetta}
+  \begin{block}{}
+    \begin{enumerate}
+      \item \textbf{Scomponi} tutti i denominatori.
+      \item Scrivi le \textbf{condizioni di esistenza} (CE): ogni fattore del denominatore deve essere diverso da $0$.
+      \item Trova il \textbf{denominatore comune} e \textbf{moltiplica} tutti e due i membri per esso.
+      \item \textbf{Risolvi} l'equazione di secondo grado che resta.
+      \item \textbf{Controlla} le soluzioni con le CE: quelle che non le rispettano si scartano.
+    \end{enumerate}
+  \end{block}
+  \pause
+  \begin{alertblock}{Un consiglio}
+    Per controllare una soluzione, sostituiscila nell'\textbf{equazione di partenza}.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Come si lavora}
+  In ogni slide c'è un esercizio \textbf{già risolto}, con \textbf{al massimo un} errore.
+  \bigskip
+  \begin{enumerate}
+    \item Trova l'errore.
+    \item Spiega al compagno perché è un errore.
+    \item Correggi e trova le soluzioni giuste.
+  \end{enumerate}
+  \bigskip
+  \pause
+  \textcolor{rosso}{Attenzione:} \lq\lq al massimo un\rq\rq\ vuol dire che potrebbe anche non essercene nessuno.
+\end{frame}
+
+% ============================================================
+% 1. Mancano le CE
+\begin{frame}{Esercizio 1}
+  \[
+    \frac{x}{x-3}-\frac{2}{x+3}=\frac{18}{x^2-9}
+  \]
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      {\color<2->{rosso}Moltiplico per $(x-3)(x+3)$:}
+      \begin{gather*}
+        x(x+3)-2(x-3)= 18\\
+        x^2+x-12= 0\\
+        (x+4)(x-3)= 0\\
+        x=-4 \quad x=3
+      \end{gather*}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \uncover<2->{\textcolor{rosso}{Mancano le condizioni di esistenza!}
+      \[
+        x^2-9=(x-3)(x+3)
+      \]
+      \[
+        \text{CE: } x\neq3,\ x\neq-3
+      \]}
+      \uncover<3->{\vspace{-0.5em}
+      \[
+        x=-4\si \quad x=3\no
+      \]
+      \begin{block}{}
+        \centering Soluzione: $x=-4$
+      \end{block}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 2. Il segno del meno
+\begin{frame}{Esercizio 2}
+  \[
+    \frac{2x}{x+1}-\frac{x-2}{x-1}=\frac{2}{x^2-1}
+  \]
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      CE: $x\neq1$, $x\neq-1$. Moltiplico per $(x-1)(x+1)$:
+      \begin{gather*}
+        2x(x-1)-(x-2)(x+1)= 2\\
+        {\color<2->{rosso}2x^2-2x-x^2-x-2}= 2\\
+        x^2-3x-4= 0\\
+        (x-4)(x+1)= 0\\
+        x=4 \quad x=-1\no
+      \end{gather*}
+      \uncover<4->{\small Controllo $x=4$: \ $\frac85-\frac23=\frac{14}{15}$, \ ma a destra $\frac{2}{15}$.\\ \textcolor{rosso}{Non è soluzione.}}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \uncover<2->{\textcolor{rosso}{Il meno cambia il segno di \textbf{tutto} il prodotto $(x-2)(x+1)=x^2-x-2$:}
+      \[
+        -(x^2-x-2) = -x^2+x+2
+      \]}
+      \uncover<3->{\vspace{-1em}
+      \begin{gather*}
+        2x^2-2x-x^2+x+2= 2\\
+        x^2-x = x(x-1)= 0\\
+        x=0\si \quad x=1\no
+      \end{gather*}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 3. Il 2 nel denominatore comune
+\begin{frame}{Esercizio 3}
+  \[
+    \frac{x}{x-1}+\frac{1}{x+1}=\frac{4}{2x^2-2}
+  \]
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      $2x^2-2=2(x-1)(x+1)$, \ CE: $x\neq\pm1$.\\[0.3em]
+      {\color<2->{rosso}Moltiplico per $(x-1)(x+1)$:}
+      \begin{gather*}
+        x(x+1)+(x-1)= 4\\
+        x^2+2x-5= 0\\
+        x= -1\pm\sqrt6
+      \end{gather*}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \uncover<2->{\textcolor{rosso}{Il denominatore comune è $2(x-1)(x+1)$: manca il $2$!}}
+      \uncover<3->{
+      \begin{gather*}
+        2x(x+1)+2(x-1)= 4\\
+        2x^2+4x-6= 0\\
+        x^2+2x-3=(x+3)(x-1)= 0\\
+        x=-3\si \quad x=1\no
+      \end{gather*}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 4. Dividere per x
+\begin{frame}{Esercizio 4}
+  \[
+    \frac{x^2+x}{x-2}=\frac{3x}{x-2}
+  \]
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      CE: $x\neq2$. Moltiplico per $x-2$:
+      \begin{gather*}
+        x^2+x= 3x\\
+        {\color<2->{rosso}\text{divido per } x:}\quad x+1= 3\\
+        x= 2\no
+      \end{gather*}
+      L'equazione è impossibile.
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \uncover<2->{\textcolor{rosso}{Non si divide per $x$: può valere $0$!}\\
+      \small(Ricordate \textit{Dividere per $x$}?)}
+      \uncover<3->{
+      \begin{gather*}
+        x^2-2x= 0\\
+        x(x-2)= 0\\
+        x=0\si \quad x=2\no
+      \end{gather*}
+      \begin{block}{}
+        \centering Non è impossibile: $x=0$
+      \end{block}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+% 5. Tutto giusto
+\begin{frame}{Esercizio 5}
+  \[
+    \frac{x}{x+2}+\frac{1}{x}=\frac{2}{x^2+2x}
+  \]
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      $x^2+2x=x(x+2)$, \ CE: $x\neq0$, $x\neq-2$.\\[0.3em]
+      Moltiplico per $x(x+2)$:
+      \begin{gather*}
+        x^2+(x+2)= 2\\
+        x^2+x = x(x+1)= 0\\
+        x=0\no \quad x=-1\si
+      \end{gather*}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \uncover<2->{\begin{block}{}
+        \centering\Large Qui è tutto giusto!
+      \end{block}}
+      \uncover<3->{Controllo $x=-1$:
+      \[
+        \frac{-1}{1}+\frac{1}{-1}=-2
+        \qquad
+        \frac{2}{1-2}=-2
+        \quad\textcolor{verde}{\checkmark}
+      \]}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Problema 1}
+  Un numero sommato al suo reciproco dà $\dfrac{10}{3}$. Che numero è?
+  \bigskip
+  \pause
+
+  \textcolor{grigio}{Indizio: chiama $x$ il numero; il suo reciproco è $\frac1x$.}
+  \pause
+  \[
+    x+\frac1x=\frac{10}{3} \qquad \text{CE: } x\neq0
+  \]
+  \pause
+  \vspace{-0.8em}
+  \[
+    3x^2+3=10x \qquad 3x^2-10x+3=0 \qquad \frac\Delta4=25-9=16
+  \]
+  \pause
+  \[
+    x=\frac{5\pm4}{3}: \qquad x=3 \qquad x=\frac13
+  \]
+  \pause
+  \begin{center}
+    \textcolor{rosso}{Tutte e due! Perché?}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Ricordiamo: l'incertezza relativa percentuale}
+  \[
+    i_\ell=\left(\frac{I_\ell}{\bar\ell}\times100\right)\%
+  \]
+  \bigskip
+  \pause
+  Esempio: una matita di $\bar\ell=20\,$cm, misurata con incertezza $I_\ell=0\virgola1\,$cm:
+  \[
+    i_\ell=\left(\frac{0\virgola1}{20}\times100\right)\%=0\virgola5\%
+  \]
+\end{frame}
+
+\begin{frame}{Problema 2}
+  Con lo stesso righello, che ha incertezza $0\virgola1\,$cm, misuro due matite:
+  la seconda è $5\,$cm più lunga della prima.
+  L'incertezza relativa percentuale della prima supera quella della seconda di $1\%$.
+  Quanto sono lunghe le matite?
+  \medskip
+  \pause
+
+  \textcolor{grigio}{Indizio: chiama $\bar\ell$ la lunghezza della prima; la seconda è lunga $\bar\ell+5$.}
+  \pause
+  \[
+    \frac{0\virgola1}{\bar\ell}\times100-\frac{0\virgola1}{\bar\ell+5}\times100=1
+    \qquad\Longrightarrow\qquad
+    \frac{10}{\bar\ell}-\frac{10}{\bar\ell+5}=1
+  \]
+  \pause
+  \[
+    10(\bar\ell+5)-10\bar\ell=\bar\ell(\bar\ell+5)
+    \qquad
+    \bar\ell^2+5\bar\ell-50=0
+    \qquad
+    (\bar\ell+10)(\bar\ell-5)=0
+  \]
+  \pause
+  \begin{center}
+    $\bar\ell=-10$ non ha senso: \ le matite sono lunghe $5\,$cm e $10\,$cm \ ($2\%$ e $1\%$).
+  \end{center}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Fabbrica la trappola}
+  \[
+    \frac{x}{x-1}+\frac{\textcolor{blu}{B}}{x}=\frac{\textcolor{blu}{C}}{x^2-x}
+  \]
+  Scegli i numeri $\textcolor{blu}{B}$ e $\textcolor{blu}{C}$ in modo che l'equazione abbia
+  \begin{enumerate}[(a)]
+    \item due soluzioni accettabili;
+    \item una soluzione accettabile e una da scartare;
+    \item nessuna soluzione.
+  \end{enumerate}
+  \bigskip
+  \pause
+  Poi passa la tua equazione alla coppia vicina: deve risolverla.
+\end{frame}
+
+\begin{frame}{Fabbrica la trappola: il trucco}
+  CE: $x\neq0$, $x\neq1$. \ Moltiplico per $x(x-1)$:
+  \[
+    x^2+B(x-1)=C \qquad\Longrightarrow\qquad x^2+Bx-(B+C)=0
+  \]
+  \pause
+  \begin{tabular}{lll}
+    (a) & $B=1$, $C=5$:  & $x^2+x-6=0$, \quad $x=2$, \ $x=-3$\\[0.3em]
+    \pause
+    (b) & $B=-4$, $C=1$: & $x^2-4x+3=0$, \quad $x=3$, \ $x=1\no$\\[0.3em]
+    \pause
+    (c) & $B=-1$, $C=1$: & $x^2-x=0$, \quad $x=0\no$, \ $x=1\no$
+  \end{tabular}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Biglietto d'uscita}
+  Da soli, su un foglietto da consegnare:
+  \vfill
+  \[
+    \Large \frac{x}{x-4}-\frac{2}{x}=\frac{8}{x^2-4x}
+  \]
+  \vfill
+\end{frame}
+
+\end{document}

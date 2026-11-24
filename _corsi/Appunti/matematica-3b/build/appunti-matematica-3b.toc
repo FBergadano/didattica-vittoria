@@ -27,4 +27,11 @@
 \contentsline {paragraph}{8. Una storiella per chiudere (85--97')}{10}{paragraph*.13}%
 \contentsline {paragraph}{Compiti (97--100')}{10}{paragraph*.14}%
 \contentsline {paragraph}{Se resto indietro}{11}{paragraph*.15}%
-\contentsline {section}{\numberline {1.8}Note sul capitolo}{11}{section.1.8}%
+\contentsline {subsection}{\numberline {1.7.2}Scaletta: altre due ore sulle frazionarie, con meno esercizi in fila}{11}{subsection.1.7.2}%
+\contentsline {paragraph}{1. Kahoot (0--15')}{11}{paragraph*.16}%
+\contentsline {paragraph}{2. Trova l'errore, a coppie (15--50')}{12}{paragraph*.17}%
+\contentsline {paragraph}{3. Due problemi (55--75')}{13}{paragraph*.18}%
+\contentsline {paragraph}{4. Fabbrica la trappola, a coppie (75--90')}{14}{paragraph*.19}%
+\contentsline {paragraph}{5. Biglietto d'uscita (90--100')}{14}{paragraph*.20}%
+\contentsline {paragraph}{Se resto indietro}{14}{paragraph*.21}%
+\contentsline {section}{\numberline {1.8}Note sul capitolo}{15}{section.1.8}%

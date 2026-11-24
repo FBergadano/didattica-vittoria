@@ -40,7 +40,13 @@
   "latex-workshop.latex.recipes": [
     {
       "name": "latexmk (xelatex)",
-      "tools": ["latexmk-xelatex"]
+      "tools": [
+        "latexmk-xelatex"
+      ]
     }
-  ]
+  ],
+  "files.exclude": {
+    "**/Diapositive/*.synctex.gz": true,
+    "**/Diapositive/build/build": true
+  }
 }

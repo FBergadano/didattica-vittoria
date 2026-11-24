@@ -486,7 +486,7 @@ Quale di queste due misure è più precisa?
 {"v":"b","t":"La massa di una moneta: $(7{,}5 \\pm 0{,}1)\\ \\text g$"},
 {"v":"c","t":"Sono ugualmente precise"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-auto-moneta" opts=_o ok="a" s="Bisogna confrontare le incertezze relative, non quelle assolute: per l'automobile $10/1200 \approx 0{,}8\%$, per la moneta $0{,}1/7{,}5 \approx 1{,}3\%$. Dieci chili sembrano tanti, ma rispetto a una tonnellata sono pochi." %}
+{% include mcq.html id="mcq-auto-moneta" opts=_o ok="a" s="Bisogna confrontare le incertezze relative, non quelle totali: per l'automobile $10/1200 \approx 0{,}8\%$, per la moneta $0{,}1/7{,}5 \approx 1{,}3\%$. Dieci chili sembrano tanti, ma rispetto a una tonnellata sono pochi." %}
 <div style="clear:both"></div>
 {% include box-end.html %}
 {% include unisci-end.html %}
@@ -499,13 +499,13 @@ Spesso la grandezza che ci interessa non si misura direttamente, ma si *calcola*
 
 {% include margin-note-end.html %}
 
-{% include margin-note.html testo="Somma e differenza: si sommano le incertezze assolute" %}
+{% include margin-note.html testo="Somma e differenza: si sommano le incertezze totali" %}
 
 Il primo esempio è una somma. Mettiamo in fila due banchi: il primo è lungo $(70{,}2 \pm 0{,}2)\ \text{cm}$, il secondo $(69{,}8 \pm 0{,}2)\ \text{cm}$. La fila è lunga $70{,}2 + 69{,}8 = 140{,}0\ \text{cm}$. Ciascuno dei due banchi, però, potrebbe essere lungo fino a $0{,}2\ \text{cm}$ in più di quanto abbiamo misurato; se lo fossero entrambi, la fila sarebbe più lunga di $0{,}2 + 0{,}2 = 0{,}4\ \text{cm}$. Allo stesso modo, se fossero entrambi più corti, la fila sarebbe più corta di $0{,}4\ \text{cm}$. Scriviamo quindi
 
 $$\ell = (140{,}0 \pm 0{,}4)\ \text{cm}.$$
 
-Nella somma, dunque, <u markdown="span">le **incertezze assolute** si sommano</u>. Lo stesso accade nella differenza: il risultato di una sottrazione è il più grande possibile quando il primo numero è più grande di quanto misurato e il secondo è più piccolo, e anche in questo caso le due incertezze si sommano.
+Nella somma, dunque, <u markdown="span">le **incertezze totali** si sommano</u>. Lo stesso accade nella differenza: il risultato di una sottrazione è il più grande possibile quando il primo numero è più grande di quanto misurato e il secondo è più piccolo, e anche in questo caso le due incertezze si sommano.
 
 {% include margin-note-end.html %}
 
@@ -515,24 +515,24 @@ Il secondo esempio è un prodotto. Il piano di un banco misura $(70{,}0 \pm 0{,}
 
 $$70{,}5 \times 50{,}5 \approx 3560\ \text{cm}^2, \qquad 69{,}5 \times 49{,}5 \approx 3440\ \text{cm}^2.$$
 
-L'area può quindi essere circa $60\ \text{cm}^2$ più grande o più piccola di $3500\ \text{cm}^2$. Questa volta non possiamo sommare le incertezze assolute dei lati, perché sono in centimetri, mentre l'area si misura in centimetri quadrati. <u markdown="span">Si sommano invece le **incertezze relative percentuali**</u>: per il lato lungo l'incertezza relativa è $0{,}5/70{,}0 \approx 0{,}7\%$, per quello corto $0{,}5/50{,}0 = 1\%$, e per l'area $60/3500 \approx 1{,}7\%$, cioè proprio $0{,}7\% + 1\%$.
+L'area può quindi essere circa $60\ \text{cm}^2$ più grande o più piccola di $3500\ \text{cm}^2$. Questa volta non possiamo sommare le incertezze totali dei lati, perché sono in centimetri, mentre l'area si misura in centimetri quadrati. <u markdown="span">Si sommano invece le **incertezze relative percentuali**</u>: per il lato lungo l'incertezza relativa è $0{,}5/70{,}0 \approx 0{,}7\%$, per quello corto $0{,}5/50{,}0 = 1\%$, e per l'area $60/3500 \approx 1{,}7\%$, cioè proprio $0{,}7\% + 1\%$.
 
 {% include margin-note-end.html %}
 
 Queste regole valgono in generale, e sono riassunte nel seguente teorema.
 
 {% include box-thm.html testo="Teorema di propagazione dell'incertezza" %}
-Siano $x$ e $y$ due grandezze misurate con incertezze assolute $I_x$, $I_y$ e incertezze relative percentuali $i_x = (I_x/\bar{x})\times 100\%$, $i_y = (I_y/\bar{y})\times 100\%$.
+Siano $x$ e $y$ due grandezze misurate con incertezze totali $I_x$, $I_y$ e incertezze relative percentuali $i_x = (I_x/\bar{x})\times 100\%$, $i_y = (I_y/\bar{y})\times 100\%$.
 
 | Operazione | Incertezza da usare | Regola |
 |---|---|---|
-| $z = x + y$ | **assoluta** | $I_z = I_x + I_y$ |
-| $z = x - y$ | **assoluta** | $I_z = I_x + I_y$ |
+| $z = x + y$ | **totale** | $I_z = I_x + I_y$ |
+| $z = x - y$ | **totale** | $I_z = I_x + I_y$ |
 | $z = x \cdot y$ | **relativa %** | $i_z = i_x + i_y$ |
 | $z = x / y$ | **relativa %** | $i_z = i_x + i_y$ |
 | $z = x^n$ | **relativa %** | $i_z = n\,i_x$ |
 
-L'incertezza assoluta risultante si ricava sempre come $I_z = \bar{z}\,\cdot\,i_z / 100$.
+L'incertezza totale risultante si ricava sempre come $I_z = \bar{z}\,\cdot\,i_z / 100$.
 {% include box-end.html %}
 
 {% include margin-note.html testo="Una potenza è un prodotto ripetuto" %}
@@ -543,15 +543,15 @@ La regola della potenza deriva da quella del prodotto. Infatti $x^2 = x \cdot x$
 
 {% include box-imp.html testo="Come si usa il teorema" %}
 1. Si calcola il valore $\bar z$ usando i valori medi delle grandezze misurate.
-2. Si guarda quale operazione compare nella formula: per una somma o una differenza servono le incertezze **assolute**, per un prodotto, un quoziente o una potenza servono le incertezze **relative percentuali**.
+2. Si guarda quale operazione compare nella formula: per una somma o una differenza servono le incertezze **totali**, per un prodotto, un quoziente o una potenza servono le incertezze **relative percentuali**.
 3. Se servono le incertezze relative, si calcolano per ciascuna grandezza misurata con $i_x = (I_x/\bar x)\times 100\%$.
 4. Si applica la regola della tabella.
-5. Se si è trovata l'incertezza relativa $i_z$, si ricava quella assoluta con $I_z = \bar z \cdot i_z/100$.
+5. Se si è trovata l'incertezza relativa $i_z$, si ricava quella totale con $I_z = \bar z \cdot i_z/100$.
 6. Si scrive il risultato nella forma $z = \bar z \pm I_z$, con la sua unità di misura.
 {% include box-end.html %}
 
 {% include box-warn.html testo="Attenzione: nella differenza le incertezze si sommano!" %}
-In $z = x - y$, le incertezze *assolute* si sommano (non si sottraggono). Se $x$ e $y$ sono vicini, $z = x - y$ è piccolo ma $I_z = I_x + I_y$ rimane grande: l'incertezza relativa percentuale su $z$ può diventare molto elevata.
+In $z = x - y$, le incertezze *totali* si sommano (non si sottraggono). 
 {% include box-end.html %}
 
 {% include margin-note.html testo="Più operazioni: un passo alla volta" %}
@@ -569,7 +569,7 @@ L'area vale $\bar S = (20{,}0\ \text{cm})^2 = 400\ \text{cm}^2$. Poiché $S = \e
 
 $$i_\ell = \frac{0{,}2\ \text{cm}}{20{,}0\ \text{cm}} \times 100\% = 1\%,$$
 
-e quella sull'area è il doppio, $i_S = 2 \cdot 1\% = 2\%$. L'incertezza assoluta sull'area è quindi
+e quella sull'area è il doppio, $i_S = 2 \cdot 1\% = 2\%$. L'incertezza totale sull'area è quindi
 
 $$I_S = \frac{400\ \text{cm}^2 \cdot 2}{100} = 8\ \text{cm}^2,$$
 
@@ -583,7 +583,7 @@ La velocità media vale $\bar v = \dfrac{100{,}0\ \text{m}}{12{,}5\ \text{s}} = 
 
 $$i_v = 0{,}5\% + 0{,}8\% = 1{,}3\%.$$
 
-L'incertezza assoluta è quindi $I_v = \dfrac{8{,}0\ \text{m/s} \cdot 1{,}3}{100} \approx 0{,}1\ \text{m/s}$, e il risultato è $v = (8{,}0 \pm 0{,}1)\ \text{m/s}$.
+L'incertezza totale è quindi $I_v = \dfrac{8{,}0\ \text{m/s} \cdot 1{,}3}{100} \approx 0{,}1\ \text{m/s}$, e il risultato è $v = (8{,}0 \pm 0{,}1)\ \text{m/s}$.
 
 Osserviamo che l'incertezza relativa sul tempo è maggiore di quella sulla distanza: <u markdown="span">per migliorare la misura della velocità bisognerebbe usare un cronometro più preciso</u>.
 
@@ -591,7 +591,7 @@ Osserviamo che l'incertezza relativa sul tempo è maggiore di quella sulla dista
 {% include scorri-slide.html titolo="Due operazioni: la velocità di una macchinina" %}
 Una macchinina giocattolo passa davanti a due tacche di un metro steso sul pavimento: la prima è a $x_1 = (20{,}0 \pm 0{,}5)\ \text{cm}$, la seconda a $x_2 = (80{,}0 \pm 0{,}5)\ \text{cm}$. Per andare dall'una all'altra impiega $t = (1{,}50 \pm 0{,}05)\ \text{s}$. Calcoliamo la sua velocità media, con l'incertezza.
 
-Per prima cosa calcoliamo la distanza percorsa, che è una differenza: $d = x_2 - x_1 = 80{,}0\ \text{cm} - 20{,}0\ \text{cm} = 60{,}0\ \text{cm}$. Le incertezze assolute si sommano, quindi $I_d = 0{,}5\ \text{cm} + 0{,}5\ \text{cm} = 1{,}0\ \text{cm}$, e $d = (60{,}0 \pm 1{,}0)\ \text{cm}$. L'incertezza relativa sulla distanza è $i_d = \dfrac{1{,}0}{60{,}0} \times 100\% \approx 1{,}7\%$.
+Per prima cosa calcoliamo la distanza percorsa, che è una differenza: $d = x_2 - x_1 = 80{,}0\ \text{cm} - 20{,}0\ \text{cm} = 60{,}0\ \text{cm}$. Le incertezze totali si sommano, quindi $I_d = 0{,}5\ \text{cm} + 0{,}5\ \text{cm} = 1{,}0\ \text{cm}$, e $d = (60{,}0 \pm 1{,}0)\ \text{cm}$. L'incertezza relativa sulla distanza è $i_d = \dfrac{1{,}0}{60{,}0} \times 100\% \approx 1{,}7\%$.
 
 Poi calcoliamo la velocità, che è un quoziente: $\bar v = \dfrac{60{,}0\ \text{cm}}{1{,}50\ \text{s}} = 40\ \text{cm/s}$. L'incertezza relativa sul tempo è $i_t = \dfrac{0{,}05}{1{,}50} \times 100\% \approx 3{,}3\%$, quindi $i_v \approx 1{,}7\% + 3{,}3\% = 5\%$ e
 
@@ -612,13 +612,13 @@ Per ogni grandezza calcolata, quali incertezze si sommano?
 {"t":"Il volume di un cubo","c":1},
 {"t":"La velocità, distanza diviso tempo","c":1}
 ]{% endcapture %}
-{% include sort.html id="sort-propagazione" dati=_sProp col0="Le incertezze assolute" col1="Le incertezze relative %" %}
+{% include sort.html id="sort-propagazione" dati=_sProp col0="Le incertezze totali" col1="Le incertezze relative %" %}
 {% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qProp %}[
-{"t":"Nella differenza $z = x - y$ le incertezze assolute si sottraggono.","ok":false,"s":"No: si sommano sempre, anche nella differenza."},
-{"t":"Nel prodotto $z = x \\cdot y$ si sommano le incertezze assolute.","ok":false,"s":"No: nel prodotto e nel quoziente si sommano le incertezze relative percentuali."},
+{"t":"Nella differenza $z = x - y$ le incertezze totali si sottraggono.","ok":false,"s":"No: si sommano sempre, anche nella differenza."},
+{"t":"Nel prodotto $z = x \\cdot y$ si sommano le incertezze totali.","ok":false,"s":"No: nel prodotto e nel quoziente si sommano le incertezze relative percentuali."},
 {"t":"Se il lato di un quadrato ha un'incertezza relativa del $2\\%$, l'area del quadrato ha un'incertezza relativa del $4\\%$.","ok":true,"s":"Sì: l'area è il lato al quadrato, e per una potenza l'incertezza relativa si moltiplica per l'esponente: $2 \\times 2\\% = 4\\%$."}
 ]{% endcapture %}
 {% include quiz.html domande=_qProp id="q-propagazione" senza_esempi="true" %}
@@ -812,7 +812,7 @@ Calcola di nuovo tutte le quantità che hai calcolato nella Fase 3 e nella Fase 
 
 {% include margin-note.html testo="Differenza, prodotto, quoziente" %}
 
-**Variazione di livello** (differenza: le incertezze assolute si sommano):
+**Variazione di livello** (differenza: le incertezze totali si sommano):
 
 $$z=\bar{h}_f - \bar{h}_i, \qquad I_z = I_{h_f} + I_{h_i}, \qquad i_z = \frac{I_z}{z} \times 100\%$$
 
@@ -905,7 +905,7 @@ $$ s=\frac{12.4-11.9}{2} \ \text{cm}. $$
 - Cosa significa scrivere $x = \bar{x} \pm I_x$?
 - Cos'è l'incertezza relativa percentuale? Come si calcola e a cosa serve?
 - Quando una misura è compatibile con un valore?
-- Perché nella differenza $z = x - y$ le incertezze *assolute* si sommano (e non si sottraggono)?
+- Perché nella differenza $z = x - y$ le incertezze *totali* si sommano (e non si sottraggono)?
 - Perché nel prodotto e nel quoziente si sommano le incertezze *relative*?
 - Perché nella propagazione dell'incertezza su $S = \pi(D/2)^2$ compare un fattore 2?
 
@@ -1030,7 +1030,7 @@ Quanto vale l'incertezza relativa percentuale $i_S$ sull'area di base?
 {% include num.html id="numIntiS" valore="2.5" unit="%" tol="2" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html titolo="3. L'incertezza sul dislivello" %}
-Quanto vale l'incertezza assoluta $I_z$ sul dislivello $z = \bar h_f - \bar h_i$?
+Quanto vale l'incertezza totale $I_z$ sul dislivello $z = \bar h_f - \bar h_i$?
 
 {% include num.html id="numIntIz" valore="0.2" unit="cm" %}
 {% include scorri-slide-end.html %}
@@ -1067,7 +1067,7 @@ Quale misura ha contribuito di più all'incertezza sulla densità, e come si pot
 {"v":"c","t":"Il dislivello $z$: con un sasso più grande, o un bicchiere più stretto, l'acqua salirebbe di più e la sua incertezza relativa sarebbe più piccola"},
 {"v":"d","t":"Nessuna: tutte contribuiscono allo stesso modo"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-int-peso" opts=_oIntPeso ok="c" s="$i_z \approx 16{,}7\%$, contro il $2{,}5\%$ dell'area e lo $0{,}3\%$ della massa. L'incertezza assoluta su $z$ resta $0{,}2\ \text{cm}$ comunque, ma se l'acqua sale di più diventa una parte più piccola del dislivello." %}
+{% include mcq.html id="mcq-int-peso" opts=_oIntPeso ok="c" s="$i_z \approx 16{,}7\%$, contro il $2{,}5\%$ dell'area e lo $0{,}3\%$ della massa. L'incertezza totale su $z$ resta $0{,}2\ \text{cm}$ comunque, ma se l'acqua sale di più diventa una parte più piccola del dislivello." %}
 {% include scorri-slide-end.html %}
 {% include scorri-end.html %}
 <div style="clear:both"></div>
@@ -1078,7 +1078,7 @@ Per chiudere, qualche domanda di ragionamento, come quelle che vi farò all'inte
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qInt %}[
 {"t":"Se ripeto tre volte una misura e trovo sempre lo stesso valore, l'incertezza è zero.","ok":false,"s":"No: la semidispersione è zero, ma resta l'incertezza strumentale."},
-{"t":"Nella differenza $z = h_f - h_i$ le incertezze assolute si sottraggono, come i valori.","ok":false,"s":"No, si sommano: nel caso peggiore $h_f$ è un po' troppo grande e $h_i$ un po' troppo piccolo, e i due sbagli si accumulano."},
+{"t":"Nella differenza $z = h_f - h_i$ le incertezze totali si sottraggono, come i valori.","ok":false,"s":"No, si sommano: nel caso peggiore $h_f$ è un po' troppo grande e $h_i$ un po' troppo piccolo, e i due sbagli si accumulano."},
 {"t":"In $S = \\pi(D/2)^2$ l'incertezza relativa su $S$ è il doppio di quella su $D$.","ok":true,"s":"Sì: $(D/2)^2$ è un prodotto di due fattori uguali, e nel prodotto le incertezze relative si sommano. Il $\\pi$ e il $2$ sono numeri esatti e non aggiungono incertezza."},
 {"t":"Un'incertezza relativa dell'$1\\%$ indica una misura più precisa di una con il $10\\%$, anche se le due misure riguardano grandezze diverse.","ok":true,"s":"Sì: l'incertezza relativa serve proprio a confrontare la precisione di misure diverse."},
 {"t":"Il metodo funziona anche con un tappo di sughero, che galleggia.","ok":false,"s":"No: il sughero resta in parte fuori dall'acqua, e il livello sale solo per la parte immersa."},

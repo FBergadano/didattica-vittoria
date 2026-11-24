@@ -1,12 +1,11 @@
 # Fdb version 4
-["xdvipdfmx"] 1793710846.59026 "build/eq-frazionarie.xdv" "build/eq-frazionarie.pdf" "build/eq-frazionarie" 1793710848.00641 0
-  "build/eq-frazionarie.xdv" 1793710846.09972 1331040 f83a28fa587b27599721c88b79659d14 "xelatex"
+["xdvipdfmx"] 1795425619.0345 "eq-frazionarie.xdv" "/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b/Diapositive/eq-frazionarie.pdf" "/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b/Diapositive/eq-frazionarie" 1795425619.87513 0
+  "eq-frazionarie.xdv" 1795425618.74969 1331040 23a35755c682240b551798e719567709 "xelatex"
   (generated)
-  "build/eq-frazionarie.pdf"
+  "/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b/Diapositive/eq-frazionarie.pdf"
   (rewritten before read)
-["xelatex"] 1793710812.85481 "/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b/eq-frazionarie.tex" "build/eq-frazionarie.xdv" "eq-frazionarie" 1793710847.98613 0
+["xelatex"] 1795425599.55438 "eq-frazionarie.tex" "eq-frazionarie.xdv" "eq-frazionarie" 1795425619.86897 0
   "/etc/texmf/web2c/texmf.cnf" 1784293461.96888 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/fulvio/Desktop/Scuola/didattica-vittoria/_corsi/Appunti/matematica-3b/eq-frazionarie.tex" 1793710743.14375 22955 ef5cf44e62c85e573e4fbbd9734cc9ec ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136768653 1528 f853c4d1b4e0550255e02831fdc8496f ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -255,9 +254,9 @@
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1769369718 41603 27f93b3067076450172040dcd57ca8b3 ""
   "/var/lib/texmf/web2c/xetex/xelatex.fmt" 1784293637 5946946 69ae8bc8924b15d5d8b35b1e757af58e ""
-  "build/eq-frazionarie.aux" 1793710846.09363 3226 0c9a4a9d28cd1eb998ff81b47d4b8364 "xelatex"
-  "build/eq-frazionarie.nav" 1793710846.09946 1689 8a8d62dfb91232332467db0b24e1301a "xelatex"
-  "build/eq-frazionarie.out" 1793710819.24673 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "eq-frazionarie.aux" 1795425618.74769 3226 0c9a4a9d28cd1eb998ff81b47d4b8364 "xelatex"
+  "eq-frazionarie.nav" 1795425618.74969 1689 8a8d62dfb91232332467db0b24e1301a "xelatex"
+  "eq-frazionarie.out" 1795425602.35641 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
   "eq-frazionarie.tex" 1793710743.14375 22955 ef5cf44e62c85e573e4fbbd9734cc9ec ""
   "immagini-frazionarie/aloe.jpg" 1793047818.97995 119039 0f12a9c70bc0694ba3b1564e868c17db ""
   "immagini-frazionarie/felce.jpg" 1793172596.22847 57055 251f588e52f9c431380d0ad1a1dc9770 ""
@@ -265,11 +264,11 @@
   "immagini-frazionarie/pigna.jpg" 1793047813.61896 195517 534070c8fa83e34ae610183fc4afeef4 ""
   "immagini-frazionarie/romanesco.jpg" 1793047806.88196 178683 a376280a9c5029d6bfc9b4328e2de0ca ""
   (generated)
-  "build/eq-frazionarie.aux"
-  "build/eq-frazionarie.log"
-  "build/eq-frazionarie.nav"
-  "build/eq-frazionarie.out"
-  "build/eq-frazionarie.snm"
-  "build/eq-frazionarie.toc"
-  "build/eq-frazionarie.xdv"
+  "eq-frazionarie.aux"
+  "eq-frazionarie.log"
+  "eq-frazionarie.nav"
+  "eq-frazionarie.out"
+  "eq-frazionarie.snm"
+  "eq-frazionarie.toc"
+  "eq-frazionarie.xdv"
   (rewritten before read)

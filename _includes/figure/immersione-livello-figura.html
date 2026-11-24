@@ -1,56 +1,34 @@
 {% comment %}
-Figura statica: due bicchieri cilindrici disegnati in prospettiva, prima e dopo aver immerso il sasso
-(metodo della variazione di livello). Prima: il sasso è sul tavolo, l'acqua arriva a h_i; sono indicati
-h_i e il diametro D. Dopo: il sasso è sul fondo, l'acqua arriva a h_f; la linea tratteggiata è il livello
-di prima e la quota arancione è Δh. Nessun parametro.
+Figura statica: due bicchieri cilindrici visti in sezione, prima e dopo aver immerso il sasso
+(metodo della variazione di livello). Prima: il sasso è sul tavolo, l'acqua arriva a h_i; sopra è
+indicato il diametro interno D. Dopo: il sasso è sul fondo, l'acqua arriva a h_f; la linea tratteggiata
+è il livello di prima e la quota arancione è Δh. Stile da libro: contorni a inchiostro, colori piatti.
+Nessun parametro.
 {% endcomment %}
-<svg viewBox="0 0 500 328" xmlns="http://www.w3.org/2000/svg" style="max-width:540px;width:100%;display:block;margin:1.2rem auto;" role="img" aria-label="Il livello dell'acqua prima e dopo aver immerso il sasso">
-<defs>
-<linearGradient id="imliv-vetro" x1="0" x2="1" y1="0" y2="0">
- <stop offset="0" stop-color="#cbd5e1" stop-opacity="0.55"/><stop offset="0.18" stop-color="#ffffff" stop-opacity="0.15"/>
- <stop offset="0.75" stop-color="#e2e8f0" stop-opacity="0.1"/><stop offset="1" stop-color="#94a3b8" stop-opacity="0.5"/></linearGradient>
-<linearGradient id="imliv-acqua" x1="0" x2="1" y1="0" y2="0">
- <stop offset="0" stop-color="#60a5fa" stop-opacity="0.75"/><stop offset="0.35" stop-color="#93c5fd" stop-opacity="0.6"/>
- <stop offset="1" stop-color="#3b82f6" stop-opacity="0.75"/></linearGradient>
-<radialGradient id="imliv-sasso" cx="0.35" cy="0.3" r="0.8">
- <stop offset="0" stop-color="#d1d5db"/><stop offset="0.6" stop-color="#8b8f97"/><stop offset="1" stop-color="#52565e"/></radialGradient>
-<radialGradient id="imliv-ombra" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000" stop-opacity="0.22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
-<marker id="imliv-fr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 Z" fill="#334155"/></marker>
-</defs>
-<line x1="20" y1="252" x2="480" y2="252" stroke="#d6d3d1" stroke-width="2"/>
-<ellipse cx="130" cy="255" rx="69" ry="14" fill="url(#imliv-ombra)"/>
-<path d="M 75,240 A 55 11 0 0 0 185,240 L 185,245 A 55 11 0 0 1 75,245 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
-<path d="M 75,60 A 55 11 0 0 1 185,60" fill="none" stroke="#94a3b8" stroke-width="1.6"/>
-
-<path d="M 75.0,170 L 75,240 A 55 11 0 0 0 185,240 L 185.0,170 A 55.0 11 0 0 1 75.0,170 Z" fill="url(#imliv-acqua)"/>
-<ellipse cx="130" cy="170" rx="55.0" ry="11" fill="#dbeafe" fill-opacity="0.85" stroke="#3b82f6" stroke-width="1.4"/>
-<path d="M 75,60 L 75,240 A 55 11 0 0 0 185,240 L 185,60 A 55 11 0 0 1 75,60 Z" fill="url(#imliv-vetro)" stroke="#475569" stroke-width="2"/>
-<path d="M 75,60 A 55 11 0 0 0 185,60" fill="none" stroke="#475569" stroke-width="2"/>
-<path d="M 87.1,77 L 87.1,234" stroke="#fff" stroke-opacity="0.7" stroke-width="5" stroke-linecap="round"/>
-<path d="M 178.4,81 L 178.4,226" stroke="#fff" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
-<text x="130" y="212" font-size="17" fill="#1e3a8a" text-anchor="middle" font-family="Georgia,serif">acqua</text>
-<ellipse cx="228" cy="246" rx="28" ry="5" fill="url(#imliv-ombra)"/><g transform="translate(228,229) scale(1)"><path d="M -24,-2 C -26,-14 -9,-21 4,-19 C 17,-17 27,-9 25,3 C 23,14 9,18 -4,17 C -17,16 -23,9 -24,-2 Z" fill="url(#imliv-sasso)" stroke="#374151" stroke-width="1.4"/><path d="M -12,-12 C -6,-15 2,-15 7,-13" fill="none" stroke="#fff" stroke-opacity="0.45" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="5" r="1.6" fill="#374151" opacity="0.5"/><circle cx="-8" cy="8" r="1.2" fill="#374151" opacity="0.4"/></g>
-<ellipse cx="360" cy="255" rx="69" ry="14" fill="url(#imliv-ombra)"/>
-<path d="M 305,240 A 55 11 0 0 0 415,240 L 415,245 A 55 11 0 0 1 305,245 Z" fill="#cbd5e1" stroke="#64748b" stroke-width="1.5"/>
-<path d="M 305,60 A 55 11 0 0 1 415,60" fill="none" stroke="#94a3b8" stroke-width="1.6"/>
-<g transform="translate(360,221) scale(1)"><path d="M -24,-2 C -26,-14 -9,-21 4,-19 C 17,-17 27,-9 25,3 C 23,14 9,18 -4,17 C -17,16 -23,9 -24,-2 Z" fill="url(#imliv-sasso)" stroke="#374151" stroke-width="1.4"/><path d="M -12,-12 C -6,-15 2,-15 7,-13" fill="none" stroke="#fff" stroke-opacity="0.45" stroke-width="2.5" stroke-linecap="round"/><circle cx="8" cy="5" r="1.6" fill="#374151" opacity="0.5"/><circle cx="-8" cy="8" r="1.2" fill="#374151" opacity="0.4"/></g>
-<path d="M 305.0,140 L 305,240 A 55 11 0 0 0 415,240 L 415.0,140 A 55.0 11 0 0 1 305.0,140 Z" fill="url(#imliv-acqua)"/>
-<ellipse cx="360" cy="140" rx="55.0" ry="11" fill="#dbeafe" fill-opacity="0.85" stroke="#3b82f6" stroke-width="1.4"/>
-<path d="M 305,60 L 305,240 A 55 11 0 0 0 415,240 L 415,60 A 55 11 0 0 1 305,60 Z" fill="url(#imliv-vetro)" stroke="#475569" stroke-width="2"/>
-<path d="M 305,60 A 55 11 0 0 0 415,60" fill="none" stroke="#475569" stroke-width="2"/>
-<path d="M 317.1,77 L 317.1,234" stroke="#fff" stroke-opacity="0.7" stroke-width="5" stroke-linecap="round"/>
-<path d="M 408.4,81 L 408.4,226" stroke="#fff" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
-<path d="M 305,170 A 55 11 0 0 0 415,170" fill="none" stroke="#1e40af" stroke-width="1.3" stroke-dasharray="5,4"/>
-<line x1="59" y1="240" x2="59" y2="170" stroke="#334155" stroke-width="1.5" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
-<text x="53" y="210.0" font-size="21" font-style="italic" fill="#0f172a" text-anchor="end" font-family="Georgia,serif">h<tspan font-size="14" dy="4">i</tspan></text>
-<line x1="289" y1="240" x2="289" y2="140" stroke="#334155" stroke-width="1.5" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
-<text x="283" y="195.0" font-size="21" font-style="italic" fill="#0f172a" text-anchor="end" font-family="Georgia,serif">h<tspan font-size="14" dy="4">f</tspan></text>
-<line x1="417" y1="140" x2="435" y2="140" stroke="#94a3b8" stroke-width="1"/><line x1="417" y1="170" x2="435" y2="170" stroke="#94a3b8" stroke-width="1"/>
-<line x1="429" y1="170" x2="429" y2="140" stroke="#c2410c" stroke-width="1.5" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
-<text x="437" y="161.0" font-size="21" fill="#c2410c" font-family="Georgia,serif">Δ<tspan font-style="italic">h</tspan></text>
-<line x1="75" y1="257" x2="75" y2="284" stroke="#94a3b8" stroke-width="1"/><line x1="185" y1="257" x2="185" y2="284" stroke="#94a3b8" stroke-width="1"/>
-<line x1="75" y1="278" x2="185" y2="278" stroke="#334155" stroke-width="1.5" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
-<text x="130" y="272" font-size="21" font-style="italic" fill="#0f172a" text-anchor="middle" font-family="Georgia,serif">D</text>
-<text x="155" y="320" font-size="17" fill="#475569" text-anchor="middle" font-family="Georgia,serif">Prima dell'immersione</text>
-<text x="360" y="320" font-size="17" fill="#475569" text-anchor="middle" font-family="Georgia,serif">Dopo l'immersione</text>
+<svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" style="max-width:540px;width:100%;display:block;margin:1.2rem auto;" role="img" aria-label="Il livello dell'acqua prima e dopo aver immerso il sasso">
+<defs><marker id="imliv-fr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1,1.5 L9,5 L1,8.5" fill="none" stroke="#222" stroke-width="1.4"/></marker><marker id="imliv-fo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1,1.5 L9,5 L1,8.5" fill="none" stroke="#c2410c" stroke-width="1.4"/></marker></defs>
+<rect x="80" y="170" width="100" height="66" fill="#bfe0ea"/>
+<line x1="80" y1="170" x2="180" y2="170" stroke="#2a6f8a" stroke-width="1.6"/>
+<path d="M 75,60 V 244 H 185 V 60 H 180 V 236 H 80 V 60 Z" fill="#e4eef0" stroke="#222" stroke-width="1.6" stroke-linejoin="round"/>
+<rect x="310" y="140" width="100" height="96" fill="#bfe0ea"/>
+<g transform="translate(360,236) scale(1)" stroke="#222" stroke-linejoin="round"><path d="M -24,0 L -21,-12 L -10,-20 L 5,-19 L 18,-13 L 25,-3 L 24,0 Z" fill="#a39d92" stroke-width="1.6"/><path d="M -10,-20 L -4,-9 L 18,-13 M -4,-9 L -7,0 M -21,-12 L -4,-9" fill="none" stroke-width="0.9"/></g>
+<line x1="310" y1="140" x2="410" y2="140" stroke="#2a6f8a" stroke-width="1.6"/>
+<path d="M 305,60 V 244 H 415 V 60 H 410 V 236 H 310 V 60 Z" fill="#e4eef0" stroke="#222" stroke-width="1.6" stroke-linejoin="round"/>
+<g transform="translate(232,244) scale(1)" stroke="#222" stroke-linejoin="round"><path d="M -24,0 L -21,-12 L -10,-20 L 5,-19 L 18,-13 L 25,-3 L 24,0 Z" fill="#a39d92" stroke-width="1.6"/><path d="M -10,-20 L -4,-9 L 18,-13 M -4,-9 L -7,0 M -21,-12 L -4,-9" fill="none" stroke-width="0.9"/></g>
+<line x1="20" y1="244" x2="480" y2="244" stroke="#222" stroke-width="1.6"/>
+<path d="M30,244 l-8,8 M40,244 l-8,8 M50,244 l-8,8 M60,244 l-8,8 M70,244 l-8,8 M80,244 l-8,8 M90,244 l-8,8 M100,244 l-8,8 M110,244 l-8,8 M120,244 l-8,8 M130,244 l-8,8 M140,244 l-8,8 M150,244 l-8,8 M160,244 l-8,8 M170,244 l-8,8 M180,244 l-8,8 M190,244 l-8,8 M200,244 l-8,8 M210,244 l-8,8 M220,244 l-8,8 M230,244 l-8,8 M240,244 l-8,8 M250,244 l-8,8 M260,244 l-8,8 M270,244 l-8,8 M280,244 l-8,8 M290,244 l-8,8 M300,244 l-8,8 M310,244 l-8,8 M320,244 l-8,8 M330,244 l-8,8 M340,244 l-8,8 M350,244 l-8,8 M360,244 l-8,8 M370,244 l-8,8 M380,244 l-8,8 M390,244 l-8,8 M400,244 l-8,8 M410,244 l-8,8 M420,244 l-8,8 M430,244 l-8,8 M440,244 l-8,8 M450,244 l-8,8 M460,244 l-8,8 M470,244 l-8,8 M480,244 l-8,8" stroke="#222" stroke-width="0.8"/>
+<text x="130" y="210" font-size="17" fill="#2a6f8a" text-anchor="middle" font-family="Georgia,serif">acqua</text>
+<line x1="310" y1="170" x2="410" y2="170" stroke="#2a6f8a" stroke-width="1.2" stroke-dasharray="5,4"/>
+<line x1="62" y1="236" x2="62" y2="170" stroke="#222" stroke-width="1.2" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
+<text x="55" y="209" font-size="21" font-style="italic" fill="#222" text-anchor="end" font-family="Georgia,serif">h<tspan font-size="14" dy="4">i</tspan></text>
+<line x1="292" y1="236" x2="292" y2="140" stroke="#222" stroke-width="1.2" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
+<text x="285" y="194" font-size="21" font-style="italic" fill="#222" text-anchor="end" font-family="Georgia,serif">h<tspan font-size="14" dy="4">f</tspan></text>
+<line x1="418" y1="140" x2="438" y2="140" stroke="#222" stroke-width="0.8"/><line x1="418" y1="170" x2="438" y2="170" stroke="#222" stroke-width="0.8"/>
+<line x1="432" y1="170" x2="432" y2="140" stroke="#c2410c" stroke-width="1.4" marker-start="url(#imliv-fo)" marker-end="url(#imliv-fo)"/>
+<text x="440" y="161" font-size="21" fill="#c2410c" font-family="Georgia,serif">Δ<tspan font-style="italic">h</tspan></text>
+<line x1="80" y1="56" x2="80" y2="30" stroke="#222" stroke-width="0.8"/><line x1="180" y1="56" x2="180" y2="30" stroke="#222" stroke-width="0.8"/>
+<line x1="80" y1="38" x2="180" y2="38" stroke="#222" stroke-width="1.2" marker-start="url(#imliv-fr)" marker-end="url(#imliv-fr)"/>
+<text x="130" y="30" font-size="21" font-style="italic" fill="#222" text-anchor="middle" font-family="Georgia,serif">D</text>
+<text x="150" y="288" font-size="17" fill="#444" text-anchor="middle" font-family="Georgia,serif">Prima dell'immersione</text>
+<text x="360" y="288" font-size="17" fill="#444" text-anchor="middle" font-family="Georgia,serif">Dopo l'immersione</text>
 </svg>
