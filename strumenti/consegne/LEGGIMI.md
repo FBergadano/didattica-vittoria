@@ -45,21 +45,26 @@
 ## Appunti presi a lezione (bonus alla verifica)
 
 Chi prende appunti ad almeno il 90% delle lezioni ha mezzo punto in più alla
-verifica; chi arriva almeno al 70%, un quarto di punto. Le lezioni in cui lo
-studente è assente non contano (la percentuale è sulle lezioni in cui c'era).
+verifica; chi arriva almeno al 70%, un quarto di punto. Matematica e Fisica si
+contano separatamente. Le lezioni in cui lo studente è assente non contano (la
+percentuale è sulle lezioni in cui c'era).
 
-- A fine lezione, pagina del docente → scheda **Appunti**: la data è già
-  quella di oggi e tutti partono con «✓ Appunti». Tocca solo chi non li ha
-  presi bene (✗ No) o è assente, poi **Salva la lezione**. Per correggere una
-  lezione passata, clicca sulla sua data nel riepilogo.
-- Il riepilogo mostra, per ogni codice, lezioni con appunti, percentuale e
-  bonus (+½, +¼).
-- Dopo ogni verifica, in «Conta le lezioni dal» metti il giorno dopo e premi
-  **Ricomincia da qui**: il conteggio riparte da zero (le lezioni vecchie
-  restano salvate, ma non contano).
-- Lo studente vede nella finestrella 👤 la sua percentuale, il bonus che ha
-  in quel momento e l'elenco delle lezioni (✓, ✗, assente).
-- Nel database ci sono solo codice, giorno e stato (ok, no, assente).
+- Il mio orario è in `_data/orario.yml`: serve solo a proporre la lezione del
+  giorno. Due ore di fila della stessa materia valgono come una lezione.
+- A fine lezione, pagina del docente → scheda **Appunti**: la data è quella di
+  oggi e la materia è quella in orario (se ho scambiato le ore, scelgo l'altra).
+  Tutti partono con «✓ Appunti»: tocco solo chi non li ha presi bene (✗ No) o
+  è assente, poi **Salva**. **Una lezione conta solo se la salvo**: se non c'è
+  stata, o c'era una verifica, non salvo niente.
+- Per correggere una lezione passata clicco sulla sua data nel riepilogo; da
+  lì posso anche cancellarla.
+- Per ogni materia, il riepilogo mostra lezioni con appunti, percentuale e
+  bonus (+½, +¼). Dopo ogni verifica, in «Conta le lezioni dal» metto il giorno
+  dopo e premo **Ricomincia da qui**: il conteggio di quella materia riparte da
+  zero (le lezioni vecchie restano salvate, ma non contano).
+- Lo studente vede nella finestrella 👤, materia per materia, la sua
+  percentuale, il bonus che ha in quel momento e l'elenco delle lezioni.
+- Nel database ci sono solo codice, giorno, materia e stato (ok, no, assente).
   Serve la Worker aggiornata a novembre 2026 (`npx wrangler@4 deploy`).
 
 ## Stato attuale (ottobre 2026)
