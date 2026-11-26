@@ -116,6 +116,29 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   .stud b { letter-spacing: .05em; }
   .stud small { color: var(--muto); }
   textarea.codici { width: 100%; min-height: 9em; font-family: ui-monospace, monospace; text-transform: uppercase; }
+  /* appunti presi a lezione */
+  .ap-righe { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: .45rem; margin-top: .7rem; }
+  .ap-riga { display: flex; align-items: center; gap: .5rem; border: 1px solid var(--bordo); border-radius: 10px; padding: .35rem .5rem; background: #fff; }
+  .ap-riga b { min-width: 4.2em; letter-spacing: .05em; }
+  .ap-seg { display: flex; flex: 1; }
+  .ap-seg button { flex: 1; border-radius: 0; padding: .45rem .3rem; font-size: .85rem; color: var(--testo2); }
+  .ap-seg button:first-child { border-radius: 8px 0 0 8px; }
+  .ap-seg button:last-child { border-radius: 0 8px 8px 0; }
+  .ap-seg button + button { border-left: none; }
+  .ap-seg button.on[data-v="ok"]  { background: var(--ok-bg); color: var(--ok); border-color: #86efac; font-weight: 700; }
+  .ap-seg button.on[data-v="no"]  { background: var(--err-bg); color: var(--err); border-color: #fca5a5; font-weight: 700; }
+  .ap-seg button.on[data-v="ass"] { background: #e2e8f0; color: #334155; font-weight: 700; }
+  .ap-barra { display: flex; flex-wrap: wrap; gap: .5rem .8rem; align-items: center; }
+  .ap-conta { font-size: .85rem; color: var(--testo2); }
+  table.griglia td.ap-ok { color: var(--ok); font-weight: 700; }
+  table.griglia td.ap-no { color: var(--err); font-weight: 700; background: var(--err-bg); }
+  table.griglia td.ap-ass { color: var(--muto); }
+  table.griglia td.ap-bonus { font-weight: 700; }
+  table.griglia th.ap-sel { background: var(--accent-light); }
+  .ap-mat { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .6rem; }
+  .ap-mat button { padding: .45rem .9rem; }
+  .ap-mat button.on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+  .ap-mat small { font-weight: 400; opacity: .85; }
 </style>
 </head>
 <body>
@@ -126,6 +149,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   <nav class="schede" id="schede" hidden>
     <button data-s="compiti" class="on">Compiti</button>
     <button data-s="tutte">Tutte le risposte</button>
+    <button data-s="appunti">Appunti</button>
     <button data-s="foto">Foto</button>
     <button data-s="schemi">Schemi e relazioni</button>
     <button data-s="dubbi">Dubbi<span id="nd"></span></button>
@@ -154,6 +178,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
 
   <section id="s-compiti" hidden></section>
   <section id="s-tutte" hidden></section>
+  <section id="s-appunti" hidden></section>
   <section id="s-foto" hidden></section>
   <section id="s-schemi" hidden></section>
   <section id="s-dubbi" hidden></section>
@@ -170,6 +195,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   var BASE = {{ site.baseurl | jsonify }};
   var SCADENZA = {{ site.consegne_scadenza | default: "08:00" | jsonify }};
   var COMPITI = {{ site.data.compiti | default: nil | jsonify }} || {};
+  var ORARIO = {{ site.data.orario | default: nil | jsonify }} || {};
   var CAPITOLI = {
     {% for c in _capitoli %}{{ c.url | jsonify }}: {{ c.title | jsonify }}{% unless forloop.last %},{% endunless %}
     {% endfor %}
@@ -223,7 +249,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
   function ordineEs(x) { x = String(x || ''); return x.charAt(0) === 'R' ? 1000 + (+x.slice(1) || 0) : (+x || 1e9); }
 
   // ───────── stato ─────────
-  var studenti = [], classe = null, righe = [], dubbi = [], foto = [], schemi = [], osservazioni = [], ossId = 0, scheda = 'compiti';
+  var appunti = null, studenti = [], classe = null, righe = [], dubbi = [], foto = [], schemi = [], osservazioni = [], ossId = 0, scheda = 'compiti';
   function chiaveCompito(c) { return String(c.data).slice(0, 10) + '|' + [].concat(c.capitolo || []).join(','); }
   function fotoDi(c, codice) { var k = chiaveCompito(c); return foto.filter(function(f) { return f.compito === k && (!codice || f.codice === codice); }); }
   // carica le immagini (una richiesta per foto) dentro gli <img data-foto="id">
@@ -290,7 +316,8 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
       chiama('/docente/dubbi?classe=' + encodeURIComponent(classe)).then(function(j) { dubbi = j.dubbi || []; }),
       chiama('/docente/foto?classe=' + encodeURIComponent(classe)).then(function(j) { foto = j.foto || []; }).catch(function() { foto = []; }),
       chiama('/docente/schemi?classe=' + encodeURIComponent(classe)).then(function(j) { schemi = j.schemi || []; }).catch(function() { schemi = null; }),
-      caricaOsservazioni()
+      caricaOsservazioni(),
+      caricaAppunti()
     ]).then(function() { avviso(null); mostra(); }).catch(function(e) { if (e.message !== 'accesso') avviso('<b>Errore:</b> ' + esc(e.message || e) + '. Premi ↻ Aggiorna; se resta, mandami questo messaggio.', true); });
   }
   // riquadro in cima alla pagina per «caricamento…» ed errori (prima la pagina restava bianca)
@@ -307,7 +334,7 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     $('#nd').innerHTML = aperti ? '<span class="badge">' + aperti + '</span>' : '';
     var nuove = (osservazioni || []).filter(function(o) { return !o.letta; }).length;
     $('#no').innerHTML = nuove ? '<span class="badge">' + nuove + '</span>' : '';
-    try { ({ compiti: vistaCompiti, tutte: vistaTutte, foto: vistaFoto, schemi: vistaSchemi, dubbi: vistaDubbi, osservazioni: vistaOsservazioni, studenti: vistaStudenti, dati: vistaDati })[scheda](); }
+    try { ({ compiti: vistaCompiti, tutte: vistaTutte, appunti: vistaAppunti, foto: vistaFoto, schemi: vistaSchemi, dubbi: vistaDubbi, osservazioni: vistaOsservazioni, studenti: vistaStudenti, dati: vistaDati })[scheda](); }
     catch (e) { avviso('<b>Errore nel mostrare la scheda:</b> ' + esc(e.message) + (e.stack ? '<br><small>' + esc(String(e.stack).split('\n').slice(0, 3).join(' · ')) + '</small>' : '') + '<br>Mandami questo messaggio.', true); }
   }
 
@@ -630,6 +657,114 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
     });
   }
 
+  // ───────── appunti presi a lezione (mezzo punto con il 90%, un quarto con il 70%) ─────────
+  // Una lezione = classe + giorno + materia; conta solo se la salvo. Le assenze non contano:
+  // la percentuale è sulle lezioni in cui lo studente c'era. Matematica e Fisica si contano a parte.
+  var GIORNI_ESTESI = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
+  var ap = null; // { classe, data, materia, stati, salvata }
+  function caricaAppunti() {
+    return chiama('/docente/appunti', { classe: classe }).then(function(j) { appunti = j; }).catch(function(e) { if (e.message === 'accesso') throw e; appunti = null; });
+  }
+  function oggiStr() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function inOrario(data) { var o = ORARIO[classe] || {}; return [].concat(o[GIORNI_ESTESI[giorno(data).getDay()]] || []); }
+  function materieClasse() {
+    var m = {}, o = ORARIO[classe] || {};
+    Object.keys(o).forEach(function(g) { [].concat(o[g] || []).forEach(function(x) { m[x] = 1; }); });
+    (appunti && appunti.righe || []).forEach(function(r) { m[r[1]] = 1; });
+    var l = Object.keys(m); return l.length ? l : ['Matematica', 'Fisica'];
+  }
+  function apSegnate() { // { 'data|materia': { codice: stato } }
+    var L = {}; (appunti.righe || []).forEach(function(r) { var k = r[0] + '|' + r[1]; (L[k] = L[k] || {})[r[2]] = r[3]; }); return L;
+  }
+  function apBonus(ok, pres) {
+    if (!pres) return { pct: null, txt: '—' };
+    var p = ok / pres; return { pct: p, txt: p >= 0.9 ? '+½' : p >= 0.7 ? '+¼' : '—' };
+  }
+  function apScegli(data, materia) {
+    var S = apSegnate(), mat = materieClasse();
+    if (!materia) { // la materia proposta: la prima in orario non ancora salvata, poi la prima in orario
+      var oo = inOrario(data);
+      materia = oo.filter(function(m) { return !S[data + '|' + m]; })[0] || oo[0] || mat[0];
+    }
+    var k = data + '|' + materia;
+    ap = { classe: classe, data: data, materia: materia, salvata: !!S[k], stati: {} };
+    codiciDi(classe).forEach(function(c) { ap.stati[c] = (S[k] && S[k][c]) || 'ok'; });
+  }
+  function vistaAppunti() {
+    var sec = $('#s-appunti'), cod = codiciDi(classe);
+    if (appunti === null) { sec.innerHTML = '<div class="card">Per segnare gli appunti serve la Worker aggiornata: dalla cartella <code>strumenti/consegne</code> lancia <code>npx wrangler@4 deploy</code>, poi premi ↻ Aggiorna.</div>'; return; }
+    if (!cod.length) { sec.innerHTML = '<div class="card">La classe <b>' + esc(classe) + '</b> non ha ancora codici: aggiungili nella scheda <b>Studenti</b>.</div>'; return; }
+    if (!ap || ap.classe !== classe) apScegli(oggiStr());
+    var S = apSegnate(), mat = materieClasse(), oo = inOrario(ap.data), gg = GIORNI_ESTESI[giorno(ap.data).getDay()];
+    var h = '<div class="card"><div class="ap-barra"><b>Lezione del</b> <input type="date" id="apdata" value="' + esc(ap.data) + '">' +
+      '<span class="nota" style="margin:0">' + (oo.length ? 'In orario il ' + gg + ': ' + esc(oo.join(' e ')) + '.' : 'Il ' + gg + ' non hai lezione in orario con la ' + esc(classe) + ': se l\'hai fatta lo stesso, scegli la materia.') + '</span></div>' +
+      '<div class="ap-mat">' + mat.map(function(m) {
+        var segn = !!S[ap.data + '|' + m], orr = oo.indexOf(m) >= 0;
+        return '<button data-m="' + esc(m) + '"' + (m === ap.materia ? ' class="on"' : '') + '>' + esc(m) +
+          (segn ? ' <small>✓ salvata</small>' : orr ? ' <small>in orario</small>' : '') + '</button>';
+      }).join('') + '</div>' +
+      '<p class="nota">La lezione conta solo se la salvi: se non c\'è stata, o c\'era una verifica, non salvare niente. ' +
+      'Tutti partono con «appunti ok»: tocca solo chi non li ha presi bene o è assente. Gli assenti non contano nella percentuale.</p>' +
+      '<div class="ap-righe">' + cod.map(function(c) {
+        return '<div class="ap-riga"><b>' + esc(c) + '</b><div class="ap-seg" data-c="' + esc(c) + '">' +
+          [['ok', '✓ Appunti'], ['no', '✗ No'], ['ass', 'Assente']].map(function(o) {
+            return '<button data-v="' + o[0] + '"' + (ap.stati[c] === o[0] ? ' class="on"' : '') + '>' + o[1] + '</button>';
+          }).join('') + '</div></div>';
+      }).join('') + '</div>' +
+      '<p class="ap-barra" style="margin-top:.8rem"><button class="pri" id="apsalva">' + (ap.salvata ? 'Salva le correzioni' : 'Salva la lezione di ' + esc(ap.materia)) + '</button> <span class="ap-conta" id="apconta"></span> <span id="apmsg" class="nota" style="margin:0"></span>' +
+      (ap.salvata ? '<span style="flex:1"></span><button class="peric" id="apcanc">Cancella questa lezione</button>' : '') + '</p></div>';
+    // riepilogo, una materia per volta
+    mat.forEach(function(m) {
+      var da = (appunti.da || {})[m] || '';
+      var date = Object.keys(S).filter(function(k) { var p = k.split('|'); return p[1] === m && p[0] >= da; }).map(function(k) { return k.split('|')[0]; }).sort().reverse();
+      h += '<div class="card"><b>' + esc(m) + ' — riepilogo</b>' +
+        '<p class="ap-barra" style="margin-top:.5rem">Conta le lezioni dal <input type="date" class="apda" data-m="' + esc(m) + '" value="' + esc(da) + '"> <button class="apdasalva" data-m="' + esc(m) + '">Ricomincia da qui</button> <span class="nota apdamsg" style="margin:0"></span></p>';
+      if (!date.length) { h += '<p class="nota">Nessuna lezione segnata' + (da ? ' dal ' + esc(bella(giorno(da))) : '') + '.</p></div>'; return; }
+      h += '<div class="tab-wrap"><table class="griglia"><thead><tr><th class="cod">Codice</th><th>Appunti</th><th>%</th><th>Bonus</th>' +
+        date.map(function(d) { return '<th data-d="' + d + '" data-m="' + esc(m) + '"' + (d === ap.data && m === ap.materia ? ' class="ap-sel"' : '') + '><span class="d">' + esc(bella(giorno(d))) + '</span></th>'; }).join('') + '</tr></thead><tbody>' +
+        cod.map(function(c) {
+          var t = { ok: 0, no: 0, ass: 0 };
+          date.forEach(function(d) { var v = S[d + '|' + m][c]; if (v) t[v]++; });
+          var pres = t.ok + t.no, b = apBonus(t.ok, pres);
+          return '<tr><td class="cod">' + esc(c) + '</td><td>' + t.ok + ' su ' + pres + (t.ass ? ' <small class="nota">(' + t.ass + ' ass.)</small>' : '') + '</td>' +
+            '<td>' + (b.pct === null ? '—' : Math.round(b.pct * 100) + '%') + '</td><td class="ap-bonus">' + b.txt + '</td>' +
+            date.map(function(d) { var v = S[d + '|' + m][c]; return '<td class="ap-' + (v || 'nd') + '">' + (v === 'ok' ? '✓' : v === 'no' ? '✗' : v === 'ass' ? 'A' : '') + '</td>'; }).join('') + '</tr>';
+        }).join('') + '</tbody></table></div></div>';
+    });
+    h += '<p class="nota">Bonus alla verifica: ½ punto con gli appunti ad almeno il 90% delle lezioni, ¼ di punto con almeno il 70%, materia per materia. ' +
+      'Ogni studente vede le sue percentuali nella finestrella 👤. Clicca su una data per correggere quella lezione. ' +
+      'Dopo una verifica, in «Conta le lezioni dal» metti il giorno successivo: il conteggio di quella materia riparte da zero (le lezioni vecchie restano salvate).</p>';
+    sec.innerHTML = h;
+    function conta() { var n = { ok: 0, no: 0, ass: 0 }; cod.forEach(function(c) { n[ap.stati[c]]++; }); $('#apconta').textContent = n.ok + ' con appunti, ' + n.no + ' senza, ' + n.ass + ' assenti'; }
+    conta();
+    $$('.ap-seg', sec).forEach(function(g) {
+      $$('button', g).forEach(function(b) {
+        b.onclick = function() { ap.stati[g.dataset.c] = b.dataset.v; $$('button', g).forEach(function(x) { x.classList.toggle('on', x === b); }); $('#apmsg').textContent = ''; conta(); };
+      });
+    });
+    $('#apdata').onchange = function() { if (this.value) { apScegli(this.value); vistaAppunti(); } };
+    $$('.ap-mat button', sec).forEach(function(b) { b.onclick = function() { apScegli(ap.data, b.dataset.m); vistaAppunti(); }; });
+    $$('th[data-d]', sec).forEach(function(th) { th.onclick = function() { apScegli(th.dataset.d, th.dataset.m); vistaAppunti(); window.scrollTo({ top: 0, behavior: 'smooth' }); }; });
+    $('#apsalva').onclick = function() {
+      var b = this, st = {}, cur = ap; cod.forEach(function(c) { st[c] = cur.stati[c]; }); b.disabled = true;
+      chiama('/docente/appunti-salva', { classe: classe, data: cur.data, materia: cur.materia, stati: st }).then(caricaAppunti).then(function() {
+        apScegli(cur.data, cur.materia); vistaAppunti(); $('#apmsg').textContent = '✓ Salvata: ' + cur.materia + ', ' + bella(giorno(cur.data)) + '.';
+      }).catch(function(e) { b.disabled = false; if (e.message !== 'accesso') $('#apmsg').innerHTML = '<span class="err">' + esc(e.message) + '</span>'; });
+    };
+    if ($('#apcanc')) $('#apcanc').onclick = function() {
+      var cur = ap;
+      if (!confirm('Cancellare la lezione di ' + cur.materia + ' del ' + bella(giorno(cur.data)) + '? Non conterà più per nessuno.')) return;
+      chiama('/docente/appunti-salva', { classe: classe, data: cur.data, materia: cur.materia, stati: {} }).then(caricaAppunti).then(function() { apScegli(cur.data, cur.materia); vistaAppunti(); });
+    };
+    $$('.apdasalva', sec).forEach(function(b) {
+      b.onclick = function() {
+        var m = b.dataset.m, v = $('.apda[data-m="' + m + '"]', sec).value;
+        if (v && !confirm(m + ': contare solo le lezioni dal ' + bella(giorno(v)) + ' in poi? Le lezioni precedenti restano salvate, ma non contano più per la percentuale.')) return;
+        chiama('/docente/appunti-da', { classe: classe, materia: m, da: v }).then(caricaAppunti).then(vistaAppunti);
+      };
+    });
+  }
+
   // ───────── studenti ─────────
   function vistaStudenti() {
     var sec = $('#s-studenti'), mie = studenti.filter(function(s) { return s.classe === classe; });
@@ -735,14 +870,14 @@ Nel server ci sono solo codici (es. GIUR), mai nomi.
 
   function vistaDati() {
     var sec = $('#s-dati');
-    sec.innerHTML = '<div class="card" id="notifiche"></div><div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte, le foto, i dubbi e le osservazioni arrivati prima della data scelta. ' +
+    sec.innerHTML = '<div class="card" id="notifiche"></div><div class="card"><b>Cancellare i dati vecchi</b><p class="nota">Cancella, per tutte le classi, le risposte, le foto, i dubbi, le osservazioni e gli appunti segnati prima della data scelta. ' +
       'Conviene farlo a fine quadrimestre: sul server resta solo ciò che serve.</p>' +
       '<p>Cancella tutto ciò che è precedente al <input type="date" id="primadi"> <button class="peric" id="cancella">Cancella</button> <span id="canmsg" class="nota"></span></p></div>';
     $('#cancella').onclick = function() {
       var v = $('#primadi').value; if (!v) return;
       var t = giorno(v).getTime();
       if (!confirm('Cancellare definitivamente risposte e dubbi precedenti al ' + bella(giorno(v)) + ' ' + v.slice(0, 4) + '?')) return;
-      chiama('/docente/cancella', { prima_di: t }).then(function(j) { $('#canmsg').textContent = '✓ Cancellati ' + j.risposte + ' risposte, ' + (j.foto || 0) + ' foto, ' + j.dubbi + ' dubbi, ' + (j.schemi || 0) + ' schemi e ' + (j.osservazioni || 0) + ' osservazioni.'; });
+      chiama('/docente/cancella', { prima_di: t, prima_data: v }).then(function(j) { $('#canmsg').textContent = '✓ Cancellati ' + j.risposte + ' risposte, ' + (j.foto || 0) + ' foto, ' + j.dubbi + ' dubbi, ' + (j.schemi || 0) + ' schemi e ' + (j.osservazioni || 0) + ' osservazioni.'; });
     };
     vistaNotifiche();
   }

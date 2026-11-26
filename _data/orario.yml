@@ -1,0 +1,32 @@
+# ═══════════════════════════════════════════════════════════════════════
+#  ORARIO — le mie lezioni, classe per classe e giorno per giorno.
+#  Lo usa la scheda «Appunti» della pagina del docente per proporre la
+#  lezione del giorno: la lezione conta solo se la salvo (se non c'è stata,
+#  o c'era una verifica, basta non salvarla; se ho scambiato le ore, scelgo
+#  l'altra materia).
+#  Due ore di fila della stessa materia valgono come una lezione sola.
+#  Il nome della classe deve essere uguale a quello della scheda «Studenti».
+# ═══════════════════════════════════════════════════════════════════════
+
+"3ACD":
+  lunedì:    [Fisica]
+  mercoledì: [Matematica]          # 2 ore
+  venerdì:   [Matematica, Fisica]
+
+"3B":
+  lunedì:    [Matematica]          # 2 ore
+  martedì:   [Matematica, Fisica]
+  mercoledì: [Fisica]
+
+"4ACD":
+  lunedì:    [Matematica]          # 2 ore
+  giovedì:   [Fisica, Matematica]
+  venerdì:   [Fisica]
+
+"4B":
+  martedì:   [Fisica]
+  venerdì:   [Fisica]
+
+"5ACD":
+  mercoledì: [Fisica]
+  giovedì:   [Fisica]

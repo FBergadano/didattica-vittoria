@@ -112,9 +112,11 @@ Nella realtà la rotazione era così minuscola che Cavendish dovette leggerla co
    domanda="Prima di usare l'animazione: secondo te, cosa succede alla forza fra le due sfere se raddoppi la massa di una delle due? E se la raddoppi entrambe? E se invece raddoppi la distanza fra loro?"
    risposta=_r %}
 
+{% include box-anim.html %}
 Puoi ripetere l'esperienza di Cavendish con l'animazione qui sotto.
 
 {% include lab-virtuali/cavendish-lab.html %}
+{% include box-end.html %}
 
 Verifica con l'animazione che:
 
@@ -158,9 +160,11 @@ Il modulo $F = G\,\dfrac{m_1 \cdot m_2}{r^2}$ ci dice *quanto* vale la forza gra
 - **Verso:** attrattivo — ciascuna massa è "tirata" verso l'altra.
 
 
+{% include box-anim.html %}
 Questo significa che i vettori si disegnano nel seguente modo.
 
 {% include lab-virtuali/dir-verso-gravita.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="Forze centrali" %}
 Le forze che, come quella gravitazionale, hanno come direzione la retta che passa per i centri dei corpi si chiamano <definizione>forze centrali</definizione>. Queste forze hanno delle proprietà molto importanti, come cominceremo a vedere nella <a href="#energia-potenziale-gravitazionale">sezione sull'energia potenziale</a>, più sotto.
@@ -258,9 +262,11 @@ $$
 F_1 = G \frac{M_1 \cdot m}{r_1^2}, \qquad\qquad F_2 = G \frac{M_2\cdot m}{r_2^2} 
 $$
 
+{% include box-anim.html %}
 Nel seguente simulatore puoi spostare le masse e cambiarne i valori: guarda come cambiano le due forze su $m$, e la loro somma.
 
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-forza-grav" tipo="forza" fisica="grav" %}
+{% include box-end.html %}
 
 {% include unisci.html %}
 
@@ -599,9 +605,11 @@ $$\vec g_{tot} = \vec g_1 + \vec g_2 + \cdots.$$
 
 {% include box-end.html %}
 
+{% include box-anim.html %}
 Prova a sommare i campi con il simulatore: sposta le masse e il punto $P$, e cambia i valori delle masse.
 
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-campo-grav" tipo="campo" fisica="grav" %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include scorri.html %}
@@ -681,12 +689,16 @@ Le linee di campo sono linee <u>in ogni punto tangenti alla direzione del vettor
 Osserva come si costruisce una linea di campo a partire dai vettori: si dispongono prima i vettori del campo $\vec g$ uno via l'altro, poi si traccia la linea che li unisce, e infine vedi comparire, punto per punto, la retta tangente alla curva in quel punto: nota che ogni vettore giace esattamente su di essa.
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/linea-tangente-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="Il caso di una singola massa sferica" %}
 Nel caso di una singola massa sferica che genera il campo, poiché il vettore $\vec g$ indica sempre verso la massa, le linee si disegnano così (prova a cambiare la massa, e a cliccare in un punto per vedere lì il vettore $\vec g$):
 
+{% include box-anim.html %}
 {% include lab-virtuali/linee-campo-gravitazionale-lab.html id="lcg-una" modo="una" %}
+{% include box-end.html %}
 
 Da questa immagine notiamo alcune proprietà importanti delle linee di campo <u>generate da una singola massa</u>.
 
@@ -704,7 +716,9 @@ Cosa succede se il campo è generato da **più masse insieme**, come ad esempio 
 Prova tu stesso a verificare che questa è la forma delle linee di campo secondo la definizione data prima: clicca in un punto qualsiasi dell'immagine (fuori dai due corpi) per vedere comparire i due vettori $\vec g_T$ e $\vec g_L$ generati da Terra e Luna in quel punto, la loro somma $\vec g_{tot}$ secondo la regola del parallelogramma, e la retta tangente alla linea di campo risultante in quel punto. Puoi anche spostare la Terra e la Luna e cambiarne la massa.
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/linee-campo-gravitazionale-lab.html id="lcg-due" %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% capture _qLineeCampo %}[
@@ -736,7 +750,9 @@ Ci serve quindi un equivalente scalare (cioè una grandezza fatta solo di un num
 Cominciamo da $U$. Due masse che si attraggono si comportano un po' come se fossero legate da una molla: se le allontani, la molla si allunga e immagazzina energia; se le lasci andare, la molla le riporta l'una verso l'altra, e l'energia immagazzinata si trasforma in energia cinetica. L'energia immagazzinata fra due masse a causa della gravità è proprio l'energia potenziale gravitazionale.
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/molla-oscillazione-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="U cresce con la distanza…" %}
 La prima cosa che la molla ci fa capire è che <u markdown="span">l'energia potenziale deve **aumentare** man mano che aumenta la distanza fra le due masse</u>: più allontani la Luna, più la molla si allunga, e più energia c'è da restituire quando la lasci andare.
@@ -919,12 +935,14 @@ In presenza di più masse, ciascuna contribuisce all'energia potenziale di $m$ (
 $$U_{tot} = U_1 + U_2 + \cdots \qquad\qquad V_{tot} = V_1 + V_2 + \cdots$$
 {% include box-end.html %}
 
+{% include box-anim.html %}
 Nei due simulatori qui sotto, a sinistra c'è l'energia potenziale della massa $m$, a destra il potenziale nel punto $P$. Sposta le masse, cambiane i valori, aggiungine o toglile: i conti si aggiornano da soli.
 
 <div class="sim-affiancati">
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-energia-grav" tipo="energia" fisica="grav" aggiungi="true" titolo="Energia potenziale" %}
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-potenziale-grav" tipo="potenziale" fisica="grav" aggiungi="true" titolo="Potenziale" %}
 </div>
+{% include box-end.html %}
 
 {% include esercizi/esercizio-energia-potenziale.html %}
 
@@ -1075,7 +1093,9 @@ Nella realtà, nessun pianeta è perfettamente sferico, quindi il valore di $g$ 
 Ma allora perché, quando lanciamo un sasso, disegniamo $\vec g$ sempre uguale, dritto verso il basso, come se non puntasse verso il centro della Terra? Perché noi ci muoviamo in una regione piccolissima rispetto al pianeta. Avvicinati alla superficie con il cursore e guarda i vettori del campo: da lontano convergono verso il centro e sono più corti man mano che ci si allontana, ma da vicino diventano <u>paralleli e tutti uguali</u>. In una regione piccola vicino alla superficie, il campo gravitazionale è praticamente costante.
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/campo-uniforme-lab.html id="cul-peso" solo="pianeta" %}
+{% include box-end.html %}
 
 {% include box-warn.html testo="Massa e peso non sono la stessa cosa" %}
 
@@ -1089,7 +1109,9 @@ Ad esempio, uno stesso astronauta ha la stessa massa sulla Terra e sulla Luna, m
 
 {% include box-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/forza-peso-pianeti-lab.html %}
+{% include box-end.html %}
 
 {% include unisci.html %}
 {% include box-ex.html testo="Verifica Subito!" %}

@@ -50,7 +50,9 @@ Inoltre, quando arriva il Sole, l'acqua contenuta all'interno del cactus evapora
 
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/bilancia-cactus-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="Anche chi misura ha dei limiti" %}
 
@@ -59,7 +61,9 @@ Inoltre, quando arriva il Sole, l'acqua contenuta all'interno del cactus evapora
 
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/ape-righello-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="Nessuna misura è perfetta: si dichiara sempre l'incertezza" %}
 
@@ -152,7 +156,9 @@ L'incertezza strumentale, che indichiamo nelle nostre formule con i.s., dipende 
 
 {% include figure/esempio-righello-figura.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/esempio-calibro-lab.html %}
+{% include box-end.html %}
 
 {% include esercizi/prova-strumenti.html %}
 
@@ -873,7 +879,9 @@ Quando avete finito, premete **Invia al prof** in fondo al modulo. Se vi accorge
 
 ### Modulo
 
+{% include box-anim.html %}
 {% include lab-virtuali/modulo-relazione-lab.html %}
+{% include box-end.html %}
 
 </div>
 </section>

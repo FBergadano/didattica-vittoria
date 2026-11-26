@@ -55,7 +55,9 @@ Come per la gravità, l'energia immagazzinata si può immaginare con una molla c
 {% include margin-note-end.html %}
 
 
+{% include box-anim.html %}
 {% include lab-virtuali/molla-cariche-lab.html %}
+{% include box-end.html %}
 
 {% include box-warn.html testo="Nell'energia potenziale niente valore assoluto" %}
 Nella legge di Coulomb, $F = k\,\dfrac{\lvert Q\cdot q\rvert}{r^2}$, c'è il valore assoluto, perché un modulo è sempre positivo. Nell'energia potenziale, invece, le cariche si scrivono **con il loro segno**: il segno di $U$ ci dice se le cariche si attraggono ($U<0$) o si respingono ($U>0$).
@@ -172,9 +174,11 @@ In presenza di più cariche, ognuna contribuisce all'energia potenziale di $q$ <
 %}
 {% include box-end.html %}
 
+{% include box-anim.html %}
 Attenzione ai segni: qui alcuni contributi possono essere positivi e altri negativi. Prova con il simulatore: sposta le cariche e la carica $q$, cambiane valore e segno, aggiungi o togli cariche.
 
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-energia-elet" tipo="energia" fisica="elet" aggiungi="true" %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
@@ -352,9 +356,11 @@ In presenza di più cariche, ciascuna genera un potenziale <u markdown="span">es
 %}
 {% include box-end.html %}
 
+{% include box-anim.html %}
 Prova con il simulatore: sposta le cariche e il punto $P$, cambiane valore e segno, aggiungine o toglile. Riesci a trovare un punto in cui il potenziale totale è zero?
 
 {% include lab-virtuali/sovrapposizione-lab.html id="sov-potenziale-elet" tipo="potenziale" fisica="elet" aggiungi="true" %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 Nei calcoli usa $k \approx 9\times10^{9}\ \text N\cdot\text m^2/\text C^2$.
@@ -387,9 +393,11 @@ Come per la gravità, il potenziale si rappresenta con le <definizione>superfici
 {% include margin-note-end.html %}
 
 
+{% include box-anim.html %}
 Nel simulatore delle linee di campo puoi ora mostrare anche le superfici equipotenziali (in arancione): guarda come si deformano con due cariche, e verifica che tagliano sempre le linee di campo ad angolo retto.
 
 {% include lab-virtuali/linee-campo-elettrico-lab.html id="lce-equi" equi="true" %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include scorri.html %}
@@ -597,9 +605,11 @@ Che la carica elettrica fosse portata da particelle minuscole, gli elettroni, al
 {% include margin-note-end.html %}
 
 
+{% include box-anim.html %}
 Il simulatore riproduce il suo esperimento: una goccia d'olio carica negativamente si trova fra due lastre orizzontali, e il campo fra le lastre si può regolare. Ti servirà nel problema qui sotto.
 
 {% include lab-virtuali/millikan-lab.html %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Il problema di Millikan" %}
 Usa $g = 9{,}8\ \text{m/s}^2$.
@@ -715,9 +725,11 @@ Qui però entra di nuovo in gioco il segno. Per una carica positiva, $U = q\,V$ 
 {% include margin-note-end.html %}
 
 
+{% include box-anim.html %}
 Nel simulatore puoi scegliere quale lastra è positiva e il segno della carica. Fra le lastre sono tracciate le linee equipotenziali, con il loro potenziale; sotto, il grafico del potenziale $V$ e quello dell'energia potenziale $U = q\,V$ della carica.
 
 {% include lab-virtuali/rotola-potenziale-lab.html %}
+{% include box-end.html %}
 
 {% include box-imp.html testo="Il moto di una carica dal punto di vista dell'energia" %}
 - **Conservazione:** l'energia meccanica $K + U$ resta costante, quindi l'energia potenziale elettrica che la carica perde si trasforma in energia cinetica.

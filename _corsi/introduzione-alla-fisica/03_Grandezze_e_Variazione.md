@@ -128,7 +128,9 @@ Al contrario, *se aumentiamo il denominatore* (cioè il numero di chili) *senza 
 
 Questa cosa vale in generale, per ogni formula della fisica.
 
+{% include box-anim.html %}
 {% include lab-virtuali/proporzionalita-diagramma-lab.html %}
+{% include box-end.html %}
 
 {% include box-imp.html testo="Proporzionalità diretta e Proporzionalità inversa" %}
 In una formula del tipo 
@@ -155,7 +157,9 @@ Adesso pensa ad aumentare le fette totali e il numero di amici, **uno alla volta
 Ogni volta che incontri una formula del tipo $x = \frac yz$, pensa alla pizza: il **numeratore si comporta come le fette totali** — cresce e $x$ cresce con lui — mentre il **denominatore si comporta come gli amici a tavola** — cresce e $x$ diminuisce.
 {% include box-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/pizza-proporzionalita-lab.html %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 

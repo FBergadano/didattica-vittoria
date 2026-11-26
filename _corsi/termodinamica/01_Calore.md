@@ -29,9 +29,11 @@ Abbiamo già detto, nello scorso capitolo, che l'energia meccanica può converti
    alt="Ritratto di James Prescott Joule"
    larghezza="220px" %}
 
+{% include box-anim.html %}
 Puoi ripetere il suo esperimento con la seguente animazione.
 
 {% include lab-virtuali/mulinello-joule-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="Dal lavoro al calore" %}
 Mentre i pesi scendono, perdono **energia potenziale gravitazionale**. Le corde, srotolandosi, fanno girare il mulinello, che agita l'acqua. Ma l'acqua non continua a girare per sempre: l'attrito con le palette la rallenta e l'energia viene **dissipata**. E infatti il termometro sale: <u markdown="span">l'energia meccanica persa dai pesi è diventata **calore**, che ha scaldato l'acqua</u>. Più volte fai cadere i pesi, più la temperatura aumenta.
@@ -120,16 +122,18 @@ Quando studiamo uno scambio di calore, conviene sempre dire con chiarezza chi è
 È la stessa convenzione che hai usato per il lavoro: come un lavoro positivo fa aumentare l'energia del sistema ($\Delta E = L$), così un calore positivo è energia che il sistema riceve, e un calore negativo è energia che il sistema perde.
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 Trascina la spada nella fornace per scaldarla, nel cesto di ghiaccio per raffreddarla, oppure immergila nella bacinella d'acqua e osserva il flusso di calore, finché spada e acqua non raggiungono l'equilibrio termico. Ogni volta che appoggi la spada da qualche parte, prima di vedere che cosa succede, dovrai indovinare se, prendendo la **spada come sistema** e tutto il resto come ambiente, il calore $Q$ sarà positivo, negativo o nullo.
 
 {% include lab-virtuali/spada-lab.html %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include scorri.html %}
 {% include scorri-slide.html %}
 {% capture _qtemperatura %}[
 {"t": "Due corpi in equilibrio termico hanno la stessa temperatura.", "ok": true, "s": "Sì: è proprio la definizione di equilibrio termico."},
-{"t": "Il calore passa sempre dal corpo che ha più massa a quello che ne ha meno.", "ok": false, "s": "No: il calore passa dal corpo a temperatura maggiore a quello a temperatura minore, qualunque sia la loro massa."},
+{"t": "Il calore passa sempre dal corpo con temperatura più elevata a quello con temperatura inferiore.", "ok": true, "s": "Sì: il calore passa dal corpo a temperatura, come scritto nella box precedente."},
 {"t": "Una tazza di tè si raffredda sul tavolo: prendendo il tè come sistema, $Q<0$.", "ok": true, "s": "Sì: il tè cede calore all'ambiente, quindi il calore esce dal sistema."},
 {"t": "Un cubetto di ghiaccio messo in un bicchiere d'acqua tiepida: prendendo il ghiaccio come sistema, $Q>0$.", "ok": true, "s": "Sì: l'acqua, più calda, cede calore al ghiaccio. Il calore entra nel sistema."},
 {"t": "Una bottiglia d'acqua chiusa in frigorifero da un giorno intero scambia ancora calore con l'aria del frigorifero.", "ok": false, "s": "No: dopo tanto tempo ha raggiunto la temperatura del frigorifero. È in equilibrio termico, quindi $Q=0$."}
@@ -151,10 +155,9 @@ In un contenitore che non scambia calore con l'esterno, metti a contatto tre cor
 {% capture _o %}[
 {"v":"a","t":"$A$ resta a $80\\ \\text{°C}$ e gli altri due si scaldano fino a lui"},
 {"v":"b","t":"tutti e tre arrivano alla stessa temperatura, compresa fra $20\\ \\text{°C}$ e $80\\ \\text{°C}$"},
-{"v":"c","t":"tutti e tre arrivano a $50\\ \\text{°C}$, perché è la temperatura di mezzo"},
 {"v":"d","t":"$B$ non scambia calore con nessuno, perché è già a metà"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-vs-tre-corpi" opts=_o ok="b" s="Il calore passa dai corpi più caldi a quelli più freddi finché c'è una differenza di temperatura: alla fine i tre corpi sono in equilibrio termico, cioè alla stessa temperatura. Quale sia esattamente dipende dalle loro masse e dai materiali: non è detto che sia proprio $50\ \text{°C}$. Anche $B$ partecipa: prima riceve calore da $A$ o ne cede a $C$, a seconda di come cambiano le temperature." %}
+{% include mcq.html id="mcq-vs-tre-corpi" opts=_o ok="b" s="Il calore passa dai corpi più caldi a quelli più freddi finché c'è una differenza di temperatura: alla fine i tre corpi sono in equilibrio termico, cioè alla stessa temperatura. Quale sia esattamente dipende dalle loro masse e dai materiali: non è detto che sia proprio la temperatura di mezzo ($50\ \text{°C}$)." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 Una tazza di tè a $70\ \text{°C}$ è appoggiata sul tavolo, in una stanza a $20\ \text{°C}$.
@@ -190,9 +193,11 @@ La temperatura (simbolo $T$) è la grandezza fisica misurata da un termometro. L
 Come scopriremo nei prossimi capitoli, ci sono ottime ragioni per cui nel Sistema Internazionale si è scelto di utilizzare la scala dei kelvin per misurare la temperatura, invece che quella più abituale dei gradi centigradi (anche chiamati **gradi celsius**, in onore del suo inventore Anders Celsius). Eppure, comunemente continuiamo ad utilizzare la scala dei gradi centigradi. È quindi importante abituarsi a passare dall'una all'altra, anche se in questo corso vi sarà richiesto di adottare quasi sempre il kelvin quando fornite un risultato.
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 Compara le due scale con questa animazione.
 
 {% include lab-virtuali/termometro-fuoco-ghiaccio-lab.html %}
+{% include box-end.html %}
 
 {% include box-imp.html testo="Da gradi centigradi a kelvin" %}
 Per passare da una scala all'altra basta sommare o sottrarre il numero $273{,}15$:
@@ -318,7 +323,9 @@ Oggi crediamo che la materia sia composta da un numero gigantesco di **molecole*
 <u markdown="span">La temperatura misura **l'agitazione termica**</u> di un corpo, cioè la velocità con cui si muovono le particelle che lo compongono. Maggiore è la temperatura, maggiore è la velocità delle particelle.
 {% include box-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/agitazione-termica-lab.html %}
+{% include box-end.html %}
 
 {% include box-ex.html testo="Verifica Subito!" %}
 {% include scorri.html %}
@@ -373,7 +380,9 @@ La motivazione è che il liquido all'interno **si espande**, cioè aumenta di vo
 {% include margin-note.html testo="La spiegazione microscopica" %}
 Esso avviene perché, quando la temperatura di un corpo aumenta, aumenta anche la velocità con cui si muovono le particelle che costituiscono il corpo. Muovendosi più velocemente, le particelle si urtano con maggiore intensità. Pertanto, esse tendono a “rimbalzare” maggiormente e quindi ad allontanarsi. Il materiale, quindi, si dilata.
 
+{% include box-anim.html %}
 {% include lab-virtuali/dilatazione-termometro-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note-end.html %}
 
@@ -534,7 +543,9 @@ Sappiamo che la temperatura di un corpo cambia quando si fornisce ad esso --- o 
 {% include margin-note-end.html %}
 
 Puoi osservare il riscaldamento e il raffreddamento di un corpo con la seguente animazione.
+{% include box-anim.html %}
 {% include lab-virtuali/calorimetria-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="Costruire la formula" %}
 Notiamo che la variazione della temperatura è:
@@ -690,7 +701,9 @@ Come ogni potenza, si misura in watt (W): $1\ \text W = 1\ \text J/\text s$.
 All'interno di un **solido**, il calore si trasmette per <definizione>conduzione</definizione>. Per comprendere di cosa si tratta, osserva la seguente animazione.
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/conduzione-barra-lab.html %}
+{% include box-end.html %}
 
 
 {% include margin-note.html testo="La spiegazione microscopica" %}
@@ -801,7 +814,9 @@ D'inverno molti uccelli «si gonfiano», sollevando le piume, e sembrano due vol
 In un liquido o in un gas, il calore si trasmette per <definizione>convezione</definizione>. Per comprendere di cosa si tratti, osserva la seguente animazione.
 {% include margin-note-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/convezione-pentola-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="La spiegazione microscopica" %}
 Nella vista microscopica, le particelle sul fondo, scaldate dalla fiamma, vibrano di più e [si allontanano](#il-termometro-e-la-dilatazione-termica) le une dalle altre: l'acqua calda si dilata, diventa **meno densa** e spinge verso l'alto le particelle che le stanno sopra. L'acqua calda sale, e quella fredda, più densa, scende ai lati a prenderne il posto.

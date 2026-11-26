@@ -1,0 +1,19 @@
+{% comment %}
+Riquadro «Animazione»: incornicia una simulazione o un'animazione
+(_includes/lab-virtuali/…) per staccarla dal testo normale, come una piccola
+finestra con la barra scura in alto. Si chiude con box-end.html.
+In stampa la cornice sparisce e resta solo il contenuto (per le animazioni
+che in stampa mostrano un'immagine ferma).
+
+Parametri:
+  testo — etichetta nella barra (default "Animazione")
+
+Uso:
+  {% include box-anim.html %}
+  Trascina la spada nella fornace…
+  {% include lab-virtuali/spada-lab.html %}
+  {% include box-end.html %}
+{% endcomment %}
+<div class="box box-anim">
+<p class="box-label"><span class="box-anim-ico" aria-hidden="true">▶</span> {{ include.testo | default: "Animazione" }}</p>
+<div class="box-content" markdown="1">

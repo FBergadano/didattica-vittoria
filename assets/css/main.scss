@@ -2242,6 +2242,20 @@ cit em, cit i { font-style: normal; }
 @media (max-width: 600px) { .sc-scale button { font-size: .68rem; } }
 @media print { .sc-scale button.on { outline: 2px solid #000; } }
 
+// ── Riquadro «Animazione» (box-anim.html): una finestra con la barra scura ──
+.box.box-anim { border: 1px solid #cbd5e1; border-left: 1px solid #cbd5e1; border-radius: $radius-md; background: #f8fafc; padding: 0; overflow: hidden; box-shadow: 0 2px 6px rgba(15,23,42,.08); }
+.box.box-anim > .box-label { margin: 0; padding: .45rem 1rem; background: #1e293b; color: #e2e8f0; display: flex; align-items: center; gap: .45rem; }
+.box.box-anim .box-anim-ico { color: #38bdf8; font-size: .8rem; }
+.box.box-anim > .box-content { padding: .8rem 1rem 1rem; }
+.box.box-anim > .box-content > :first-child { margin-top: 0; }
+.box.box-anim > .box-content > :last-child { margin-bottom: 0; }
+@media (max-width: 600px) { .box.box-anim > .box-content { padding: .7rem .6rem .8rem; } }
+@media print {
+  .box.box-anim { border: none; box-shadow: none; background: none !important; padding: 0; }
+  .box.box-anim > .box-label { display: none; }
+  .box.box-anim > .box-content { padding: 0; }
+}
+
 // ── Riquadro di un gruppo di lavoro (box-gruppo.html) ──
 .box.box-gruppo { border-left: none; border-top: 4px solid #0f766e; border-radius: 0 0 $radius-md $radius-md; background: #f8fafc; box-shadow: 0 1px 3px rgba(15,23,42,.08); }
 .gr-head { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; margin-bottom: .3rem; }

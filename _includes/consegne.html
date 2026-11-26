@@ -69,6 +69,14 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
   max-width: calc(100vw - 40px); opacity: 0; pointer-events: none; transition: opacity .25s; }
 #cons-toast.cons-vis { opacity: 1; pointer-events: auto; }
 #cons-toast button { margin-left: .6rem; border: none; background: #fff; color: #1f2937; border-radius: 999px; padding: .15rem .6rem; font: inherit; cursor: pointer; }
+#cons-panel .cons-ap-barra { position: relative; height: 10px; border-radius: 5px; background: #e5e7eb; margin: .5rem 0 1.1rem; }
+#cons-panel .cons-ap-barra i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; background: #15803d; }
+#cons-panel .cons-ap-barra span { position: absolute; top: -3px; height: 16px; border-left: 2px dashed #6b7280; }
+#cons-panel .cons-ap-barra small { position: absolute; top: 14px; transform: translateX(-50%); font-size: .68rem; color: #6b7280; white-space: nowrap; }
+#cons-panel .cons-ap-lez { display: flex; flex-wrap: wrap; gap: .25rem; margin-top: .3rem; }
+#cons-panel .cons-ap-lez span { font-size: .72rem; border-radius: 6px; padding: .1rem .35rem; background: #dcfce7; color: #15803d; }
+#cons-panel .cons-ap-lez span.no { background: #fee2e2; color: #dc2626; }
+#cons-panel .cons-ap-lez span.ass { background: #f1f5f9; color: #6b7280; }
 @media (max-width: 600px) { #cons-btn .cons-lbl { display: none; } }
 @media print { #cons-btn, #cons-panel, #cons-toast { display: none !important; } }
 </style>
@@ -156,6 +164,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     var oggi = new Date(); oggi.setHours(0, 0, 0, 0);
     var lista = (COMPITI[a.classe] || []).filter(function(c) { return giorno(c.data) >= oggi; })
       .sort(function(x, y) { return giorno(x.data) - giorno(y.data); }).slice(0, 4);
+    h += '<h4>Appunti a lezione</h4><div class="cons-appunti"><div class="cons-hint" style="margin-top:0">Carico…</div></div>';
     h += '<h4>Prossimi compiti</h4>';
     if (!lista.length) h += '<div class="cons-hint">Nessun compito in programma.</div>';
     else h += '<ul>' + lista.map(function(c) {
@@ -190,7 +199,7 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     h += '<h4>Dubbi e osservazioni</h4><div class="cons-messaggi"></div><div class="cons-miei"></div>';
     panel.innerHTML = h;
     messaggi();
-    stato(); mostraDubbi(); mostraAnteprime(); mostraFoto(); mostraSchemi();
+    stato(); mostraDubbi(); mostraAnteprime(); mostraFoto(); mostraSchemi(); mostraAppunti();
   }
 
   // ── foto dei compiti su carta ──
@@ -213,7 +222,35 @@ Richiede consegne-head.html nel <head>. Se consegne_url è vuoto non mostra null
     var a = C.accesso(); if (!a) return;
     C.chiama('/mie-foto', { token: a.token }).then(function(j) { mieFoto = j.foto || []; mostraFoto(); }).catch(function() {});
     C.chiama('/miei-schemi', { token: a.token }).then(function(j) { mieiSchemi = j.schemi || []; mostraSchemi(); }).catch(function() {});
+    C.chiama('/miei-appunti', { token: a.token }).then(function(j) { mieiAppunti = j; mostraAppunti(); }).catch(function() { mieiAppunti = false; mostraAppunti(); });
   }
+  // ── appunti presi a lezione: ½ punto con almeno il 90%, ¼ con almeno il 70% (le assenze non contano),
+  //    Matematica e Fisica separate, ciascuna contata dal giorno scelto dal docente (dopo una verifica) ──
+  var mieiAppunti = null;
+  function mostraAppunti() {
+    var box = panel.querySelector('.cons-appunti'); if (!box) return;
+    if (mieiAppunti === null) return;
+    if (!mieiAppunti) { box.innerHTML = '<div class="cons-hint" style="margin-top:0">Non riesco a leggere il conteggio degli appunti: riprova più tardi.</div>'; return; }
+    var da = mieiAppunti.da || {}, per = {};
+    (mieiAppunti.lezioni || []).forEach(function(l) { if (l.data >= (da[l.materia] || '')) (per[l.materia] = per[l.materia] || []).push(l); });
+    var regola = '<div class="cons-hint">Con gli appunti ad almeno il 90% delle lezioni hai mezzo punto in più alla verifica, con almeno il 70% un quarto di punto. Le lezioni in cui sei assente non contano. Matematica e Fisica si contano separatamente, e dopo ogni verifica il conteggio riparte da zero.</div>';
+    var mat = Object.keys(per).sort();
+    if (!mat.length) { box.innerHTML = '<div class="cons-hint" style="margin-top:0">Ancora nessuna lezione segnata.</div>' + regola; return; }
+    box.innerHTML = mat.map(function(m) {
+      var lz = per[m], ok = 0, no = 0;
+      lz.forEach(function(l) { if (l.stato === 'ok') ok++; else if (l.stato === 'no') no++; });
+      var pres = ok + no, tit = '<div style="margin-top:.4rem"><b>' + esc(m) + '</b>';
+      if (!pres) return tit + ': nessuna lezione in cui eri presente.</div>';
+      var p = ok / pres, pc = Math.round(p * 100);
+      var esito = p >= 0.9 ? 'per ora hai <b>mezzo punto in più</b> alla verifica' : p >= 0.7 ? 'per ora hai <b>un quarto di punto in più</b> alla verifica' : 'per ora non hai il bonus (serve almeno il 70%)';
+      return tit + ': appunti in <b>' + ok + '</b> ' + (ok === 1 ? 'lezione' : 'lezioni') + ' su ' + pres + ' (<b>' + pc + '%</b>), ' + esito + '.</div>' +
+        '<div class="cons-ap-barra"><i style="width:' + pc + '%"></i><span style="left:70%"></span><span style="left:90%"></span><small style="left:70%">70%</small><small style="left:90%">90%</small></div>' +
+        '<div class="cons-ap-lez">' + lz.slice(0, 20).map(function(l) {
+          return '<span class="' + (l.stato === 'ok' ? '' : l.stato) + '">' + bella(giorno(l.data)) + ' ' + (l.stato === 'ok' ? '✓' : l.stato === 'no' ? '✗' : 'assente') + '</span>';
+        }).join('') + '</div>';
+    }).join('') + regola;
+  }
+
   // ── schemi per l'interrogazione ──
   var mieiSchemi = [];
   function mostraSchemi() {

@@ -132,6 +132,7 @@ Tutti i box si aprono con `{% include box-XXX.html testo="..." %}` e si chiudono
 | `box-imp.html`  | ambra + barra cyan destra | Punti importanti da ricordare (nuovi, appena spiegati) |
 | `box-ricorda.html` | indaco | Richiamo sintetico di un concetto/formula già visti in precedenza, prima di riusarli (es. prima di sostituire una variabile in una formula nota) |
 | `box-esempio.html` | lampone | Esempi svolti (non numerati). Più esempi di fila: un solo riquadro con `scorri.html`, una slide per esempio |
+| `box-anim.html` | finestra con barra scura | Animazioni e simulazioni di `lab-virtuali/` (con dentro il paragrafo di istruzioni), per staccarle dal testo. Non per le animazioni di formule e unità, che restano nel testo |
 
 Esempio:
 ```

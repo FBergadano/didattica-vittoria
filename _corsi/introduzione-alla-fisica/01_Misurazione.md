@@ -61,9 +61,13 @@ Per ogni caratteristica, decidi: è una **grandezza fisica** (le si può associa
 {% include fill-def.html prompt='Prova a formulare una definizione di grandezza fisica, completando la frase: "Una grandezza fisica è…"' id="fill-gf" %}
 ## Come si misura?
 La misurazione è un'operazione che consiste nel confrontare l'oggetto che si desidera misurare con un oggetto di riferimento, il quale è chiamato <definizione>campione</definizione>. Ad esempio, qui di seguito puoi misurare il lato lungo della lavagna con una biro o con un cancellino
+{% include box-anim.html %}
 {% include lab-virtuali/misura-riga-lavagna-lab.html %}
+{% include box-end.html %}
 oppure in quest'altro esempio puoi misurare la massa di un vaso di fiori con dei sacchetti di farina da $1 \ \text{kg}.$
+{% include box-anim.html %}
 {% include lab-virtuali/bilancia-vaso-lab.html %}
+{% include box-end.html %}
 
 Notiamo alcune cose.
 1. Il numero associato all'altezza della lavagna varia a seconda che utilizziamo un cancellino o una biro, e in effetti ha senso solo se è rapportato <u>a quel campione specifico</u>. Cambiando il campione cambia anche il numero.
@@ -175,7 +179,9 @@ $$1\times \underbrace{10\times 10 \times 10 \times \cdots\times 10}_{30 \text{ v
 
 Sfruttando questo ragionamento, possiamo scrivere $500$ come $5\times 10^2$, e $567$ come $5{,}67\times 10^2$. Basta insomma contare il numero di salti verso sinistra che fa la virgola e metterla ad esponente di 10. Ad esempio la massa del Sole diventa
 
+{% include box-anim.html %}
 {% include lab-virtuali/notazione-scientifica-grande-lab.html %}
+{% include box-end.html %}
 
 $$
 \begin{aligned}
@@ -201,7 +207,9 @@ $$0{,}00\,1= 10^{-3}, \qquad 0{,}00\, 2 = 2\times 10^{-3}, \qquad 0{,}00\, 000\,
 
 Anche in questo caso, il numero di salti verso destra che fa la virgola diventa l'esponente, ma con un segno meno. Ad esempio, la massa dell'elettrone può essere scritta come
 
+{% include box-anim.html %}
 {% include lab-virtuali/notazione-scientifica-piccola-lab.html %}
+{% include box-end.html %}
 
 $$\begin{aligned}
 m_\text{e} &= 0{,}000\,000\,000\,000\,000\,000\,000\,000\,000\,000\,910\,938\,370\,153\ \text{kg}\\
@@ -406,9 +414,11 @@ Sostituiamo $1\ \text{m} = 10\ \text{dm}$:
 
 $$1\ \text{m}^2 = (10\ \text{dm}) \times (10\ \text{dm}) = 10^2\ \text{dm}^2 = 100\ \text{dm}^2.$$
 
+{% include box-anim.html %}
 L'animazione qui sotto mostra esattamente questo: un quadrato di lato 1 m viene suddiviso con una griglia di lato 1 dm, rivelando che ci sono esattamente 100 quadratini di 1 dm².
 
 {% include lab-virtuali/equivalenza-area-lab.html %}
+{% include box-end.html %}
 
 Prova ora a ripetere lo stesso ragionamento con gli altri multipli del metro.
 
@@ -430,7 +440,9 @@ Cosa noti? Per dm era $10^1$ → area $10^2$; per cm era $10^2$ → area $10^4$;
 Se per la lunghezza il fattore di conversione è $10^n$, per l'**area** è $10^{2n}$. Sulla retta dei prefissi, ogni passo vale il **doppio** per le aree.
 {% include box-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/prefissi-area-lab.html %}
+{% include box-end.html %}
 
 {% include esercizi/esercizio-qar.html %}
 
@@ -448,7 +460,9 @@ Esempio: un cubo di lato $\ell = 2\ \text{m}$ ha volume $V = \ell^3 = (2\ \text{
 
 #### Equivalenze tra misure di volume
 
+{% include box-anim.html %}
 {% include lab-virtuali/equivalenza-volume-lab.html %}
+{% include box-end.html %}
 
 Prova ora a ripetere lo stesso ragionamento con gli altri multipli del metro.
 
@@ -470,7 +484,9 @@ Cosa noti? Per dm era $10^1$ → volume $10^3$; per cm era $10^2$ → volume $10
 Se per la lunghezza il fattore di conversione è $10^n$, per il **volume** è $10^{3n}$. Sulla retta dei prefissi, ogni passo vale il **triplo** per i volumi.
 {% include box-end.html %}
 
+{% include box-anim.html %}
 {% include lab-virtuali/prefissi-volume-lab.html %}
+{% include box-end.html %}
 
 {% include unisci.html %}
 {% include esercizi/esercizio-qvol.html %}

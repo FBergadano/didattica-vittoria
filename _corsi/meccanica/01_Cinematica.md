@@ -13,7 +13,9 @@ Achille, simbolo di rapidità, deve raggiungere la tartaruga, simbolo di lentezz
 
 La citazione qui sopra ripercorre il celebre paradosso del filosofo greco Zenone. Puoi vedere il paradosso illustrato nella seguente animazione.
 
+{% include box-anim.html %}
 {% include lab-virtuali/achille-tartaruga-lab.html %}
+{% include box-end.html %}
 
 Questo paradosso mostra in modo molto semplice che chi corre più veloce non può mai raggiungere chi corre più lentamente. Cioè, mostra che il movimento è assurdo e che non è possibile muoversi, perché il movimento è solo un'illusione.  
 Naturalmente, da qualche parte nel ragionamento c'è un errore, e muoversi ***è*** infatti possibile. Ma per trovare questo errore ci misero circa 2000 anni, e non è facile comprenderne la spiegazione. Vedrai più avanti nei tuoi studi come risolvere questo paradosso.  

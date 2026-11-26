@@ -40,7 +40,9 @@ Possiamo intuire il concetto di lavoro pensando alla sensazione di *fatica* che 
 {% include margin-note.html testo="Dall'esempio del banco alla formula del lavoro" %}
 Immagina di spostare un banco spingendolo orizzontalmente. Lo spostamento ti costa fatica, cioè *lavoro*. Proviamo a comprendere da cosa dipende questa fatica con la seguente animazione.
 
+{% include box-anim.html %}
 {% include lab-virtuali/spinta-banco-lab.html %}
+{% include box-end.html %}
 
 La fatica che devi fare dipende
 - dalla forza che devi applicare (un banco pesante richiederà più forza di uno leggero) 
@@ -89,9 +91,11 @@ Perché in realtà le cellule all'interno dei nostri muscoli si spostano continu
 | Verso contrario | Negativo $(L<0)$ | $L=-F\cdot \Delta s$ |
 | Perpendicolare | Nullo $(L=0)$ | $L=0$ |
 
+{% include box-anim.html %}
 La seguente animazione riassume i casi appena descritti. Attiva le frecce delle quattro forze per confrontarne il verso con quello dello spostamento e leggere il segno del lavoro che ciascuna compie (ma cerca prima di indovinarle tu!).
 
 {% include lab-virtuali/segno-lavoro-lab.html %}
+{% include box-end.html %}
 
 In particolare, poiché l'attrito ha sempre verso opposto rispetto al moto, <u markdown="span">il lavoro compiuto dall'attrito è sempre **negativo**</u>.
 
@@ -122,7 +126,9 @@ $$
 
 Consideriamo le seguenti due situazioni.
 
+{% include box-anim.html %}
 {% include lab-virtuali/pozzo-potenza-lab.html %}
+{% include box-end.html %}
 
 Da una parte, un omino solleva a mano un secchio d'acqua; dall'altra, una pompa compie lo stesso lavoro (stesso peso dell'acqua, per lo stesso spostamento). Poiché forza e spostamento sono uguali in entrambe le situazioni, a cambiare non è il lavoro compiuto, ma <u markdown="span">il **tempo** impiegato per svolgere quel lavoro</u>. Evidentemente, la pompa è più ***potente*** dell'omino.
 
@@ -532,7 +538,9 @@ Proviamo quindi a mettere questo concetto in azione, con alcuni esempi concreti.
 Guarda ad esempio cosa succede dal punto di vista energetico a un bambino che salta su un tappeto elastico:
 
 
+{% include box-anim.html %}
 {% include lab-virtuali/trampolino-lab.html %}
+{% include box-end.html %}
 
 Prova a ricostruire tu stesso, passo per passo, come cambia l'energia del bambino lungo tutto il ciclo (nota che ora prendiamo come riferimento per l'altezza, e quindi per l'energia potenziale gravitazionale nulla, proprio il punto di massima estensione del tappeto):
 
@@ -543,7 +551,9 @@ Prova a ricostruire tu stesso, passo per passo, come cambia l'energia del bambin
 
 Lo stesso scambio fra energia potenziale ed energia cinetica avviene in moltissime altre situazioni. Osserva ad esempio un pendolo che oscilla avanti e indietro senza mai fermarsi:
 
+{% include box-anim.html %}
 {% include lab-virtuali/pendolo-lab.html %}
+{% include box-end.html %}
 
 Prova a descrivere anche tu, passo per passo, come cambia la sua energia lungo l'oscillazione (l'altezza $h$ è misurata rispetto al punto più basso della sua traiettoria):
 
@@ -553,7 +563,9 @@ Prova a descrivere anche tu, passo per passo, come cambia la sua energia lungo l
 
 Un altro esempio dello stesso fenomeno è uno yo-yo che sale e scende lungo il suo filo, senza mai fermarsi:
 
+{% include box-anim.html %}
 {% include lab-virtuali/yoyo-lab.html %}
+{% include box-end.html %}
 
 Anche qui, prova a descrivere come cambia la sua energia (l'altezza $h$ è misurata rispetto al punto più basso della sua corsa):
 
@@ -669,7 +681,9 @@ Ad esempio, l'attrito compie sempre un lavoro negativo, perciò diminuisce l'ene
 
 Consideriamo l'esempio di una palla da bowling che cade.
 
+{% include box-anim.html %}
 {% include lab-virtuali/bowling-lab.html %}
+{% include box-end.html %}
 
 Inizialmente, come già sappiamo, l'energia meccanica è solo potenziale gravitazionale. Man mano che cade, essa si trasforma in energia cinetica.   
 Quando però la palla tocca il pavimento, la sua energia potenziale è nulla e dopo pochi istanti vediamo che la palla è ferma, quindi perde anche tutta la sua energia cinetica. Questo significa che la sua energia è stata dissipata.

@@ -86,7 +86,9 @@ Tutta la materia che ti circonda in questo momento è composta da un numero giga
 
 In un semplice bicchiere d'acqua è presente un numero di particelle cariche superiore al numero di stelle in tutto l'Universo.
 
+{% include box-anim.html %}
 {% include lab-virtuali/zoom-atomo-lab.html %}
+{% include box-end.html %}
 
 Tutti i comportamenti comuni della materia sono comprensibili in termini del movimento di queste minuscole particelle elettricamente cariche, cioè in termini delle forze che studieremo in questo capitolo.
 {% include margin-note-end.html %}
@@ -268,9 +270,11 @@ I metalli sono in genere ottimi conduttori (argento, rame e oro fra i migliori);
 
 
 
+{% include box-anim.html %}
 Osserva l'animazione seguente: nel conduttore (ferro) alcuni elettroni sono liberi di muoversi fra i nuclei; nell'isolante (legno), invece, ogni elettrone orbita sempre e soltanto attorno al proprio nucleo. Poi trascina la carica vicino ai due materiali e confronta che cosa succede.
 
 {% include lab-virtuali/conduttore-isolante-lab.html %}
+{% include box-end.html %}
 
 {% include box-imp.html testo="Conduttori e Isolanti" %}
 I **conduttori** sono quei materiali che presentano al loro interno cariche **libere di muoversi**.  
@@ -481,7 +485,9 @@ Un conduttore può essere elettrizzato semplicemente venendo messo a contatto co
 {% include margin-note-end.html %}
 
 
+{% include box-anim.html %}
 {% include lab-virtuali/carica-per-contatto-lab.html %}
+{% include box-end.html %}
 
 {% include box-imp.html testo="Elettrizzazione per contatto" %}
 L'elettrizzazione per contatto è il fenomeno per cui un conduttore neutro, messo a contatto con un corpo carico, si carica anch'esso: una parte della carica passa <u>dal corpo carico a quello neutro</u>, e alla fine i due corpi sono carichi <u>con lo stesso segno</u>.
@@ -574,7 +580,9 @@ C'è però un modo ancora più sorprendente per cambiare la carica di un condutt
 {% include margin-note-end.html %}
 
 
+{% include box-anim.html %}
 {% include lab-virtuali/polarizzazione-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="Le cariche si separano: la polarizzazione" %}
 Si vede che <u>le cariche di segno opposto al corpo ne sono attratte</u>, mentre <u>quelle di segno uguale ne sono respinte</u>. Pertanto, quelle di segno opposto si avvicinano e le altre si allontanano, <u>creando due zone separate di carica</u>. Questo processo è chiamato <definizione>polarizzazione</definizione>.
@@ -675,7 +683,9 @@ Il pettine strofinato piega il filo d'acqua del rubinetto. Se al posto del petti
 
 Abbiamo visto che la polarizzazione non elettrizza il corpo in modo permanente. Per rendere permanente la separazione delle cariche serve un passaggio in più, che puoi vedere nella seguente animazione. Prova sia con la bacchetta negativa sia con quella positiva.
 
+{% include box-anim.html %}
 {% include lab-virtuali/induzione-permanente-lab.html %}
+{% include box-end.html %}
 
 {% include margin-note.html testo="Il collegamento a terra" %}
 Osserviamo che se, mentre il corpo carico resta vicino, colleghiamo il conduttore a terra con un filo, alcuni elettroni si spostano attraverso il filo (mentre i protoni rimangono fermi, come al solito). Se poi stacchiamo il collegamento a terra *prima* di allontanare il corpo carico, il conduttore resta con una carica netta permanente. Questo fenomeno si chiama dunque <definizione>elettrizzazione per induzione</definizione>.
