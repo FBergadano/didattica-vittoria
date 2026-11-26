@@ -61,6 +61,11 @@ const SCHEMA = [
   // quante osservazioni ha mandato oggi ogni studente (contro gli abusi): la chiave è
   // un'impronta (HMAC) del giorno, della classe e del codice, senza legame con i messaggi
   `CREATE TABLE IF NOT EXISTS limiti (k TEXT PRIMARY KEY, n INTEGER NOT NULL)`,
+  // appunti presi a lezione (bonus alla verifica): per ogni lezione (giorno e materia) e
+  // studente, stato = 'ok' (appunti adeguati), 'no' (non adeguati), 'ass' (assente: non conta)
+  `CREATE TABLE IF NOT EXISTS appunti (
+     classe TEXT NOT NULL, data TEXT NOT NULL, materia TEXT NOT NULL, codice TEXT NOT NULL, stato TEXT NOT NULL,
+     PRIMARY KEY (classe, data, materia, codice))`,
   // questionari anonimi (vedi «Questionari anonimi» in LEGGIMI.md): nessun codice, nessun
   // orario. Le risposte hanno come chiave un numero a caso (WITHOUT ROWID: nemmeno l'ordine
   // in cui sono salvate dice chi ha risposto per primo) e si cancellano dopo l'email.
@@ -92,6 +97,9 @@ async function preparaDB(env) {
   const col = (await DB.prepare('PRAGMA table_info(q_sessioni)').all()).results.map((r) => r.name);
   if (col.length && !(col.includes('classe') && col.includes('scadenza')))
     await DB.batch(['q_sessioni', 'q_risposte', 'q_partecipanti'].map((t) => DB.prepare('DROP TABLE IF EXISTS ' + t)));
+  // tabella degli appunti di una prima versione, senza la materia (mai usata): si rifà
+  const ca = (await DB.prepare('PRAGMA table_info(appunti)').all()).results.map((r) => r.name);
+  if (ca.length && !ca.includes('materia')) await DB.prepare('DROP TABLE appunti').run();
   await DB.batch(SCHEMA.map((s) => DB.prepare(s)));
   // database creati prima che esistesse la colonna "esercizio" (numero del Verifica Subito!/Prova tu!)
   await DB.prepare('ALTER TABLE risposte ADD COLUMN esercizio TEXT').run().catch(() => {});
@@ -134,6 +142,7 @@ export default {
         case '/osservazione': return await nuovaOsservazione(corpo, env, cors, ctx);
         case '/foto':        return await nuovaFoto(corpo, env, cors, ctx);
         case '/mie-foto':    return await mieFoto(corpo, env, cors);
+        case '/miei-appunti': return await mieiAppunti(corpo, env, cors);
         case '/foto-elimina': return await eliminaFoto(corpo, env, cors);
         case '/schema':      return await nuovoSchema(corpo, env, cors, ctx);
         case '/miei-schemi': return await mieiSchemi(corpo, env, cors);
@@ -445,6 +454,21 @@ async function eliminaSchema(c, env, cors) {
   return json({ ok: true }, 200, cors);
 }
 
+// ───────── appunti presi a lezione ─────────
+const RE_DATA = /^\d{4}-\d{2}-\d{2}$/, RE_MATERIA = /^[A-Za-zÀ-ÿ' ]{1,24}$/, STATI_APPUNTI = ['ok', 'no', 'ass'];
+async function appuntiDa(env, classe) { // per ogni materia, da quale lezione si conta (si cambia dopo ogni verifica)
+  const r = await env.DB.prepare('SELECT k, v FROM conf WHERE k LIKE ?').bind('appunti_da|' + classe + '|%').all();
+  const da = {}; r.results.forEach((x) => { if (x.v) da[x.k.split('|')[2]] = x.v; });
+  return da;
+}
+async function mieiAppunti(c, env, cors) {
+  const st = await studenteDa(c.token, env);
+  if (!st) return json({ errore: 'accesso' }, 401, cors);
+  const r = await env.DB.prepare('SELECT data, materia, stato FROM appunti WHERE classe = ? AND codice = ? ORDER BY data DESC')
+    .bind(st.classe, st.codice).all();
+  return json({ da: await appuntiDa(env, st.classe), lezioni: r.results }, 200, cors);
+}
+
 // ───────── docente ─────────
 async function docenteAutorizzato(req, env) {
   if (!env.DOCENTE_PASSWORD) return 'password non impostata';
@@ -485,6 +509,7 @@ async function docente(p, url, c, env, cors, ctx) {
         ops.push(DB.prepare('DELETE FROM dubbi WHERE classe = ? AND codice = ?').bind(classe, x));
         ops.push(DB.prepare('DELETE FROM foto WHERE classe = ? AND codice = ?').bind(classe, x));
         ops.push(DB.prepare('DELETE FROM schemi WHERE classe = ? AND codice = ?').bind(classe, x));
+        ops.push(DB.prepare('DELETE FROM appunti WHERE classe = ? AND codice = ?').bind(classe, x));
       }
       if (ops.length) await DB.batch(ops);
       return json({ ok: true, aggiunti: codici.filter((x) => !attuali.includes(x)).length, tolti: via.length }, 200, cors);
@@ -604,6 +629,30 @@ async function docente(p, url, c, env, cors, ctx) {
       return json({ ora: Date.now(), dubbi: d.results, foto: f.results, schemi: s.results, risposte: r.results, osservazioni: o.results }, 200, cors);
     }
     case '/docente/questionario': return await qDocente(c, env, cors);
+    case '/docente/appunti': { // tutte le lezioni segnate di una classe, più la data da cui si conta (per materia)
+      const classe = str(c.classe, 16);
+      const r = await DB.prepare('SELECT data, materia, codice, stato FROM appunti WHERE classe = ? ORDER BY data').bind(classe).raw();
+      return json({ da: await appuntiDa(env, classe), righe: r }, 200, cors);
+    }
+    case '/docente/appunti-salva': { // una lezione: { classe, data, materia, stati: { GIUR: 'ok', … } } (stati vuoto = cancella la lezione)
+      const classe = str(c.classe, 16), data = str(c.data, 10), materia = str(c.materia, 24);
+      if (!RE_CLASSE.test(classe || '') || !RE_DATA.test(data || '') || !RE_MATERIA.test(materia || '')) return json({ errore: 'dati' }, 400, cors);
+      const codici = (await DB.prepare('SELECT codice FROM studenti WHERE classe = ?').bind(classe).all()).results.map((x) => x.codice);
+      const stati = c.stati && typeof c.stati === 'object' ? c.stati : {};
+      const ops = [DB.prepare('DELETE FROM appunti WHERE classe = ? AND data = ? AND materia = ?').bind(classe, data, materia)];
+      for (const k of Object.keys(stati)) {
+        if (codici.includes(k) && STATI_APPUNTI.includes(stati[k]))
+          ops.push(DB.prepare('INSERT INTO appunti (classe, data, materia, codice, stato) VALUES (?, ?, ?, ?, ?)').bind(classe, data, materia, k, stati[k]));
+      }
+      await DB.batch(ops);
+      return json({ ok: true, salvati: ops.length - 1 }, 200, cors);
+    }
+    case '/docente/appunti-da': { // nuovo conteggio di una materia (dopo una verifica): '' = conta tutte le lezioni
+      const classe = str(c.classe, 16), materia = str(c.materia, 24), da = str(c.da || '', 10);
+      if (!RE_CLASSE.test(classe || '') || !RE_MATERIA.test(materia || '') || (da && !RE_DATA.test(da))) return json({ errore: 'dati' }, 400, cors);
+      await DB.prepare('INSERT OR REPLACE INTO conf (k, v) VALUES (?, ?)').bind('appunti_da|' + classe + '|' + materia, da).run();
+      return json({ ok: true }, 200, cors);
+    }
     case '/docente/cancella': { // cancella risposte, dubbi e foto più vecchi di una data
       const prima = Number(c.prima_di);
       if (!isFinite(prima) || prima <= 0) return json({ errore: 'data non valida' }, 400, cors);
@@ -612,6 +661,9 @@ async function docente(p, url, c, env, cors, ctx) {
       const f = await DB.prepare('DELETE FROM foto WHERE ts < ?').bind(prima).run();
       const g = await DB.prepare('DELETE FROM schemi WHERE ts < ?').bind(prima).run();
       const o = await DB.prepare('DELETE FROM osservazioni WHERE ts < ?').bind(prima).run();
+      // il giorno scelto dal docente (la data in millisecondi è la mezzanotte italiana, che in UTC è il giorno prima)
+      const dPrima = RE_DATA.test(String(c.prima_data || '')) ? c.prima_data : new Date(prima + 12 * 3600 * 1000).toISOString().slice(0, 10);
+      await DB.prepare('DELETE FROM appunti WHERE data < ?').bind(dPrima).run();
       return json({ ok: true, risposte: a.meta.changes, dubbi: b.meta.changes, foto: f.meta.changes, schemi: g.meta.changes, osservazioni: o.meta.changes }, 200, cors);
     }
   }
