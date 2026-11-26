@@ -40,9 +40,8 @@ Mentre i pesi scendono, perdono **energia potenziale gravitazionale**. Le corde,
 Joule comprese dunque la seguente cosa.
 
 {% include box-imp.html testo="Il calore" %}
-<u>Il calore</u> (simbolo $Q$) <u markdown="span">è una forma di energia che si **trasmette** da un corpo a un altro</u>. Pertanto, <u>essa si misura in joule</u> (simbolo J).  
-
-
+<u>Il calore</u> (simbolo $Q$) <u markdown="span">è una forma di energia che si **trasmette** da un corpo a un altro</u>. Pertanto, <u>essa si misura in joule</u> (simbolo J).    
+Un corpo, quindi, non *ha* calore: il calore si **cede** o si **acquista** da un corpo a un altro.
 {% include box-end.html %}
 {% include spoiler.html testo="Joule e la birra: la storia" %}
 {% include figure/joule-birra-figura.html %}
@@ -61,40 +60,18 @@ Quando presentò i suoi risultati, negli anni Quaranta dell'Ottocento, molti sci
 {"t": "Il calore è una forma di energia e si misura in joule.", "ok": true, "s": "Sì: proprio per questo la sua unità di misura è il joule, come per il lavoro e per ogni altra forma di energia."},
 {"t": "Strofinando le mani, l'energia meccanica si trasforma in calore.", "ok": true, "s": "Sì: l'attrito dissipa l'energia meccanica, che diventa calore."},
 {"t": "Nel mulinello di Joule l'acqua si scalda perché viene a contatto con un corpo più caldo.", "ok": false, "s": "No: nessun corpo caldo tocca l'acqua. Si scalda perché l'energia meccanica persa dai pesi viene dissipata dall'attrito fra l'acqua e le palette."},
-{"t": "Nel mulinello di Joule, se i pesi cadessero da un'altezza doppia, l'acqua si scalderebbe di più.", "ok": true, "s": "Sì: i pesi perderebbero il doppio dell'energia potenziale, e il doppio dell'energia diventerebbe calore."},
 {"t": "Un corpo caldo contiene più calore di un corpo freddo.", "ok": false, "s": "No: il calore non è qualcosa che un corpo contiene. È energia che passa da un corpo a un altro: un corpo caldo ha una temperatura più alta, non «più calore»."}
 ]{% endcapture %}
 {% include quiz.html domande=_qcalore id="q-calore" senza_esempi="true" %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
-Nel suo mulinello, Joule faceva cadere i pesi decine di volte di fila, riavvolgendo ogni volta le corde. Perché?
-{% capture _o %}[
-{"v":"a","t":"Perché i pesi, cadendo più volte, diventavano più pesanti"},
-{"v":"b","t":"Perché a ogni caduta l'acqua si scaldava pochissimo: ripetendo, l'energia si accumulava e il riscaldamento diventava abbastanza grande da misurarlo"},
-{"v":"c","t":"Perché l'acqua doveva prima raffreddarsi"},
-{"v":"d","t":"Perché una sola caduta avrebbe raffreddato l'acqua"}
-]{% endcapture %}
-{% include mcq.html id="mcq-vs-joule-ripete" opts=_o ok="b" s="L'energia potenziale persa in una caduta è piccola, e l'aumento di temperatura che produce è di pochi millesimi di grado. Ripetendo le cadute, l'energia trasformata in calore si somma, e la temperatura sale abbastanza da poterla misurare con precisione." %}
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html %}
-{% include calc-margin.html id="calcVsBici" %}
-Un ciclista, con la bici, ha una massa totale di $80\ \text{kg}$ e viaggia a $10\ \text{m/s}$. Frena fino a fermarsi. Quanta energia è diventata calore, soprattutto nei freni e nelle ruote?
-
-{% include num.html id="numVsBici" valore="4000" unit="J" %}
-{% include spoiler.html testo="Mostra la soluzione" %}
-Tutta l'energia cinetica, $K = \dfrac12 m v^2 = \dfrac12\cdot 80\ \text{kg}\cdot(10\ \text{m/s})^2 = 4\,000\ \text J$, viene dissipata dall'attrito e diventa calore: è per questo che, dopo una lunga discesa frenando, i freni di una bici scottano.
-{% include spoiler-end.html %}
-<div style="clear:both"></div>
-{% include scorri-slide-end.html %}
-{% include scorri-slide.html %}
-Le «stelle cadenti» sono sassolini, spesso più piccoli di un chicco di riso, che entrano nell'atmosfera a decine di chilometri al secondo. Perché brillano?
+Le «stelle cadenti» sono sassolini che entrano velocissimi nell'atmosfera. Perché brillano?
 {% capture _o %}[
 {"v":"a","t":"Perché riflettono la luce del Sole"},
-{"v":"b","t":"Perché sono fatti di materiale luminoso"},
-{"v":"c","t":"Perché l'attrito con l'aria trasforma la loro enorme energia cinetica in calore: si scaldano fino a migliaia di gradi e diventano incandescenti"},
+{"v":"c","t":"Perché l'aria li frena, e la loro energia cinetica diventa calore: si scaldano fino a diventare incandescenti"},
 {"v":"d","t":"Perché sono già caldissimi quando arrivano dallo spazio"}
 ]{% endcapture %}
-{% include mcq.html id="mcq-vs-meteora" opts=_o ok="c" s="A decine di chilometri al secondo anche un sassolino ha un'energia cinetica enorme. Frenato dall'aria, la dissipa in calore in pochi secondi: si scalda fino a diventare incandescente e quasi sempre si consuma prima di toccare terra." %}
+{% include mcq.html id="mcq-vs-meteora" opts=_o ok="c" s="A decine di chilometri al secondo anche un sassolino ha un'energia cinetica enorme, che in pochi secondi diventa calore." %}
 {% include scorri-slide-end.html %}
 {% include scorri-slide.html %}
 {% capture _r %}Non è sparita: a ogni rimbalzo una parte dell'energia meccanica della palla viene dissipata. Diventa soprattutto calore (la palla e il pavimento si scaldano un pochino, nel punto dell'urto) e in parte suono. Alla fine tutta l'energia potenziale iniziale si è trasformata così: la quantità totale di energia è rimasta la stessa.{% endcapture %}

@@ -50,6 +50,7 @@
   - data: 2026-11-23
     capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
     esercizi: [6,7]
+
 "3B":
   - data: 2026-11-09
     capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
@@ -60,6 +61,9 @@
   - data: 2026-11-18
     capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
     esercizi: [6,7]
+  - data: 2026-11-25
+    capitolo: introduzione-alla-fisica/02_Laboratorio_Misurazione
+    esercizi: [8]
 
 "4ACD":
   - data: 2026-10-23
@@ -70,7 +74,9 @@
     capitolo: meccanica/06_Energia
     riepilogo: [41, 42, 43, 45, 48, 56, 62, 67]
     note: "Allenamento per la verifica del 20: le tre domande di teoria, poi i problemi. Usate l'indizio solo se siete bloccati."
-
+  - data: 2026-11-27
+    capitolo: termodinamica/01_Calore
+    esercizi: [1,2]
 
 
 "4B":

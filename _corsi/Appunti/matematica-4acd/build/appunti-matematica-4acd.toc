@@ -1,3 +1,5 @@
 \xpg@aux {}{italian}
 \contentsline {chapter}{\numberline {1}Funzione inversa e trasformazioni dei grafici}{2}{chapter.1}%
 \contentsline {section}{\numberline {1.1}Scaletta: due ore di preparazione alla verifica}{2}{section.1.1}%
+\contentsline {chapter}{\numberline {2}La funzione esponenziale}{6}{chapter.2}%
+\contentsline {section}{\numberline {2.1}La leggenda della scacchiera}{6}{section.2.1}%

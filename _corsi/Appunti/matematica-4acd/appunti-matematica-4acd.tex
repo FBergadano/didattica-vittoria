@@ -90,4 +90,34 @@ Dalla simulazione, un esercizio per tipo (in tutto una decina, per non sommerger
 \subsection*{Se resto indietro: che cosa tagliare}
 Nell'ordine: l'artista di strada (2.4), $f(-x)$ (3.6), il secondo esercizio tipo verifica (lo do per casa). \textbf{Non} tagliare il monopattino né il primo esercizio tipo verifica: sono quelli che collegano le due parti.
 
+\chapter{La funzione esponenziale}
+
+\section{La leggenda della scacchiera}
+
+\begin{quote}\itshape
+L'incendio suo seguiva ogne scintilla;\\
+ed eran tante, che'l numero loro\\
+più che'l doppiar de li scacchi s'inmilla.
+\begin{flushright}\upshape (Dante, \emph{Paradiso}, canto XXVII)\end{flushright}
+\end{quote}
+
+Dante, in questi versi in cui descrive il numero enorme di angeli nel Paradiso, fa riferimento a una antica storia, che riguarda la nascita degli scacchi.
+
+Si racconta che gli scacchi nacquero in India, per consolare un re che aveva perduto il figlio in guerra. Un saggio propose allora al re un gioco da lui inventato, fatto di 64 caselle chiare e scure e 32 pezzi: gli scacchi. Il gioco rappresentava la guerra e aveva lo scopo di far comprendere al re che non era possibile vincere senza sacrificare neanche un pezzo: a volte il più importante. Il re, affascinato, iniziò a giocare e trovò in esso un modo per riflettere e superare il dolore.
+
+Per ricompensare il saggio, il re gli offrì qualsiasi cosa. L'uomo fece una richiesta apparentemente modesta: un chicco di riso sulla prima casella della scacchiera, due sulla seconda, quattro sulla terza, raddoppiando ogni volta fino alla sessantaquattresima.
+Il re accettò con leggerezza, scoppiò a ridere e si offrì di dargli il doppio. Ma il saggio rispose \cit{mi basta quello che ho richiesto}. I contabili del re presero dunque a contare i chicchi di riso necessari: $1+2+4+8+16+32+\dots$. Ben presto si bloccarono nei conti e si rivolsero pallidi al re: l'intero regno non bastava a soddisfare la richiesta. Né i regni vicini. Né l'intero mondo.
+
+I chicchi di riso, ad ogni casella, vengono raddoppiati. Quindi, la prima casella ne ha solo $1$, la seconda ne ha $2$, la terza ne ha $2\cdot 2$, la quarta ne ha $2\cdot 2 \cdot 2$, la quinta $2\cdot 2 \cdot 2 \cdot 2$, e così via. Sappiamo che possiamo scrivere queste operazioni in modo più compatto come $2^0=1$, $2^1$, $2^2$, $2^3$, $2^4$, ecc., fino alla 64esima casella, che contiene $2^{63}$ chicchi. Sommiamo tutti i chicchi di riso in tutte le caselle:
+\[
+2^0+2^1+2^2+2^3+\cdots+2^{63} = 2^{64}-1 .
+\]
+La richiesta del saggio ammonta quindi a esattamente $18\,446\,744\,073\,709\,551\,615$ chicchi di riso. Per avere un'idea di quanti sono, considera che l'attuale produzione mondiale di riso corrisponde circa a $370\,000\,000\,000$ chicchi annuali. Cioè, l'attuale produzione annuale di riso corrisponde a pochi miliardesimi della richiesta del saggio:
+\[
+\frac{370\,000\,000\,000}{18\,446\,744\,073\,709\,551\,615} \simeq 0{,}000\,000\,02 .
+\]
+Servirebbero cioè miliardi di anni per produrre una quantità di riso sufficiente a soddisfare la richiesta del saggio: un numero di anni superiore alla storia dell'umanità.
+
+Questa storia ci fa comprendere quanto sia sorprendente ciò che succede con le potenze: crescono a un ritmo che per noi è inconcepibile.
+
 \end{document}
